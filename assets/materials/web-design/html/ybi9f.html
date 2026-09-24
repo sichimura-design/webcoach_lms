@@ -1,0 +1,609 @@
+<!DOCTYPE html>
+<!-- clipkit-source-url: https://learn.webcoach.jp/web-design/ybi9F -->
+<!-- clipkit-fetched-at: 2026-09-17T11:14:00.275Z -->
+<html lang="ja"><head>
+    <!-- headタグ内の上部に挿入されます -->
+
+    <meta charset="UTF-8">
+    <title>Adobe Photoshop｜17章 レイヤーマスクを使ってみよう - WEBCOACH</title>
+
+    <!-- resetcssのCDNでのCSS読み込み -->
+    <link rel="stylesheet" href="../../_assets/17f8e278dc.css">
+
+    <!-- fontawesomeのCDNでのCSS読み込み -->
+    <link rel="stylesheet" href="../../_assets/799aeb25cc.css">
+
+    <!-- BootstrapのCDNでのCSS読み込み -->
+    <link href="../../_assets/7633b7c0c9.css" rel="stylesheet">
+
+    <!-- highlight.jsの読み込み -->
+    <link rel="stylesheet" href="../../_assets/e31ce2dd8c.css">
+
+    <!-- カスタムCSS -->
+    <link rel="stylesheet" href="../../_assets/c533dd7750.css">
+
+    <!-- clipkitデフォルトのCSS -->
+    <!--<link rel="stylesheet" media="screen" href="https://cdn.clipkit.co/clipkit/stylesheets/application-1.0.css?v=v15.9.0-20260915">-->
+
+    <!-- jQuery -->
+    
+
+    <!-- カスタムJS -->
+    
+    
+
+    <!-- clipkitデフォルトのJS -->
+    
+
+    <!-- フォント -->
+    <link rel="preconnect" href="https://fonts.googleapis.com/">
+    <link rel="preconnect" href="https://fonts.gstatic.com/">
+    <link href="../../_assets/8b5713f1fc.css" rel="stylesheet">
+
+    <link href="../../_assets/b83ae8ba65.webp" rel="shortcut icon" type="image/vnd.microsoft.icon">
+    <link rel="apple-touch-icon" href="../../_assets/ea0aba163d.webp">
+    <link rel="alternate" type="application/rss+xml" href="https://learn.webcoach.jp/media.rss" title="WEBCOACH">
+    
+<link rel="canonical" href="https://learn.webcoach.jp/web-design/ybi9F">
+
+<meta name="description" content="">
+<meta name="keywords" content="">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:domain" content="learn.webcoach.jp">
+<meta name="twitter:title" content="Adobe Photoshop｜17章 レイヤーマスクを使ってみよう - WEBCOACH">
+<meta name="twitter:image" content="https://cdn.clipkit.co/tenants/589/articles/images/000/000/709/medium/5e3c91f8-e343-4767-9f80-d6bd3a69eaff.png?1740018368">
+<meta name="twitter:description" content="">
+<meta property="og:site_name" content="WEBCOACH">
+<meta property="og:title" content="Adobe Photoshop｜17章 レイヤーマスクを使ってみよう">
+<meta property="og:description" content="">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://learn.webcoach.jp/web-design/ybi9F">
+<meta property="og:image" content="https://cdn.clipkit.co/tenants/589/articles/images/000/000/709/large/5e3c91f8-e343-4767-9f80-d6bd3a69eaff.png?1740018368">
+
+
+    <!-- headタグ内の下部に挿入されます -->
+
+
+<meta name="csrf-param" content="authenticity_token">
+<meta name="csrf-token" content="Th2WnN_xDwCLBT4dqT89_3xw69UHnHuC829KerEp9SdqwaSLzeTUYV_MUjiqRFMqIf5OXTWkj4GKuY07XNI5Dg"><meta content="" name="routing-root-path"><meta content="media" name="site-name"><meta content="ja" name="i18n-default-locale"><meta content="ja" name="i18n-locale"><style data-clipkit-snapshot="force-visible">[data-aos],.reveal,.wow,.fade-in,.animate__animated,.js-reveal{opacity:1!important;transform:none!important;visibility:visible!important;animation:none!important;transition:none!important}</style></head>
+
+<body class="device-desktop" style="visibility: visible;">
+    <!-- bodyタグ内の上部に挿入されます -->
+
+
+    <!-- サイドバーとコンテンツのコンテナ -->
+    <div class="d-flex flex-row w-100 mb-5" style="min-height: calc(100vh - 400px);">
+
+        <!-- サイドバー -->
+        <!--<nav id="side-bar" class="d-flex flex-column fixed-top" style="width: 250px;">-->
+        <!--    <h1 class="d-block w-100 text-center">-->
+        <!--        <a class="d-block" href="/">-->
+        <!--            <img class="mw-100 p-3" src="https://cdn.clipkit.co/tenants/589/sites/logos/000/000/001/logo_sm/a8defd4b-1cc7-433b-a61c-08e7db0e3e4f.png?1714459367" alt="WEBCOACH">-->
+        <!--        </a>-->
+        <!--    </h1>-->
+        <!--    <ul class="nav flex-column m-0 p-3 fw-bold">-->
+        <!--        <li id="sidebar-top" class="nav-item mb-2" style="display: none;"><a href="/"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;" src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/233/original/home.png?1715353458">-->
+        <!--                <div>ホーム</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-knowledges" class="nav-item mb-2" style="display: none;"><a href="/knowledges"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;" src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/232/original/book.png?1715353458">-->
+        <!--                <div>学習の心得</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-web-designs" class="nav-item mb-2" style="display: none;"><a href="/web-designs"-->
+        <!--                class="nav-link text-body d-flex align-items-center active">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/231/original/design.png?1715353457">-->
+        <!--                <div>WEBデザイン</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-web-marketing" class="nav-item mb-2" style="display: none;"><a href="/web-marketings"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/230/original/marketing.png?1715353457">-->
+        <!--                <div>WEBマーケティング</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-codings" class="nav-item mb-2" style="display: none;"><a href="/codings"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/229/original/website.png?1715353457">-->
+        <!--                <div>WEBサイト構築</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-business-skills" class="nav-item mb-2" style="display: none;"><a href="/business-skills"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/228/original/business.png?1715353456">-->
+        <!--                <div>ビジネススキル</div>-->
+        <!--            </a></li>-->
+        <!--    </ul>-->
+        <!--</nav>-->
+
+        <!-- コンテンツ -->
+        <!--<main class="ms-auto" style="width: calc(100vw - 250px);">-->
+        <main class="ms-auto" style="width: calc(100vw);">
+            <div id="sb-site">
+                
+
+
+<div class="container">
+  <div class="row">
+    <div class="article">
+      <div class="mb-3 text-light" style="
+        height: 180px;
+        background-image: url(&quot;../../_assets/e1d58e2b8a.webp&quot;);
+        background-repeat: no-repeat;
+        background-size: cover;
+        display: flex;
+        align-items: flex-end;
+      ">
+        <div style="
+          margin: 0 0 30px 30px;
+        ">
+          <div>WEBデザイン</div>
+
+          <div class="fw-bold h2">Adobe Photoshop｜17章 レイヤーマスクを使ってみよう</div>
+        </div>
+      </div>
+      <div class="article-content">
+        <!-- 目次 -->
+        <div class="index mb-3" style="background-color: #FDF5E8;">
+          <div>
+            <div class="fw-light">INDEX</div>
+            <div class="h3">目次</div>
+          </div>
+          <div class="toc"><ul><li><a href="#heading0" class="tocLink">17章 レイヤーマスクを使ってみよう</a><ul><li><a href="#heading1" class="tocLink">この教材の学習時間:240分</a></li></ul></li><li><a href="#heading2" class="tocLink">【17-1】レイヤーマスクとは</a></li><li><a href="#heading3" class="tocLink">【17-2】レイヤーマスクの基本操作</a><ul><li><a href="#heading4" class="tocLink">操作手順</a><ul><li><a href="#heading5" class="tocLink"></a></li><li><a href="#heading6" class="tocLink"></a></li><li><a href="#heading7" class="tocLink"></a></li><li><a href="#heading8" class="tocLink"></a></li><li><a href="#heading9" class="tocLink"></a></li><li><a href="#heading10" class="tocLink"></a></li></ul></li><li><a href="#heading11" class="tocLink">レイヤーマスクの編集</a></li></ul></li><li><a href="#heading12" class="tocLink">【17-3】レイヤーマスクの活用例</a><ul><li><a href="#heading13" class="tocLink">選択範囲からレイヤーマスクを作成しよう</a><ul><li><a href="#heading14" class="tocLink">演習課題</a></li><li><a href="#heading15" class="tocLink"></a></li></ul></li></ul></li><li><a href="#heading16" class="tocLink">【17-4】演習：レイヤーマスクを使って2枚の写真を合成しよう</a><ul><li><a href="#heading17" class="tocLink">演習課題</a></li><li><a href="#heading18" class="tocLink"></a></li><li><a href="#heading19" class="tocLink">完成画像</a></li><li><a href="#heading20" class="tocLink"></a></li></ul></li><li><a href="#heading21" class="tocLink">【17-5】演習：映り込みの表現をしよう</a><ul><li><a href="#heading22" class="tocLink">演習課題</a></li><li><a href="#heading23" class="tocLink"></a></li><li><a href="#heading24" class="tocLink">完成画像</a></li><li><a href="#heading25" class="tocLink"></a></li></ul><ul><li><a href="#heading26" class="tocLink">操作手順</a><ul><li><a href="#heading27" class="tocLink">1. 香水の画像を読み込み、マジック消しゴムツールで背景を消去する</a></li><li><a href="#heading28" class="tocLink"></a></li><li><a href="#heading29" class="tocLink"></a></li><li><a href="#heading30" class="tocLink"></a></li><li><a href="#heading31" class="tocLink"></a></li><li><a href="#heading32" class="tocLink"></a></li><li><a href="#heading33" class="tocLink"></a></li><li><a href="#heading34" class="tocLink">2. レイヤーを追加して背景を白くする</a></li><li><a href="#heading35" class="tocLink"></a></li><li><a href="#heading36" class="tocLink"></a></li><li><a href="#heading37" class="tocLink"></a></li><li><a href="#heading38" class="tocLink"></a></li><li><a href="#heading39" class="tocLink"></a></li><li><a href="#heading40" class="tocLink"></a></li><li><a href="#heading41" class="tocLink">3. 香水のサイズを変更する</a></li><li><a href="#heading42" class="tocLink"></a></li><li><a href="#heading43" class="tocLink"></a></li><li><a href="#heading44" class="tocLink">4. 香水のレイヤーを複製して、複製した香水レイヤーを垂直方向へ反転する</a></li><li><a href="#heading45" class="tocLink"></a></li><li><a href="#heading46" class="tocLink"></a></li><li><a href="#heading47" class="tocLink"></a></li><li><a href="#heading48" class="tocLink"></a></li><li><a href="#heading49" class="tocLink"></a></li><li><a href="#heading50" class="tocLink"></a></li><li><a href="#heading51" class="tocLink"></a></li><li><a href="#heading52" class="tocLink"></a></li><li><a href="#heading53" class="tocLink"></a></li><li><a href="#heading54" class="tocLink">5. 複製した香水レイヤーにレイヤーマスクでグラデーションをかける</a></li><li><a href="#heading55" class="tocLink"></a></li><li><a href="#heading56" class="tocLink"></a></li><li><a href="#heading57" class="tocLink"></a></li><li><a href="#heading58" class="tocLink">6. レイヤーを追加して背景画像を読み込みレイヤーマスクでグラデーションをかける</a></li><li><a href="#heading59" class="tocLink"></a></li><li><a href="#heading60" class="tocLink"></a></li><li><a href="#heading61" class="tocLink"></a></li><li><a href="#heading62" class="tocLink"></a></li><li><a href="#heading63" class="tocLink"></a></li><li><a href="#heading64" class="tocLink"></a></li><li><a href="#heading65" class="tocLink"></a></li></ul></li></ul></li></ul></div>
+        </div>
+        
+        <div class="back-to-roadmap mb-4 text-center"></div>
+
+        <!-- コンテンツ -->
+        
+        
+        <div class="article-item item_html " id="item25607" data-item-id="25607" data-item-type="ItemHtml"><div class="item-body"><div class="pagenation-buttons" style="justify-content: space-between;">
+  <a href="https://learn.webcoach.jp/web-design/wqWzv" class="pagenation-buttons_prev"><img src="../../_assets/47498cfebf.svg" class="pagenation-buttons_icon">前の章に戻る</a>
+  <a href="https://learn.webcoach.jp/web-design/jvzYj" class="pagenation-buttons_next">次の章に進む<img src="../../_assets/47498cfebf.svg" class="pagenation-buttons_icon"></a>
+</div></div></div>
+        
+        <div class="article-item item_heading " id="item36879" data-item-id="36879" data-item-type="ItemHeading"><h2 class="item-body" id="heading0">17章 レイヤーマスクを使ってみよう</h2></div>
+        
+        <div class="article-item item_markdown " id="item39480" data-item-id="39480" data-item-type="ItemMarkdown"><h4 id="heading1">この教材の学習時間:240分</h4>
+</div>
+        
+        <div class="article-item item_rich_text " id="item8251" data-item-id="8251" data-item-type="ItemRichText"><div class="item-body-hbr">この章では、<span class="decoration-01"><span class="decoration-02">レイヤーマスク</span></span>について、基礎から丁寧に解説していきます。<br>
+レイヤーマスクは、元画像を傷つけずに<span class="decoration-02"><span class="decoration-01">画像の一部を隠したり表示したりできる</span></span>機能です。これにより、画像の合成や細部の調整を、後から何度でもやり直せる柔軟なワークフローで実現できます。<br>
+Photoshopの画像編集作業をより効率的でクリエイティブなものにする機能です。基本をしっかり押さえて表現の幅を広げていきましょう！</div></div>
+        
+        <div class="article-item item_heading " id="item36908" data-item-id="36908" data-item-type="ItemHeading"><h2 class="item-body" id="heading2">【17-1】レイヤーマスクとは</h2></div>
+        
+        <div class="article-item item_rich_text " id="item8261" data-item-id="8261" data-item-type="ItemRichText"><div class="item-body-hbr"> レイヤーマスクは、<span class="decoration-01"><span class="decoration-02">画像の表示と非表示を設定する機能</span></span>です。<br>
+非表示にしたい部分がある画像のレイヤーに対してレイヤーマスクを追加することで、元々の画像の状態を保持しながら不要な部分だけマスクして非表示にすることができます。</div></div>
+        
+        <div class="article-item item_link " id="item36880" data-item-id="36880" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=ybi9F&amp;item_id=36880" rel="nofollow noopener noreferrer" target="_blank">Adobe Photoshop 17-1 【使用素材】</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="Adobe Photoshop 17-1 【使用素材】" data-reference="https://www.dropbox.com/scl/fi/r7olt23elatt0t0w4wh2t/Adobe-Photoshop-17_apple.jpg?rlkey=917ulz4nzz8at7z2fi4kbddh1&amp;st=qiptukfm&amp;dl=0" src="../../_assets/8068ac7adc.webp" width="75" height="75"></div><div class="media-body"><div class="item-body"></div></div></div></div></div>
+        
+        <div class="article-item item_heading " id="item36909" data-item-id="36909" data-item-type="ItemHeading"><h2 class="item-body" id="heading3">【17-2】レイヤーマスクの基本操作</h2></div>
+        
+        <div class="article-item item_text " id="item8263" data-item-id="8263" data-item-type="ItemText"><div class="item-body-hbr"> 実際に使用素材を使って、りんごの背景を非表示にする操作をしてみましょう。<br>背景が非表示になるとマス目が表示されます。</div></div>
+        
+        <div class="article-item item_heading " id="item36910" data-item-id="36910" data-item-type="ItemHeading"><h3 class="item-body" id="heading4">操作手順</h3></div>
+        
+        <div class="article-item item_text " id="item8264" data-item-id="8264" data-item-type="ItemText"><div class="item-body-hbr">1. 選択ツールのオブジェクト選択ツールを使用して選択範囲にしたい場所をクリック</div></div>
+        
+        <div class="article-item item_image " id="item8318" data-item-id="8318" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/008/318/medium/7e3d81ba-26ab-4ff6-83d5-efcf208f968d.jpg?1740021934" title=""><img class="img-responsive item-image" alt=" (8318)" data-reference="" src="../../_assets/0b2de06a12.webp" width="640" height="386"></a><h4 id="heading5"></h4></div></div>
+        
+        <div class="article-item item_image " id="item8319" data-item-id="8319" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/008/319/medium/fa34190d-d1f5-4280-9015-16d0e3d8527f.jpg?1740021947" title=""><img class="img-responsive item-image" alt=" (8319)" data-reference="" src="../../_assets/f7200125a4.webp" width="640" height="386"></a><h4 id="heading6"></h4></div></div>
+        
+        <div class="article-item item_image " id="item8320" data-item-id="8320" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/008/320/medium/f176a4a0-191b-4e0b-bec1-25bdeeed8d06.jpg?1740021960" title=""><img class="img-responsive item-image" alt=" (8320)" data-reference="" src="../../_assets/41e6452011.webp" width="640" height="385"></a><h4 id="heading7"></h4></div></div>
+        
+        <div class="article-item item_html " id="item36881" data-item-id="36881" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_text " id="item8265" data-item-id="8265" data-item-type="ItemText"><div class="item-body-hbr">2. レイヤーパネルで選択対象の画像のレイヤーを選択していることを確認してレイヤーマスクを追加</div></div>
+        
+        <div class="article-item item_image " id="item8321" data-item-id="8321" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/008/321/medium/8d9a3abd-7c3f-45b8-be79-16b5a0b15531.jpg?1740021974" title=""><img class="img-responsive item-image" alt=" (8321)" data-reference="" src="../../_assets/ada2c91f85.webp" width="640" height="388"></a><h4 id="heading8"></h4></div></div>
+        
+        <div class="article-item item_html " id="item36882" data-item-id="36882" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_text " id="item8266" data-item-id="8266" data-item-type="ItemText"><div class="item-body-hbr">3. レイヤーパネルにレイヤーマスクサムネイルが表示されます。</div></div>
+        
+        <div class="article-item item_image " id="item8322" data-item-id="8322" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/008/322/medium/a77d42d3-12a0-42b0-a7cb-5d11e9c2dc35.jpg?1740021985" title=""><img class="img-responsive item-image" alt=" (8322)" data-reference="" src="../../_assets/6aa4ece52e.webp" width="640" height="385"></a><h4 id="heading9"></h4></div></div>
+        
+        <div class="article-item item_html " id="item8267" data-item-id="8267" data-item-type="ItemHtml"><div class="item-body"><div class="callout white">
+    <div class="title-area">
+        <div class="icon bulb"></div>
+        <div class="title">レイヤーマスクサムネイルの見方</div>
+    </div>
+    <div class="content-area">
+      <ul>
+        <li>レイヤーマスクサムネイルは白黒の画像が表示されています。</li>
+        <li>マスク上では、りんごの周囲（背景）が非表示になっているため黒く、りんご自体は表示されているため白くなっています。</li>
+        <li>表示部分は白色、非表示部分は黒色。この色分けによって表示する箇所と非表示を分けることができます。</li>
+      </ul>
+    </div>
+</div></div></div>
+        
+        <div class="article-item item_image " id="item8323" data-item-id="8323" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/008/323/medium/314964c7-152a-4d61-970c-f1b93a829136.jpg?1740022002" title=""><img class="img-responsive item-image" alt=" (8323)" data-reference="" src="../../_assets/007c66954b.webp" width="490" height="268"></a><h4 id="heading10"></h4></div></div>
+        
+        <div class="article-item item_link " id="item12352" data-item-id="12352" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=ybi9F&amp;item_id=12352" rel="nofollow noopener noreferrer" target="_blank">作業動画 Adobe Photoshop 17-1</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="作業動画 Adobe Photoshop 17-1" data-reference="https://www.dropbox.com/scl/fi/sc50pgl2j5drhrjk5xxja/Adobe-Photoshop17-1_1.0_.mov?rlkey=npxuvb4d67odq8rbeifvn6ls9&amp;e=1&amp;st=e630acy6&amp;dl=0" src="../../_assets/fb06745a74.webp" width="75" height="75"></div><div class="media-body"><div class="item-body">この動画はデモンストレーション動画になります。
+音声は入っておりません。</div></div></div></div></div>
+        
+        <div class="article-item item_heading " id="item36911" data-item-id="36911" data-item-type="ItemHeading"><h3 class="item-body" id="heading11">レイヤーマスクの編集</h3></div>
+        
+        <div class="article-item item_rich_text " id="item8269" data-item-id="8269" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">1. 画像サムネイルを選択した場合</span></div></div>
+        
+        <div class="article-item item_html " id="item36883" data-item-id="36883" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li><span class="decoration-02">画像そのもの</span>に対して編集ができます。（例：ブラシツールで線を描画する）</li>
+  <li>画像に編集をした場合、マスクで非表示になっているところに対しては表示されませんが編集されています。</li>
+  <span>※レイヤーマスクサムネイル上で右クリックし、レイヤーマスクを使用しない選択をするとレイヤーマスクが非表示になり画像が全て表示されます。</span>
+</ul>
+</div></div>
+        
+        <div class="article-item item_link " id="item12353" data-item-id="12353" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=ybi9F&amp;item_id=12353" rel="nofollow noopener noreferrer" target="_blank">作業動画 Adobe Photoshop 17-2</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="作業動画 Adobe Photoshop 17-2" data-reference="https://www.dropbox.com/scl/fi/1ifrtjmdbzqred95gfr5c/Adobe-Photoshop17-2_1.0_.mov?rlkey=hm7mdthv2hh3a1bfvmsxrfomn&amp;e=1&amp;st=34lwolrq&amp;dl=0" src="../../_assets/fb06745a74.webp" width="75" height="75"></div><div class="media-body"><div class="item-body">この動画はデモンストレーション動画になります。
+音声は入っておりません。</div></div></div></div></div>
+        
+        <div class="article-item item_rich_text " id="item8272" data-item-id="8272" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">2. レイヤーマスクサムネイルをクリックした場合</span></div></div>
+        
+        <div class="article-item item_html " id="item36884" data-item-id="36884" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li>ブラシツールなどを使用してマスクの範囲（表示するところと非表示にするところ）を調整することができます。</li>
+  <li>色は自動的に白黒になります。</li>
+  <span>レイヤーマスクサムネイルに対しての編集は、<span class="decoration-02">元々の画像には影響はありません。</span></span>
+</ul>
+</div></div>
+        
+        <div class="article-item item_link " id="item12354" data-item-id="12354" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=ybi9F&amp;item_id=12354" rel="nofollow noopener noreferrer" target="_blank">作業動画 Adobe Photoshop 17-3</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="作業動画 Adobe Photoshop 17-3" data-reference="https://www.dropbox.com/scl/fi/7jjmpgqe1pg3s4yciotbo/Adobe-Photoshop17-3_1.0_.mov?rlkey=1vhimnehekos7b1hw6mv9ut5i&amp;e=1&amp;st=g902zn8w&amp;dl=0" src="../../_assets/fb06745a74.webp" width="75" height="75"></div><div class="media-body"><div class="item-body">この動画はデモンストレーション動画になります。
+音声は入っておりません。</div></div></div></div></div>
+        
+        <div class="article-item item_html " id="item8275" data-item-id="8275" data-item-type="ItemHtml"><div class="item-body"><div class="card-with-icon point">
+  <span class="bold">補足説明<br></span>
+  <ul>
+    <li><strong>マスクを調整するときに気を付けること</strong></li>
+    <ul>
+      <li>操作する対象のレイヤーマスクサムネイルを選択しておきましょう。</li>
+      <li><span class="decoration-02">ブラシの色が白の場合（#ffffff）は表示、黒の場合（#000000）は非表示になります。</span></li>
+      <li>白と黒以外の色で操作した場合は、グレーの色になり表示は半透明になります。</li>
+    </ul>
+    <li><strong>マスクと消しゴムツールの違い</strong></li>
+    <ul>
+      <li>消しゴムツールは画像そのものに手を加えるので、<span class="decoration-02">元々の画像の状態を保持することができないため後で消したところを復活させることができません。</span></li>
+      <li>一方、レイヤーマスクはピクセルを「消す」のではなく「隠す（非表示にする）」だけなので、マスクを編集すれば<span class="decoration-02">いつでも元に戻すことができます。</span></li>	
+    </ul>
+  </ul>
+</div></div></div>
+        
+        <div class="article-item item_heading " id="item36912" data-item-id="36912" data-item-type="ItemHeading"><h2 class="item-body" id="heading12">【17-3】レイヤーマスクの活用例</h2></div>
+        
+        <div class="article-item item_heading " id="item36913" data-item-id="36913" data-item-type="ItemHeading"><h3 class="item-body" id="heading13">選択範囲からレイヤーマスクを作成しよう</h3></div>
+        
+        <div class="article-item item_markdown " id="item12851" data-item-id="12851" data-item-type="ItemMarkdown"><h4 id="heading14">演習課題</h4>
+</div>
+        
+        <div class="article-item item_text " id="item8277" data-item-id="8277" data-item-type="ItemText"><div class="item-body-hbr">写真をぼやけた雰囲気にしましょう。</div></div>
+        
+        <div class="article-item item_link " id="item36885" data-item-id="36885" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=ybi9F&amp;item_id=36885" rel="nofollow noopener noreferrer" target="_blank">Adobe Photoshop 17-2【使用素材】</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="Adobe Photoshop 17-2【使用素材】" data-reference="https://www.dropbox.com/scl/fi/hf51s82ss9s7df2uzzlfb/Adobe-Photoshop-17_cat.jpg?rlkey=7pznh395u3c9703h4p13ulv4o&amp;st=j4dcdhk4&amp;dl=0" src="../../_assets/8068ac7adc.webp" width="75" height="75"></div><div class="media-body"><div class="item-body"></div></div></div></div></div>
+        
+        <div class="article-item item_image " id="item8276" data-item-id="8276" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/008/276/medium/d0e6a386-de1f-4263-9add-f397ac16c8a5.jpg?1740020278" title=""><img class="img-responsive item-image" alt=" (8276)" data-reference="" src="../../_assets/3def9fe092.webp" width="640" height="202"></a><h4 id="heading15"></h4></div></div>
+        
+        <div class="article-item item_link " id="item12355" data-item-id="12355" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=ybi9F&amp;item_id=12355" rel="nofollow noopener noreferrer" target="_blank">作業動画 Adobe Photoshop 17-4</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="作業動画 Adobe Photoshop 17-4" data-reference="https://www.dropbox.com/scl/fi/t37knlazu5ccf0rj9h2wf/Adobe-Photoshop17-4_1.0_.mov?rlkey=jsxwae4220vm86plhlq73r8st&amp;e=1&amp;st=ksmvzcyg&amp;dl=0" src="../../_assets/fb06745a74.webp" width="75" height="75"></div><div class="media-body"><div class="item-body">この動画はデモンストレーション動画になります。
+音声は入っておりません。</div></div></div></div></div>
+        
+        <div class="article-item item_heading " id="item36914" data-item-id="36914" data-item-type="ItemHeading"><h2 class="item-body" id="heading16">【17-4】演習：レイヤーマスクを使って2枚の写真を合成しよう</h2></div>
+        
+        <div class="article-item item_markdown " id="item12852" data-item-id="12852" data-item-type="ItemMarkdown"><h4 id="heading17">演習課題</h4>
+</div>
+        
+        <div class="article-item item_rich_text " id="item8282" data-item-id="8282" data-item-type="ItemRichText"><div class="item-body-hbr">写真を合成しましょう。</div></div>
+        
+        <div class="article-item item_link " id="item36886" data-item-id="36886" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=ybi9F&amp;item_id=36886" rel="nofollow noopener noreferrer" target="_blank">Adobe Photoshop 17-3【使用素材】</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="Adobe Photoshop 17-3【使用素材】" data-reference="https://www.dropbox.com/scl/fo/ix4cj6sd19n8s47mg20t6/AG9GUVoHhYYYL715c_RRRa0?rlkey=sfuuyn3u73te65hmwpn67eaef&amp;st=gtrmw7v1&amp;dl=0" src="../../_assets/8068ac7adc.webp" width="75" height="75"></div><div class="media-body"><div class="item-body"></div></div></div></div></div>
+        
+        <div class="article-item item_image " id="item8279" data-item-id="8279" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/008/279/medium/b75fc60e-af6b-4e48-b801-95c100e60047.jpg?1740020405" title=""><img class="img-responsive item-image" alt=" (8279)" data-reference="" src="../../_assets/850f5c3804.webp" width="640" height="328"></a><h4 id="heading18"></h4></div></div>
+        
+        <div class="article-item item_markdown " id="item12854" data-item-id="12854" data-item-type="ItemMarkdown"><h4 id="heading19">完成画像</h4>
+</div>
+        
+        <div class="article-item item_image " id="item8280" data-item-id="8280" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/008/280/medium/6a07afe8-efbb-4faa-b0b2-002e2b01451c.jpg?1740020423" title=""><img class="img-responsive item-image" alt=" (8280)" data-reference="" src="../../_assets/06ae9bbbdc.webp" width="640" height="386"></a><h4 id="heading20"></h4></div></div>
+        
+        <div class="article-item item_link " id="item12358" data-item-id="12358" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=ybi9F&amp;item_id=12358" rel="nofollow noopener noreferrer" target="_blank">作業動画 Adobe Photoshop 17-5</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="作業動画 Adobe Photoshop 17-5" data-reference="https://www.dropbox.com/scl/fi/n055cvdznt25j3o46n6ai/Adobe-Photoshop17-5_1.0_.mov?rlkey=7zhgefrascdggxupp4fodp0fq&amp;e=1&amp;st=ccp7mo6n&amp;dl=0" src="../../_assets/fb06745a74.webp" width="75" height="75"></div><div class="media-body"><div class="item-body">この動画はデモンストレーション動画になります。
+音声は入っておりません。</div></div></div></div></div>
+        
+        <div class="article-item item_heading " id="item36915" data-item-id="36915" data-item-type="ItemHeading"><h2 class="item-body" id="heading21">【17-5】演習：映り込みの表現をしよう</h2></div>
+        
+        <div class="article-item item_markdown " id="item12856" data-item-id="12856" data-item-type="ItemMarkdown"><h4 id="heading22">演習課題</h4>
+</div>
+        
+        <div class="article-item item_text " id="item8285" data-item-id="8285" data-item-type="ItemText"><div class="item-body-hbr">写真に容器の写り込みを表現しましょう。</div></div>
+        
+        <div class="article-item item_image " id="item8283" data-item-id="8283" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/008/283/medium/24c98f0a-1175-4184-b74e-63739254c82d.jpg?1740020609" title=""><img class="img-responsive item-image" alt=" (8283)" data-reference="" src="../../_assets/9073c37b0d.webp" width="640" height="350"></a><h4 id="heading23"></h4></div></div>
+        
+        <div class="article-item item_link " id="item36887" data-item-id="36887" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=ybi9F&amp;item_id=36887" rel="nofollow noopener noreferrer" target="_blank">Adobe Photoshop 17-4【使用素材】</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="Adobe Photoshop 17-4【使用素材】" data-reference="https://www.dropbox.com/scl/fo/fa2bfsxszdziy9jkxydzq/AOgdcRq4qrmTEcaWoIa6ztE?rlkey=8d6c72xjm9zutsil6h15ydspx&amp;st=ms96w8ly&amp;dl=0" src="../../_assets/8068ac7adc.webp" width="75" height="75"></div><div class="media-body"><div class="item-body"></div></div></div></div></div>
+        
+        <div class="article-item item_markdown " id="item12858" data-item-id="12858" data-item-type="ItemMarkdown"><h4 id="heading24">完成画像</h4>
+</div>
+        
+        <div class="article-item item_image " id="item8284" data-item-id="8284" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/008/284/medium/df99c508-70e3-4187-bbb4-c9abd648605e.jpg?1740020635" title=""><img class="img-responsive item-image" alt=" (8284)" data-reference="" src="../../_assets/4899cb22ad.webp" width="640" height="427"></a><h4 id="heading25"></h4></div></div>
+        
+        <div class="article-item item_heading " id="item36916" data-item-id="36916" data-item-type="ItemHeading"><h3 class="item-body" id="heading26">操作手順</h3></div>
+        
+        <div class="article-item item_markdown " id="item8288" data-item-id="8288" data-item-type="ItemMarkdown"><h4 id="heading27">1. 香水の画像を読み込み、マジック消しゴムツールで背景を消去する</h4>
+</div>
+        
+        <div class="article-item item_text " id="item8317" data-item-id="8317" data-item-type="ItemText"><div class="item-body-hbr">1. 画像をファイルからドラッグ&amp;ドロップします。</div></div>
+        
+        <div class="article-item item_image " id="item12859" data-item-id="12859" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/012/859/medium/7486dfe7-9f18-4da0-b528-23cf0da59c0a.jpg?1745435504" title=""><img class="img-responsive item-image" alt=" (12859)" data-reference="" src="../../_assets/6346892ba5.webp" width="640" height="457"></a><h4 id="heading28"></h4></div></div>
+        
+        <div class="article-item item_html " id="item36888" data-item-id="36888" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_text " id="item8316" data-item-id="8316" data-item-type="ItemText"><div class="item-body-hbr">2. サブメニューからクラウドを選択して、香水を被写体選択します。</div></div>
+        
+        <div class="article-item item_image " id="item12860" data-item-id="12860" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/012/860/medium/1507f30b-146e-4e16-8af9-fbd2cba9433f.jpg?1745435523" title=""><img class="img-responsive item-image" alt=" (12860)" data-reference="" src="../../_assets/84d6262d8e.webp" width="640" height="457"></a><h4 id="heading29"></h4></div></div>
+        
+        <div class="article-item item_html " id="item36890" data-item-id="36890" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_text " id="item8315" data-item-id="8315" data-item-type="ItemText"><div class="item-body-hbr">3. 選択範囲を反転します。<br>（メニューバー：選択範囲＞選択の反転）</div></div>
+        
+        <div class="article-item item_image " id="item12861" data-item-id="12861" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/012/861/medium/aca85071-4041-4014-8cdc-41a40e2e5d8b.jpg?1745435539" title=""><img class="img-responsive item-image" alt=" (12861)" data-reference="" src="../../_assets/ee633be086.webp" width="640" height="460"></a><h4 id="heading30"></h4></div></div>
+        
+        <div class="article-item item_html " id="item36889" data-item-id="36889" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_text " id="item8314" data-item-id="8314" data-item-type="ItemText"><div class="item-body-hbr">4. マジック消しゴムツールをツールから選択し、背景を消去します。</div></div>
+        
+        <div class="article-item item_image " id="item12862" data-item-id="12862" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/012/862/medium/1bb638bd-6144-45b8-b73a-726711d3fc97.jpg?1745435557" title=""><img class="img-responsive item-image" alt=" (12862)" data-reference="" src="../../_assets/be4b72352c.webp" width="640" height="457"></a><h4 id="heading31"></h4></div></div>
+        
+        <div class="article-item item_image " id="item12863" data-item-id="12863" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/012/863/medium/ef83da8c-8b99-45a9-90b6-ef9b2b25193c.jpg?1745435574" title=""><img class="img-responsive item-image" alt=" (12863)" data-reference="" src="../../_assets/0eefae97f3.webp" width="640" height="457"></a><h4 id="heading32"></h4></div></div>
+        
+        <div class="article-item item_html " id="item36891" data-item-id="36891" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_text " id="item8313" data-item-id="8313" data-item-type="ItemText"><div class="item-body-hbr">5. 選択範囲を解除します。<br>（メニューバー：選択範囲＞選択の解除）</div></div>
+        
+        <div class="article-item item_image " id="item12864" data-item-id="12864" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/012/864/medium/352b92c2-98ce-4df7-94dd-cfb207079349.jpg?1745435591" title=""><img class="img-responsive item-image" alt=" (12864)" data-reference="" src="../../_assets/4cea52cb3b.webp" width="640" height="460"></a><h4 id="heading33"></h4></div></div>
+        
+        <div class="article-item item_markdown " id="item8289" data-item-id="8289" data-item-type="ItemMarkdown"><h4 id="heading34">2. レイヤーを追加して背景を白くする</h4>
+</div>
+        
+        <div class="article-item item_text " id="item8312" data-item-id="8312" data-item-type="ItemText"><div class="item-body-hbr">1.レイヤーパネルでレイヤーを追加し、ベタ塗りを選択します。</div></div>
+        
+        <div class="article-item item_image " id="item12868" data-item-id="12868" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/012/868/medium/5f17b06e-7f22-4870-8617-b33ff3b5a98c.jpg?1745435692" title=""><img class="img-responsive item-image" alt=" (12868)" data-reference="" src="../../_assets/3ec05537b1.webp" width="640" height="461"></a><h4 id="heading35"></h4></div></div>
+        
+        <div class="article-item item_image " id="item12865" data-item-id="12865" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/012/865/medium/874d2c1f-a49c-4916-a622-20c7c38fbb08.jpg?1745435618" title=""><img class="img-responsive item-image" alt=" (12865)" data-reference="" src="../../_assets/52cc2aa1ce.webp" width="640" height="459"></a><h4 id="heading36"></h4></div></div>
+        
+        <div class="article-item item_image " id="item12869" data-item-id="12869" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/012/869/medium/7532e2b9-bdcf-43a9-a6aa-9730f30ed985.jpg?1745435709" title=""><img class="img-responsive item-image" alt=" (12869)" data-reference="" src="../../_assets/d2d66ee389.webp" width="640" height="458"></a><h4 id="heading37"></h4></div></div>
+        
+        <div class="article-item item_html " id="item36892" data-item-id="36892" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_rich_text " id="item12866" data-item-id="12866" data-item-type="ItemRichText"><div class="item-body-hbr">2.塗りつぶしの設定を行い、香水のレイヤーより下に配置します。（レイヤーを長押して移動）</div></div>
+        
+        <div class="article-item item_image " id="item12870" data-item-id="12870" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/012/870/medium/044edb00-2897-4311-9dfa-6bb325c89a22.jpg?1745435729" title=""><img class="img-responsive item-image" alt=" (12870)" data-reference="" src="../../_assets/d8ccfa86b8.webp" width="640" height="457"></a><h4 id="heading38"></h4></div></div>
+        
+        <div class="article-item item_image " id="item12871" data-item-id="12871" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/012/871/medium/a2522636-0a90-450d-bd4a-c71738ecef8a.jpg?1745435745" title=""><img class="img-responsive item-image" alt=" (12871)" data-reference="" src="../../_assets/f77ad861fe.webp" width="640" height="454"></a><h4 id="heading39"></h4></div></div>
+        
+        <div class="article-item item_image " id="item12873" data-item-id="12873" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/012/873/medium/d5d430d2-aa0f-4320-b6bd-ce265c5dad8c.jpg?1745435760"><img class="img-responsive item-image" alt=" (12873)" src="../../_assets/5aea4c6868.webp" width="640" height="458"></a><h4 id="heading40"></h4></div></div>
+        
+        <div class="article-item item_markdown " id="item8290" data-item-id="8290" data-item-type="ItemMarkdown"><h4 id="heading41">3. 香水のサイズを変更する</h4>
+</div>
+        
+        <div class="article-item item_text " id="item8310" data-item-id="8310" data-item-type="ItemText"><div class="item-body-hbr">1. 香水のレイヤーを選択した状態で変形を行います。<br>（メニューバー：編集＞変形＞拡大・縮小）</div></div>
+        
+        <div class="article-item item_image " id="item12874" data-item-id="12874" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/012/874/medium/95caeab1-9fe2-437c-b36c-e4cba438ce08.jpg?1745435775" title=""><img class="img-responsive item-image" alt=" (12874)" data-reference="" src="../../_assets/159d012eb4.webp" width="640" height="460"></a><h4 id="heading42"></h4></div></div>
+        
+        <div class="article-item item_html " id="item36893" data-item-id="36893" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_text " id="item8311" data-item-id="8311" data-item-type="ItemText"><div class="item-body-hbr">2. オプションバーにW（幅）70%を入力し、中央の鎖マークをクリックすると縦横比が固定されます。</div></div>
+        
+        <div class="article-item item_image " id="item12875" data-item-id="12875" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/012/875/medium/9e2efbc2-1d10-45c1-9867-afb3ad52781e.jpg?1745435792" title=""><img class="img-responsive item-image" alt=" (12875)" data-reference="" src="../../_assets/77c896ff86.webp" width="640" height="458"></a><h4 id="heading43"></h4></div></div>
+        
+        <div class="article-item item_markdown " id="item8304" data-item-id="8304" data-item-type="ItemMarkdown"><h4 id="heading44">4. 香水のレイヤーを複製して、複製した香水レイヤーを垂直方向へ反転する</h4>
+</div>
+        
+        <div class="article-item item_text " id="item8305" data-item-id="8305" data-item-type="ItemText"><div class="item-body-hbr">1. 香水のレイヤーを複製します。<br>（メニューバー：レイヤー＞レイヤーの複製）</div></div>
+        
+        <div class="article-item item_image " id="item12876" data-item-id="12876" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/012/876/medium/def85e99-2938-4174-b116-3059d37ab262.jpg?1745435809" title=""><img class="img-responsive item-image" alt=" (12876)" data-reference="" src="../../_assets/dfa36ddef1.webp" width="640" height="462"></a><h4 id="heading45"></h4></div></div>
+        
+        <div class="article-item item_html " id="item36894" data-item-id="36894" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_text " id="item8306" data-item-id="8306" data-item-type="ItemText"><div class="item-body-hbr">2. 香水のレイヤーが複製されます。<br>（同じ場所に複製されるので重なっています）</div></div>
+        
+        <div class="article-item item_image " id="item12877" data-item-id="12877" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/012/877/medium/b28a6c06-0081-4316-ba99-e365efe67329.jpg?1745435823" title=""><img class="img-responsive item-image" alt=" (12877)" data-reference="" src="../../_assets/a8ba2b5039.webp" width="640" height="458"></a><h4 id="heading46"></h4></div></div>
+        
+        <div class="article-item item_html " id="item36895" data-item-id="36895" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_text " id="item8307" data-item-id="8307" data-item-type="ItemText"><div class="item-body-hbr">3.  複製した香水レイヤーを選択し、垂直方向に反転します。<br>（メニューバー：編集＞変形＞垂直方向に反転）</div></div>
+        
+        <div class="article-item item_image " id="item12878" data-item-id="12878" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/012/878/medium/550e65ab-60e5-44d8-aa0d-aa5e0d3e0b3a.jpg?1745435839" title=""><img class="img-responsive item-image" alt=" (12878)" data-reference="" src="../../_assets/18d5299190.webp" width="640" height="459"></a><h4 id="heading47"></h4></div></div>
+        
+        <div class="article-item item_html " id="item36896" data-item-id="36896" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_text " id="item8308" data-item-id="8308" data-item-type="ItemText"><div class="item-body-hbr">4. 反転したレイヤーの位置を調整します。</div></div>
+        
+        <div class="article-item item_image " id="item12879" data-item-id="12879" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/012/879/medium/57d7146d-6146-454f-9c98-1ea2f8def9f2.jpg?1745435856" title=""><img class="img-responsive item-image" alt=" (12879)" data-reference="" src="../../_assets/0f47544e6c.webp" width="640" height="461"></a><h4 id="heading48"></h4></div></div>
+        
+        <div class="article-item item_image " id="item12880" data-item-id="12880" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/012/880/medium/a1efca05-2e9b-4788-ac0f-e564d470216f.jpg?1745435871" title=""><img class="img-responsive item-image" alt=" (12880)" data-reference="" src="../../_assets/1fb54c7146.webp" width="640" height="457"></a><h4 id="heading49"></h4></div></div>
+        
+        <div class="article-item item_html " id="item36897" data-item-id="36897" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_text " id="item8309" data-item-id="8309" data-item-type="ItemText"><div class="item-body-hbr">5. 画面をズームインして位置の調整をします。</div></div>
+        
+        <div class="article-item item_image " id="item12881" data-item-id="12881" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/012/881/medium/4a955d82-454c-4dad-8c13-a056b46c663a.jpg?1745435887" title=""><img class="img-responsive item-image" alt=" (12881)" data-reference="" src="../../_assets/7d2d3b282a.webp" width="640" height="458"></a><h4 id="heading50"></h4></div></div>
+        
+        <div class="article-item item_image " id="item12882" data-item-id="12882" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/012/882/medium/cf2f9e00-efc5-48fe-9267-1e4d27e35fbd.jpg?1745435906" title=""><img class="img-responsive item-image" alt=" (12882)" data-reference="" src="../../_assets/14fde472d9.webp" width="640" height="455"></a><h4 id="heading51"></h4></div></div>
+        
+        <div class="article-item item_html " id="item36898" data-item-id="36898" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_text " id="item8303" data-item-id="8303" data-item-type="ItemText"><div class="item-body-hbr">6.画像に合わせた表示で元に戻します。</div></div>
+        
+        <div class="article-item item_image " id="item12883" data-item-id="12883" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/012/883/medium/d0edc94e-1c68-4a35-b191-d331cc4ea7dc.jpg?1745435919" title=""><img class="img-responsive item-image" alt=" (12883)" data-reference="" src="../../_assets/b9f5e6dac0.webp" width="640" height="460"></a><h4 id="heading52"></h4></div></div>
+        
+        <div class="article-item item_image " id="item12884" data-item-id="12884" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/012/884/medium/8e627503-fcac-4742-9e52-c13cc64f216c.jpg?1745435935" title=""><img class="img-responsive item-image" alt=" (12884)" data-reference="" src="../../_assets/ecc634d902.webp" width="640" height="458"></a><h4 id="heading53"></h4></div></div>
+        
+        <div class="article-item item_html " id="item36899" data-item-id="36899" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_markdown " id="item8292" data-item-id="8292" data-item-type="ItemMarkdown"><h4 id="heading54">5. 複製した香水レイヤーにレイヤーマスクでグラデーションをかける</h4>
+</div>
+        
+        <div class="article-item item_text " id="item8300" data-item-id="8300" data-item-type="ItemText"><div class="item-body-hbr">1. 複製した香水レイヤーを選択し、レイヤーマスクを作成します。</div></div>
+        
+        <div class="article-item item_image " id="item12885" data-item-id="12885" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/012/885/medium/c483cfef-91ab-4f03-9128-d91e6a58ba5d.jpg?1745435953" title=""><img class="img-responsive item-image" alt=" (12885)" data-reference="" src="../../_assets/1a83b23ad4.webp" width="640" height="456"></a><h4 id="heading55"></h4></div></div>
+        
+        <div class="article-item item_html " id="item36900" data-item-id="36900" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_text " id="item8301" data-item-id="8301" data-item-type="ItemText"><div class="item-body-hbr">2. レイヤーマスクサムネイルを選択した状態で、グラデーションツールでグラデーションをかけます。<br>（色は白と黒のグラデーションを選択します。）<br>下から上へドラッグして調整します。</div></div>
+        
+        <div class="article-item item_image " id="item12886" data-item-id="12886" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/012/886/medium/56f85d30-1976-4817-8678-48f7321b744c.jpg?1745435966" title=""><img class="img-responsive item-image" alt=" (12886)" data-reference="" src="../../_assets/078e041276.webp" width="640" height="457"></a><h4 id="heading56"></h4></div></div>
+        
+        <div class="article-item item_html " id="item36901" data-item-id="36901" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_text " id="item8302" data-item-id="8302" data-item-type="ItemText"><div class="item-body-hbr">3. レイヤーサムネイルを選択し、不透明度を調整します。</div></div>
+        
+        <div class="article-item item_image " id="item12887" data-item-id="12887" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/012/887/medium/097240e7-f0a3-4dbb-9ce1-ef676fa37d68.jpg?1745435984" title=""><img class="img-responsive item-image" alt=" (12887)" data-reference="" src="../../_assets/62b78649c3.webp" width="640" height="457"></a><h4 id="heading57"></h4></div></div>
+        
+        <div class="article-item item_markdown " id="item8293" data-item-id="8293" data-item-type="ItemMarkdown"><h4 id="heading58">6. レイヤーを追加して背景画像を読み込みレイヤーマスクでグラデーションをかける</h4>
+</div>
+        
+        <div class="article-item item_text " id="item8294" data-item-id="8294" data-item-type="ItemText"><div class="item-body-hbr">1. レイヤーパネルでレイヤーを追加します。</div></div>
+        
+        <div class="article-item item_image " id="item12888" data-item-id="12888" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/012/888/medium/76606cfd-7e30-469b-8cc0-d5d33a6f173e.jpg?1745435998" title=""><img class="img-responsive item-image" alt=" (12888)" data-reference="" src="../../_assets/276bec3643.webp" width="640" height="460"></a><h4 id="heading59"></h4></div></div>
+        
+        <div class="article-item item_html " id="item36902" data-item-id="36902" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_text " id="item8295" data-item-id="8295" data-item-type="ItemText"><div class="item-body-hbr">2. 背景の画像を読み込みます。</div></div>
+        
+        <div class="article-item item_image " id="item12889" data-item-id="12889" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/012/889/medium/32500745-b647-4eb4-b80f-14dfad08107a.jpg?1745436011" title=""><img class="img-responsive item-image" alt=" (12889)" data-reference="" src="../../_assets/3fcd6d2b62.webp" width="640" height="459"></a><h4 id="heading60"></h4></div></div>
+        
+        <div class="article-item item_html " id="item36903" data-item-id="36903" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_text " id="item8296" data-item-id="8296" data-item-type="ItemText"><div class="item-body-hbr">3. 香水のレイヤーを背景画像の下に配置します。</div></div>
+        
+        <div class="article-item item_image " id="item12890" data-item-id="12890" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/012/890/medium/2360f105-8ce8-42a9-94f0-735df0a9c382.jpg?1745436026" title=""><img class="img-responsive item-image" alt=" (12890)" data-reference="" src="../../_assets/5d390dd64b.webp" width="640" height="459"></a><h4 id="heading61"></h4></div></div>
+        
+        <div class="article-item item_image " id="item12891" data-item-id="12891" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/012/891/medium/1c903296-7056-4811-8b57-4bde611d1b9f.jpg?1745436040" title=""><img class="img-responsive item-image" alt=" (12891)" data-reference="" src="../../_assets/6fb757bf40.webp" width="640" height="460"></a><h4 id="heading62"></h4></div></div>
+        
+        <div class="article-item item_html " id="item36904" data-item-id="36904" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_text " id="item8297" data-item-id="8297" data-item-type="ItemText"><div class="item-body-hbr">4. 背景画像レイヤーにレイヤーマスクを作成します。</div></div>
+        
+        <div class="article-item item_image " id="item12892" data-item-id="12892" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/012/892/medium/2ea8bc4b-06d7-45db-b61b-6dbdab75bd38.jpg?1745436052" title=""><img class="img-responsive item-image" alt=" (12892)" data-reference="" src="../../_assets/186731f09d.webp" width="640" height="460"></a><h4 id="heading63"></h4></div></div>
+        
+        <div class="article-item item_html " id="item36905" data-item-id="36905" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_text " id="item8298" data-item-id="8298" data-item-type="ItemText"><div class="item-body-hbr">5. レイヤーマスクサムネイルを選択した状態で、グラデーションツールでグラデーションをかけます。<br>（色は白と黒のグラデーションを選択します。）</div></div>
+        
+        <div class="article-item item_image " id="item12893" data-item-id="12893" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/012/893/medium/b3c2e349-09f1-49c6-a272-8739c743458b.jpg?1745436073" title=""><img class="img-responsive item-image" alt=" (12893)" data-reference="" src="../../_assets/7f3e62f824.webp" width="640" height="458"></a><h4 id="heading64"></h4></div></div>
+        
+        <div class="article-item item_html " id="item36906" data-item-id="36906" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_text " id="item8299" data-item-id="8299" data-item-type="ItemText"><div class="item-body-hbr">6. 下から上へドラッグして調整します。</div></div>
+        
+        <div class="article-item item_image " id="item12894" data-item-id="12894" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/012/894/medium/4a52185d-c181-409e-b213-e768c622a4bf.jpg?1745436086" title=""><img class="img-responsive item-image" alt=" (12894)" data-reference="" src="../../_assets/b1760d2dff.webp" width="640" height="458"></a><h4 id="heading65"></h4></div></div>
+        
+        <div class="article-item item_link " id="item12361" data-item-id="12361" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=ybi9F&amp;item_id=12361" rel="nofollow noopener noreferrer" target="_blank">作業動画 Adobe Photoshop 17-6</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="作業動画 Adobe Photoshop 17-6" data-reference="https://www.dropbox.com/scl/fi/pi9vyhg8qu4muhsxua2ho/Adobe-Photoshop17-6_1.0_-1.mov?rlkey=nzvacy0en11rm6gwt227cleh3&amp;e=1&amp;st=wre8nfnn&amp;dl=0" src="../../_assets/fb06745a74.webp" width="75" height="75"></div><div class="media-body"><div class="item-body">この動画はデモンストレーション動画になります。
+音声は入っておりません。</div></div></div></div></div>
+        
+        <div class="article-item item_rich_text " id="item36907" data-item-id="36907" data-item-type="ItemRichText"><div class="item-body-hbr">これで「17章 レイヤーマスクを使ってみよう」の解説を終わります。<br>
+次の章に進みましょう。</div></div>
+        
+        <div class="article-item item_html " id="item25608" data-item-id="25608" data-item-type="ItemHtml"><div class="item-body"><div class="pagenation-buttons" style="justify-content: space-between;">
+  <a href="https://learn.webcoach.jp/web-design/wqWzv" class="pagenation-buttons_prev"><img src="../../_assets/47498cfebf.svg" class="pagenation-buttons_icon">前の章に戻る</a>
+  <a href="https://learn.webcoach.jp/web-design/jvzYj" class="pagenation-buttons_next">次の章に進む<img src="../../_assets/47498cfebf.svg" class="pagenation-buttons_icon"></a>
+</div></div></div>
+        
+        
+        
+        <div class="back-to-roadmap mb-4 text-center"></div>
+      </div>
+    </div>
+    
+    <div class="lightbox-modal" id="lightboxModal">
+      <img src="" alt="">
+    </div>
+    
+    <div id="modal" class="fixed-menu-modal">
+      <div class="fixed-menu-modal-content">
+        <div class="index mb-3" style="background-color: #FDF5E8;">
+          <div>
+            <div class="fw-light">INDEX</div>
+            <div class="h3">目次</div>
+          </div>
+          <div class="toc"><ul><li><a href="#heading0" class="tocLink">17章 レイヤーマスクを使ってみよう</a><ul><li><a href="#heading1" class="tocLink">この教材の学習時間:240分</a></li></ul></li><li><a href="#heading2" class="tocLink">【17-1】レイヤーマスクとは</a></li><li><a href="#heading3" class="tocLink">【17-2】レイヤーマスクの基本操作</a><ul><li><a href="#heading4" class="tocLink">操作手順</a><ul><li><a href="#heading5" class="tocLink"></a></li><li><a href="#heading6" class="tocLink"></a></li><li><a href="#heading7" class="tocLink"></a></li><li><a href="#heading8" class="tocLink"></a></li><li><a href="#heading9" class="tocLink"></a></li><li><a href="#heading10" class="tocLink"></a></li></ul></li><li><a href="#heading11" class="tocLink">レイヤーマスクの編集</a></li></ul></li><li><a href="#heading12" class="tocLink">【17-3】レイヤーマスクの活用例</a><ul><li><a href="#heading13" class="tocLink">選択範囲からレイヤーマスクを作成しよう</a><ul><li><a href="#heading14" class="tocLink">演習課題</a></li><li><a href="#heading15" class="tocLink"></a></li></ul></li></ul></li><li><a href="#heading16" class="tocLink">【17-4】演習：レイヤーマスクを使って2枚の写真を合成しよう</a><ul><li><a href="#heading17" class="tocLink">演習課題</a></li><li><a href="#heading18" class="tocLink"></a></li><li><a href="#heading19" class="tocLink">完成画像</a></li><li><a href="#heading20" class="tocLink"></a></li></ul></li><li><a href="#heading21" class="tocLink">【17-5】演習：映り込みの表現をしよう</a><ul><li><a href="#heading22" class="tocLink">演習課題</a></li><li><a href="#heading23" class="tocLink"></a></li><li><a href="#heading24" class="tocLink">完成画像</a></li><li><a href="#heading25" class="tocLink"></a></li></ul><ul><li><a href="#heading26" class="tocLink">操作手順</a><ul><li><a href="#heading27" class="tocLink">1. 香水の画像を読み込み、マジック消しゴムツールで背景を消去する</a></li><li><a href="#heading28" class="tocLink"></a></li><li><a href="#heading29" class="tocLink"></a></li><li><a href="#heading30" class="tocLink"></a></li><li><a href="#heading31" class="tocLink"></a></li><li><a href="#heading32" class="tocLink"></a></li><li><a href="#heading33" class="tocLink"></a></li><li><a href="#heading34" class="tocLink">2. レイヤーを追加して背景を白くする</a></li><li><a href="#heading35" class="tocLink"></a></li><li><a href="#heading36" class="tocLink"></a></li><li><a href="#heading37" class="tocLink"></a></li><li><a href="#heading38" class="tocLink"></a></li><li><a href="#heading39" class="tocLink"></a></li><li><a href="#heading40" class="tocLink"></a></li><li><a href="#heading41" class="tocLink">3. 香水のサイズを変更する</a></li><li><a href="#heading42" class="tocLink"></a></li><li><a href="#heading43" class="tocLink"></a></li><li><a href="#heading44" class="tocLink">4. 香水のレイヤーを複製して、複製した香水レイヤーを垂直方向へ反転する</a></li><li><a href="#heading45" class="tocLink"></a></li><li><a href="#heading46" class="tocLink"></a></li><li><a href="#heading47" class="tocLink"></a></li><li><a href="#heading48" class="tocLink"></a></li><li><a href="#heading49" class="tocLink"></a></li><li><a href="#heading50" class="tocLink"></a></li><li><a href="#heading51" class="tocLink"></a></li><li><a href="#heading52" class="tocLink"></a></li><li><a href="#heading53" class="tocLink"></a></li><li><a href="#heading54" class="tocLink">5. 複製した香水レイヤーにレイヤーマスクでグラデーションをかける</a></li><li><a href="#heading55" class="tocLink"></a></li><li><a href="#heading56" class="tocLink"></a></li><li><a href="#heading57" class="tocLink"></a></li><li><a href="#heading58" class="tocLink">6. レイヤーを追加して背景画像を読み込みレイヤーマスクでグラデーションをかける</a></li><li><a href="#heading59" class="tocLink"></a></li><li><a href="#heading60" class="tocLink"></a></li><li><a href="#heading61" class="tocLink"></a></li><li><a href="#heading62" class="tocLink"></a></li><li><a href="#heading63" class="tocLink"></a></li><li><a href="#heading64" class="tocLink"></a></li><li><a href="#heading65" class="tocLink"></a></li></ul></li></ul></li></ul></div>
+        </div>
+        
+        <!-- ボタン類 -->
+        <div id="fixed-menu_buttons" class="fixed-menu_buttons">
+  <a href="https://learn.webcoach.jp/web-design/wqWzv" class="pagenation-buttons_prev"><img src="../../_assets/47498cfebf.svg" class="pagenation-buttons_icon">前の章に戻る</a>
+  <a href="https://learn.webcoach.jp/web-design/jvzYj" class="pagenation-buttons_next">次の章に進む<img src="../../_assets/47498cfebf.svg" class="pagenation-buttons_icon"></a>
+</div>
+        
+        <div class="back-to-roadmap text-center"></div>
+      </div>
+    </div>
+    
+    <button id="toggleBtn" class="floating-btn">
+      <img id="iconOpen" src="../../_assets/5feefcfc55.svg" alt="メニューを開く">
+      <img id="iconClose" src="../../_assets/ae4a1129c9.svg" alt="メニューを閉じる" style="display:none;">
+    </button>
+  </div>
+</div>
+</div>
+<!-- <script src="https://cdn.clipkit.co/clipkit/javascripts/item-shopify-1.0.js?v=v15.9.0-20260915" async></script> -->
+            </main></div>
+        
+
+    
+
+    <div class="p-5" style="background-color: #B73E3D; color: white; height: 300px;">
+        <div class="">
+            <div class="h4 ps-3" style="border-left: 5px solid white;">WEBCOACH | キャリアチェンジまでの全てを学ぶマンツーマンWEBスクール</div>
+            <ul class="nav flex-column m-0 p-3 fw-light">
+                <li class="nav-item mb-2"><a href="https://www.webcoach.jp/" target="_blank">WEBCOACH | 公式HP</a></li>
+                <li class="nav-item mb-2"><a href="https://www.instagram.com/webcoach_officials/" target="_blank">WEBCOACH | 公式Instagram</a></li>
+                <li class="nav-item mb-2"><a href="https://vectorinc.co.jp/groupservice/webcoach-career/" target="_blank">WEBCOACH 公式メディア | WEBCOACH career</a></li>
+            </ul>
+        </div>
+        <div class="text-center">
+            <small>© 2020 by WEBCOACH</small>
+        </div>
+    </div>
+
+    
+
+    <!-- bodyタグ内の下部に挿入されます -->
+
+
+    <!-- BootstrapのCDNでのjs読み込み -->
+    
+
+    <!-- シンタックスハイライトの生成 -->
+    
+    
+
+    <!-- 目次の生成 -->
+    
+
+    <!-- ブックマークの生成 -->
+    
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="ck-icon-arrow-down" viewBox="0 0 1792 1792"><path d="M1675 832q0 53-37 90l-651 652q-39 37-91 37-53 0-90-37l-651-652q-38-36-38-90 0-53 38-91l74-75q39-37 91-37 53 0 90 37l294 294v-704q0-52 38-90t90-38h128q52 0 90 38t38 90v704l294-294q37-37 90-37 52 0 91 37l75 75q37 39 37 91z"></path></symbol><symbol id="ck-icon-arrow-up" viewBox="0 0 1792 1792"><path d="M1675 971q0 51-37 90l-75 75q-38 38-91 38-54 0-90-38l-294-293v704q0 52-37.5 84.5t-90.5 32.5h-128q-53 0-90.5-32.5t-37.5-84.5v-704l-294 293q-36 38-90 38t-90-38l-75-75q-38-38-38-90 0-53 38-91l651-651q35-37 90-37 54 0 91 37l651 651q37 39 37 91z"></path></symbol><symbol id="ck-icon-calendar" viewBox="0 0 1792 1792"><path d="M192 1664h288v-288h-288v288zm352 0h320v-288h-320v288zm-352-352h288v-320h-288v320zm352 0h320v-320h-320v320zm-352-384h288v-288h-288v288zm736 736h320v-288h-320v288zm-384-736h320v-288h-320v288zm768 736h288v-288h-288v288zm-384-352h320v-320h-320v320zm-352-864v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm736 864h288v-320h-288v320zm-384-384h320v-288h-320v288zm384 0h288v-288h-288v288zm32-480v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm384-64v1280q0 52-38 90t-90 38h-1408q-52 0-90-38t-38-90v-1280q0-52 38-90t90-38h128v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h384v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h128q52 0 90 38t38 90z"></path></symbol><symbol id="ck-icon-chevron-left" viewBox="0 0 1792 1792"><path d="M1427 301l-531 531 531 531q19 19 19 45t-19 45l-166 166q-19 19-45 19t-45-19l-742-742q-19-19-19-45t19-45l742-742q19-19 45-19t45 19l166 166q19 19 19 45t-19 45z"></path></symbol><symbol id="ck-icon-chevron-right" viewBox="0 0 1792 1792"><path d="M1363 877l-742 742q-19 19-45 19t-45-19l-166-166q-19-19-19-45t19-45l531-531-531-531q-19-19-19-45t19-45l166-166q19-19 45-19t45 19l742 742q19 19 19 45t-19 45z"></path></symbol><symbol id="ck-icon-clock-o" viewBox="0 0 1792 1792"><path d="M1024 544v448q0 14-9 23t-23 9h-320q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h224v-352q0-14 9-23t23-9h64q14 0 23 9t9 23zm416 352q0-148-73-273t-198-198-273-73-273 73-198 198-73 273 73 273 198 198 273 73 273-73 198-198 73-273zm224 0q0 209-103 385.5t-279.5 279.5-385.5 103-385.5-103-279.5-279.5-103-385.5 103-385.5 279.5-279.5 385.5-103 385.5 103 279.5 279.5 103 385.5z"></path></symbol><symbol id="ck-icon-trash" viewBox="0 0 1792 1792"><path d="M704 1376v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm-544-992h448l-48-117q-7-9-17-11h-317q-10 2-17 11zm928 32v64q0 14-9 23t-23 9h-96v948q0 83-47 143.5t-113 60.5h-832q-66 0-113-58.5t-47-141.5v-952h-96q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h309l70-167q15-37 54-63t79-26h320q40 0 79 26t54 63l70 167h309q14 0 23 9t9 23z"></path></symbol><symbol id="ck-icon-undo" viewBox="0 0 1792 1792"><path d="M1664 896q0 156-61 298t-164 245-245 164-298 61q-172 0-327-72.5t-264-204.5q-7-10-6.5-22.5t8.5-20.5l137-138q10-9 25-9 16 2 23 12 73 95 179 147t225 52q104 0 198.5-40.5t163.5-109.5 109.5-163.5 40.5-198.5-40.5-198.5-109.5-163.5-163.5-109.5-198.5-40.5q-98 0-188 35.5t-160 101.5l137 138q31 30 14 69-17 40-59 40h-448q-26 0-45-19t-19-45v-448q0-42 40-59 39-17 69 14l130 129q107-101 244.5-156.5t284.5-55.5q156 0 298 61t245 164 164 245 61 298z"></path></symbol></svg>
+
+<!--Clipkit(R) v15.9.0-20260915 Copyright (C) 2026 VECTOR Inc.-->
+
+
+
+
+
+<div class="dynmsg alert alert-info" style="display:none;"><button class="close"><span class="fa fa-times"></span></button><div class="message"></div></div><div class="dynmsg alert alert-danger" style="display:none;"><button class="close"><span class="fa fa-times"></span></button><div class="message"></div></div></body></html>

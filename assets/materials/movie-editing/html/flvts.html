@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<!-- clipkit-source-url: https://learn.webcoach.jp/movie-editing/Premiere_Pro/FLvtS -->
+<!-- clipkit-fetched-at: 2026-09-17T11:14:00.275Z -->
+<html lang="ja"><head>
+    <!-- headタグ内の上部に挿入されます -->
+
+    <meta charset="UTF-8">
+    <title>第12章：トランジションのある映像を作ろう！  - WEBCOACH</title>
+
+    <!-- resetcssのCDNでのCSS読み込み -->
+    <link rel="stylesheet" href="../../_assets/17f8e278dc.css">
+
+    <!-- fontawesomeのCDNでのCSS読み込み -->
+    <link rel="stylesheet" href="../../_assets/799aeb25cc.css">
+
+    <!-- BootstrapのCDNでのCSS読み込み -->
+    <link href="../../_assets/7633b7c0c9.css" rel="stylesheet">
+
+    <!-- highlight.jsの読み込み -->
+    <link rel="stylesheet" href="../../_assets/e31ce2dd8c.css">
+
+    <!-- カスタムCSS -->
+    <link rel="stylesheet" href="../../_assets/c533dd7750.css">
+
+    <!-- clipkitデフォルトのCSS -->
+    <!--<link rel="stylesheet" media="screen" href="https://cdn.clipkit.co/clipkit/stylesheets/application-1.0.css?v=v15.9.0-20260915">-->
+
+    <!-- jQuery -->
+    
+
+    <!-- カスタムJS -->
+    
+    
+
+    <!-- clipkitデフォルトのJS -->
+    
+
+    <!-- フォント -->
+    <link rel="preconnect" href="https://fonts.googleapis.com/">
+    <link rel="preconnect" href="https://fonts.gstatic.com/">
+    <link href="../../_assets/8b5713f1fc.css" rel="stylesheet">
+
+    <link href="../../_assets/b83ae8ba65.webp" rel="shortcut icon" type="image/vnd.microsoft.icon">
+    <link rel="apple-touch-icon" href="../../_assets/ea0aba163d.webp">
+    <link rel="alternate" type="application/rss+xml" href="https://learn.webcoach.jp/media.rss" title="WEBCOACH">
+    
+<link rel="canonical" href="https://learn.webcoach.jp/movie-editing/Premiere_Pro/FLvtS">
+
+<meta name="description" content="">
+<meta name="keywords" content="">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:domain" content="learn.webcoach.jp">
+<meta name="twitter:title" content="第12章：トランジションのある映像を作ろう！  - WEBCOACH">
+<meta name="twitter:image" content="https://cdn.clipkit.co/tenants/589/item_links/images/000/021/831/medium/52644c71-f465-4de6-bd5e-bc6cb458d47d.png?1754873413">
+<meta name="twitter:description" content="">
+<meta property="og:site_name" content="WEBCOACH">
+<meta property="og:title" content="第12章：トランジションのある映像を作ろう！ ">
+<meta property="og:description" content="">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://learn.webcoach.jp/movie-editing/Premiere_Pro/FLvtS">
+<meta property="og:image" content="https://cdn.clipkit.co/tenants/589/item_links/images/000/021/831/large/52644c71-f465-4de6-bd5e-bc6cb458d47d.png?1754873413">
+
+
+    <!-- headタグ内の下部に挿入されます -->
+
+
+<meta name="csrf-param" content="authenticity_token">
+<meta name="csrf-token" content="YegDeZzWqt1rn_YvJPrFcXyK7s-Y0IGpQAm16Ut1wqFIXJqR7s89HvhADVO2pcQFLqchza1AbqYsTCb_XUk33Q"><meta content="" name="routing-root-path"><meta content="media" name="site-name"><meta content="ja" name="i18n-default-locale"><meta content="ja" name="i18n-locale"><style data-clipkit-snapshot="force-visible">[data-aos],.reveal,.wow,.fade-in,.animate__animated,.js-reveal{opacity:1!important;transform:none!important;visibility:visible!important;animation:none!important;transition:none!important}</style></head>
+
+<body class="device-desktop" style="visibility: visible;">
+    <!-- bodyタグ内の上部に挿入されます -->
+
+
+    <!-- サイドバーとコンテンツのコンテナ -->
+    <div class="d-flex flex-row w-100 mb-5" style="min-height: calc(100vh - 400px);">
+
+        <!-- サイドバー -->
+        <!--<nav id="side-bar" class="d-flex flex-column fixed-top" style="width: 250px;">-->
+        <!--    <h1 class="d-block w-100 text-center">-->
+        <!--        <a class="d-block" href="/">-->
+        <!--            <img class="mw-100 p-3" src="https://cdn.clipkit.co/tenants/589/sites/logos/000/000/001/logo_sm/a8defd4b-1cc7-433b-a61c-08e7db0e3e4f.png?1714459367" alt="WEBCOACH">-->
+        <!--        </a>-->
+        <!--    </h1>-->
+        <!--    <ul class="nav flex-column m-0 p-3 fw-bold">-->
+        <!--        <li id="sidebar-top" class="nav-item mb-2" style="display: none;"><a href="/"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;" src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/233/original/home.png?1715353458">-->
+        <!--                <div>ホーム</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-knowledges" class="nav-item mb-2" style="display: none;"><a href="/knowledges"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;" src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/232/original/book.png?1715353458">-->
+        <!--                <div>学習の心得</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-web-designs" class="nav-item mb-2" style="display: none;"><a href="/web-designs"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/231/original/design.png?1715353457">-->
+        <!--                <div>WEBデザイン</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-web-marketing" class="nav-item mb-2" style="display: none;"><a href="/web-marketings"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/230/original/marketing.png?1715353457">-->
+        <!--                <div>WEBマーケティング</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-codings" class="nav-item mb-2" style="display: none;"><a href="/codings"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/229/original/website.png?1715353457">-->
+        <!--                <div>WEBサイト構築</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-business-skills" class="nav-item mb-2" style="display: none;"><a href="/business-skills"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/228/original/business.png?1715353456">-->
+        <!--                <div>ビジネススキル</div>-->
+        <!--            </a></li>-->
+        <!--    </ul>-->
+        <!--</nav>-->
+
+        <!-- コンテンツ -->
+        <!--<main class="ms-auto" style="width: calc(100vw - 250px);">-->
+        <main class="ms-auto" style="width: calc(100vw);">
+            <div id="sb-site">
+                
+
+
+<div class="container">
+  <div class="row">
+    <div class="article">
+      <div class="mb-3 text-light" style="
+        height: 180px;
+        background-image: url(&quot;../../_assets/e1d58e2b8a.webp&quot;);
+        background-repeat: no-repeat;
+        background-size: cover;
+        display: flex;
+        align-items: flex-end;
+      ">
+        <div style="
+          margin: 0 0 30px 30px;
+        ">
+          <div>Premiere Pro</div>
+
+          <div class="fw-bold h2">第12章：トランジションのある映像を作ろう！ </div>
+        </div>
+      </div>
+      <div class="article-content">
+        <!-- 目次 -->
+        <div class="index mb-3" style="background-color: #FDF5E8;">
+          <div>
+            <div class="fw-light">INDEX</div>
+            <div class="h3">目次</div>
+          </div>
+          <div class="toc"><ul><li><a href="#heading0" class="tocLink">第12章：トランジションのある映像を作ろう！ </a><ul><li><a href="#heading1" class="tocLink">この教材の学習時間:30分</a></li></ul></li><li><a href="#heading2" class="tocLink">【12-1】トランジションの作り方</a><ul><li><a href="#heading3" class="tocLink">目安の学習時間：30分</a></li></ul><ul><li><a href="#heading4" class="tocLink">プロジェクト・シーケンスの作成・素材の読み込み</a><ul><li><a href="#heading5" class="tocLink"></a></li><li><a href="#heading6" class="tocLink"></a></li><li><a href="#heading7" class="tocLink"></a></li><li><a href="#heading8" class="tocLink"></a></li></ul></li><li><a href="#heading9" class="tocLink">【調整レイヤー】を配置する</a><ul><li><a href="#heading10" class="tocLink"></a></li><li><a href="#heading11" class="tocLink"></a></li><li><a href="#heading12" class="tocLink"></a></li><li><a href="#heading13" class="tocLink"></a></li><li><a href="#heading14" class="tocLink"></a></li><li><a href="#heading15" class="tocLink"></a></li><li><a href="#heading16" class="tocLink"></a></li><li><a href="#heading17" class="tocLink"></a></li><li><a href="#heading18" class="tocLink"></a></li></ul></li><li><a href="#heading19" class="tocLink">トランジションを作成する</a><ul><li><a href="#heading20" class="tocLink"></a></li><li><a href="#heading21" class="tocLink"></a></li><li><a href="#heading22" class="tocLink"></a></li><li><a href="#heading23" class="tocLink"></a></li><li><a href="#heading24" class="tocLink"></a></li><li><a href="#heading25" class="tocLink"></a></li><li><a href="#heading26" class="tocLink"></a></li><li><a href="#heading27" class="tocLink"></a></li><li><a href="#heading28" class="tocLink"></a></li><li><a href="#heading29" class="tocLink"></a></li><li><a href="#heading30" class="tocLink"></a></li><li><a href="#heading31" class="tocLink"></a></li><li><a href="#heading32" class="tocLink"></a></li><li><a href="#heading33" class="tocLink"></a></li><li><a href="#heading34" class="tocLink"></a></li><li><a href="#heading35" class="tocLink"></a></li><li><a href="#heading36" class="tocLink"></a></li><li><a href="#heading37" class="tocLink"></a></li><li><a href="#heading38" class="tocLink"></a></li><li><a href="#heading39" class="tocLink"></a></li><li><a href="#heading40" class="tocLink"></a></li><li><a href="#heading41" class="tocLink"></a></li><li><a href="#heading42" class="tocLink"></a></li><li><a href="#heading43" class="tocLink">トランジション部分（スロー表示）</a></li><li><a href="#heading44" class="tocLink">完成動画</a></li></ul></li></ul></li></ul></div>
+        </div>
+        
+        <div class="back-to-roadmap mb-4 text-center"></div>
+
+        <!-- コンテンツ -->
+        
+        
+        <div class="article-item item_html " id="item25939" data-item-id="25939" data-item-type="ItemHtml"><div class="item-body"><div class="pagenation-buttons" style="justify-content: space-between;">
+  <a href="https://learn.webcoach.jp/movie-editing/Premiere_Pro/wVzWV" class="pagenation-buttons_prev"><img src="../../_assets/47498cfebf.svg" class="pagenation-buttons_icon">前の章に戻る</a>
+  <a href="https://learn.webcoach.jp/movie-editing/Premiere_Pro/wsGpf" class="pagenation-buttons_next">次の章に進む<img src="../../_assets/47498cfebf.svg" class="pagenation-buttons_icon"></a>
+</div></div></div>
+        
+        <div class="article-item item_heading " id="item21821" data-item-id="21821" data-item-type="ItemHeading"><h2 class="item-body" id="heading0">第12章：トランジションのある映像を作ろう！ </h2></div>
+        
+        <div class="article-item item_markdown " id="item39924" data-item-id="39924" data-item-type="ItemMarkdown"><h4 id="heading1">この教材の学習時間:30分</h4>
+</div>
+        
+        <div class="article-item item_rich_text " id="item21823" data-item-id="21823" data-item-type="ItemRichText"><div class="item-body-hbr">この章では<span class="decoration-02">トランジションの作り方を学ぶ</span>ことで、<span class="decoration-02">印象的なトランジション(画面切り替え)演出をできるようにする</span>ことを目標とします。</div></div>
+        
+        <div class="article-item item_rich_text " id="item21825" data-item-id="21825" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">使用素材（あらかじめダウンロードしておきましょう）</span></div></div>
+        
+        <div class="article-item item_text " id="item21827" data-item-id="21827" data-item-type="ItemText"><div class="item-body-hbr">動画素材「m1.mp4」「m2.mp4」</div></div>
+        
+        <div class="article-item item_link " id="item21831" data-item-id="21831" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=FLvtS&amp;item_id=21831" rel="nofollow noopener noreferrer" target="_blank">Premiere Pro 12章 使用素材</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="Premiere Pro 12章 使用素材" data-reference="https://www.dropbox.com/scl/fi/37ht74h8ptzw6bgj31es1/premiere-ro_ch12_v1-0_published.zip?rlkey=yrfzbtsjg8u9y65ca146wi35s&amp;st=um7nx97p&amp;dl=0" src="../../_assets/8068ac7adc.webp" width="75" height="75"></div><div class="media-body"><div class="item-body"></div></div></div></div></div>
+        
+        <div class="article-item item_rich_text " id="item21832" data-item-id="21832" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">完成見本</span></div></div>
+        
+        <div class="article-item item_link " id="item21833" data-item-id="21833" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=FLvtS&amp;item_id=21833" rel="nofollow noopener noreferrer" target="_blank">Premiere Pro 12-1</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="Premiere Pro 12-1" data-reference="https://www.dropbox.com/scl/fi/wdhx5fr4fpxf88kze4p1v/Premiere_Pro_12-.1_1.0_.mp4?rlkey=3uedu6euw981rsfhmjws9d0vf&amp;st=7t0elv0z&amp;dl=0" src="../../_assets/8068ac7adc.webp" width="75" height="75"></div><div class="media-body"><div class="item-body"></div></div></div></div></div>
+        
+        <div class="article-item item_heading " id="item21834" data-item-id="21834" data-item-type="ItemHeading"><h2 class="item-body" id="heading2">【12-1】トランジションの作り方</h2></div>
+        
+        <div class="article-item item_markdown " id="item21835" data-item-id="21835" data-item-type="ItemMarkdown"><h4 id="heading3">目安の学習時間：30分</h4>
+</div>
+        
+        <div class="article-item item_rich_text " id="item21836" data-item-id="21836" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-02">「トランジション」</span>とは、<span class="decoration-02">前のカットと後ろのカットをつなぎ合わせて、画面を切り替えたいときに適用する効果</span>のことです。<br>
+Premiere Proにもトランジションのエフェクトは用意されていますが、今回はオリジナルのトランジションを作っていきます。</div></div>
+        
+        <div class="article-item item_heading " id="item21837" data-item-id="21837" data-item-type="ItemHeading"><h3 class="item-body" id="heading4">プロジェクト・シーケンスの作成・素材の読み込み</h3></div>
+        
+        <div class="article-item item_rich_text " id="item49043" data-item-id="49043" data-item-type="ItemRichText"><div class="item-body-hbr">1. Premiere Proを起動し、<span class="decoration-02"><span class="decoration-01">【新規プロジェクト】</span></span>をクリックします。</div></div>
+        
+        <div class="article-item item_image " id="item49044" data-item-id="49044" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/049/044/medium/95511272-4e14-4828-83d0-ecc7f413d5de.png?1779608088" title=""><img class="img-responsive item-image" alt=" (49044)" data-reference="" src="../../_assets/faaa337a1e.webp" width="433" height="496"></a><h4 id="heading5"></h4></div></div>
+        
+        <div class="article-item item_html " id="item22030" data-item-id="22030" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_text " id="item49045" data-item-id="49045" data-item-type="ItemText"><div class="item-body-hbr">2. 表示されたウィンドウで、プロジェクト名と保存先を入力します。</div></div>
+        
+        <div class="article-item item_rich_text " id="item49046" data-item-id="49046" data-item-type="ItemRichText"><div class="item-body-hbr">3. すると編集画面（空のプロジェクト）が開くので、<span class="decoration-02"><span class="decoration-01">【プロジェクトパネル】</span></span>内の何もないところをダブルクリックします。</div></div>
+        
+        <div class="article-item item_image " id="item49047" data-item-id="49047" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/049/047/medium/f2f10313-bc4a-46d2-a0a5-13b3d235fe65.png?1779608157" title=""><img class="img-responsive item-image" alt=" (49047)" data-reference="" src="../../_assets/edc5bed7c8.webp" width="640" height="198"></a><h4 id="heading6"></h4></div></div>
+        
+        <div class="article-item item_html " id="item22029" data-item-id="22029" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_text " id="item49048" data-item-id="49048" data-item-type="ItemText"><div class="item-body-hbr">4. PCのフォルダが開くので、そこで素材を選んで読み込みます。</div></div>
+        
+        <div class="article-item item_image " id="item21856" data-item-id="21856" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/021/856/medium/1d834eaf-9d15-4869-ac02-44af26c46989.png?1749285328"><img class="img-responsive item-image" alt=" (21856)" src="../../_assets/4a4a45a3c3.webp" width="517" height="213"></a><h4 id="heading7"></h4></div></div>
+        
+        <div class="article-item item_html " id="item22022" data-item-id="22022" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_text " id="item49049" data-item-id="49049" data-item-type="ItemText"><div class="item-body-hbr">5. プロジェクトパネルにあるクリップm1.mp4、m2.mp4を選択して、タイムラインパネルへ直接ドラッグ＆ドロップします。</div></div>
+        
+        <div class="article-item item_rich_text " id="item49050" data-item-id="49050" data-item-type="ItemRichText"><div class="item-body-hbr">6. これで動画に最適なシーケンスが<span class="decoration-02"><span class="decoration-01">自動</span></span>で作られます。</div></div>
+        
+        <div class="article-item item_image " id="item21857" data-item-id="21857" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/021/857/medium/0b98d9f6-73ab-443e-847c-8c435e87fe0f.png?1749285335" title=""><img class="img-responsive item-image" alt=" (21857)" data-reference="" src="../../_assets/48c77e4c0c.webp" width="640" height="99"></a><h4 id="heading8"></h4></div></div>
+        
+        <div class="article-item item_html " id="item22021" data-item-id="22021" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_rich_text " id="item49051" data-item-id="49051" data-item-type="ItemRichText"><div class="item-body-hbr">7. プロジェクトパネルにできたシーケンスを右クリックして<span class="decoration-02"><span class="decoration-01">【名前の変更】</span></span>を選択し書き換えます。</div></div>
+        
+        <div class="article-item item_heading " id="item21853" data-item-id="21853" data-item-type="ItemHeading"><h3 class="item-body" id="heading9">【調整レイヤー】を配置する</h3></div>
+        
+        <div class="article-item item_rich_text " id="item21858" data-item-id="21858" data-item-type="ItemRichText"><div class="item-body-hbr">1. プロジェクトパネルの何も無い箇所を右クリックするとメニューが表示されるので、<span class="decoration-02">【新規項目】</span>＞<span class="decoration-02">【調整レイヤー】</span>を選択します。</div></div>
+        
+        <div class="article-item item_image " id="item21867" data-item-id="21867" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/021/867/medium/157eab99-6467-495e-9c45-fe14acc64090.png?1749285518"><img class="img-responsive item-image" alt=" (21867)" src="../../_assets/456cb9cc96.webp" width="584" height="212"></a><h4 id="heading10"></h4></div></div>
+        
+        <div class="article-item item_html " id="item22019" data-item-id="22019" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_rich_text " id="item21859" data-item-id="21859" data-item-type="ItemRichText"><div class="item-body-hbr">2. 調整レイヤー設定パネルが表示されるので<span class="decoration-02">【OK】</span>をクリックします。</div></div>
+        
+        <div class="article-item item_image " id="item21868" data-item-id="21868" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/021/868/medium/ecb5f23d-a532-4049-adcc-290d0ce2af82.png?1749285528"><img class="img-responsive item-image" alt=" (21868)" src="../../_assets/228fd429b8.webp" width="511" height="341"></a><h4 id="heading11"></h4></div></div>
+        
+        <div class="article-item item_html " id="item22018" data-item-id="22018" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_rich_text " id="item21860" data-item-id="21860" data-item-type="ItemRichText"><div class="item-body-hbr">3. すると、プロジェクトパネル内に調整レイヤーが作成されました。</div></div>
+        
+        <div class="article-item item_image " id="item21869" data-item-id="21869" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/021/869/medium/857fd68e-b5a1-4b3b-a39e-0526c0fc7ac2.png?1749285534"><img class="img-responsive item-image" alt=" (21869)" src="../../_assets/dc62cae51d.webp" width="298" height="167"></a><h4 id="heading12"></h4></div></div>
+        
+        <div class="article-item item_html " id="item22017" data-item-id="22017" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_rich_text " id="item21861" data-item-id="21861" data-item-type="ItemRichText"><div class="item-body-hbr">4. この調整レイヤーのテキストの部分をクリックすると文字が入力できる状態になるので、「調整レイヤー01」に変更します。</div></div>
+        
+        <div class="article-item item_image " id="item21870" data-item-id="21870" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/021/870/medium/fb802d21-8a82-4fe3-93ed-049bac93894e.png?1749285565"><img class="img-responsive item-image" alt=" (21870)" src="../../_assets/284156f39a.png" width="298" height="213"></a><h4 id="heading13"></h4></div></div>
+        
+        <div class="article-item item_image " id="item21872" data-item-id="21872" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/021/872/medium/d74b9761-7a4f-4e7e-ae54-dd7cdadd76df.png?1749285605"><img class="img-responsive item-image" alt=" (21872)" src="../../_assets/6b5c071429.png" width="298" height="210"></a><h4 id="heading14"></h4></div></div>
+        
+        <div class="article-item item_html " id="item22015" data-item-id="22015" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_rich_text " id="item21862" data-item-id="21862" data-item-type="ItemRichText"><div class="item-body-hbr">5. &nbsp;この調整レイヤー01を選択してコピー&amp;ペーストをすると、「調整レイヤー01」が複製されました。</div></div>
+        
+        <div class="article-item item_image " id="item21871" data-item-id="21871" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/021/871/medium/95e92ca7-0da1-40e1-bf2d-bf8299cda639.png?1749285574"><img class="img-responsive item-image" alt=" (21871)" src="../../_assets/af6214d1c9.webp" width="640" height="259"></a><h4 id="heading15"></h4></div></div>
+        
+        <div class="article-item item_html " id="item22014" data-item-id="22014" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_rich_text " id="item21863" data-item-id="21863" data-item-type="ItemRichText"><div class="item-body-hbr">6. 複製した「調整レイヤー01」を「調整レイヤー02」に名前を変更します。</div></div>
+        
+        <div class="article-item item_image " id="item21873" data-item-id="21873" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/021/873/medium/ebca30d2-096d-4487-a03f-c79932c1f657.png?1749285615"><img class="img-responsive item-image" alt=" (21873)" src="../../_assets/a61f2c6750.webp" width="285" height="160"></a><h4 id="heading16"></h4></div></div>
+        
+        <div class="article-item item_html " id="item22013" data-item-id="22013" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_rich_text " id="item21864" data-item-id="21864" data-item-type="ItemRichText"><div class="item-body-hbr">7. これでプロジェクトパネル内に「調整レイヤー01」と「調整レイヤー02」の2つの調整レイヤーが作成されました。</div></div>
+        
+        <div class="article-item item_image " id="item21874" data-item-id="21874" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/021/874/medium/c1480974-05ff-4d51-bcad-517e3b21e560.png?1749285622"><img class="img-responsive item-image" alt=" (21874)" src="../../_assets/53b1c1e249.webp" width="640" height="154"></a><h4 id="heading17"></h4></div></div>
+        
+        <div class="article-item item_html " id="item22011" data-item-id="22011" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_rich_text " id="item21865" data-item-id="21865" data-item-type="ItemRichText"><div class="item-body-hbr">8. 調整レイヤー01を【V2】トラック、調整レイヤー02を【V3】トラックに下記のタイムコードにそれぞれ配置します。<br>
+調整レイヤー01→（00;00;04;00）～（00;00;04;04）<br>
+調整レイヤー02→（00;00;03;26）～（00;00;04;04）</div></div>
+        
+        <div class="article-item item_image " id="item21875" data-item-id="21875" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/021/875/medium/e7571f55-8f71-4478-990a-b2f95297fe2e.png?1749285627" title=""><img class="img-responsive item-image" alt=" (21875)" data-reference="" src="../../_assets/ff3921b19f.webp" width="640" height="159"></a><h4 id="heading18"></h4></div></div>
+        
+        <div class="article-item item_html " id="item22010" data-item-id="22010" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_heading " id="item21866" data-item-id="21866" data-item-type="ItemHeading"><h3 class="item-body" id="heading19">トランジションを作成する</h3></div>
+        
+        <div class="article-item item_rich_text " id="item21877" data-item-id="21877" data-item-type="ItemRichText"><div class="item-body-hbr">1. 調整レイヤー01に<span class="decoration-02">【ビデオエフェクト】</span>＞<span class="decoration-02">【複製】</span>をダブルクリックして適用します。</div></div>
+        
+        <div class="article-item item_image " id="item21896" data-item-id="21896" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/021/896/medium/f78c1516-d091-4232-b698-2940495e921d.png?1749286024"><img class="img-responsive item-image" alt=" (21896)" src="../../_assets/842b23fbc4.webp" width="242" height="136"></a><h4 id="heading20"></h4></div></div>
+        
+        <div class="article-item item_html " id="item22008" data-item-id="22008" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_rich_text " id="item21878" data-item-id="21878" data-item-type="ItemRichText"><div class="item-body-hbr">2. <span class="decoration-02">【カウント】</span>の数値を【3】にします。</div></div>
+        
+        <div class="article-item item_image " id="item21898" data-item-id="21898" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/021/898/medium/2849bbc8-311a-48ad-9068-fb75d40707bb.png?1749286036"><img class="img-responsive item-image" alt=" (21898)" src="../../_assets/09a246b99e.webp" width="605" height="110"></a><h4 id="heading21"></h4></div></div>
+        
+        <div class="article-item item_html " id="item22007" data-item-id="22007" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_rich_text " id="item21879" data-item-id="21879" data-item-type="ItemRichText"><div class="item-body-hbr">3. すると画面が9分割されました。</div></div>
+        
+        <div class="article-item item_image " id="item21899" data-item-id="21899" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/021/899/medium/644aa688-3e7c-48e4-8e1f-1600ebd89f13.png?1749286047"><img class="img-responsive item-image" alt=" (21899)" src="../../_assets/faba91f72f.webp" width="640" height="356"></a><h4 id="heading22"></h4></div></div>
+        
+        <div class="article-item item_html " id="item22006" data-item-id="22006" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_rich_text " id="item21880" data-item-id="21880" data-item-type="ItemRichText"><div class="item-body-hbr">4. 次に調整レイヤー01クリップを選択した状態で、<span class="decoration-02">【ビデオエフェクト】</span>＞<span class="decoration-02">【ディストーション】</span>＞<span class="decoration-02">【ミラー】</span>を適用します。</div></div>
+        
+        <div class="article-item item_image " id="item21901" data-item-id="21901" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/021/901/medium/0f6bec93-adcb-491a-a73d-9f82d2996057.png?1749286055"><img class="img-responsive item-image" alt=" (21901)" src="../../_assets/5e04ad1691.webp" width="312" height="175"></a><h4 id="heading23"></h4></div></div>
+        
+        <div class="article-item item_image " id="item21904" data-item-id="21904" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/021/904/medium/3ba50bc8-e59b-4ba6-9291-970f41ec3570.png?1749286074"><img class="img-responsive item-image" alt=" (21904)" src="../../_assets/1332c29974.webp" width="640" height="360"></a><h4 id="heading24"></h4></div></div>
+        
+        <div class="article-item item_html " id="item22004" data-item-id="22004" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_rich_text " id="item21881" data-item-id="21881" data-item-type="ItemRichText"><div class="item-body-hbr">5. <span class="decoration-02">【反射角度】</span>を【90°】、<span class="decoration-02">【反射の中心】</span>のY軸を【719】に設定します。</div></div>
+        
+        <div class="article-item item_image " id="item21902" data-item-id="21902" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/021/902/medium/bd0c8e70-11d9-40d6-b915-92bbeb536178.png?1749286061" title=""><img class="img-responsive item-image" alt=" (21902)" data-reference="" src="../../_assets/07f87e5632.webp" width="640" height="110"></a><h4 id="heading25"></h4></div></div>
+        
+        <div class="article-item item_html " id="item22003" data-item-id="22003" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_rich_text " id="item21882" data-item-id="21882" data-item-type="ItemRichText"><div class="item-body-hbr">6. すると継ぎ目が消えるくらいに設定することができます。</div></div>
+        
+        <div class="article-item item_image " id="item21906" data-item-id="21906" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/021/906/medium/aef1c710-4cf0-478c-b94c-93723ee327a4.png?1749286102"><img class="img-responsive item-image" alt=" (21906)" src="../../_assets/15cd7af73f.webp" width="640" height="361"></a><h4 id="heading26"></h4></div></div>
+        
+        <div class="article-item item_html " id="item22001" data-item-id="22001" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_rich_text " id="item21883" data-item-id="21883" data-item-type="ItemRichText"><div class="item-body-hbr">7. 調整レイヤー01クリップを選択した状態で、<span class="decoration-02">【ビデオエフェクト】</span>＞<span class="decoration-02">【ディストーション】</span>＞<span class="decoration-02">【ミラー】</span>を適用します。</div></div>
+        
+        <div class="article-item item_image " id="item21907" data-item-id="21907" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/021/907/medium/44272d90-0519-4cc5-b5c8-ea2894cb2a24.png?1749286111"><img class="img-responsive item-image" alt=" (21907)" src="../../_assets/9014e55bf7.webp" width="312" height="175"></a><h4 id="heading27"></h4></div></div>
+        
+        <div class="article-item item_html " id="item22000" data-item-id="22000" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_rich_text " id="item21884" data-item-id="21884" data-item-type="ItemRichText"><div class="item-body-hbr">8. <span class="decoration-02">【反射角度】</span>を【-90°】、<span class="decoration-02">【反射の中心】</span>のY軸を【360】に設定します。</div></div>
+        
+        <div class="article-item item_image " id="item21909" data-item-id="21909" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/021/909/medium/ee0bbc69-ebdc-47ad-b3e4-f612ea2dabfb.png?1749286117"><img class="img-responsive item-image" alt=" (21909)" src="../../_assets/f0270c1646.webp" width="640" height="112"></a><h4 id="heading28"></h4></div></div>
+        
+        <div class="article-item item_html " id="item21999" data-item-id="21999" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_rich_text " id="item21885" data-item-id="21885" data-item-type="ItemRichText"><div class="item-body-hbr">9. すると継ぎ目が消えるくらいに設定できます。</div></div>
+        
+        <div class="article-item item_image " id="item21910" data-item-id="21910" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/021/910/medium/09cf9717-f10f-4d32-9c8f-7880df21de72.png?1749286124"><img class="img-responsive item-image" alt=" (21910)" src="../../_assets/2500d16427.webp" width="640" height="359"></a><h4 id="heading29"></h4></div></div>
+        
+        <div class="article-item item_html " id="item21998" data-item-id="21998" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_rich_text " id="item21886" data-item-id="21886" data-item-type="ItemRichText"><div class="item-body-hbr">10. 調整レイヤー01クリップを選択した状態で、<span class="decoration-02">【ビデオエフェクト】</span>＞<span class="decoration-02">【ディストーション】</span>＞<span class="decoration-02">【ミラー】</span>を適用します。</div></div>
+        
+        <div class="article-item item_image " id="item21911" data-item-id="21911" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/021/911/medium/1fb8d534-2897-418d-809a-c4d991574928.png?1749286131"><img class="img-responsive item-image" alt=" (21911)" src="../../_assets/9014e55bf7.webp" width="312" height="175"></a><h4 id="heading30"></h4></div></div>
+        
+        <div class="article-item item_html " id="item21996" data-item-id="21996" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_rich_text " id="item21887" data-item-id="21887" data-item-type="ItemRichText"><div class="item-body-hbr">11. <span class="decoration-02">【反射角度】</span>を【180°】、<span class="decoration-02">【反射の中心】</span>のX軸を【640】に設定します。</div></div>
+        
+        <div class="article-item item_image " id="item21912" data-item-id="21912" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/021/912/medium/fe3fc8b4-9476-4c40-ac24-06e08c3ba2f3.png?1749286162"><img class="img-responsive item-image" alt=" (21912)" src="../../_assets/fd0bada249.webp" width="640" height="110"></a><h4 id="heading31"></h4></div></div>
+        
+        <div class="article-item item_html " id="item21995" data-item-id="21995" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_rich_text " id="item21888" data-item-id="21888" data-item-type="ItemRichText"><div class="item-body-hbr">12. すると継ぎ目が消えるくらいに設定できます。</div></div>
+        
+        <div class="article-item item_image " id="item21913" data-item-id="21913" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/021/913/medium/74d8f0e3-61d7-4e3a-b138-0e46a1f2e30e.png?1749286169"><img class="img-responsive item-image" alt=" (21913)" src="../../_assets/aa2a50bc74.webp" width="640" height="359"></a><h4 id="heading32"></h4></div></div>
+        
+        <div class="article-item item_html " id="item21994" data-item-id="21994" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_rich_text " id="item21889" data-item-id="21889" data-item-type="ItemRichText"><div class="item-body-hbr">13. さらに調整レイヤー01クリップを選択した状態で、<span class="decoration-02">【ビデオエフェクト】</span>＞<span class="decoration-02">【ディストーション】</span>＞<span class="decoration-02">【ミラー】</span>をもう一度適用します。</div></div>
+        
+        <div class="article-item item_image " id="item21915" data-item-id="21915" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/021/915/medium/4f804b49-c3e5-4ef0-b46a-23ba4012a6c3.png?1749286178"><img class="img-responsive item-image" alt=" (21915)" src="../../_assets/9014e55bf7.webp" width="312" height="175"></a><h4 id="heading33"></h4></div></div>
+        
+        <div class="article-item item_html " id="item21993" data-item-id="21993" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_rich_text " id="item21890" data-item-id="21890" data-item-type="ItemRichText"><div class="item-body-hbr">14. <span class="decoration-02">【反射角度】</span>を【360°】、<span class="decoration-02">【反射の中心】</span>のX軸を【1279】に設定します。</div></div>
+        
+        <div class="article-item item_image " id="item21916" data-item-id="21916" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/021/916/medium/2917517a-65d8-49c8-85a4-2788fa09c315.png?1749286190"><img class="img-responsive item-image" alt=" (21916)" src="../../_assets/6cb8685de9.webp" width="640" height="114"></a><h4 id="heading34"></h4></div></div>
+        
+        <div class="article-item item_html " id="item21992" data-item-id="21992" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_rich_text " id="item21893" data-item-id="21893" data-item-type="ItemRichText"><div class="item-body-hbr">15. すると継ぎ目が消えるくらいに設定できます。<br>
+※【360°】と入力した場合は表記が【1×0.0°】となります</div></div>
+        
+        <div class="article-item item_image " id="item21917" data-item-id="21917" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/021/917/medium/76a78a4f-dad3-4f5b-8c9c-67e882fec548.png?1749286195"><img class="img-responsive item-image" alt=" (21917)" src="../../_assets/8a5975cf1b.webp" width="640" height="359"></a><h4 id="heading35"></h4></div></div>
+        
+        <div class="article-item item_html " id="item21990" data-item-id="21990" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_rich_text " id="item21894" data-item-id="21894" data-item-type="ItemRichText"><div class="item-body-hbr">ここまでで<span class="decoration-02">【ミラー】</span>エフェクトを<span class="decoration-02">4回</span>適用しています。<br>
+下図のようになっているかを確認してください。</div></div>
+        
+        <div class="article-item item_image " id="item21918" data-item-id="21918" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/021/918/medium/c6c6d332-e016-4d37-ac16-e8c7fc422589.png?1749286200"><img class="img-responsive item-image" alt=" (21918)" src="../../_assets/351f821874.webp" width="640" height="527"></a><h4 id="heading36"></h4></div></div>
+        
+        <div class="article-item item_html " id="item21989" data-item-id="21989" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_rich_text " id="item21895" data-item-id="21895" data-item-type="ItemRichText"><div class="item-body-hbr">これで調整レイヤー01のエフェクトの設定が完了しました。</div></div>
+        
+        <div class="article-item item_rich_text " id="item21919" data-item-id="21919" data-item-type="ItemRichText"><div class="item-body-hbr">1. 続いて調整レイヤー02に<span class="decoration-02">【ビデオエフェクト】</span>＞<span class="decoration-02">【トランスフォーム】</span>＞<span class="decoration-02">【トランスフォーム】</span>をダブルクリックして適用します。</div></div>
+        
+        <div class="article-item item_image " id="item21961" data-item-id="21961" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/021/961/medium/b6301c96-faf0-436e-9e0a-bcc70f0eccce.png?1749287100"><img class="img-responsive item-image" alt=" (21961)" src="../../_assets/048f89383d.webp" width="313" height="176"></a><h4 id="heading37"></h4></div></div>
+        
+        <div class="article-item item_html " id="item21988" data-item-id="21988" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_rich_text " id="item21951" data-item-id="21951" data-item-type="ItemRichText"><div class="item-body-hbr">2. 時間インジケーターを調整レイヤー02の左端に合わせた状態で、<span class="decoration-02">【スケール】</span>の左にある<span class="decoration-02">【ストップウォッチ】</span>アイコンをクリックしてアニメーションをオンにします。</div></div>
+        
+        <div class="article-item item_image " id="item21962" data-item-id="21962" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/021/962/medium/b3f997f0-6c6b-435c-9912-6db5615781a8.png?1749287110"><img class="img-responsive item-image" alt=" (21962)" src="../../_assets/4363af1558.webp" width="640" height="194"></a><h4 id="heading38"></h4></div></div>
+        
+        <div class="article-item item_html " id="item21987" data-item-id="21987" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_rich_text " id="item21952" data-item-id="21952" data-item-type="ItemRichText"><div class="item-body-hbr">3. これで調整レイヤー02の最初にキーフレームが設定されました。</div></div>
+        
+        <div class="article-item item_image " id="item21963" data-item-id="21963" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/021/963/medium/bf753e7c-553c-41f4-a634-cbedb6e90f29.png?1749287118"><img class="img-responsive item-image" alt=" (21963)" src="../../_assets/42528c4ac6.webp" width="640" height="85"></a><h4 id="heading39"></h4></div></div>
+        
+        <div class="article-item item_html " id="item21985" data-item-id="21985" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_rich_text " id="item21953" data-item-id="21953" data-item-type="ItemRichText"><div class="item-body-hbr">4. 時間インジケーターを調整レイヤー02の右端に移動して<span class="decoration-02">【スケール】</span>の数値を【300】と入力します。</div></div>
+        
+        <div class="article-item item_image " id="item21965" data-item-id="21965" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/021/965/medium/5fd3de81-cef1-4cd1-902d-92b4e5c37ae9.png?1749287124"><img class="img-responsive item-image" alt=" (21965)" src="../../_assets/44c3f8e2ff.webp" width="640" height="197"></a><h4 id="heading40"></h4></div></div>
+        
+        <div class="article-item item_html " id="item21984" data-item-id="21984" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_rich_text " id="item21955" data-item-id="21955" data-item-type="ItemRichText"><div class="item-body-hbr">5. すると調整レイヤー02の最初と最後にキーフレームを設定することができます。</div></div>
+        
+        <div class="article-item item_image " id="item21966" data-item-id="21966" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/021/966/medium/63b58f96-b485-433d-8027-c8a5f392681c.png?1749287132"><img class="img-responsive item-image" alt=" (21966)" src="../../_assets/61f968fc0f.webp" width="640" height="90"></a><h4 id="heading41"></h4></div></div>
+        
+        <div class="article-item item_html " id="item21982" data-item-id="21982" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_rich_text " id="item21957" data-item-id="21957" data-item-type="ItemRichText"><div class="item-body-hbr">6. <span class="decoration-02">【コンポジションのシャッター角度を使用】</span>のチェックを外して<span class="decoration-02">【シャッター角度】</span>を【360】に設定します。</div></div>
+        
+        <div class="article-item item_image " id="item21967" data-item-id="21967" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/021/967/medium/39088a40-a9d3-4882-b29b-32e9d8202760.png?1749287138"><img class="img-responsive item-image" alt=" (21967)" src="../../_assets/eb811bd046.webp" width="640" height="370"></a><h4 id="heading42"></h4></div></div>
+        
+        <div class="article-item item_html " id="item21980" data-item-id="21980" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_rich_text " id="item21958" data-item-id="21958" data-item-type="ItemRichText"><div class="item-body-hbr">これで、インパクトのあるズームトランジションができました。</div></div>
+        
+        <div class="article-item item_markdown " id="item21969" data-item-id="21969" data-item-type="ItemMarkdown"><h4 id="heading43">トランジション部分（スロー表示）</h4>
+</div>
+        
+        <div class="article-item item_link " id="item21974" data-item-id="21974" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=FLvtS&amp;item_id=21974" rel="nofollow noopener noreferrer" target="_blank">Premiere Pro 12-2</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="Premiere Pro 12-2" data-reference="https://www.dropbox.com/scl/fi/oi0ixk860etxfmel0d93i/Premiere_Pro_12-.2_1.0_.mp4?rlkey=oy1pmkrat7b1exd6ew76aiewj&amp;st=bsr3vr51&amp;dl=0" src="../../_assets/8068ac7adc.webp" width="75" height="75"></div><div class="media-body"><div class="item-body"></div></div></div></div></div>
+        
+        <div class="article-item item_markdown " id="item21971" data-item-id="21971" data-item-type="ItemMarkdown"><h4 id="heading44">完成動画</h4>
+</div>
+        
+        <div class="article-item item_link " id="item21976" data-item-id="21976" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=FLvtS&amp;item_id=21976" rel="nofollow noopener noreferrer" target="_blank">Premiere Pro 12-3</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="Premiere Pro 12-3" data-reference="https://www.dropbox.com/scl/fi/arrhjk5oc6j0ehg8yc8m7/Premiere_Pro_12-.3_1.0_.mp4?rlkey=txwndxd657mnmhkztunkzj84g&amp;st=17uthrul&amp;dl=0" src="../../_assets/8068ac7adc.webp" width="75" height="75"></div><div class="media-body"><div class="item-body"></div></div></div></div></div>
+        
+        <div class="article-item item_rich_text " id="item21978" data-item-id="21978" data-item-type="ItemRichText"><div class="item-body-hbr">これで「第12章：トランジションのある映像を作ろう！」の解説を終わります。<br>
+次の章に進みましょう。</div></div>
+        
+        <div class="article-item item_html " id="item25940" data-item-id="25940" data-item-type="ItemHtml"><div class="item-body"><div class="pagenation-buttons" style="justify-content: space-between;">
+  <a href="https://learn.webcoach.jp/movie-editing/Premiere_Pro/wVzWV" class="pagenation-buttons_prev"><img src="../../_assets/47498cfebf.svg" class="pagenation-buttons_icon">前の章に戻る</a>
+  <a href="https://learn.webcoach.jp/movie-editing/Premiere_Pro/wsGpf" class="pagenation-buttons_next">次の章に進む<img src="../../_assets/47498cfebf.svg" class="pagenation-buttons_icon"></a>
+</div></div></div>
+        
+        
+        
+        <div class="back-to-roadmap mb-4 text-center"></div>
+      </div>
+    </div>
+    
+    <div class="lightbox-modal" id="lightboxModal">
+      <img src="" alt="">
+    </div>
+    
+    <div id="modal" class="fixed-menu-modal">
+      <div class="fixed-menu-modal-content">
+        <div class="index mb-3" style="background-color: #FDF5E8;">
+          <div>
+            <div class="fw-light">INDEX</div>
+            <div class="h3">目次</div>
+          </div>
+          <div class="toc"><ul><li><a href="#heading0" class="tocLink">第12章：トランジションのある映像を作ろう！ </a><ul><li><a href="#heading1" class="tocLink">この教材の学習時間:30分</a></li></ul></li><li><a href="#heading2" class="tocLink">【12-1】トランジションの作り方</a><ul><li><a href="#heading3" class="tocLink">目安の学習時間：30分</a></li></ul><ul><li><a href="#heading4" class="tocLink">プロジェクト・シーケンスの作成・素材の読み込み</a><ul><li><a href="#heading5" class="tocLink"></a></li><li><a href="#heading6" class="tocLink"></a></li><li><a href="#heading7" class="tocLink"></a></li><li><a href="#heading8" class="tocLink"></a></li></ul></li><li><a href="#heading9" class="tocLink">【調整レイヤー】を配置する</a><ul><li><a href="#heading10" class="tocLink"></a></li><li><a href="#heading11" class="tocLink"></a></li><li><a href="#heading12" class="tocLink"></a></li><li><a href="#heading13" class="tocLink"></a></li><li><a href="#heading14" class="tocLink"></a></li><li><a href="#heading15" class="tocLink"></a></li><li><a href="#heading16" class="tocLink"></a></li><li><a href="#heading17" class="tocLink"></a></li><li><a href="#heading18" class="tocLink"></a></li></ul></li><li><a href="#heading19" class="tocLink">トランジションを作成する</a><ul><li><a href="#heading20" class="tocLink"></a></li><li><a href="#heading21" class="tocLink"></a></li><li><a href="#heading22" class="tocLink"></a></li><li><a href="#heading23" class="tocLink"></a></li><li><a href="#heading24" class="tocLink"></a></li><li><a href="#heading25" class="tocLink"></a></li><li><a href="#heading26" class="tocLink"></a></li><li><a href="#heading27" class="tocLink"></a></li><li><a href="#heading28" class="tocLink"></a></li><li><a href="#heading29" class="tocLink"></a></li><li><a href="#heading30" class="tocLink"></a></li><li><a href="#heading31" class="tocLink"></a></li><li><a href="#heading32" class="tocLink"></a></li><li><a href="#heading33" class="tocLink"></a></li><li><a href="#heading34" class="tocLink"></a></li><li><a href="#heading35" class="tocLink"></a></li><li><a href="#heading36" class="tocLink"></a></li><li><a href="#heading37" class="tocLink"></a></li><li><a href="#heading38" class="tocLink"></a></li><li><a href="#heading39" class="tocLink"></a></li><li><a href="#heading40" class="tocLink"></a></li><li><a href="#heading41" class="tocLink"></a></li><li><a href="#heading42" class="tocLink"></a></li><li><a href="#heading43" class="tocLink">トランジション部分（スロー表示）</a></li><li><a href="#heading44" class="tocLink">完成動画</a></li></ul></li></ul></li></ul></div>
+        </div>
+        
+        <!-- ボタン類 -->
+        <div id="fixed-menu_buttons" class="fixed-menu_buttons">
+  <a href="https://learn.webcoach.jp/movie-editing/Premiere_Pro/wVzWV" class="pagenation-buttons_prev"><img src="../../_assets/47498cfebf.svg" class="pagenation-buttons_icon">前の章に戻る</a>
+  <a href="https://learn.webcoach.jp/movie-editing/Premiere_Pro/wsGpf" class="pagenation-buttons_next">次の章に進む<img src="../../_assets/47498cfebf.svg" class="pagenation-buttons_icon"></a>
+</div>
+        
+        <div class="back-to-roadmap text-center"></div>
+      </div>
+    </div>
+    
+    <button id="toggleBtn" class="floating-btn">
+      <img id="iconOpen" src="../../_assets/5feefcfc55.svg" alt="メニューを開く">
+      <img id="iconClose" src="../../_assets/ae4a1129c9.svg" alt="メニューを閉じる" style="display:none;">
+    </button>
+  </div>
+</div>
+</div>
+<!-- <script src="https://cdn.clipkit.co/clipkit/javascripts/item-shopify-1.0.js?v=v15.9.0-20260915" async></script> -->
+            </main></div>
+        
+
+    
+
+    <div class="p-5" style="background-color: #B73E3D; color: white; height: 300px;">
+        <div class="">
+            <div class="h4 ps-3" style="border-left: 5px solid white;">WEBCOACH | キャリアチェンジまでの全てを学ぶマンツーマンWEBスクール</div>
+            <ul class="nav flex-column m-0 p-3 fw-light">
+                <li class="nav-item mb-2"><a href="https://www.webcoach.jp/" target="_blank">WEBCOACH | 公式HP</a></li>
+                <li class="nav-item mb-2"><a href="https://www.instagram.com/webcoach_officials/" target="_blank">WEBCOACH | 公式Instagram</a></li>
+                <li class="nav-item mb-2"><a href="https://vectorinc.co.jp/groupservice/webcoach-career/" target="_blank">WEBCOACH 公式メディア | WEBCOACH career</a></li>
+            </ul>
+        </div>
+        <div class="text-center">
+            <small>© 2020 by WEBCOACH</small>
+        </div>
+    </div>
+
+    
+
+    <!-- bodyタグ内の下部に挿入されます -->
+
+
+    <!-- BootstrapのCDNでのjs読み込み -->
+    
+
+    <!-- シンタックスハイライトの生成 -->
+    
+    
+
+    <!-- 目次の生成 -->
+    
+
+    <!-- ブックマークの生成 -->
+    
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="ck-icon-arrow-down" viewBox="0 0 1792 1792"><path d="M1675 832q0 53-37 90l-651 652q-39 37-91 37-53 0-90-37l-651-652q-38-36-38-90 0-53 38-91l74-75q39-37 91-37 53 0 90 37l294 294v-704q0-52 38-90t90-38h128q52 0 90 38t38 90v704l294-294q37-37 90-37 52 0 91 37l75 75q37 39 37 91z"></path></symbol><symbol id="ck-icon-arrow-up" viewBox="0 0 1792 1792"><path d="M1675 971q0 51-37 90l-75 75q-38 38-91 38-54 0-90-38l-294-293v704q0 52-37.5 84.5t-90.5 32.5h-128q-53 0-90.5-32.5t-37.5-84.5v-704l-294 293q-36 38-90 38t-90-38l-75-75q-38-38-38-90 0-53 38-91l651-651q35-37 90-37 54 0 91 37l651 651q37 39 37 91z"></path></symbol><symbol id="ck-icon-calendar" viewBox="0 0 1792 1792"><path d="M192 1664h288v-288h-288v288zm352 0h320v-288h-320v288zm-352-352h288v-320h-288v320zm352 0h320v-320h-320v320zm-352-384h288v-288h-288v288zm736 736h320v-288h-320v288zm-384-736h320v-288h-320v288zm768 736h288v-288h-288v288zm-384-352h320v-320h-320v320zm-352-864v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm736 864h288v-320h-288v320zm-384-384h320v-288h-320v288zm384 0h288v-288h-288v288zm32-480v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm384-64v1280q0 52-38 90t-90 38h-1408q-52 0-90-38t-38-90v-1280q0-52 38-90t90-38h128v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h384v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h128q52 0 90 38t38 90z"></path></symbol><symbol id="ck-icon-chevron-left" viewBox="0 0 1792 1792"><path d="M1427 301l-531 531 531 531q19 19 19 45t-19 45l-166 166q-19 19-45 19t-45-19l-742-742q-19-19-19-45t19-45l742-742q19-19 45-19t45 19l166 166q19 19 19 45t-19 45z"></path></symbol><symbol id="ck-icon-chevron-right" viewBox="0 0 1792 1792"><path d="M1363 877l-742 742q-19 19-45 19t-45-19l-166-166q-19-19-19-45t19-45l531-531-531-531q-19-19-19-45t19-45l166-166q19-19 45-19t45 19l742 742q19 19 19 45t-19 45z"></path></symbol><symbol id="ck-icon-clock-o" viewBox="0 0 1792 1792"><path d="M1024 544v448q0 14-9 23t-23 9h-320q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h224v-352q0-14 9-23t23-9h64q14 0 23 9t9 23zm416 352q0-148-73-273t-198-198-273-73-273 73-198 198-73 273 73 273 198 198 273 73 273-73 198-198 73-273zm224 0q0 209-103 385.5t-279.5 279.5-385.5 103-385.5-103-279.5-279.5-103-385.5 103-385.5 279.5-279.5 385.5-103 385.5 103 279.5 279.5 103 385.5z"></path></symbol><symbol id="ck-icon-trash" viewBox="0 0 1792 1792"><path d="M704 1376v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm-544-992h448l-48-117q-7-9-17-11h-317q-10 2-17 11zm928 32v64q0 14-9 23t-23 9h-96v948q0 83-47 143.5t-113 60.5h-832q-66 0-113-58.5t-47-141.5v-952h-96q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h309l70-167q15-37 54-63t79-26h320q40 0 79 26t54 63l70 167h309q14 0 23 9t9 23z"></path></symbol><symbol id="ck-icon-undo" viewBox="0 0 1792 1792"><path d="M1664 896q0 156-61 298t-164 245-245 164-298 61q-172 0-327-72.5t-264-204.5q-7-10-6.5-22.5t8.5-20.5l137-138q10-9 25-9 16 2 23 12 73 95 179 147t225 52q104 0 198.5-40.5t163.5-109.5 109.5-163.5 40.5-198.5-40.5-198.5-109.5-163.5-163.5-109.5-198.5-40.5q-98 0-188 35.5t-160 101.5l137 138q31 30 14 69-17 40-59 40h-448q-26 0-45-19t-19-45v-448q0-42 40-59 39-17 69 14l130 129q107-101 244.5-156.5t284.5-55.5q156 0 298 61t245 164 164 245 61 298z"></path></symbol></svg>
+
+<!--Clipkit(R) v15.9.0-20260915 Copyright (C) 2026 VECTOR Inc.-->
+
+
+
+
+
+<div class="dynmsg alert alert-info" style="display:none;"><button class="close"><span class="fa fa-times"></span></button><div class="message"></div></div><div class="dynmsg alert alert-danger" style="display:none;"><button class="close"><span class="fa fa-times"></span></button><div class="message"></div></div></body></html>

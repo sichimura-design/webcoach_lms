@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<!-- clipkit-source-url: https://learn.webcoach.jp/web-design/VBc77 -->
+<!-- clipkit-fetched-at: 2026-09-17T11:14:00.275Z -->
+<html lang="ja"><head>
+    <!-- headタグ内の上部に挿入されます -->
+
+    <meta charset="UTF-8">
+    <title>Figma -完成編- - WEBCOACH</title>
+
+    <!-- resetcssのCDNでのCSS読み込み -->
+    <link rel="stylesheet" href="../../_assets/17f8e278dc.css">
+
+    <!-- fontawesomeのCDNでのCSS読み込み -->
+    <link rel="stylesheet" href="../../_assets/799aeb25cc.css">
+
+    <!-- BootstrapのCDNでのCSS読み込み -->
+    <link href="../../_assets/7633b7c0c9.css" rel="stylesheet">
+
+    <!-- highlight.jsの読み込み -->
+    <link rel="stylesheet" href="../../_assets/e31ce2dd8c.css">
+
+    <!-- カスタムCSS -->
+    <link rel="stylesheet" href="../../_assets/c533dd7750.css">
+
+    <!-- clipkitデフォルトのCSS -->
+    <!--<link rel="stylesheet" media="screen" href="https://cdn.clipkit.co/clipkit/stylesheets/application-1.0.css?v=v15.9.0-20260915">-->
+
+    <!-- jQuery -->
+    
+
+    <!-- カスタムJS -->
+    
+    
+
+    <!-- clipkitデフォルトのJS -->
+    
+
+    <!-- フォント -->
+    <link rel="preconnect" href="https://fonts.googleapis.com/">
+    <link rel="preconnect" href="https://fonts.gstatic.com/">
+    <link href="../../_assets/8b5713f1fc.css" rel="stylesheet">
+
+    <link href="../../_assets/b83ae8ba65.webp" rel="shortcut icon" type="image/vnd.microsoft.icon">
+    <link rel="apple-touch-icon" href="../../_assets/ea0aba163d.webp">
+    <link rel="alternate" type="application/rss+xml" href="https://learn.webcoach.jp/media.rss" title="WEBCOACH">
+    
+<link rel="canonical" href="https://learn.webcoach.jp/web-design/VBc77">
+
+<meta name="description" content="">
+<meta name="keywords" content="">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:domain" content="learn.webcoach.jp">
+<meta name="twitter:title" content="Figma -完成編- - WEBCOACH">
+<meta name="twitter:image" content="https://cdn.clipkit.co/tenants/589/item_movies/images/000/003/345/medium/5de7cfbd-54b1-46f1-9714-920919024a4c.jpg?1719556979">
+<meta name="twitter:description" content="">
+<meta property="og:site_name" content="WEBCOACH">
+<meta property="og:title" content="Figma -完成編-">
+<meta property="og:description" content="">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://learn.webcoach.jp/web-design/VBc77">
+<meta property="og:image" content="https://cdn.clipkit.co/tenants/589/item_movies/images/000/003/345/large/5de7cfbd-54b1-46f1-9714-920919024a4c.jpg?1719556979">
+
+
+    <!-- headタグ内の下部に挿入されます -->
+
+
+<meta name="csrf-param" content="authenticity_token">
+<meta name="csrf-token" content="RLsby62ns1Nk4cK5bNhBmHObIjQw8d2HCouzmy-WkIvzfYQ9xeXBRF5_HZh1fCdGwSOZvgo66PV2E-rdHGA-NA"><meta content="" name="routing-root-path"><meta content="media" name="site-name"><meta content="ja" name="i18n-default-locale"><meta content="ja" name="i18n-locale"><style data-clipkit-snapshot="force-visible">[data-aos],.reveal,.wow,.fade-in,.animate__animated,.js-reveal{opacity:1!important;transform:none!important;visibility:visible!important;animation:none!important;transition:none!important}</style></head>
+
+<body class="device-desktop" style="visibility: visible;">
+    <!-- bodyタグ内の上部に挿入されます -->
+
+
+    <!-- サイドバーとコンテンツのコンテナ -->
+    <div class="d-flex flex-row w-100 mb-5" style="min-height: calc(100vh - 400px);">
+
+        <!-- サイドバー -->
+        <!--<nav id="side-bar" class="d-flex flex-column fixed-top" style="width: 250px;">-->
+        <!--    <h1 class="d-block w-100 text-center">-->
+        <!--        <a class="d-block" href="/">-->
+        <!--            <img class="mw-100 p-3" src="https://cdn.clipkit.co/tenants/589/sites/logos/000/000/001/logo_sm/a8defd4b-1cc7-433b-a61c-08e7db0e3e4f.png?1714459367" alt="WEBCOACH">-->
+        <!--        </a>-->
+        <!--    </h1>-->
+        <!--    <ul class="nav flex-column m-0 p-3 fw-bold">-->
+        <!--        <li id="sidebar-top" class="nav-item mb-2" style="display: none;"><a href="/"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;" src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/233/original/home.png?1715353458">-->
+        <!--                <div>ホーム</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-knowledges" class="nav-item mb-2" style="display: none;"><a href="/knowledges"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;" src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/232/original/book.png?1715353458">-->
+        <!--                <div>学習の心得</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-web-designs" class="nav-item mb-2" style="display: none;"><a href="/web-designs"-->
+        <!--                class="nav-link text-body d-flex align-items-center active">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/231/original/design.png?1715353457">-->
+        <!--                <div>WEBデザイン</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-web-marketing" class="nav-item mb-2" style="display: none;"><a href="/web-marketings"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/230/original/marketing.png?1715353457">-->
+        <!--                <div>WEBマーケティング</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-codings" class="nav-item mb-2" style="display: none;"><a href="/codings"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/229/original/website.png?1715353457">-->
+        <!--                <div>WEBサイト構築</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-business-skills" class="nav-item mb-2" style="display: none;"><a href="/business-skills"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/228/original/business.png?1715353456">-->
+        <!--                <div>ビジネススキル</div>-->
+        <!--            </a></li>-->
+        <!--    </ul>-->
+        <!--</nav>-->
+
+        <!-- コンテンツ -->
+        <!--<main class="ms-auto" style="width: calc(100vw - 250px);">-->
+        <main class="ms-auto" style="width: calc(100vw);">
+            <div id="sb-site">
+                
+
+
+<div class="container">
+  <div class="row">
+    <div class="article">
+      <div class="mb-3 text-light" style="
+        height: 180px;
+        background-image: url(&quot;../../_assets/e1d58e2b8a.webp&quot;);
+        background-repeat: no-repeat;
+        background-size: cover;
+        display: flex;
+        align-items: flex-end;
+      ">
+        <div style="
+          margin: 0 0 30px 30px;
+        ">
+          <div>WEBデザイン</div>
+
+          <div class="fw-bold h2">Figma -完成編-</div>
+        </div>
+      </div>
+      <div class="article-content">
+        <!-- 目次 -->
+        <div class="index mb-3" style="background-color: #FDF5E8;">
+          <div>
+            <div class="fw-light">INDEX</div>
+            <div class="h3">目次</div>
+          </div>
+          <div class="toc"><ul><li><a href="#heading0" class="tocLink">0. できるようになること</a></li><li><a href="#heading1" class="tocLink">1. 学習のポイント</a></li><li><a href="#heading2" class="tocLink">2. Figma導入編</a><ul><li><a href="#heading3" class="tocLink">a. Figmaの概要</a></li><li><a href="#heading4" class="tocLink">b. 今後の学習の進め方</a></li><li><a href="#heading5" class="tocLink">c. Figmaにログインする</a></li></ul></li><li><a href="#heading6" class="tocLink">3. Figmaの基本操作を学ぶ</a><ul><li><a href="#heading7" class="tocLink">使用教材①</a><ul><li><a href="#heading8" class="tocLink">【Figma初心者向け】わずか50分で基本的な使い方をマスター!(超入門講座)</a></li></ul></li><li><a href="#heading9" class="tocLink">使用教材②</a><ul><li><a href="#heading10" class="tocLink">初心者向けFigmaの使い方：Webデザインをトレースしてみよう</a></li><li><a href="#heading11" class="tocLink">学習時の注意</a></li></ul></li><li><a href="#heading12" class="tocLink">✅ 学習理解度チェック</a></li></ul></li></ul></div>
+        </div>
+        
+        <div class="back-to-roadmap mb-4 text-center"></div>
+
+        <!-- コンテンツ -->
+        
+        
+        <div class="article-item item_heading " id="item3331" data-item-id="3331" data-item-type="ItemHeading"><h2 class="item-body" id="heading0">0. できるようになること</h2></div>
+        
+        <div class="article-item item_markdown " id="item3332" data-item-id="3332" data-item-type="ItemMarkdown"><ul>
+  <li>WEBサイト・WEBアプリ・ロゴ・名刺・ポスターなどを<strong>プロのクオリティでデザイン</strong>できるようになります！</li>
+  <li>デザインを作る上でFigmaをうまく使いこなせれば、基本的に何でも作れるようになります！</li>
+</ul>
+</div>
+        
+        <div class="article-item item_heading " id="item3333" data-item-id="3333" data-item-type="ItemHeading"><h2 class="item-body" id="heading1">1. 学習のポイント</h2></div>
+        
+        <div class="article-item item_markdown " id="item3334" data-item-id="3334" data-item-type="ItemMarkdown"><ul>
+  <li>Figmaの操作は非常に直感的なので気楽に動かしながらやっていきましょう。まずは「Figmaの基本操作を学ぶ」で動画を見ながら実際に動かしてみましょう。</li>
+  <li>Figmaは直感で操作しやすいので、<strong>「とりあえず触ってみる」精神</strong>でやっていくのがおすすめです。</li>
+  <li>困ったときは、Googleで「Figma XXXX」(XXXXにはキーワード)を入れるとほとんどの場合、解決策が出てきます。
+    <ul>
+      <li>WEBサイト開発を始めとするプログラミングにおいては<strong>「ググり力」が極めて重要</strong>なのでそこを鍛えていきましょう！</li>
+    </ul>
+  </li>
+  <li>また、YouTubeで大変参考になる教材も多くあるので、困ったときにはYouTubeもうまく活用できるとよいでしょう！</li>
+</ul>
+</div>
+        
+        <div class="article-item item_heading " id="item3335" data-item-id="3335" data-item-type="ItemHeading"><h2 class="item-body" id="heading2">2. Figma導入編</h2></div>
+        
+        <div class="article-item item_heading " id="item3336" data-item-id="3336" data-item-type="ItemHeading"><h3 class="item-body" id="heading3">a. Figmaの概要</h3></div>
+        
+        <div class="article-item item_markdown " id="item3337" data-item-id="3337" data-item-type="ItemMarkdown"><ul>
+  <li>世界各地のデザイン関係者約3,000人に聞いた「2022年に最も使いたいツール」のアンケートで1位となりました。
+この「Figma」という無料で使えるデザインツールを完全習得していただきます。</li>
+</ul>
+</div>
+        
+        <div class="article-item item_heading " id="item3338" data-item-id="3338" data-item-type="ItemHeading"><h3 class="item-body" id="heading4">b. 今後の学習の進め方</h3></div>
+        
+        <div class="article-item item_markdown " id="item3339" data-item-id="3339" data-item-type="ItemMarkdown"><ul>
+  <li>このページでは、まずFigmaの基本的な操作を網羅的に学習し、操作方法の理解をしてもらいます。</li>
+  <li>さらにショートカットキーを学ぶことで実際のデザイナーと同等のレベルまで作業効率を上げてもらいます。</li>
+  <li><a href="https://learn.webcoach.jp/web-design/sBrZW">Figma -ショートカット集-</a> にショートカットキーが網羅的にまとまっているので、適宜辞書のような形で活用するとよいでしょう</li>
+  <li>その後 <a href="https://learn.webcoach.jp/web-design/WRclF">課題：ポートフォリオサイト構築</a>  と <a href="https://learn.webcoach.jp/web-design/lszLG">課題：LPデザイン制作</a> からより実践的なアウトプットを行い、一気に案件獲得が可能なレベルまでデザイン能力を引き上げます。</li>
+</ul>
+</div>
+        
+        <div class="article-item item_heading " id="item3340" data-item-id="3340" data-item-type="ItemHeading"><h3 class="item-body" id="heading5">c. Figmaにログインする</h3></div>
+        
+        <div class="article-item item_markdown " id="item3341" data-item-id="3341" data-item-type="ItemMarkdown"><p>早速ですが、「習うより慣れろ」が大事なので、Figmaにログインしましょう！
+これから学ぶ教材もFigmaを実際に動かしながら作業を進めた方が効率が良いので、以下のページを参考にFigmaを開きましょう！</p>
+</div>
+        
+        <div class="article-item item_heading " id="item3342" data-item-id="3342" data-item-type="ItemHeading"><h2 class="item-body" id="heading6">3. Figmaの基本操作を学ぶ</h2></div>
+        
+        <div class="article-item item_markdown " id="item3343" data-item-id="3343" data-item-type="ItemMarkdown"><p>Figma操作が網羅的にまとまっている非常に良い教材です。</p>
+
+<p>反面、網羅的にまとまっているからこそ動画を見るだけではすべてを活用できるようにはなりません。必ずセクションごとに動画を止めながら手を動かして身につけていきましょう！</p>
+</div>
+        
+        <div class="article-item item_heading " id="item3344" data-item-id="3344" data-item-type="ItemHeading"><h3 class="item-body" id="heading7">使用教材①</h3></div>
+        
+        <div class="article-item item_movie " id="item3345" data-item-id="3345" data-item-type="ItemMovie"><div class="image-large"><iframe width="560" height="113" src="https://www.youtube.com/embed/HdtTh7NcEVs?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen="" title="【Figma初心者向け】わずか50分で基本的な使い方をマスター!(超入門講座)"></iframe><h4 id="heading8">【Figma初心者向け】わずか50分で基本的な使い方をマスター!(超入門講座)</h4></div><div class="cite">via <cite class="item-source"><a title="YouTube" target="_blank" rel="nofollow" href="https://www.youtube.com/watch?v=HdtTh7NcEVs">www.youtube.com</a></cite></div></div>
+        
+        <div class="article-item item_rich_text " id="item3346" data-item-id="3346" data-item-type="ItemRichText"><div class="item-body-hbr">Figmaの紹介から、基本的な機能・操作方法を簡潔にすべて説明している非常に良い教材です。ショートカットキーは少なめに、<span class="decoration-02"><span class="decoration-01">直感的な操作方法で行なっている</span></span>ので、まずはこちらから確認しましょう！</div></div>
+        
+        <div class="article-item item_heading " id="item3347" data-item-id="3347" data-item-type="ItemHeading"><h3 class="item-body" id="heading9">使用教材②</h3></div>
+        
+        <div class="article-item item_movie " id="item3348" data-item-id="3348" data-item-type="ItemMovie"><div class="image-large"><iframe width="560" height="113" src="https://www.youtube.com/embed/JuaXJ4DgItY?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen="" title="初心者向けFigmaの使い方：Webデザインをトレースしてみよう"></iframe><h4 id="heading10">初心者向けFigmaの使い方：Webデザインをトレースしてみよう</h4></div><div class="cite">via <cite class="item-source"><a title="YouTube" target="_blank" rel="nofollow" href="https://www.youtube.com/watch?v=JuaXJ4DgItY&amp;feature=youtu.be">www.youtube.com</a></cite></div></div>
+        
+        <div class="article-item item_rich_text " id="item3349" data-item-id="3349" data-item-type="ItemRichText"><div class="item-body-hbr">一つのサイトを実際に作成する過程で基本的な操作を網羅しながら説明しています。<br>
+<br>
+<span class="decoration-01">使用教材①</span>よりも網羅性は劣りますが、<span class="decoration-02"><span class="decoration-01">ショートカットキーや便利機能を多く活用している</span></span>ため、<span class="decoration-01">使用教材①</span>で基本操作を網羅し、使用教材②で作業効率を上げていきましょう</div></div>
+        
+        <div class="article-item item_markdown " id="item3350" data-item-id="3350" data-item-type="ItemMarkdown"><p>どちらの教材も見ることで反復学習になるので、手を動かしながら見ましょう！</p>
+</div>
+        
+        <div class="article-item item_markdown " id="item3351" data-item-id="3351" data-item-type="ItemMarkdown"><h4 id="heading11">学習時の注意</h4>
+</div>
+        
+        <div class="article-item item_markdown " id="item3352" data-item-id="3352" data-item-type="ItemMarkdown"><ul>
+  <li>動画を見るだけになってしまうと効果がかなり減少します。</li>
+  <li>動画を止めたりしながら必ず手元でFigmaを動かし、同じようなWEBサイトデザインを作りながら進めていきましょう。</li>
+</ul>
+</div>
+        
+        <div class="article-item item_html " id="item3353" data-item-id="3353" data-item-type="ItemHtml"><div class="item-body"><div class="icon-card white bulb">アウトプットを増やすことが実践的なスキルを身につける最短ルートです！必ず同じサイトをFigma上で作成しましょう！</div></div></div>
+        
+        <div class="article-item item_heading " id="item3354" data-item-id="3354" data-item-type="ItemHeading"><h3 class="item-body" id="heading12">✅ 学習理解度チェック</h3></div>
+        
+        <div class="article-item item_markdown " id="item3355" data-item-id="3355" data-item-type="ItemMarkdown"><p>チェックリストでわからないことがある場合には、再度動画に戻って不明点を解消しましょう。</p>
+
+<p>適宜Q&amp;Aもご用意していますので、その内容も確認するといいでしょう！</p>
+</div>
+        
+        <div class="article-item item_html " id="item3356" data-item-id="3356" data-item-type="ItemHtml"><div class="item-body"><div class="icon-card white bulb">チェックリストでわからないことを完全に無くしてから次に進みましょう！</div></div></div>
+        
+        <div class="article-item item_markdown " id="item3357" data-item-id="3357" data-item-type="ItemMarkdown"><ul>
+  <li>チーム機能</li>
+</ul>
+</div>
+        
+        <div class="article-item item_html " id="item3358" data-item-id="3358" data-item-type="ItemHtml"><div class="item-body"><ul class="checkbox">
+    <li>メンバーを招待して閲覧・編集権限を譲渡させることができる</li>
+</ul></div></div>
+        
+        <div class="article-item item_markdown " id="item3359" data-item-id="3359" data-item-type="ItemMarkdown"><ul>
+  <li>Pages</li>
+</ul>
+</div>
+        
+        <div class="article-item item_html " id="item3360" data-item-id="3360" data-item-type="ItemHtml"><div class="item-body"><ul class="checkbox">
+    <li>目的・用途に応じてページを変えることができる</li>
+</ul></div></div>
+        
+        <div class="article-item item_markdown " id="item3363" data-item-id="3363" data-item-type="ItemMarkdown"><ul>
+  <li>Frame ショートカット</li>
+</ul>
+</div>
+        
+        <div class="article-item item_html " id="item3364" data-item-id="3364" data-item-type="ItemHtml"><div class="item-body"><div class="toggle">
+    <div class="open-btn">Q. Frameを出すショートカットキーは何ですか？</div>
+    <div class="toggle-content">A. FキーまたはAキーでショートカットできます。</div>
+</div>
+</div></div>
+        
+        <div class="article-item item_markdown " id="item3362" data-item-id="3362" data-item-type="ItemMarkdown"><ul>
+  <li>Layout Grid</li>
+</ul>
+</div>
+        
+        <div class="article-item item_html " id="item3361" data-item-id="3361" data-item-type="ItemHtml"><div class="item-body"><ul class="checkbox">
+    <li>Gridを設定することができる</li>
+</ul></div></div>
+        
+        <div class="article-item item_html " id="item3365" data-item-id="3365" data-item-type="ItemHtml"><div class="item-body"><div class="icon-card white bulb">Control + Gで表示 / 非表示が変更可能です。ショートカットを多用して作業を効率化しましょう！</div></div></div>
+        
+        <div class="article-item item_markdown " id="item3366" data-item-id="3366" data-item-type="ItemMarkdown"><ul>
+  <li>配置機能</li>
+</ul>
+</div>
+        
+        <div class="article-item item_html " id="item3367" data-item-id="3367" data-item-type="ItemHtml"><div class="item-body"><ul class="checkbox">
+    <li>位置はドラッグまたはサイドバーで数値指定できる</li>
+    <li>WidthとHeightはドラッグまたはサイドバーで数値指定できる</li>
+</ul></div></div>
+        
+        <div class="article-item item_html " id="item3368" data-item-id="3368" data-item-type="ItemHtml"><div class="item-body"><div class="toggle">
+    <div class="open-btn">Q. WidthとHeightとは何ですか？</div>
+    <div class="toggle-content">A. 図形や写真等の横と縦の長さのことです。</div>
+</div></div></div>
+        
+        <div class="article-item item_html " id="item3369" data-item-id="3369" data-item-type="ItemHtml"><div class="item-body"><div class="toggle">
+    <div class="open-btn">Q. 図形の縦横比をそのままに大きさを変えたいのですが、どうすればよいですか？</div>
+    <div class="toggle-content">A.  サイドバーから比率をそのままに数値を変えるか、操作を”move”から”scale”に変更してからドラッグすることでできます。</div>
+</div></div></div>
+        
+        <div class="article-item item_html " id="item3370" data-item-id="3370" data-item-type="ItemHtml"><div class="item-body"><ul class="checkbox">
+    <li>角度をドラッグまたは数値指定で変更できる</li>
+    <li>図形の角に丸みを帯びさせることができる</li>
+</ul></div></div>
+        
+        <div class="article-item item_markdown " id="item3371" data-item-id="3371" data-item-type="ItemMarkdown"><ul>
+  <li>テキスト</li>
+</ul>
+</div>
+        
+        <div class="article-item item_html " id="item3372" data-item-id="3372" data-item-type="ItemHtml"><div class="item-body"><ul class="checkbox">
+    <li>フォント変更をできる</li>
+    <li>フォントの太さを変更できる</li>
+    <li>フォントサイズを変更できる</li>
+    <li>行間（文章同士の距離）を変更することができる</li>
+    <li>文字間隔（隣り合う文字同士の距離）を変更することができる</li>
+    <li>左揃え / 右揃え / 中央揃えを自由に変更できる</li>
+    <li>上揃え / 中央揃え / 下揃えを自由に変更できる</li>
+</ul></div></div>
+        
+        <div class="article-item item_markdown " id="item3373" data-item-id="3373" data-item-type="ItemMarkdown"><ul>
+  <li>複製</li>
+</ul>
+</div>
+        
+        <div class="article-item item_html " id="item3374" data-item-id="3374" data-item-type="ItemHtml"><div class="item-body"><ul class="checkbox">
+    <li>Optionを押しながらドラッグで複製できる</li>
+    <li>Command + Dで複製できる</li>
+    <li>Command + Cでコピー / Command + Vでペーストできる</li>
+</ul></div></div>
+        
+        <div class="article-item item_markdown " id="item3375" data-item-id="3375" data-item-type="ItemMarkdown"><ul>
+  <li>移動</li>
+</ul>
+</div>
+        
+        <div class="article-item item_html " id="item3376" data-item-id="3376" data-item-type="ItemHtml"><div class="item-body"><ul class="checkbox">
+    <li>ドラックまたはサイドバーの数値指定で位置を変更することができる</li>
+</ul></div></div>
+        
+        <div class="article-item item_html " id="item3377" data-item-id="3377" data-item-type="ItemHtml"><div class="item-body"><div class="toggle">
+    <div class="open-btn">Q. 平行に動かしたいときにはどうすればよいですか？</div>
+    <div class="toggle-content">A. Shiftを押しながら移動させることで平行に移動させることができます。</div>
+</div></div></div>
+        
+        <div class="article-item item_markdown " id="item3378" data-item-id="3378" data-item-type="ItemMarkdown"><ul>
+  <li>AutoLayoutの使い方</li>
+</ul>
+</div>
+        
+        <div class="article-item item_html " id="item3379" data-item-id="3379" data-item-type="ItemHtml"><div class="item-body"><ul class="checkbox">
+    <li>Shiftを押しながら選択して複数アイテムを選択できる</li>
+    <li>Shift + AでAuto Layoutの表示を出すことができる</li>
+</ul></div></div>
+        
+        <div class="article-item item_markdown " id="item3380" data-item-id="3380" data-item-type="ItemMarkdown"><ul>
+  <li>グループ化</li>
+</ul>
+</div>
+        
+        <div class="article-item item_html " id="item3381" data-item-id="3381" data-item-type="ItemHtml"><div class="item-body"><ul class="checkbox">
+    <li>グループ化をすることができる</li>
+</ul></div></div>
+        
+        <div class="article-item item_html " id="item3382" data-item-id="3382" data-item-type="ItemHtml"><div class="item-body"><div class="icon-card white bulb">動画内でもグループごとに名前をつけていたように、名前をつけることで編集・保存等が楽になります！</div></div></div>
+        
+        <div class="article-item item_html " id="item3383" data-item-id="3383" data-item-type="ItemHtml"><div class="item-body"><div class="toggle">
+    <div class="open-btn">Q. グループ化をショートカットでやるにはどうすればよいですか？</div>
+    <div class="toggle-content">A. Command + Gでグループ化ができます。</div>
+</div></div></div>
+        
+        <div class="article-item item_html " id="item3384" data-item-id="3384" data-item-type="ItemHtml"><div class="item-body"><div class="toggle">
+    <div class="open-btn">Q. グループ化の解除をショートカットでやるにはどうすればよいですか？</div>
+    <div class="toggle-content">A. Command + Shift + Gでグループ化を解除できます。</div>
+</div></div></div>
+        
+        <div class="article-item item_markdown " id="item3385" data-item-id="3385" data-item-type="ItemMarkdown"><ul>
+  <li>Community機能</li>
+</ul>
+</div>
+        
+        <div class="article-item item_html " id="item3386" data-item-id="3386" data-item-type="ItemHtml"><div class="item-body"><ul class="checkbox">
+    <li>Unsplashをインストールした</li>
+</ul></div></div>
+        
+        <div class="article-item item_markdown " id="item3387" data-item-id="3387" data-item-type="ItemMarkdown"><ul>
+  <li>プラグイン機能</li>
+</ul>
+</div>
+        
+        <div class="article-item item_html " id="item3388" data-item-id="3388" data-item-type="ItemHtml"><div class="item-body"><ul class="checkbox">
+    <li>Community &gt; Pluginからプラグインを設定できる</li>
+</ul></div></div>
+        
+        <div class="article-item item_markdown " id="item3389" data-item-id="3389" data-item-type="ItemMarkdown"><ul>
+  <li>Image</li>
+</ul>
+</div>
+        
+        <div class="article-item item_html " id="item3390" data-item-id="3390" data-item-type="ItemHtml"><div class="item-body"><ul class="checkbox">
+    <li>Fill・Fit・Tile・Cropを使い分けることができる</li>
+</ul></div></div>
+        
+        <div class="article-item item_markdown " id="item3391" data-item-id="3391" data-item-type="ItemMarkdown"><ul>
+  <li>その他便利機能</li>
+</ul>
+</div>
+        
+        <div class="article-item item_html " id="item3392" data-item-id="3392" data-item-type="ItemHtml"><div class="item-body"><ul class="checkbox">
+    <li>1つのアイテムを選択した上でOptionを押しながら他のアイテムにカーソルを合わせることでマージンがわかる</li>
+    <li>Control + Cでスポイトでカラーを抽出できる</li>
+    <li>コンポートネント機能を使用することができる</li>
+</ul></div></div>
+        
+        <div class="article-item item_html " id="item3393" data-item-id="3393" data-item-type="ItemHtml"><div class="item-body"><div class="icon-card white bulb">親コンポートネントのデザインを変更すると子コンポートネントのデザインも変更される便利な機能です！活用しましょう！</div></div></div>
+        
+        <div class="article-item item_markdown " id="item3394" data-item-id="3394" data-item-type="ItemMarkdown"><ul>
+  <li>ペースト</li>
+</ul>
+</div>
+        
+        <div class="article-item item_html " id="item3395" data-item-id="3395" data-item-type="ItemHtml"><div class="item-body"><ul class="checkbox">
+    <li>command + C → command + Vで普通の貼り付けができる</li>
+    <li>Option command + C  → Option Comamand + Vでスタイル（フォント・色）の貼り付け</li>
+</ul></div></div>
+        
+        <div class="article-item item_markdown " id="item3396" data-item-id="3396" data-item-type="ItemMarkdown"><ul>
+  <li>WEBサイトデザインを作るときは必ずPC版とスマホ版の双方を作成すること</li>
+</ul>
+</div>
+        
+        <div class="article-item item_html " id="item5665" data-item-id="5665" data-item-type="ItemHtml"><div class="item-body"><ul class="checkbox">
+    <li>WEBサイトをスマホ版とPC版で作る必要がわかる</li>
+</ul></div></div>
+        
+        
+        
+        <div class="back-to-roadmap mb-4 text-center"></div>
+      </div>
+    </div>
+    
+    <div class="lightbox-modal" id="lightboxModal">
+      <img src="" alt="">
+    </div>
+    
+    <div id="modal" class="fixed-menu-modal">
+      <div class="fixed-menu-modal-content">
+        <div class="index mb-3" style="background-color: #FDF5E8;">
+          <div>
+            <div class="fw-light">INDEX</div>
+            <div class="h3">目次</div>
+          </div>
+          <div class="toc"><ul><li><a href="#heading0" class="tocLink">0. できるようになること</a></li><li><a href="#heading1" class="tocLink">1. 学習のポイント</a></li><li><a href="#heading2" class="tocLink">2. Figma導入編</a><ul><li><a href="#heading3" class="tocLink">a. Figmaの概要</a></li><li><a href="#heading4" class="tocLink">b. 今後の学習の進め方</a></li><li><a href="#heading5" class="tocLink">c. Figmaにログインする</a></li></ul></li><li><a href="#heading6" class="tocLink">3. Figmaの基本操作を学ぶ</a><ul><li><a href="#heading7" class="tocLink">使用教材①</a><ul><li><a href="#heading8" class="tocLink">【Figma初心者向け】わずか50分で基本的な使い方をマスター!(超入門講座)</a></li></ul></li><li><a href="#heading9" class="tocLink">使用教材②</a><ul><li><a href="#heading10" class="tocLink">初心者向けFigmaの使い方：Webデザインをトレースしてみよう</a></li><li><a href="#heading11" class="tocLink">学習時の注意</a></li></ul></li><li><a href="#heading12" class="tocLink">✅ 学習理解度チェック</a></li></ul></li></ul></div>
+        </div>
+        
+        <!-- ボタン類 -->
+        <div id="fixed-menu_buttons" class="fixed-menu_buttons"></div>
+        
+        <div class="back-to-roadmap text-center"></div>
+      </div>
+    </div>
+    
+    <button id="toggleBtn" class="floating-btn">
+      <img id="iconOpen" src="../../_assets/5feefcfc55.svg" alt="メニューを開く">
+      <img id="iconClose" src="../../_assets/ae4a1129c9.svg" alt="メニューを閉じる" style="display:none;">
+    </button>
+  </div>
+</div>
+</div>
+<!-- <script src="https://cdn.clipkit.co/clipkit/javascripts/item-shopify-1.0.js?v=v15.9.0-20260915" async></script> -->
+            </main></div>
+        
+
+    
+
+    <div class="p-5" style="background-color: #B73E3D; color: white; height: 300px;">
+        <div class="">
+            <div class="h4 ps-3" style="border-left: 5px solid white;">WEBCOACH | キャリアチェンジまでの全てを学ぶマンツーマンWEBスクール</div>
+            <ul class="nav flex-column m-0 p-3 fw-light">
+                <li class="nav-item mb-2"><a href="https://www.webcoach.jp/" target="_blank">WEBCOACH | 公式HP</a></li>
+                <li class="nav-item mb-2"><a href="https://www.instagram.com/webcoach_officials/" target="_blank">WEBCOACH | 公式Instagram</a></li>
+                <li class="nav-item mb-2"><a href="https://vectorinc.co.jp/groupservice/webcoach-career/" target="_blank">WEBCOACH 公式メディア | WEBCOACH career</a></li>
+            </ul>
+        </div>
+        <div class="text-center">
+            <small>© 2020 by WEBCOACH</small>
+        </div>
+    </div>
+
+    
+
+    <!-- bodyタグ内の下部に挿入されます -->
+
+
+    <!-- BootstrapのCDNでのjs読み込み -->
+    
+
+    <!-- シンタックスハイライトの生成 -->
+    
+    
+
+    <!-- 目次の生成 -->
+    
+
+    <!-- ブックマークの生成 -->
+    
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="ck-icon-arrow-down" viewBox="0 0 1792 1792"><path d="M1675 832q0 53-37 90l-651 652q-39 37-91 37-53 0-90-37l-651-652q-38-36-38-90 0-53 38-91l74-75q39-37 91-37 53 0 90 37l294 294v-704q0-52 38-90t90-38h128q52 0 90 38t38 90v704l294-294q37-37 90-37 52 0 91 37l75 75q37 39 37 91z"></path></symbol><symbol id="ck-icon-arrow-up" viewBox="0 0 1792 1792"><path d="M1675 971q0 51-37 90l-75 75q-38 38-91 38-54 0-90-38l-294-293v704q0 52-37.5 84.5t-90.5 32.5h-128q-53 0-90.5-32.5t-37.5-84.5v-704l-294 293q-36 38-90 38t-90-38l-75-75q-38-38-38-90 0-53 38-91l651-651q35-37 90-37 54 0 91 37l651 651q37 39 37 91z"></path></symbol><symbol id="ck-icon-calendar" viewBox="0 0 1792 1792"><path d="M192 1664h288v-288h-288v288zm352 0h320v-288h-320v288zm-352-352h288v-320h-288v320zm352 0h320v-320h-320v320zm-352-384h288v-288h-288v288zm736 736h320v-288h-320v288zm-384-736h320v-288h-320v288zm768 736h288v-288h-288v288zm-384-352h320v-320h-320v320zm-352-864v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm736 864h288v-320h-288v320zm-384-384h320v-288h-320v288zm384 0h288v-288h-288v288zm32-480v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm384-64v1280q0 52-38 90t-90 38h-1408q-52 0-90-38t-38-90v-1280q0-52 38-90t90-38h128v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h384v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h128q52 0 90 38t38 90z"></path></symbol><symbol id="ck-icon-chevron-left" viewBox="0 0 1792 1792"><path d="M1427 301l-531 531 531 531q19 19 19 45t-19 45l-166 166q-19 19-45 19t-45-19l-742-742q-19-19-19-45t19-45l742-742q19-19 45-19t45 19l166 166q19 19 19 45t-19 45z"></path></symbol><symbol id="ck-icon-chevron-right" viewBox="0 0 1792 1792"><path d="M1363 877l-742 742q-19 19-45 19t-45-19l-166-166q-19-19-19-45t19-45l531-531-531-531q-19-19-19-45t19-45l166-166q19-19 45-19t45 19l742 742q19 19 19 45t-19 45z"></path></symbol><symbol id="ck-icon-clock-o" viewBox="0 0 1792 1792"><path d="M1024 544v448q0 14-9 23t-23 9h-320q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h224v-352q0-14 9-23t23-9h64q14 0 23 9t9 23zm416 352q0-148-73-273t-198-198-273-73-273 73-198 198-73 273 73 273 198 198 273 73 273-73 198-198 73-273zm224 0q0 209-103 385.5t-279.5 279.5-385.5 103-385.5-103-279.5-279.5-103-385.5 103-385.5 279.5-279.5 385.5-103 385.5 103 279.5 279.5 103 385.5z"></path></symbol><symbol id="ck-icon-trash" viewBox="0 0 1792 1792"><path d="M704 1376v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm-544-992h448l-48-117q-7-9-17-11h-317q-10 2-17 11zm928 32v64q0 14-9 23t-23 9h-96v948q0 83-47 143.5t-113 60.5h-832q-66 0-113-58.5t-47-141.5v-952h-96q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h309l70-167q15-37 54-63t79-26h320q40 0 79 26t54 63l70 167h309q14 0 23 9t9 23z"></path></symbol><symbol id="ck-icon-undo" viewBox="0 0 1792 1792"><path d="M1664 896q0 156-61 298t-164 245-245 164-298 61q-172 0-327-72.5t-264-204.5q-7-10-6.5-22.5t8.5-20.5l137-138q10-9 25-9 16 2 23 12 73 95 179 147t225 52q104 0 198.5-40.5t163.5-109.5 109.5-163.5 40.5-198.5-40.5-198.5-109.5-163.5-163.5-109.5-198.5-40.5q-98 0-188 35.5t-160 101.5l137 138q31 30 14 69-17 40-59 40h-448q-26 0-45-19t-19-45v-448q0-42 40-59 39-17 69 14l130 129q107-101 244.5-156.5t284.5-55.5q156 0 298 61t245 164 164 245 61 298z"></path></symbol></svg>
+
+<!--Clipkit(R) v15.9.0-20260915 Copyright (C) 2026 VECTOR Inc.-->
+
+
+
+
+
+<div class="dynmsg alert alert-info" style="display:none;"><button class="close"><span class="fa fa-times"></span></button><div class="message"></div></div><div class="dynmsg alert alert-danger" style="display:none;"><button class="close"><span class="fa fa-times"></span></button><div class="message"></div></div></body></html>

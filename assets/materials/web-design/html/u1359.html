@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<!-- clipkit-source-url: https://learn.webcoach.jp/web-design/WordPress/U1359 -->
+<!-- clipkit-fetched-at: 2026-09-17T11:14:00.275Z -->
+<html lang="ja"><head>
+    <!-- headタグ内の上部に挿入されます -->
+
+    <meta charset="UTF-8">
+    <title>WordPress｜4章：初期設定 - WEBCOACH</title>
+
+    <!-- resetcssのCDNでのCSS読み込み -->
+    <link rel="stylesheet" href="../../_assets/17f8e278dc.css">
+
+    <!-- fontawesomeのCDNでのCSS読み込み -->
+    <link rel="stylesheet" href="../../_assets/799aeb25cc.css">
+
+    <!-- BootstrapのCDNでのCSS読み込み -->
+    <link href="../../_assets/7633b7c0c9.css" rel="stylesheet">
+
+    <!-- highlight.jsの読み込み -->
+    <link rel="stylesheet" href="../../_assets/e31ce2dd8c.css">
+
+    <!-- カスタムCSS -->
+    <link rel="stylesheet" href="../../_assets/c533dd7750.css">
+
+    <!-- clipkitデフォルトのCSS -->
+    <!--<link rel="stylesheet" media="screen" href="https://cdn.clipkit.co/clipkit/stylesheets/application-1.0.css?v=v15.9.0-20260915">-->
+
+    <!-- jQuery -->
+    
+
+    <!-- カスタムJS -->
+    
+    
+
+    <!-- clipkitデフォルトのJS -->
+    
+
+    <!-- フォント -->
+    <link rel="preconnect" href="https://fonts.googleapis.com/">
+    <link rel="preconnect" href="https://fonts.gstatic.com/">
+    <link href="../../_assets/8b5713f1fc.css" rel="stylesheet">
+
+    <link href="../../_assets/b83ae8ba65.webp" rel="shortcut icon" type="image/vnd.microsoft.icon">
+    <link rel="apple-touch-icon" href="../../_assets/ea0aba163d.webp">
+    <link rel="alternate" type="application/rss+xml" href="https://learn.webcoach.jp/media.rss" title="WEBCOACH">
+    
+<link rel="canonical" href="https://learn.webcoach.jp/web-design/WordPress/U1359">
+
+<meta name="description" content="">
+<meta name="keywords" content="">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:domain" content="learn.webcoach.jp">
+<meta name="twitter:title" content="WordPress｜4章：初期設定 - WEBCOACH">
+<meta name="twitter:image" content="https://cdn.clipkit.co/tenants/589/item_images/images/000/014/450/medium/711c08c9-8712-4ff7-aa66-2aa59b22f67a.png?1746858387">
+<meta name="twitter:description" content="">
+<meta property="og:site_name" content="WEBCOACH">
+<meta property="og:title" content="WordPress｜4章：初期設定">
+<meta property="og:description" content="">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://learn.webcoach.jp/web-design/WordPress/U1359">
+<meta property="og:image" content="https://cdn.clipkit.co/tenants/589/item_images/images/000/014/450/large/711c08c9-8712-4ff7-aa66-2aa59b22f67a.png?1746858387">
+
+
+    <!-- headタグ内の下部に挿入されます -->
+
+
+<meta name="csrf-param" content="authenticity_token">
+<meta name="csrf-token" content="6pFesWbu2yWbv3HilK3aKSsdgKHjP2Kw4Qi5dIfB0E2SOvi0im_m2CAjR0l2QPkYy0XuNdepZw0LTafY_-LczA"><meta content="" name="routing-root-path"><meta content="media" name="site-name"><meta content="ja" name="i18n-default-locale"><meta content="ja" name="i18n-locale"><style data-clipkit-snapshot="force-visible">[data-aos],.reveal,.wow,.fade-in,.animate__animated,.js-reveal{opacity:1!important;transform:none!important;visibility:visible!important;animation:none!important;transition:none!important}</style></head>
+
+<body class="device-desktop" style="visibility: visible;">
+    <!-- bodyタグ内の上部に挿入されます -->
+
+
+    <!-- サイドバーとコンテンツのコンテナ -->
+    <div class="d-flex flex-row w-100 mb-5" style="min-height: calc(100vh - 400px);">
+
+        <!-- サイドバー -->
+        <!--<nav id="side-bar" class="d-flex flex-column fixed-top" style="width: 250px;">-->
+        <!--    <h1 class="d-block w-100 text-center">-->
+        <!--        <a class="d-block" href="/">-->
+        <!--            <img class="mw-100 p-3" src="https://cdn.clipkit.co/tenants/589/sites/logos/000/000/001/logo_sm/a8defd4b-1cc7-433b-a61c-08e7db0e3e4f.png?1714459367" alt="WEBCOACH">-->
+        <!--        </a>-->
+        <!--    </h1>-->
+        <!--    <ul class="nav flex-column m-0 p-3 fw-bold">-->
+        <!--        <li id="sidebar-top" class="nav-item mb-2" style="display: none;"><a href="/"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;" src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/233/original/home.png?1715353458">-->
+        <!--                <div>ホーム</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-knowledges" class="nav-item mb-2" style="display: none;"><a href="/knowledges"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;" src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/232/original/book.png?1715353458">-->
+        <!--                <div>学習の心得</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-web-designs" class="nav-item mb-2" style="display: none;"><a href="/web-designs"-->
+        <!--                class="nav-link text-body d-flex align-items-center active">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/231/original/design.png?1715353457">-->
+        <!--                <div>WEBデザイン</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-web-marketing" class="nav-item mb-2" style="display: none;"><a href="/web-marketings"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/230/original/marketing.png?1715353457">-->
+        <!--                <div>WEBマーケティング</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-codings" class="nav-item mb-2" style="display: none;"><a href="/codings"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/229/original/website.png?1715353457">-->
+        <!--                <div>WEBサイト構築</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-business-skills" class="nav-item mb-2" style="display: none;"><a href="/business-skills"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/228/original/business.png?1715353456">-->
+        <!--                <div>ビジネススキル</div>-->
+        <!--            </a></li>-->
+        <!--    </ul>-->
+        <!--</nav>-->
+
+        <!-- コンテンツ -->
+        <!--<main class="ms-auto" style="width: calc(100vw - 250px);">-->
+        <main class="ms-auto" style="width: calc(100vw);">
+            <div id="sb-site">
+                
+
+
+<div class="container">
+  <div class="row">
+    <div class="article">
+      <div class="mb-3 text-light" style="
+        height: 180px;
+        background-image: url(&quot;../../_assets/e1d58e2b8a.webp&quot;);
+        background-repeat: no-repeat;
+        background-size: cover;
+        display: flex;
+        align-items: flex-end;
+      ">
+        <div style="
+          margin: 0 0 30px 30px;
+        ">
+          <div>WordPress</div>
+
+          <div class="fw-bold h2">WordPress｜4章：初期設定</div>
+        </div>
+      </div>
+      <div class="article-content">
+        <!-- 目次 -->
+        <div class="index mb-3" style="background-color: #FDF5E8;">
+          <div>
+            <div class="fw-light">INDEX</div>
+            <div class="h3">目次</div>
+          </div>
+          <div class="toc"><ul><li><a href="#heading0" class="tocLink">4章：初期設定</a><ul><li><a href="#heading1" class="tocLink">この章で到達できるゴール</a></li></ul><ul><li><a href="#heading2" class="tocLink">【4-1】SSL設定</a><ul><li><a href="#heading3" class="tocLink">①ロリポップの設定1</a></li><li><a href="#heading4" class="tocLink"></a></li><li><a href="#heading5" class="tocLink"></a></li><li><a href="#heading6" class="tocLink"></a></li><li><a href="#heading7" class="tocLink">②WordPressの設定</a></li><li><a href="#heading8" class="tocLink"></a></li><li><a href="#heading9" class="tocLink"></a></li><li><a href="#heading10" class="tocLink">③ロリポップの設定2</a></li><li><a href="#heading11" class="tocLink"></a></li><li><a href="#heading12" class="tocLink">【補足】もし.htaccess編集後に「404エラー（ページが見つかりません）」が出たら？</a></li></ul></li><li><a href="#heading13" class="tocLink">【4-2】パーマリンクの設定</a><ul><li><a href="#heading14" class="tocLink"></a></li></ul></li><li><a href="#heading15" class="tocLink">【4-3】サイトの基本情報の設定</a><ul><li><a href="#heading16" class="tocLink"></a></li><li><a href="#heading17" class="tocLink"></a></li><li><a href="#heading18" class="tocLink"></a></li></ul></li></ul></li></ul></div>
+        </div>
+        
+        <div class="back-to-roadmap mb-4 text-center"></div>
+
+        <!-- コンテンツ -->
+        
+        
+        <div class="article-item item_html " id="item25494" data-item-id="25494" data-item-type="ItemHtml"><div class="item-body"><div class="pagenation-buttons" style="justify-content: space-between;">
+  <a href="https://learn.webcoach.jp/web-design/WordPress/hWIgw" class="pagenation-buttons_prev"><img src="../../_assets/47498cfebf.svg" class="pagenation-buttons_icon">前の章に戻る</a>
+  <a href="https://learn.webcoach.jp/web-design/WordPress/054Bb" class="pagenation-buttons_next">次の章に進む<img src="../../_assets/47498cfebf.svg" class="pagenation-buttons_icon"></a>
+</div>
+</div></div>
+        
+        <div class="article-item item_heading " id="item14431" data-item-id="14431" data-item-type="ItemHeading"><h2 class="item-body" id="heading0">4章：初期設定</h2></div>
+        
+        <div class="article-item item_markdown " id="item45171" data-item-id="45171" data-item-type="ItemMarkdown"><h4 id="heading1">この章で到達できるゴール</h4>
+</div>
+        
+        <div class="article-item item_rich_text " id="item45172" data-item-id="45172" data-item-type="ItemRichText"><div class="item-body-hbr">本章は、Webサイトを安全かつ長期的に運用するための「土台作り」を行うパートです。<br>
+セキュリティやURL構造など、<span class="decoration-01"><span class="decoration-02">後から変更することが難しい重要な設定</span></span>を確定させます。<br>
+以下の状態になれば、この章はクリアとなります。</div></div>
+        
+        <div class="article-item item_markdown " id="item45173" data-item-id="45173" data-item-type="ItemMarkdown"><ul>
+  <li>通信を暗号化する「SSL設定」を行い、自動的に安全なhttpsへ切り替わる仕組みを構築できる</li>
+  <li>後から変更するとリスクがある「パーマリンク（URLのルール）」やサイトタイトルなどの基本設定を完了させ、本格的なページ作成を始める準備が整う</li>
+</ul>
+</div>
+        
+        <div class="article-item item_heading " id="item14433" data-item-id="14433" data-item-type="ItemHeading"><h3 class="item-body" id="heading2">【4-1】SSL設定</h3></div>
+        
+        <div class="article-item item_html " id="item14437" data-item-id="14437" data-item-type="ItemHtml"><div class="item-body"><div class="card-with-icon point">
+  <span class="bold">SSL設定の必要性<br></span>
+        <ul>
+            <li><span class="content"><strong>ユーザーとの通信が暗号化</strong>され、個人情報や問い合わせ内容が第三者に盗み見されるリスクを防げます</span><br></li>
+            <li><span class="content"><strong>ブラウザの警告（「保護されていない通信」など）を回避</strong>でき、安心して閲覧してもらえるようになります</span><br></li>
+            <li><span class="content"><strong>SEO（検索順位）でも有利</strong>とされており、検索エンジンからの評価にもつながります</span><br></li>
+            <li><span class="content">サイトの<strong>信頼性・安心感が高まり、訪問者の印象も良くなります</strong></span><br></li>
+        </ul>
+</div></div></div>
+        
+        <div class="article-item item_text " id="item14438" data-item-id="14438" data-item-type="ItemText"><div class="item-body-hbr">Webサイトの信頼性を高める重要な手順です！<br>では設定を行っていきましょう。</div></div>
+        
+        <div class="article-item item_markdown " id="item14439" data-item-id="14439" data-item-type="ItemMarkdown"><h4 id="heading3">①ロリポップの設定1</h4>
+</div>
+        
+        <div class="article-item item_html " id="item15525" data-item-id="15525" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_html " id="item14445" data-item-id="14445" data-item-type="ItemHtml"><div class="item-body">では早速設定していきます!<br>
+<a href="https://user.lolipop.jp/" target="_blank">ロリポップ</a>にログインを行い【セキュリティ】→【独自SSL証明書導入】を選択してください。</div></div>
+        
+        <div class="article-item item_image " id="item14450" data-item-id="14450" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/014/450/medium/711c08c9-8712-4ff7-aa66-2aa59b22f67a.png?1746858387" title=""><img class="img-responsive item-image" alt=" (14450)" data-reference="" src="../../_assets/e4051d1b2e.webp" width="640" height="290"></a><h4 id="heading4"></h4></div></div>
+        
+        <div class="article-item item_html " id="item15527" data-item-id="15527" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_rich_text " id="item14451" data-item-id="14451" data-item-type="ItemRichText"><div class="item-body-hbr">スクロールダウンをして、<span class="decoration-02">独自SSL（無料）</span>の中からWordPressに使用しているドメインにチェックを入れ、【独自SSL（無料）を設定する】をクリックしてください。</div></div>
+        
+        <div class="article-item item_image " id="item14452" data-item-id="14452" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/014/452/medium/912c490c-664f-4a05-8637-849bf06b3d2a.png?1746858459" title=""><img class="img-responsive item-image" alt=" (14452)" data-reference="" src="../../_assets/ef75ec05ef.webp" width="640" height="290"></a><h4 id="heading5"></h4></div></div>
+        
+        <div class="article-item item_html " id="item15526" data-item-id="15526" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_rich_text " id="item14453" data-item-id="14453" data-item-type="ItemRichText"><div class="item-body-hbr">少し時間を置いて、もう一度【セキュリティ】→【独自SSL証明書導入】を選択します。<br>
+先ほど設定したドメインが画像の様に<span class="decoration-02">●SSL保護有効</span>になっていれば、ロリポップ側の設定は一旦終了です。</div></div>
+        
+        <div class="article-item item_image " id="item14454" data-item-id="14454" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/014/454/medium/e7d0d7df-f53c-4900-bd0b-61c87923f586.png?1746858523" title=""><img class="img-responsive item-image" alt=" (14454)" data-reference="" src="../../_assets/64c25f9212.webp" width="640" height="290"></a><h4 id="heading6"></h4></div></div>
+        
+        <div class="article-item item_text " id="item14455" data-item-id="14455" data-item-type="ItemText"><div class="item-body-hbr">では続いてWordPress側の設定に移っていきましょう！</div></div>
+        
+        <div class="article-item item_markdown " id="item14457" data-item-id="14457" data-item-type="ItemMarkdown"><h4 id="heading7">②WordPressの設定</h4>
+</div>
+        
+        <div class="article-item item_html " id="item15528" data-item-id="15528" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_rich_text " id="item14460" data-item-id="14460" data-item-type="ItemRichText"><div class="item-body-hbr">WordPressのダッシュボードにログインを行い、【設定】を選択してください。<br>
+<span class="decoration-02">WordPress アドレス (URL)とサイトアドレス (URL)の部分が「http://」になっていると思います。</span><br>
+こちらを画像の様に「https://」に<span class="decoration-02">変更を行い、【変更を保存】ボタンを押してください。</span></div></div>
+        
+        <div class="article-item item_image " id="item14461" data-item-id="14461" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/014/461/medium/969b14e4-2ef4-44b6-aab9-c8deeffccd9e.png?1746858661" title=""><img class="img-responsive item-image" alt=" (14461)" data-reference="" src="../../_assets/40478db6e4.webp" width="640" height="290"></a><h4 id="heading8"></h4></div></div>
+        
+        <div class="article-item item_html " id="item15529" data-item-id="15529" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_text " id="item14462" data-item-id="14462" data-item-type="ItemText"><div class="item-body-hbr">【変更を保存】ボタンを押すとログイン画面が表示されます。<br>以前使用していたブックマークは削除し、新しいhttpsのURLを登録し直してください。<br><br></div></div>
+        
+        <div class="article-item item_image " id="item14464" data-item-id="14464" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/014/464/medium/34147785-9868-445a-8b05-3bc454e882e3.png?1746858758" title=""><img class="img-responsive item-image" alt=" (14464)" data-reference="" src="../../_assets/e05dba4ba4.webp" width="640" height="290"></a><h4 id="heading9"></h4></div></div>
+        
+        <div class="article-item item_html " id="item14468" data-item-id="14468" data-item-type="ItemHtml"><div class="item-body"><div class="card-with-icon point">
+  <span class="bold">ポイント<br></span>
+  <ul>
+    <li>ダッシュボードのURLも<strong>http://からhttps://に変更されるので気を付けてください！</strong></li>
+  </ul>
+</div></div></div>
+        
+        <div class="article-item item_text " id="item14470" data-item-id="14470" data-item-type="ItemText"><div class="item-body-hbr">ブックマークが出来たらログインしていきましょう！</div></div>
+        
+        <div class="article-item item_rich_text " id="item14472" data-item-id="14472" data-item-type="ItemRichText"><div class="item-body-hbr">では最後にロリポップからもう一度設定を行って行きます！<br>
+上記の設定で<span class="decoration-01">https://への変更はできましたがこの段階ではまだhttp://のアドレスが使えてしまいますので、http://を停止する作業に移っていきます！</span></div></div>
+        
+        <div class="article-item item_markdown " id="item14474" data-item-id="14474" data-item-type="ItemMarkdown"><h4 id="heading10">③ロリポップの設定2</h4>
+</div>
+        
+        <div class="article-item item_html " id="item15530" data-item-id="15530" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_html " id="item14475" data-item-id="14475" data-item-type="ItemHtml"><div class="item-body"><a href="https://user.lolipop.jp/" target="_blank">ロリポップ</a>にログインを行い【ロリポップFTP】を選択してください。<br>
+そうすると下の画面がでてきます。<br>
+【2-4】で設定したフォルダと同じ名前のフォルダをクリックしてください。</div></div>
+        
+        <div class="article-item item_html " id="item14476" data-item-id="14476" data-item-type="ItemHtml"><div class="item-body"><div class="card-with-icon point">
+  <span class="bold">サーバーにあるフォルダを表示している画面<br></span>
+  <span class="content">Webサイトの情報全てが入っているため、誤って削除や編集を行うとWordPressが一切使えなくなります。<br>慎重に作業を行ってください。</span><br>
+  <img src="../../_assets/489ce68629.webp" alt="Wordpressインストール履歴の例" style="max-width:100%; height: auto; margin-top: 10px;">
+</div></div></div>
+        
+        <div class="article-item item_html " id="item15531" data-item-id="15531" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_text " id="item14490" data-item-id="14490" data-item-type="ItemText"><div class="item-body-hbr">フォルダを選択するとファイルがずらっと出てきます！<br>こちらの中から.htaccessを選択してください。</div></div>
+        
+        <div class="article-item item_image " id="item14492" data-item-id="14492" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/014/492/medium/92445348-df2e-4e2b-9cc0-a1537ec8c322.png?1746860551" title=""><img class="img-responsive item-image" alt=" (14492)" data-reference="" src="../../_assets/639436ca22.webp" width="640" height="290"></a><h4 id="heading11"></h4></div></div>
+        
+        <div class="article-item item_html " id="item15532" data-item-id="15532" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_html " id="item15535" data-item-id="15535" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_text " id="item14508" data-item-id="14508" data-item-type="ItemText"><div class="item-body-hbr">.htaccessファイルの「RewriteBase /」の下に下記の2行のコードを追加します。<br>貼り付けができたら保存するボタンをクリックしてください。</div></div>
+        
+        <div class="article-item item_code " id="item14504" data-item-id="14504" data-item-type="ItemCode"><div class="item-body"><div class="CodeRay">
+  <div class="code"><pre>RewriteCond %{HTTP:X-Forwarded-Proto} !https
+RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [R=301,L]</pre></div>
+</div>
+<div class="cite"><cite class="item-source">貼り付けるテキスト</cite></div></div></div>
+        
+        <div class="article-item item_code " id="item37868" data-item-id="37868" data-item-type="ItemCode"><div class="item-body"><div class="CodeRay">
+  <div class="code"><pre># BEGIN WordPress
+&lt;IfModule mod_rewrite.c&gt;
+RewriteEngine On
+RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
+RewriteBase /
+RewriteCond %{HTTP:X-Forwarded-Proto} !https
+RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [R=301,L]
+
+# index.php 以外のファイルが存在しない場合にルートへリダイレクト
+RewriteRule ^index\.php$ - [L]
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule . /index.php [L]
+&lt;/IfModule&gt;
+# END WordPress</pre></div>
+</div>
+<div class="cite"><cite class="item-source">ページ全体の記述例</cite></div></div></div>
+        
+        <div class="article-item item_html " id="item15534" data-item-id="15534" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_markdown " id="item24757" data-item-id="24757" data-item-type="ItemMarkdown"><h4 id="heading12">【補足】もし.htaccess編集後に「404エラー（ページが見つかりません）」が出たら？</h4>
+</div>
+        
+        <div class="article-item item_rich_text " id="item24758" data-item-id="24758" data-item-type="ItemRichText"><div class="item-body-hbr">以上の手順を踏んでも、「ページが見つかりません」や「404 Not Found」と表示されてサイトが見られなくなることがあります。<br>
+これはサイトの設定情報に一時的なズレが生じているだけで、多くは簡単な手順で解決できます。<br>
+慌てずに、以下の3つのステップを順番にお試しください。</div></div>
+        
+        <div class="article-item item_rich_text " id="item24760" data-item-id="24760" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">具体的な手順</span></div></div>
+        
+        <div class="article-item item_rich_text " id="item24761" data-item-id="24761" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">1. ご自身のサイトURLを確認しましょう</span><br>
+まず、あなたのWordPressサイトのURLがどちらのパターンに近いかを確認します。<br>
+<br>
+パターンA：ドメイン直下タイプ<br>
+URLが https://あなたのドメイン/ のように、ドメイン名のすぐ後にページ名が続く形式。<br>
+（例: https://example.com/ や https://example.com/contact/）<br>
+<br>
+パターンB：サブディレクトリタイプ<br>
+URLが https://あなたのドメイン/フォルダ名/ のように、ドメイン名とページ名の間に特定のフォルダ名（wpやblogなど）が挟まっている形式。<br>
+（例: https://example.com/wp/ や https://example.com/blog/contact/）</div></div>
+        
+        <div class="article-item item_rich_text " id="item24762" data-item-id="24762" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">2. .htaccessファイルを修正しましょう</span><br>
+ロリポップの管理画面などから、再度.htaccessファイルを開き、RewriteBase / と書かれている行を探してください。<br>
+<br>
+パターンA の場合 → RewriteBase / のままでOKです。修正は必要ありません。<br>
+パターンB の場合 → RewriteBase /フォルダ名/ のように、あなたのURLで使われているフォルダ名を書き加えます。（例： RewriteBase /wp/ や RewriteBase /blog/）</div></div>
+        
+        <div class="article-item item_rich_text " id="item24763" data-item-id="24763" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">3. ファイルを保存します。</span></div></div>
+        
+        <div class="article-item item_text " id="item14513" data-item-id="14513" data-item-type="ItemText"><div class="item-body-hbr">この作業がうまくいったらSSL作業は完了です！<br>WordPressのダッシュボードにログインできるか試してみてください。</div></div>
+        
+        <div class="article-item item_heading " id="item14514" data-item-id="14514" data-item-type="ItemHeading"><h3 class="item-body" id="heading13">【4-2】パーマリンクの設定</h3></div>
+        
+        <div class="article-item item_rich_text " id="item14516" data-item-id="14516" data-item-type="ItemRichText"><div class="item-body-hbr">パーマリンクとは、<span class="decoration-02">投稿やページごとに設定されるURL</span>（ https://example.com/page-1 の /page-1 の部分）のことです。<br>
+URLに日本語が含まれているとエラーの原因になることがあるため、URLが英数字で表示されるように設定を行っていきます。</div></div>
+        
+        <div class="article-item item_text " id="item14518" data-item-id="14518" data-item-type="ItemText"><div class="item-body-hbr">では、WordPressのダッシュボードにログインして、【設定】→【パーマリンク】を選択してください。</div></div>
+        
+        <div class="article-item item_rich_text " id="item14520" data-item-id="14520" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">「共通設定」の中から「数字ベース」にチェックを入れ、【変更を保存】をクリックしてください。</span></div></div>
+        
+        <div class="article-item item_image " id="item14521" data-item-id="14521" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/014/521/medium/844af872-716c-4351-8d24-8200946d75e8.png?1746860946" title=""><img class="img-responsive item-image" alt=" (14521)" data-reference="" src="../../_assets/f56e75d1e2.webp" width="640" height="331"></a><h4 id="heading14"></h4></div></div>
+        
+        <div class="article-item item_html " id="item14526" data-item-id="14526" data-item-type="ItemHtml"><div class="item-body"><div class="card-with-icon point">
+  <span class="bold">ポイント<br></span>
+        <ul>
+            <li><span class="content">慣れてくると、SEOを意識した投稿名にチェックを入れて、投稿ごとに自分で設定するのがおすすめです。ただし、最初のうちは複雑に考えず、数字ベースなど変更が少ない形式で設定するのが安心です。</span><br></li>
+            <li><span class="content">パーマリンクは一度設定したら、むやみに変更しないようにしましょう。以前のURLではページにアクセスできなくなってしまい、検索結果やリンク先からの流入が途絶えるリスクがあります。</span><br></li>
+        </ul>
+</div></div></div>
+        
+        <div class="article-item item_heading " id="item14528" data-item-id="14528" data-item-type="ItemHeading"><h3 class="item-body" id="heading15">【4-3】サイトの基本情報の設定</h3></div>
+        
+        <div class="article-item item_markdown " id="item14530" data-item-id="14530" data-item-type="ItemMarkdown"><p>ダッシュボードの【設定】→【一般設定】を選択してください。</p>
+
+<ul>
+  <li>①サイトのタイトル：サイト名を入力してください。</li>
+  <li>②キャッチフレーズ：サイトの説明を入力してください。</li>
+  <li>③サイトアイコン：ファビコンと呼ばれる画像です。通常はロゴ画像などを使用します！
+    <ul>
+      <li>ファビコン推奨サイズ：512px x 512px</li>
+    </ul>
+  </li>
+</ul>
+</div>
+        
+        <div class="article-item item_image " id="item14531" data-item-id="14531" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/014/531/medium/30f6a507-55f0-4a98-9ee8-29c292d42b7d.png?1746861153" title=""><img class="img-responsive item-image" alt=" (14531)" data-reference="" src="../../_assets/c57ccb3b5d.webp" width="640" height="168"></a><h4 id="heading16"></h4></div></div>
+        
+        <div class="article-item item_text " id="item14532" data-item-id="14532" data-item-type="ItemText"><div class="item-body-hbr">具体的にどこに表示されるかは以下の画像を見てみてください！</div></div>
+        
+        <div class="article-item item_html " id="item15533" data-item-id="15533" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_image " id="item14533" data-item-id="14533" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/014/533/medium/21955115-f161-4667-b91c-01ee8a41413a.png?1746861195" title=""><img class="img-responsive item-image" alt=" (14533)" data-reference="" src="../../_assets/ee11f4b6ee.webp" width="640" height="432"></a><h4 id="heading17"></h4></div></div>
+        
+        <div class="article-item item_image " id="item15632" data-item-id="15632" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/015/632/medium/43480871-ccb6-401a-8008-cef84986d330.png?1747189721" title=""><img class="img-responsive item-image" alt=" (15632)" data-reference="" src="../../_assets/c02154a326.webp" width="640" height="430"></a><h4 id="heading18"></h4></div></div>
+        
+        <div class="article-item item_html " id="item14535" data-item-id="14535" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_text " id="item14536" data-item-id="14536" data-item-type="ItemText"><div class="item-body-hbr">お疲れ様でした！こちらでWordPressの初期設定は完了です！<br>では、この後は実際にダッシュボードを使用してページ作成を行なっていきましょう！<br>これで【4章 初期設定】の解説を終わります。<br>次の章に進みましょう！</div></div>
+        
+        <div class="article-item item_html " id="item25495" data-item-id="25495" data-item-type="ItemHtml"><div class="item-body"><div class="pagenation-buttons" style="justify-content: space-between;">
+  <a href="https://learn.webcoach.jp/web-design/WordPress/hWIgw" class="pagenation-buttons_prev"><img src="../../_assets/47498cfebf.svg" class="pagenation-buttons_icon">前の章に戻る</a>
+  <a href="https://learn.webcoach.jp/web-design/WordPress/054Bb" class="pagenation-buttons_next">次の章に進む<img src="../../_assets/47498cfebf.svg" class="pagenation-buttons_icon"></a>
+</div>
+</div></div>
+        
+        
+        
+        <div class="back-to-roadmap mb-4 text-center"></div>
+      </div>
+    </div>
+    
+    <div class="lightbox-modal" id="lightboxModal">
+      <img src="" alt="">
+    </div>
+    
+    <div id="modal" class="fixed-menu-modal">
+      <div class="fixed-menu-modal-content">
+        <div class="index mb-3" style="background-color: #FDF5E8;">
+          <div>
+            <div class="fw-light">INDEX</div>
+            <div class="h3">目次</div>
+          </div>
+          <div class="toc"><ul><li><a href="#heading0" class="tocLink">4章：初期設定</a><ul><li><a href="#heading1" class="tocLink">この章で到達できるゴール</a></li></ul><ul><li><a href="#heading2" class="tocLink">【4-1】SSL設定</a><ul><li><a href="#heading3" class="tocLink">①ロリポップの設定1</a></li><li><a href="#heading4" class="tocLink"></a></li><li><a href="#heading5" class="tocLink"></a></li><li><a href="#heading6" class="tocLink"></a></li><li><a href="#heading7" class="tocLink">②WordPressの設定</a></li><li><a href="#heading8" class="tocLink"></a></li><li><a href="#heading9" class="tocLink"></a></li><li><a href="#heading10" class="tocLink">③ロリポップの設定2</a></li><li><a href="#heading11" class="tocLink"></a></li><li><a href="#heading12" class="tocLink">【補足】もし.htaccess編集後に「404エラー（ページが見つかりません）」が出たら？</a></li></ul></li><li><a href="#heading13" class="tocLink">【4-2】パーマリンクの設定</a><ul><li><a href="#heading14" class="tocLink"></a></li></ul></li><li><a href="#heading15" class="tocLink">【4-3】サイトの基本情報の設定</a><ul><li><a href="#heading16" class="tocLink"></a></li><li><a href="#heading17" class="tocLink"></a></li><li><a href="#heading18" class="tocLink"></a></li></ul></li></ul></li></ul></div>
+        </div>
+        
+        <!-- ボタン類 -->
+        <div id="fixed-menu_buttons" class="fixed-menu_buttons">
+  <a href="https://learn.webcoach.jp/web-design/WordPress/hWIgw" class="pagenation-buttons_prev"><img src="../../_assets/47498cfebf.svg" class="pagenation-buttons_icon">前の章に戻る</a>
+  <a href="https://learn.webcoach.jp/web-design/WordPress/054Bb" class="pagenation-buttons_next">次の章に進む<img src="../../_assets/47498cfebf.svg" class="pagenation-buttons_icon"></a>
+</div>
+        
+        <div class="back-to-roadmap text-center"></div>
+      </div>
+    </div>
+    
+    <button id="toggleBtn" class="floating-btn">
+      <img id="iconOpen" src="../../_assets/5feefcfc55.svg" alt="メニューを開く">
+      <img id="iconClose" src="../../_assets/ae4a1129c9.svg" alt="メニューを閉じる" style="display:none;">
+    </button>
+  </div>
+</div>
+</div>
+<!-- <script src="https://cdn.clipkit.co/clipkit/javascripts/item-shopify-1.0.js?v=v15.9.0-20260915" async></script> -->
+            </main></div>
+        
+
+    
+
+    <div class="p-5" style="background-color: #B73E3D; color: white; height: 300px;">
+        <div class="">
+            <div class="h4 ps-3" style="border-left: 5px solid white;">WEBCOACH | キャリアチェンジまでの全てを学ぶマンツーマンWEBスクール</div>
+            <ul class="nav flex-column m-0 p-3 fw-light">
+                <li class="nav-item mb-2"><a href="https://www.webcoach.jp/" target="_blank">WEBCOACH | 公式HP</a></li>
+                <li class="nav-item mb-2"><a href="https://www.instagram.com/webcoach_officials/" target="_blank">WEBCOACH | 公式Instagram</a></li>
+                <li class="nav-item mb-2"><a href="https://vectorinc.co.jp/groupservice/webcoach-career/" target="_blank">WEBCOACH 公式メディア | WEBCOACH career</a></li>
+            </ul>
+        </div>
+        <div class="text-center">
+            <small>© 2020 by WEBCOACH</small>
+        </div>
+    </div>
+
+    
+
+    <!-- bodyタグ内の下部に挿入されます -->
+
+
+    <!-- BootstrapのCDNでのjs読み込み -->
+    
+
+    <!-- シンタックスハイライトの生成 -->
+    
+    
+
+    <!-- 目次の生成 -->
+    
+
+    <!-- ブックマークの生成 -->
+    
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="ck-icon-arrow-down" viewBox="0 0 1792 1792"><path d="M1675 832q0 53-37 90l-651 652q-39 37-91 37-53 0-90-37l-651-652q-38-36-38-90 0-53 38-91l74-75q39-37 91-37 53 0 90 37l294 294v-704q0-52 38-90t90-38h128q52 0 90 38t38 90v704l294-294q37-37 90-37 52 0 91 37l75 75q37 39 37 91z"></path></symbol><symbol id="ck-icon-arrow-up" viewBox="0 0 1792 1792"><path d="M1675 971q0 51-37 90l-75 75q-38 38-91 38-54 0-90-38l-294-293v704q0 52-37.5 84.5t-90.5 32.5h-128q-53 0-90.5-32.5t-37.5-84.5v-704l-294 293q-36 38-90 38t-90-38l-75-75q-38-38-38-90 0-53 38-91l651-651q35-37 90-37 54 0 91 37l651 651q37 39 37 91z"></path></symbol><symbol id="ck-icon-calendar" viewBox="0 0 1792 1792"><path d="M192 1664h288v-288h-288v288zm352 0h320v-288h-320v288zm-352-352h288v-320h-288v320zm352 0h320v-320h-320v320zm-352-384h288v-288h-288v288zm736 736h320v-288h-320v288zm-384-736h320v-288h-320v288zm768 736h288v-288h-288v288zm-384-352h320v-320h-320v320zm-352-864v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm736 864h288v-320h-288v320zm-384-384h320v-288h-320v288zm384 0h288v-288h-288v288zm32-480v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm384-64v1280q0 52-38 90t-90 38h-1408q-52 0-90-38t-38-90v-1280q0-52 38-90t90-38h128v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h384v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h128q52 0 90 38t38 90z"></path></symbol><symbol id="ck-icon-chevron-left" viewBox="0 0 1792 1792"><path d="M1427 301l-531 531 531 531q19 19 19 45t-19 45l-166 166q-19 19-45 19t-45-19l-742-742q-19-19-19-45t19-45l742-742q19-19 45-19t45 19l166 166q19 19 19 45t-19 45z"></path></symbol><symbol id="ck-icon-chevron-right" viewBox="0 0 1792 1792"><path d="M1363 877l-742 742q-19 19-45 19t-45-19l-166-166q-19-19-19-45t19-45l531-531-531-531q-19-19-19-45t19-45l166-166q19-19 45-19t45 19l742 742q19 19 19 45t-19 45z"></path></symbol><symbol id="ck-icon-clock-o" viewBox="0 0 1792 1792"><path d="M1024 544v448q0 14-9 23t-23 9h-320q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h224v-352q0-14 9-23t23-9h64q14 0 23 9t9 23zm416 352q0-148-73-273t-198-198-273-73-273 73-198 198-73 273 73 273 198 198 273 73 273-73 198-198 73-273zm224 0q0 209-103 385.5t-279.5 279.5-385.5 103-385.5-103-279.5-279.5-103-385.5 103-385.5 279.5-279.5 385.5-103 385.5 103 279.5 279.5 103 385.5z"></path></symbol><symbol id="ck-icon-trash" viewBox="0 0 1792 1792"><path d="M704 1376v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm-544-992h448l-48-117q-7-9-17-11h-317q-10 2-17 11zm928 32v64q0 14-9 23t-23 9h-96v948q0 83-47 143.5t-113 60.5h-832q-66 0-113-58.5t-47-141.5v-952h-96q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h309l70-167q15-37 54-63t79-26h320q40 0 79 26t54 63l70 167h309q14 0 23 9t9 23z"></path></symbol><symbol id="ck-icon-undo" viewBox="0 0 1792 1792"><path d="M1664 896q0 156-61 298t-164 245-245 164-298 61q-172 0-327-72.5t-264-204.5q-7-10-6.5-22.5t8.5-20.5l137-138q10-9 25-9 16 2 23 12 73 95 179 147t225 52q104 0 198.5-40.5t163.5-109.5 109.5-163.5 40.5-198.5-40.5-198.5-109.5-163.5-163.5-109.5-198.5-40.5q-98 0-188 35.5t-160 101.5l137 138q31 30 14 69-17 40-59 40h-448q-26 0-45-19t-19-45v-448q0-42 40-59 39-17 69 14l130 129q107-101 244.5-156.5t284.5-55.5q156 0 298 61t245 164 164 245 61 298z"></path></symbol></svg>
+
+<!--Clipkit(R) v15.9.0-20260915 Copyright (C) 2026 VECTOR Inc.-->
+
+
+
+
+
+<div class="dynmsg alert alert-info" style="display:none;"><button class="close"><span class="fa fa-times"></span></button><div class="message"></div></div><div class="dynmsg alert alert-danger" style="display:none;"><button class="close"><span class="fa fa-times"></span></button><div class="message"></div></div></body></html>

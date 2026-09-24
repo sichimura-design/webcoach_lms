@@ -1,0 +1,686 @@
+<!DOCTYPE html>
+<!-- clipkit-source-url: https://learn.webcoach.jp/generative-ai/introduction-to-generative-ai/%E7%94%BB%E5%83%8F%E7%94%9F%E6%88%90AI%E3%81%A7%E6%8F%8F%E3%81%84%E3%81%A6%E3%81%BF%E3%82%88%E3%81%86/OfEnC -->
+<!-- clipkit-fetched-at: 2026-09-17T11:14:00.275Z -->
+<html lang="ja"><head><style data-clipkit-snapshot="force-visible">[data-aos],.reveal,.wow,.fade-in,.animate__animated,.js-reveal{opacity:1!important;transform:none!important;visibility:visible!important;animation:none!important;transition:none!important}</style></head><body><div>
+  
+    <div>
+      
+      
+        
+          <div class="article-item item_html " id="item48538" data-item-id="48538" data-item-type="ItemHtml"><div class="item-body">
+
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Adobe Fireflyで画像を生成してみよう | WEBCOACH</title>
+<link rel="preconnect" href="https://fonts.googleapis.com/">
+<link rel="preconnect" href="https://fonts.gstatic.com/">
+<link href="../../_assets/318e5d4d49.css" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; }
+  body {
+    font-family: 'Noto Sans JP', -apple-system, BlinkMacSystemFont, 'Hiragino Sans', sans-serif;
+    color: #3D3D3D; font-size: 16px; line-height: 1.9;
+    -webkit-font-smoothing: antialiased;
+  }
+  img { max-width: 100%; height: auto; display: block; }
+  .toc-link { color: #555; text-decoration: none; transition: color 0.2s; }
+  .toc-link:hover { color: #E85D4A; }
+  h2.section-heading {
+    font-size: 24px; font-weight: 700; color: #3D3D3D;
+    margin: 48px 0 20px; padding-bottom: 10px;
+    border-bottom: 3px solid #FAE8E0; line-height: 1.4;
+  }
+  h3.sub-heading {
+    font-size: 19px; font-weight: 700; color: #3D3D3D;
+    margin: 32px 0 14px; line-height: 1.5;
+  }
+  .text-body { font-size: 16px; line-height: 1.9; color: #444; margin: 0 0 16px; }
+  .accent { color: #E85D4A; font-weight: 700; }
+  .point-box {
+    background: #FFFBF0; border-left: 4px solid #F5A64A;
+    padding: 18px 22px; border-radius: 0 12px 12px 0; margin: 24px 0;
+  }
+  .point-box .label { font-size: 12px; font-weight: 700; color: #F5A64A; letter-spacing: 0.15em; margin-bottom: 6px; }
+  .point-box p { margin: 0; font-size: 15px; line-height: 1.8; color: #555; }
+  .note-box {
+    background: #FFF3F0; border-left: 4px solid #E85D4A;
+    padding: 18px 22px; border-radius: 0 12px 12px 0; margin: 24px 0;
+  }
+  .note-box .label { font-size: 12px; font-weight: 700; color: #E85D4A; letter-spacing: 0.15em; margin-bottom: 6px; }
+  .note-box p { margin: 0; font-size: 15px; line-height: 1.8; color: #555; }
+  .imagine-box {
+    background: #fff; border: 2px solid #E85D4A;
+    border-radius: 16px; padding: 24px; margin: 24px 0;
+  }
+  .imagine-box .label { font-size: 12px; font-weight: 700; color: #E85D4A; letter-spacing: 0.1em; margin-bottom: 8px; }
+  .imagine-box p { font-size: 16px; line-height: 1.8; color: #3D3D3D; margin: 0; }
+  .stumbling-box {
+    background: linear-gradient(135deg, #FFF8F0, #FFFBF0); border: 2px solid #F5A64A;
+    border-radius: 16px; padding: 24px; margin: 24px 0;
+  }
+  .stumbling-box .label { font-size: 12px; font-weight: 700; color: #F5A64A; letter-spacing: 0.1em; margin-bottom: 8px; }
+  .stumbling-box ul { margin: 0; padding-left: 18px; font-size: 15px; line-height: 2; color: #555; }
+  .usecase-box {
+    background: #F0F7FF; border: 1px solid #C2DFF5;
+    border-radius: 12px; padding: 18px 22px; margin: 24px 0;
+  }
+  .usecase-box .label { font-size: 12px; font-weight: 700; color: #2E86DE; letter-spacing: 0.1em; margin-bottom: 6px; }
+  .usecase-box p { margin: 0; font-size: 15px; line-height: 1.8; color: #444; }
+  .card-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 24px 0; }
+  .card {
+    background: #fff; border: 2px solid #FAE8E0;
+    border-radius: 16px; padding: 22px;
+  }
+  .card h3 { font-size: 17px; font-weight: 700; color: #E85D4A; margin: 0 0 8px; }
+  .card p, .card ul { font-size: 14px; line-height: 1.7; color: #555; margin: 0; }
+  .card ul { padding-left: 16px; }
+  .inline-quiz {
+    background: #FFF8F0; border: 2px solid #FAE8E0;
+    border-radius: 16px; padding: 24px; margin: 36px 0;
+  }
+  .inline-quiz .quiz-label { font-size: 12px; font-weight: 700; color: #F5A64A; letter-spacing: 0.1em; margin-bottom: 12px; }
+  .inline-quiz .quiz-question { font-size: 16px; font-weight: 700; color: #3D3D3D; margin: 0 0 16px; line-height: 1.6; }
+  .quiz-options { display: flex; flex-direction: column; gap: 8px; }
+  .quiz-opt {
+    display: block; width: 100%; text-align: left;
+    background: #fff; border: 2px solid #E8E8E8; border-radius: 10px;
+    padding: 12px 16px; font-size: 15px;
+    font-family: 'Noto Sans JP', sans-serif; color: #3D3D3D;
+    cursor: pointer; transition: border-color 0.2s, background 0.2s; line-height: 1.6;
+  }
+  .quiz-opt:hover:not(.answered) { border-color: #F5A64A; background: #FFFBF0; }
+  .quiz-feedback {
+    display: none; margin-top: 16px; padding: 14px 18px;
+    border-radius: 8px; font-size: 14px; line-height: 1.7; color: #444;
+  }
+  .summary-box {
+    background: linear-gradient(135deg, #FDF0ED, #FFFBF0);
+    border: 2px solid #FAE8E0; border-radius: 16px;
+    padding: 28px; margin: 48px 0 28px;
+  }
+  .summary-box .label { font-size: 13px; font-weight: 700; color: #E85D4A; letter-spacing: 0.15em; margin-bottom: 18px; }
+  .summary-box ul { margin: 0; padding-left: 18px; font-size: 14px; line-height: 2; color: #444; }
+  .img-caption {
+    font-size: 13px; color: #999; text-align: center; margin: -8px 0 20px;
+  }
+  .step-block {
+    display: flex; align-items: flex-start; gap: 14px; margin-bottom: 20px;
+  }
+  .step-num {
+    flex-shrink: 0; width: 36px; height: 36px; border-radius: 50%;
+    background: linear-gradient(135deg, #F5A64A, #E85D4A);
+    color: #fff; font-weight: 700; font-size: 15px;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .step-block .step-title { font-size: 16px; font-weight: 700; color: #3D3D3D; margin-bottom: 4px; }
+  .step-block .step-desc { font-size: 14px; line-height: 1.7; color: #555; margin: 0; }
+  .styled-table {
+    width: 100%; border-collapse: separate; border-spacing: 0;
+    border-radius: 12px; overflow: hidden; font-size: 15px;
+  }
+  .styled-table thead th {
+    background: #E85D4A; color: #fff; padding: 12px 16px;
+    font-weight: 700; text-align: left;
+  }
+  .styled-table tbody td {
+    padding: 12px 16px; border-bottom: 1px solid #FAE8E0;
+    vertical-align: top;
+  }
+  .styled-table tbody tr:nth-child(even) { background: #FDF0ED; }
+  .lesson-wrapper { max-width: 70%; margin: 0 auto; }
+  @media (max-width: 600px) {
+    .lesson-wrapper { max-width: 92%; }
+    .card-grid { grid-template-columns: 1fr; }
+    h2.section-heading { font-size: 20px; }
+    .styled-table { font-size: 13px; }
+    .styled-table thead th, .styled-table tbody td { padding: 10px 12px; }
+  }
+</style>
+<meta name="csrf-param" content="authenticity_token">
+<meta name="csrf-token" content="z6oQ5oyabavx-oRMctlxxDUCFsgi1eolCCCgL6F--q5l_ZtPoz3rL7YZMJhoRs_t1bhl1_IiIsiMrhr5j_Zz1A"><meta content="" name="routing-root-path"><meta content="media" name="site-name"><meta content="ja" name="i18n-default-locale"><meta content="ja" name="i18n-locale">
+
+<div class="lesson-wrapper">
+
+
+<!-- ヘッダー -->
+<div style="background: linear-gradient(135deg, #E85D4A, #F5A64A); color: #fff; padding: 32px 32px 28px; border-radius: 16px 16px 0 0; margin-top: 32px;">
+  <div style="font-size: 12px; font-weight: 700; opacity: 0.85; letter-spacing: 0.15em;">LESSON 4-3</div>
+  <h1 style="margin: 8px 0 0; font-size: 28px; font-weight: 700; line-height: 1.4; color: #fff;">Adobe Fireflyで画像を生成してみよう</h1>
+  <p style="margin: 10px 0 0; font-size: 14px; opacity: 0.85; color: #fff;">Chapter 4: 画像AIハンズオン ／ 所要時間：約20分</p>
+</div>
+
+<!-- ゴールボックス -->
+<div style="background: #FAE8E0; padding: 18px 26px; border-radius: 0 0 16px 16px; margin-bottom: 36px;">
+  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
+    <div style="font-size: 12px; font-weight: 700; color: #E85D4A; letter-spacing: 0.15em;">このレッスンのゴール</div>
+    <div style="font-size: 12px; font-weight: 500; color: #E85D4A;">⏱ 約20分</div>
+  </div>
+  <p style="margin: 0; font-size: 16px; font-weight: 700; color: #3D3D3D; line-height: 1.6;">Adobe Fireflyで画像を生成し、Canva AIとの違いを比較しながら「コンテンツタイプ」と「効果」で表現を調整できるようになる</p>
+</div>
+
+<!-- ロードマップに戻るボタンの場合 --> 
+<div style="display: flex; justify-content: center; align-items: center; padding: 24px 0; margin-top: 24px;">
+  <a href="https://learn.webcoach.jp/2Q/introduction-to-generative-ai" style="display: inline-block; background: #fff; color: #E85D4A; border: 2px solid #E85D4A; font-weight: 700; padding: 10px clamp(24px, 7vw, 48px); border-radius: 8px; text-decoration: none; white-space: nowrap;">ロードマップに戻る</a>
+</div>
+ <!-- 前の章に戻るボタン / 次の章に進むボタン がある場合 -->  
+<div style="display: flex; justify-content: space-between; align-items: center; padding: 24px 0; margin-top: 24px;">
+  <a href="https://learn.webcoach.jp/generative-ai/introduction-to-generative-ai/%E7%94%BB%E5%83%8F%E7%94%9F%E6%88%90AI%E3%81%A7%E6%8F%8F%E3%81%84%E3%81%A6%E3%81%BF%E3%82%88%E3%81%86/iGUCm" style="position: relative; display: inline-block; background: linear-gradient(135deg, #E85D4A, #F5A64A); color: #fff; font-weight: 700; padding: 12px clamp(24px, 7vw, 48px); border-radius: 8px; text-decoration: none;"><img src="../../_assets/47498cfebf.svg" style="position: absolute; top: 50%; transform: translateY(-50%); left: 12px; filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(125deg) brightness(103%) contrast(103%); transform: translateY(-50%) rotate(180deg);">前の章に戻る</a>
+  <a href="https://learn.webcoach.jp/generative-ai/introduction-to-generative-ai/%E7%94%BB%E5%83%8F%E7%94%9F%E6%88%90AI%E3%81%A7%E6%8F%8F%E3%81%84%E3%81%A6%E3%81%BF%E3%82%88%E3%81%86/iCED9" style="position: relative; display: inline-block; background: linear-gradient(135deg, #E85D4A, #F5A64A); color: #fff; font-weight: 700; padding: 12px clamp(24px, 7vw, 48px); border-radius: 8px; text-decoration: none;">次の章に進む<img src="../../_assets/47498cfebf.svg" style="position: absolute; top: 50%; transform: translateY(-50%); right: 12px; filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(125deg) brightness(103%) contrast(103%);"></a>
+</div>
+<!-- 目次 -->
+<div style="background: #fff; border: 1px solid #E8E8E8; border-radius: 12px; padding: 22px 26px; margin-bottom: 40px;">
+  <div style="font-size: 13px; font-weight: 700; color: #F5A64A; letter-spacing: 0.1em; margin-bottom: 12px;">目次</div>
+  <ol style="margin: 0; padding-left: 22px; font-size: 15px; color: #555; line-height: 2.2;">
+    <li><a href="#sec1" class="toc-link">Adobe Fireflyの世界へ</a></li>
+    <li><a href="#sec2" class="toc-link">比較体験 - Fireflyで「空飛ぶ猫」を再チャレンジ</a></li>
+    <li><a href="#sec3" class="toc-link">Fireflyの機能で「空飛ぶ猫」の雰囲気を変えてみよう</a></li>
+    <li><a href="#sec4" class="toc-link">章末課題 - AIツール別「得意な表現」発見レポート</a></li>
+  </ol>
+</div>
+
+
+<!-- イメージしてみよう -->
+<div class="imagine-box">
+  <div class="label">🎬 イメージしてみよう</div>
+  <p>
+    1章ではCanva AIで「空飛ぶ猫」を描きました。<br>
+    今度は、プロのクリエイターも使うAdobe社のAIツールで同じ「空飛ぶ猫」を描いてみたら——<br><br>
+    <strong class="accent">同じ言葉なのに、まるで違う猫が現れます。</strong><br>
+    毛並みの質感、光の当たり方、背景の世界観。<br><br>
+    さらに「水彩」「映画風」「ネオン」と効果を変えれば、1匹の空飛ぶ猫が無限のバリエーションに。<br>
+    <strong class="accent">AIごとの「個性」を発見する旅</strong>に出かけましょう。
+  </p>
+</div>
+
+
+<!-- 躓きポイント -->
+<div class="stumbling-box">
+  <div class="label">⚡ このレッスンで躓きやすいポイント</div>
+  <ul>
+    <li><strong class="accent">Adobe IDの作成</strong>で戸惑うことがある。パスワードの設定条件に注意し、画面の指示を丁寧に読もう</li>
+    <li>Fireflyの設定パネルは<strong class="accent">右側にある</strong>。「コンテンツタイプ」と「効果」の場所を見つけよう</li>
+    <li>Canva AIと同じ結果にはならない。<strong class="accent">違いこそが学びのポイント</strong></li>
+  </ul>
+</div>
+
+
+<!-- ============================================================
+  セクション 1: Adobe Fireflyの世界へ
+============================================================ -->
+<h2 class="section-heading" id="sec1">1. Adobe Fireflyの世界へ</h2>
+
+<h3 class="sub-heading">Adobe Fireflyとは？</h3>
+
+<p class="text-body">
+  <strong class="accent">Adobe Firefly（アドビ ファイアフライ）</strong>は、PhotoshopやIllustratorといったプロ向けのクリエイティブツールで有名なAdobe社が提供する、クリエイティブな用途に特化した画像生成AIプラットフォームです。
+</p>
+
+<div class="card-grid">
+  <div class="card">
+    <h3>Adobe製品との連携</h3>
+    <p>Adobeの豊富なクリエイティブ製品との連携が強みです。Photoshop内でも直接利用できます。</p>
+  </div>
+  <div class="card">
+    <h3>権利面での安全性</h3>
+    <p>学習データにAdobe Stock（写真素材サイト）の画像など、<strong>権利的にクリアされた画像を使用</strong>しており、商用利用にも比較的安全です。</p>
+  </div>
+</div>
+
+<div class="note-box">
+  <div class="label">注意</div>
+  <p>どのようなAIツールを利用する場合でも、<strong class="accent">最新の利用規約を自身で確認し、遵守すること</strong>が非常に重要です。</p>
+</div>
+
+<h3 class="sub-heading">Adobe Fireflyのアカウント作成とログイン</h3>
+
+<p class="text-body">Adobe Fireflyを利用するためには、Adobe IDが必要です。</p>
+
+<div style="margin: 24px 0;">
+  <div class="step-block">
+    <div class="step-num">1</div>
+    <div>
+      <div class="step-title">公式サイトにアクセス</div>
+      <p class="step-desc">Webブラウザで「Adobe Firefly」と検索するか、公式サイト（firefly.adobe.com）にアクセスします。</p>
+    </div>
+  </div>
+</div>
+
+<div style="margin: 24px 0; text-align: center;">
+  <a href="https://learn.webcoach.jp/theme/webcoach/img/introduction-to-generative-ai/image-ai-hands-on/img21.png" class="lightbox" style="display: inline-block;">
+    <img src="../../_assets/8235db8a35.webp" alt="" class="lightbox-img" style="display: block; margin: 0 auto; max-width: 100%;">
+  </a>
+  <p style="font-size: 13px; color: #999; margin-top: 8px;">Adobe Firefly公式サイト</p>
+</div>
+<div style="margin: 24px 0;">
+  <div class="step-block">
+    <div class="step-num">2</div>
+    <div>
+      <div class="step-title">Adobe IDでログイン</div>
+      <p class="step-desc">既にAdobe IDをお持ちの場合はそのままログイン。お持ちでない場合は、メールアドレス、Googleアカウント、Apple IDなどで無料作成できます。</p>
+    </div>
+  </div>
+</div>
+
+<div style="margin: 24px 0; text-align: center;">
+  <a href="https://learn.webcoach.jp/theme/webcoach/img/introduction-to-generative-ai/image-ai-hands-on/img22.png" class="lightbox" style="display: inline-block;">
+    <img src="../../_assets/51b7676a5c.webp" alt="" class="lightbox-img" style="display: block; margin: 0 auto; max-width: 100%;">
+  </a>
+  <p style="font-size: 13px; color: #999; margin-top: 8px;">Adobe IDログイン画面</p>
+</div>
+<div class="point-box">
+  <div class="label">ポイント</div>
+  <p>Adobe IDの作成で戸惑ったら、画面の指示をよく読み、一つ一つ丁寧に進めましょう。パスワードの設定条件（文字数、使用可能な文字種など）に注意してください。</p>
+</div>
+
+<h3 class="sub-heading">Fireflyの「テキストから画像生成」機能</h3>
+
+<p class="text-body">
+  Adobe Fireflyにログインすると、様々な生成AI機能のメニューが表示されます。今回は<strong class="accent">「テキストから画像生成 (Text to Image)」</strong>機能を使用します。
+</p>
+
+<div style="margin: 24px 0;">
+  <div class="step-block">
+    <div class="step-num">1</div>
+    <div>
+      <div class="step-title">「テキストから画像生成」を選択</div>
+      <p class="step-desc">Fireflyのホーム画面から「画像」を選び、「テキストから画像生成」メニューを選択します。</p>
+    </div>
+  </div>
+</div>
+
+<div style="margin: 24px 0; text-align: center;">
+  <a href="https://learn.webcoach.jp/theme/webcoach/img/introduction-to-generative-ai/image-ai-hands-on/img23.png" class="lightbox" style="display: inline-block;">
+    <img src="../../_assets/9a8c21e78e.webp" alt="" class="lightbox-img" style="display: block; margin: 0 auto; max-width: 100%;">
+  </a>
+  <p style="font-size: 13px; color: #999; margin-top: 8px;">テキストから画像生成メニュー</p>
+</div>
+<p class="text-body">画像生成インターフェースの主な構成要素は以下の通りです。</p>
+
+<div style="overflow-x: auto; margin: 20px 0; border-radius: 12px; box-shadow: 0 1px 6px rgba(0,0,0,0.06);">
+  <table class="styled-table">
+    <thead>
+      <tr>
+        <th>要素</th>
+        <th>機能</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td style="font-weight: 700;">プロンプト入力欄</td>
+        <td>ここにキーワードを入力します</td>
+      </tr>
+      <tr>
+        <td style="font-weight: 700;">生成ボタン</td>
+        <td>プロンプト入力後、このボタンで画像を生成します</td>
+      </tr>
+      <tr>
+        <td style="font-weight: 700;">一般設定</td>
+        <td>縦横比（正方形、横長、縦長など）、使用モデルを選べます</td>
+      </tr>
+      <tr>
+        <td style="font-weight: 700;">コンテンツの種類</td>
+        <td>「アート」か「写真」を選択できます</td>
+      </tr>
+      <tr>
+        <td style="font-weight: 700;">スタイル（効果）</td>
+        <td>水彩、サイバーパンク、ぼかしなど細かい画風を指定できます</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<div style="margin: 24px 0; text-align: center;">
+  <a href="https://learn.webcoach.jp/theme/webcoach/img/introduction-to-generative-ai/image-ai-hands-on/img24.png" class="lightbox" style="display: inline-block;">
+    <img src="../../_assets/95a602c726.webp" alt="" class="lightbox-img" style="display: block; margin: 0 auto; max-width: 100%;">
+  </a>
+  <p style="font-size: 13px; color: #999; margin-top: 8px;">Fireflyインターフェースの解説</p>
+</div>
+<!-- 確認クイズ #1 -->
+<div class="inline-quiz">
+  <div class="quiz-label">✏️ 確認クイズ</div>
+  <p class="quiz-question">Adobe Fireflyの特徴として正しいのはどれ？</p>
+  <div class="quiz-options">
+    <button class="quiz-opt" data-correct="false">A. Google社が提供するAIツールである</button>
+    <button class="quiz-opt" data-correct="true">B. 権利的にクリアされた学習データを使用しており、商用利用にも比較的安全</button>
+    <button class="quiz-opt" data-correct="false">C. 無料では一切利用できない</button>
+    <button class="quiz-opt" data-correct="false">D. テキスト生成のみに対応している</button>
+  </div>
+  <div class="quiz-feedback">
+    <strong>正解！</strong> Adobe Fireflyは、Adobe Stockの画像など<strong>権利的にクリアされた学習データ</strong>を使用しているため、生成された画像の商用利用にも比較的安全性が高いとされています。ただし、最新の利用規約は必ず確認しましょう。
+  </div>
+</div>
+
+
+<!-- ============================================================
+  セクション 2: 比較体験
+============================================================ -->
+<h2 class="section-heading" id="sec2">2. 比較体験 - Fireflyで「空飛ぶ猫」を再チャレンジ</h2>
+
+<h3 class="sub-heading">同じキーワード、違うAI、違うアート</h3>
+
+<p class="text-body">
+  1章ではCanva AIを使って「空飛ぶ猫」を生成しました。今度はAdobe Fireflyで、全く同じキーワード<strong class="accent">「空飛ぶ猫」</strong>を使って画像を生成し、その違いを体験してみましょう。
+</p>
+
+<div style="margin: 24px 0;">
+  <div class="step-block">
+    <div class="step-num">1</div>
+    <div>
+      <div class="step-title">「テキストから画像生成」機能を開く</div>
+      <p class="step-desc">Adobe Fireflyの「テキストから画像生成」機能を開きます。</p>
+    </div>
+  </div>
+  <div class="step-block">
+    <div class="step-num">2</div>
+    <div>
+      <div class="step-title">「空飛ぶ猫」と入力</div>
+      <p class="step-desc">プロンプト入力欄に「<strong>空飛ぶ猫</strong>」と入力します。</p>
+    </div>
+  </div>
+  <div class="step-block">
+    <div class="step-num">3</div>
+    <div>
+      <div class="step-title">デフォルト設定で生成</div>
+      <p class="step-desc">「コンテンツの種類」や「スタイル」はデフォルトのまま、「生成」ボタンをクリックします。</p>
+    </div>
+  </div>
+</div>
+
+<div style="margin: 24px 0; text-align: center;">
+  <a href="https://learn.webcoach.jp/theme/webcoach/img/introduction-to-generative-ai/image-ai-hands-on/img25.png" class="lightbox" style="display: inline-block;">
+    <img src="../../_assets/c399f40ee6.webp" alt="" class="lightbox-img" style="display: block; margin: 0 auto; max-width: 100%;">
+  </a>
+  <p style="font-size: 13px; color: #999; margin-top: 8px;">Fireflyで空飛ぶ猫を生成</p>
+</div>
+<p class="text-body">
+  Fireflyが生成した「空飛ぶ猫」の画像（通常4枚）が表示されます。
+</p>
+
+<div style="margin: 24px 0; text-align: center;">
+  <a href="https://learn.webcoach.jp/theme/webcoach/img/introduction-to-generative-ai/image-ai-hands-on/img26.png" class="lightbox" style="display: inline-block;">
+    <img src="../../_assets/a0e86612fb.webp" alt="" class="lightbox-img" style="display: block; margin: 0 auto; max-width: 100%;">
+  </a>
+  <p style="font-size: 13px; color: #999; margin-top: 8px;">Fireflyの空飛ぶ猫生成結果</p>
+</div>
+<h3 class="sub-heading">比較してみよう</h3>
+
+<p class="text-body">
+  1章でCanva AIを使って生成した「空飛ぶ猫」と、今回Fireflyで生成した画像を並べて見比べてみましょう。以下の観点で比較してみてください。
+</p>
+
+<div class="card-grid">
+  <div class="card">
+    <h3>画風</h3>
+    <p>アニメ調？リアル調？絵画調？それぞれのAIがどんなスタイルで描いたか</p>
+  </div>
+  <div class="card">
+    <h3>ディテール</h3>
+    <p>毛並みの細かさ、背景の描き込み、光の表現はどう違う？</p>
+  </div>
+  <div class="card">
+    <h3>全体の雰囲気</h3>
+    <p>温かみ、クール、ファンタジーなど、全体から受ける印象の違い</p>
+  </div>
+  <div class="card">
+    <h3>色の使い方</h3>
+    <p>色調、コントラスト、明るさなど、色彩表現の違い</p>
+  </div>
+</div>
+
+<div style="margin: 24px 0; text-align: center;">
+  <a href="https://learn.webcoach.jp/theme/webcoach/img/introduction-to-generative-ai/image-ai-hands-on/img27.png" class="lightbox" style="display: inline-block;">
+    <img src="../../_assets/ca07073272.webp" alt="" class="lightbox-img" style="display: block; margin: 0 auto; max-width: 100%;">
+  </a>
+  <p style="font-size: 13px; color: #999; margin-top: 8px;">Canva AIとFireflyの比較</p>
+</div>
+<div class="point-box">
+  <div class="label">ポイント</div>
+  <p>同じ「空飛ぶ猫」という指示でも、AIによって「個性」が異なります。例えば、<strong class="accent">Canva AIはデフォルメされたキャラクターっぽい表現</strong>が得意で、<strong class="accent">Fireflyはより写実的で細部まで描き込まれた表現</strong>が得意な傾向があります。</p>
+</div>
+
+<!-- 確認クイズ #2 -->
+<div class="inline-quiz">
+  <div class="quiz-label">✏️ 確認クイズ</div>
+  <p class="quiz-question">同じ「空飛ぶ猫」というキーワードでCanva AIとAdobe Fireflyに画像を生成させた場合、正しいのはどれ？</p>
+  <div class="quiz-options">
+    <button class="quiz-opt" data-correct="false">A. 全く同じ画像が生成される</button>
+    <button class="quiz-opt" data-correct="false">B. どちらか一方が必ず優れた画像を生成する</button>
+    <button class="quiz-opt" data-correct="true">C. それぞれのAIが異なる「個性」を持っているため、異なるテイストの画像が生まれる</button>
+    <button class="quiz-opt" data-correct="false">D. 同じキーワードでは片方のAIしか画像を生成できない</button>
+  </div>
+  <div class="quiz-feedback">
+    <strong>正解！</strong> 各AIツールには独自の学習データやアルゴリズムがあるため、同じキーワードでも<strong>異なるテイストの画像</strong>が生まれます。どちらが優れているかではなく、それぞれの「得意な表現」や「クセ」を感じ取ることが大切です。
+  </div>
+</div>
+
+
+<!-- ============================================================
+  セクション 3: Fireflyの機能で雰囲気を変えてみよう
+============================================================ -->
+<h2 class="section-heading" id="sec3">3. Fireflyの機能で「空飛ぶ猫」の雰囲気を変えてみよう</h2>
+
+<h3 class="sub-heading">「コンテンツタイプ」と「効果」で遊ぼう</h3>
+
+<p class="text-body">
+  Adobe Fireflyには、生成画像の雰囲気を調整するための便利な機能が備わっています。特に<strong class="accent">「コンテンツの種類」</strong>と<strong class="accent">「効果」</strong>は、手軽に多彩な表現を生み出せる強力なツールです。
+</p>
+
+<div class="card-grid">
+  <div class="card">
+    <h3>コンテンツの種類</h3>
+    <ul>
+      <li><strong>アート (Art)</strong>：絵画的な表現に</li>
+      <li><strong>写真 (Photo)</strong>：実写のような表現に</li>
+    </ul>
+  </div>
+  <div class="card">
+    <h3>効果 (Effects)</h3>
+    <ul>
+      <li>水彩、サイバーパンク、ファンタジーなど</li>
+      <li>数百種類の効果を組み合わせ可能</li>
+    </ul>
+  </div>
+</div>
+
+<p class="text-body">
+  キーワードは「<strong>空飛ぶ猫</strong>」のまま、以下の組み合わせ例を試してみましょう。
+</p>
+
+<!-- 例1 -->
+<div style="background: #fff; border: 2px solid #FAE8E0; border-radius: 16px; padding: 22px; margin: 24px 0;">
+  <div style="font-size: 14px; font-weight: 700; color: #E85D4A; margin-bottom: 8px;">例1：アート + 水彩</div>
+  <p style="font-size: 15px; line-height: 1.7; color: #555; margin: 0 0 12px;">コンテンツタイプ「<strong>アート</strong>」＋ 効果「<strong>水彩</strong>」（テクニックの項目から探す）</p>
+<div style="margin: 24px 0; text-align: center;">
+  <a href="https://learn.webcoach.jp/theme/webcoach/img/introduction-to-generative-ai/image-ai-hands-on/img28.png" class="lightbox" style="display: inline-block;">
+    <img src="../../_assets/2b27b9f8d5.webp" alt="" class="lightbox-img" style="display: block; margin: 0 auto; max-width: 100%;">
+  </a>
+  <p style="font-size: 13px; color: #999; margin-top: 8px;">アート＋水彩で生成した空飛ぶ猫</p>
+</div>
+  </div>
+
+<!-- 例2 -->
+<div style="background: #fff; border: 2px solid #FAE8E0; border-radius: 16px; padding: 22px; margin: 24px 0;">
+  <div style="font-size: 14px; font-weight: 700; color: #E85D4A; margin-bottom: 8px;">例2：写真 + 映画風</div>
+  <p style="font-size: 15px; line-height: 1.7; color: #555; margin: 0 0 12px;">コンテンツタイプ「<strong>写真</strong>」＋ 効果「<strong>映画風</strong>」（テーマの項目から探す）</p>
+<div style="margin: 24px 0; text-align: center;">
+  <a href="https://learn.webcoach.jp/theme/webcoach/img/introduction-to-generative-ai/image-ai-hands-on/img29.png" class="lightbox" style="display: inline-block;">
+    <img src="../../_assets/ca303108b3.webp" alt="" class="lightbox-img" style="display: block; margin: 0 auto; max-width: 100%;">
+  </a>
+  <p style="font-size: 13px; color: #999; margin-top: 8px;">写真＋映画風で生成した空飛ぶ猫</p>
+</div>
+  </div>
+
+<!-- 例3 -->
+<div style="background: #fff; border: 2px solid #FAE8E0; border-radius: 16px; padding: 22px; margin: 24px 0;">
+  <div style="font-size: 14px; font-weight: 700; color: #E85D4A; margin-bottom: 8px;">例3：アート + ネオン</div>
+  <p style="font-size: 15px; line-height: 1.7; color: #555; margin: 0 0 12px;">コンテンツタイプ「<strong>アート</strong>」＋ 効果「<strong>ネオン</strong>」（効果の項目から探す）</p>
+<div style="margin: 24px 0; text-align: center;">
+  <a href="https://learn.webcoach.jp/theme/webcoach/img/introduction-to-generative-ai/image-ai-hands-on/img30.png" class="lightbox" style="display: inline-block;">
+    <img src="../../_assets/96538b28c5.webp" alt="" class="lightbox-img" style="display: block; margin: 0 auto; max-width: 100%;">
+  </a>
+  <p style="font-size: 13px; color: #999; margin-top: 8px;">アート＋ネオンで生成した空飛ぶ猫</p>
+</div></div>
+
+<div class="usecase-box">
+  <div class="label">💡 こんな場面で使える！</div>
+  <p>カフェのポスター、SNSのバナー、プレゼン資料など、目的に応じて「写真風」「イラスト風」「レトロ調」と使い分けられます。同じテーマでも効果を変えるだけで印象がガラリと変わるので、複数パターン作って比較検討するのがおすすめです。</p>
+</div>
+
+<h3 class="sub-heading">練習問題：「夢の乗り物」をFireflyで再チャレンジ</h3>
+
+<p class="text-body">
+  1章の章末課題でCanva AIを使ってデザインした「夢の乗り物」を、今度は<strong class="accent">Adobe Fireflyで生成</strong>してみましょう。同じキーワードを使い、「コンテンツタイプ」を「アート」に設定し、「効果」の中から乗り物のイメージに合うものをいくつか試してみてください。
+</p>
+
+<div style="margin: 24px 0; text-align: center;">
+  <a href="https://learn.webcoach.jp/theme/webcoach/img/introduction-to-generative-ai/image-ai-hands-on/img31.png" class="lightbox" style="display: inline-block;">
+    <img src="../../_assets/ebcf67983d.webp" alt="" class="lightbox-img" style="display: block; margin: 0 auto; max-width: 100%;">
+  </a>
+  <p style="font-size: 13px; color: #999; margin-top: 8px;">Fireflyで生成したクジラバス</p>
+</div>
+  <p class="img-caption">Fireflyで「空飛ぶクジラバス、星空の下」を生成（アート + ファンタジー）</p>
+
+<div class="point-box">
+  <div class="label">ポイント</div>
+  <p>「ファンタジー」「ドリーミー」「蒸気機関パンク」など、乗り物のコンセプトに合いそうなスタイル効果を試してみましょう。Canva AIで作成した時と比べて<strong class="accent">より壮大になった、より幻想的になった</strong>などの変化を観察してみてください。</p>
+</div>
+
+
+<!-- ============================================================
+  セクション 4: 章末課題
+============================================================ -->
+<h2 class="section-heading" id="sec4">4. 章末課題 - AIツール別「得意な表現」発見レポート</h2>
+
+<p class="text-body">
+  新しいカフェの開店告知ポスターに使う<strong class="accent">「コーヒーカップから立ちのぼる、ハート型の湯気」</strong>というイメージ画像をAIで作成します。
+</p>
+
+<div style="background: #fff; border: 2px solid #FAE8E0; border-radius: 16px; padding: 22px; margin: 24px 0;">
+  <div style="font-size: 14px; font-weight: 700; color: #E85D4A; margin-bottom: 12px;">課題の手順</div>
+  <ol style="margin: 0; padding-left: 22px; font-size: 15px; line-height: 2.2; color: #555;">
+    <li>Canva AIとAdobe Fireflyの両方で、それぞれ<strong class="accent">3回以上</strong>（異なるスタイルや効果を試しながら）画像を生成</li>
+    <li>両方のAIの中から、それぞれ最もイメージに近い・魅力的な画像を1枚ずつ選ぶ</li>
+    <li>どちらのAIがテーマを魅力的に表現できたか、<strong class="accent">具体的な理由とともに100〜200字のレポート</strong>を書く</li>
+  </ol>
+</div>
+
+<div class="point-box">
+  <div class="label">ポイント</div>
+  <p>プロンプトのヒント：「コーヒーカップ、ハート型の湯気、温かい雰囲気、カフェのカウンター」。スタイルや効果で<strong class="accent">「写真風」「イラスト風」「レトロ調」「ミニマル」</strong>などを試してみましょう。</p>
+</div>
+
+<div style="margin: 24px 0; text-align: center;">
+  <a href="https://learn.webcoach.jp/theme/webcoach/img/introduction-to-generative-ai/image-ai-hands-on/img32.png" class="lightbox" style="display: inline-block;">
+    <img src="../../_assets/fe8459fd6c.webp" alt="" class="lightbox-img" style="display: block; margin: 0 auto; max-width: 100%;">
+  </a>
+  <p style="font-size: 13px; color: #999; margin-top: 8px;">Canvaで生成したコーヒーカップ</p>
+</div><p class="img-caption">Canvaで生成（プロンプト：コーヒーカップ、ハート型の湯気、温かい雰囲気、カフェのカウンター、実写風）</p>
+
+<div style="margin: 24px 0; text-align: center;">
+  <a href="https://learn.webcoach.jp/theme/webcoach/img/introduction-to-generative-ai/image-ai-hands-on/img33.png" class="lightbox" style="display: inline-block;">
+    <img src="../../_assets/8866d866f7.webp" alt="" class="lightbox-img" style="display: block; margin: 0 auto; max-width: 100%;">
+  </a>
+  <p style="font-size: 13px; color: #999; margin-top: 8px;">Fireflyで生成したコーヒーカップ</p>
+</div><p class="img-caption">Fireflyで生成（プロンプト：コーヒーカップ、ハート型の湯気、温かい雰囲気、カフェのカウンター）</p>
+
+<div class="note-box">
+  <div class="label">注意</div>
+  <p>この課題の目的は、<strong class="accent">どちらのAIが絶対的に優れているかを決めることではありません</strong>。実際に使ってみて、それぞれのツールの「得意な表現」や「クセ」を自身が感じ取ることが重要です。</p>
+</div>
+
+<div style="background: #fff; border: 2px solid #FAE8E0; border-radius: 16px; padding: 22px; margin: 24px 0;">
+  <div style="font-size: 14px; font-weight: 700; color: #E85D4A; margin-bottom: 12px;">レポート解答例</div>
+  <p style="font-size: 15px; line-height: 1.8; color: #555; margin: 0;">「Fireflyの方が、湯気の質感がリアルで、コーヒーの温かみがより伝わってきた。Canva AIは可愛らしい雰囲気になったが、ハートの形が少し崩れやすかった。今回のテーマ（カフェのポスター用）には、写実的な表現が得意なFireflyの方が適していると感じた。」</p>
+</div>
+
+<div class="usecase-box">
+  <div class="label">💡 こんな場面で使える！</div>
+  <p>完成した課題はコーチに提出してフィードバックをもらいましょう。自分の書いたレポートや生成物を見せて、評価の観点や理由付けについて、より専門的な視点からのアドバイスがもらえます。</p>
+</div>
+
+<!-- 確認クイズ #3 -->
+<div class="inline-quiz">
+  <div class="quiz-label">✏️ 確認クイズ</div>
+  <p class="quiz-question">Adobe Fireflyの「コンテンツの種類」で選べる2つの選択肢はどれ？</p>
+  <div class="quiz-options">
+    <button class="quiz-opt" data-correct="false">A. 「写真」と「動画」</button>
+    <button class="quiz-opt" data-correct="true">B. 「アート」と「写真」</button>
+    <button class="quiz-opt" data-correct="false">C. 「イラスト」と「3D」</button>
+    <button class="quiz-opt" data-correct="false">D. 「水彩」と「油絵」</button>
+  </div>
+  <div class="quiz-feedback">
+    <strong>正解！</strong> Adobe Fireflyの「コンテンツの種類」では<strong>「アート (Art)」</strong>と<strong>「写真 (Photo)」</strong>の2つを選べます。アートを選ぶと絵画的な表現に、写真を選ぶと実写のような表現になりやすくなります。さらに「効果」を組み合わせることで、より細かいスタイル調整が可能です。
+  </div>
+</div>
+
+
+<!-- まとめ -->
+<div class="summary-box">
+  <div class="label">まとめ</div>
+  <ul>
+    <li><strong style="color: #3D3D3D;">Adobe Fireflyの特徴</strong> — Adobe社提供、権利的にクリアされた学習データ使用、商用利用にも比較的安全</li>
+    <li><strong style="color: #3D3D3D;">AIツールの個性</strong> — 同じキーワードでもCanva AIとFireflyでは全く異なるテイストの画像が生まれる</li>
+    <li><strong style="color: #3D3D3D;">コンテンツタイプ</strong> — 「アート」（絵画的）と「写真」（実写的）の2種類で大きな方向性を決める</li>
+    <li><strong style="color: #3D3D3D;">効果</strong> — 水彩、映画風、ネオンなど数百種類の効果で細かい表現を調整できる</li>
+    <li><strong style="color: #3D3D3D;">大切な視点</strong> — どちらのAIが優れているかではなく、それぞれの「得意な表現」を知ることが重要</li>
+  </ul>
+</div>
+
+
+<!-- 理解度チェック -->
+<details style="background: #F0FAF0; border: 1px solid #C8E6C9; border-radius: 12px; padding: 0; margin: 36px 0;">
+  <summary style="padding: 18px 24px; font-size: 14px; font-weight: 700; color: #4CAF50; cursor: pointer; letter-spacing: 0.1em;">理解度チェック（クリックして開く）</summary>
+  <div style="padding: 0 24px 18px;">
+
+    <details style="background: #fff; border: 1px solid #BBF7D0; border-radius: 10px; padding: 0; margin: 8px 0; overflow: hidden;">
+      <summary style="padding: 14px 18px; font-size: 15px; font-weight: 600; color: #166534; cursor: pointer;">Adobe Fireflyにログインし、画像を生成できた</summary>
+      <div style="padding: 0 18px 14px; font-size: 14px; color: #555; line-height: 1.7;">Adobe IDでログイン後、「テキストから画像生成」を選択し、キーワードを入力して「生成」ボタンをクリックします。通常4枚の画像が提示されます。</div>
+    </details>
+
+    <details style="background: #fff; border: 1px solid #BBF7D0; border-radius: 10px; padding: 0; margin: 8px 0; overflow: hidden;">
+      <summary style="padding: 14px 18px; font-size: 15px; font-weight: 600; color: #166534; cursor: pointer;">Canva AIとFireflyの表現の違いを比較できた</summary>
+      <div style="padding: 0 18px 14px; font-size: 14px; color: #555; line-height: 1.7;">同じ「空飛ぶ猫」でも、画風、ディテール、雰囲気、色使いに違いがあります。Canva AIはデフォルメ的、Fireflyはより写実的な傾向がありますが、設定やスタイルで大きく変わります。</div>
+    </details>
+
+    <details style="background: #fff; border: 1px solid #BBF7D0; border-radius: 10px; padding: 0; margin: 8px 0; overflow: hidden;">
+      <summary style="padding: 14px 18px; font-size: 15px; font-weight: 600; color: #166534; cursor: pointer;">「コンテンツタイプ」と「効果」を使って画像の雰囲気を変えられた</summary>
+      <div style="padding: 0 18px 14px; font-size: 14px; color: #555; line-height: 1.7;">コンテンツタイプで「アート」「写真」の大きな方向性を決め、効果で「水彩」「映画風」「ネオン」などの細かい表現を調整できます。組み合わせることで無限のバリエーションが生まれます。</div>
+    </details>
+
+    <details style="background: #fff; border: 1px solid #BBF7D0; border-radius: 10px; padding: 0; margin: 8px 0; overflow: hidden;">
+      <summary style="padding: 14px 18px; font-size: 15px; font-weight: 600; color: #166534; cursor: pointer;">章末課題（AIツール比較レポート）に取り組めた</summary>
+      <div style="padding: 0 18px 14px; font-size: 14px; color: #555; line-height: 1.7;">Canva AIとFireflyの両方で3回以上画像を生成し、それぞれの得意な表現やクセを発見できていればOKです。レポートには「具体的にどこが違ったか」「どちらがこのテーマに向いていたか」を書きましょう。</div>
+    </details>
+
+  </div>
+</details>
+   <!-- 前の章に戻るボタン / 次の章に進むボタン がある場合 -->  
+<div style="display: flex; justify-content: space-between; align-items: center; padding: 24px 0; margin-top: 24px;">
+  <a href="https://learn.webcoach.jp/generative-ai/introduction-to-generative-ai/%E7%94%BB%E5%83%8F%E7%94%9F%E6%88%90AI%E3%81%A7%E6%8F%8F%E3%81%84%E3%81%A6%E3%81%BF%E3%82%88%E3%81%86/iGUCm" style="position: relative; display: inline-block; background: linear-gradient(135deg, #E85D4A, #F5A64A); color: #fff; font-weight: 700; padding: 12px clamp(24px, 7vw, 48px); border-radius: 8px; text-decoration: none;"><img src="../../_assets/47498cfebf.svg" style="position: absolute; top: 50%; transform: translateY(-50%); left: 12px; filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(125deg) brightness(103%) contrast(103%); transform: translateY(-50%) rotate(180deg);">前の章に戻る</a>
+  <a href="https://learn.webcoach.jp/generative-ai/introduction-to-generative-ai/%E7%94%BB%E5%83%8F%E7%94%9F%E6%88%90AI%E3%81%A7%E6%8F%8F%E3%81%84%E3%81%A6%E3%81%BF%E3%82%88%E3%81%86/iCED9" style="position: relative; display: inline-block; background: linear-gradient(135deg, #E85D4A, #F5A64A); color: #fff; font-weight: 700; padding: 12px clamp(24px, 7vw, 48px); border-radius: 8px; text-decoration: none;">次の章に進む<img src="../../_assets/47498cfebf.svg" style="position: absolute; top: 50%; transform: translateY(-50%); right: 12px; filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(125deg) brightness(103%) contrast(103%);"></a>
+</div>
+<!-- ロードマップに戻るボタンの場合 --> 
+<div style="display: flex; justify-content: center; align-items: center; padding: 24px 0; margin-top: 24px;">
+  <a href="https://learn.webcoach.jp/2Q/introduction-to-generative-ai" style="display: inline-block; background: #fff; color: #E85D4A; border: 2px solid #E85D4A; font-weight: 700; padding: 10px clamp(24px, 7vw, 48px); border-radius: 8px; text-decoration: none; white-space: nowrap;">ロードマップに戻る</a>
+</div>
+
+</div><!-- /.lesson-wrapper -->
+
+<!-- JavaScript -->
+
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="ck-icon-arrow-down" viewBox="0 0 1792 1792"><path d="M1675 832q0 53-37 90l-651 652q-39 37-91 37-53 0-90-37l-651-652q-38-36-38-90 0-53 38-91l74-75q39-37 91-37 53 0 90 37l294 294v-704q0-52 38-90t90-38h128q52 0 90 38t38 90v704l294-294q37-37 90-37 52 0 91 37l75 75q37 39 37 91z"></path></symbol><symbol id="ck-icon-arrow-up" viewBox="0 0 1792 1792"><path d="M1675 971q0 51-37 90l-75 75q-38 38-91 38-54 0-90-38l-294-293v704q0 52-37.5 84.5t-90.5 32.5h-128q-53 0-90.5-32.5t-37.5-84.5v-704l-294 293q-36 38-90 38t-90-38l-75-75q-38-38-38-90 0-53 38-91l651-651q35-37 90-37 54 0 91 37l651 651q37 39 37 91z"></path></symbol><symbol id="ck-icon-calendar" viewBox="0 0 1792 1792"><path d="M192 1664h288v-288h-288v288zm352 0h320v-288h-320v288zm-352-352h288v-320h-288v320zm352 0h320v-320h-320v320zm-352-384h288v-288h-288v288zm736 736h320v-288h-320v288zm-384-736h320v-288h-320v288zm768 736h288v-288h-288v288zm-384-352h320v-320h-320v320zm-352-864v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm736 864h288v-320h-288v320zm-384-384h320v-288h-320v288zm384 0h288v-288h-288v288zm32-480v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm384-64v1280q0 52-38 90t-90 38h-1408q-52 0-90-38t-38-90v-1280q0-52 38-90t90-38h128v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h384v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h128q52 0 90 38t38 90z"></path></symbol><symbol id="ck-icon-chevron-left" viewBox="0 0 1792 1792"><path d="M1427 301l-531 531 531 531q19 19 19 45t-19 45l-166 166q-19 19-45 19t-45-19l-742-742q-19-19-19-45t19-45l742-742q19-19 45-19t45 19l166 166q19 19 19 45t-19 45z"></path></symbol><symbol id="ck-icon-chevron-right" viewBox="0 0 1792 1792"><path d="M1363 877l-742 742q-19 19-45 19t-45-19l-166-166q-19-19-19-45t19-45l531-531-531-531q-19-19-19-45t19-45l166-166q19-19 45-19t45 19l742 742q19 19 19 45t-19 45z"></path></symbol><symbol id="ck-icon-clock-o" viewBox="0 0 1792 1792"><path d="M1024 544v448q0 14-9 23t-23 9h-320q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h224v-352q0-14 9-23t23-9h64q14 0 23 9t9 23zm416 352q0-148-73-273t-198-198-273-73-273 73-198 198-73 273 73 273 198 198 273 73 273-73 198-198 73-273zm224 0q0 209-103 385.5t-279.5 279.5-385.5 103-385.5-103-279.5-279.5-103-385.5 103-385.5 279.5-279.5 385.5-103 385.5 103 279.5 279.5 103 385.5z"></path></symbol><symbol id="ck-icon-trash" viewBox="0 0 1792 1792"><path d="M704 1376v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm-544-992h448l-48-117q-7-9-17-11h-317q-10 2-17 11zm928 32v64q0 14-9 23t-23 9h-96v948q0 83-47 143.5t-113 60.5h-832q-66 0-113-58.5t-47-141.5v-952h-96q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h309l70-167q15-37 54-63t79-26h320q40 0 79 26t54 63l70 167h309q14 0 23 9t9 23z"></path></symbol><symbol id="ck-icon-undo" viewBox="0 0 1792 1792"><path d="M1664 896q0 156-61 298t-164 245-245 164-298 61q-172 0-327-72.5t-264-204.5q-7-10-6.5-22.5t8.5-20.5l137-138q10-9 25-9 16 2 23 12 73 95 179 147t225 52q104 0 198.5-40.5t163.5-109.5 109.5-163.5 40.5-198.5-40.5-198.5-109.5-163.5-163.5-109.5-198.5-40.5q-98 0-188 35.5t-160 101.5l137 138q31 30 14 69-17 40-59 40h-448q-26 0-45-19t-19-45v-448q0-42 40-59 39-17 69 14l130 129q107-101 244.5-156.5t284.5-55.5q156 0 298 61t245 164 164 245 61 298z"></path></symbol></svg>
+
+<!--Clipkit(R) v15.9.0-20260915 Copyright (C) 2026 VECTOR Inc.-->
+
+
+</div></div>
+        
+      
+    </div>
+  
+  </div>
+
+<!-- <script src="https://cdn.clipkit.co/clipkit/javascripts/item-shopify-1.0.js?v=v15.9.0-20260915" async></script> -->
+</body></html>

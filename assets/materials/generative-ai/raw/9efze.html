@@ -1,0 +1,271 @@
+
+
+
+<div>
+  
+    <div>
+      
+      
+        
+          <div class="article-item item_html " id="item48873" data-item-id="48873" data-item-type="ItemHtml"><div class="item-body"><!DOCTYPE html>
+<html lang="ja">
+<head><script async="async" data-label="saas" nonce="SixGiddWjGltZO16I+K2tw==" src="//b.clipkit.co/"></script><script src="//cdn.clipkit.co/clipkit_assets/beacon-787bbf3225ec43d93f198af35f7d56fdef40fb50440a2909500bdf5b99225aab.js" async="async" id="clipkit-beacon" data-page-type="article" data-page-id="2463" data-domain="learn.webcoach.jp" data-url="/generative-ai/introduction-to-generative-ai/claude-chap6/9EFzE" data-href="https://learn.webcoach.jp/media/beacon"></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Claudeを自分の仕事に組み込む | Claude活用講座</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Noto Sans JP', sans-serif; color: #3D3D3D; font-size: 16px; line-height: 1.9; background: #F7F8FA; -webkit-font-smoothing: antialiased; }
+.lesson-wrapper { max-width: 70%; margin: 0 auto; padding: 40px 0 80px; }
+@media (max-width: 600px) { .lesson-wrapper { max-width: 92%; } }
+h2 { font-size: 22px; font-weight: 900; color: #2D2D2D; margin: 48px 0 20px; padding: 0 0 12px; position: relative; letter-spacing: -0.02em; line-height: 1.4; }
+h2::after { content: ''; position: absolute; bottom: 0; left: 0; width: 44px; height: 4px; border-radius: 2px; background: linear-gradient(90deg, #E85D4A, #F5A64A); }
+p { font-size: 15px; line-height: 2.0; color: #555; margin: 0 0 14px; }
+.accent { color: #E85D4A; font-weight: 700; }
+
+.hero { background: linear-gradient(135deg, #E85D4A 0%, #F5A64A 100%); border-radius: 16px; padding: 48px 40px; margin-bottom: 40px; color: #fff; }
+.hero__label { font-size: 13px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; opacity: 0.85; margin-bottom: 12px; }
+.hero__title { font-size: 28px; font-weight: 800; line-height: 1.3; margin-bottom: 16px; }
+.hero__meta { display: flex; gap: 20px; font-size: 14px; opacity: 0.9; flex-wrap: wrap; }
+.hero__meta span { background: rgba(255,255,255,0.2); padding: 4px 12px; border-radius: 20px; }
+
+.goal-box { background: #fff; padding: 24px 28px; border-radius: 16px; margin-bottom: 32px; box-shadow: 0 2px 16px rgba(0,0,0,0.06); position: relative; overflow: hidden; }
+.goal-box::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px; background: linear-gradient(90deg, #E85D4A, #F5A64A); }
+.goal-box__label { font-size: 11px; font-weight: 700; color: #E85D4A; letter-spacing: 0.15em; margin-bottom: 8px; }
+.goal-box__text { font-size: 15px; font-weight: 700; color: #3D3D3D; line-height: 1.7; margin: 0; }
+
+.action-card { background: #fff; border-radius: 20px; padding: 28px; margin: 24px 0; box-shadow: 0 2px 16px rgba(0,0,0,0.07); position: relative; overflow: hidden; }
+.action-card::before { content: ''; position: absolute; top: 0; left: 0; bottom: 0; width: 5px; background: linear-gradient(180deg, #E85D4A, #F5A64A); }
+.action-card__header { display: flex; gap: 16px; align-items: flex-start; margin-bottom: 16px; }
+.action-card__num { width: 40px; height: 40px; border-radius: 50%; background: linear-gradient(135deg, #E85D4A, #F5A64A); color: #fff; font-size: 18px; font-weight: 900; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.action-card__title-area { flex: 1; }
+.action-card__step { font-size: 11px; font-weight: 700; color: #E85D4A; letter-spacing: 0.1em; margin-bottom: 4px; }
+.action-card__title { font-size: 18px; font-weight: 900; color: #2D2D2D; line-height: 1.3; }
+.action-card__body { font-size: 14px; color: #555; line-height: 1.8; }
+.action-card__hint { background: #F7F8FA; border-radius: 10px; padding: 14px 16px; margin-top: 14px; font-size: 13px; color: #666; line-height: 1.7; }
+.action-card__hint strong { color: #E85D4A; }
+
+.checklist { list-style: none; padding: 0; margin: 0; }
+.checklist__item { display: flex; gap: 12px; align-items: flex-start; padding: 10px 0; border-bottom: 1px solid #F0F0F0; }
+.checklist__item:last-child { border-bottom: none; }
+.checklist__cb { width: 20px; height: 20px; border: 2px solid #E85D4A; border-radius: 5px; flex-shrink: 0; margin-top: 2px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s; }
+.checklist__cb.checked { background: #E85D4A; }
+.checklist__cb.checked::after { content: '✓'; color: #fff; font-size: 13px; font-weight: 700; }
+.checklist__text { font-size: 14px; color: #3D3D3D; line-height: 1.6; cursor: pointer; }
+
+.complete-banner { background: linear-gradient(135deg, #E85D4A, #F5A64A); border-radius: 16px; padding: 28px; margin: 40px 0; text-align: center; display: none; }
+.complete-banner__icon { font-size: 48px; margin-bottom: 10px; }
+.complete-banner__title { font-size: 22px; font-weight: 900; color: #fff; margin-bottom: 8px; }
+.complete-banner__desc { font-size: 14px; color: rgba(255,255,255,0.9); line-height: 1.7; }
+
+.note-final { background: #FFF8F6; border-radius: 14px; padding: 22px 24px; margin: 28px 0; }
+.note-final__label { font-size: 11px; font-weight: 700; color: #E0882A; letter-spacing: 0.12em; margin-bottom: 10px; }
+.note-final p { font-size: 14px; color: #6A5A50; line-height: 1.85; margin: 0; }
+
+.next-step { background: #fff; border-radius: 16px; padding: 28px; margin: 32px 0; box-shadow: 0 2px 16px rgba(0,0,0,0.06); }
+.next-step__label { font-size: 11px; font-weight: 700; color: #E85D4A; letter-spacing: 0.15em; margin-bottom: 14px; }
+.next-step ul { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 10px; }
+.next-step li { font-size: 14px; color: #3D3D3D; display: flex; gap: 10px; align-items: flex-start; line-height: 1.7; }
+.next-step li::before { content: '→'; color: #E85D4A; font-weight: 700; flex-shrink: 0; }
+.plan-note { background: #FFF8F0; border: 1.5px solid #F5A64A; border-radius: 12px; padding: 14px 18px; margin: 20px 0; display: flex; align-items: flex-start; gap: 12px; font-size: 14px; color: #555; line-height: 1.7; }
+.plan-note__badge { background: linear-gradient(135deg, #F5A64A, #E85D4A); color: #fff; font-size: 11px; font-weight: 700; padding: 3px 10px; border-radius: 20px; white-space: nowrap; flex-shrink: 0; margin-top: 2px; }
+.plan-note--free .plan-note__badge { background: linear-gradient(135deg, #4CAF7C, #2E7D52); }
+</style>
+<meta name="csrf-param" content="authenticity_token" />
+<meta name="csrf-token" content="LJyJr4pmuTjocfZf0jbVG-_4ezLQ526Wpesh_3IKzuoPYpj6ivBhvvAVsAXM-K1aXZHFiqmhOQp0i6Myh3r7Zg" /><meta content="" name="routing-root-path" /><meta content="media" name="site-name" /><meta content="ja" name="i18n-default-locale" /><meta content="ja" name="i18n-locale" /></head>
+<body>
+<div class="lesson-wrapper">
+
+  <div class="hero">
+    <div class="hero__label">Chapter 6 — Lesson 2</div>
+    <div class="hero__title">Claudeを自分の仕事に組み込む</div>
+    <div class="hero__meta">
+      <span>🕐 約10分</span>
+      <span>✏️ 実践型</span>
+      <span>🎯 業務活用</span>
+    </div>
+  </div>
+  
+  <!-- 前の章に戻るボタンの場合 -->  
+<div style="display: flex; justify-content: flex-start; align-items: center; padding: 24px 0; margin-top: 24px;">
+  <a href="UK0Ni" style="position: relative; display: inline-block; background: linear-gradient(135deg, #E85D4A, #F5A64A); color: #fff; font-weight: 700; padding: 12px clamp(24px, 7vw, 48px); border-radius: 8px; text-decoration: none;"><img src="/theme/webcoach/img/icons/arrow-right.svg" style="position: absolute; top: 50%; transform: translateY(-50%); left: 12px; filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(125deg) brightness(103%) contrast(103%); transform: translateY(-50%) rotate(180deg);">前の章に戻る</a>
+</div>
+
+  <div class="goal-box">
+    <div class="goal-box__label">このレッスンのゴール</div>
+    <p class="goal-box__text">4つのアクションを実行して、<span class="accent">受講後すぐに自分の業務でClaudeを使い始めている状態</span>をつくる。</p>
+  </div>
+
+  <div class="plan-note">
+    <span class="plan-note__badge">Pro 以上</span>
+    <span>ステップ1はProjectsを使うため<strong>Proプラン以上が必要</strong>です。Freeプランの方は<strong>ステップ1をスキップしてステップ2から始めてください。</strong>ステップ3にもFreeプラン向けの代替手順を記載しています。</span>
+  </div>
+
+  <!-- Action 1 -->
+  <div class="action-card" id="action1">
+    <div class="action-card__header">
+      <div class="action-card__num">1</div>
+      <div class="action-card__title-area">
+        <div class="action-card__step">ステップ 1／4</div>
+        <div class="action-card__title">Projectsを1つ作成する</div>
+      </div>
+    </div>
+    <div class="action-card__body">
+      <p>今持っているクライアント・案件の中から1つ選んで、Projectを作成してください。</p>
+      <ul class="checklist" id="cl1">
+        <li class="checklist__item">
+          <div class="checklist__cb" onclick="toggleCheck(this)"></div>
+          <span class="checklist__text" onclick="toggleCheck(this.previousElementSibling)">claude.ai にサインインして「Projects」を開いた</span>
+        </li>
+        <li class="checklist__item">
+          <div class="checklist__cb" onclick="toggleCheck(this)"></div>
+          <span class="checklist__text" onclick="toggleCheck(this.previousElementSibling)">クライアント名・案件名で新規 Project を作成した</span>
+        </li>
+        <li class="checklist__item">
+          <div class="checklist__cb" onclick="toggleCheck(this)"></div>
+          <span class="checklist__text" onclick="toggleCheck(this.previousElementSibling)">Project instructions にクライアント情報を最低3行登録した</span>
+        </li>
+      </ul>
+      <div class="action-card__hint">
+        <strong>参考：</strong>何のクライアントも抱えていない場合は「自分自身の副業用 Project」を作りましょう。「私はデザイナーで、〇〇なスタイルが得意。ターゲットは△△」という形で自分の強みを登録します。
+      </div>
+    </div>
+  </div>
+
+  <!-- Action 2 -->
+  <div class="action-card" id="action2">
+    <div class="action-card__header">
+      <div class="action-card__num">2</div>
+      <div class="action-card__title-area">
+        <div class="action-card__step">ステップ 2／4</div>
+        <div class="action-card__title">カスタム指示に自分のルールを1つ登録する</div>
+      </div>
+    </div>
+    <div class="action-card__body">
+      <p>カスタム指示を設定して、毎回説明しなくていい状態を作りましょう。</p>
+      <ul class="checklist">
+        <li class="checklist__item">
+          <div class="checklist__cb" onclick="toggleCheck(this)"></div>
+          <span class="checklist__text" onclick="toggleCheck(this.previousElementSibling)">設定画面から「Custom Instructions」を開いた</span>
+        </li>
+        <li class="checklist__item">
+          <div class="checklist__cb" onclick="toggleCheck(this)"></div>
+          <span class="checklist__text" onclick="toggleCheck(this.previousElementSibling)">自分の職種・出力形式・NG事項を最低5行登録して保存した</span>
+        </li>
+      </ul>
+      <div class="action-card__hint">
+        <strong>最低限の登録例：</strong>「私はWebデザイナーです。回答は箇条書き・日本語・敬語なしで。専門用語は使わないでください。」これだけでも効果があります。
+      </div>
+    </div>
+  </div>
+
+  <!-- Action 3 -->
+  <div class="action-card" id="action3">
+    <div class="action-card__header">
+      <div class="action-card__num">3</div>
+      <div class="action-card__title-area">
+        <div class="action-card__step">ステップ 3／4</div>
+        <div class="action-card__title">自分の直近の業務タスクを1つClaudeに依頼する</div>
+      </div>
+    </div>
+    <div class="action-card__body">
+      <p>「試しに使ってみる」から「実際の仕事で使う」に切り替えましょう。今週・今日中にできる業務タスクを1つ選んで Claude に依頼してください。</p>
+      <ul class="checklist">
+        <li class="checklist__item">
+          <div class="checklist__cb" onclick="toggleCheck(this)"></div>
+          <span class="checklist__text" onclick="toggleCheck(this.previousElementSibling)">依頼するタスクを決めた（例：メール文案・SNS投稿・キャッチコピー・提案書の構成）</span>
+        </li>
+        <li class="checklist__item">
+          <div class="checklist__cb" onclick="toggleCheck(this)"></div>
+          <span class="checklist__text" onclick="toggleCheck(this.previousElementSibling)">Project内で依頼した（Proの方）／通常チャットで依頼した（Freeの方）</span>
+        </li>
+        <li class="checklist__item">
+          <div class="checklist__cb" onclick="toggleCheck(this)"></div>
+          <span class="checklist__text" onclick="toggleCheck(this.previousElementSibling)">回答を受け取って、実際に使える部分があったか確認した</span>
+        </li>
+      </ul>
+      <div class="action-card__hint">
+        <strong>タスク例：</strong>クライアントへの返信メール / SNS 投稿のキャプション3案 / LP のキャッチコピー / 業務提案書の目次構成 / 競合分析レポートのたたき台
+      </div>
+    </div>
+  </div>
+
+  <!-- Action 4 -->
+  <div class="action-card" id="action4">
+    <div class="action-card__header">
+      <div class="action-card__num">4</div>
+      <div class="action-card__title-area">
+        <div class="action-card__step">ステップ 4／4</div>
+        <div class="action-card__title">「この業務にClaudeを使ったらどう変わるか」を1文メモする</div>
+      </div>
+    </div>
+    <div class="action-card__body">
+      <p>Claudeを使った体験を1文だけ言語化してみましょう。これが「自分のClaude活用法」の最初の1ページになります。</p>
+      <ul class="checklist">
+        <li class="checklist__item">
+          <div class="checklist__cb" onclick="toggleCheck(this)"></div>
+          <span class="checklist__text" onclick="toggleCheck(this.previousElementSibling)">「〇〇の業務でClaudeを使うと△△が変わる」という1文をメモした</span>
+        </li>
+      </ul>
+      <div class="action-card__hint">
+        <strong>例：</strong>「競合分析をClaudeに頼むと、手作業で2時間かかっていたことが30分で終わる」「キャッチコピーを10案出してもらってから選ぶ、という形に変えると提案の質が上がった」
+      </div>
+    </div>
+  </div>
+
+  <!-- 完了バナー -->
+  <div class="complete-banner" id="completeBanner">
+    <div class="complete-banner__icon">🎉</div>
+    <div class="complete-banner__title">講座修了おめでとうございます！</div>
+    <div class="complete-banner__desc">4つのアクションを完了しました。<br>Claude は使えば使うほど、自分の業務にフィットしていきます。<br>次のステップへ進みましょう。</div>
+  </div>
+
+<div class="next-step">
+    <div class="next-step__label">さらに深めたい方へ</div>
+    <ul>
+      <li>Claude Code 講座：ターミナルから Claude に仕事を任せるコーディング活用編</li>
+      <li>Projects を育てる習慣：毎案件終了後に学んだことを Projects に追記する</li>
+      <li>Artifacts でのLPたたき台提案を実際のクライアント提案フローに組み込む</li>
+    </ul>
+  </div>
+  
+    <!-- 前の章に戻るボタンの場合 -->  
+<div style="display: flex; justify-content: flex-start; align-items: center; padding: 24px 0; margin-top: 24px;">
+  <a href="UK0Ni" style="position: relative; display: inline-block; background: linear-gradient(135deg, #E85D4A, #F5A64A); color: #fff; font-weight: 700; padding: 12px clamp(24px, 7vw, 48px); border-radius: 8px; text-decoration: none;"><img src="/theme/webcoach/img/icons/arrow-right.svg" style="position: absolute; top: 50%; transform: translateY(-50%); left: 12px; filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(125deg) brightness(103%) contrast(103%); transform: translateY(-50%) rotate(180deg);">前の章に戻る</a>
+</div>
+
+</div>
+<script>
+function toggleCheck(cb) {
+  cb.classList.toggle('checked');
+  checkCompletion();
+}
+
+function checkCompletion() {
+  const all = document.querySelectorAll('.checklist__cb');
+  const done = document.querySelectorAll('.checklist__cb.checked');
+  if (all.length > 0 && all.length === done.length) {
+    document.getElementById('completeBanner').style.display = 'block';
+    document.getElementById('completeBanner').scrollIntoView({ behavior: 'smooth', block: 'center' });
+  } else {
+    document.getElementById('completeBanner').style.display = 'none';
+  }
+}
+</script>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="ck-icon-arrow-down" viewBox="0 0 1792 1792"><path d="M1675 832q0 53-37 90l-651 652q-39 37-91 37-53 0-90-37l-651-652q-38-36-38-90 0-53 38-91l74-75q39-37 91-37 53 0 90 37l294 294v-704q0-52 38-90t90-38h128q52 0 90 38t38 90v704l294-294q37-37 90-37 52 0 91 37l75 75q37 39 37 91z" /></symbol><symbol id="ck-icon-arrow-up" viewBox="0 0 1792 1792"><path d="M1675 971q0 51-37 90l-75 75q-38 38-91 38-54 0-90-38l-294-293v704q0 52-37.5 84.5t-90.5 32.5h-128q-53 0-90.5-32.5t-37.5-84.5v-704l-294 293q-36 38-90 38t-90-38l-75-75q-38-38-38-90 0-53 38-91l651-651q35-37 90-37 54 0 91 37l651 651q37 39 37 91z" /></symbol><symbol id="ck-icon-calendar" viewBox="0 0 1792 1792"><path d="M192 1664h288v-288h-288v288zm352 0h320v-288h-320v288zm-352-352h288v-320h-288v320zm352 0h320v-320h-320v320zm-352-384h288v-288h-288v288zm736 736h320v-288h-320v288zm-384-736h320v-288h-320v288zm768 736h288v-288h-288v288zm-384-352h320v-320h-320v320zm-352-864v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm736 864h288v-320h-288v320zm-384-384h320v-288h-320v288zm384 0h288v-288h-288v288zm32-480v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm384-64v1280q0 52-38 90t-90 38h-1408q-52 0-90-38t-38-90v-1280q0-52 38-90t90-38h128v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h384v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h128q52 0 90 38t38 90z" /></symbol><symbol id="ck-icon-chevron-left" viewBox="0 0 1792 1792"><path d="M1427 301l-531 531 531 531q19 19 19 45t-19 45l-166 166q-19 19-45 19t-45-19l-742-742q-19-19-19-45t19-45l742-742q19-19 45-19t45 19l166 166q19 19 19 45t-19 45z" /></symbol><symbol id="ck-icon-chevron-right" viewBox="0 0 1792 1792"><path d="M1363 877l-742 742q-19 19-45 19t-45-19l-166-166q-19-19-19-45t19-45l531-531-531-531q-19-19-19-45t19-45l166-166q19-19 45-19t45 19l742 742q19 19 19 45t-19 45z" /></symbol><symbol id="ck-icon-clock-o" viewBox="0 0 1792 1792"><path d="M1024 544v448q0 14-9 23t-23 9h-320q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h224v-352q0-14 9-23t23-9h64q14 0 23 9t9 23zm416 352q0-148-73-273t-198-198-273-73-273 73-198 198-73 273 73 273 198 198 273 73 273-73 198-198 73-273zm224 0q0 209-103 385.5t-279.5 279.5-385.5 103-385.5-103-279.5-279.5-103-385.5 103-385.5 279.5-279.5 385.5-103 385.5 103 279.5 279.5 103 385.5z" /></symbol><symbol id="ck-icon-trash" viewBox="0 0 1792 1792"><path d="M704 1376v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm-544-992h448l-48-117q-7-9-17-11h-317q-10 2-17 11zm928 32v64q0 14-9 23t-23 9h-96v948q0 83-47 143.5t-113 60.5h-832q-66 0-113-58.5t-47-141.5v-952h-96q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h309l70-167q15-37 54-63t79-26h320q40 0 79 26t54 63l70 167h309q14 0 23 9t9 23z" /></symbol><symbol id="ck-icon-undo" viewBox="0 0 1792 1792"><path d="M1664 896q0 156-61 298t-164 245-245 164-298 61q-172 0-327-72.5t-264-204.5q-7-10-6.5-22.5t8.5-20.5l137-138q10-9 25-9 16 2 23 12 73 95 179 147t225 52q104 0 198.5-40.5t163.5-109.5 109.5-163.5 40.5-198.5-40.5-198.5-109.5-163.5-163.5-109.5-198.5-40.5q-98 0-188 35.5t-160 101.5l137 138q31 30 14 69-17 40-59 40h-448q-26 0-45-19t-19-45v-448q0-42 40-59 39-17 69 14l130 129q107-101 244.5-156.5t284.5-55.5q156 0 298 61t245 164 164 245 61 298z" /></symbol></svg><script async="async" defer="defer" nonce="SixGiddWjGltZO16I+K2tw==" src="//www.instagram.com/embed.js"></script>
+
+<!--Clipkit(R) v15.9.0-20260915 Copyright (C) 2026 VECTOR Inc.-->
+
+</body>
+</html>
+</div></div>
+        
+      
+    </div>
+  
+  </div>
+</div>
+<!-- <script src="https://cdn.clipkit.co/clipkit/javascripts/item-shopify-1.0.js?v=v15.9.0-20260915" async></script> -->

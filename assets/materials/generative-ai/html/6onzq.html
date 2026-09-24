@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<!-- clipkit-source-url: https://learn.webcoach.jp/generative-ai/introduction-to-generative-ai/AI%E3%82%92%E5%91%B3%E6%96%B9%E3%81%AB%E3%81%99%E3%82%8B%E3%83%97%E3%83%AD%E3%83%B3%E3%83%97%E3%83%88%E3%82%A8%E3%83%B3%E3%82%B8%E3%83%8B%E3%82%A2%E3%83%AA%E3%83%B3%E3%82%B0%E3%81%AE%E5%9F%BA%E6%9C%AC/6onzQ -->
+<!-- clipkit-fetched-at: 2026-09-17T11:14:00.275Z -->
+<html lang="ja"><head><style data-clipkit-snapshot="force-visible">[data-aos],.reveal,.wow,.fade-in,.animate__animated,.js-reveal{opacity:1!important;transform:none!important;visibility:visible!important;animation:none!important;transition:none!important}</style></head><body><div>
+  
+    <div>
+      
+      
+        
+          <div class="article-item item_html " id="item48546" data-item-id="48546" data-item-type="ItemHtml"><div class="item-body">
+
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>【任意/応用編】プロンプト思考を"画像生成"に活かす | WEBCOACH</title>
+<link rel="preconnect" href="https://fonts.googleapis.com/">
+<link rel="preconnect" href="https://fonts.gstatic.com/">
+<link href="../../_assets/318e5d4d49.css" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; }
+  body {
+    font-family: 'Noto Sans JP', -apple-system, BlinkMacSystemFont, 'Hiragino Sans', sans-serif;
+    color: #3D3D3D; font-size: 16px; line-height: 1.9;
+    -webkit-font-smoothing: antialiased;
+  }
+  img { max-width: 100%; height: auto; display: block; }
+  .toc-link { color: #555; text-decoration: none; transition: color 0.2s; }
+  .toc-link:hover { color: #E85D4A; }
+  h2.section-heading {
+    font-size: 24px; font-weight: 700; color: #3D3D3D;
+    margin: 48px 0 20px; padding-bottom: 10px;
+    border-bottom: 3px solid #FAE8E0; line-height: 1.4;
+  }
+  h3.sub-heading {
+    font-size: 19px; font-weight: 700; color: #3D3D3D;
+    margin: 32px 0 14px; line-height: 1.5;
+  }
+  .text-body { font-size: 16px; line-height: 1.9; color: #444; margin: 0 0 16px; }
+  .accent { color: #E85D4A; font-weight: 700; }
+  .point-box {
+    background: #FFFBF0; border-left: 4px solid #F5A64A;
+    padding: 18px 22px; border-radius: 0 12px 12px 0; margin: 24px 0;
+  }
+  .point-box .label { font-size: 12px; font-weight: 700; color: #F5A64A; letter-spacing: 0.15em; margin-bottom: 6px; }
+  .point-box p { margin: 0; font-size: 15px; line-height: 1.8; color: #555; }
+  .note-box {
+    background: #FFF3F0; border-left: 4px solid #E85D4A;
+    padding: 18px 22px; border-radius: 0 12px 12px 0; margin: 24px 0;
+  }
+  .note-box .label { font-size: 12px; font-weight: 700; color: #E85D4A; letter-spacing: 0.15em; margin-bottom: 6px; }
+  .note-box p { margin: 0; font-size: 15px; line-height: 1.8; color: #555; }
+  .imagine-box {
+    background: #fff; border: 2px solid #E85D4A;
+    border-radius: 16px; padding: 24px; margin: 24px 0;
+  }
+  .imagine-box .label { font-size: 12px; font-weight: 700; color: #E85D4A; letter-spacing: 0.1em; margin-bottom: 8px; }
+  .imagine-box p { font-size: 16px; line-height: 1.8; color: #3D3D3D; margin: 0; }
+  .stumbling-box {
+    background: linear-gradient(135deg, #FFF8F0, #FFFBF0); border: 2px solid #F5A64A;
+    border-radius: 16px; padding: 24px; margin: 24px 0;
+  }
+  .stumbling-box .label { font-size: 12px; font-weight: 700; color: #F5A64A; letter-spacing: 0.1em; margin-bottom: 8px; }
+  .stumbling-box ul { margin: 0; padding-left: 18px; font-size: 15px; line-height: 2; color: #555; }
+  .card-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 24px 0; }
+  .card {
+    background: #fff; border: 2px solid #FAE8E0;
+    border-radius: 16px; padding: 22px;
+  }
+  .card h3 { font-size: 17px; font-weight: 700; color: #E85D4A; margin: 0 0 8px; }
+  .card p { font-size: 14px; line-height: 1.7; color: #555; margin: 0; }
+  .inline-quiz {
+    background: #FFF8F0; border: 2px solid #FAE8E0;
+    border-radius: 16px; padding: 24px; margin: 36px 0;
+  }
+  .inline-quiz .quiz-label { font-size: 12px; font-weight: 700; color: #F5A64A; letter-spacing: 0.1em; margin-bottom: 12px; }
+  .inline-quiz .quiz-question { font-size: 16px; font-weight: 700; color: #3D3D3D; margin: 0 0 16px; line-height: 1.6; }
+  .quiz-options { display: flex; flex-direction: column; gap: 8px; }
+  .quiz-opt {
+    display: block; width: 100%; text-align: left;
+    background: #fff; border: 2px solid #E8E8E8; border-radius: 10px;
+    padding: 12px 16px; font-size: 15px;
+    font-family: 'Noto Sans JP', sans-serif; color: #3D3D3D;
+    cursor: pointer; transition: border-color 0.2s, background 0.2s; line-height: 1.6;
+  }
+  .quiz-opt:hover:not(.answered) { border-color: #F5A64A; background: #FFFBF0; }
+  .quiz-feedback {
+    display: none; margin-top: 16px; padding: 14px 18px;
+    border-radius: 8px; font-size: 14px; line-height: 1.7; color: #444;
+  }
+  .summary-box {
+    background: linear-gradient(135deg, #FDF0ED, #FFFBF0);
+    border: 2px solid #FAE8E0; border-radius: 16px;
+    padding: 28px; margin: 48px 0 28px;
+  }
+  .summary-box .label { font-size: 13px; font-weight: 700; color: #E85D4A; letter-spacing: 0.15em; margin-bottom: 18px; }
+  .summary-box ul { margin: 0; padding-left: 18px; font-size: 14px; line-height: 2; color: #444; }
+  .styled-table {
+    width: 100%; border-collapse: separate; border-spacing: 0;
+    border-radius: 12px; overflow: hidden; font-size: 15px; margin: 20px 0;
+  }
+  .styled-table thead th {
+    background: #E85D4A; color: #fff; padding: 12px 16px;
+    font-weight: 700; text-align: left;
+  }
+  .styled-table tbody td {
+    padding: 12px 16px; border-bottom: 1px solid #FAE8E0;
+    vertical-align: top;
+  }
+  .styled-table tbody tr:nth-child(even) { background: #FDF0ED; }
+  .img-caption {
+    font-size: 13px; color: #999; text-align: center; margin: -8px 0 20px;
+  }
+  .step-block {
+    display: flex; align-items: flex-start; gap: 14px; margin-bottom: 20px;
+  }
+  .step-num {
+    flex-shrink: 0; width: 36px; height: 36px; border-radius: 50%;
+    background: linear-gradient(135deg, #F5A64A, #E85D4A);
+    color: #fff; font-weight: 700; font-size: 15px;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .step-block .step-title { font-size: 16px; font-weight: 700; color: #3D3D3D; margin-bottom: 4px; }
+  .step-block .step-desc { font-size: 14px; line-height: 1.7; color: #555; margin: 0; }
+  .lesson-wrapper { max-width: 70%; margin: 0 auto; }
+  @media (max-width: 600px) {
+    .lesson-wrapper { max-width: 92%; }
+    .card-grid { grid-template-columns: 1fr; }
+    h2.section-heading { font-size: 20px; }
+  }
+</style>
+<meta name="csrf-param" content="authenticity_token">
+<meta name="csrf-token" content="4izZXYaNMoveSFwR5HMBDajiGtNC3KDYOJgDOMD2yCIuXPFZbaa7O5aKTiYZdHaKXZDe_zmr1iobRnqMGMEkmQ"><meta content="" name="routing-root-path"><meta content="media" name="site-name"><meta content="ja" name="i18n-default-locale"><meta content="ja" name="i18n-locale">
+
+<div class="lesson-wrapper">
+
+<div style="background: linear-gradient(135deg, #E85D4A, #F5A64A); color: #fff; padding: 32px 32px 28px; border-radius: 16px 16px 0 0; margin-top: 32px;">
+  <div style="font-size: 12px; font-weight: 700; opacity: 0.85; letter-spacing: 0.15em;">LESSON 5-6</div>
+  <h1 style="margin: 8px 0 0; font-size: 28px; font-weight: 700; line-height: 1.4; color: #fff;">【任意/応用編】プロンプト思考を"画像生成"に活かす</h1>
+  <p style="margin: 10px 0 0; font-size: 14px; opacity: 0.85; color: #fff;">chapter5 テキスト生成で培った論理をビジュアルに応用する ／ 所要時間：約20分</p>
+</div>
+
+<div style="background: #FAE8E0; padding: 18px 26px; border-radius: 0 0 16px 16px; margin-bottom: 36px;">
+  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
+    <div style="font-size: 12px; font-weight: 700; color: #E85D4A; letter-spacing: 0.15em;">このレッスンのゴール</div>
+    <div style="font-size: 12px; font-weight: 500; color: #E85D4A;">⏱ 約20分</div>
+  </div>
+  <p style="margin: 0; font-size: 16px; font-weight: 700; color: #3D3D3D; line-height: 1.6;">テキスト生成で学んだ「指示の構造化」を画像生成に応用し、より意図に近いビジュアルを出力するためのパラメータ指定を習得する</p>
+</div>
+
+ <!-- ロードマップに戻るボタンの場合 --> 
+<div style="display: flex; justify-content: center; align-items: center; padding: 24px 0; margin-top: 24px;">
+  <a href="https://learn.webcoach.jp/2Q/introduction-to-generative-ai" style="display: inline-block; background: #fff; color: #E85D4A; border: 2px solid #E85D4A; font-weight: 700; padding: 10px clamp(24px, 7vw, 48px); border-radius: 8px; text-decoration: none; white-space: nowrap;">ロードマップに戻る</a>
+</div>
+ <!-- 前の章に戻るボタンの場合 -->  
+<div style="display: flex; justify-content: flex-start; align-items: center; padding: 24px 0; margin-top: 24px;">
+  <a href="https://learn.webcoach.jp/generative-ai/introduction-to-generative-ai/AI%E3%82%92%E5%91%B3%E6%96%B9%E3%81%AB%E3%81%99%E3%82%8B%E3%83%97%E3%83%AD%E3%83%B3%E3%83%97%E3%83%88%E3%82%A8%E3%83%B3%E3%82%B8%E3%83%8B%E3%82%A2%E3%83%AA%E3%83%B3%E3%82%B0%E3%81%AE%E5%9F%BA%E6%9C%AC/6gMwf" style="position: relative; display: inline-block; background: linear-gradient(135deg, #E85D4A, #F5A64A); color: #fff; font-weight: 700; padding: 12px clamp(24px, 7vw, 48px); border-radius: 8px; text-decoration: none;"><img src="../../_assets/47498cfebf.svg" style="position: absolute; top: 50%; transform: translateY(-50%); left: 12px; filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(125deg) brightness(103%) contrast(103%); transform: translateY(-50%) rotate(180deg);">前の章に戻る</a>
+</div>
+<div style="background: #fff; border: 1px solid #E8E8E8; border-radius: 12px; padding: 22px 26px; margin-bottom: 40px;">
+  <div style="font-size: 13px; font-weight: 700; color: #F5A64A; letter-spacing: 0.1em; margin-bottom: 12px;">目次</div>
+  <ol style="margin: 0; padding-left: 22px; font-size: 15px; color: #555; line-height: 2.2;">
+    <li><a href="#sec1" class="toc-link">テキストと画像、プロンプトの共通点と違い</a></li>
+    <li><a href="#sec2" class="toc-link">実践！旅行プランの「キービジュアル」をAIで描く</a></li>
+    <li><a href="#sec3" class="toc-link">理解度チェックとまとめ</a></li>
+  </ol>
+</div>
+
+<div class="imagine-box">
+  <div class="label">🎬 イメージしてみよう</div>
+  <p>
+    「綺麗な海の画像を作って」という曖昧な指示を、「エメラルドグリーンの浅瀬、白い砂浜、俯瞰のアングル、4Kのシネマティックな質感」と言語化してみる——。<br><br>
+    <strong class="accent">プロンプト思考とは、あなたの「頭の中の解像度」を言葉に落とし込む作業です。</strong><br>
+    テキスト生成AIで学んだ論理的な指示の出し方は、画像生成AIにおいてもそのまま通用します。言葉でピクセルをコントロールする感覚を掴みましょう。
+  </p>
+</div>
+
+<div class="stumbling-box">
+  <div class="label">⚡ このレッスンで意識すべきポイント</div>
+  <ul>
+    <li>画像生成AIは<strong class="accent">「形容詞」や「専門用語（カメラワークなど）」</strong>に強く反応する。</li>
+    <li>指示を長くするほど、AIが優先順位を迷うことがある。重要なキーワードは<strong class="accent">プロンプトの前方</strong>に配置しよう。</li>
+    <li>2026年現在のAIは、日本語でも十分理解するが、依然として<strong class="accent">英語の方がニュアンスの再現性が高い</strong>場合がある。</li>
+  </ul>
+</div>
+
+<h2 class="section-heading" id="sec1">1. テキストと画像、プロンプトの共通点と違い</h2>
+
+<p class="text-body">
+  画像生成AIも、基本的には「言葉による指示（プロンプト）」で動作します。テキスト生成で学んだ「明確さ」「具体性」「文脈」の原則はそのまま適用されますが、画像特有の指定すべき要素があります。
+</p>
+
+<h3 class="sub-heading">画像生成プロンプトの主要パラメータ</h3>
+
+<div style="overflow-x: auto;">
+  <table class="styled-table">
+    <thead>
+      <tr>
+        <th>指示要素</th>
+        <th>具体例</th>
+        <th>説明</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td style="font-weight: 700;">被写体 (Subject)</td>
+        <td>a futuristic city, a samurai warrior</td>
+        <td>画像の中心となる「何を描くか」を具体的に。</td>
+      </tr>
+      <tr>
+        <td style="font-weight: 700;">スタイル (Style)</td>
+        <td>anime style, photorealistic, cyberpunk</td>
+        <td>画風や全体のタッチを指定。</td>
+      </tr>
+      <tr>
+        <td style="font-weight: 700;">構図 (Composition)</td>
+        <td>wide shot, close-up, bird's-eye view</td>
+        <td>視点の高さや被写体との距離を指定。</td>
+      </tr>
+      <tr>
+        <td style="font-weight: 700;">色彩 (Color/Mood)</td>
+        <td>vibrant colors, warm color palette</td>
+        <td>色のトーンや醸し出したい雰囲気を指定。</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="point-box">
+  <div class="label">ポイント</div>
+  <p>2026年3月現在、DALL-E 3（ChatGPT内蔵）やGeminiなどは、話し言葉のような長い指示から自動的にこれらのパラメータを補完してくれます。しかし、<strong class="accent">自分で明示的に指定できる力</strong>を持つことで、修正（インペインティング）の精度が格段に上がります。</p>
+</div>
+
+<h2 class="section-heading" id="sec2">2. 実践！旅行プランの「キービジュアル」をAIで描く</h2>
+
+<p class="text-body">
+  3章で作成した「旅行プラン」の魅力を一目で伝えるキービジュアルを作成してみましょう。ここでは「言葉によるイメージの整理」が重要です。
+</p>
+
+<div class="card-grid">
+  <div class="card">
+    <h3>Step 1: コンセプトの抽出</h3>
+    <p>「北海道の雄大な自然」「アクティブな卒業旅行」など、プランの核となるキーワードを書き出します。</p>
+  </div>
+  <div class="card">
+    <h3>Step 2: 情景の言語化</h3>
+    <p>「誰が」「どこで」「何をしているか」を、視覚情報としてAIが理解できる形に翻訳します。</p>
+  </div>
+</div>
+
+<h3 class="sub-heading">プロンプトの構造化例（Adobe Firefly / Canva用）</h3>
+
+<div class="point-box" style="background: #F8F9FA; border-left-color: #6C757D;">
+  <p style="font-family: monospace;">
+    <strong>[プロンプト例]</strong><br>
+    北海道の壮大な雪山を背景に、若者たちが海鮮BBQを楽しんでいる明るいイラスト。アニメ風のスタイル。青い空、立ち上る湯気、心からの笑顔、乾杯のポーズ。広角レンズによる開放感のある構図、鮮やかな色彩。
+  </p>
+</div>
+
+<div class="note-box">
+  <div class="label">ネガティブプロンプトの活用</div>
+  <p>2026年のツールでも、「描いてほしくないもの」を指定する機能は有効です。「blurry (ぼやけ)」「extra limbs (不自然な手足)」「low resolution (低解像度)」などを指定することで、品質を安定させることができます。</p>
+</div>
+
+<div class="inline-quiz">
+  <div class="quiz-label">✏️ 確認クイズ</div>
+  <p class="quiz-question">画像生成プロンプトで、被写体の「詳細」をより良く伝えるために最も効果的な方法はどれ？</p>
+  <div class="quiz-options">
+    <button class="quiz-opt" data-correct="false">A. 「いい感じの表情」と抽象的に指示する</button>
+    <button class="quiz-opt" data-correct="true">B. 「心からの笑顔でリラックスしている」のように具体的な感情や状態を添える</button>
+    <button class="quiz-opt" data-correct="false">C. 指示を短くし、AIの判断にすべてを委ねる</button>
+  </div>
+  <div class="quiz-feedback">
+    <strong>正解！</strong> 画像生成AIは感情を表す形容詞や具体的な状態描写に敏感です。解像度の高い言葉を選ぶほど、あなたのイメージに近い画像が生成されます。
+  </div>
+</div>
+
+<h2 class="section-heading" id="sec3">3. 理解度チェックとまとめ</h2>
+
+<p class="text-body">
+  プロンプト思考を画像生成に活かすことで、AIは単なる「自動作成ツール」から、あなたの「表現の代行者」へと進化します。
+</p>
+
+<div class="summary-box">
+  <div class="label">本レッスンのまとめ</div>
+  <ul>
+    <li><strong style="color: #3D3D3D;">論理構造の転用</strong> — テキスト生成で培った「指示・文脈・形式」の構造は画像生成でも有効。</li>
+    <li><strong style="color: #3D3D3D;">パラメータの明示</strong> — 被写体だけでなく、画風・構図・色彩を個別に指定する癖をつける。</li>
+    <li><strong style="color: #3D3D3D;">試行錯誤のプロセス</strong> — 一度で成功を目指さず、言葉の追加や削除で出力をコントロールする。</li>
+    <li><strong style="color: #3D3D3D;">責任ある活用</strong> — 生成された画像の利用にあたっては、著作権や倫理ガイドラインを常に遵守する。</li>
+  </ul>
+</div>
+
+<div class="usecase-box">
+  <div class="label">💡 WEBCOACH先生にフィードバックを貰おう！</div>
+  <p>
+    作成したプロンプトで生成した画像や、苦労した点をコーチに共有してください。<br>
+    「もっと自然な笑顔にするには？」「このスタイルを維持するには？」といった具体的な相談をすることで、あなたのプロンプトスキルはさらに磨かれます。
+  </p>
+</div>
+
+<details style="background: #F0FAF0; border: 1px solid #C8E6C9; border-radius: 12px; padding: 0; margin: 36px 0;">
+  <summary style="padding: 18px 24px; font-size: 14px; font-weight: 700; color: #4CAF50; cursor: pointer; letter-spacing: 0.1em;">理解度チェック（クリックして開く）</summary>
+  <div style="padding: 0 24px 18px;">
+
+    <details style="background: #fff; border: 1px solid #BBF7D0; border-radius: 10px; padding: 0; margin: 8px 0; overflow: hidden;">
+      <summary style="padding: 14px 18px; font-size: 15px; font-weight: 600; color: #166534; cursor: pointer;">テキスト生成と画像生成のプロンプトの共通点を説明できる</summary>
+      <div style="padding: 0 18px 14px; font-size: 14px; color: #555; line-height: 1.7;">どちらも「明確な指示」「具体的な詳細」「状況説明（文脈）」が重要であるという点は共通しています。AIとのコミュニケーションの根幹は同じです。</div>
+    </details>
+
+    <details style="background: #fff; border: 1px solid #BBF7D0; border-radius: 10px; padding: 0; margin: 8px 0; overflow: hidden;">
+      <summary style="padding: 14px 18px; font-size: 15px; font-weight: 600; color: #166534; cursor: pointer;">画像生成特有の指示要素（パラメータ）を3つ以上挙げられる</summary>
+      <div style="padding: 0 18px 14px; font-size: 14px; color: #555; line-height: 1.7;">被写体(Subject)、スタイル(Style)、構図(Composition)、色彩(Color)、照明(Lighting)などが挙げられます。</div>
+    </details>
+
+    <details style="background: #fff; border: 1px solid #BBF7D0; border-radius: 10px; padding: 0; margin: 8px 0; overflow: hidden;">
+      <summary style="padding: 14px 18px; font-size: 15px; font-weight: 600; color: #166534; cursor: pointer;">ネガティブプロンプトの役割を理解している</summary>
+      <div style="padding: 0 18px 14px; font-size: 14px; color: #555; line-height: 1.7;">「描いてほしくない要素」をAIに伝えることで、ノイズの除去や品質の向上、不要な文字の混入などを防ぐ役割があります。</div>
+    </details>
+
+  </div>
+</details>
+
+<p class="text-body" style="text-align: center; margin-top: 40px; font-weight: 700;">
+  これで「プロンプト思考を画像生成に活かす」の解説を終わります。<br>
+  テキストからビジュアルまで、言葉の力を自在に操れるクリエイターを目指していきましょう！<br>
+  大変お疲れ様でした。
+</p>
+ <!-- ロードマップに戻るボタンの場合 -->
+ 
+ 
+   
+<div inline="" quiz="" logic="" document.queryselectorall('.inline-quiz').foreach(function(quiz)="" {="" var="" options="quiz.querySelectorAll('.quiz-opt');" feedback="quiz.querySelector('.quiz-feedback');" answered="false;" options.foreach(function(opt)="" opt.addeventlistener('click',="" function()="" if="" (answered)="" return;="" iscorrect="opt.dataset.correct" =="=" 'true';="" options.foreach(function(o)="" o.style.pointerevents="none" ;="" o.style.opacity="0.6" o.classlist.add('answered');="" (o.dataset.correct="==" 'true')="" o.style.bordercolor="#4CAF50" o.style.background="#E8F5E9" o.style.color="#2E7D32" }="" });="" (!iscorrect)="" opt.style.bordercolor="#E85D4A" opt.style.background="#FFF3F0" opt.style.color="#C62828" opt.style.opacity="1" feedback.style.display="block" feedback.style.background="isCorrect" ?="" '#e8f5e9'="" :="" '#fff3e0';="" feedback.style.borderleft="4px solid " +="" (iscorrect="" '#4caf50'="" '#e85d4a');="" <="" script="">
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="ck-icon-arrow-down" viewBox="0 0 1792 1792"><path d="M1675 832q0 53-37 90l-651 652q-39 37-91 37-53 0-90-37l-651-652q-38-36-38-90 0-53 38-91l74-75q39-37 91-37 53 0 90 37l294 294v-704q0-52 38-90t90-38h128q52 0 90 38t38 90v704l294-294q37-37 90-37 52 0 91 37l75 75q37 39 37 91z"></path></symbol><symbol id="ck-icon-arrow-up" viewBox="0 0 1792 1792"><path d="M1675 971q0 51-37 90l-75 75q-38 38-91 38-54 0-90-38l-294-293v704q0 52-37.5 84.5t-90.5 32.5h-128q-53 0-90.5-32.5t-37.5-84.5v-704l-294 293q-36 38-90 38t-90-38l-75-75q-38-38-38-90 0-53 38-91l651-651q35-37 90-37 54 0 91 37l651 651q37 39 37 91z"></path></symbol><symbol id="ck-icon-calendar" viewBox="0 0 1792 1792"><path d="M192 1664h288v-288h-288v288zm352 0h320v-288h-320v288zm-352-352h288v-320h-288v320zm352 0h320v-320h-320v320zm-352-384h288v-288h-288v288zm736 736h320v-288h-320v288zm-384-736h320v-288h-320v288zm768 736h288v-288h-288v288zm-384-352h320v-320h-320v320zm-352-864v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm736 864h288v-320h-288v320zm-384-384h320v-288h-320v288zm384 0h288v-288h-288v288zm32-480v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm384-64v1280q0 52-38 90t-90 38h-1408q-52 0-90-38t-38-90v-1280q0-52 38-90t90-38h128v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h384v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h128q52 0 90 38t38 90z"></path></symbol><symbol id="ck-icon-chevron-left" viewBox="0 0 1792 1792"><path d="M1427 301l-531 531 531 531q19 19 19 45t-19 45l-166 166q-19 19-45 19t-45-19l-742-742q-19-19-19-45t19-45l742-742q19-19 45-19t45 19l166 166q19 19 19 45t-19 45z"></path></symbol><symbol id="ck-icon-chevron-right" viewBox="0 0 1792 1792"><path d="M1363 877l-742 742q-19 19-45 19t-45-19l-166-166q-19-19-19-45t19-45l531-531-531-531q-19-19-19-45t19-45l166-166q19-19 45-19t45 19l742 742q19 19 19 45t-19 45z"></path></symbol><symbol id="ck-icon-clock-o" viewBox="0 0 1792 1792"><path d="M1024 544v448q0 14-9 23t-23 9h-320q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h224v-352q0-14 9-23t23-9h64q14 0 23 9t9 23zm416 352q0-148-73-273t-198-198-273-73-273 73-198 198-73 273 73 273 198 198 273 73 273-73 198-198 73-273zm224 0q0 209-103 385.5t-279.5 279.5-385.5 103-385.5-103-279.5-279.5-103-385.5 103-385.5 279.5-279.5 385.5-103 385.5 103 279.5 279.5 103 385.5z"></path></symbol><symbol id="ck-icon-trash" viewBox="0 0 1792 1792"><path d="M704 1376v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm-544-992h448l-48-117q-7-9-17-11h-317q-10 2-17 11zm928 32v64q0 14-9 23t-23 9h-96v948q0 83-47 143.5t-113 60.5h-832q-66 0-113-58.5t-47-141.5v-952h-96q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h309l70-167q15-37 54-63t79-26h320q40 0 79 26t54 63l70 167h309q14 0 23 9t9 23z"></path></symbol><symbol id="ck-icon-undo" viewBox="0 0 1792 1792"><path d="M1664 896q0 156-61 298t-164 245-245 164-298 61q-172 0-327-72.5t-264-204.5q-7-10-6.5-22.5t8.5-20.5l137-138q10-9 25-9 16 2 23 12 73 95 179 147t225 52q104 0 198.5-40.5t163.5-109.5 109.5-163.5 40.5-198.5-40.5-198.5-109.5-163.5-163.5-109.5-198.5-40.5q-98 0-188 35.5t-160 101.5l137 138q31 30 14 69-17 40-59 40h-448q-26 0-45-19t-19-45v-448q0-42 40-59 39-17 69 14l130 129q107-101 244.5-156.5t284.5-55.5q156 0 298 61t245 164 164 245 61 298z"></path></symbol></svg>
+
+<!--Clipkit(R) v15.9.0-20260915 Copyright (C) 2026 VECTOR Inc.-->
+
+
+</div></div>
+        
+      
+    </div>
+  
+  </div>
+</div>
+<!-- <script src="https://cdn.clipkit.co/clipkit/javascripts/item-shopify-1.0.js?v=v15.9.0-20260915" async></script> -->
+</div></body></html>

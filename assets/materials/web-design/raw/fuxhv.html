@@ -1,0 +1,680 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+  <html lang="ja">
+
+<head><script async="async" data-label="saas" nonce="767Jxted6s9YCeZEvlCWPA==" src="//b.clipkit.co/"></script><script src="//cdn.clipkit.co/clipkit_assets/beacon-787bbf3225ec43d93f198af35f7d56fdef40fb50440a2909500bdf5b99225aab.js" async="async" id="clipkit-beacon" data-page-type="article" data-page-id="302" data-domain="learn.webcoach.jp" data-url="/web-design/Fuxhv" data-href="https://learn.webcoach.jp/media/beacon"></script>
+    <!-- headタグ内の上部に挿入されます -->
+
+    <meta charset="UTF-8">
+    <title>Wix実践 -上級編- - WEBCOACH</title>
+
+    <!-- resetcssのCDNでのCSS読み込み -->
+    <link rel="stylesheet" href="https://unpkg.com/modern-css-reset/dist/reset.min.css" />
+
+    <!-- fontawesomeのCDNでのCSS読み込み -->
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/fontawesome/4.7.0/css/font-awesome.min.css">
+
+    <!-- BootstrapのCDNでのCSS読み込み -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous" />
+
+    <!-- highlight.jsの読み込み -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.1/styles/dracula.min.css">
+
+    <!-- カスタムCSS -->
+    <link rel="stylesheet" href="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/168/original/style.css?1788081716">
+
+    <!-- clipkitデフォルトのCSS -->
+    <!--<link rel="stylesheet" media="screen" href="https://cdn.clipkit.co/clipkit/stylesheets/application-1.0.css?v=v15.9.0-20260915">-->
+
+    <!-- jQuery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <!-- カスタムJS -->
+    <script src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/202/original/script.js?1788946194"></script>
+    <script src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/535/original/script.js?1743681771"></script>
+
+    <!-- clipkitデフォルトのJS -->
+    <script src="https://cdn.clipkit.co/clipkit/javascripts/default-1.0.js?v=v15.9.0-20260915"></script>
+
+    <!-- フォント -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;700&display=swap" rel="stylesheet">
+
+    <link href="https://cdn.clipkit.co/clipkit/favicons/square/missing.png" rel="shortcut icon" type="image/vnd.microsoft.icon">
+    <link rel="apple-touch-icon" href="https://cdn.clipkit.co/clipkit/touch_icons/square/missing.png">
+    <link rel="alternate" type="application/rss+xml"
+        href="https://learn.webcoach.jp/media.rss" title="WEBCOACH">
+    
+<link rel="canonical" href="https://learn.webcoach.jp/web-design/Fuxhv">
+
+<meta name="description" content="">
+<meta name="keywords" content="">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:domain" content="learn.webcoach.jp">
+<meta name="twitter:title" content="Wix実践 -上級編- - WEBCOACH">
+<meta name="twitter:image" content="https://cdn.clipkit.co/tenants/589/item_images/images/000/051/397/medium/f13dbeb1-f15f-41f6-8550-2ebba1995f50.jpg?1787056229">
+<meta name="twitter:description" content="">
+<meta property="og:site_name" content="WEBCOACH">
+<meta property="og:title" content="Wix実践 -上級編-">
+<meta property="og:description" content="">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://learn.webcoach.jp/web-design/Fuxhv">
+<meta property="og:image" content="https://cdn.clipkit.co/tenants/589/item_images/images/000/051/397/large/f13dbeb1-f15f-41f6-8550-2ebba1995f50.jpg?1787056229">
+<script type="application/ld+json">
+  {
+    "@context": "http://schema.org",
+    "@type": "NewsArticle",
+    "mainEntityOfPage":{
+      "@type":"WebPage",
+      "@id": "https://learn.webcoach.jp/web-design/Fuxhv"
+    },
+    "headline": "Wix実践 -上級編-",
+    "image": {
+      "@type": "ImageObject",
+      "url": "https://cdn.clipkit.co/tenants/589/item_images/images/000/051/397/medium/f13dbeb1-f15f-41f6-8550-2ebba1995f50.jpg?1787056229",
+      "width": 800,
+      "height": 600
+    },
+    "datePublished": "2024-07-29T17:52:21+09:00",
+    "dateModified": "2026-08-18T21:32:13+09:00",
+    "author": {
+      "@type": "Person",
+      "name": "r_ono"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "WEBCOACH",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://cdn.clipkit.co/tenants/589/sites/logos/000/000/001/logo_sm/a8defd4b-1cc7-433b-a61c-08e7db0e3e4f.png?1714459367"
+      }
+    },
+    "description": ""
+  }
+  </script>
+
+    <!-- headタグ内の下部に挿入されます -->
+
+
+<meta name="csrf-param" content="authenticity_token" />
+<meta name="csrf-token" content="1Sua1XJUUX1bKCpvJ4yK_7O3rF_ZrykLulwSv2x4A04YdgBuzjHJRZofQjkjeneD9LukreDq6SsD6fCU8DaYFg" /><meta content="" name="routing-root-path" /><meta content="media" name="site-name" /><meta content="ja" name="i18n-default-locale" /><meta content="ja" name="i18n-locale" /></head>
+
+<body class="device-desktop">
+    <!-- bodyタグ内の上部に挿入されます -->
+
+
+    <!-- サイドバーとコンテンツのコンテナ -->
+    <div class="d-flex flex-row w-100 mb-5" style="min-height: calc(100vh - 400px);">
+
+        <!-- サイドバー -->
+        <!--<nav id="side-bar" class="d-flex flex-column fixed-top" style="width: 250px;">-->
+        <!--    <h1 class="d-block w-100 text-center">-->
+        <!--        <a class="d-block" href="/">-->
+        <!--            <img class="mw-100 p-3" src="https://cdn.clipkit.co/tenants/589/sites/logos/000/000/001/logo_sm/a8defd4b-1cc7-433b-a61c-08e7db0e3e4f.png?1714459367" alt="WEBCOACH">-->
+        <!--        </a>-->
+        <!--    </h1>-->
+        <!--    <ul class="nav flex-column m-0 p-3 fw-bold">-->
+        <!--        <li id="sidebar-top" class="nav-item mb-2" style="display: none;"><a href="/"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;" src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/233/original/home.png?1715353458">-->
+        <!--                <div>ホーム</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-knowledges" class="nav-item mb-2" style="display: none;"><a href="/knowledges"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;" src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/232/original/book.png?1715353458">-->
+        <!--                <div>学習の心得</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-web-designs" class="nav-item mb-2" style="display: none;"><a href="/web-designs"-->
+        <!--                class="nav-link text-body d-flex align-items-center active">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/231/original/design.png?1715353457">-->
+        <!--                <div>WEBデザイン</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-web-marketing" class="nav-item mb-2" style="display: none;"><a href="/web-marketings"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/230/original/marketing.png?1715353457">-->
+        <!--                <div>WEBマーケティング</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-codings" class="nav-item mb-2" style="display: none;"><a href="/codings"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/229/original/website.png?1715353457">-->
+        <!--                <div>WEBサイト構築</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-business-skills" class="nav-item mb-2" style="display: none;"><a href="/business-skills"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/228/original/business.png?1715353456">-->
+        <!--                <div>ビジネススキル</div>-->
+        <!--            </a></li>-->
+        <!--    </ul>-->
+        <!--</nav>-->
+
+        <!-- コンテンツ -->
+        <!--<main class="ms-auto" style="width: calc(100vw - 250px);">-->
+        <main class="ms-auto" style="width: calc(100vw);">
+            <div id="sb-site">
+                
+
+
+<div class="container">
+  <div class="row">
+    <div class="article">
+      <div class="mb-3 text-light" style="
+        height: 180px;
+        background-image: url(https://cdn.clipkit.co/tenants/589/resources/assets/000/000/270/original/article-header.png?1717761933);
+        background-repeat: no-repeat;
+        background-size: cover;
+        display: flex;
+        align-items: flex-end;
+      ">
+        <div style="
+          margin: 0 0 30px 30px;
+        ">
+          <div>WEBデザイン</div>
+
+          <div class="fw-bold h2">Wix実践 -上級編-</div>
+        </div>
+      </div>
+      <div class="article-content">
+        <!-- 目次 -->
+        <div class="index mb-3" style="background-color: #FDF5E8;">
+          <div>
+            <div class="fw-light">INDEX</div>
+            <div class="h3">目次</div>
+          </div>
+          <div class="toc"></div>
+        </div>
+        
+        <div class="back-to-roadmap mb-4 text-center"></div>
+
+        <!-- コンテンツ -->
+        
+        
+        <div class="article-item item_html " id="item25486" data-item-id="25486" data-item-type="ItemHtml"><div class="item-body"><div class="pagenation-buttons">
+  <a href="ChIor" class="pagenation-buttons_prev"><img src="/theme/webcoach/img/icons/arrow-right.svg" class="pagenation-buttons_icon">前の章に戻る</a>
+</div></div></div>
+        
+        <div class="article-item item_html " id="item38451" data-item-id="38451" data-item-type="ItemHtml"><div class="item-body"><div class="callout white">
+    <div class="title-area">
+        <div class="icon bulb"></div>
+        <div class="title">注意事項</div>
+    </div>
+    <div class="content-area">
+      	<ul>
+          <li>Wix上級編は、<span class="decoration-02">ノーコードツールでのWeb制作経験を積み、本格的なLPやHP制作に挑戦したい方を対象としています。</span></li>
+<li>もし一度学習してみて難しく感じたり、他のデザインツールを先に学びたい場合は、そちらを優先して学習するようにしましょう</li>
+<li>将来的にポートフォリオを作成したい方には、ぜひ学習をおすすめします。<span class="decoration-02">コーチと相談した上で、ご自身のスキルが上がったタイミングでこの教材に戻ってくるようにしましょう！</span></li>
+
+        </ul>
+    </div>
+</div></div></div>
+        
+        <div class="article-item item_heading " id="item5298" data-item-id="5298" data-item-type="ItemHeading"><h2 class="item-body">0. はじめに</h2></div>
+        
+        <div class="article-item item_markdown " id="item39244" data-item-id="39244" data-item-type="ItemMarkdown"><h4 id="section">この教材の学習時間: 12時間</h4>
+</div>
+        
+        <div class="article-item item_markdown " id="item5299" data-item-id="5299" data-item-type="ItemMarkdown"><p>いよいよWixについての学習は最後になります！この課題を自力で完成させることができたら、Wixで大体のHPは対応できます。</p>
+
+<p>初級編・中級編を終えて、「難しくて大変だな。。。」と感じた方も少なくないと思います！</p>
+
+<p>しかし、誰もが通る道です。ここで挫けずにあと少しがんばりましょう！</p>
+
+<p>逆に上級編まで、躓くことなく学習ができている方は本当に素晴らしいです👏</p>
+
+<p>WEBスキルについての学習で初期段階からここまでハイレベルなことをやっている人はなかなかいないと思います😅</p>
+
+<p>ぜひ、自信を持ってください！</p>
+</div>
+        
+        <div class="article-item item_rich_text " id="item5300" data-item-id="5300" data-item-type="ItemRichText"><div class="item-body-hbr">上級編では、中級編同様、ご自身の力のみで<span class="decoration-02"><span class="decoration-01">本格的なコーポレートサイトの制作</span></span>を行っていただきます。<br>
+<br>
+<span class="decoration-02"><span class="decoration-01">中級編までをしっかりと実行し、理解できている方にとっては新しい知識はあまり必要なく実装できる</span></span>と思います。<br>
+<br>
+<span class="decoration-01"><span class="decoration-02">Wixでの作業スピードの向上とこれまでの知識の定着</span></span>を目指してやっていきましょう。</div></div>
+        
+        <div class="article-item item_markdown " id="item5301" data-item-id="5301" data-item-type="ItemMarkdown"><p><strong>以下のフローに沿っての上級編を進めてください！</strong></p>
+
+<p>==</p>
+
+<p>1 . 制作課題を確認する</p>
+
+<p>2 . ヒント・初級編・中級編を参考にしながら<strong>ご自身の力のみ</strong>で、1から白紙のテンプレートを用いて構築する。</p>
+
+<p>3 . 制作課題をご自身のWixのアカウントの「マイサイト」のところに追加していただきます。編集画面から間違っていた場所、わからなかった場所をご自身で添削していただきます。</p>
+
+<p>4 . コーチにてSlackにて共有する。</p>
+
+<p>==</p>
+</div>
+        
+        <div class="article-item item_html " id="item5302" data-item-id="5302" data-item-type="ItemHtml"><div class="item-body"><div class="callout white">
+    <div class="title-area">
+        <div class="icon bulb"></div>
+        <div class="title">注意事項</div>
+    </div>
+    <div class="content-area">
+        <ul>
+            <li>分からないところがあっても、すぐに答えを見るのではなくご自身の力のみで自己解決を図ってください！<br>
+                15分間は、初級編・中級編の動画を復習する・ヒントをみる・ググって解決法を模索するなど自己解決を図りましょう！</li>
+            <li>受講生の皆様がご卒業後にWEB業界で働く際には、新たなWEBスキルをご自身で身に付け、発生した問題を解決する”自己解決能力”が必要不可欠です。</li>
+            <li>画像は見本と全く同じものを使用する必要はありません。画像サイトからご自身でお選びください。</li>
+            <li>サイトに合った良い素材を選定するのもスキルの一つです。</li>
+            <li>WEBサイトに載っているグラフやイラストはご自身で「Figma」・「Excel」を用いて代用してみてください！</li>
+            <li>全く課題と同じものでなくて構いません。ご自身が納得できるものであればOKです👌</li>
+            <li>ブログの検索機能は実装しなくて大丈夫です！<br>
+                Wixの仕様が変更されてブログの検索機能はなくなってしまいました😢<br>
+                答えにはブログの検索機能がついていると思いますが、実装していただかなくて構いません👌</li>
+            <li>提出の際、コーチにメールアドレスを聞いてWixの権限を共有しましょう！<br>
+                添削をするにあたって、Wixの権限共有は必須です。権限共有の方法がわからない方は、「Wix -実践編- ＞ d. Wixの権限共有機能を理解しよう」を確認しましょう🙌</li>
+          	<li><span class="decoration-02">Webデザインで扱うツールは日々UI（画面の見た目）が変更されます。</span><br>
+                運営では日々教材の改善に努めておりますが、Wixも日々アップデートされ、機能やボタンが常に追加・変更されていくため教材の画面と異なる場合があります。また、ユーザーごとに表示されるUIが若干異なる場合があります。
+教材の通り進めていてご不明な点ございましたら以下のフローに従って解決していただけますと幸いです🙌</li>
+        </ul>
+    </div>
+</div></div></div>
+        
+        <div class="article-item item_rich_text " id="item51394" data-item-id="51394" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">・分からないことが出てきたときの対処方法</span></div></div>
+        
+        <div class="article-item item_text " id="item51395" data-item-id="51395" data-item-type="ItemText"><div class="item-body-hbr">1.画面のスクリーンショットを取る。<br />Windowsは「Windows + Shift + S」や「PrtSc」、Macは「Command + Shift + 3」や「Command + Shift + 4」を使います。</div></div>
+        
+        <div class="article-item item_text " id="item51396" data-item-id="51396" data-item-type="ItemText"><div class="item-body-hbr">2.AI（Chat gpt や google gemini など）にそのスクリーンショットを添付し疑問点を書く。</div></div>
+        
+        <div class="article-item item_image " id="item51397" data-item-id="51397" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/051/397/medium/f13dbeb1-f15f-41f6-8550-2ebba1995f50.jpg?1787056229" title=""><img class="img-responsive item-image" alt=" (51397)" data-reference="" src="https://cdn.clipkit.co/tenants/589/item_images/images/000/051/397/medium/f13dbeb1-f15f-41f6-8550-2ebba1995f50.jpg?1787056229" width="550" height="640" /></a><h4></h4></div></div>
+        
+        <div class="article-item item_text " id="item51398" data-item-id="51398" data-item-type="ItemText"><div class="item-body-hbr">3.AIにきいても解決しなかった場合はコーチに聞く。</div></div>
+        
+        <div class="article-item item_rich_text " id="item51399" data-item-id="51399" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">分からないことがあれば遠慮なく質問しましょう！</span>また、以下のフォーマットに従って質問をするとよいです！</div></div>
+        
+        <div class="article-item item_text " id="item51400" data-item-id="51400" data-item-type="ItemText"><div class="item-body-hbr">・ 実現したいこと<br />・ エラーの内容、わからないこと、できないこと<br />・ 原因の予想<br />・ 実際に試したこと<br />・ 回答者が参考になりそうなソースコードやファイルなど</div></div>
+        
+        <div class="article-item item_markdown " id="item5303" data-item-id="5303" data-item-type="ItemMarkdown"><p>いよいよWix最後の制作課題です！ぜひやりきってください🙌</p>
+</div>
+        
+        <div class="article-item item_html " id="item48561" data-item-id="48561" data-item-type="ItemHtml"><div class="item-body"><div class="card-with-icon attention">
+  <span class="bold">白紙のテンプレートが開けない際の対処法に関して<br></span>
+	  <ul>
+      <li>Wixのアップデートによって、動画の手順で白紙のテンプレートが開けない場合があります</li>
+      <li>その際は以下のURLから白紙のテンプレートを開いてください！</li>
+      <li>Wixのアカウントを持っている状態であれば、この手順で開くことができます！</li>        
+  </ul>
+</div></div></div>
+        
+        <div class="article-item item_html " id="item51196" data-item-id="51196" data-item-type="ItemHtml"><div class="item-body"><!-- スタイル定義（CSS） -->
+<style>
+  .card-link {
+    display: block;
+    text-decoration: none;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    padding: 16px 20px;
+    background-color: #ffffff;
+    width: 100%;
+    box-sizing: border-box;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .card-link:hover {
+    border-color: #d1d5db;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  }
+
+  .card-title {
+    font-size: 15px;
+    font-weight: 700;
+    color: #000000;
+    margin: 0 0 10px 0;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    line-height: 1.4;
+  }
+
+  .external-icon {
+    width: 14px;
+    height: 14px;
+    fill: #9ca3af;
+    flex-shrink: 0;
+  }
+
+  .card-description {
+    font-size: 14px;
+    color: #374151;
+    margin: 0;
+    padding-left: 48px; /* 画像にあったインデント位置を再現 */
+    line-height: 1.5;
+  }
+</style>
+
+<!-- リンクカード本体（HTML） -->
+<a href="https://ja.wix.com/intro/view/bfbd969c-12ff-4d7a-ac33-e3085d70925c?flowContext=JTdCJTIyaGlzdG9yeUVudHJpZXMlMjIlM0ElNUIlN0IlMjJmbG93SWQlMjIlM0ElMjI3NGJlMmRlNS1jNGFhLTQzZTUtYTZjYS02ODdhODY1MDE2NTclMjIlMkMlMjJzbmFwc2hvdElkJTIyJTNBJTIyNmEzMGQwZGYtNWU3ZS00NGMzLWI5NWEtMmJkNDQwNTA0NTllJTIyJTdEJTJDJTdCJTIyZmxvd0lkJTIyJTNBJTIyNzRiZTJkZTUtYzRhYS00M2U1LWE2Y2EtNjg3YTg2NTAxNjU3JTIyJTJDJTIycGFnZUlkJTIyJTNBJTIyYmZiZDk2OWMtMTJmZi00ZDdhLWFjMzMtZTMwODVkNzA5MjVjJTIyJTJDJTIyc25hcHNob3RJZCUyMiUzQSUyMjZhMzBkMGRmLTVlN2UtNDRjMy1iOTVhLTJiZDQ0MDUwNDU5ZSUyMiU3RCU1RCUyQyUyMmFuc3dlcnMlMjIlM0ElN0IlN0QlMkMlMjJleHBlcmltZW50cyUyMiUzQSU3QiU3RCUyQyUyMm1ldGFkYXRhJTIyJTNBJTdCJTIybWV0YVNpdGVOYW1lc3BhY2UlMjIlM0ElMjJEQVNIQk9BUkRfRklSU1QlMjIlMkMlMjJoYXNIdG1sQXBwJTIyJTNBJTIydHJ1ZSUyMiUyQyUyMm9yaWdpblRlbXBsYXRlSWQlMjIlM0ElMjI2YzQ2MzhkZi05N2RiLTRjMGItODYyYy0zMzg2OWJiMmE3YzklMjIlMkMlMjJpc0hhcm1vbnlBbGxvd2VkJTIyJTNBJTIydHJ1ZSUyMiUyQyUyMmlzSGFybW9ueSUyMiUzQSUyMnRydWUlMjIlMkMlMjJpc1N0dWRpbyUyMiUzQSUyMmZhbHNlJTIyJTJDJTIyc3R1ZGlvVGVtcGxhdGVzVXJsJTIyJTNBJTIyaHR0cHMlM0ElMkYlMkZ3d3cud2l4LmNvbSUyRnN0dWRpbyUyRnRlbXBsYXRlcyUyMiUyQyUyMmJ1c2luZXNzU2VnbWVudElkJTIyJTNBJTIybm90LWNsYXNzaWZpZWQlMjIlMkMlMjJtZXRhU2l0ZUlkJTIyJTNBJTIyNDhjMTEwNGUtZDA5OC00ZmZjLWE4YzctMDA0OGJmNGYzYzk3JTIyJTJDJTIyYmlTbHVnJTIyJTNBJTIyY3VzdG9taXplX3NpdGVfZnJvbV9kYXNoYm9hcmQlMjIlMkMlMjJsYW5ndWFnZSUyMiUzQSUyMmphJTIyJTJDJTIyZ2VvJTIyJTNBJTIySlAlMjIlN0QlMkMlMjJiaVByb2ZpbGUlMjIlM0ElN0IlN0QlMkMlMjJkZWFsZXJPZmZlcnMlMjIlM0ElN0IlN0QlMkMlMjJpbnRlcm1lZGlhdGVEYXRhJTIyJTNBJTdCJTdEJTJDJTIycHJlbWl1bUZlYXR1cmVzJTIyJTNBJTdCJTdEJTdE&metaSiteId=48c1104e-d098-4ffc-a8c7-0048bf4f3c97&originTemplateId=6c4638df-97db-4c0b-862c-33869bb2a7c9" class="card-link" target="_blank" rel="noopener noreferrer">
+  <div class="card-title">
+    Wix 白紙のテンプレート
+    <svg class="external-icon" viewBox="0 0 24 24">
+      <path d="M19 19H5V5h7V3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2v-7h-2v7zM14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3h-7z"></path>
+    </svg>
+  </div>
+  <p class="card-description">白紙のテンプレートが開きます</p>
+</a></div></div>
+        
+        <div class="article-item item_heading " id="item5304" data-item-id="5304" data-item-type="ItemHeading"><h2 class="item-body">1. 作成課題の確認</h2></div>
+        
+        <div class="article-item item_markdown " id="item39245" data-item-id="39245" data-item-type="ItemMarkdown"><h4 id="section">目安の学習時間:5分</h4>
+</div>
+        
+        <div class="article-item item_markdown " id="item5305" data-item-id="5305" data-item-type="ItemMarkdown"><p>こちらが作成課題となります！</p>
+</div>
+        
+        <div class="article-item item_link " id="item5306" data-item-id="5306" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=Fuxhv&amp;item_id=5306" rel="nofollow noopener noreferrer" target="_blank">ホーム | example-2</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="ホーム | example-2" data-reference="https://info2516354.wixsite.com/website-2" src="https://cdn.clipkit.co/tenants/589/item_links/images/000/005/306/thumb/91323101-f9c9-48ca-82b1-20f248f32a24.png?1745418846" width="75" height="75" /></div><div class="media-body"><div class="item-body"></div></div></div></div></div>
+        
+        <div class="article-item item_heading " id="item5307" data-item-id="5307" data-item-type="ItemHeading"><h2 class="item-body">2. ヒント</h2></div>
+        
+        <div class="article-item item_markdown " id="item39247" data-item-id="39247" data-item-type="ItemMarkdown"><h4 id="section">目安の学習時間:15分</h4>
+</div>
+        
+        <div class="article-item item_markdown " id="item5308" data-item-id="5308" data-item-type="ItemMarkdown"><p>制作課題において難易度が高いスキルについてです！以下のヒントを確認しながら作成課題に取り組んでみましょう！</p>
+</div>
+        
+        <div class="article-item item_markdown " id="item40267" data-item-id="40267" data-item-type="ItemMarkdown"><h4 id="section">予約機能の追加方法</h4>
+</div>
+        
+        <div class="article-item item_rich_text " id="item40268" data-item-id="40268" data-item-type="ItemRichText"><div class="item-body-hbr">オンラインでサービスの予約を受け付けるための機能です。「Wix ブッキング」というアプリを追加して実装します。Wixの多くの高機能は、このように「アプリ」を追加することで実装できます。</div></div>
+        
+        <div class="article-item item_html " id="item40269" data-item-id="40269" data-item-type="ItemHtml"><div class="item-body"><!DOCTYPE html>
+<div class="card-with-icon check">
+    <span class="bold"><strong>操作手順</strong><br></span>
+    <div class="content-area">
+        <ol>
+            <li>エディタ左側のメニューから「アプリ」（四角が4つ並んだアイコン）をクリックします。</li>
+            <li>検索窓に「Wix ブッキング」と入力して検索します。</li>
+            <li>表示された「Wix ブッキング」アプリを選択し、「サイトに追加」をクリックします。</li>
+        </ol>
+    </div>
+</div></div></div>
+        
+        <div class="article-item item_image " id="item40270" data-item-id="40270" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/040/270/medium/09963c3b-1db3-416c-b437-89cb323d881b.png?1759908969" title=""><img class="img-responsive item-image" alt=" (40270)" data-reference="" src="https://cdn.clipkit.co/tenants/589/item_images/images/000/040/270/medium/09963c3b-1db3-416c-b437-89cb323d881b.png?1759908969" width="640" height="360" /></a><h4></h4></div></div>
+        
+        <div class="article-item item_markdown " id="item40275" data-item-id="40275" data-item-type="ItemMarkdown"><h4 id="section">その他のアプリの追加方法（ブログ・チャット・販売プラン）</h4>
+</div>
+        
+        <div class="article-item item_rich_text " id="item40278" data-item-id="40278" data-item-type="ItemRichText"><div class="item-body-hbr">以下のアプリも、「Wix ブッキング」と全く同じ手順でWix App Marketからサイトに追加できます。<br>
+エディタ左側メニューの「アプリ」から、それぞれ以下のアプリ名を検索して追加しましょう。</div></div>
+        
+        <div class="article-item item_html " id="item40277" data-item-id="40277" data-item-type="ItemHtml"><div class="item-body"><!DOCTYPE html>
+<ul>
+    <li>
+        <strong>ブログ機能</strong><br>
+        サイト内で情報発信を行うための機能です。<br>
+        検索するアプリ名：「<strong>Wix ブログ</strong>」
+    </li>
+    <li>
+        <strong>チャット機能</strong><br>
+        サイト訪問者とリアルタイムでコミュニケーションをとるための機能です。<br>
+        検索するアプリ名：「<strong>Wixスマートチャット</strong>」
+    </li>
+    <li>
+        <strong>販売プラン機能</strong><br>
+        月額課金や回数券など、会員向けのプランを販売するための機能です。<br>
+        検索するアプリ名：「<strong>Wix 販売プラン</strong>」
+    </li>
+</ul></div></div>
+        
+        <div class="article-item item_markdown " id="item40271" data-item-id="40271" data-item-type="ItemMarkdown"><h4 id="section">決済機能の追加方法</h4>
+</div>
+        
+        <div class="article-item item_rich_text " id="item40272" data-item-id="40272" data-item-type="ItemRichText"><div class="item-body-hbr">サイト上で商品やサービスの代金支払いを受け付けるための機能です。これには<span class="decoration-01">サイトのアップグレード</span>が必須となります。</div></div>
+        
+        <div class="article-item item_html " id="item40274" data-item-id="40274" data-item-type="ItemHtml"><div class="item-body"><!DOCTYPE html>
+<div class="callout white">
+    <div class="title-area">
+        <div class="icon bulb"></div>
+        <div class="title"><strong>決済機能を追加する上での重要な注意点</strong></div>
+    </div>
+    <div class="content-area">
+        <ul>
+            <li>サイトでオンライン決済を受け付けるには、まず決済機能に対応した<strong>プレミアムプランにサイトをアップグレードする</strong>必要があります。</li>
+            <li>Wix独自の決済サービス「Wix Payments」は現在日本では利用できません。決済方法を設定する際は、必ず<strong>サードパーティの決済代行サービス</strong>を選択してください。</li>
+        </ul>
+    </div>
+</div></div></div>
+        
+        <div class="article-item item_html " id="item40273" data-item-id="40273" data-item-type="ItemHtml"><div class="item-body"><!DOCTYPE html>
+<div class="card-with-icon check">
+    <span class="bold"><strong>操作手順</strong><br></span>
+    <div class="content-area">
+        <ol>
+            <li>サイトを決済機能対応のプレミアムプランにアップグレードします。</li>
+            <li>サイトの<strong>ダッシュボード</strong>に移動します。</li>
+            <li>左側のメニューから「設定」>「決済方法」に進みます。</li>
+            <li>利用可能な決済代行サービス（日本ではStripe, PayPal, コンビニ決済などが利用可能）の中から、ビジネスに適したものを選択し、「接続」ボタンから設定を進めます。</li>
+        </ol>
+    </div>
+</div></div></div>
+        
+        <div class="article-item item_image " id="item5314" data-item-id="5314" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/005/314/medium/8977bb2f-3a7e-430a-af06-e79662130a42.png?1721449983" title="ピンポイント解説"><img class="img-responsive item-image" alt="ピンポイント解説" data-reference="" src="https://cdn.clipkit.co/tenants/589/item_images/images/000/005/314/medium/8977bb2f-3a7e-430a-af06-e79662130a42.png?1721449983" width="640" height="347" /></a><h4>ピンポイント解説</h4></div></div>
+        
+        <div class="article-item item_rich_text " id="item12575" data-item-id="12575" data-item-type="ItemRichText"><div class="item-body-hbr">ページで使われている「プラン」の設定について説明します。<br>
+<br>
+サイドバーからアプリを選択し、「Wixビジネスソリューション」を選択しましょう。<br>
+<br>
+こちらにはWixがデフォルトで用意しているアプリが一覧で確認できます。<br>
+<br>
+「販売プラン」を選択しインストールしましょう。<br>
+<br>
+そうすると今回のページのようなプランを設定することができます。<br>
+<br>
+それ以降はプランを追加できたら、プランを選択した上で<br>
+<br>
+「プランを管理」をクリックすると新しいプランの作成やプラン内容の編集を行えます。<br>
+<br>
+「設定」をクリックすると表示やデザイン面での編集を行うことができます。<br>
+<br>
+「プランを管理」後の操作と「設定」後の操作方法については割愛します。<br>
+<br>
+実際に触ってみること、Google検索を通じて解決できるはずです。</div></div>
+        
+        <div class="article-item item_heading " id="item12580" data-item-id="12580" data-item-type="ItemHeading"><h2 class="item-body">3. サイト制作</h2></div>
+        
+        <div class="article-item item_markdown " id="item39246" data-item-id="39246" data-item-type="ItemMarkdown"><h4 id="section">目安の学習時間:12時間</h4>
+</div>
+        
+        <div class="article-item item_markdown " id="item12583" data-item-id="12583" data-item-type="ItemMarkdown"><h4 id="a-">a. 【動画解説】弊社クライアント部分のロゴマークの探し方</h4>
+</div>
+        
+        <div class="article-item item_link " id="item12584" data-item-id="12584" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=Fuxhv&amp;item_id=12584" rel="nofollow noopener noreferrer" target="_blank">補足動画_Wix上級編_弊社クライアントのロゴマークの探し方</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="補足動画_Wix上級編_弊社クライアントのロゴマークの探し方" data-reference="https://www.dropbox.com/scl/fi/sepojahmhms4btrovejcw/_WIX-_.mp4?rlkey=bqlz8a7sm5fk0rrntjf60jeqs&amp;e=1&amp;st=5x5ozkhw&amp;dl=0" src="https://cdn.clipkit.co/tenants/589/item_links/images/000/012/584/thumb/0174c41e-b0f4-48be-a9b7-b7d6b33d2a25.png?1745419295" width="75" height="75" /></div><div class="media-body"><div class="item-body">Wix上級編の「弊社クライアント」セクションで使用するロゴマークの作成方法について、動画にて簡単に解説しながら説明していますのでご覧ください。特に、素材サイトからの探し方に悩む方が多いため、Canvaを使用して簡単にオリジナルのロゴマークを作成する方法を詳しく紹介しています。Canvaの基本的な使い方から、ロゴデザインのコツまで、ステップバイステップで解説しています。</div></div></div></div></div>
+        
+        <div class="article-item item_markdown " id="item12587" data-item-id="12587" data-item-type="ItemMarkdown"><h4 id="b--">b. 【動画解説】上級編-円グラフ部分の画像の色の変え方</h4>
+</div>
+        
+        <div class="article-item item_link " id="item12588" data-item-id="12588" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=Fuxhv&amp;item_id=12588" rel="nofollow noopener noreferrer" target="_blank">補足動画_Wix上級編_円グラフ部分の画像の色の変え方</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="補足動画_Wix上級編_円グラフ部分の画像の色の変え方" data-reference="https://www.dropbox.com/scl/fi/ge95q79oyjbc82trwvc57/_WIX-_.mp4?rlkey=4n2sj6mrhtzlctqjacgxskrah&amp;e=1&amp;st=3uapwsiu&amp;dl=0" src="https://cdn.clipkit.co/tenants/589/item_links/images/000/012/588/thumb/0cc343b9-70ea-4fda-bf6e-5287e8b54716.png?1745419277" width="75" height="75" /></div><div class="media-body"><div class="item-body">Wix上級編で多くの方が躓くポイントである、マウスオーバー時に画像の色が変化する効果の設定方法について、動画にて簡単に解説しながら説明していますのでご覧ください。この機能は、ユーザーがマウスを画像に重ねると色が変わる動的な視覚効果を作り出すもので、サイトのインタラクティブ性を高めます。設定手順や注意点、さらにはカスタマイズのコツについても詳しく解説しています。</div></div></div></div></div>
+        
+        <div class="article-item item_link " id="item40169" data-item-id="40169" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=Fuxhv&amp;item_id=40169" rel="nofollow noopener noreferrer" target="_blank">Wix上級編　使用素材</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="Wix上級編　使用素材" data-reference="https://www.dropbox.com/scl/fi/mr1gqvmyoko1d7o1o9ay2/wix3.0_image.zip?rlkey=yzfq8xatlas8a63lgg3ejyo2m&amp;st=81vvlro8&amp;dl=0" src="https://cdn.clipkit.co/tenants/589/item_links/images/000/040/169/thumb/be5b0ce2-bd31-4689-a811-f16878dbdc8f.png?1758865766" width="75" height="75" /></div><div class="media-body"><div class="item-body">こちらは使用しなくても構いません。可能な方はご自身で画像を制作してみましょう！</div></div></div></div></div>
+        
+        <div class="article-item item_markdown " id="item12589" data-item-id="12589" data-item-type="ItemMarkdown"><h4 id="c--">c. 【動画解説】上級編-サイトメニューの構造や調整について解説</h4>
+</div>
+        
+        <div class="article-item item_link " id="item12591" data-item-id="12591" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=Fuxhv&amp;item_id=12591" rel="nofollow noopener noreferrer" target="_blank">補足動画_Wix上級編_サイトメニューの構造や調整</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="補足動画_Wix上級編_サイトメニューの構造や調整" data-reference="https://www.dropbox.com/scl/fi/mt1grvuidttc6qlhlvnqi/_WIX-_.mp4?rlkey=x2x3agia8ldlt6ahq1fbgc3f1&amp;e=1&amp;st=fxql5132&amp;dl=0" src="https://cdn.clipkit.co/tenants/589/item_links/images/000/012/591/thumb/49cd29f9-7a64-4b3d-9340-cca9889230ee.png?1745419345" width="75" height="75" /></div><div class="media-body"><div class="item-body"></div></div></div></div></div>
+        
+        <div class="article-item item_markdown " id="item12593" data-item-id="12593" data-item-type="ItemMarkdown"><h4 id="d-">d. 【動画解説】上級編のアンカーメニューの位置を変えたい</h4>
+</div>
+        
+        <div class="article-item item_link " id="item12595" data-item-id="12595" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=Fuxhv&amp;item_id=12595" rel="nofollow noopener noreferrer" target="_blank">補足動画_Wix上級編_アンカーの配置を変えたい</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="補足動画_Wix上級編_アンカーの配置を変えたい" data-reference="https://www.dropbox.com/scl/fi/nrvgj4o7vb6sb97ozkfxy/_WIX-_.mp4?rlkey=cefg328j8djz43or6afbua4pi&amp;st=m59f4rrl&amp;dl=0" src="https://cdn.clipkit.co/tenants/589/item_links/images/000/012/595/thumb/6e5569d6-e641-4c74-a6ff-1edfcb654386.png?1745419420" width="75" height="75" /></div><div class="media-body"><div class="item-body">アンカーボタンのレイアウトと配置について、Wixエディターでの設定方法を動画にて簡単に解説しながら説明していますのでご覧ください。</div></div></div></div></div>
+        
+        <div class="article-item item_markdown " id="item12597" data-item-id="12597" data-item-type="ItemMarkdown"><h4 id="e-">e. 【動画解説】上級編でつまずきやすい用語の解説</h4>
+</div>
+        
+        <div class="article-item item_link " id="item12598" data-item-id="12598" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=Fuxhv&amp;item_id=12598" rel="nofollow noopener noreferrer" target="_blank">補足動画_Wix上級編_用語解説</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="補足動画_Wix上級編_用語解説" data-reference="https://www.dropbox.com/scl/fi/d2i3pksq8fwv70ia0pv33/_WIX-_.mp4?rlkey=hexj2g49tsjudblksv9axisz4&amp;st=3t4wsyhy&amp;dl=0" src="https://cdn.clipkit.co/tenants/589/item_links/images/000/012/598/thumb/707654cf-6778-451d-8d89-07d27de6598e.png?1758585985" width="75" height="75" /></div><div class="media-body"><div class="item-body">Wix上級編で頻繁に使用される機能や用語、特にダッシュボードとハンバーガーメニューについて、動画にて簡単に解説しながら説明していますのでご覧ください。</div></div></div></div></div>
+        
+        <div class="article-item item_heading " id="item5315" data-item-id="5315" data-item-type="ItemHeading"><h2 class="item-body">4. 自己添削</h2></div>
+        
+        <div class="article-item item_markdown " id="item39248" data-item-id="39248" data-item-type="ItemMarkdown"><h4 id="section">目安の学習時間:5分</h4>
+</div>
+        
+        <div class="article-item item_rich_text " id="item5316" data-item-id="5316" data-item-type="ItemRichText"><div class="item-body-hbr">課題制作、お疲れ様でした！自分が納得できるWEBサイトを制作することはできたでしょうか。<br>
+<br>
+完成版のサイトを、コーチの方からお使いのWixアカウントに共有いたしますので、以下のテンプレートを参考に、<span class="decoration-02"><span class="decoration-01">Slackの「 c-【受講ID】-【お名前】」のチャンネルでコーチをメンションしてください！</span></span><br>
+<br>
+実際に制作課題がどのように作られているかを確認することができるため、不明点を解決することができると思います。</div></div>
+        
+        <div class="article-item item_html " id="item5317" data-item-id="5317" data-item-type="ItemHtml"><div class="item-body"><div class="quote">例）<br>
+    <br>
+    お世話になっております。<br>
+    Wix実践 -上級編- 作成課題の完成版サイトの共有を希望します。<br>
+    以下のメールアドレスに送付をお願いいたします。<br>
+    <br>
+    ==<br>
+    Wixアカウントでお使いのメールアドレス<br>
+    ==<br>
+</div></div></div>
+        
+        <div class="article-item item_rich_text " id="item5318" data-item-id="5318" data-item-type="ItemRichText"><div class="item-body-hbr">それでは、<span class="decoration-01"><span class="decoration-02">自己添削に取り組んでください！現在の自分ができる100%の状態のWEBサイトを完成させましょう！</span></span><br>
+<br>
+そして、下記のテンプレートを参考にし、<span class="decoration-02"><span class="decoration-01">Slackの「 c-【受講ID】-【お名前】」のチャンネルでコーチをメンションし、制作課題を共有してください</span></span>🙌</div></div>
+        
+        <div class="article-item item_html " id="item5319" data-item-id="5319" data-item-type="ItemHtml"><div class="item-body"><div class="callout white">
+    <div class="title-area">
+        <div class="icon bulb"></div>
+        <div class="title">注意事項</div>
+    </div>
+    <div class="content-area">
+      	<ul>
+          <li>その際、権限共有も忘れないでください！権限共有の仕方がわからない方は、「Wix -実践編- ＞ d. Wixの権限共有機能を理解しよう」を確認しましょう🙌</li>
+          <li>また、サイト名は作成者が分かるように<span class="decoration-02">上級編-名前</span>で統一しましょう！</li>
+        </ul>
+    </div>
+</div></div></div>
+        
+        <div class="article-item item_rich_text " id="item5320" data-item-id="5320" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">コーチにSlackで共有する際のテンプレート</span></div></div>
+        
+        <div class="article-item item_html " id="item5321" data-item-id="5321" data-item-type="ItemHtml"><div class="item-body"><div class="quote">〇〇コーチ (@メンション)<br>
+    <br>
+    お世話になっております。<br>
+    Wix -〇〇編-の制作課題が終了いたしました。<br>
+    以下のURLのサイトに権限共有もいたしましたのでご確認いただき、添削をよろしくお願いいたします。<br>
+    <br>
+    ==<br>
+    サイトURL<br>
+    ==<br>
+</div></div></div>
+        
+        <div class="article-item item_heading " id="item5322" data-item-id="5322" data-item-type="ItemHeading"><h2 class="item-body">5. まとめ</h2></div>
+        
+        <div class="article-item item_markdown " id="item39249" data-item-id="39249" data-item-type="ItemMarkdown"><h4 id="section">目安の学習時間:5分</h4>
+</div>
+        
+        <div class="article-item item_rich_text " id="item5323" data-item-id="5323" data-item-type="ItemRichText"><div class="item-body-hbr">Wix実践 -上級編-お疲れ様でした！<br>
+<br>
+もう皆様は、<span class="decoration-01"><span class="decoration-02">Wixについてのスキルを完璧に身に付けたので大抵のHPはご自身の力のみで制作することができます！</span></span><br>
+<br>
+まだ一つのWEBサイトを制作するのに時間がかかるかもしれませんが、慣れてくればどんどん時間を短縮することができます🤝<br>
+<br>
+次はもう一つのノーコード制作ツールである「WordPress」について学習します。<br>
+引き続き頑張っていきましょう！</div></div>
+        
+        <div class="article-item item_link " id="item48722" data-item-id="48722" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=Fuxhv&amp;item_id=48722" rel="nofollow noopener noreferrer" target="_blank">Wix教材報告フォーム</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="Wix教材報告フォーム" data-reference="https://docs.google.com/forms/d/e/1FAIpQLSc6MiUBpk_UCOd1lq-MxhDPMzCBLTT7fphZduSJrvV50NfRMA/viewform?usp=publish-editor" src="https://cdn.clipkit.co/tenants/589/item_links/images/000/048/722/thumb/9127fd1b-66b6-4d44-adff-6f1939a1a57b.png?1776324125" width="75" height="75" /></div><div class="media-body"><div class="item-body">アップデート箇所の報告/教材へのご意見を募集しております！</div></div></div></div></div>
+        
+        <div class="article-item item_rich_text " id="item48723" data-item-id="48723" data-item-type="ItemRichText"><div class="item-body-hbr">※質問フォームではありません。(質問はコーチにお願いいたします)</div></div>
+        
+        <div class="article-item item_html " id="item25487" data-item-id="25487" data-item-type="ItemHtml"><div class="item-body"><div class="pagenation-buttons">
+  <a href="ChIor" class="pagenation-buttons_prev"><img src="/theme/webcoach/img/icons/arrow-right.svg" class="pagenation-buttons_icon">前の章に戻る</a>
+</div></div></div>
+        
+        
+        
+        <div class="back-to-roadmap mb-4 text-center"></div>
+      </div>
+    </div>
+    
+    <div class="lightbox-modal" id="lightboxModal">
+      <img src="" alt="">
+    </div>
+    
+    <div id="modal" class="fixed-menu-modal">
+      <div class="fixed-menu-modal-content">
+        <div class="index mb-3" style="background-color: #FDF5E8;">
+          <div>
+            <div class="fw-light">INDEX</div>
+            <div class="h3">目次</div>
+          </div>
+          <div class="toc"></div>
+        </div>
+        
+        <!-- ボタン類 -->
+        <div id="fixed-menu_buttons" class="fixed-menu_buttons"></div>
+        
+        <div class="back-to-roadmap text-center"></div>
+      </div>
+    </div>
+    
+    <button id="toggleBtn" class="floating-btn">
+      <img id="iconOpen" 
+           src="/theme/webcoach/img/icons/fixed-menu_modal-open.svg" 
+           alt="メニューを開く">
+      <img id="iconClose" 
+           src="/theme/webcoach/img/icons/fixed-menu_modal-close.svg" 
+           alt="メニューを閉じる" style="display:none;">
+    </button>
+  </div>
+</div>
+</div>
+<!-- <script src="https://cdn.clipkit.co/clipkit/javascripts/item-shopify-1.0.js?v=v15.9.0-20260915" async></script> -->
+            </div>
+        </main>
+
+    </div>
+
+    <div class="p-5" style="background-color: #B73E3D; color: white; height: 300px;">
+        <div class="">
+            <div class="h4 ps-3" style="border-left: 5px solid white;">WEBCOACH | キャリアチェンジまでの全てを学ぶマンツーマンWEBスクール</div>
+            <ul class="nav flex-column m-0 p-3 fw-light">
+                <li class="nav-item mb-2"><a href="https://www.webcoach.jp/" target="_blank">WEBCOACH | 公式HP</a></li>
+                <li class="nav-item mb-2"><a href="https://www.instagram.com/webcoach_officials/" target="_blank">WEBCOACH | 公式Instagram</a></li>
+                <li class="nav-item mb-2"><a href="https://vectorinc.co.jp/groupservice/webcoach-career/" target="_blank">WEBCOACH 公式メディア | WEBCOACH career</a></li>
+            </ul>
+        </div>
+        <div class="text-center">
+            <small>&copy; 2020 by WEBCOACH</small>
+        </div>
+    </div>
+
+    <script src="https://cdn.clipkit.co/clipkit/javascripts/application-1.0.js?v=v15.9.0-20260915" async></script>
+
+    <!-- bodyタグ内の下部に挿入されます -->
+
+
+    <!-- BootstrapのCDNでのjs読み込み -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+        crossorigin="anonymous"></script>
+
+    <!-- シンタックスハイライトの生成 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.1/highlight.min.js"></script>
+    <script>
+        // ハイライトを実行
+        hljs.initHighlightingOnLoad();
+    </script>
+
+    <!-- 目次の生成 -->
+    <script type="text/javascript">toc();</script>
+
+    <!-- ブックマークの生成 -->
+    <script type="text/javascript">displayLinks();</script>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="ck-icon-arrow-down" viewBox="0 0 1792 1792"><path d="M1675 832q0 53-37 90l-651 652q-39 37-91 37-53 0-90-37l-651-652q-38-36-38-90 0-53 38-91l74-75q39-37 91-37 53 0 90 37l294 294v-704q0-52 38-90t90-38h128q52 0 90 38t38 90v704l294-294q37-37 90-37 52 0 91 37l75 75q37 39 37 91z" /></symbol><symbol id="ck-icon-arrow-up" viewBox="0 0 1792 1792"><path d="M1675 971q0 51-37 90l-75 75q-38 38-91 38-54 0-90-38l-294-293v704q0 52-37.5 84.5t-90.5 32.5h-128q-53 0-90.5-32.5t-37.5-84.5v-704l-294 293q-36 38-90 38t-90-38l-75-75q-38-38-38-90 0-53 38-91l651-651q35-37 90-37 54 0 91 37l651 651q37 39 37 91z" /></symbol><symbol id="ck-icon-calendar" viewBox="0 0 1792 1792"><path d="M192 1664h288v-288h-288v288zm352 0h320v-288h-320v288zm-352-352h288v-320h-288v320zm352 0h320v-320h-320v320zm-352-384h288v-288h-288v288zm736 736h320v-288h-320v288zm-384-736h320v-288h-320v288zm768 736h288v-288h-288v288zm-384-352h320v-320h-320v320zm-352-864v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm736 864h288v-320h-288v320zm-384-384h320v-288h-320v288zm384 0h288v-288h-288v288zm32-480v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm384-64v1280q0 52-38 90t-90 38h-1408q-52 0-90-38t-38-90v-1280q0-52 38-90t90-38h128v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h384v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h128q52 0 90 38t38 90z" /></symbol><symbol id="ck-icon-chevron-left" viewBox="0 0 1792 1792"><path d="M1427 301l-531 531 531 531q19 19 19 45t-19 45l-166 166q-19 19-45 19t-45-19l-742-742q-19-19-19-45t19-45l742-742q19-19 45-19t45 19l166 166q19 19 19 45t-19 45z" /></symbol><symbol id="ck-icon-chevron-right" viewBox="0 0 1792 1792"><path d="M1363 877l-742 742q-19 19-45 19t-45-19l-166-166q-19-19-19-45t19-45l531-531-531-531q-19-19-19-45t19-45l166-166q19-19 45-19t45 19l742 742q19 19 19 45t-19 45z" /></symbol><symbol id="ck-icon-clock-o" viewBox="0 0 1792 1792"><path d="M1024 544v448q0 14-9 23t-23 9h-320q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h224v-352q0-14 9-23t23-9h64q14 0 23 9t9 23zm416 352q0-148-73-273t-198-198-273-73-273 73-198 198-73 273 73 273 198 198 273 73 273-73 198-198 73-273zm224 0q0 209-103 385.5t-279.5 279.5-385.5 103-385.5-103-279.5-279.5-103-385.5 103-385.5 279.5-279.5 385.5-103 385.5 103 279.5 279.5 103 385.5z" /></symbol><symbol id="ck-icon-trash" viewBox="0 0 1792 1792"><path d="M704 1376v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm-544-992h448l-48-117q-7-9-17-11h-317q-10 2-17 11zm928 32v64q0 14-9 23t-23 9h-96v948q0 83-47 143.5t-113 60.5h-832q-66 0-113-58.5t-47-141.5v-952h-96q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h309l70-167q15-37 54-63t79-26h320q40 0 79 26t54 63l70 167h309q14 0 23 9t9 23z" /></symbol><symbol id="ck-icon-undo" viewBox="0 0 1792 1792"><path d="M1664 896q0 156-61 298t-164 245-245 164-298 61q-172 0-327-72.5t-264-204.5q-7-10-6.5-22.5t8.5-20.5l137-138q10-9 25-9 16 2 23 12 73 95 179 147t225 52q104 0 198.5-40.5t163.5-109.5 109.5-163.5 40.5-198.5-40.5-198.5-109.5-163.5-163.5-109.5-198.5-40.5q-98 0-188 35.5t-160 101.5l137 138q31 30 14 69-17 40-59 40h-448q-26 0-45-19t-19-45v-448q0-42 40-59 39-17 69 14l130 129q107-101 244.5-156.5t284.5-55.5q156 0 298 61t245 164 164 245 61 298z" /></symbol></svg><script async="async" defer="defer" nonce="767Jxted6s9YCeZEvlCWPA==" src="//www.instagram.com/embed.js"></script>
+
+<!--Clipkit(R) v15.9.0-20260915 Copyright (C) 2026 VECTOR Inc.-->
+
+</body>
+
+</html>
+

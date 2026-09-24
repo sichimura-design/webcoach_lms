@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+  <html lang="ja">
+
+<head><script async="async" data-label="saas" nonce="W99J9JaCqTnrIRYztF5cnw==" src="//b.clipkit.co/"></script><script src="//cdn.clipkit.co/clipkit_assets/beacon-787bbf3225ec43d93f198af35f7d56fdef40fb50440a2909500bdf5b99225aab.js" async="async" id="clipkit-beacon" data-page-type="article" data-page-id="1762" data-domain="learn.webcoach.jp" data-url="/generative-ai/AI_coding/%E6%95%99%E6%9D%905%20%E5%AE%9F%E8%B7%B5%EF%BC%81AI%E6%B4%BB%E7%94%A8Web%E3%82%B5%E3%82%A4%E3%83%88%E5%AE%9F%E8%A3%85%E3%81%A8%E6%9C%80%E9%81%A9%E5%8C%96/DJIFh" data-href="https://learn.webcoach.jp/media/beacon"></script>
+    <!-- headタグ内の上部に挿入されます -->
+
+    <meta charset="UTF-8">
+    <title>3章：サイトを磨き上げる！AIサイト最適化 - WEBCOACH</title>
+
+    <!-- resetcssのCDNでのCSS読み込み -->
+    <link rel="stylesheet" href="https://unpkg.com/modern-css-reset/dist/reset.min.css" />
+
+    <!-- fontawesomeのCDNでのCSS読み込み -->
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/fontawesome/4.7.0/css/font-awesome.min.css">
+
+    <!-- BootstrapのCDNでのCSS読み込み -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous" />
+
+    <!-- highlight.jsの読み込み -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.1/styles/dracula.min.css">
+
+    <!-- カスタムCSS -->
+    <link rel="stylesheet" href="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/168/original/style.css?1788081716">
+
+    <!-- clipkitデフォルトのCSS -->
+    <!--<link rel="stylesheet" media="screen" href="https://cdn.clipkit.co/clipkit/stylesheets/application-1.0.css?v=v15.9.0-20260915">-->
+
+    <!-- jQuery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <!-- カスタムJS -->
+    <script src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/202/original/script.js?1788946194"></script>
+    <script src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/535/original/script.js?1743681771"></script>
+
+    <!-- clipkitデフォルトのJS -->
+    <script src="https://cdn.clipkit.co/clipkit/javascripts/default-1.0.js?v=v15.9.0-20260915"></script>
+
+    <!-- フォント -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;700&display=swap" rel="stylesheet">
+
+    <link href="https://cdn.clipkit.co/clipkit/favicons/square/missing.png" rel="shortcut icon" type="image/vnd.microsoft.icon">
+    <link rel="apple-touch-icon" href="https://cdn.clipkit.co/clipkit/touch_icons/square/missing.png">
+    <link rel="alternate" type="application/rss+xml"
+        href="https://learn.webcoach.jp/media.rss" title="WEBCOACH">
+    
+<link rel="canonical" href="https://learn.webcoach.jp/generative-ai/AI_coding/%E6%95%99%E6%9D%905%20%E5%AE%9F%E8%B7%B5%EF%BC%81AI%E6%B4%BB%E7%94%A8Web%E3%82%B5%E3%82%A4%E3%83%88%E5%AE%9F%E8%A3%85%E3%81%A8%E6%9C%80%E9%81%A9%E5%8C%96/DJIFh">
+
+<meta name="description" content="">
+<meta name="keywords" content="">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:domain" content="learn.webcoach.jp">
+<meta name="twitter:title" content="3章：サイトを磨き上げる！AIサイト最適化 - WEBCOACH">
+<meta name="twitter:image" content="https://cdn.clipkit.co/tenants/589/item_images/images/000/037/521/medium/afa0a0b3-4906-40ee-95df-f0eb80cc4ddf.png?1753932160">
+<meta name="twitter:description" content="">
+<meta property="og:site_name" content="WEBCOACH">
+<meta property="og:title" content="3章：サイトを磨き上げる！AIサイト最適化">
+<meta property="og:description" content="">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://learn.webcoach.jp/generative-ai/AI_coding/%E6%95%99%E6%9D%905%20%E5%AE%9F%E8%B7%B5%EF%BC%81AI%E6%B4%BB%E7%94%A8Web%E3%82%B5%E3%82%A4%E3%83%88%E5%AE%9F%E8%A3%85%E3%81%A8%E6%9C%80%E9%81%A9%E5%8C%96/DJIFh">
+<meta property="og:image" content="https://cdn.clipkit.co/tenants/589/item_images/images/000/037/521/large/afa0a0b3-4906-40ee-95df-f0eb80cc4ddf.png?1753932160">
+<script type="application/ld+json">
+  {
+    "@context": "http://schema.org",
+    "@type": "NewsArticle",
+    "mainEntityOfPage":{
+      "@type":"WebPage",
+      "@id": "https://learn.webcoach.jp/generative-ai/AI_coding/%E6%95%99%E6%9D%905%20%E5%AE%9F%E8%B7%B5%EF%BC%81AI%E6%B4%BB%E7%94%A8Web%E3%82%B5%E3%82%A4%E3%83%88%E5%AE%9F%E8%A3%85%E3%81%A8%E6%9C%80%E9%81%A9%E5%8C%96/DJIFh"
+    },
+    "headline": "3章：サイトを磨き上げる！AIサイト最適化",
+    "image": {
+      "@type": "ImageObject",
+      "url": "https://cdn.clipkit.co/tenants/589/item_images/images/000/037/521/medium/afa0a0b3-4906-40ee-95df-f0eb80cc4ddf.png?1753932160",
+      "width": 800,
+      "height": 600
+    },
+    "datePublished": "2025-07-31T12:46:38+09:00",
+    "dateModified": "2025-08-02T08:15:16+09:00",
+    "author": {
+      "@type": "Person",
+      "name": "m_takenaga"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "WEBCOACH",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://cdn.clipkit.co/tenants/589/sites/logos/000/000/001/logo_sm/a8defd4b-1cc7-433b-a61c-08e7db0e3e4f.png?1714459367"
+      }
+    },
+    "description": ""
+  }
+  </script>
+
+    <!-- headタグ内の下部に挿入されます -->
+
+
+<meta name="csrf-param" content="authenticity_token" />
+<meta name="csrf-token" content="QPA6ljbcTasJrJt6xjlfr2ZQAfpwF6CBLCguO_ESSKPk4uUsyEBOK6f_B97PBP2lXU-dTDclqil_Osizw3ubwQ" /><meta content="" name="routing-root-path" /><meta content="media" name="site-name" /><meta content="ja" name="i18n-default-locale" /><meta content="ja" name="i18n-locale" /></head>
+
+<body class="device-desktop">
+    <!-- bodyタグ内の上部に挿入されます -->
+
+
+    <!-- サイドバーとコンテンツのコンテナ -->
+    <div class="d-flex flex-row w-100 mb-5" style="min-height: calc(100vh - 400px);">
+
+        <!-- サイドバー -->
+        <!--<nav id="side-bar" class="d-flex flex-column fixed-top" style="width: 250px;">-->
+        <!--    <h1 class="d-block w-100 text-center">-->
+        <!--        <a class="d-block" href="/">-->
+        <!--            <img class="mw-100 p-3" src="https://cdn.clipkit.co/tenants/589/sites/logos/000/000/001/logo_sm/a8defd4b-1cc7-433b-a61c-08e7db0e3e4f.png?1714459367" alt="WEBCOACH">-->
+        <!--        </a>-->
+        <!--    </h1>-->
+        <!--    <ul class="nav flex-column m-0 p-3 fw-bold">-->
+        <!--        <li id="sidebar-top" class="nav-item mb-2" style="display: none;"><a href="/"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;" src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/233/original/home.png?1715353458">-->
+        <!--                <div>ホーム</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-knowledges" class="nav-item mb-2" style="display: none;"><a href="/knowledges"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;" src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/232/original/book.png?1715353458">-->
+        <!--                <div>学習の心得</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-web-designs" class="nav-item mb-2" style="display: none;"><a href="/web-designs"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/231/original/design.png?1715353457">-->
+        <!--                <div>WEBデザイン</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-web-marketing" class="nav-item mb-2" style="display: none;"><a href="/web-marketings"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/230/original/marketing.png?1715353457">-->
+        <!--                <div>WEBマーケティング</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-codings" class="nav-item mb-2" style="display: none;"><a href="/codings"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/229/original/website.png?1715353457">-->
+        <!--                <div>WEBサイト構築</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-business-skills" class="nav-item mb-2" style="display: none;"><a href="/business-skills"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/228/original/business.png?1715353456">-->
+        <!--                <div>ビジネススキル</div>-->
+        <!--            </a></li>-->
+        <!--    </ul>-->
+        <!--</nav>-->
+
+        <!-- コンテンツ -->
+        <!--<main class="ms-auto" style="width: calc(100vw - 250px);">-->
+        <main class="ms-auto" style="width: calc(100vw);">
+            <div id="sb-site">
+                
+
+
+<div class="container">
+  <div class="row">
+    <div class="article">
+      <div class="mb-3 text-light" style="
+        height: 180px;
+        background-image: url(https://cdn.clipkit.co/tenants/589/resources/assets/000/000/270/original/article-header.png?1717761933);
+        background-repeat: no-repeat;
+        background-size: cover;
+        display: flex;
+        align-items: flex-end;
+      ">
+        <div style="
+          margin: 0 0 30px 30px;
+        ">
+          <div>教材5 実践！AI活用Webサイト実装と最適化</div>
+
+          <div class="fw-bold h2">3章：サイトを磨き上げる！AIサイト最適化</div>
+        </div>
+      </div>
+      <div class="article-content">
+        <!-- 目次 -->
+        <div class="index mb-3" style="background-color: #FDF5E8;">
+          <div>
+            <div class="fw-light">INDEX</div>
+            <div class="h3">目次</div>
+          </div>
+          <div class="toc"></div>
+        </div>
+        
+        <div class="back-to-roadmap mb-4 text-center"></div>
+
+        <!-- コンテンツ -->
+        
+        
+        <div class="article-item item_html " id="item37587" data-item-id="37587" data-item-type="ItemHtml"><div class="item-body"><div class="pagenation-buttons">
+  <a href="UiDIh" class="pagenation-buttons_prev"><img src="/theme/webcoach/img/icons/arrow-right.svg" class="pagenation-buttons_icon">前の章に戻る</a>
+  <a href="Y8JIT" class="pagenation-buttons_next">次の章に進む<img src="/theme/webcoach/img/icons/arrow-right.svg" class="pagenation-buttons_icon"></a>
+</div></div></div>
+        
+        <div class="article-item item_heading " id="item37512" data-item-id="37512" data-item-type="ItemHeading"><h2 class="item-body">3章：サイトを磨き上げる！AIサイト最適化</h2></div>
+        
+        <div class="article-item item_markdown " id="item37513" data-item-id="37513" data-item-type="ItemMarkdown"><h4 id="section">この章の目安学習時間：90分</h4>
+</div>
+        
+        <div class="article-item item_markdown " id="item37514" data-item-id="37514" data-item-type="ItemMarkdown"><h4 id="section">この章で到達できるゴール：</h4>
+</div>
+        
+        <div class="article-item item_html " id="item37515" data-item-id="37515" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li>Chrome DevToolsのLighthouseを使い、Webサイトのパフォーマンスを計測・評価できる。</li>
+  <li>AIの支援を受けながら、画像の最適化などを行い、サイトの表示速度を改善できる。</li>
+</ul>
+</div></div>
+        
+        <div class="article-item item_heading " id="item37516" data-item-id="37516" data-item-type="ItemHeading"><h2 class="item-body">【3-1】サイトの健康診断：Lighthouseで計測する</h2></div>
+        
+        <div class="article-item item_markdown " id="item37517" data-item-id="37517" data-item-type="ItemMarkdown"><h4 id="section">目安の学習時間：30分</h4>
+</div>
+        
+        <div class="article-item item_heading " id="item37518" data-item-id="37518" data-item-type="ItemHeading"><h3 class="item-body">なぜサイトの表示速度が重要なのか？</h3></div>
+        
+        <div class="article-item item_rich_text " id="item37519" data-item-id="37519" data-item-type="ItemRichText"><div class="item-body-hbr">Webサイトは、ただ作って終わりではありません。ユーザーに快適に使ってもらうためには、ページの<span class="decoration-02">表示速度</span>が非常に重要です。</div></div>
+        
+        <div class="article-item item_html " id="item37520" data-item-id="37520" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li>
+    <span class="decoration-01">ユーザー体験の向上</span>: <br>ページの表示が遅いと、ユーザーは待ちきれずにサイトを閉じてしまいます（離脱）。特にスマートフォンのユーザーは、少しの遅延でもストレスを感じやすいと言われています。
+  </li>
+  <li>
+    <span class="decoration-01">ビジネス機会への影響</span>: <br>ECサイトであれば、表示速度の遅れは売上の低下に直結します。LPであれば、コンバージョン率（目標達成率）の低下につながります。
+  </li>
+  <li>
+    <span class="decoration-01">SEOへの影響</span>: <br>Googleなどの検索エンジンは、表示速度が速いサイトを高く評価する傾向にあります。つまり、表示速度は検索順位にも影響を与える重要な要素の一つです。
+  </li>
+</ul>
+</div></div>
+        
+        <div class="article-item item_image " id="item37521" data-item-id="37521" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/037/521/medium/afa0a0b3-4906-40ee-95df-f0eb80cc4ddf.png?1753932160" title=""><img class="img-responsive item-image" alt=" (37521)" data-reference="" src="https://cdn.clipkit.co/tenants/589/item_images/images/000/037/521/medium/afa0a0b3-4906-40ee-95df-f0eb80cc4ddf.png?1753932160" width="640" height="640" /></a><h4></h4></div></div>
+        
+        <div class="article-item item_heading " id="item37522" data-item-id="37522" data-item-type="ItemHeading"><h3 class="item-body">ChromeのLighthouseで弱点を発見！</h3></div>
+        
+        <div class="article-item item_rich_text " id="item37523" data-item-id="37523" data-item-type="ItemRichText"><div class="item-body-hbr">サイトのパフォーマンスを測定するために、Google Chromeに標準で搭載されている<span class="decoration-02">Lighthouse（ライトハウス</span><span class="decoration-02">）</span>というツールを使います。<br>
+Lighthouseは、Webページの品質を多角的に評価し、改善点をレポートしてくれる強力な「健康診断ツール」です。</div></div>
+        
+        <div class="article-item item_rich_text " id="item37524" data-item-id="37524" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">操作手順</span></div></div>
+        
+        <div class="article-item item_html " id="item37525" data-item-id="37525" data-item-type="ItemHtml"><div class="item-body"><ol>
+  <li>ブラウザ上で右クリックし、「検証」を選択してデベロッパーツールを開く。</li>
+  <li>デベロッパーツールのタブの中から「Lighthouse」を選択する。</li>
+</ol>
+</div></div>
+        
+        <div class="article-item item_image " id="item37526" data-item-id="37526" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/037/526/medium/6e942de7-3256-4605-924f-ee17a2cad9af.png?1753932273" title=""><img class="img-responsive item-image" alt=" (37526)" data-reference="" src="https://cdn.clipkit.co/tenants/589/item_images/images/000/037/526/medium/6e942de7-3256-4605-924f-ee17a2cad9af.png?1753932273" width="640" height="346" /></a><h4></h4></div></div>
+        
+        <div class="article-item item_html " id="item37527" data-item-id="37527" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_html " id="item37528" data-item-id="37528" data-item-type="ItemHtml"><div class="item-body"><ol start="3">
+  <li>「デバイス」で「モバイル」が選択されていることを確認し、「ページ読み込みを分析」ボタンをクリックする。</li>
+</ol></div></div>
+        
+        <div class="article-item item_image " id="item37529" data-item-id="37529" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/037/529/medium/182db503-ff15-469f-bdc1-269c2f15da79.png?1753932327" title=""><img class="img-responsive item-image" alt=" (37529)" data-reference="" src="https://cdn.clipkit.co/tenants/589/item_images/images/000/037/529/medium/182db503-ff15-469f-bdc1-269c2f15da79.png?1753932327" width="640" height="346" /></a><h4></h4></div></div>
+        
+        <div class="article-item item_html " id="item37530" data-item-id="37530" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_html " id="item37531" data-item-id="37531" data-item-type="ItemHtml"><div class="item-body"><ol start="4">
+  <li>計測が始まり、しばらくするとパフォーマンススコアや改善点のレポートが表示される。</li>
+</ol></div></div>
+        
+        <div class="article-item item_image " id="item37532" data-item-id="37532" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/037/532/medium/881da3de-4355-4877-a465-19f360f1b638.png?1753932398" title=""><img class="img-responsive item-image" alt=" (37532)" data-reference="" src="https://cdn.clipkit.co/tenants/589/item_images/images/000/037/532/medium/881da3de-4355-4877-a465-19f360f1b638.png?1753932398" width="640" height="346" /></a><h4></h4></div></div>
+        
+        <div class="article-item item_rich_text " id="item37533" data-item-id="37533" data-item-type="ItemRichText"><div class="item-body-hbr">レポートでは、以下の主要な指標がスコアとして表示されます。<br>
+まずは「パフォーマンス」のスコアと、その下の「改善できる項目」に注目しましょう。</div></div>
+        
+        <div class="article-item item_html " id="item37534" data-item-id="37534" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li><span class="decoration-01">Performance (パフォーマンス)</span>: 表示速度に関するスコア。</li>
+  <li><span class="decoration-01">Accessibility (アクセシビリティ)</span>: 使いやすさ、見やすさに関するスコア。</li>
+  <li><span class="decoration-01">Best Practices (ベストプラクティス)</span>: 推奨されるWeb標準に沿っているかのスコア。</li>
+  <li><span class="decoration-01">SEO (検索エンジン最適化)</span>: 検索エンジンに見つけてもらいやすいかのスコア。</li>
+</ul>
+</div></div>
+        
+        <div class="article-item item_heading " id="item37535" data-item-id="37535" data-item-type="ItemHeading"><h2 class="item-body">【3-2】AIと実践する高速化テクニック</h2></div>
+        
+        <div class="article-item item_markdown " id="item37536" data-item-id="37536" data-item-type="ItemMarkdown"><h4 id="section">目安の学習時間：30分</h4>
+</div>
+        
+        <div class="article-item item_heading " id="item37537" data-item-id="37537" data-item-type="ItemHeading"><h3 class="item-body">AIに聞く！画像の最適化と圧縮方法</h3></div>
+        
+        <div class="article-item item_rich_text " id="item37538" data-item-id="37538" data-item-type="ItemRichText"><div class="item-body-hbr">Lighthouseのレポートで、ほぼ間違いなく指摘されるのが「<span class="decoration-02">サイズの大きな画像</span>」の問題です。特に高画質な写真を使うファッション系のLPでは、画像の最適化がパフォーマンスに最も大きな影響を与えます。<br>
+<br>
+<span class="decoration-01">考え方<span class="decoration-02"></span></span><br>
+Webで表示する画像は、必ずしも元データと同じ高画質である必要はありません。<br>
+人間の目にはほとんど分からないレベルで画質を少し落とし（圧縮）、ファイルサイズを劇的に小さくすることが可能です。<br>
+<br>
+<span class="decoration-01">AIへの質問例</span><br>
+「Lighthouseで『適切にサイズ調整されていない画像』と指摘されました。Webサイトで使う画像を最適化するにはどうすればいいですか？JPEG, PNG, WebPといった画像形式の使い分けについても教えてください。」<br>
+<br>
+AIは、以下のようなアドバイスをくれるはずです。</div></div>
+        
+        <div class="article-item item_html " id="item37539" data-item-id="37539" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li><span class="decoration-01">JPEG</span>: 写真に適している。非可逆圧縮。</li>
+  <li><span class="decoration-01">PNG</span>: 背景が透明な画像や、色の数が少ないイラストに適している。可逆圧縮。</li>
+  <li><span class="decoration-01">WebP</span>: JPEGとPNGの両方の利点を持ち、より高い圧縮率を実現する次世代フォーマット。</li>
+</ul>
+</div></div>
+        
+        <div class="article-item item_heading " id="item37540" data-item-id="37540" data-item-type="ItemHeading"><h3 class="item-body">計測結果を基にAIと改善策を練る</h3></div>
+        
+        <div class="article-item item_rich_text " id="item37541" data-item-id="37541" data-item-type="ItemRichText"><div class="item-body-hbr">画像の最適化が完了したら、再度Lighthouseで計測してみましょう。<br>
+パフォーマンススコアが大幅に改善されているはずです。<br>
+<br>
+Lighthouseレポートには、他にも様々な改善項目が提案されています。<br>
+例えば、「レンダリングをブロックするリソースの除外」といった専門的な項目が出てくることもあります。<br>
+<br>
+このような<span class="decoration-02">意味が分からない項目こそ、AIに質問するチャンス</span>です。<br>
+<br>
+<span class="decoration-01">AIへの質問例</span><br>
+「Lighthouseで『レンダリングをブロックするリソースの除外』という改善項目が提案されました。これはどういう意味ですか？また、具体的にどうすれば改善できますか？」<br>
+<br>
+AIに専門用語を翻訳させ、具体的な解決策のコードを提示させることで、一人では解決が難しい問題にも対処できるようになります。<br>
+また画像のように分析レポートをHTML形式でダウンロードして、GeminiなどのLLMに読み込ませて改善提案をもらうことも有効です。</div></div>
+        
+        <div class="article-item item_image " id="item37542" data-item-id="37542" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/037/542/medium/55da67f4-0f11-4693-aafc-ea79f8e2223d.png?1753932668" title=""><img class="img-responsive item-image" alt=" (37542)" data-reference="" src="https://cdn.clipkit.co/tenants/589/item_images/images/000/037/542/medium/55da67f4-0f11-4693-aafc-ea79f8e2223d.png?1753932668" width="640" height="346" /></a><h4></h4></div></div>
+        
+        <div class="article-item item_rich_text " id="item37543" data-item-id="37543" data-item-type="ItemRichText"><div class="item-body-hbr">例えばこちらのサイトを分析してもらうとこのような回答が返ってきます。</div></div>
+        
+        <div class="article-item item_code " id="item37544" data-item-id="37544" data-item-type="ItemCode"><div class="item-body"><div class="CodeRay">
+  <div class="code"><pre>ご提供いただいたLighthouseレポートを分析し、ウェブサイト（ `https://info2516354.wixsite.com/waterlandingpage` ）の
+パフォーマンス、SEO、アクセシビリティを向上させるための改善アクションプランをご提案します。
+
+### **総合評価**
+
+レポートからは、特に**パフォーマンス**と**SEO**の領域で早急な改善が必要であることが示されています。
+アクセシビリティは比較的問題が少ないものの、UX（ユーザーエクスペリエンス）向上のための改善点が存在します。
+
+---
+
+### **改善アクションプラン**
+
+改善インパクトが大きく、緊急性の高い順にアクションプランを記載します。
+
+#### **【最優先】SEO（検索エンジン最適化）に関する改善**
+
+**現状の問題点：**
+現在、このページは検索エンジンにインデックスされない設定になっており、検索結果に表示されません。
+また、ページの概要を示すメタディスクリプションも設定されていません。
+
+* **監査項目:**
+    * ページのインデックス登録を行えません (is-crawlable): **スコア 0**
+    * ドキュメントにメタ ディスクリプションが指定されていません (meta-description): **スコア 0**
+
+**具体的なアクションプラン：**
+
+1.  **`noindex` タグの削除:**
+    * ページのHTMLヘッダー内にある `&lt;meta name=&quot;robots&quot; content=&quot;noindex&quot; /&gt;` というタグを削除、
+または `&quot;index&quot;` に変更してください。これにより、Googleなどの検索エンジンがページをクロールし、
+検索結果に表示できるようになります。これは**最も緊急性の高い修正**です。
+    * Wixエディタの「SEO設定」または「高度なSEO設定」から、ページのインデックス登録を許可する
+オプションを有効にしてください。
+
+2.  **メタディスクリプションの設定:**
+    * ページのコンテンツを要約した、魅力的で分かりやすい説明文（120文字程度が目安）を
+メタディスクリプションとして設定してください。これは検索結果ページでタイトルの下に表示され、
+ユーザーのクリック率に大きく影響します。
+    * **例:** 「天然水のウォーターサーバーをご家庭に。採水地から直送される新鮮でおいしいお水の魅力と、
+お得な3日間お試しセットをご紹介します。」
+
+---
+
+#### **【優先度：高】パフォーマンスの改善**
+
+**現状の問題点：**
+ページの表示速度が遅く、特に最も大きなコンテンツが表示されるまで（LCP）に7.0秒かかっています。
+これはユーザーの離脱に直結する大きな問題です。原因は、画像の読み込み、
+使用していないJavaScriptやCSS、過大なDOMサイズなどが複合的に影響していると考えられます。
+
+* **主要な低評価指標:**
+    * Largest Contentful Paint (LCP): **7.0秒** (目標: 2.5秒以下)
+    * First Contentful Paint (FCP): **3.0秒** (目標: 1.8秒以下)
+    * Time to Interactive (TTI): **11.3秒** (目標: 3.8秒以下)
+    * 過大なDOMサイズの回避 (dom-size): **スコア 0** (996要素)
+    * JavaScript バンドル内の重複モジュールを削除する (duplicated-javascript): **スコア 0** (63 KiB 削減可能)
+    * 使用していない JavaScript の削減 (unused-javascript): 97 KiB 削減可能
+
+**具体的なアクションプラン：**
+
+1.  **LCP（Largest Contentful Paint）の改善:**
+    * **LCP要素の特定と最適化:** レポートによると、LCPの対象は
+背景画像（`f364e9389d1848cc8f0ef4ab3fc0368a.jpg`）です。
+        * **画像の圧縮:** この画像をWebPやAVIFのような次世代フォーマットに変換し、
+ファイルサイズを削減してください。Wixでは多くの場合自動で最適化されますが、
+アップロードする画像自体のサイズを小さくすることが有効です。
+        * **適切なサイズ設定:** 表示されるサイズ以上に大きな画像を読み込まないように、
+リサイズしてください。
+        * **画像のプリロード:** 重要な背景画像は、HTMLの`&lt;head&gt;`内で`&lt;link rel=&quot;preload&quot;&gt;`
+を使用して優先的に読み込むことを検討してください。
+
+2.  **JavaScriptとCSSの最適化:**
+    * **不要なコードの削減:** レポートでは、97KiBのJavaScriptと42KiBのCSSが使用されて
+いないと指摘されています。
+        * **Wixアプリの見直し:** 使用していない、または優先度の低いWixアプリや機能（ウィジェットなど）
+を無効化または削除することで、不要なスクリプトの読み込みを削減できます。
+        * **コード分割:** Wix Velo (開発者モード) を使用している場合、必要なコードだけを必要なタイミングで
+読み込むようにコード分割を検討してください。
+
+3.  **DOMサイズの削減:**
+    * ページの要素数が996と多く、ブラウザの処理負荷を高めています。
+        * **レイアウトの簡素化:** ページ内のセクション、ボックス、装飾要素などが過剰でないか
+見直してください。非表示にしている要素もDOMには含まれるため、不要なものは完全に削除します。
+        * **Wixアプリの整理:** 多くの要素を生成するアプリ（例：複雑なギャラリー、リストなど）は、
+よりシンプルな代替手段を検討してください。
+
+---
+
+#### **【優先度：中】アクセシビリティとUI/UXの改善**
+
+**現状の問題点：**
+全体的なアクセシビリティスコアは高いですが、タップターゲットのサイズが小さく、
+モバイルユーザーが操作しにくい箇所があります。
+
+* **監査項目:**
+    * タップ ターゲットのサイズや間隔は十分な大きさではありません (target-size): **スコア 0**
+
+**具体的なアクションプラン：**
+
+1.  **タップターゲットのサイズ調整:**
+    * レポートで指摘されているスライドショーのナビゲーションボタン（`Slide 1`, `Slide 2`など）が小さすぎます。
+    * Wixエディタ上で、これらのボタンのサイズを大きくするか、ボタン間の余白（マージン）を
+広げて、ユーザーが誤操作なくタップできるように修正してください。
+最低でも24px四方のタップ領域を確保することが推奨されます。
+
+---
+
+#### **その他のおすすめの方法**
+
+1.  **サードパーティCookieへの対応:**
+    * 12件のサードパーティCookieが検出されています。ChromeではサードパーティCookieのサポートが
+段階的に廃止されます。サイトで使用しているWixアプリや外部サービスがこれに依存していないか確認し、
+必要に応じて代替策を検討してください。
+2.  **コンソールエラーの確認:**
+    * Chrome DevToolsの「Issues」パネルに記録された問題を確認し、修正してください。
+ブラウザエラーはサイトの予期せぬ動作につながる可能性があります。
+
+### **まとめ**
+
+まずは**SEOの`noindex`解除とメタディスクリプション設定**を最優先で行い、
+検索結果に表示されるようにすることが不可欠です。
+
+次に、**パフォーマンス改善**に着手し、特にページの顔となる**画像の最適化**と、
+サイトの動作を重くしている**不要なJavaScript/CSS/DOM要素の削減**を進めてください。
+
+これらの改善を順次行うことで、ユーザー体験が大幅に向上し、ビジネス目標の達成にも
+繋がりやすくなります。定期的にLighthouseで計測し、改善の効果を確認することをお勧めします。</pre></div>
+</div>
+<div class="cite"><cite class="item-source">回答例</cite></div></div></div>
+        
+        <div class="article-item item_heading " id="item37545" data-item-id="37545" data-item-type="ItemHeading"><h2 class="item-body">【3-3】3章 -章末課題- [あなたのLP高速化チャレンジ！]</h2></div>
+        
+        <div class="article-item item_markdown " id="item37546" data-item-id="37546" data-item-type="ItemMarkdown"><h4 id="section">目安の学習時間：30分</h4>
+</div>
+        
+        <div class="article-item item_heading " id="item37547" data-item-id="37547" data-item-type="ItemHeading"><h3 class="item-body">問題</h3></div>
+        
+        <div class="article-item item_rich_text " id="item37548" data-item-id="37548" data-item-type="ItemRichText"><div class="item-body-hbr">この課題では、<span class="decoration-02">あなたが2章で実装したファッションブランド「LYNA」のLP</span>を、<br>
+LighthouseとAIの力を借りてパフォーマンス改善に取り組みます。<br>
+<br>
+プロジェクトで使用した画像は、デザインの質を保つために高画質なものが提供されていましたが、Web表示のためにはまだ最適化されていません。<br>
+このLPの表示速度を計測し、ボトルネックを特定・改善して、パフォーマンススコアをできるだけ高めてください。</div></div>
+        
+        <div class="article-item item_heading " id="item37549" data-item-id="37549" data-item-type="ItemHeading"><h3 class="item-body">解答手順</h3></div>
+        
+        <div class="article-item item_html " id="item37550" data-item-id="37550" data-item-type="ItemHtml"><div class="item-body"><ol>
+  <li>2章で作成した「LYNA」のLPプロジェクトの中から、<span class="decoration-02">index.html</span>をローカルサーバーでブラウザで開きます。</li>
+  <li>Lighthouseで計測し、<span class="decoration-02">最適化前のパフォーマンススコア</span>と改善点を記録（スクリーンショット）します。おそらく「適切にサイズ調整されていない画像」が大きな改善点として指摘されるはずです。</li>
+  <li>Lighthouseのレポートで指摘された画像（例：ヒーローセクションのメイン画像など）を、AIに推薦されたオンラインの圧縮ツール（Squoosh, TinyPNGなど）を使って最適化します。</li>
+  <li>圧縮してダウンロードした画像ファイルを、プロジェクトフォルダ内の<span class="decoration-02">元の画像ファイルと差し替え</span>（上書き保存）ます。</li>
+  <li>最適化後のWebページを再度Lighthouseで計測し、パフォーマンススコアが改善したことを確認します。</li>
+  <li><span class="decoration-02">最適化前と後のLighthouseのスコア比較画像</span>を提出して、課題完了です。</li>
+</ol>
+</div></div>
+        
+        <div class="article-item item_rich_text " id="item37786" data-item-id="37786" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">最適化前</span></div></div>
+        
+        <div class="article-item item_image " id="item37787" data-item-id="37787" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/037/787/medium/5b4bb6de-246f-41d3-8288-60a6530f974f.png?1754089977" title=""><img class="img-responsive item-image" alt=" (37787)" data-reference="" src="https://cdn.clipkit.co/tenants/589/item_images/images/000/037/787/medium/5b4bb6de-246f-41d3-8288-60a6530f974f.png?1754089977" width="640" height="311" /></a><h4></h4></div></div>
+        
+        <div class="article-item item_image " id="item37788" data-item-id="37788" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/037/788/medium/ae4db6fe-a339-458f-84dd-d1653945fa36.png?1754090002" title=""><img class="img-responsive item-image" alt=" (37788)" data-reference="" src="https://cdn.clipkit.co/tenants/589/item_images/images/000/037/788/medium/ae4db6fe-a339-458f-84dd-d1653945fa36.png?1754090002" width="640" height="312" /></a><h4></h4></div></div>
+        
+        <div class="article-item item_rich_text " id="item37789" data-item-id="37789" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">最適化後</span></div></div>
+        
+        <div class="article-item item_image " id="item37790" data-item-id="37790" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/037/790/medium/bbdd56d7-6ada-4094-bc89-d48bf8f00b72.png?1754090056" title=""><img class="img-responsive item-image" alt=" (37790)" data-reference="" src="https://cdn.clipkit.co/tenants/589/item_images/images/000/037/790/medium/bbdd56d7-6ada-4094-bc89-d48bf8f00b72.png?1754090056" width="640" height="314" /></a><h4></h4></div></div>
+        
+        <div class="article-item item_image " id="item37791" data-item-id="37791" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/037/791/medium/75653ba2-204a-47f7-b96f-2f6d69aed556.png?1754090085" title=""><img class="img-responsive item-image" alt=" (37791)" data-reference="" src="https://cdn.clipkit.co/tenants/589/item_images/images/000/037/791/medium/75653ba2-204a-47f7-b96f-2f6d69aed556.png?1754090085" width="640" height="312" /></a><h4></h4></div></div>
+        
+        <div class="article-item item_rich_text " id="item37551" data-item-id="37551" data-item-type="ItemRichText"><div class="item-body-hbr">これで「3章：サイトを磨き上げる！AIサイト最適化」の解説を終わります。<br>
+次の章に進みましょう。</div></div>
+        
+        <div class="article-item item_html " id="item37588" data-item-id="37588" data-item-type="ItemHtml"><div class="item-body"><div class="pagenation-buttons">
+  <a href="UiDIh" class="pagenation-buttons_prev"><img src="/theme/webcoach/img/icons/arrow-right.svg" class="pagenation-buttons_icon">前の章に戻る</a>
+  <a href="Y8JIT" class="pagenation-buttons_next">次の章に進む<img src="/theme/webcoach/img/icons/arrow-right.svg" class="pagenation-buttons_icon"></a>
+</div></div></div>
+        
+        
+        
+        <div class="back-to-roadmap mb-4 text-center"></div>
+      </div>
+    </div>
+    
+    <div class="lightbox-modal" id="lightboxModal">
+      <img src="" alt="">
+    </div>
+    
+    <div id="modal" class="fixed-menu-modal">
+      <div class="fixed-menu-modal-content">
+        <div class="index mb-3" style="background-color: #FDF5E8;">
+          <div>
+            <div class="fw-light">INDEX</div>
+            <div class="h3">目次</div>
+          </div>
+          <div class="toc"></div>
+        </div>
+        
+        <!-- ボタン類 -->
+        <div id="fixed-menu_buttons" class="fixed-menu_buttons"></div>
+        
+        <div class="back-to-roadmap text-center"></div>
+      </div>
+    </div>
+    
+    <button id="toggleBtn" class="floating-btn">
+      <img id="iconOpen" 
+           src="/theme/webcoach/img/icons/fixed-menu_modal-open.svg" 
+           alt="メニューを開く">
+      <img id="iconClose" 
+           src="/theme/webcoach/img/icons/fixed-menu_modal-close.svg" 
+           alt="メニューを閉じる" style="display:none;">
+    </button>
+  </div>
+</div>
+</div>
+<!-- <script src="https://cdn.clipkit.co/clipkit/javascripts/item-shopify-1.0.js?v=v15.9.0-20260915" async></script> -->
+            </div>
+        </main>
+
+    </div>
+
+    <div class="p-5" style="background-color: #B73E3D; color: white; height: 300px;">
+        <div class="">
+            <div class="h4 ps-3" style="border-left: 5px solid white;">WEBCOACH | キャリアチェンジまでの全てを学ぶマンツーマンWEBスクール</div>
+            <ul class="nav flex-column m-0 p-3 fw-light">
+                <li class="nav-item mb-2"><a href="https://www.webcoach.jp/" target="_blank">WEBCOACH | 公式HP</a></li>
+                <li class="nav-item mb-2"><a href="https://www.instagram.com/webcoach_officials/" target="_blank">WEBCOACH | 公式Instagram</a></li>
+                <li class="nav-item mb-2"><a href="https://vectorinc.co.jp/groupservice/webcoach-career/" target="_blank">WEBCOACH 公式メディア | WEBCOACH career</a></li>
+            </ul>
+        </div>
+        <div class="text-center">
+            <small>&copy; 2020 by WEBCOACH</small>
+        </div>
+    </div>
+
+    <script src="https://cdn.clipkit.co/clipkit/javascripts/application-1.0.js?v=v15.9.0-20260915" async></script>
+
+    <!-- bodyタグ内の下部に挿入されます -->
+
+
+    <!-- BootstrapのCDNでのjs読み込み -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+        crossorigin="anonymous"></script>
+
+    <!-- シンタックスハイライトの生成 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.1/highlight.min.js"></script>
+    <script>
+        // ハイライトを実行
+        hljs.initHighlightingOnLoad();
+    </script>
+
+    <!-- 目次の生成 -->
+    <script type="text/javascript">toc();</script>
+
+    <!-- ブックマークの生成 -->
+    <script type="text/javascript">displayLinks();</script>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="ck-icon-arrow-down" viewBox="0 0 1792 1792"><path d="M1675 832q0 53-37 90l-651 652q-39 37-91 37-53 0-90-37l-651-652q-38-36-38-90 0-53 38-91l74-75q39-37 91-37 53 0 90 37l294 294v-704q0-52 38-90t90-38h128q52 0 90 38t38 90v704l294-294q37-37 90-37 52 0 91 37l75 75q37 39 37 91z" /></symbol><symbol id="ck-icon-arrow-up" viewBox="0 0 1792 1792"><path d="M1675 971q0 51-37 90l-75 75q-38 38-91 38-54 0-90-38l-294-293v704q0 52-37.5 84.5t-90.5 32.5h-128q-53 0-90.5-32.5t-37.5-84.5v-704l-294 293q-36 38-90 38t-90-38l-75-75q-38-38-38-90 0-53 38-91l651-651q35-37 90-37 54 0 91 37l651 651q37 39 37 91z" /></symbol><symbol id="ck-icon-calendar" viewBox="0 0 1792 1792"><path d="M192 1664h288v-288h-288v288zm352 0h320v-288h-320v288zm-352-352h288v-320h-288v320zm352 0h320v-320h-320v320zm-352-384h288v-288h-288v288zm736 736h320v-288h-320v288zm-384-736h320v-288h-320v288zm768 736h288v-288h-288v288zm-384-352h320v-320h-320v320zm-352-864v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm736 864h288v-320h-288v320zm-384-384h320v-288h-320v288zm384 0h288v-288h-288v288zm32-480v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm384-64v1280q0 52-38 90t-90 38h-1408q-52 0-90-38t-38-90v-1280q0-52 38-90t90-38h128v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h384v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h128q52 0 90 38t38 90z" /></symbol><symbol id="ck-icon-chevron-left" viewBox="0 0 1792 1792"><path d="M1427 301l-531 531 531 531q19 19 19 45t-19 45l-166 166q-19 19-45 19t-45-19l-742-742q-19-19-19-45t19-45l742-742q19-19 45-19t45 19l166 166q19 19 19 45t-19 45z" /></symbol><symbol id="ck-icon-chevron-right" viewBox="0 0 1792 1792"><path d="M1363 877l-742 742q-19 19-45 19t-45-19l-166-166q-19-19-19-45t19-45l531-531-531-531q-19-19-19-45t19-45l166-166q19-19 45-19t45 19l742 742q19 19 19 45t-19 45z" /></symbol><symbol id="ck-icon-clock-o" viewBox="0 0 1792 1792"><path d="M1024 544v448q0 14-9 23t-23 9h-320q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h224v-352q0-14 9-23t23-9h64q14 0 23 9t9 23zm416 352q0-148-73-273t-198-198-273-73-273 73-198 198-73 273 73 273 198 198 273 73 273-73 198-198 73-273zm224 0q0 209-103 385.5t-279.5 279.5-385.5 103-385.5-103-279.5-279.5-103-385.5 103-385.5 279.5-279.5 385.5-103 385.5 103 279.5 279.5 103 385.5z" /></symbol><symbol id="ck-icon-trash" viewBox="0 0 1792 1792"><path d="M704 1376v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm-544-992h448l-48-117q-7-9-17-11h-317q-10 2-17 11zm928 32v64q0 14-9 23t-23 9h-96v948q0 83-47 143.5t-113 60.5h-832q-66 0-113-58.5t-47-141.5v-952h-96q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h309l70-167q15-37 54-63t79-26h320q40 0 79 26t54 63l70 167h309q14 0 23 9t9 23z" /></symbol><symbol id="ck-icon-undo" viewBox="0 0 1792 1792"><path d="M1664 896q0 156-61 298t-164 245-245 164-298 61q-172 0-327-72.5t-264-204.5q-7-10-6.5-22.5t8.5-20.5l137-138q10-9 25-9 16 2 23 12 73 95 179 147t225 52q104 0 198.5-40.5t163.5-109.5 109.5-163.5 40.5-198.5-40.5-198.5-109.5-163.5-163.5-109.5-198.5-40.5q-98 0-188 35.5t-160 101.5l137 138q31 30 14 69-17 40-59 40h-448q-26 0-45-19t-19-45v-448q0-42 40-59 39-17 69 14l130 129q107-101 244.5-156.5t284.5-55.5q156 0 298 61t245 164 164 245 61 298z" /></symbol></svg><script async="async" defer="defer" nonce="W99J9JaCqTnrIRYztF5cnw==" src="//www.instagram.com/embed.js"></script>
+
+<!--Clipkit(R) v15.9.0-20260915 Copyright (C) 2026 VECTOR Inc.-->
+
+</body>
+
+</html>
+

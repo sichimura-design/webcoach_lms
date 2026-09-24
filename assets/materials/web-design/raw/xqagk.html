@@ -1,0 +1,1121 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+  <html lang="ja">
+
+<head><script async="async" data-label="saas" nonce="xfbBbN58vroacIAWVFkIjw==" src="//b.clipkit.co/"></script><script src="//cdn.clipkit.co/clipkit_assets/beacon-787bbf3225ec43d93f198af35f7d56fdef40fb50440a2909500bdf5b99225aab.js" async="async" id="clipkit-beacon" data-page-type="article" data-page-id="464" data-domain="learn.webcoach.jp" data-url="/web-design/XqAGK" data-href="https://learn.webcoach.jp/media/beacon"></script>
+    <!-- headタグ内の上部に挿入されます -->
+
+    <meta charset="UTF-8">
+    <title>Figma｜はじめに - WEBCOACH</title>
+
+    <!-- resetcssのCDNでのCSS読み込み -->
+    <link rel="stylesheet" href="https://unpkg.com/modern-css-reset/dist/reset.min.css" />
+
+    <!-- fontawesomeのCDNでのCSS読み込み -->
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/fontawesome/4.7.0/css/font-awesome.min.css">
+
+    <!-- BootstrapのCDNでのCSS読み込み -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous" />
+
+    <!-- highlight.jsの読み込み -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.1/styles/dracula.min.css">
+
+    <!-- カスタムCSS -->
+    <link rel="stylesheet" href="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/168/original/style.css?1788081716">
+
+    <!-- clipkitデフォルトのCSS -->
+    <!--<link rel="stylesheet" media="screen" href="https://cdn.clipkit.co/clipkit/stylesheets/application-1.0.css?v=v15.9.0-20260915">-->
+
+    <!-- jQuery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <!-- カスタムJS -->
+    <script src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/202/original/script.js?1788946194"></script>
+    <script src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/535/original/script.js?1743681771"></script>
+
+    <!-- clipkitデフォルトのJS -->
+    <script src="https://cdn.clipkit.co/clipkit/javascripts/default-1.0.js?v=v15.9.0-20260915"></script>
+
+    <!-- フォント -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;700&display=swap" rel="stylesheet">
+
+    <link href="https://cdn.clipkit.co/clipkit/favicons/square/missing.png" rel="shortcut icon" type="image/vnd.microsoft.icon">
+    <link rel="apple-touch-icon" href="https://cdn.clipkit.co/clipkit/touch_icons/square/missing.png">
+    <link rel="alternate" type="application/rss+xml"
+        href="https://learn.webcoach.jp/media.rss" title="WEBCOACH">
+    
+<link rel="canonical" href="https://learn.webcoach.jp/web-design/XqAGK">
+
+<meta name="description" content="">
+<meta name="keywords" content="">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:domain" content="learn.webcoach.jp">
+<meta name="twitter:title" content="Figma｜はじめに - WEBCOACH">
+<meta name="twitter:image" content="https://cdn.clipkit.co/tenants/589/item_images/images/000/006/082/medium/784c8f36-4d06-4a1f-ae34-8108aed7fc6e.png?1755426940">
+<meta name="twitter:description" content="">
+<meta property="og:site_name" content="WEBCOACH">
+<meta property="og:title" content="Figma｜はじめに">
+<meta property="og:description" content="">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://learn.webcoach.jp/web-design/XqAGK">
+<meta property="og:image" content="https://cdn.clipkit.co/tenants/589/item_images/images/000/006/082/large/784c8f36-4d06-4a1f-ae34-8108aed7fc6e.png?1755426940">
+<script type="application/ld+json">
+  {
+    "@context": "http://schema.org",
+    "@type": "NewsArticle",
+    "mainEntityOfPage":{
+      "@type":"WebPage",
+      "@id": "https://learn.webcoach.jp/web-design/XqAGK"
+    },
+    "headline": "Figma｜はじめに",
+    "image": {
+      "@type": "ImageObject",
+      "url": "https://cdn.clipkit.co/tenants/589/item_images/images/000/006/082/medium/784c8f36-4d06-4a1f-ae34-8108aed7fc6e.png?1755426940",
+      "width": 800,
+      "height": 600
+    },
+    "datePublished": "2024-11-19T20:45:32+09:00",
+    "dateModified": "2026-02-01T11:20:44+09:00",
+    "author": {
+      "@type": "Person",
+      "name": "g_miyashita"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "WEBCOACH",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://cdn.clipkit.co/tenants/589/sites/logos/000/000/001/logo_sm/a8defd4b-1cc7-433b-a61c-08e7db0e3e4f.png?1714459367"
+      }
+    },
+    "description": ""
+  }
+  </script>
+
+    <!-- headタグ内の下部に挿入されます -->
+
+
+<meta name="csrf-param" content="authenticity_token" />
+<meta name="csrf-token" content="J1h4T5q4wOd0N4pvzVuQAW5QIH0Blkp6iy-o-OZG9ZjfhelelwekfCZV8CDc9kU_k9lkRqvs-jskwVIuT4IoHg" /><meta content="" name="routing-root-path" /><meta content="media" name="site-name" /><meta content="ja" name="i18n-default-locale" /><meta content="ja" name="i18n-locale" /></head>
+
+<body class="device-desktop">
+    <!-- bodyタグ内の上部に挿入されます -->
+
+
+    <!-- サイドバーとコンテンツのコンテナ -->
+    <div class="d-flex flex-row w-100 mb-5" style="min-height: calc(100vh - 400px);">
+
+        <!-- サイドバー -->
+        <!--<nav id="side-bar" class="d-flex flex-column fixed-top" style="width: 250px;">-->
+        <!--    <h1 class="d-block w-100 text-center">-->
+        <!--        <a class="d-block" href="/">-->
+        <!--            <img class="mw-100 p-3" src="https://cdn.clipkit.co/tenants/589/sites/logos/000/000/001/logo_sm/a8defd4b-1cc7-433b-a61c-08e7db0e3e4f.png?1714459367" alt="WEBCOACH">-->
+        <!--        </a>-->
+        <!--    </h1>-->
+        <!--    <ul class="nav flex-column m-0 p-3 fw-bold">-->
+        <!--        <li id="sidebar-top" class="nav-item mb-2" style="display: none;"><a href="/"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;" src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/233/original/home.png?1715353458">-->
+        <!--                <div>ホーム</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-knowledges" class="nav-item mb-2" style="display: none;"><a href="/knowledges"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;" src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/232/original/book.png?1715353458">-->
+        <!--                <div>学習の心得</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-web-designs" class="nav-item mb-2" style="display: none;"><a href="/web-designs"-->
+        <!--                class="nav-link text-body d-flex align-items-center active">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/231/original/design.png?1715353457">-->
+        <!--                <div>WEBデザイン</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-web-marketing" class="nav-item mb-2" style="display: none;"><a href="/web-marketings"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/230/original/marketing.png?1715353457">-->
+        <!--                <div>WEBマーケティング</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-codings" class="nav-item mb-2" style="display: none;"><a href="/codings"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/229/original/website.png?1715353457">-->
+        <!--                <div>WEBサイト構築</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-business-skills" class="nav-item mb-2" style="display: none;"><a href="/business-skills"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/228/original/business.png?1715353456">-->
+        <!--                <div>ビジネススキル</div>-->
+        <!--            </a></li>-->
+        <!--    </ul>-->
+        <!--</nav>-->
+
+        <!-- コンテンツ -->
+        <!--<main class="ms-auto" style="width: calc(100vw - 250px);">-->
+        <main class="ms-auto" style="width: calc(100vw);">
+            <div id="sb-site">
+                
+
+
+<div class="container">
+  <div class="row">
+    <div class="article">
+      <div class="mb-3 text-light" style="
+        height: 180px;
+        background-image: url(https://cdn.clipkit.co/tenants/589/resources/assets/000/000/270/original/article-header.png?1717761933);
+        background-repeat: no-repeat;
+        background-size: cover;
+        display: flex;
+        align-items: flex-end;
+      ">
+        <div style="
+          margin: 0 0 30px 30px;
+        ">
+          <div>WEBデザイン</div>
+
+          <div class="fw-bold h2">Figma｜はじめに</div>
+        </div>
+      </div>
+      <div class="article-content">
+        <!-- 目次 -->
+        <div class="index mb-3" style="background-color: #FDF5E8;">
+          <div>
+            <div class="fw-light">INDEX</div>
+            <div class="h3">目次</div>
+          </div>
+          <div class="toc"></div>
+        </div>
+        
+        <div class="back-to-roadmap mb-4 text-center"></div>
+
+        <!-- コンテンツ -->
+        
+        
+        <div class="article-item item_html " id="item38427" data-item-id="38427" data-item-type="ItemHtml"><div class="item-body"><div class="pagenation-buttons">
+  <a href="nLx1a" class="pagenation-buttons_prev"><img src="/theme/webcoach/img/icons/arrow-right.svg" class="pagenation-buttons_icon">前の章に戻る</a>
+  <a href="iJrTF" class="pagenation-buttons_next">次の章に進む<img src="/theme/webcoach/img/icons/arrow-right.svg" class="pagenation-buttons_icon"></a>
+</div>
+</div></div>
+        
+        <div class="article-item item_heading " id="item6077" data-item-id="6077" data-item-type="ItemHeading"><h2 class="item-body">0章　はじめてのFigma</h2></div>
+        
+        <div class="article-item item_markdown " id="item39299" data-item-id="39299" data-item-type="ItemMarkdown"><h4 id="section">教材全体の目安学習時間：40時間</h4>
+</div>
+        
+        <div class="article-item item_markdown " id="item39295" data-item-id="39295" data-item-type="ItemMarkdown"><h4 id="section">この教材の学習時間: 60分</h4>
+</div>
+        
+        <div class="article-item item_heading " id="item6078" data-item-id="6078" data-item-type="ItemHeading"><h2 class="item-body">【0-1】はじめに</h2></div>
+        
+        <div class="article-item item_markdown " id="item39296" data-item-id="39296" data-item-type="ItemMarkdown"><h4 id="section">目安の学習時間:15分</h4>
+</div>
+        
+        <div class="article-item item_markdown " id="item6080" data-item-id="6080" data-item-type="ItemMarkdown"><h4 id="figmano1ui">■ Figmaは、現在シェアNO.1のUI作成ツール</h4>
+</div>
+        
+        <div class="article-item item_html " id="item6863" data-item-id="6863" data-item-type="ItemHtml"><div class="item-body"><div>皆さん、WEBのUIデザイン(*1) の制作ツールと言うと、何を思い浮かべますか？</div>
+<div>2大グラフィックソフトとして確立しているAdobeのPhotoshop? Illustrator? それともXD?</div>
+<div>いえいえ、今はWEB制作時のUIデザインツールというと<span class="decoration-02">圧倒的にFigmaが主流</span>です。</div></div></div>
+        
+        <div class="article-item item_image " id="item6082" data-item-id="6082" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/006/082/medium/784c8f36-4d06-4a1f-ae34-8108aed7fc6e.png?1755426940" title=""><img class="img-responsive item-image" alt=" (6082)" data-reference="" src="https://cdn.clipkit.co/tenants/589/item_images/images/000/006/082/medium/784c8f36-4d06-4a1f-ae34-8108aed7fc6e.png?1755426940" width="640" height="331" /></a><h4></h4></div></div>
+        
+        <div class="article-item item_html " id="item6084" data-item-id="6084" data-item-type="ItemHtml"><div class="item-body"><div>
+  <p>参考: <a href="https://www.uxtools.co/survey/design-tools-awards/design-standard">https://www.uxtools.co/survey/design-tools-awards/design-standard</a></p>
+</div></div></div>
+        
+        <div class="article-item item_html " id="item6864" data-item-id="6864" data-item-type="ItemHtml"><div class="item-body"><div>その扱いやすさ・機能性から<span class="decoration-02">GoogleやMicrosoftなど世界的な大手企業</span>をはじめ、<span>国内外の多くの企業専属デザイナーや制作会社・フリーランスのデザイナーが使用</span>しています。</div>
+<div>更に無料で使用できる事から、これからデザインを学びたい方々や更にはノンデザイナーでも使用する方々も多く、現在シェアNo.1を確立している注目のUI作成ツールです。</div></div></div>
+        
+        <div class="article-item item_markdown " id="item6087" data-item-id="6087" data-item-type="ItemMarkdown"><h4 id="figma">■ Figmaがある程度使えるようになると…</h4>
+</div>
+        
+        <div class="article-item item_rich_text " id="item6088" data-item-id="6088" data-item-type="ItemRichText"><div class="item-body-hbr">Figmaがある程度使えるようになると、企業などからニーズのある<span class="decoration-02">WEBサイトやアプリのデザイン</span>が出来るようになる他、<span class="decoration-02">ランディングページ</span>(*2)や<span class="decoration-02">バナー広告画像</span>(*3)、更には<span class="decoration-02">プレゼン資料や名刺</span>など、様々な媒体を制作できるようになります。<br>
+<br>
+Figmaの使い方を覚え、WEB制作の現場で活躍できる制作スキルを身に付けましょう。</div></div>
+        
+        <div class="article-item item_html " id="item6865" data-item-id="6865" data-item-type="ItemHtml"><div class="item-body"><p>✅<strong> (*1) ：UI</strong></p>
+<div style="margin-left: 20px;">
+  <div>UIとは<span class="decoration-02">「ユーザーインターフェース」</span>の略。</div>
+  <div>WEBサイトやアプリを訪れたユーザーが、快適に操作できるようにインターフェースをデザインすることです。</div>
+</div></div></div>
+        
+        <div class="article-item item_html " id="item6866" data-item-id="6866" data-item-type="ItemHtml"><div class="item-body"><p>✅<strong> (*2) ：LP</strong></p>
+<div style="margin-left: 20px;">
+  <div>LP(ランディングページ)とは、主にWeb広告から訪れたユーザーに「購入」「お問い合わせ」「資料請求」などの行動を起こしてもらうことに特化したページ。</div>
+  <div>略して"LP"と呼ばれます。</div>
+</div></div></div>
+        
+        <div class="article-item item_html " id="item6867" data-item-id="6867" data-item-type="ItemHtml"><div class="item-body"><p>✅<strong> (*3) ：バナー広告</strong></p>
+<div style="margin-left: 20px;">
+  <div>バナー広告とは、Webサイト上に表示される画像（もしくは動画）の広告のこと。</div>
+</div></div></div>
+        
+        <div class="article-item item_rich_text " id="item6091" data-item-id="6091" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">✅ WEBサイト / LP(ランディングページ) / アプリなど。</span></div></div>
+        
+        <div class="article-item item_image " id="item6092" data-item-id="6092" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/006/092/medium/dea8f677-356e-427b-99f9-deb3debc378c.png?1732009486" title=""><img class="img-responsive item-image" alt=" (6092)" data-reference="" src="https://cdn.clipkit.co/tenants/589/item_images/images/000/006/092/medium/dea8f677-356e-427b-99f9-deb3debc378c.png?1732009486" width="640" height="352" /></a><h4></h4></div></div>
+        
+        <div class="article-item item_rich_text " id="item6093" data-item-id="6093" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">✅ バナー広告</span></div></div>
+        
+        <div class="article-item item_image " id="item6094" data-item-id="6094" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/006/094/medium/eca9de95-0cfa-4923-8ca8-a53aad505d55.png?1732009564" title=""><img class="img-responsive item-image" alt=" (6094)" data-reference="" src="https://cdn.clipkit.co/tenants/589/item_images/images/000/006/094/medium/eca9de95-0cfa-4923-8ca8-a53aad505d55.png?1732009564" width="474" height="268" /></a><h4></h4></div></div>
+        
+        <div class="article-item item_rich_text " id="item6095" data-item-id="6095" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">✅ サムネイルやSNS画像</span></div></div>
+        
+        <div class="article-item item_image " id="item6096" data-item-id="6096" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/006/096/medium/63f05fcd-0ca5-4379-901d-4741329d2e8f.png?1732009618" title=""><img class="img-responsive item-image" alt=" (6096)" data-reference="" src="https://cdn.clipkit.co/tenants/589/item_images/images/000/006/096/medium/63f05fcd-0ca5-4379-901d-4741329d2e8f.png?1732009618" width="640" height="288" /></a><h4></h4></div></div>
+        
+        <div class="article-item item_heading " id="item6097" data-item-id="6097" data-item-type="ItemHeading"><h2 class="item-body">【0-2】Figmaの特徴を知ろう</h2></div>
+        
+        <div class="article-item item_markdown " id="item39297" data-item-id="39297" data-item-type="ItemMarkdown"><h4 id="section">目安の学習時間:15分</h4>
+</div>
+        
+        <div class="article-item item_markdown " id="item6098" data-item-id="6098" data-item-type="ItemMarkdown"><h4 id="section">1. 無料で使える。（スタータープランの場合）</h4>
+</div>
+        
+        <div class="article-item item_html " id="item6868" data-item-id="6868" data-item-type="ItemHtml"><div class="item-body"><div>
+  <div>学習する範囲であれば無料版（スタータープラン)で十分です。</div>
+  <div>※無料以外のプランについては、後述の「プランについて」にて解説しています。</div>
+</div></div></div>
+        
+        <div class="article-item item_link " id="item38043" data-item-id="38043" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=XqAGK&amp;item_id=38043" rel="nofollow noopener noreferrer" target="_blank">プランと料金 | Figma</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="プランと料金 | Figma" data-reference="https://www.figma.com/ja-jp/pricing/" src="https://cdn.clipkit.co/tenants/589/item_links/images/000/038/043/thumb/d0770595-0817-4f64-b768-7334440c8617.png?1755427053" width="75" height="75" /></div><div class="media-body"><div class="item-body"></div></div></div></div></div>
+        
+        <div class="article-item item_markdown " id="item6101" data-item-id="6101" data-item-type="ItemMarkdown"><h4 id="windows-mac">2. Windows, Macに対応</h4>
+</div>
+        
+        <div class="article-item item_html " id="item6869" data-item-id="6869" data-item-type="ItemHtml"><div class="item-body"><div>
+  <div>両OSに対応しており、更にはChromeなどのウェブブラウザからでも使用する事が出来ます。</div>
+  <div>タブレットやスマートフォンでは基本的には使用できませんが、制作したFigmaのデザインを確認する事は出来ます。</div>
+</div></div></div>
+        
+        <div class="article-item item_markdown " id="item6103" data-item-id="6103" data-item-type="ItemMarkdown"><h4 id="figmaphotoshopillustrator">3. FigmaとPhotoshop/Illustratorの違いについて</h4>
+</div>
+        
+        <div class="article-item item_html " id="item6870" data-item-id="6870" data-item-type="ItemHtml"><div class="item-body"><div>
+  <div>基本的には、いずれのアプリケーションでもWEBデザインの作業をする事が出来ます。</div>
+  <div>しかし、PhotoshopとIllustratorは元々WEB等のUI制作を目的としたアプリケーションではありませんでした。</div>
+</div></div></div>
+        
+        <div class="article-item item_html " id="item6871" data-item-id="6871" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li>
+    <div><strong>Photoshop</strong></div>
+    <div>写真などの画像に加工を加えるなど、画像制作をする事に特化したアプリケーション。</div>
+  </li>
+  <li>
+     <div><strong>Illustrator</strong></div>
+     <div>イラストを描く事や印刷物の制作に特化したアプリケーション。</div>
+  </li>
+</ul></div></div>
+        
+        <div class="article-item item_html " id="item6872" data-item-id="6872" data-item-type="ItemHtml"><div class="item-body"><div><span class="decoration-02">FigmaはWEB等のUI作成に特化したツール</span>で、その分野における便利な機能が多数搭載されています。</div>
+<div>Figmaにはスタッフやクライアントと素早くデザインの共有ができ、更に直にコメントを残す機能もある為、余計な連絡のやり取りの時間と手間を省くこともできます。そのため<span class="decoration-02">現在WEB制作の現場において最も重宝するツール</span>となっています。</div></div></div>
+        
+        <div class="article-item item_markdown " id="item6107" data-item-id="6107" data-item-type="ItemMarkdown"><h4 id="section">4. 作業効率を向上させる機能がたくさん</h4>
+</div>
+        
+        <div class="article-item item_html " id="item6873" data-item-id="6873" data-item-type="ItemHtml"><div class="item-body"><p>
+  <div>Figmaには、作業効率を向上させる機能が数多く搭載されています。</div>
+  <div>少しでも効率的に作業出来るようになりましょう。</div>
+</p>
+<p>※詳細は第4章で解説します。</p></div></div>
+        
+        <div class="article-item item_markdown " id="item6109" data-item-id="6109" data-item-type="ItemMarkdown"><h4 id="section">5. コンテンツ制作を補助する様々なプラグイン</h4>
+</div>
+        
+        <div class="article-item item_html " id="item6874" data-item-id="6874" data-item-type="ItemHtml"><div class="item-body"><div>
+  <div>
+    <div>Figmaは、コンテンツ制作を補助する様々なプラグイン（拡張機能）を使う事も出来ます。</div>
+    <div>例えば、</div>
+    <ul>
+      <li><strong>Unsplash</strong> : 著作権フリーの画像を素早く配置。</li>
+      <li><strong>Iconify</strong> : アイコン画像を素早く配置。</li>
+      <li><strong>Mockup</strong> : モックアップを素早く作成。 ※ここでのモックアップとは、デザインしたものをPCやスマホの画面に仮に表示させた見本状態の事。</li>
+    </ul>
+    <div>上記の他にも、たくさんのプラグインがあります。</div>
+    <div>※こちらも、第4章で詳しく解説します。</div>
+  </div>
+</div></div></div>
+        
+        <div class="article-item item_markdown " id="item6113" data-item-id="6113" data-item-type="ItemMarkdown"><h4 id="web">6. プレゼン資料や名刺の作成など、WEB以外の用途にも使える</h4>
+</div>
+        
+        <div class="article-item item_html " id="item6875" data-item-id="6875" data-item-type="ItemHtml"><div class="item-body"><div>
+    <div>Figmaはベクター形式（拡大縮小しても劣化しない画像形式）の画像を作成出来てPDFでも出力できるため、プレゼン資料や名刺などを作成する事も可能です。</div>
+    <ul>
+      <li>扱いやすいフロー作成やプレビュー機能もあるので、スライドを使って社内プレゼンをする時、便利に使う事が出来ます。インタラクティブな表現も可能です。</li>
+    </ul>
+</div></div></div>
+        
+        <div class="article-item item_markdown " id="item6116" data-item-id="6116" data-item-type="ItemMarkdown"><h4 id="section">7. 依頼者や担当の方々との共同作業ができる</h4>
+</div>
+        
+        <div class="article-item item_html " id="item6876" data-item-id="6876" data-item-type="ItemHtml"><div class="item-body"><div>
+    <div>Figmaにはスタッフやクライアント達と素早くデザインの共有が出来、更に<span class="decoration-02">直にコメントを残す機能もある為、余計な連絡のやり取りの時間と手間を省く事も出来ます。</span></div>
+    <div>また<span class="decoration-02">複数の編集者やデザイナー達と同時に作業する事も可能なので、効率的な制作進行をする事が出来ます。</span></div>
+    <div>そのため、チームを組んで案件を受けるような場合には非常に重宝するツールと言えます。</div>
+</div></div></div>
+        
+        <div class="article-item item_heading " id="item6118" data-item-id="6118" data-item-type="ItemHeading"><h2 class="item-body">【0-3】Figmaをインストールしよう</h2></div>
+        
+        <div class="article-item item_markdown " id="item39298" data-item-id="39298" data-item-type="ItemMarkdown"><h4 id="section">目安の学習時間: 15分</h4>
+</div>
+        
+        <div class="article-item item_rich_text " id="item6119" data-item-id="6119" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">Figmaのウェブサイト</span>にアクセスし、ダウンロードしよう。</div></div>
+        
+        <div class="article-item item_markdown " id="item6120" data-item-id="6120" data-item-type="ItemMarkdown"><p><strong>FigmaサイトURL</strong></p>
+</div>
+        
+        <div class="article-item item_link " id="item6121" data-item-id="6121" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=XqAGK&amp;item_id=6121" rel="nofollow noopener noreferrer" target="_blank">Figmaダウンロード | デスクトップ&amp;モバイル向けWebデザインアプリ</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="Figmaダウンロード | デスクトップ&amp;モバイル向けWebデザインアプリ" data-reference="https://www.figma.com/ja-jp/downloads/" src="https://cdn.clipkit.co/tenants/589/item_links/images/000/006/121/thumb/e1c05694-642b-4ce8-8c86-9e642c0a0238.png?1732010655" width="75" height="75" /></div><div class="media-body"><div class="item-body">macOSまたはWindowsデスクトップ向けFigma Webデザインアプリ、フォントインストーラ―、デバイスプレビューアプリをダウンロードできます。</div></div></div></div></div>
+        
+        <div class="article-item item_rich_text " id="item6122" data-item-id="6122" data-item-type="ItemRichText"><div class="item-body-hbr">ここで使用するパソコンのOS（mac, windows）に合わせたダウンローダーを選択します。ダウンロード後、各OSのインストール方法について記載します。</div></div>
+        
+        <div class="article-item item_markdown " id="item6123" data-item-id="6123" data-item-type="ItemMarkdown"><h4 id="mac">Macの場合</h4>
+<p>1 . ダウンロードした<strong>「Figma.dmg」</strong>を開きます。<br />
+2 . 下記画面が表示されたら、左の「Figma」のアイコンを、右の「Applications」にドラッグ&amp;ドロップ。</p>
+</div>
+        
+        <div class="article-item item_image " id="item6124" data-item-id="6124" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/006/124/medium/6064b4cb-450e-4bf1-9c28-9397638daeb1.png?1732011098" title=""><img class="img-responsive item-image" alt=" (6124)" data-reference="" src="https://cdn.clipkit.co/tenants/589/item_images/images/000/006/124/medium/6064b4cb-450e-4bf1-9c28-9397638daeb1.png?1732011098" width="640" height="360" /></a><h4></h4></div></div>
+        
+        <div class="article-item item_rich_text " id="item6125" data-item-id="6125" data-item-type="ItemRichText"><div class="item-body-hbr">3 . 「アプリケーション」にFigmaが追加されます。  <br>
+4 . この後は下記に記載の<span class="decoration-02">Figmaをインストール後</span>に進みます。</div></div>
+        
+        <div class="article-item item_markdown " id="item6126" data-item-id="6126" data-item-type="ItemMarkdown"><h4 id="windows">Windowsの場合</h4>
+<p>1 . ダウンロードした<strong>「FigmaSetup.exe」</strong>を開きます。</p>
+</div>
+        
+        <div class="article-item item_image " id="item6127" data-item-id="6127" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/006/127/medium/a6cd434f-a15b-4a57-a1b3-6268c41e01cb.png?1732011236" title=""><img class="img-responsive item-image" alt=" (6127)" data-reference="" src="https://cdn.clipkit.co/tenants/589/item_images/images/000/006/127/medium/a6cd434f-a15b-4a57-a1b3-6268c41e01cb.png?1732011236" width="640" height="421" /></a><h4></h4></div></div>
+        
+        <div class="article-item item_rich_text " id="item6128" data-item-id="6128" data-item-type="ItemRichText"><div class="item-body-hbr">2 . Figmaが使用PCのアプリに追加されます。  <br>
+3 . この後は下記に記載の<span class="decoration-02">Figmaをインストール後</span>に進みます。</div></div>
+        
+        <div class="article-item item_markdown " id="item6129" data-item-id="6129" data-item-type="ItemMarkdown"><h4 id="figma">Figmaをインストール後</h4>
+</div>
+        
+        <div class="article-item item_html " id="item6877" data-item-id="6877" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li>
+    <div>Figmaをインストールした後は、アカウント作成を行います。</div>
+    <div>※もし自分のgoogleアカウントがあれば、このアカウントをそのまま使用してもOKです。  勿論、Figma用のアカウントを別途作成してもOKです。 </div>
+  </li>
+</ul></div></div>
+        
+        <div class="article-item item_markdown " id="item6131" data-item-id="6131" data-item-type="ItemMarkdown"><p>1 . Figmaを立ち上げると、以下の画面になります。（※日本語の場合もあります）</p>
+</div>
+        
+        <div class="article-item item_image " id="item6132" data-item-id="6132" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/006/132/medium/6803531b-7d72-4b9d-b517-5848437cf418.png?1732011493" title=""><img class="img-responsive item-image" alt=" (6132)" data-reference="" src="https://cdn.clipkit.co/tenants/589/item_images/images/000/006/132/medium/6803531b-7d72-4b9d-b517-5848437cf418.png?1732011493" width="640" height="426" /></a><h4></h4></div></div>
+        
+        <div class="article-item item_markdown " id="item6133" data-item-id="6133" data-item-type="ItemMarkdown"><ul>
+  <li>既にGoogleアカウント（もしくはFigmaのアカウント）があり、そのアカウントを使用する場合は Log in with browserへ。</li>
+  <li>アカウントが無い場合（もしくは別途作成する場合）は、<strong>No account?Create one</strong>よりアカウント作成してから Log in with browser へ。</li>
+</ul>
+</div>
+        
+        <div class="article-item item_rich_text " id="item6137" data-item-id="6137" data-item-type="ItemRichText"><div class="item-body-hbr">2. <span class="decoration-01">Log in with browser</span> を選択後、ログインが成功すると以下のような表示になります。  <br>
+※今回はgoogleアカウントでログインした場合です。</div></div>
+        
+        <div class="article-item item_image " id="item6135" data-item-id="6135" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/006/135/medium/b966aaa1-3d8d-49b1-b208-a8d0bfe5bc45.png?1732011622" title=""><img class="img-responsive item-image" alt=" (6135)" data-reference="" src="https://cdn.clipkit.co/tenants/589/item_images/images/000/006/135/medium/b966aaa1-3d8d-49b1-b208-a8d0bfe5bc45.png?1732011622" width="640" height="360" /></a><h4></h4></div></div>
+        
+        <div class="article-item item_rich_text " id="item6136" data-item-id="6136" data-item-type="ItemRichText"><div class="item-body-hbr">3 . 後は<span class="decoration-02">Open the desktop app</span>​を選択すれば、ログインした状態でFigmaのデスクトップアプリを起動できます。</div></div>
+        
+        <div class="article-item item_html " id="item6878" data-item-id="6878" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li><div>Windows ARMは扱い方は通常のWindowsと同じですが、規格が異なり通常のWindowsでは動作しません。</div><div>もしWindows ARM対応のPCを使用の際は、こちらを選択してください。</div></li>
+  <li>ベータ版は開発版です。初心者の方は選択しなくてOKです。  </li>
+  <li>同列に配置されている「フォントインストーラー」とは、ブラウザ版でローカルPC（使用しているPC）のフォントを使用出来るようにするツールです。</li>
+</ul></div></div>
+        
+        <div class="article-item item_markdown " id="item6139" data-item-id="6139" data-item-type="ItemMarkdown"><h4 id="section">デスクトップ版とブラウザ版の違い</h4>
+</div>
+        
+        <div class="article-item item_rich_text " id="item6140" data-item-id="6140" data-item-type="ItemRichText"><div class="item-body-hbr">Figmaはデスクトップ版（アプリ版）でも、Chrome等のウェブブラウザからも使用出来ます。  <br>
+<br>
+基本的に大きな変わりは無いのですが、ある程度作り込んだデザインを編集する場合に、ウェブブラウザ版は動作が遅くなりやすいので、<span class="decoration-02">なるべくはデスクトップ版を使う事をおすすめ</span>します。</div></div>
+        
+        <div class="article-item item_markdown " id="item6141" data-item-id="6141" data-item-type="ItemMarkdown"><h4 id="section">プランについて</h4>
+</div>
+        
+        <div class="article-item item_html " id="item6879" data-item-id="6879" data-item-type="ItemHtml"><div class="item-body"><div>Figmaには４つのプランがあります。<strong>※作業の際は、無料のスタータープランで十分です。</strong></div>
+<ul>
+  <li>スタータープラン（無料）</li>
+  <li>プロフェッショナルプラン</li>
+  <li>ビジネスプラン</li>
+  <li>エンタープライズプラン</li>
+</ul></div></div>
+        
+        <div class="article-item item_rich_text " id="item6143" data-item-id="6143" data-item-type="ItemRichText"><div class="item-body-hbr">プランの違いは、公式サイトで確認できます。</div></div>
+        
+        <div class="article-item item_link " id="item6144" data-item-id="6144" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=XqAGK&amp;item_id=6144" rel="nofollow noopener noreferrer" target="_blank">プランと料金 | Figma</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="プランと料金 | Figma" data-reference="https://www.figma.com/ja-jp/pricing/" src="https://cdn.clipkit.co/tenants/589/item_links/images/000/006/144/thumb/b0e8a0cc-2a36-4bdc-bc92-b2bebd6d90aa.png?1732012051" width="75" height="75" /></div><div class="media-body"><div class="item-body"></div></div></div></div></div>
+        
+        <div class="article-item item_heading " id="item6145" data-item-id="6145" data-item-type="ItemHeading"><h2 class="item-body">【0-4】各章の目次（詳細は各章のページにて記載）</h2></div>
+        
+        <div class="article-item item_markdown " id="item41492" data-item-id="41492" data-item-type="ItemMarkdown"><h4 id="section">目安の学習時間:15分</h4>
+</div>
+        
+        <div class="article-item item_rich_text " id="item6146" data-item-id="6146" data-item-type="ItemRichText"><div class="item-body-hbr">✅ <span class="decoration-01">各章の目次を見ることで、Figmaを学習する全体の流れを把握しましょう！</span></div></div>
+        
+        <div class="article-item item_html " id="item38425" data-item-id="38425" data-item-type="ItemHtml"><div class="item-body"><div class="card-with-icon attention">
+
+  <span class="bold">FigmaのUIに関する注意<br></span>
+
+	  <ul>
+
+      <li>Figmaは機能改善のために日々アップデートが行われており、その影響で教材内のUIと実際のUIが違う場合があります。</li>
+      <li>UIが異なることで操作に迷われた場合は、Figmaの公式ヘルプセンターや生成AIを活用しながら学習を進めていただきますようお願いいたします。</li>
+
+    </ul>
+
+</div></div></div>
+        
+        <div class="article-item item_heading " id="item6147" data-item-id="6147" data-item-type="ItemHeading"><h3 class="item-body">【第1章】初期設定をして作業の準備をしよう</h3></div>
+        
+        <div class="article-item item_rich_text " id="item6148" data-item-id="6148" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">第1章の内容</span></div></div>
+        
+        <div class="article-item item_html " id="item6149" data-item-id="6149" data-item-type="ItemHtml"><div class="item-body"><table class="simple">
+    <tbody>
+        <tr>
+            <th scope="row">
+                <div>1-1 言語の設定</div>
+            </th>
+            <td>
+                <div>デフォルトの言語は英語ですが、設定で日本語に変更出来ます。</div>
+            </td>
+        </tr>
+        <tr>
+            <th scope="row">
+                <div>1-2 テーマ（背景色）の選択</div>
+            </th>
+            <td>
+                <div>お好みに合わせてFigmaの画面を設定してみよう。</div>
+            </td>
+        </tr>
+    </tbody>
+</table></div></div>
+        
+        <div class="article-item item_heading " id="item6150" data-item-id="6150" data-item-type="ItemHeading"><h3 class="item-body">【第2章】画面の構成を知ろう</h3></div>
+        
+        <div class="article-item item_rich_text " id="item6153" data-item-id="6153" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">第2章の内容</span></div></div>
+        
+        <div class="article-item item_html " id="item6152" data-item-id="6152" data-item-type="ItemHtml"><div class="item-body"><table class="simple">
+    <tbody>
+        <tr>
+            <th scope="row">
+                <div>2-1 ホーム画面の説明</div>
+            </th>
+            <td>
+                <div>Figmaを立ち上げて初めに目にする画面の解説です。</div>
+            </td>
+        </tr>
+        <tr>
+            <th scope="row">
+                <div>2-2 デザインファイルを新規作成しよう</div>
+            </th>
+            <td>
+                <div>まずは、Figmaで作業する為のファイルを作成しよう。</div>
+            </td>
+        </tr>
+              <tr>
+            <th scope="row">
+                <div>2-3 編集画面の説明</div>
+            </th>
+            <td>
+                <div>Figmaで作業する編集画面の解説です。</div>
+            </td>
+        </tr>
+    </tbody>
+</table></div></div>
+        
+        <div class="article-item item_heading " id="item6154" data-item-id="6154" data-item-type="ItemHeading"><h3 class="item-body">【第3章】基本操作を覚えよう</h3></div>
+        
+        <div class="article-item item_rich_text " id="item6155" data-item-id="6155" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">第3章の内容</span></div></div>
+        
+        <div class="article-item item_html " id="item6156" data-item-id="6156" data-item-type="ItemHtml"><div class="item-body"><table class="simple">
+    <tbody>
+        <tr>
+            <th scope="row">
+                <div>3-1 オブジェクトを作成しよう</div>
+            </th>
+            <td>
+                <div>まずは、Figmaの基本的な操作である図形作成やテキスト入力をして、オブジェクトを作成してみよう。</div>
+            </td>
+        </tr>
+        <tr>
+            <th scope="row">
+                <div>3-2 オブジェクトの大きさを変えたり、向きを変更してみよう</div>
+            </th>
+            <td>
+                <div>作成したオブジェクトを拡大縮小したり、向きを変えてみよう。</div>
+            </td>
+        </tr>
+        <tr>
+            <th scope="row">
+                <div>3-3 オブジェクトの色を変えてみよう</div>
+            </th>
+            <td>
+                <div>カラーパレットを使用して、自由自在に色を変更出来ます。</div>
+            </td>
+        </tr>
+        <tr>
+            <th scope="row">
+                <div>3-4 テキストを編集してみよう</div>
+            </th>
+            <td>
+                <div>入力したテキストのサイズや書体等を変更してみよう。</div>
+            </td>
+        </tr>
+        <tr>
+            <th scope="row">
+                <div>3-5 オブジェクトを複製してみよう</div>
+            </th>
+            <td>
+                <div>作業時に良く使うので、覚えておくと便利です。</div>
+            </td>
+        </tr>
+        <tr>
+            <th scope="row">
+                <div>3-6 レイヤーを覚えよう</div>
+            </th>
+            <td>
+                <div>配置したオブジェクトの確認や管理ができます。</div>
+            </td>
+        </tr>
+        <tr>
+            <th scope="row">
+                <div>3-7 フレームツールを覚えよう</div>
+            </th>
+            <td>
+                <div>実際にデザイン作業する際は、基本的にはこのフレーム内に図形や画像やテキストを配置して作業を進めます。</div>
+            </td>
+        </tr>
+        <tr>
+            <th scope="row">
+                <div>3-8 レイヤーをグループ化してみよう</div>
+            </th>
+            <td>
+                <div>レイヤーを整理整頓してみよう。</div>
+            </td>
+        </tr>
+        <tr>
+            <th scope="row">
+                <div>3-9 画像をFigmaに置いてみよう</div>
+            </th>
+            <td>
+                <div>自分のパソコンにある画像をFigmaに置いてみよう</div>
+            </td>
+        </tr>
+        <tr>
+            <th scope="row">
+                <div>3-10 キャンバスを自由に動かしてみよう</div>
+            </th>
+            <td>
+                <div>Figmaの編集画面の倍率を変えたり、上下左右自由に動かしてみよう。</div>
+            </td>
+        </tr>
+        <tr>
+            <th scope="row">
+                <div>3-11 パスの操作を覚えよう</div>
+            </th>
+            <td>
+                <div>パスで描く事により、図形ツールには無い形を自由に描く事が出来ます。</div>
+            </td>
+        </tr>
+        <tr>
+            <th scope="row">
+                <div>3-12 作成したものを画像データで書き出してみよう（エクスポート）</div>
+            </th>
+            <td>
+                <div>Figmaでは、簡単に画像データを作る事が出来ます。試しに画像を作ってみましょう。</div>
+            </td>
+        </tr>
+    </tbody>
+</table></div></div>
+        
+        <div class="article-item item_heading " id="item6157" data-item-id="6157" data-item-type="ItemHeading"><h3 class="item-body">【第4章】便利な機能を覚えよう</h3></div>
+        
+        <div class="article-item item_rich_text " id="item6158" data-item-id="6158" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">第4章の内容</span></div></div>
+        
+        <div class="article-item item_html " id="item6169" data-item-id="6169" data-item-type="ItemHtml"><div class="item-body"><table class="simple">
+    <tbody>
+        <tr>
+            <th scope="row">
+                <div>4-1 ショートカット</div>
+            </th>
+            <td>
+                <div>ショートカットを使いこなす事が出来れば、効率的に作業出来るようになります。</div>
+            </td>
+        </tr>
+        <tr>
+            <th scope="row">
+                <div>4-2 ガイド（定規・グリッド）</div>
+            </th>
+            <td>
+                <div>ガイドを使用すれば規則性のあるレイアウトを構築する事が容易です。</div>
+            </td>
+        </tr>
+        <tr>
+            <th scope="row">
+                <div>4-3 コンポーネント</div>
+            </th>
+            <td>
+                <div>同じようなパーツを使いまわしたい場合、コンポーネントを使うと便利です。</div>
+            </td>
+        </tr>
+        <tr>
+            <th scope="row">
+                <div>4-4 バリアント</div>
+            </th>
+            <td>
+                <div>配置したコンポーネントを別コンポーネントに切り替える際などに便利です。</div>
+            </td>
+        </tr>
+        <tr>
+            <th scope="row">
+                <div>4-5 スタイル</div>
+            </th>
+            <td>
+                <div>フォントの色/サイズ/書体等を登録する機能です。全体のフォントの統一化に役立ちます。</div>
+            </td>
+        </tr>
+        <tr>
+            <th scope="row">
+                <div>4-6 オートレイアウト</div>
+            </th>
+            <td>
+                <div>複数のオブジェクトを、素早く規則的な整列ができる機能です。</div>
+            </td>
+        </tr>
+        <tr>
+            <th scope="row">
+                <div>4-7 マスク</div>
+            </th>
+            <td>
+                <div>オブジェクトの表示領域を限定させる方法です。</div>
+            </td>
+        </tr>
+        <tr>
+            <th scope="row">
+                <div>4-8 エフェクト</div>
+            </th>
+            <td>
+                <div>オブジェクトに影を作ったり、ぼかし等の効果を付ける事ができます。</div>
+            </td>
+        </tr>
+        <tr>
+            <th scope="row">
+                <div>4-9 プラグイン</div>
+            </th>
+            <td>
+                <div>Figmaの拡張機能です。多くの便利な機能を使う事ができます。</div>
+            </td>
+        </tr>
+    </tbody>
+</table></div></div>
+        
+        <div class="article-item item_heading " id="item6159" data-item-id="6159" data-item-type="ItemHeading"><h3 class="item-body">【第5章】ワイヤーフレームを作成してみよう</h3></div>
+        
+        <div class="article-item item_rich_text " id="item6175" data-item-id="6175" data-item-type="ItemRichText"><div class="item-body-hbr">ここからは実際にウェブサイトのデザインを制作する工程に入ります。<br>
+<br>
+一般的な制作方法としては、初めから時間を使って色や画像等を含めたような作り込んだデザイン作成をするのではなく、まず短時間でも作成可能なワイヤーフレームという設計図を作成します。</div></div>
+        
+        <div class="article-item item_markdown " id="item6177" data-item-id="6177" data-item-type="ItemMarkdown"><p>==<br />
+<strong>主な工程</strong><br />
+1. ワイヤーフレームを作成。<br />
+2. 作成したワイヤーフレームをチームやクライアント等、関係者に確認してもらう。<br />
+3. OKが出たら、デザイン作業開始。<br />
+4. ある程度完成したら、デザインを関係者に確認してもらう。<br />
+==</p>
+</div>
+        
+        <div class="article-item item_rich_text " id="item6176" data-item-id="6176" data-item-type="ItemRichText"><div class="item-body-hbr">この章では、このワイヤーフレームについて解説していきます。<br>
+まずは、サンプルを参考に模写する事から始めてみましょう。</div></div>
+        
+        <div class="article-item item_rich_text " id="item6160" data-item-id="6160" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">第5章の内容</span></div></div>
+        
+        <div class="article-item item_html " id="item6170" data-item-id="6170" data-item-type="ItemHtml"><div class="item-body"><table class="simple">
+    <tbody>
+        <tr>
+            <th scope="row">
+                <div>5-1 ワイヤーフレームとは？</div>
+            </th>
+            <td>
+                <div>ワイヤーフレームは、ウェブページの設計図。</div>
+            </td>
+        </tr>
+        <tr>
+            <th scope="row">
+                <div>5-2 ワイヤーフレーム作成の際、必要なことは？</div>
+            </th>
+            <td>
+                <div>ワイヤーフレームの要点を解説します。</div>
+            </td>
+        </tr>
+        <tr>
+            <th scope="row">
+                <div>5-3 Figmaで用意されているフレームをベースにしてみよう</div>
+            </th>
+            <td>
+                <div>Figmaには色々なデバイスに合わせたサイズのフレームが用意されています。</div>
+            </td>
+        </tr>
+        <tr>
+            <th scope="row">
+                <div>5-4 ガイド（定規・グリッド）を敷いて、ルールを決めてみよう</div>
+            </th>
+            <td>
+                <div>直感的にオブジェクトを配置するだけではなく、ある程度ルールを作って配置してみましょう。</div>
+            </td>
+        </tr>
+        <tr>
+            <th scope="row">
+                <div>5-5 オブジェクトを配置してみよう</div>
+            </th>
+            <td>
+                <div>ガイドを基準に、図形ツールやテキストツールを使って上手く配置してみましょう。</div>
+            </td>
+        </tr>
+        <tr>
+            <th scope="row">
+                <div>5-6 プレビューしてみよう</div>
+            </th>
+            <td>
+                <div>フレームごとに分けた表示を確認してみよう。</div>
+            </td>
+        </tr>
+        <tr>
+            <th scope="row">
+                <div>【演習】オリジナルサイト制作を考案し、そのワイヤーフレームを作ってみよう</div>
+            </th>
+            <td>
+                <div>独自でサイトのワイヤーフレームを作ってみましょう。</div>
+                <div>テーマは架空のお店やサービスなど何でもOKです。</div>
+            </td>
+        </tr>
+    </tbody>
+</table></div></div>
+        
+        <div class="article-item item_heading " id="item6161" data-item-id="6161" data-item-type="ItemHeading"><h3 class="item-body">【第6章】プロトタイプを設定してみよう</h3></div>
+        
+        <div class="article-item item_rich_text " id="item6162" data-item-id="6162" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">第6章の内容</span></div></div>
+        
+        <div class="article-item item_html " id="item6171" data-item-id="6171" data-item-type="ItemHtml"><div class="item-body"><table class="simple">
+    <tbody>
+        <tr>
+            <th scope="row">
+                <div>6-1 プロトタイプとは？</div>
+            </th>
+            <td>
+                <div>Figmaにはウェブページのように、設定したリンクをクリックすると指定したフレームにジャンプする機能があります。</div>
+            </td>
+        </tr>
+        <tr>
+            <th scope="row">
+                <div>6-2 5章で作ったワイヤーフレームに、フローの設定を加えてみよう</div>
+            </th>
+            <td>
+                <div>ワイヤーフレームに導線設定をして、リンク設定を加えてみましょう。</div>
+            </td>
+        </tr>
+        <tr>
+            <th scope="row">
+                <div>6-3 フロー設定を加えたワイヤーフレームを、プレビューしてみよう</div>
+            </th>
+            <td>
+                <div>リンク設定したオブジェクトをクリックし、画面遷移を確認してみましょう。</div>
+            </td>
+        </tr>
+        <tr>
+            <th scope="row">
+                <div>6-4 インタラクションを設定してみよう</div>
+            </th>
+            <td>
+                <div>ハンバーガーメニューなど、実際の挙動に近い動作を加える事も可能です。</div>
+            </td>
+        </tr>
+        <tr>
+            <th scope="row">
+                <div>6-5 フロー設定を加えたワイヤーフレームを、共有してみよう</div>
+            </th>
+            <td>
+                <div>作成したFigmaデータを他の方に見て貰う事が出来ます。</div>
+            </td>
+        </tr>
+        <tr>
+            <th scope="row">
+                <div>【演習】オリジナルで作ったワイヤーフレームに、フロー設定を加えてみよう</div>
+            </th>
+            <td>
+                <div>第5章で自作したワイヤーフレームに、フロー設定を加えてみよう。</div>
+            </td>
+        </tr>
+    </tbody>
+</table></div></div>
+        
+        <div class="article-item item_heading " id="item6163" data-item-id="6163" data-item-type="ItemHeading"><h3 class="item-body">【第7章】デザインをしてみよう</h3></div>
+        
+        <div class="article-item item_rich_text " id="item6164" data-item-id="6164" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">第7章の内容</span></div></div>
+        
+        <div class="article-item item_html " id="item6172" data-item-id="6172" data-item-type="ItemHtml"><div class="item-body"><table class="simple">
+    <tbody>
+        <tr>
+            <th scope="row">
+                <div>7-1 5章で作ったワイヤーフレームに、デザインを加えてみよう</div>
+            </th>
+            <td>
+                <div>ここからデザイン作業のスタートです。</div>
+            </td>
+        </tr>
+        <tr>
+            <th scope="row">
+                <div>7-2 メインビジュアルや、サムネイル/アイコン等の画像を作成してみよう</div>
+            </th>
+            <td>
+                <div>素材・パーツの準備してみましょう。</div>
+            </td>
+        </tr>
+        <tr>
+            <th scope="row">
+                <div>7-3 Figmaでデザインする際の便利技</div>
+            </th>
+            <td>
+                <div>初めての方でも扱える簡単な便利技を幾らかご紹介します。</div>
+            </td>
+        </tr>
+        <tr>
+            <th scope="row">
+                <div>7-4 準備した素材を配置したり、色やテキストを調整してみよう</div>
+            </th>
+            <td>
+                <div>ワイヤーフレームで作成した部分に、デザインを加えていきます。</div>
+            </td>
+        </tr>
+        <tr>
+            <th scope="row">
+                <div>7-5 デザインしたサイトを、共有してみよう</div>
+            </th>
+            <td>
+                <div>作成したデザインを、色々な方に手早く見て貰おう。</div>
+            </td>
+        </tr>
+        <tr>
+            <th scope="row">
+                <div>【演習】オリジナルで作ったワイヤーフレームに、デザインを加えてみよう</div>
+            </th>
+            <td>
+                <div>第5章の演習で作成したワイヤーフレームに、デザインを加えてみよう。</div>
+            </td>
+        </tr>
+    </tbody>
+</table></div></div>
+        
+        <div class="article-item item_heading " id="item6165" data-item-id="6165" data-item-type="ItemHeading"><h3 class="item-body">【第8章】バナー画像を作ってみよう</h3></div>
+        
+        <div class="article-item item_rich_text " id="item6166" data-item-id="6166" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">第8章の内容</span></div></div>
+        
+        <div class="article-item item_html " id="item6173" data-item-id="6173" data-item-type="ItemHtml"><div class="item-body"><table class="simple">
+    <tbody>
+        <tr>
+            <th scope="row">
+                <div>8-1 バナー広告とは</div>
+            </th>
+            <td>
+                <div>他のWebページに誘導する為に設置する広告です。</div>
+            </td>
+        </tr>
+        <tr>
+            <th scope="row">
+                <div>8-2 バナー画像を作る際の心得やコツなど</div>
+            </th>
+            <td>
+                <div>初めに3つのポイントを抑えよう。</div>
+            </td>
+        </tr>
+        <tr>
+            <th scope="row">
+                <div>8-3 実際に作ってみよう</div>
+            </th>
+            <td>
+                <div>注意点を覚えて、作成してみよう。</div>
+            </td>
+        </tr>
+        <tr>
+            <th scope="row">
+                <div>8-4 書き出ししてみよう（エクスポート）</div>
+            </th>
+            <td>
+                <div>Figmaの機能「エクスポート」より、簡単に画像書き出しする事が出来ます。</div>
+            </td>
+        </tr>
+        <tr>
+            <th scope="row">
+                <div>8-5 リサイズしてみよう</div>
+            </th>
+            <td>
+                <div>配置場所に準じたサイズになるよう、リサイズしてみましょう。</div>
+            </td>
+        </tr>
+        <tr>
+            <th scope="row">
+                <div>【演習】オリジナルのバナーを作ってみよう</div>
+            </th>
+            <td>
+                <div>バナー作りの基礎を覚えたら、オリジナルのバナーを作成しよう。</div>
+            </td>
+        </tr>
+        <tr>
+            <th scope="row">
+                <div>【演習】バナーギャラリーを作ってみよう</div>
+            </th>
+            <td>
+                <div>独自のバナーギャラリーを作ってみましょう。</div>
+                <div>ポートフォリオ用に作っておくと、就活時に役に立つと思います。</div>
+            </td>
+        </tr>
+    </tbody>
+</table></div></div>
+        
+        <div class="article-item item_heading " id="item6167" data-item-id="6167" data-item-type="ItemHeading"><h3 class="item-body">【第9章】LPのデザイン案を作ってみよう</h3></div>
+        
+        <div class="article-item item_rich_text " id="item6168" data-item-id="6168" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">第9章の内容</span></div></div>
+        
+        <div class="article-item item_html " id="item6174" data-item-id="6174" data-item-type="ItemHtml"><div class="item-body"><table class="simple">
+    <tbody>
+        <tr>
+            <th scope="row">
+                <div>9-1 LPとは</div>
+            </th>
+            <td>
+                <div>LP（ランディングページについて説明します。</div>
+            </td>
+        </tr>
+        <tr>
+            <th scope="row">
+                <div>9-2 LPとホームページの違い</div>
+            </th>
+            <td>
+                <div>二つのサイトの目的・ターゲット・デザインの違いを理解しましょう。</div>
+            </td>
+        </tr>
+        <tr>
+            <th scope="row">
+                <div>9-3 ワイヤーフレーム作成からデザイン実装まで進めてみよう</div>
+            </th>
+            <td>
+                <div>ホームページ作成の時と同じくワイヤーフレームから着手してみましょう。単一ページなのでホームページの時に比べ作りやすいと思います。</div>
+            </td>
+        </tr>
+        <tr>
+            <th scope="row">
+                <div>9-4 デザインしたLPを、共有してみよう</div>
+            </th>
+            <td>
+                <div>色々な方にデザインしたLPを見て貰おう。</div>
+            </td>
+        </tr>
+        <tr>
+            <th scope="row">
+                <div>【演習】オリジナルのLPデザイン案を作ってみよう</div>
+            </th>
+            <td>
+                <div>オリジナルのLPを作ってみましょう。勿論シンプルなものでOKです。テーマは架空の商品やイベントなど、何でもOK。</div>
+            </td>
+        </tr>
+    </tbody>
+</table></div></div>
+        
+        <div class="article-item item_html " id="item38429" data-item-id="38429" data-item-type="ItemHtml"><div class="item-body"><div class="pagenation-buttons">
+  <a href="nLx1a" class="pagenation-buttons_prev"><img src="/theme/webcoach/img/icons/arrow-right.svg" class="pagenation-buttons_icon">前の章に戻る</a>
+  <a href="iJrTF" class="pagenation-buttons_next">次の章に進む<img src="/theme/webcoach/img/icons/arrow-right.svg" class="pagenation-buttons_icon"></a>
+</div>
+</div></div>
+        
+        
+        
+        <div class="back-to-roadmap mb-4 text-center"></div>
+      </div>
+    </div>
+    
+    <div class="lightbox-modal" id="lightboxModal">
+      <img src="" alt="">
+    </div>
+    
+    <div id="modal" class="fixed-menu-modal">
+      <div class="fixed-menu-modal-content">
+        <div class="index mb-3" style="background-color: #FDF5E8;">
+          <div>
+            <div class="fw-light">INDEX</div>
+            <div class="h3">目次</div>
+          </div>
+          <div class="toc"></div>
+        </div>
+        
+        <!-- ボタン類 -->
+        <div id="fixed-menu_buttons" class="fixed-menu_buttons"></div>
+        
+        <div class="back-to-roadmap text-center"></div>
+      </div>
+    </div>
+    
+    <button id="toggleBtn" class="floating-btn">
+      <img id="iconOpen" 
+           src="/theme/webcoach/img/icons/fixed-menu_modal-open.svg" 
+           alt="メニューを開く">
+      <img id="iconClose" 
+           src="/theme/webcoach/img/icons/fixed-menu_modal-close.svg" 
+           alt="メニューを閉じる" style="display:none;">
+    </button>
+  </div>
+</div>
+</div>
+<!-- <script src="https://cdn.clipkit.co/clipkit/javascripts/item-shopify-1.0.js?v=v15.9.0-20260915" async></script> -->
+            </div>
+        </main>
+
+    </div>
+
+    <div class="p-5" style="background-color: #B73E3D; color: white; height: 300px;">
+        <div class="">
+            <div class="h4 ps-3" style="border-left: 5px solid white;">WEBCOACH | キャリアチェンジまでの全てを学ぶマンツーマンWEBスクール</div>
+            <ul class="nav flex-column m-0 p-3 fw-light">
+                <li class="nav-item mb-2"><a href="https://www.webcoach.jp/" target="_blank">WEBCOACH | 公式HP</a></li>
+                <li class="nav-item mb-2"><a href="https://www.instagram.com/webcoach_officials/" target="_blank">WEBCOACH | 公式Instagram</a></li>
+                <li class="nav-item mb-2"><a href="https://vectorinc.co.jp/groupservice/webcoach-career/" target="_blank">WEBCOACH 公式メディア | WEBCOACH career</a></li>
+            </ul>
+        </div>
+        <div class="text-center">
+            <small>&copy; 2020 by WEBCOACH</small>
+        </div>
+    </div>
+
+    <script src="https://cdn.clipkit.co/clipkit/javascripts/application-1.0.js?v=v15.9.0-20260915" async></script>
+
+    <!-- bodyタグ内の下部に挿入されます -->
+
+
+    <!-- BootstrapのCDNでのjs読み込み -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+        crossorigin="anonymous"></script>
+
+    <!-- シンタックスハイライトの生成 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.1/highlight.min.js"></script>
+    <script>
+        // ハイライトを実行
+        hljs.initHighlightingOnLoad();
+    </script>
+
+    <!-- 目次の生成 -->
+    <script type="text/javascript">toc();</script>
+
+    <!-- ブックマークの生成 -->
+    <script type="text/javascript">displayLinks();</script>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="ck-icon-arrow-down" viewBox="0 0 1792 1792"><path d="M1675 832q0 53-37 90l-651 652q-39 37-91 37-53 0-90-37l-651-652q-38-36-38-90 0-53 38-91l74-75q39-37 91-37 53 0 90 37l294 294v-704q0-52 38-90t90-38h128q52 0 90 38t38 90v704l294-294q37-37 90-37 52 0 91 37l75 75q37 39 37 91z" /></symbol><symbol id="ck-icon-arrow-up" viewBox="0 0 1792 1792"><path d="M1675 971q0 51-37 90l-75 75q-38 38-91 38-54 0-90-38l-294-293v704q0 52-37.5 84.5t-90.5 32.5h-128q-53 0-90.5-32.5t-37.5-84.5v-704l-294 293q-36 38-90 38t-90-38l-75-75q-38-38-38-90 0-53 38-91l651-651q35-37 90-37 54 0 91 37l651 651q37 39 37 91z" /></symbol><symbol id="ck-icon-calendar" viewBox="0 0 1792 1792"><path d="M192 1664h288v-288h-288v288zm352 0h320v-288h-320v288zm-352-352h288v-320h-288v320zm352 0h320v-320h-320v320zm-352-384h288v-288h-288v288zm736 736h320v-288h-320v288zm-384-736h320v-288h-320v288zm768 736h288v-288h-288v288zm-384-352h320v-320h-320v320zm-352-864v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm736 864h288v-320h-288v320zm-384-384h320v-288h-320v288zm384 0h288v-288h-288v288zm32-480v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm384-64v1280q0 52-38 90t-90 38h-1408q-52 0-90-38t-38-90v-1280q0-52 38-90t90-38h128v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h384v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h128q52 0 90 38t38 90z" /></symbol><symbol id="ck-icon-chevron-left" viewBox="0 0 1792 1792"><path d="M1427 301l-531 531 531 531q19 19 19 45t-19 45l-166 166q-19 19-45 19t-45-19l-742-742q-19-19-19-45t19-45l742-742q19-19 45-19t45 19l166 166q19 19 19 45t-19 45z" /></symbol><symbol id="ck-icon-chevron-right" viewBox="0 0 1792 1792"><path d="M1363 877l-742 742q-19 19-45 19t-45-19l-166-166q-19-19-19-45t19-45l531-531-531-531q-19-19-19-45t19-45l166-166q19-19 45-19t45 19l742 742q19 19 19 45t-19 45z" /></symbol><symbol id="ck-icon-clock-o" viewBox="0 0 1792 1792"><path d="M1024 544v448q0 14-9 23t-23 9h-320q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h224v-352q0-14 9-23t23-9h64q14 0 23 9t9 23zm416 352q0-148-73-273t-198-198-273-73-273 73-198 198-73 273 73 273 198 198 273 73 273-73 198-198 73-273zm224 0q0 209-103 385.5t-279.5 279.5-385.5 103-385.5-103-279.5-279.5-103-385.5 103-385.5 279.5-279.5 385.5-103 385.5 103 279.5 279.5 103 385.5z" /></symbol><symbol id="ck-icon-trash" viewBox="0 0 1792 1792"><path d="M704 1376v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm-544-992h448l-48-117q-7-9-17-11h-317q-10 2-17 11zm928 32v64q0 14-9 23t-23 9h-96v948q0 83-47 143.5t-113 60.5h-832q-66 0-113-58.5t-47-141.5v-952h-96q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h309l70-167q15-37 54-63t79-26h320q40 0 79 26t54 63l70 167h309q14 0 23 9t9 23z" /></symbol><symbol id="ck-icon-undo" viewBox="0 0 1792 1792"><path d="M1664 896q0 156-61 298t-164 245-245 164-298 61q-172 0-327-72.5t-264-204.5q-7-10-6.5-22.5t8.5-20.5l137-138q10-9 25-9 16 2 23 12 73 95 179 147t225 52q104 0 198.5-40.5t163.5-109.5 109.5-163.5 40.5-198.5-40.5-198.5-109.5-163.5-163.5-109.5-198.5-40.5q-98 0-188 35.5t-160 101.5l137 138q31 30 14 69-17 40-59 40h-448q-26 0-45-19t-19-45v-448q0-42 40-59 39-17 69 14l130 129q107-101 244.5-156.5t284.5-55.5q156 0 298 61t245 164 164 245 61 298z" /></symbol></svg><script async="async" defer="defer" nonce="xfbBbN58vroacIAWVFkIjw==" src="//www.instagram.com/embed.js"></script>
+
+<!--Clipkit(R) v15.9.0-20260915 Copyright (C) 2026 VECTOR Inc.-->
+
+</body>
+
+</html>
+

@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<!-- clipkit-source-url: https://learn.webcoach.jp/generative-ai/introduction-to-generative-ai/AI%E3%82%92%E5%91%B3%E6%96%B9%E3%81%AB%E3%81%99%E3%82%8B%E3%83%97%E3%83%AD%E3%83%B3%E3%83%97%E3%83%88%E3%82%A8%E3%83%B3%E3%82%B8%E3%83%8B%E3%82%A2%E3%83%AA%E3%83%B3%E3%82%B0%E3%81%AE%E5%9F%BA%E6%9C%AC/d85kX -->
+<!-- clipkit-fetched-at: 2026-09-17T11:14:00.275Z -->
+<html lang="ja"><head><style data-clipkit-snapshot="force-visible">[data-aos],.reveal,.wow,.fade-in,.animate__animated,.js-reveal{opacity:1!important;transform:none!important;visibility:visible!important;animation:none!important;transition:none!important}</style></head><body><div>
+  
+    <div>
+      
+      
+        
+          <div class="article-item item_html " id="item48542" data-item-id="48542" data-item-type="ItemHtml"><div class="item-body">
+
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>良いプロンプトの基本構成 | WEBCOACH</title>
+<link rel="preconnect" href="https://fonts.googleapis.com/">
+<link rel="preconnect" href="https://fonts.gstatic.com/">
+<link href="../../_assets/318e5d4d49.css" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; }
+  body {
+    font-family: 'Noto Sans JP', -apple-system, BlinkMacSystemFont, 'Hiragino Sans', sans-serif;
+    color: #3D3D3D; font-size: 16px; line-height: 1.9;
+  }
+  img { max-width: 100%; height: auto; display: block; }
+  h2.section-heading {
+    font-size: 24px; font-weight: 700; color: #3D3D3D;
+    margin: 48px 0 20px; padding-bottom: 10px;
+    border-bottom: 3px solid #FAE8E0; line-height: 1.4;
+  }
+  .text-body { font-size: 16px; line-height: 1.9; color: #444; margin: 0 0 16px; }
+  .accent { color: #E85D4A; font-weight: 700; }
+  .point-box {
+    background: #FFFBF0; border-left: 4px solid #F5A64A;
+    padding: 18px 22px; border-radius: 0 12px 12px 0; margin: 24px 0;
+  }
+  .point-box .label { font-size: 12px; font-weight: 700; color: #F5A64A; letter-spacing: 0.15em; margin-bottom: 6px; }
+  .point-box p { margin: 0; font-size: 15px; line-height: 1.8; color: #555; }
+  .note-box {
+    background: #FFF3F0; border-left: 4px solid #E85D4A;
+    padding: 18px 22px; border-radius: 0 12px 12px 0; margin: 24px 0;
+  }
+  .note-box .label { font-size: 12px; font-weight: 700; color: #E85D4A; letter-spacing: 0.15em; margin-bottom: 6px; }
+  .note-box p { margin: 0; font-size: 15px; line-height: 1.8; color: #555; }
+  .imagine-box {
+    background: #fff; border: 2px solid #E85D4A;
+    border-radius: 16px; padding: 24px; margin: 24px 0;
+  }
+  .imagine-box .label { font-size: 12px; font-weight: 700; color: #E85D4A; letter-spacing: 0.1em; margin-bottom: 8px; }
+  .imagine-box p { font-size: 16px; line-height: 1.8; color: #3D3D3D; margin: 0; }
+  .stumbling-box {
+    background: linear-gradient(135deg, #FFF8F0, #FFFBF0); border: 2px solid #F5A64A;
+    border-radius: 16px; padding: 24px; margin: 24px 0;
+  }
+  .stumbling-box .label { font-size: 12px; font-weight: 700; color: #F5A64A; letter-spacing: 0.1em; margin-bottom: 8px; }
+  .stumbling-box ul { margin: 0; padding-left: 18px; font-size: 15px; line-height: 2; color: #555; }
+  .usecase-box {
+    background: #F0F7FF; border: 1px solid #C2DFF5;
+    border-radius: 12px; padding: 18px 22px; margin: 24px 0;
+  }
+  .usecase-box .label { font-size: 12px; font-weight: 700; color: #2E86DE; letter-spacing: 0.1em; margin-bottom: 6px; }
+  .usecase-box p { margin: 0; font-size: 15px; line-height: 1.8; color: #444; }
+  .card-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 24px 0; }
+  .card {
+    background: #fff; border: 2px solid #FAE8E0;
+    border-radius: 16px; padding: 22px;
+  }
+  .card h3 { font-size: 17px; font-weight: 700; color: #E85D4A; margin: 0 0 8px; }
+  .card p, .card ul { font-size: 14px; line-height: 1.7; color: #555; margin: 0; }
+  .card ul { padding-left: 16px; }
+  .principle-card {
+    background: #fff; border: 2px solid #FAE8E0;
+    border-radius: 16px; padding: 22px; margin: 16px 0;
+    display: flex; align-items: flex-start; gap: 16px;
+  }
+  .principle-num {
+    flex-shrink: 0; width: 44px; height: 44px; border-radius: 50%;
+    background: linear-gradient(135deg, #E85D4A, #F5A64A);
+    color: #fff; font-weight: 700; font-size: 18px;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .principle-card h3 { font-size: 17px; font-weight: 700; color: #3D3D3D; margin: 0 0 4px; }
+  .principle-card p { font-size: 14px; line-height: 1.7; color: #555; margin: 0; }
+  .inline-quiz {
+    background: #FFF8F0; border: 2px solid #FAE8E0;
+    border-radius: 16px; padding: 24px; margin: 36px 0;
+  }
+  .inline-quiz .quiz-label { font-size: 12px; font-weight: 700; color: #F5A64A; letter-spacing: 0.1em; margin-bottom: 12px; }
+  .inline-quiz .quiz-question { font-size: 16px; font-weight: 700; color: #3D3D3D; margin: 0 0 16px; line-height: 1.6; }
+  .quiz-options { display: flex; flex-direction: column; gap: 8px; }
+  .quiz-opt {
+    display: block; width: 100%; text-align: left;
+    background: #fff; border: 2px solid #E8E8E8; border-radius: 10px;
+    padding: 12px 16px; font-size: 15px;
+    font-family: 'Noto Sans JP', sans-serif; color: #3D3D3D;
+    cursor: pointer; transition: border-color 0.2s, background 0.2s; line-height: 1.6;
+  }
+  .quiz-opt:hover:not(.answered) { border-color: #F5A64A; background: #FFFBF0; }
+  .quiz-feedback {
+    display: none; margin-top: 16px; padding: 14px 18px;
+    border-radius: 8px; font-size: 14px; line-height: 1.7; color: #444;
+  }
+  .summary-box {
+    background: linear-gradient(135deg, #FDF0ED, #FFFBF0);
+    border: 2px solid #FAE8E0; border-radius: 16px;
+    padding: 28px; margin: 48px 0 28px;
+  }
+  .summary-box .label { font-size: 13px; font-weight: 700; color: #E85D4A; letter-spacing: 0.15em; margin-bottom: 18px; }
+  .summary-box ul { margin: 0; padding-left: 18px; font-size: 14px; line-height: 2; color: #444; }
+  .prompt-example {
+    background: #2D2D2D; color: #E8E8E8; border-radius: 12px;
+    padding: 20px 24px; margin: 16px 0; font-size: 14px; line-height: 1.8;
+    font-family: 'Noto Sans JP', monospace; white-space: pre-wrap;
+  }
+  .prompt-example .prompt-label {
+    font-size: 11px; color: #F5A64A; font-weight: 700; letter-spacing: 0.1em; margin-bottom: 8px;
+  }
+  .compare-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 24px 0; }
+  .compare-bad { background: #FFF3F0; border: 2px solid #E85D4A; border-radius: 16px; padding: 20px; }
+  .compare-good { background: #E8F5E9; border: 2px solid #4CAF50; border-radius: 16px; padding: 20px; }
+  .compare-bad .compare-label { font-size: 12px; font-weight: 700; color: #E85D4A; margin-bottom: 8px; }
+  .compare-good .compare-label { font-size: 12px; font-weight: 700; color: #4CAF50; margin-bottom: 8px; }
+  .lesson-wrapper { max-width: 70%; margin: 0 auto; }
+  @media (max-width: 600px) {
+    .lesson-wrapper { max-width: 92%; }
+    .card-grid, .compare-grid { grid-template-columns: 1fr; }
+    h2.section-heading { font-size: 20px; }
+  }
+  .toc-link { color: #555; text-decoration: none; }
+  .toc-link:hover { color: #E85D4A; }
+</style>
+<meta name="csrf-param" content="authenticity_token">
+<meta name="csrf-token" content="qauBHTSndmETUkD0sT1cPYiZtpqZXGOURYf174BzDDrbrk-d-OnkhVnu9tHTmQH9gcT1ByDUqF1rxWGg7HFoPQ"><meta content="" name="routing-root-path"><meta content="media" name="site-name"><meta content="ja" name="i18n-default-locale"><meta content="ja" name="i18n-locale">
+
+<div class="lesson-wrapper">
+
+<!-- ヘッダー -->
+<div style="background: linear-gradient(135deg, #E85D4A, #F5A64A); color: #fff; padding: 32px 32px 28px; border-radius: 16px 16px 0 0; margin-top: 32px;">
+  <div style="font-size: 12px; font-weight: 700; opacity: 0.85; letter-spacing: 0.15em;">LESSON 5-2</div>
+  <h1 style="margin: 8px 0 0; font-size: 28px; font-weight: 700; line-height: 1.4; color: #fff;">良いプロンプトの基本構成</h1>
+  <p style="margin: 10px 0 0; font-size: 14px; opacity: 0.85; color: #fff;">Chapter 5: プロンプトエンジニアリング ／ 所要時間：約20分</p>
+</div>
+
+<!-- ゴールボックス -->
+<div style="background: #FAE8E0; padding: 18px 26px; border-radius: 0 0 16px 16px; margin-bottom: 36px;">
+  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
+    <div style="font-size: 12px; font-weight: 700; color: #E85D4A; letter-spacing: 0.15em;">このレッスンのゴール</div>
+    <div style="font-size: 12px; font-weight: 500; color: #E85D4A;">⏱ 約20分</div>
+  </div>
+  <p style="margin: 0; font-size: 16px; font-weight: 700; color: #3D3D3D; line-height: 1.6;">良いプロンプトの「4大構成要素」を理解し、自分の言葉で説明できるようになる</p>
+</div>
+
+ <!-- ロードマップに戻るボタンの場合 --> 
+<div style="display: flex; justify-content: center; align-items: center; padding: 24px 0; margin-top: 24px;">
+  <a href="https://learn.webcoach.jp/2Q/introduction-to-generative-ai" style="display: inline-block; background: #fff; color: #E85D4A; border: 2px solid #E85D4A; font-weight: 700; padding: 10px clamp(24px, 7vw, 48px); border-radius: 8px; text-decoration: none; white-space: nowrap;">ロードマップに戻る</a>
+</div>
+ <!-- 前の章に戻るボタン / 次の章に進むボタン がある場合 -->  
+<div style="display: flex; justify-content: space-between; align-items: center; padding: 24px 0; margin-top: 24px;">
+  <a href="https://learn.webcoach.jp/generative-ai/introduction-to-generative-ai/AI%E3%82%92%E5%91%B3%E6%96%B9%E3%81%AB%E3%81%99%E3%82%8B%E3%83%97%E3%83%AD%E3%83%B3%E3%83%97%E3%83%88%E3%82%A8%E3%83%B3%E3%82%B8%E3%83%8B%E3%82%A2%E3%83%AA%E3%83%B3%E3%82%B0%E3%81%AE%E5%9F%BA%E6%9C%AC/BDZLb" style="position: relative; display: inline-block; background: linear-gradient(135deg, #E85D4A, #F5A64A); color: #fff; font-weight: 700; padding: 12px clamp(24px, 7vw, 48px); border-radius: 8px; text-decoration: none;"><img src="../../_assets/47498cfebf.svg" style="position: absolute; top: 50%; transform: translateY(-50%); left: 12px; filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(125deg) brightness(103%) contrast(103%); transform: translateY(-50%) rotate(180deg);">前の章に戻る</a>
+  <a href="https://learn.webcoach.jp/generative-ai/introduction-to-generative-ai/AI%E3%82%92%E5%91%B3%E6%96%B9%E3%81%AB%E3%81%99%E3%82%8B%E3%83%97%E3%83%AD%E3%83%B3%E3%83%97%E3%83%88%E3%82%A8%E3%83%B3%E3%82%B8%E3%83%8B%E3%82%A2%E3%83%AA%E3%83%B3%E3%82%B0%E3%81%AE%E5%9F%BA%E6%9C%AC/QU9Hm" style="position: relative; display: inline-block; background: linear-gradient(135deg, #E85D4A, #F5A64A); color: #fff; font-weight: 700; padding: 12px clamp(24px, 7vw, 48px); border-radius: 8px; text-decoration: none;">次の章に進む<img src="../../_assets/47498cfebf.svg" style="position: absolute; top: 50%; transform: translateY(-50%); right: 12px; filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(125deg) brightness(103%) contrast(103%);"></a>
+</div>
+<!-- 目次 -->
+<div style="background: #fff; border: 1px solid #E8E8E8; border-radius: 12px; padding: 22px 26px; margin-bottom: 40px;">
+  <div style="font-size: 13px; font-weight: 700; color: #F5A64A; letter-spacing: 0.1em; margin-bottom: 12px;">目次</div>
+  <ol style="margin: 0; padding-left: 22px; font-size: 15px; color: #555; line-height: 2.2;">
+    <li><a href="#sec1" class="toc-link">プロンプトの質がAIの価値を決める</a></li>
+    <li><a href="#sec2" class="toc-link">良いプロンプトの4大構成要素</a></li>
+    <li><a href="#sec3" class="toc-link">実践的なプロンプトテンプレート</a></li>
+    <li><a href="#sec4" class="toc-link">章末課題</a></li>
+  </ol>
+</div>
+
+
+<!-- イメージしてみよう -->
+<div class="imagine-box">
+  <div class="label">🎬 イメージしてみよう</div>
+  <p>
+    あなたは新人マーケターです。上司にこう言われました。<br>
+    「マーケティング戦略考えて」<br><br>
+    ...困りますよね？ <strong class="accent">誰に？ 何の商品？ 予算は？ いつまでに？</strong><br><br>
+    実はAIも同じです。曖昧な指示では、曖昧な答えしか返せません。<br>
+    逆に、<strong class="accent">具体的で明確な指示を出せば、AIは驚くほど優秀な回答</strong>を返してくれます。
+  </p>
+</div>
+
+
+<!-- 躓きポイント -->
+<div class="stumbling-box">
+  <div class="label">⚡ このレッスンで躓きやすいポイント</div>
+  <ul>
+    <li>4つの要素を「全部完璧に揃えないといけない」と思いがち → <strong class="accent">最初は2〜3要素でもOK</strong></li>
+    <li>「役割」の指定を忘れがち → 最初に「あなたは〇〇です」と書く癖をつけよう</li>
+  </ul>
+</div>
+
+
+<!-- ============================================================
+  セクション 1
+============================================================ -->
+<h2 class="section-heading" id="sec1">1. プロンプトの質がAIの価値を決める</h2>
+
+<p class="text-body">
+  同じAIを使っているのに、なぜ人によって結果がこんなに違うのか？答えは<strong class="accent">「プロンプト」</strong>にあります。
+</p>
+
+<p class="text-body">
+  例えば、マーケティング戦略についてAIに尋ねる場合を比べてみましょう。
+</p>
+
+<!-- 比較 -->
+<div class="compare-grid">
+  <div class="compare-bad">
+    <div class="compare-label">悪いプロンプト</div>
+    <p style="font-size: 15px; color: #555; margin: 0; line-height: 1.7;">「マーケティング戦略考えて」</p>
+  </div>
+  <div class="compare-good">
+    <div class="compare-label">良いプロンプト</div>
+    <p style="font-size: 15px; color: #555; margin: 0; line-height: 1.7;">「あなたは経験豊富なマーケティングコンサルタントです。ターゲット層は20代女性、商品は新しいオーガニックスキンケアです。SNS（Instagram）での初期認知度向上のための戦略を、アクションプラン3つとKPI設定を含めて箇条書きで提案してください。」</p>
+  </div>
+</div>
+
+<p class="text-body">
+  この2つのプロンプトでは、AIから得られる回答の質は<strong class="accent">雲泥の差</strong>です。なぜこれほど結果が変わるのか？ それは<strong class="accent">「指示の解像度」</strong>が全く違うからです。
+</p>
+
+<div style="margin: 24px 0; text-align: center;">
+  <a href="https://learn.webcoach.jp/theme/webcoach/img/introduction-to-generative-ai/prompt-engineering/img1.png" class="lightbox" style="display: inline-block;">
+    <img src="../../_assets/0ea4c8f21d.webp" alt="" class="lightbox-img" style="display: block; margin: 0 auto; max-width: 100%;">
+  </a>
+  <p style="font-size: 13px; color: #999; margin-top: 8px;">悪いプロンプトと良いプロンプトの出力比較</p>
+</div>
+<div class="point-box">
+  <div class="label">ポイント</div>
+  <p>プロンプトとは、単なる「質問」ではなく、AIに<strong class="accent">「どのように思考し、どのように行動し、どのように出力してほしいか」</strong>を伝えるための「精密なコミュニケーション設計図」です。</p>
+</div>
+
+<!-- 確認クイズ #1 -->
+<div class="inline-quiz">
+  <div class="quiz-label">✏️ 確認クイズ</div>
+  <p class="quiz-question">AIの回答の質に最も大きく影響するものは？</p>
+  <div class="quiz-options">
+    <button class="quiz-opt" data-correct="false">A. AIの利用料金プラン</button>
+    <button class="quiz-opt" data-correct="true">B. プロンプト（指示）の具体性と明確さ</button>
+    <button class="quiz-opt" data-correct="false">C. 質問する時間帯</button>
+    <button class="quiz-opt" data-correct="false">D. AIに敬語を使うこと</button>
+  </div>
+  <div class="quiz-feedback">
+    <strong>正解！</strong> 指示が具体的で明確であるほど、AIは思考し行動するための明確な道筋を得られ、質の高い回答を返してくれます。
+  </div>
+</div>
+
+<div class="usecase-box">
+  <div class="label">💡 こんな場面で使える！</div>
+  <p>仕事で企画書を作りたいとき、「企画書書いて」ではなく「あなたはマーケターです。〇〇の目的で、△△向けの企画書の骨子を箇条書きで作って」と伝えるだけで、格段に実用的なアウトプットが得られます。</p>
+</div>
+
+
+<!-- ============================================================
+  セクション 2: 4大構成要素
+============================================================ -->
+<h2 class="section-heading" id="sec2">2. 良いプロンプトの4大構成要素</h2>
+
+<p class="text-body">
+  優れたプロンプトには、共通して含まれる<strong class="accent">4つの構成要素</strong>があります。これらを意識するだけで、プロンプトの質は格段に向上します。
+</p>
+
+<div style="margin: 24px 0; text-align: center;">
+  <a href="https://learn.webcoach.jp/theme/webcoach/img/introduction-to-generative-ai/prompt-engineering/img2.png" class="lightbox" style="display: inline-block;">
+    <img src="../../_assets/1a2c59d1fb.webp" alt="" class="lightbox-img" style="display: block; margin: 0 auto; max-width: 100%;">
+  </a>
+  <p style="font-size: 13px; color: #999; margin-top: 8px;">良いプロンプトの4大構成要素の図解</p>
+</div>
+  
+<!-- 4要素カード -->
+<div class="principle-card">
+  <div class="principle-num">1</div>
+  <div>
+    <h3>役割（Role）</h3>
+    <p>AIに「キャラクター」を与えます。特定の専門家やキャラクターの役割を指定することで、出力のトーン、視点、専門性が変わります。<br><strong>例：</strong>「あなたは優秀なコピーライターです」「あなたは親身なカウンセラーです」</p>
+  </div>
+</div>
+
+<div class="principle-card">
+  <div class="principle-num">2</div>
+  <div>
+    <h3>指示（Instruction）</h3>
+    <p>AIに「やってほしいこと」を明確に伝えます。具体的な動詞を使って指示しましょう。<br><strong>例：</strong>「要約して」「リストアップして」「比較して」「提案して」</p>
+  </div>
+</div>
+
+<div class="principle-card">
+  <div class="principle-num">3</div>
+  <div>
+    <h3>文脈（Context）</h3>
+    <p>AIに「前提知識・背景情報」をインプットします。目的、ターゲット、制約条件などを提供します。<br><strong>例：</strong>「ターゲットは30代の働く女性です」「300字以内で」</p>
+  </div>
+</div>
+
+<div class="principle-card">
+  <div class="principle-num">4</div>
+  <div>
+    <h3>出力形式（Output Format）</h3>
+    <p>AIに「望む答えの形」を具体的に示します。箇条書き、表形式、口調など。<br><strong>例：</strong>「箇条書きで3つ提案して」「表形式でまとめて」「丁寧な口調で」</p>
+  </div>
+</div>
+
+<!-- 4要素まとめテーブル -->
+<div style="overflow-x: auto; margin: 20px 0; border-radius: 12px; box-shadow: 0 1px 6px rgba(0,0,0,0.06);">
+  <table style="width: 100%; border-collapse: separate; border-spacing: 0; border-radius: 12px; overflow: hidden; font-size: 15px;">
+    <thead>
+      <tr>
+        <th style="background: #E85D4A; color: #fff; padding: 12px 16px; font-weight: 700; text-align: left;">構成要素</th>
+        <th style="background: #E85D4A; color: #fff; padding: 12px 16px; font-weight: 700; text-align: left;">意味・役割</th>
+        <th style="background: #E85D4A; color: #fff; padding: 12px 16px; font-weight: 700; text-align: left;">効果</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td style="padding: 12px 16px; border-bottom: 1px solid #FAE8E0; font-weight: 700;">役割</td>
+        <td style="padding: 12px 16px; border-bottom: 1px solid #FAE8E0;">AIに特定の立場を演じさせる</td>
+        <td style="padding: 12px 16px; border-bottom: 1px solid #FAE8E0;">専門性・トーンが明確になる</td>
+      </tr>
+      <tr style="background: #FDF0ED;">
+        <td style="padding: 12px 16px; border-bottom: 1px solid #FAE8E0; font-weight: 700;">指示</td>
+        <td style="padding: 12px 16px; border-bottom: 1px solid #FAE8E0;">実行タスクを具体的に伝える</td>
+        <td style="padding: 12px 16px; border-bottom: 1px solid #FAE8E0;">的確に動ける</td>
+      </tr>
+      <tr>
+        <td style="padding: 12px 16px; border-bottom: 1px solid #FAE8E0; font-weight: 700;">文脈</td>
+        <td style="padding: 12px 16px; border-bottom: 1px solid #FAE8E0;">背景や制約を伝える</td>
+        <td style="padding: 12px 16px; border-bottom: 1px solid #FAE8E0;">意図を汲み取れる</td>
+      </tr>
+      <tr style="background: #FDF0ED;">
+        <td style="padding: 12px 16px; font-weight: 700;">出力形式</td>
+        <td style="padding: 12px 16px;">回答スタイルを指定する</td>
+        <td style="padding: 12px 16px;">後工程が楽になる</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="point-box">
+  <div class="label">ポイント</div>
+  <p>4つの要素を<strong class="accent">全部完璧に揃える必要はありません。</strong>まずは「役割」と「指示」の2つから始めて、徐々に「文脈」「出力形式」を加えていきましょう。</p>
+</div>
+
+<!-- 確認クイズ #2 -->
+<div class="inline-quiz">
+  <div class="quiz-label">✏️ 確認クイズ</div>
+  <p class="quiz-question">「あなたは経験豊富な栄養士です」というプロンプトの一文は、4大構成要素のうちどれに該当しますか？</p>
+  <div class="quiz-options">
+    <button class="quiz-opt" data-correct="true">A. 役割（Role）</button>
+    <button class="quiz-opt" data-correct="false">B. 指示（Instruction）</button>
+    <button class="quiz-opt" data-correct="false">C. 文脈（Context）</button>
+    <button class="quiz-opt" data-correct="false">D. 出力形式（Output Format）</button>
+  </div>
+  <div class="quiz-feedback">
+    <strong>正解！</strong> 「あなたは〇〇です」という表現は、AIに特定のキャラクターや専門家としての「役割」を与えています。これにより、AIは栄養士としての視点と専門知識を活かした回答を生成してくれます。
+  </div>
+</div>
+
+<div class="usecase-box">
+  <div class="label">💡 こんな場面で使える！</div>
+  <p>夕食の献立に困ったとき、4つの要素を意識してみましょう。「あなたは栄養士です（役割）。夕食の献立を3品提案して（指示）。冷蔵庫に豚肉と玉ねぎがあり、調理時間は30分以内（文脈）。番号付きリストで（出力形式）」のように組み立てれば、実用的な回答が得られます。</p>
+</div>
+
+
+<!-- ============================================================
+  セクション 3: テンプレート
+============================================================ -->
+<h2 class="section-heading" id="sec3">3. 実践的なプロンプトテンプレート</h2>
+
+<p class="text-body">
+  4大構成要素を組み合わせた、<strong class="accent">汎用性の高い基本テンプレート</strong>を紹介します。この型さえ押さえれば、今日からあなたもプロンプト名人です。
+</p>
+
+<div class="prompt-example">
+  <div class="prompt-label">プロンプトテンプレート</div>
+<strong style="color: #F5A64A;">【役割】</strong>
+あなたは[AIに演じさせたい役割]です。
+
+<strong style="color: #F5A64A;">【指示】</strong>
+以下の[文脈]と[制約条件]に基づいて、
+[具体的な指示内容]を実行してください。
+最終的な出力は[期待する出力形式]でお願いします。
+
+<strong style="color: #F5A64A;">【文脈】</strong>
+[必要な背景情報、目的、ターゲットなど]
+
+<strong style="color: #F5A64A;">【制約条件】</strong>
+[文字数制限、キーワード、注意点など]
+</div>
+
+<div class="note-box">
+  <div class="label">注意</div>
+  <p>テンプレート活用のコツは3つ。<strong class="accent">最初から完璧を目指さない。</strong>空欄があってもOK。慣れてきたら徐々に具体的に記述していきましょう。</p>
+</div>
+
+<!-- 確認クイズ #3 -->
+<div class="inline-quiz">
+  <div class="quiz-label">✏️ 確認クイズ</div>
+  <p class="quiz-question">テンプレートを使うとき、正しいアプローチは？</p>
+  <div class="quiz-options">
+    <button class="quiz-opt" data-correct="false">A. すべての項目を必ず埋めなければならない</button>
+    <button class="quiz-opt" data-correct="true">B. 必要な情報から記述し、空欄があってもOK</button>
+    <button class="quiz-opt" data-correct="false">C. テンプレートの順番は絶対に変えてはいけない</button>
+    <button class="quiz-opt" data-correct="false">D. テンプレートは一度しか使えない</button>
+  </div>
+  <div class="quiz-feedback">
+    <strong>正解！</strong> テンプレートは柔軟に使うものです。まずは書ける項目から埋めてAIに投げてみましょう。回答を見て不足を感じたら、情報を追加して再度試す。この<strong>試行錯誤が上達の近道</strong>です。
+  </div>
+</div>
+
+
+<!-- ============================================================
+  セクション 4: 章末課題
+============================================================ -->
+<h2 class="section-heading" id="sec4">4. 章末課題 - プロンプト要素分解パズル</h2>
+
+<p class="text-body">
+  以下のプロンプトは4つの要素で構成されています。それぞれがどの要素にあたるか、分解して考えてみましょう。
+</p>
+
+<div class="prompt-example">
+  <div class="prompt-label">分解してみよう</div>
+「あなたはプロの旅行プランナーです。私は来月、初めて北海道へ3泊4日の個人旅行に行きます。予算は10万円以内で、主な目的は美味しい海鮮を食べることと、美しい自然を満喫することです。これらの情報を踏まえ、具体的な4日間の旅行プランと、各日の詳細な旅程（移動手段、観光スポット、食事場所の候補）、そしておおよその予算内訳を提案してください。提案は、箇条書きと表を効果的に使って、分かりやすいレポート形式でまとめてください。」
+</div>
+
+<div style="overflow-x: auto; margin: 20px 0; border-radius: 12px; box-shadow: 0 1px 6px rgba(0,0,0,0.06);">
+  <table style="width: 100%; border-collapse: separate; border-spacing: 0; border-radius: 12px; overflow: hidden; font-size: 15px;">
+    <thead>
+      <tr>
+        <th style="background: #E85D4A; color: #fff; padding: 12px 16px; font-weight: 700; text-align: left;">構成要素</th>
+        <th style="background: #E85D4A; color: #fff; padding: 12px 16px; font-weight: 700; text-align: left;">該当部分</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td style="padding: 12px 16px; border-bottom: 1px solid #FAE8E0; font-weight: 700;">役割</td>
+        <td style="padding: 12px 16px; border-bottom: 1px solid #FAE8E0;">「あなたはプロの旅行プランナーです。」</td>
+      </tr>
+      <tr style="background: #FDF0ED;">
+        <td style="padding: 12px 16px; border-bottom: 1px solid #FAE8E0; font-weight: 700;">文脈</td>
+        <td style="padding: 12px 16px; border-bottom: 1px solid #FAE8E0;">「私は来月、初めて北海道へ3泊4日の個人旅行に行きます。予算は10万円以内で、主な目的は美味しい海鮮を食べることと、美しい自然を満喫することです。」</td>
+      </tr>
+      <tr>
+        <td style="padding: 12px 16px; border-bottom: 1px solid #FAE8E0; font-weight: 700;">指示</td>
+        <td style="padding: 12px 16px; border-bottom: 1px solid #FAE8E0;">「具体的な4日間の旅行プランと、各日の詳細な旅程、そしておおよその予算内訳を提案してください。」</td>
+      </tr>
+      <tr style="background: #FDF0ED;">
+        <td style="padding: 12px 16px; font-weight: 700;">出力形式</td>
+        <td style="padding: 12px 16px;">「箇条書きと表を効果的に使って、分かりやすいレポート形式でまとめてください。」</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="point-box">
+  <div class="label">ポイント</div>
+  <p>一見複雑に見えるプロンプトも、<strong class="accent">4つの構成要素に分解して考えると構造が明確</strong>になります。日常的にプロンプトを書くとき、この4要素を意識する習慣をつけましょう。</p>
+</div>
+
+<div class="usecase-box">
+  <div class="label">💡 こんな場面で使える！</div>
+  <p>他の人が書いたプロンプトを見たとき、「このプロンプトには何が足りないかな？」と4要素で分析する癖をつけると、自分のプロンプト力が飛躍的に向上します。</p>
+</div>
+
+
+<!-- まとめ -->
+<div class="summary-box">
+  <div class="label">まとめ</div>
+  <ul>
+    <li><strong style="color: #3D3D3D;">プロンプト = 設計図</strong> — 指示の解像度がAIの回答品質を決める</li>
+    <li><strong style="color: #3D3D3D;">4大構成要素</strong> — ①役割 ②指示 ③文脈 ④出力形式</li>
+    <li><strong style="color: #3D3D3D;">テンプレート</strong> — 4要素を当てはめるだけで質の高いプロンプトが書ける</li>
+    <li><strong style="color: #3D3D3D;">完璧を目指さない</strong> — まずは2〜3要素から始めて、徐々に具体的にしていく</li>
+  </ul>
+</div>
+
+
+<!-- 理解度チェック -->
+<details style="background: #F0FAF0; border: 1px solid #C8E6C9; border-radius: 12px; padding: 0; margin: 36px 0;">
+  <summary style="padding: 18px 24px; font-size: 14px; font-weight: 700; color: #4CAF50; cursor: pointer; letter-spacing: 0.1em;">理解度チェック（クリックして開く）</summary>
+  <div style="padding: 0 24px 18px;">
+
+    <details style="background: #fff; border: 1px solid #BBF7D0; border-radius: 10px; padding: 0; margin: 8px 0; overflow: hidden;">
+      <summary style="padding: 14px 18px; font-size: 15px; font-weight: 600; color: #166534; cursor: pointer;">良いプロンプトと悪いプロンプトの違いを説明できる</summary>
+      <div style="padding: 0 18px 14px; font-size: 14px; color: #555; line-height: 1.7;">悪いプロンプトは曖昧で情報が不足しているため、AIが何を求められているか理解できません。良いプロンプトは4大構成要素を含み、AIに明確な思考の道筋を示します。</div>
+    </details>
+
+    <details style="background: #fff; border: 1px solid #BBF7D0; border-radius: 10px; padding: 0; margin: 8px 0; overflow: hidden;">
+      <summary style="padding: 14px 18px; font-size: 15px; font-weight: 600; color: #166534; cursor: pointer;">4大構成要素をすべて挙げられる</summary>
+      <div style="padding: 0 18px 14px; font-size: 14px; color: #555; line-height: 1.7;">①役割（Role）②指示（Instruction）③文脈（Context）④出力形式（Output Format）の4つです。</div>
+    </details>
+
+    <details style="background: #fff; border: 1px solid #BBF7D0; border-radius: 10px; padding: 0; margin: 8px 0; overflow: hidden;">
+      <summary style="padding: 14px 18px; font-size: 15px; font-weight: 600; color: #166534; cursor: pointer;">プロンプトテンプレートの使い方を理解した</summary>
+      <div style="padding: 0 18px 14px; font-size: 14px; color: #555; line-height: 1.7;">テンプレートの各項目に情報を当てはめるだけでOKです。最初から完璧を目指さず、空欄があっても構いません。慣れてきたら徐々に具体的に記述していきましょう。</div>
+    </details>
+
+    <details style="background: #fff; border: 1px solid #BBF7D0; border-radius: 10px; padding: 0; margin: 8px 0; overflow: hidden;">
+      <summary style="padding: 14px 18px; font-size: 15px; font-weight: 600; color: #166534; cursor: pointer;">既存のプロンプトを4つの要素に分解できる</summary>
+      <div style="padding: 0 18px 14px; font-size: 14px; color: #555; line-height: 1.7;">旅行プランナーの例で実践しました。「あなたは〇〇です」= 役割、「〜してください」= 指示、背景情報 = 文脈、「箇条書きで」= 出力形式と分類できればOKです。</div>
+    </details>
+
+  </div>
+</details>
+ <!-- 前の章に戻るボタン / 次の章に進むボタン がある場合 -->  
+<div style="display: flex; justify-content: space-between; align-items: center; padding: 24px 0; margin-top: 24px;">
+  <a href="https://learn.webcoach.jp/generative-ai/introduction-to-generative-ai/AI%E3%82%92%E5%91%B3%E6%96%B9%E3%81%AB%E3%81%99%E3%82%8B%E3%83%97%E3%83%AD%E3%83%B3%E3%83%97%E3%83%88%E3%82%A8%E3%83%B3%E3%82%B8%E3%83%8B%E3%82%A2%E3%83%AA%E3%83%B3%E3%82%B0%E3%81%AE%E5%9F%BA%E6%9C%AC/BDZLb" style="position: relative; display: inline-block; background: linear-gradient(135deg, #E85D4A, #F5A64A); color: #fff; font-weight: 700; padding: 12px clamp(24px, 7vw, 48px); border-radius: 8px; text-decoration: none;"><img src="../../_assets/47498cfebf.svg" style="position: absolute; top: 50%; transform: translateY(-50%); left: 12px; filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(125deg) brightness(103%) contrast(103%); transform: translateY(-50%) rotate(180deg);">前の章に戻る</a>
+  <a href="https://learn.webcoach.jp/generative-ai/introduction-to-generative-ai/AI%E3%82%92%E5%91%B3%E6%96%B9%E3%81%AB%E3%81%99%E3%82%8B%E3%83%97%E3%83%AD%E3%83%B3%E3%83%97%E3%83%88%E3%82%A8%E3%83%B3%E3%82%B8%E3%83%8B%E3%82%A2%E3%83%AA%E3%83%B3%E3%82%B0%E3%81%AE%E5%9F%BA%E6%9C%AC/QU9Hm" style="position: relative; display: inline-block; background: linear-gradient(135deg, #E85D4A, #F5A64A); color: #fff; font-weight: 700; padding: 12px clamp(24px, 7vw, 48px); border-radius: 8px; text-decoration: none;">次の章に進む<img src="../../_assets/47498cfebf.svg" style="position: absolute; top: 50%; transform: translateY(-50%); right: 12px; filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(125deg) brightness(103%) contrast(103%);"></a>
+</div>
+ <!-- ロードマップに戻るボタンの場合 --> 
+<div style="display: flex; justify-content: center; align-items: center; padding: 24px 0; margin-top: 24px;">
+  <a href="https://learn.webcoach.jp/2Q/introduction-to-generative-ai" style="display: inline-block; background: #fff; color: #E85D4A; border: 2px solid #E85D4A; font-weight: 700; padding: 10px clamp(24px, 7vw, 48px); border-radius: 8px; text-decoration: none; white-space: nowrap;">ロードマップに戻る</a>
+</div>
+
+</div><!-- /.lesson-wrapper -->
+
+<!-- JavaScript -->
+
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="ck-icon-arrow-down" viewBox="0 0 1792 1792"><path d="M1675 832q0 53-37 90l-651 652q-39 37-91 37-53 0-90-37l-651-652q-38-36-38-90 0-53 38-91l74-75q39-37 91-37 53 0 90 37l294 294v-704q0-52 38-90t90-38h128q52 0 90 38t38 90v704l294-294q37-37 90-37 52 0 91 37l75 75q37 39 37 91z"></path></symbol><symbol id="ck-icon-arrow-up" viewBox="0 0 1792 1792"><path d="M1675 971q0 51-37 90l-75 75q-38 38-91 38-54 0-90-38l-294-293v704q0 52-37.5 84.5t-90.5 32.5h-128q-53 0-90.5-32.5t-37.5-84.5v-704l-294 293q-36 38-90 38t-90-38l-75-75q-38-38-38-90 0-53 38-91l651-651q35-37 90-37 54 0 91 37l651 651q37 39 37 91z"></path></symbol><symbol id="ck-icon-calendar" viewBox="0 0 1792 1792"><path d="M192 1664h288v-288h-288v288zm352 0h320v-288h-320v288zm-352-352h288v-320h-288v320zm352 0h320v-320h-320v320zm-352-384h288v-288h-288v288zm736 736h320v-288h-320v288zm-384-736h320v-288h-320v288zm768 736h288v-288h-288v288zm-384-352h320v-320h-320v320zm-352-864v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm736 864h288v-320h-288v320zm-384-384h320v-288h-320v288zm384 0h288v-288h-288v288zm32-480v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm384-64v1280q0 52-38 90t-90 38h-1408q-52 0-90-38t-38-90v-1280q0-52 38-90t90-38h128v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h384v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h128q52 0 90 38t38 90z"></path></symbol><symbol id="ck-icon-chevron-left" viewBox="0 0 1792 1792"><path d="M1427 301l-531 531 531 531q19 19 19 45t-19 45l-166 166q-19 19-45 19t-45-19l-742-742q-19-19-19-45t19-45l742-742q19-19 45-19t45 19l166 166q19 19 19 45t-19 45z"></path></symbol><symbol id="ck-icon-chevron-right" viewBox="0 0 1792 1792"><path d="M1363 877l-742 742q-19 19-45 19t-45-19l-166-166q-19-19-19-45t19-45l531-531-531-531q-19-19-19-45t19-45l166-166q19-19 45-19t45 19l742 742q19 19 19 45t-19 45z"></path></symbol><symbol id="ck-icon-clock-o" viewBox="0 0 1792 1792"><path d="M1024 544v448q0 14-9 23t-23 9h-320q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h224v-352q0-14 9-23t23-9h64q14 0 23 9t9 23zm416 352q0-148-73-273t-198-198-273-73-273 73-198 198-73 273 73 273 198 198 273 73 273-73 198-198 73-273zm224 0q0 209-103 385.5t-279.5 279.5-385.5 103-385.5-103-279.5-279.5-103-385.5 103-385.5 279.5-279.5 385.5-103 385.5 103 279.5 279.5 103 385.5z"></path></symbol><symbol id="ck-icon-trash" viewBox="0 0 1792 1792"><path d="M704 1376v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm-544-992h448l-48-117q-7-9-17-11h-317q-10 2-17 11zm928 32v64q0 14-9 23t-23 9h-96v948q0 83-47 143.5t-113 60.5h-832q-66 0-113-58.5t-47-141.5v-952h-96q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h309l70-167q15-37 54-63t79-26h320q40 0 79 26t54 63l70 167h309q14 0 23 9t9 23z"></path></symbol><symbol id="ck-icon-undo" viewBox="0 0 1792 1792"><path d="M1664 896q0 156-61 298t-164 245-245 164-298 61q-172 0-327-72.5t-264-204.5q-7-10-6.5-22.5t8.5-20.5l137-138q10-9 25-9 16 2 23 12 73 95 179 147t225 52q104 0 198.5-40.5t163.5-109.5 109.5-163.5 40.5-198.5-40.5-198.5-109.5-163.5-163.5-109.5-198.5-40.5q-98 0-188 35.5t-160 101.5l137 138q31 30 14 69-17 40-59 40h-448q-26 0-45-19t-19-45v-448q0-42 40-59 39-17 69 14l130 129q107-101 244.5-156.5t284.5-55.5q156 0 298 61t245 164 164 245 61 298z"></path></symbol></svg>
+
+<!--Clipkit(R) v15.9.0-20260915 Copyright (C) 2026 VECTOR Inc.-->
+
+
+</div></div>
+        
+      
+    </div>
+  
+  </div>
+
+<!-- <script src="https://cdn.clipkit.co/clipkit/javascripts/item-shopify-1.0.js?v=v15.9.0-20260915" async></script> -->
+</body></html>

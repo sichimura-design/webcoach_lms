@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<!-- clipkit-source-url: https://learn.webcoach.jp/web-design/WordPress/hmEqe -->
+<!-- clipkit-fetched-at: 2026-09-17T11:14:00.275Z -->
+<html lang="ja"><head>
+    <!-- headタグ内の上部に挿入されます -->
+
+    <meta charset="UTF-8">
+    <title>WordPress｜1章：はじめに - WEBCOACH</title>
+
+    <!-- resetcssのCDNでのCSS読み込み -->
+    <link rel="stylesheet" href="../../_assets/17f8e278dc.css">
+
+    <!-- fontawesomeのCDNでのCSS読み込み -->
+    <link rel="stylesheet" href="../../_assets/799aeb25cc.css">
+
+    <!-- BootstrapのCDNでのCSS読み込み -->
+    <link href="../../_assets/7633b7c0c9.css" rel="stylesheet">
+
+    <!-- highlight.jsの読み込み -->
+    <link rel="stylesheet" href="../../_assets/e31ce2dd8c.css">
+
+    <!-- カスタムCSS -->
+    <link rel="stylesheet" href="../../_assets/c533dd7750.css">
+
+    <!-- clipkitデフォルトのCSS -->
+    <!--<link rel="stylesheet" media="screen" href="https://cdn.clipkit.co/clipkit/stylesheets/application-1.0.css?v=v15.9.0-20260915">-->
+
+    <!-- jQuery -->
+    
+
+    <!-- カスタムJS -->
+    
+    
+
+    <!-- clipkitデフォルトのJS -->
+    
+
+    <!-- フォント -->
+    <link rel="preconnect" href="https://fonts.googleapis.com/">
+    <link rel="preconnect" href="https://fonts.gstatic.com/">
+    <link href="../../_assets/8b5713f1fc.css" rel="stylesheet">
+
+    <link href="../../_assets/b83ae8ba65.webp" rel="shortcut icon" type="image/vnd.microsoft.icon">
+    <link rel="apple-touch-icon" href="../../_assets/ea0aba163d.webp">
+    <link rel="alternate" type="application/rss+xml" href="https://learn.webcoach.jp/media.rss" title="WEBCOACH">
+    
+<link rel="canonical" href="https://learn.webcoach.jp/web-design/WordPress/hmEqe">
+
+<meta name="description" content="">
+<meta name="keywords" content="">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:domain" content="learn.webcoach.jp">
+<meta name="twitter:title" content="WordPress｜1章：はじめに - WEBCOACH">
+<meta name="twitter:image" content="https://cdn.clipkit.co/tenants/589/item_links/images/000/014/137/medium/502f5638-8a05-4b1a-b978-58223530cdd4.jpg?1746807893">
+<meta name="twitter:description" content="">
+<meta property="og:site_name" content="WEBCOACH">
+<meta property="og:title" content="WordPress｜1章：はじめに">
+<meta property="og:description" content="">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://learn.webcoach.jp/web-design/WordPress/hmEqe">
+<meta property="og:image" content="https://cdn.clipkit.co/tenants/589/item_links/images/000/014/137/large/502f5638-8a05-4b1a-b978-58223530cdd4.jpg?1746807893">
+
+
+    <!-- headタグ内の下部に挿入されます -->
+
+
+<meta name="csrf-param" content="authenticity_token">
+<meta name="csrf-token" content="nrxZLC9Y2DNkx4CQIZTyJAlcTIkLjcF-Ht3ytOLgs3HCVvzwjUBr7HRjNPJTaU5VFNaK0G69u0NAL-wm1qBHbw"><meta content="" name="routing-root-path"><meta content="media" name="site-name"><meta content="ja" name="i18n-default-locale"><meta content="ja" name="i18n-locale"><style data-clipkit-snapshot="force-visible">[data-aos],.reveal,.wow,.fade-in,.animate__animated,.js-reveal{opacity:1!important;transform:none!important;visibility:visible!important;animation:none!important;transition:none!important}</style></head>
+
+<body class="device-desktop" style="visibility: visible;">
+    <!-- bodyタグ内の上部に挿入されます -->
+
+
+    <!-- サイドバーとコンテンツのコンテナ -->
+    <div class="d-flex flex-row w-100 mb-5" style="min-height: calc(100vh - 400px);">
+
+        <!-- サイドバー -->
+        <!--<nav id="side-bar" class="d-flex flex-column fixed-top" style="width: 250px;">-->
+        <!--    <h1 class="d-block w-100 text-center">-->
+        <!--        <a class="d-block" href="/">-->
+        <!--            <img class="mw-100 p-3" src="https://cdn.clipkit.co/tenants/589/sites/logos/000/000/001/logo_sm/a8defd4b-1cc7-433b-a61c-08e7db0e3e4f.png?1714459367" alt="WEBCOACH">-->
+        <!--        </a>-->
+        <!--    </h1>-->
+        <!--    <ul class="nav flex-column m-0 p-3 fw-bold">-->
+        <!--        <li id="sidebar-top" class="nav-item mb-2" style="display: none;"><a href="/"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;" src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/233/original/home.png?1715353458">-->
+        <!--                <div>ホーム</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-knowledges" class="nav-item mb-2" style="display: none;"><a href="/knowledges"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;" src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/232/original/book.png?1715353458">-->
+        <!--                <div>学習の心得</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-web-designs" class="nav-item mb-2" style="display: none;"><a href="/web-designs"-->
+        <!--                class="nav-link text-body d-flex align-items-center active">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/231/original/design.png?1715353457">-->
+        <!--                <div>WEBデザイン</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-web-marketing" class="nav-item mb-2" style="display: none;"><a href="/web-marketings"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/230/original/marketing.png?1715353457">-->
+        <!--                <div>WEBマーケティング</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-codings" class="nav-item mb-2" style="display: none;"><a href="/codings"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/229/original/website.png?1715353457">-->
+        <!--                <div>WEBサイト構築</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-business-skills" class="nav-item mb-2" style="display: none;"><a href="/business-skills"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/228/original/business.png?1715353456">-->
+        <!--                <div>ビジネススキル</div>-->
+        <!--            </a></li>-->
+        <!--    </ul>-->
+        <!--</nav>-->
+
+        <!-- コンテンツ -->
+        <!--<main class="ms-auto" style="width: calc(100vw - 250px);">-->
+        <main class="ms-auto" style="width: calc(100vw);">
+            <div id="sb-site">
+                
+
+
+<div class="container">
+  <div class="row">
+    <div class="article">
+      <div class="mb-3 text-light" style="
+        height: 180px;
+        background-image: url(&quot;../../_assets/e1d58e2b8a.webp&quot;);
+        background-repeat: no-repeat;
+        background-size: cover;
+        display: flex;
+        align-items: flex-end;
+      ">
+        <div style="
+          margin: 0 0 30px 30px;
+        ">
+          <div>WordPress</div>
+
+          <div class="fw-bold h2">WordPress｜1章：はじめに</div>
+        </div>
+      </div>
+      <div class="article-content">
+        <!-- 目次 -->
+        <div class="index mb-3" style="background-color: #FDF5E8;">
+          <div>
+            <div class="fw-light">INDEX</div>
+            <div class="h3">目次</div>
+          </div>
+          <div class="toc"><ul><li><a href="#heading0" class="tocLink">1章：はじめに</a><ul><li><a href="#heading1" class="tocLink">この章で到達できるゴール</a></li></ul><ul><li><a href="#heading2" class="tocLink">【1-1】本教材を通じて到達できるゴール</a></li><li><a href="#heading3" class="tocLink">【1-2】WordPressとは</a><ul><li><a href="#heading4" class="tocLink">実際WordPressで作成されたHPをご紹介</a></li></ul></li><li><a href="#heading5" class="tocLink">【1-3】WordPressの特徴</a><ul><li><a href="#heading6" class="tocLink">① 無料で利用できる</a></li><li><a href="#heading7" class="tocLink">② プラグインで多くの機能を追加できる</a></li><li><a href="#heading8" class="tocLink">③ テーマを選んでカスタマイズが可能</a></li></ul></li></ul></li></ul></div>
+        </div>
+        
+        <div class="back-to-roadmap mb-4 text-center"></div>
+
+        <!-- コンテンツ -->
+        
+        
+        <div class="article-item item_html " id="item25488" data-item-id="25488" data-item-type="ItemHtml"><div class="item-body"><div class="pagenation-buttons" style="justify-content: flex-end;">
+  <a href="https://learn.webcoach.jp/web-design/WordPress/xH5XC" class="pagenation-buttons_next">次の章に進む<img src="../../_assets/47498cfebf.svg" class="pagenation-buttons_icon"></a>
+</div></div></div>
+        
+        <div class="article-item item_heading " id="item14132" data-item-id="14132" data-item-type="ItemHeading"><h2 class="item-body" id="heading0">1章：はじめに</h2></div>
+        
+        <div class="article-item item_markdown " id="item45159" data-item-id="45159" data-item-type="ItemMarkdown"><h4 id="heading1">この章で到達できるゴール</h4>
+</div>
+        
+        <div class="article-item item_text " id="item45160" data-item-id="45160" data-item-type="ItemText"><div class="item-body-hbr">本章は、WordPressの基礎知識と、これから学ぶツールの全体像を把握するための導入パートです。<br>以下の内容を他者に説明できる状態になれば、この章はクリアとなります。</div></div>
+        
+        <div class="article-item item_markdown " id="item45161" data-item-id="45161" data-item-type="ItemMarkdown"><ul>
+  <li>WordPressの概要を理解し、どのようなWebサイトが制作できるか（完成形のイメージ）を具体的に想像できる</li>
+  <li>WordPressの主要な3つの特徴（運用コスト・プラグイン・テーマ）について、その仕組みやメリットを説明できる</li>
+</ul>
+</div>
+        
+        <div class="article-item item_heading " id="item45162" data-item-id="45162" data-item-type="ItemHeading"><h3 class="item-body" id="heading2">【1-1】本教材を通じて到達できるゴール</h3></div>
+        
+        <div class="article-item item_markdown " id="item45163" data-item-id="45163" data-item-type="ItemMarkdown"><ul>
+  <li>サーバー・ドメインの契約からWordPressの導入、セキュリティ設定までの一連の流れを一人で完遂し、Webサイトをインターネット上に公開できる</li>
+  <li>「ブロックエディタ」や「テーマ・プラグイン」の特性を理解して使いこなし、ブログ・ポートフォリオ・企業サイトなど、目的に合わせたWebサイトを自由に構築できる</li>
+  <li>サイトの企画・設計（ディレクション）から制作までの一連の工程を経験し、マニュアル通りに作るだけでなく、自分の頭で考えてWebサイトを形にする「制作者としての基礎力」を習得できる</li>
+</ul>
+</div>
+        
+        <div class="article-item item_text " id="item45164" data-item-id="45164" data-item-type="ItemText"><div class="item-body-hbr">難しそうに見えると思いますが、一歩一歩進んでいきましょう！</div></div>
+        
+        <div class="article-item item_heading " id="item14134" data-item-id="14134" data-item-type="ItemHeading"><h3 class="item-body" id="heading3">【1-2】WordPressとは</h3></div>
+        
+        <div class="article-item item_rich_text " id="item14133" data-item-id="14133" data-item-type="ItemRichText"><div class="item-body-hbr">WordPressは、だれでも簡単に<span class="decoration-02">ノーコードでブログやWebサイトの作成ができるコンテンツマネジメントシステム（CMS）の一つ</span>です。<br>
+2003年にブログサイトとして誕生しましたが<span class="decoration-02">現在ではブログサイトだけではなく企業のHPやECサイト</span>など幅広く使用されています。<br>
+<br>
+Wixとの大きな違いは、<span class="decoration-02">PHPと呼ばれるプログラミングを使用することで、デザインや機能を開発することができる点</span>です。<br>
+<br>
+ですがWordPressの開発には高度なプログラミングスキルが必要であるため、<span class="decoration-02">この教材ではノーコードでのホームページ制作</span>を学んで頂きます。</div></div>
+        
+        <div class="article-item item_markdown " id="item14135" data-item-id="14135" data-item-type="ItemMarkdown"><h4 id="heading4">実際WordPressで作成されたHPをご紹介</h4>
+</div>
+        
+        <div class="article-item item_rich_text " id="item14136" data-item-id="14136" data-item-type="ItemRichText"><div class="item-body-hbr">まずはどんなサイトが作成できるのか、実際ノーコードで作成されているデモサイトを見てみましょう！</div></div>
+        
+        <div class="article-item item_link " id="item14137" data-item-id="14137" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=hmEqe&amp;item_id=14137" rel="nofollow noopener noreferrer" target="_blank">WordPressテーマ「TOKI (tcd069)」 | 世界と日本をつなげるインバウンドメディア向けWordPressテーマ「トキ」</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="WordPressテーマ「TOKI (tcd069)」 | 世界と日本をつなげるインバウンドメディア向けWordPressテーマ「トキ」" data-reference="https://demo.tcd-theme.com/tcd069/" src="../../_assets/c7b72de8d5.webp" width="75" height="75"></div><div class="media-body"><div class="item-body">世界と日本をつなげるインバウンドメディア向けWordPressテーマ「トキ」</div></div></div></div></div>
+        
+        <div class="article-item item_link " id="item14138" data-item-id="14138" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=hmEqe&amp;item_id=14138" rel="nofollow noopener noreferrer" target="_blank">WordPressテーマ「FALCON (tcd089)」</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="WordPressテーマ「FALCON (tcd089)」" data-reference="https://demo.tcd-theme.com/tcd089/" src="../../_assets/8b6dd71f26.webp" width="75" height="75"></div><div class="media-body"><div class="item-body">美しいギャラリーでオンラインショールームを構築する</div></div></div></div></div>
+        
+        <div class="article-item item_link " id="item14139" data-item-id="14139" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=hmEqe&amp;item_id=14139" rel="nofollow noopener noreferrer" target="_blank">クリニックや医療機関、美容サロンなどに最適なWordPressテーマ「SERUM」のデモサイト</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="クリニックや医療機関、美容サロンなどに最適なWordPressテーマ「SERUM」のデモサイト" data-reference="https://demo.tcd-theme.com/tcd096/" src="../../_assets/1367447025.webp" width="75" height="75"></div><div class="media-body"><div class="item-body">クリニックや医療機関、サロンなどの店舗サイトに適したテンプレートです。特徴的なサイドバーを予約やお問い合わせへの導線として活用いただけます。ロゴやキャッチフレーズを全面の背景画像の上に表示してブランディングできるスプラッシュ画面機能も搭載しました。</div></div></div></div></div>
+        
+        <div class="article-item item_link " id="item14140" data-item-id="14140" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=hmEqe&amp;item_id=14140" rel="nofollow noopener noreferrer" target="_blank">WordPressテーマ「SOLARIS (tcd088)」</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="WordPressテーマ「SOLARIS (tcd088)」" data-reference="https://demo.tcd-theme.com/tcd088/" src="../../_assets/4f0dab75c7.webp" width="75" height="75"></div><div class="media-body"><div class="item-body">洗練された企業サイトをスムーズに制作できるWordPressテーマ「SOLARIS」</div></div></div></div></div>
+        
+        <div class="article-item item_rich_text " id="item14141" data-item-id="14141" data-item-type="ItemRichText"><div class="item-body-hbr">いかがでしょうか？デモサイトの様にテーマを選定することでリッチなホームページの制作が可能です！</div></div>
+        
+        <div class="article-item item_heading " id="item14142" data-item-id="14142" data-item-type="ItemHeading"><h3 class="item-body" id="heading5">【1-3】WordPressの特徴</h3></div>
+        
+        <div class="article-item item_html " id="item14143" data-item-id="14143" data-item-type="ItemHtml"><div class="item-body">WordPressとは何かが理解できたところで、次はWordPressの特徴を見ていきましょう！</div></div>
+        
+        <div class="article-item item_markdown " id="item14144" data-item-id="14144" data-item-type="ItemMarkdown"><h4 id="heading6">① 無料で利用できる</h4>
+</div>
+        
+        <div class="article-item item_rich_text " id="item14145" data-item-id="14145" data-item-type="ItemRichText"><div class="item-body-hbr">独自ドメインや広告の廃止を行うと月額料金が発生するWixに対し、<span class="decoration-02">WordPressはWordPress自体にライセンス料金が発生することがありません</span>。<br>
+よって、ランニングコストを抑えたHPの運用が可能です。<br>
+ただし<span class="decoration-02">サーバーとドメインの料金は発生するため完全無料ではありません</span>。</div></div>
+        
+        <div class="article-item item_html " id="item14147" data-item-id="14147" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_rich_text " id="item14150" data-item-id="14150" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">WordPressにかかるコストの目安</span></div></div>
+        
+        <div class="article-item item_html " id="item14149" data-item-id="14149" data-item-type="ItemHtml"><div class="item-body"><table style="border-collapse: collapse; width: 100%;">
+  <tbody><tr>
+    <th style="background-color: #f0f0f0; border: 1px solid #ccc; padding: 8px;"></th>
+    <th style="background-color: #f0f0f0; border: 1px solid #ccc; padding: 8px;">WordPress</th>
+    <th style="background-color: #f0f0f0; border: 1px solid #ccc; padding: 8px;">レンタルサーバー</th>
+    <th style="background-color: #f0f0f0; border: 1px solid #ccc; padding: 8px;">ドメイン</th>
+  </tr>
+  <tr>
+    <th style="background-color: #f0f0f0; border: 1px solid #ccc; padding: 8px;">初期費用</th>
+    <td style="border: 1px solid #ccc; padding: 8px;">0円</td>
+    <td style="border: 1px solid #ccc; padding: 8px;">0円〜</td>
+    <td style="border: 1px solid #ccc; padding: 8px;">0円</td>
+  </tr>
+  <tr>
+    <th style="background-color: #f0f0f0; border: 1px solid #ccc; padding: 8px;">月額料金</th>
+    <td style="border: 1px solid #ccc; padding: 8px;">0円</td>
+    <td style="border: 1px solid #ccc; padding: 8px;">500円～</td>
+    <td style="border: 1px solid #ccc; padding: 8px;">100円～</td>
+  </tr>
+</tbody></table>
+※ サーバーやドメインによって費用は変わりますが、1000円程度でHPの運用が可能です。</div></div>
+        
+        <div class="article-item item_markdown " id="item14151" data-item-id="14151" data-item-type="ItemMarkdown"><h4 id="heading7">② プラグインで多くの機能を追加できる</h4>
+</div>
+        
+        <div class="article-item item_rich_text " id="item14152" data-item-id="14152" data-item-type="ItemRichText"><div class="item-body-hbr">WordPressでは、<span class="decoration-02">「プラグイン」という拡張機能</span>がたくさんあり、<span class="decoration-02">標準状態にはない機能を必要に応じて自由に付け加えることが可能</span>です。</div></div>
+        
+        <div class="article-item item_html " id="item14153" data-item-id="14153" data-item-type="ItemHtml"><div class="item-body"><div class="card-with-icon point">
+  <span class="bold">プラグインで追加できる機能の一例<br></span>
+  <ul>
+    <li>問い合わせフォームの作成や導入</li>
+    <li>スライダーの挿入</li>
+    <li>サイトのセキュリティ対策</li>
+    <li>SEO対策</li>
+  </ul>
+</div></div></div>
+        
+        <div class="article-item item_rich_text " id="item14154" data-item-id="14154" data-item-type="ItemRichText"><div class="item-body-hbr">テーマによってデフォルトで使用できる機能は変わってきます。<span class="decoration-02">使用しているテーマに実装したい機能が無い場合はプラグインを使用して実装</span>していきましょう！<br>
+WordPressでは60,000個を超えるプラグインがあるため、さまざまなアレンジを行うことが可能です！</div></div>
+        
+        <div class="article-item item_markdown " id="item14155" data-item-id="14155" data-item-type="ItemMarkdown"><h4 id="heading8">③ テーマを選んでカスタマイズが可能</h4>
+</div>
+        
+        <div class="article-item item_rich_text " id="item14156" data-item-id="14156" data-item-type="ItemRichText"><div class="item-body-hbr">WordPressは<span class="decoration-02">テーマと言われるデザインだけでなく機能も異なるテンプレート</span>があり、テーマを選びHP作成を行うのが特徴です。<br>
+<span class="decoration-02">テーマによってダッシュボードの使い方も違ってくるのでここが一番難しい所</span>ですがテーマを理解することでさまざまなWebサイトを簡単に構築できるのがWordPressの魅力です。<br>
+<br>
+参考までに無料のテーマをいくつかご紹介します！</div></div>
+        
+        <div class="article-item item_rich_text " id="item14157" data-item-id="14157" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">無料テーマ</span></div></div>
+        
+        <div class="article-item item_link " id="item14158" data-item-id="14158" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=hmEqe&amp;item_id=14158" rel="nofollow noopener noreferrer" target="_blank">Lightning × ExUnit 日本語デモ | Just another サイト 株式会社サンプル site</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="Lightning × ExUnit 日本語デモ | Just another サイト 株式会社サンプル site" data-reference="https://demo.dev3.biz/lightning-g3/" src="../../_assets/30861d9191.webp" width="75" height="75"></div><div class="media-body"><div class="item-body">Just another サイト 株式会社サンプル site</div></div></div></div></div>
+        
+        <div class="article-item item_link " id="item14159" data-item-id="14159" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=hmEqe&amp;item_id=14159" rel="nofollow noopener noreferrer" target="_blank">Cocoon | WordPress無料テーマ</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="Cocoon | WordPress無料テーマ" data-reference="https://wp-cocoon.com/" src="../../_assets/44c613b23a.webp" width="75" height="75"></div><div class="media-body"><div class="item-body">SEO・高速化・モバイルファースト最適化済みのシンプルな無料WordPressテーマ。100％GPLテーマです。</div></div></div></div></div>
+        
+        <div class="article-item item_link " id="item14160" data-item-id="14160" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=hmEqe&amp;item_id=14160" rel="nofollow noopener noreferrer" target="_blank">Arkhe | ミニマム、シンプル、ちょうどいい。WEB制作用の無料WordPressテーマ</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="Arkhe | ミニマム、シンプル、ちょうどいい。WEB制作用の無料WordPressテーマ" data-reference="https://arkhe-theme.com/ja/" src="../../_assets/e0a55b6754.webp" width="75" height="75"></div><div class="media-body"><div class="item-body">シンプルでミニマムな、WEB制作のベースに最適化された無料のWordPressテーマ「Arkhe」の公式サイトです。</div></div></div></div></div>
+        
+        <div class="article-item item_html " id="item14161" data-item-id="14161" data-item-type="ItemHtml"><div class="item-body"><div class="card-with-icon point">
+  <span class="bold">ポイント<br></span>
+  <ol>
+    <li>WordPressはサーバーとドメインの契約が必要</li>
+    <li>テーマ（テンプレート）に沿って制作していく</li>
+    <li>デフォルトの機能に無い機能はプラグインを導入して実装を行う</li>
+  </ol>
+</div></div></div>
+        
+        <div class="article-item item_html " id="item14162" data-item-id="14162" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_rich_text " id="item14163" data-item-id="14163" data-item-type="ItemRichText"><div class="item-body-hbr">これで<span class="decoration-01">【1章 はじめに】</span>の解説を終わります。<br>
+次の章に進みましょう！</div></div>
+        
+        <div class="article-item item_html " id="item25489" data-item-id="25489" data-item-type="ItemHtml"><div class="item-body"><div class="pagenation-buttons" style="justify-content: flex-end;">
+  <a href="https://learn.webcoach.jp/web-design/WordPress/xH5XC" class="pagenation-buttons_next">次の章に進む<img src="../../_assets/47498cfebf.svg" class="pagenation-buttons_icon"></a>
+</div></div></div>
+        
+        
+        
+        <div class="back-to-roadmap mb-4 text-center"></div>
+      </div>
+    </div>
+    
+    <div class="lightbox-modal" id="lightboxModal">
+      <img src="" alt="">
+    </div>
+    
+    <div id="modal" class="fixed-menu-modal">
+      <div class="fixed-menu-modal-content">
+        <div class="index mb-3" style="background-color: #FDF5E8;">
+          <div>
+            <div class="fw-light">INDEX</div>
+            <div class="h3">目次</div>
+          </div>
+          <div class="toc"><ul><li><a href="#heading0" class="tocLink">1章：はじめに</a><ul><li><a href="#heading1" class="tocLink">この章で到達できるゴール</a></li></ul><ul><li><a href="#heading2" class="tocLink">【1-1】本教材を通じて到達できるゴール</a></li><li><a href="#heading3" class="tocLink">【1-2】WordPressとは</a><ul><li><a href="#heading4" class="tocLink">実際WordPressで作成されたHPをご紹介</a></li></ul></li><li><a href="#heading5" class="tocLink">【1-3】WordPressの特徴</a><ul><li><a href="#heading6" class="tocLink">① 無料で利用できる</a></li><li><a href="#heading7" class="tocLink">② プラグインで多くの機能を追加できる</a></li><li><a href="#heading8" class="tocLink">③ テーマを選んでカスタマイズが可能</a></li></ul></li></ul></li></ul></div>
+        </div>
+        
+        <!-- ボタン類 -->
+        <div id="fixed-menu_buttons" class="fixed-menu_buttons">
+  <a href="https://learn.webcoach.jp/web-design/WordPress/xH5XC" class="pagenation-buttons_next">次の章に進む<img src="../../_assets/47498cfebf.svg" class="pagenation-buttons_icon"></a>
+</div>
+        
+        <div class="back-to-roadmap text-center"></div>
+      </div>
+    </div>
+    
+    <button id="toggleBtn" class="floating-btn">
+      <img id="iconOpen" src="../../_assets/5feefcfc55.svg" alt="メニューを開く">
+      <img id="iconClose" src="../../_assets/ae4a1129c9.svg" alt="メニューを閉じる" style="display:none;">
+    </button>
+  </div>
+</div>
+</div>
+<!-- <script src="https://cdn.clipkit.co/clipkit/javascripts/item-shopify-1.0.js?v=v15.9.0-20260915" async></script> -->
+            </main></div>
+        
+
+    
+
+    <div class="p-5" style="background-color: #B73E3D; color: white; height: 300px;">
+        <div class="">
+            <div class="h4 ps-3" style="border-left: 5px solid white;">WEBCOACH | キャリアチェンジまでの全てを学ぶマンツーマンWEBスクール</div>
+            <ul class="nav flex-column m-0 p-3 fw-light">
+                <li class="nav-item mb-2"><a href="https://www.webcoach.jp/" target="_blank">WEBCOACH | 公式HP</a></li>
+                <li class="nav-item mb-2"><a href="https://www.instagram.com/webcoach_officials/" target="_blank">WEBCOACH | 公式Instagram</a></li>
+                <li class="nav-item mb-2"><a href="https://vectorinc.co.jp/groupservice/webcoach-career/" target="_blank">WEBCOACH 公式メディア | WEBCOACH career</a></li>
+            </ul>
+        </div>
+        <div class="text-center">
+            <small>© 2020 by WEBCOACH</small>
+        </div>
+    </div>
+
+    
+
+    <!-- bodyタグ内の下部に挿入されます -->
+
+
+    <!-- BootstrapのCDNでのjs読み込み -->
+    
+
+    <!-- シンタックスハイライトの生成 -->
+    
+    
+
+    <!-- 目次の生成 -->
+    
+
+    <!-- ブックマークの生成 -->
+    
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="ck-icon-arrow-down" viewBox="0 0 1792 1792"><path d="M1675 832q0 53-37 90l-651 652q-39 37-91 37-53 0-90-37l-651-652q-38-36-38-90 0-53 38-91l74-75q39-37 91-37 53 0 90 37l294 294v-704q0-52 38-90t90-38h128q52 0 90 38t38 90v704l294-294q37-37 90-37 52 0 91 37l75 75q37 39 37 91z"></path></symbol><symbol id="ck-icon-arrow-up" viewBox="0 0 1792 1792"><path d="M1675 971q0 51-37 90l-75 75q-38 38-91 38-54 0-90-38l-294-293v704q0 52-37.5 84.5t-90.5 32.5h-128q-53 0-90.5-32.5t-37.5-84.5v-704l-294 293q-36 38-90 38t-90-38l-75-75q-38-38-38-90 0-53 38-91l651-651q35-37 90-37 54 0 91 37l651 651q37 39 37 91z"></path></symbol><symbol id="ck-icon-calendar" viewBox="0 0 1792 1792"><path d="M192 1664h288v-288h-288v288zm352 0h320v-288h-320v288zm-352-352h288v-320h-288v320zm352 0h320v-320h-320v320zm-352-384h288v-288h-288v288zm736 736h320v-288h-320v288zm-384-736h320v-288h-320v288zm768 736h288v-288h-288v288zm-384-352h320v-320h-320v320zm-352-864v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm736 864h288v-320h-288v320zm-384-384h320v-288h-320v288zm384 0h288v-288h-288v288zm32-480v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm384-64v1280q0 52-38 90t-90 38h-1408q-52 0-90-38t-38-90v-1280q0-52 38-90t90-38h128v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h384v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h128q52 0 90 38t38 90z"></path></symbol><symbol id="ck-icon-chevron-left" viewBox="0 0 1792 1792"><path d="M1427 301l-531 531 531 531q19 19 19 45t-19 45l-166 166q-19 19-45 19t-45-19l-742-742q-19-19-19-45t19-45l742-742q19-19 45-19t45 19l166 166q19 19 19 45t-19 45z"></path></symbol><symbol id="ck-icon-chevron-right" viewBox="0 0 1792 1792"><path d="M1363 877l-742 742q-19 19-45 19t-45-19l-166-166q-19-19-19-45t19-45l531-531-531-531q-19-19-19-45t19-45l166-166q19-19 45-19t45 19l742 742q19 19 19 45t-19 45z"></path></symbol><symbol id="ck-icon-clock-o" viewBox="0 0 1792 1792"><path d="M1024 544v448q0 14-9 23t-23 9h-320q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h224v-352q0-14 9-23t23-9h64q14 0 23 9t9 23zm416 352q0-148-73-273t-198-198-273-73-273 73-198 198-73 273 73 273 198 198 273 73 273-73 198-198 73-273zm224 0q0 209-103 385.5t-279.5 279.5-385.5 103-385.5-103-279.5-279.5-103-385.5 103-385.5 279.5-279.5 385.5-103 385.5 103 279.5 279.5 103 385.5z"></path></symbol><symbol id="ck-icon-trash" viewBox="0 0 1792 1792"><path d="M704 1376v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm-544-992h448l-48-117q-7-9-17-11h-317q-10 2-17 11zm928 32v64q0 14-9 23t-23 9h-96v948q0 83-47 143.5t-113 60.5h-832q-66 0-113-58.5t-47-141.5v-952h-96q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h309l70-167q15-37 54-63t79-26h320q40 0 79 26t54 63l70 167h309q14 0 23 9t9 23z"></path></symbol><symbol id="ck-icon-undo" viewBox="0 0 1792 1792"><path d="M1664 896q0 156-61 298t-164 245-245 164-298 61q-172 0-327-72.5t-264-204.5q-7-10-6.5-22.5t8.5-20.5l137-138q10-9 25-9 16 2 23 12 73 95 179 147t225 52q104 0 198.5-40.5t163.5-109.5 109.5-163.5 40.5-198.5-40.5-198.5-109.5-163.5-163.5-109.5-198.5-40.5q-98 0-188 35.5t-160 101.5l137 138q31 30 14 69-17 40-59 40h-448q-26 0-45-19t-19-45v-448q0-42 40-59 39-17 69 14l130 129q107-101 244.5-156.5t284.5-55.5q156 0 298 61t245 164 164 245 61 298z"></path></symbol></svg>
+
+<!--Clipkit(R) v15.9.0-20260915 Copyright (C) 2026 VECTOR Inc.-->
+
+
+
+
+
+<div class="dynmsg alert alert-info" style="display:none;"><button class="close"><span class="fa fa-times"></span></button><div class="message"></div></div><div class="dynmsg alert alert-danger" style="display:none;"><button class="close"><span class="fa fa-times"></span></button><div class="message"></div></div></body></html>

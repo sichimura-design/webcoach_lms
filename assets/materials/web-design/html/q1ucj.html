@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<!-- clipkit-source-url: https://learn.webcoach.jp/web-design/Q1UcJ -->
+<!-- clipkit-fetched-at: 2026-09-17T11:14:00.275Z -->
+<html lang="ja"><head>
+    <!-- headタグ内の上部に挿入されます -->
+
+    <meta charset="UTF-8">
+    <title>Adobe Photoshop｜15章 ラスタライズを知ろう - WEBCOACH</title>
+
+    <!-- resetcssのCDNでのCSS読み込み -->
+    <link rel="stylesheet" href="../../_assets/17f8e278dc.css">
+
+    <!-- fontawesomeのCDNでのCSS読み込み -->
+    <link rel="stylesheet" href="../../_assets/799aeb25cc.css">
+
+    <!-- BootstrapのCDNでのCSS読み込み -->
+    <link href="../../_assets/7633b7c0c9.css" rel="stylesheet">
+
+    <!-- highlight.jsの読み込み -->
+    <link rel="stylesheet" href="../../_assets/e31ce2dd8c.css">
+
+    <!-- カスタムCSS -->
+    <link rel="stylesheet" href="../../_assets/c533dd7750.css">
+
+    <!-- clipkitデフォルトのCSS -->
+    <!--<link rel="stylesheet" media="screen" href="https://cdn.clipkit.co/clipkit/stylesheets/application-1.0.css?v=v15.9.0-20260915">-->
+
+    <!-- jQuery -->
+    
+
+    <!-- カスタムJS -->
+    
+    
+
+    <!-- clipkitデフォルトのJS -->
+    
+
+    <!-- フォント -->
+    <link rel="preconnect" href="https://fonts.googleapis.com/">
+    <link rel="preconnect" href="https://fonts.gstatic.com/">
+    <link href="../../_assets/8b5713f1fc.css" rel="stylesheet">
+
+    <link href="../../_assets/b83ae8ba65.webp" rel="shortcut icon" type="image/vnd.microsoft.icon">
+    <link rel="apple-touch-icon" href="../../_assets/ea0aba163d.webp">
+    <link rel="alternate" type="application/rss+xml" href="https://learn.webcoach.jp/media.rss" title="WEBCOACH">
+    
+<link rel="canonical" href="https://learn.webcoach.jp/web-design/Q1UcJ">
+
+<meta name="description" content="">
+<meta name="keywords" content="">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:domain" content="learn.webcoach.jp">
+<meta name="twitter:title" content="Adobe Photoshop｜15章 ラスタライズを知ろう - WEBCOACH">
+<meta name="twitter:image" content="https://cdn.clipkit.co/tenants/589/articles/images/000/000/707/medium/45297d0a-7fa0-4924-8001-e9e25c65650b.png?1739950138">
+<meta name="twitter:description" content="">
+<meta property="og:site_name" content="WEBCOACH">
+<meta property="og:title" content="Adobe Photoshop｜15章 ラスタライズを知ろう">
+<meta property="og:description" content="">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://learn.webcoach.jp/web-design/Q1UcJ">
+<meta property="og:image" content="https://cdn.clipkit.co/tenants/589/articles/images/000/000/707/large/45297d0a-7fa0-4924-8001-e9e25c65650b.png?1739950138">
+
+
+    <!-- headタグ内の下部に挿入されます -->
+
+
+<meta name="csrf-param" content="authenticity_token">
+<meta name="csrf-token" content="1tudVyn_HpX1sQfWVYhn_QzlE9_3ZIEbOW1HORiXiE7n0_Pmf47nJzq370yrlaTjT790MFdDy0V4NXFwzRd74w"><meta content="" name="routing-root-path"><meta content="media" name="site-name"><meta content="ja" name="i18n-default-locale"><meta content="ja" name="i18n-locale"><style data-clipkit-snapshot="force-visible">[data-aos],.reveal,.wow,.fade-in,.animate__animated,.js-reveal{opacity:1!important;transform:none!important;visibility:visible!important;animation:none!important;transition:none!important}</style></head>
+
+<body class="device-desktop" style="visibility: visible;">
+    <!-- bodyタグ内の上部に挿入されます -->
+
+
+    <!-- サイドバーとコンテンツのコンテナ -->
+    <div class="d-flex flex-row w-100 mb-5" style="min-height: calc(100vh - 400px);">
+
+        <!-- サイドバー -->
+        <!--<nav id="side-bar" class="d-flex flex-column fixed-top" style="width: 250px;">-->
+        <!--    <h1 class="d-block w-100 text-center">-->
+        <!--        <a class="d-block" href="/">-->
+        <!--            <img class="mw-100 p-3" src="https://cdn.clipkit.co/tenants/589/sites/logos/000/000/001/logo_sm/a8defd4b-1cc7-433b-a61c-08e7db0e3e4f.png?1714459367" alt="WEBCOACH">-->
+        <!--        </a>-->
+        <!--    </h1>-->
+        <!--    <ul class="nav flex-column m-0 p-3 fw-bold">-->
+        <!--        <li id="sidebar-top" class="nav-item mb-2" style="display: none;"><a href="/"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;" src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/233/original/home.png?1715353458">-->
+        <!--                <div>ホーム</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-knowledges" class="nav-item mb-2" style="display: none;"><a href="/knowledges"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;" src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/232/original/book.png?1715353458">-->
+        <!--                <div>学習の心得</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-web-designs" class="nav-item mb-2" style="display: none;"><a href="/web-designs"-->
+        <!--                class="nav-link text-body d-flex align-items-center active">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/231/original/design.png?1715353457">-->
+        <!--                <div>WEBデザイン</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-web-marketing" class="nav-item mb-2" style="display: none;"><a href="/web-marketings"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/230/original/marketing.png?1715353457">-->
+        <!--                <div>WEBマーケティング</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-codings" class="nav-item mb-2" style="display: none;"><a href="/codings"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/229/original/website.png?1715353457">-->
+        <!--                <div>WEBサイト構築</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-business-skills" class="nav-item mb-2" style="display: none;"><a href="/business-skills"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/228/original/business.png?1715353456">-->
+        <!--                <div>ビジネススキル</div>-->
+        <!--            </a></li>-->
+        <!--    </ul>-->
+        <!--</nav>-->
+
+        <!-- コンテンツ -->
+        <!--<main class="ms-auto" style="width: calc(100vw - 250px);">-->
+        <main class="ms-auto" style="width: calc(100vw);">
+            <div id="sb-site">
+                
+
+
+<div class="container">
+  <div class="row">
+    <div class="article">
+      <div class="mb-3 text-light" style="
+        height: 180px;
+        background-image: url(&quot;../../_assets/e1d58e2b8a.webp&quot;);
+        background-repeat: no-repeat;
+        background-size: cover;
+        display: flex;
+        align-items: flex-end;
+      ">
+        <div style="
+          margin: 0 0 30px 30px;
+        ">
+          <div>WEBデザイン</div>
+
+          <div class="fw-bold h2">Adobe Photoshop｜15章 ラスタライズを知ろう</div>
+        </div>
+      </div>
+      <div class="article-content">
+        <!-- 目次 -->
+        <div class="index mb-3" style="background-color: #FDF5E8;">
+          <div>
+            <div class="fw-light">INDEX</div>
+            <div class="h3">目次</div>
+          </div>
+          <div class="toc"><ul><li><a href="#heading0" class="tocLink">15章 ラスタライズを知ろう</a><ul><li><a href="#heading1" class="tocLink">この教材の学習時間:120分</a></li></ul></li><li><a href="#heading2" class="tocLink">【15-1】ラスタライズとは</a></li><li><a href="#heading3" class="tocLink">【15-2】ラスタライズが可能な状況や条件</a></li><li><a href="#heading4" class="tocLink">【15-3】ラスタライズしてできること</a><ul><li><a href="#heading5" class="tocLink">テキストレイヤー</a></li><li><a href="#heading6" class="tocLink">シェイプレイヤー</a></li><li><a href="#heading7" class="tocLink">スマートオブジェクト</a></li></ul></li><li><a href="#heading8" class="tocLink">【15-4】ラスタライズするときの注意事項</a></li><li><a href="#heading9" class="tocLink">【15-5】ラスタライズの手順</a><ul><li><a href="#heading10" class="tocLink">1. レイヤーの選択</a></li><li><a href="#heading11" class="tocLink">2. ラスタライズの実行</a></li></ul></li><li><a href="#heading12" class="tocLink">【15-6】スマートオブジェクトについて詳しく学ぶ</a><ul><li><a href="#heading13" class="tocLink"></a></li></ul><ul><li><a href="#heading14" class="tocLink">スマートオブジェクトの特徴</a><ul><li><a href="#heading15" class="tocLink">1. 非破壊編集</a></li><li><a href="#heading16" class="tocLink">2. 再編集の柔軟性</a></li><li><a href="#heading17" class="tocLink">3. スマートフィルター</a></li><li><a href="#heading18" class="tocLink">4. 変形の自由度</a></li></ul></li><li><a href="#heading19" class="tocLink">スマートオブジェクトへの変換方法</a></li><li><a href="#heading20" class="tocLink">スマートオブジェクトの解除方法</a></li></ul></li></ul></div>
+        </div>
+        
+        <div class="back-to-roadmap mb-4 text-center"></div>
+
+        <!-- コンテンツ -->
+        
+        
+        <div class="article-item item_html " id="item25603" data-item-id="25603" data-item-type="ItemHtml"><div class="item-body"><div class="pagenation-buttons" style="justify-content: space-between;">
+  <a href="https://learn.webcoach.jp/web-design/JSjFi" class="pagenation-buttons_prev"><img src="../../_assets/47498cfebf.svg" class="pagenation-buttons_icon">前の章に戻る</a>
+  <a href="https://learn.webcoach.jp/web-design/wqWzv" class="pagenation-buttons_next">次の章に進む<img src="../../_assets/47498cfebf.svg" class="pagenation-buttons_icon"></a>
+</div></div></div>
+        
+        <div class="article-item item_heading " id="item36852" data-item-id="36852" data-item-type="ItemHeading"><h2 class="item-body" id="heading0">15章 ラスタライズを知ろう</h2></div>
+        
+        <div class="article-item item_markdown " id="item39468" data-item-id="39468" data-item-type="ItemMarkdown"><h4 id="heading1">この教材の学習時間:120分</h4>
+</div>
+        
+        <div class="article-item item_rich_text " id="item8154" data-item-id="8154" data-item-type="ItemRichText"><div class="item-body-hbr">この章では、ピクセル単位での詳細な編集が必要な場合などで使用する<span class="decoration-01"><span class="decoration-02">ラスタライズ</span></span>を解説します。</div></div>
+        
+        <div class="article-item item_heading " id="item36855" data-item-id="36855" data-item-type="ItemHeading"><h2 class="item-body" id="heading2">【15-1】ラスタライズとは</h2></div>
+        
+        <div class="article-item item_rich_text " id="item8156" data-item-id="8156" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-02">ベクトル画像（ベクター形式）からビットマップ画像（ラスター形式）へ変換することです。</span><br>
+​ビットマップ画像は<span class="decoration-02">ラスター画像</span>と呼ばれ、ラスター画像への変換なので<span class="decoration-02">ラスタライズ</span>と呼ばれます。</div></div>
+        
+        <div class="article-item item_html " id="item8157" data-item-id="8157" data-item-type="ItemHtml"><div class="item-body"><div class="callout white">
+    <div class="title-area">
+        <div class="icon bulb"></div>
+        <div class="title">解説</div>
+    </div>
+    <div class="content-area">
+     <strong>ベクトル画像</strong><br>
+      <ul>
+        <li>Illustratorで処理するのが得意な画像、という捉え方をするとベクトル画像の理解がしやすいですが、Photoshopでもベクトル画像を扱うことができます。</li>
+        <li>大きな特徴</li>
+         <ul>
+           <li>点と線を、位置や角度といった数値情報として記録・描画する形式です。</li>
+           <li>そのため画像の拡大縮小への対応に強く画像が荒れることがありません。</li>
+         </ul>
+        </ul>
+      <p>
+     <strong>ビットマップ画像</strong><br>
+      </p><ul>
+        <li>Photoshopはカメラで撮影された写真などの加工を得意とし、これらの写真はビットマップ形式で再現されています。</li>
+      </ul>
+      <p>
+    </p></div>
+</div></div></div>
+        
+        <div class="article-item item_heading " id="item36856" data-item-id="36856" data-item-type="ItemHeading"><h2 class="item-body" id="heading3">【15-2】ラスタライズが可能な状況や条件</h2></div>
+        
+        <div class="article-item item_html " id="item8225" data-item-id="8225" data-item-type="ItemHtml"><div class="item-body"><div class="callout white">
+    <div class="title-area">
+        <div class="icon bulb"></div>
+        <div class="title">各ツールの条件</div>
+    </div>
+    <div class="content-area">
+      <span class="decoration-02">ベクターオブジェクト</span>
+      <ul>
+  		<li><strong>テキストレイヤー</strong></li>
+  			<ul>
+    			<li>Photoshopではテキストはベクターデータとして扱われます。</li>
+                <li>テキストレイヤーはラスタライズ可能です。</li>
+  			</ul>
+        <li><strong>シェイプレイヤー</strong></li>
+        	<ul>
+              <li>シェイプツールで作成されたベクターレイヤーもラスタライズできます。</li>
+            </ul>
+	  </ul>
+     <p>
+       <span class="decoration-02">スマートオブジェクト</span>
+        </p><ul>
+  		 <li>Photoshopの機能の一つです。</li>
+         <li>ベクトル画像やビットマップ画像を非破壊的に編集できるようにする特別なレイヤー形式です。</li>
+          	<ul>
+              <li>※「非破壊的に編集」とは元のデータを保持し、画像の劣化を防ぎ、変形、フィルターの適用などを行っても、元の画質を失わずにできる編集のことです。</li>
+            </ul>
+         <li>ラスタライズをするとスマートオブジェクトの設定を解除します。</li>
+  	    </ul>
+      <p>
+        <span class="decoration-02">パス</span>
+        </p><ul>
+  		 <li>パスツールで描かれたパスは、ラスタライズすることでピクセルデータに変換されます。<br>
+          ※ピクセルデータとは、ビットマップ画像形式と同じです。</li>
+        </ul>      
+    </div>
+</div></div></div>
+        
+        <div class="article-item item_heading " id="item36857" data-item-id="36857" data-item-type="ItemHeading"><h2 class="item-body" id="heading4">【15-3】ラスタライズしてできること</h2></div>
+        
+        <div class="article-item item_text " id="item8224" data-item-id="8224" data-item-type="ItemText"><div class="item-body-hbr">ラスタライズは、ピクセル単位での詳細な編集や、特定のフィルターやツールを使う際に求められる操作です。</div></div>
+        
+        <div class="article-item item_heading " id="item36858" data-item-id="36858" data-item-type="ItemHeading"><h3 class="item-body" id="heading5">テキストレイヤー</h3></div>
+        
+        <div class="article-item item_rich_text " id="item8223" data-item-id="8223" data-item-type="ItemRichText"><div class="item-body-hbr"> テキストレイヤーをラスタライズすると、ブラシツールや消しゴムツールなどでピクセルを直接編集できるようになります。<br>
+※ただし、文字の再編集はできなくなります。</div></div>
+        
+        <div class="article-item item_link " id="item12330" data-item-id="12330" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=Q1UcJ&amp;item_id=12330" rel="nofollow noopener noreferrer" target="_blank">作業動画 Adobe Photoshop 15-1</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="作業動画 Adobe Photoshop 15-1" data-reference="https://www.dropbox.com/scl/fi/lxjkoy904kk01bhr01r4o/Adobe-Photoshop15-1_1.0_.mov?rlkey=wyxnkkwt70w0wwz71txt2hvnb&amp;st=k49nvn8y&amp;dl=0" src="../../_assets/fb06745a74.webp" width="75" height="75"></div><div class="media-body"><div class="item-body">この動画はデモンストレーション動画になります。
+音声は入っておりません。</div></div></div></div></div>
+        
+        <div class="article-item item_heading " id="item36859" data-item-id="36859" data-item-type="ItemHeading"><h3 class="item-body" id="heading6">シェイプレイヤー</h3></div>
+        
+        <div class="article-item item_text " id="item8222" data-item-id="8222" data-item-type="ItemText"><div class="item-body-hbr">シェイプをラスタライズすると、ピクセルベースの操作が可能になり、部分的な修正や詳細な効果の追加が行えます。</div></div>
+        
+        <div class="article-item item_link " id="item12331" data-item-id="12331" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=Q1UcJ&amp;item_id=12331" rel="nofollow noopener noreferrer" target="_blank">作業動画 Adobe Photoshop 15-2</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="作業動画 Adobe Photoshop 15-2" data-reference="https://www.dropbox.com/scl/fi/dnp1dlagh400lxy6ohdla/Adobe-Photoshop15-2_1.0_.mov?rlkey=8ttb52to3xd947vxdo8ecf1vc&amp;e=1&amp;st=wail693r&amp;dl=0" src="../../_assets/fb06745a74.webp" width="75" height="75"></div><div class="media-body"><div class="item-body">この動画はデモンストレーション動画になります。
+音声は入っておりません。</div></div></div></div></div>
+        
+        <div class="article-item item_heading " id="item36860" data-item-id="36860" data-item-type="ItemHeading"><h3 class="item-body" id="heading7">スマートオブジェクト</h3></div>
+        
+        <div class="article-item item_html " id="item8221" data-item-id="8221" data-item-type="ItemHtml"><div class="item-body"><div class="callout white">
+    <div class="title-area">
+        <div class="icon bulb"></div>
+        <div class="title">使用する場合</div>
+    </div>
+    <div class="content-area">
+      <ul>
+        <li>ベクター画像の編集で使用することができないツールを使用する場合</li>
+        	<ul>
+              <li>（ブラシツール、消しゴムツール、クローンスタンプツールなど）</li>
+            </ul>
+        <li>特定のフィルターを使用する場合</li>
+        <li>特定の自由変形ツールを使用する場合</li>
+        <li>一部のレイヤースタイルを適用したい場合</li>
+      </ul>
+    </div>
+</div>
+</div></div>
+        
+        <div class="article-item item_link " id="item12332" data-item-id="12332" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=Q1UcJ&amp;item_id=12332" rel="nofollow noopener noreferrer" target="_blank">作業動画 Adobe Photoshop 15-3</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="作業動画 Adobe Photoshop 15-3" data-reference="https://www.dropbox.com/scl/fi/402wzpsey8ebcpt8zf5m1/Adobe-Photoshop15-3_1.0_.mov?rlkey=8mdpnl1jxjai330q9xixgqpma&amp;e=1&amp;st=czjbr01i&amp;dl=0" src="../../_assets/fb06745a74.webp" width="75" height="75"></div><div class="media-body"><div class="item-body">この動画はデモンストレーション動画になります。
+音声は入っておりません。</div></div></div></div></div>
+        
+        <div class="article-item item_heading " id="item36861" data-item-id="36861" data-item-type="ItemHeading"><h2 class="item-body" id="heading8">【15-4】ラスタライズするときの注意事項</h2></div>
+        
+        <div class="article-item item_html " id="item36853" data-item-id="36853" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li>
+    ラスタライズすると、<span class="decoration-02">ベクターオブジェクトとしての特性を失い、再度ベクターに戻すことはできません。</span>
+  </li>
+  <li>
+    そのため、ラスタライズする前に<span class="decoration-02">バックアップを作成するか、スマートオブジェクトを使用して非破壊編集を維持することが推奨</span>されます。
+  </li>
+  <li>
+    また、ラスタライズ後はピクセル化されるため、<span class="decoration-02">拡大すると画質が劣化する点</span>にも注意が必要です。
+  </li>
+</ul>
+</div></div>
+        
+        <div class="article-item item_heading " id="item36862" data-item-id="36862" data-item-type="ItemHeading"><h2 class="item-body" id="heading9">【15-5】ラスタライズの手順</h2></div>
+        
+        <div class="article-item item_markdown " id="item8166" data-item-id="8166" data-item-type="ItemMarkdown"><h4 id="heading10">1. レイヤーの選択</h4>
+</div>
+        
+        <div class="article-item item_text " id="item8217" data-item-id="8217" data-item-type="ItemText"><div class="item-body-hbr">ラスタライズしたいレイヤーを選択します。</div></div>
+        
+        <div class="article-item item_markdown " id="item8167" data-item-id="8167" data-item-type="ItemMarkdown"><h4 id="heading11">2. ラスタライズの実行</h4>
+</div>
+        
+        <div class="article-item item_html " id="item36854" data-item-id="36854" data-item-type="ItemHtml"><div class="item-body"><ol>
+  <li>
+    <span class="decoration-01">メニューからの操作</span>：<br>
+    上部メニューの「レイヤー」 &gt; 「ラスタライズ」 &gt; 「テキスト」または「シェイプ」など、適切なオプションを選びます。
+  </li>
+  <li>
+    <span class="decoration-01">右クリックからの操作</span>：<br>
+    レイヤーパネル内で対象レイヤーを右クリックし、表示されるメニューから「ラスタライズ」を選択します。
+  </li>
+</ol>
+</div></div>
+        
+        <div class="article-item item_link " id="item12333" data-item-id="12333" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=Q1UcJ&amp;item_id=12333" rel="nofollow noopener noreferrer" target="_blank">作業動画 Adobe Photoshop 15-4</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="作業動画 Adobe Photoshop 15-4" data-reference="https://www.dropbox.com/scl/fi/3kpdmqtxuo891jo6plm9t/Adobe-Photoshop15-4_1.0_.mov?rlkey=010t3lh77um8jag28o1h1osnq&amp;e=1&amp;st=xn52wtw4&amp;dl=0" src="../../_assets/fb06745a74.webp" width="75" height="75"></div><div class="media-body"><div class="item-body">この動画はデモンストレーション動画になります。
+音声は入っておりません。</div></div></div></div></div>
+        
+        <div class="article-item item_html " id="item8219" data-item-id="8219" data-item-type="ItemHtml"><div class="item-body"><div class="callout white">
+    <div class="title-area">
+        <div class="icon bulb"></div>
+        <div class="title">テキストを遠近法で変形する</div>
+    </div>
+    <div class="content-area">
+      <ol>
+        <li>テキストを入力する</li>
+        <li>「編集」→「変形」→「他方向に伸縮」「遠近法」が選べないことを確認する</li>
+        <li>テキストをラスタライズする</li>
+        <li>「他方向に伸縮」「遠近法」が選べるようになる</li>
+      </ol>
+    </div>
+</div></div></div>
+        
+        <div class="article-item item_link " id="item12334" data-item-id="12334" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=Q1UcJ&amp;item_id=12334" rel="nofollow noopener noreferrer" target="_blank">作業動画 Adobe Photoshop 15-5</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="作業動画 Adobe Photoshop 15-5" data-reference="https://www.dropbox.com/scl/fi/5c7nwkwjd2bnckrb8zj5x/Adobe-Photoshop15-5_1.0_.mov?rlkey=t7v56mb4h0b9jnh027nuoydwh&amp;e=1&amp;st=neckqs7d&amp;dl=0" src="../../_assets/fb06745a74.webp" width="75" height="75"></div><div class="media-body"><div class="item-body">この動画はデモンストレーション動画になります。
+音声は入っておりません。</div></div></div></div></div>
+        
+        <div class="article-item item_heading " id="item36863" data-item-id="36863" data-item-type="ItemHeading"><h2 class="item-body" id="heading12">【15-6】スマートオブジェクトについて詳しく学ぶ</h2></div>
+        
+        <div class="article-item item_rich_text " id="item8169" data-item-id="8169" data-item-type="ItemRichText"><div class="item-body-hbr">Photoshopの機能で、ビットマップ画像やベクトル画像を非破壊的に編集できるようにする特別なレイヤー形式にすることができます。<br>
+その機能を<span class="decoration-01"><span class="decoration-02">スマートオブジェクト</span></span>と呼びます。<br>
+<br>
+スマートオブジェクト化した画像は、レイヤーパネルのサムネイルに以下のようなアイコンが表示されます。</div></div>
+        
+        <div class="article-item item_image " id="item8220" data-item-id="8220" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/008/220/medium/bd5a5343-1b07-401c-be75-f62795dc7f58.png?1740017550" title=""><img class="img-responsive item-image" alt=" (8220)" data-reference="" src="../../_assets/be4883bcda.webp" width="558" height="106"></a><h4 id="heading13"></h4></div></div>
+        
+        <div class="article-item item_heading " id="item36864" data-item-id="36864" data-item-type="ItemHeading"><h3 class="item-body" id="heading14">スマートオブジェクトの特徴</h3></div>
+        
+        <div class="article-item item_markdown " id="item8209" data-item-id="8209" data-item-type="ItemMarkdown"><h4 id="heading15">1. 非破壊編集</h4>
+</div>
+        
+        <div class="article-item item_text " id="item8213" data-item-id="8213" data-item-type="ItemText"><div class="item-body-hbr">スマートオブジェクトは元のデータを保持し、画像の劣化を防ぎます。<br>変形、フィルターの適用などを行っても、元の画質を失うことなく編集できます。</div></div>
+        
+        <div class="article-item item_markdown " id="item8210" data-item-id="8210" data-item-type="ItemMarkdown"><h4 id="heading16">2. 再編集の柔軟性</h4>
+</div>
+        
+        <div class="article-item item_rich_text " id="item8214" data-item-id="8214" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-02">スマートオブジェクト内のコンテンツはいつでも再編集可能</span>です。<br>
+スマートオブジェクトをダブルクリックすると、元のファイルが別ウィンドウで開き、編集内容を保存するとスマートオブジェクトにも反映されます。</div></div>
+        
+        <div class="article-item item_link " id="item12335" data-item-id="12335" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=Q1UcJ&amp;item_id=12335" rel="nofollow noopener noreferrer" target="_blank">作業動画 Adobe Photoshop 15-6</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="作業動画 Adobe Photoshop 15-6" data-reference="https://www.dropbox.com/scl/fi/60hihvjhq2wlkf7br2me8/Adobe-Photoshop15-6_1.0_-1.mov?rlkey=z39u86fo8rmpth5qrilo4shjt&amp;e=1&amp;st=wzy0lxlw&amp;dl=0" src="../../_assets/fb06745a74.webp" width="75" height="75"></div><div class="media-body"><div class="item-body">この動画はデモンストレーション動画になります。
+音声は入っておりません。</div></div></div></div></div>
+        
+        <div class="article-item item_markdown " id="item8211" data-item-id="8211" data-item-type="ItemMarkdown"><h4 id="heading17">3. スマートフィルター</h4>
+</div>
+        
+        <div class="article-item item_text " id="item8215" data-item-id="8215" data-item-type="ItemText"><div class="item-body-hbr">フィルターをスマートオブジェクトに適用すると、スマートフィルターとして扱われ、後から調整や削除が可能です。<br>これにより、フィルターの効果を微調整したり、完全に取り除いたりすることができます。</div></div>
+        
+        <div class="article-item item_link " id="item12336" data-item-id="12336" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=Q1UcJ&amp;item_id=12336" rel="nofollow noopener noreferrer" target="_blank">作業動画 Adobe Photoshop 15-7</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="作業動画 Adobe Photoshop 15-7" data-reference="https://www.dropbox.com/scl/fi/u4imc1cm5hv0miiy6p3jq/Adobe-Photoshop15-7_1.0_.mov?rlkey=flaojzizczt6yjeyb3rp0g0z5&amp;e=1&amp;st=n9n3womw&amp;dl=0" src="../../_assets/fb06745a74.webp" width="75" height="75"></div><div class="media-body"><div class="item-body">この動画はデモンストレーション動画になります。
+音声は入っておりません。</div></div></div></div></div>
+        
+        <div class="article-item item_markdown " id="item8212" data-item-id="8212" data-item-type="ItemMarkdown"><h4 id="heading18">4. 変形の自由度</h4>
+</div>
+        
+        <div class="article-item item_rich_text " id="item8216" data-item-id="8216" data-item-type="ItemRichText"><div class="item-body-hbr">スマートオブジェクトに対して行った変形（拡大・縮小、回転、歪みなど）は、元のデータを保持したまま実行されます。<br>
+<span class="decoration-02">変形後でも画質の劣化が最小限に抑えられます。</span></div></div>
+        
+        <div class="article-item item_link " id="item12337" data-item-id="12337" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=Q1UcJ&amp;item_id=12337" rel="nofollow noopener noreferrer" target="_blank">作業動画 Adobe Photoshop 15-8</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="作業動画 Adobe Photoshop 15-8" data-reference="https://www.dropbox.com/scl/fi/pls679ix1ipvvmhn00x4f/Adobe-Photoshop15-8_1.0_.mov?rlkey=9arontnlnhequc70toclrn15v&amp;e=1&amp;st=xcvz7ew7&amp;dl=0" src="../../_assets/fb06745a74.webp" width="75" height="75"></div><div class="media-body"><div class="item-body">この動画はデモンストレーション動画になります。
+音声は入っておりません。</div></div></div></div></div>
+        
+        <div class="article-item item_html " id="item12844" data-item-id="12844" data-item-type="ItemHtml"><div class="item-body"><div class="card-with-icon attention">
+  <span class="bold">スマートオブジェクトのデメリット<br></span>
+	  <ul>
+      <li>データが重くなる。</li>
+      <li>直接画像を編集できない。</li>
+    </ul>
+</div></div></div>
+        
+        <div class="article-item item_heading " id="item36866" data-item-id="36866" data-item-type="ItemHeading"><h3 class="item-body" id="heading19">スマートオブジェクトへの変換方法</h3></div>
+        
+        <div class="article-item item_text " id="item8208" data-item-id="8208" data-item-type="ItemText"><div class="item-body-hbr">画像レイヤーを右クリックして「スマートオブジェクトに変換」を選びます。</div></div>
+        
+        <div class="article-item item_link " id="item12338" data-item-id="12338" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=Q1UcJ&amp;item_id=12338" rel="nofollow noopener noreferrer" target="_blank">作業動画 Adobe Photoshop 15-9</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="作業動画 Adobe Photoshop 15-9" data-reference="https://www.dropbox.com/scl/fi/g6rougwa9gvul9lu097h9/Adobe-Photoshop15-9_1.0_.mov?rlkey=ujpv1xawxipgnp2ksd5uf67ga&amp;e=1&amp;st=70stlkxj&amp;dl=0" src="../../_assets/fb06745a74.webp" width="75" height="75"></div><div class="media-body"><div class="item-body">この動画はデモンストレーション動画になります。
+音声は入っておりません。</div></div></div></div></div>
+        
+        <div class="article-item item_heading " id="item36867" data-item-id="36867" data-item-type="ItemHeading"><h3 class="item-body" id="heading20">スマートオブジェクトの解除方法</h3></div>
+        
+        <div class="article-item item_text " id="item8207" data-item-id="8207" data-item-type="ItemText"><div class="item-body-hbr">画像レイヤーを右クリックして「レイヤーをラスタライズ」を選びます。</div></div>
+        
+        <div class="article-item item_link " id="item12339" data-item-id="12339" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=Q1UcJ&amp;item_id=12339" rel="nofollow noopener noreferrer" target="_blank">作業動画 Adobe Photoshop 15-10</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="作業動画 Adobe Photoshop 15-10" data-reference="https://www.dropbox.com/scl/fi/beqxd8yke5jsbbu7dj2sq/Adobe-Photoshop15-10_1.0_.mov?rlkey=vh98b47g3rbgiftv6y28ektwi&amp;e=1&amp;st=zz86a1h6&amp;dl=0" src="../../_assets/fb06745a74.webp" width="75" height="75"></div><div class="media-body"><div class="item-body">この動画はデモンストレーション動画になります。
+音声は入っておりません。</div></div></div></div></div>
+        
+        <div class="article-item item_rich_text " id="item12340" data-item-id="12340" data-item-type="ItemRichText"><div class="item-body-hbr">これで「15章 ラスタライズを知ろう」の解説を終わります。<br>
+次の章に進みましょう。</div></div>
+        
+        <div class="article-item item_html " id="item25604" data-item-id="25604" data-item-type="ItemHtml"><div class="item-body"><div class="pagenation-buttons" style="justify-content: space-between;">
+  <a href="https://learn.webcoach.jp/web-design/JSjFi" class="pagenation-buttons_prev"><img src="../../_assets/47498cfebf.svg" class="pagenation-buttons_icon">前の章に戻る</a>
+  <a href="https://learn.webcoach.jp/web-design/wqWzv" class="pagenation-buttons_next">次の章に進む<img src="../../_assets/47498cfebf.svg" class="pagenation-buttons_icon"></a>
+</div></div></div>
+        
+        
+        
+        <div class="back-to-roadmap mb-4 text-center"></div>
+      </div>
+    </div>
+    
+    <div class="lightbox-modal" id="lightboxModal">
+      <img src="" alt="">
+    </div>
+    
+    <div id="modal" class="fixed-menu-modal">
+      <div class="fixed-menu-modal-content">
+        <div class="index mb-3" style="background-color: #FDF5E8;">
+          <div>
+            <div class="fw-light">INDEX</div>
+            <div class="h3">目次</div>
+          </div>
+          <div class="toc"><ul><li><a href="#heading0" class="tocLink">15章 ラスタライズを知ろう</a><ul><li><a href="#heading1" class="tocLink">この教材の学習時間:120分</a></li></ul></li><li><a href="#heading2" class="tocLink">【15-1】ラスタライズとは</a></li><li><a href="#heading3" class="tocLink">【15-2】ラスタライズが可能な状況や条件</a></li><li><a href="#heading4" class="tocLink">【15-3】ラスタライズしてできること</a><ul><li><a href="#heading5" class="tocLink">テキストレイヤー</a></li><li><a href="#heading6" class="tocLink">シェイプレイヤー</a></li><li><a href="#heading7" class="tocLink">スマートオブジェクト</a></li></ul></li><li><a href="#heading8" class="tocLink">【15-4】ラスタライズするときの注意事項</a></li><li><a href="#heading9" class="tocLink">【15-5】ラスタライズの手順</a><ul><li><a href="#heading10" class="tocLink">1. レイヤーの選択</a></li><li><a href="#heading11" class="tocLink">2. ラスタライズの実行</a></li></ul></li><li><a href="#heading12" class="tocLink">【15-6】スマートオブジェクトについて詳しく学ぶ</a><ul><li><a href="#heading13" class="tocLink"></a></li></ul><ul><li><a href="#heading14" class="tocLink">スマートオブジェクトの特徴</a><ul><li><a href="#heading15" class="tocLink">1. 非破壊編集</a></li><li><a href="#heading16" class="tocLink">2. 再編集の柔軟性</a></li><li><a href="#heading17" class="tocLink">3. スマートフィルター</a></li><li><a href="#heading18" class="tocLink">4. 変形の自由度</a></li></ul></li><li><a href="#heading19" class="tocLink">スマートオブジェクトへの変換方法</a></li><li><a href="#heading20" class="tocLink">スマートオブジェクトの解除方法</a></li></ul></li></ul></div>
+        </div>
+        
+        <!-- ボタン類 -->
+        <div id="fixed-menu_buttons" class="fixed-menu_buttons">
+  <a href="https://learn.webcoach.jp/web-design/JSjFi" class="pagenation-buttons_prev"><img src="../../_assets/47498cfebf.svg" class="pagenation-buttons_icon">前の章に戻る</a>
+  <a href="https://learn.webcoach.jp/web-design/wqWzv" class="pagenation-buttons_next">次の章に進む<img src="../../_assets/47498cfebf.svg" class="pagenation-buttons_icon"></a>
+</div>
+        
+        <div class="back-to-roadmap text-center"></div>
+      </div>
+    </div>
+    
+    <button id="toggleBtn" class="floating-btn">
+      <img id="iconOpen" src="../../_assets/5feefcfc55.svg" alt="メニューを開く">
+      <img id="iconClose" src="../../_assets/ae4a1129c9.svg" alt="メニューを閉じる" style="display:none;">
+    </button>
+  </div>
+</div>
+</div>
+<!-- <script src="https://cdn.clipkit.co/clipkit/javascripts/item-shopify-1.0.js?v=v15.9.0-20260915" async></script> -->
+            </main></div>
+        
+
+    
+
+    <div class="p-5" style="background-color: #B73E3D; color: white; height: 300px;">
+        <div class="">
+            <div class="h4 ps-3" style="border-left: 5px solid white;">WEBCOACH | キャリアチェンジまでの全てを学ぶマンツーマンWEBスクール</div>
+            <ul class="nav flex-column m-0 p-3 fw-light">
+                <li class="nav-item mb-2"><a href="https://www.webcoach.jp/" target="_blank">WEBCOACH | 公式HP</a></li>
+                <li class="nav-item mb-2"><a href="https://www.instagram.com/webcoach_officials/" target="_blank">WEBCOACH | 公式Instagram</a></li>
+                <li class="nav-item mb-2"><a href="https://vectorinc.co.jp/groupservice/webcoach-career/" target="_blank">WEBCOACH 公式メディア | WEBCOACH career</a></li>
+            </ul>
+        </div>
+        <div class="text-center">
+            <small>© 2020 by WEBCOACH</small>
+        </div>
+    </div>
+
+    
+
+    <!-- bodyタグ内の下部に挿入されます -->
+
+
+    <!-- BootstrapのCDNでのjs読み込み -->
+    
+
+    <!-- シンタックスハイライトの生成 -->
+    
+    
+
+    <!-- 目次の生成 -->
+    
+
+    <!-- ブックマークの生成 -->
+    
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="ck-icon-arrow-down" viewBox="0 0 1792 1792"><path d="M1675 832q0 53-37 90l-651 652q-39 37-91 37-53 0-90-37l-651-652q-38-36-38-90 0-53 38-91l74-75q39-37 91-37 53 0 90 37l294 294v-704q0-52 38-90t90-38h128q52 0 90 38t38 90v704l294-294q37-37 90-37 52 0 91 37l75 75q37 39 37 91z"></path></symbol><symbol id="ck-icon-arrow-up" viewBox="0 0 1792 1792"><path d="M1675 971q0 51-37 90l-75 75q-38 38-91 38-54 0-90-38l-294-293v704q0 52-37.5 84.5t-90.5 32.5h-128q-53 0-90.5-32.5t-37.5-84.5v-704l-294 293q-36 38-90 38t-90-38l-75-75q-38-38-38-90 0-53 38-91l651-651q35-37 90-37 54 0 91 37l651 651q37 39 37 91z"></path></symbol><symbol id="ck-icon-calendar" viewBox="0 0 1792 1792"><path d="M192 1664h288v-288h-288v288zm352 0h320v-288h-320v288zm-352-352h288v-320h-288v320zm352 0h320v-320h-320v320zm-352-384h288v-288h-288v288zm736 736h320v-288h-320v288zm-384-736h320v-288h-320v288zm768 736h288v-288h-288v288zm-384-352h320v-320h-320v320zm-352-864v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm736 864h288v-320h-288v320zm-384-384h320v-288h-320v288zm384 0h288v-288h-288v288zm32-480v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm384-64v1280q0 52-38 90t-90 38h-1408q-52 0-90-38t-38-90v-1280q0-52 38-90t90-38h128v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h384v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h128q52 0 90 38t38 90z"></path></symbol><symbol id="ck-icon-chevron-left" viewBox="0 0 1792 1792"><path d="M1427 301l-531 531 531 531q19 19 19 45t-19 45l-166 166q-19 19-45 19t-45-19l-742-742q-19-19-19-45t19-45l742-742q19-19 45-19t45 19l166 166q19 19 19 45t-19 45z"></path></symbol><symbol id="ck-icon-chevron-right" viewBox="0 0 1792 1792"><path d="M1363 877l-742 742q-19 19-45 19t-45-19l-166-166q-19-19-19-45t19-45l531-531-531-531q-19-19-19-45t19-45l166-166q19-19 45-19t45 19l742 742q19 19 19 45t-19 45z"></path></symbol><symbol id="ck-icon-clock-o" viewBox="0 0 1792 1792"><path d="M1024 544v448q0 14-9 23t-23 9h-320q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h224v-352q0-14 9-23t23-9h64q14 0 23 9t9 23zm416 352q0-148-73-273t-198-198-273-73-273 73-198 198-73 273 73 273 198 198 273 73 273-73 198-198 73-273zm224 0q0 209-103 385.5t-279.5 279.5-385.5 103-385.5-103-279.5-279.5-103-385.5 103-385.5 279.5-279.5 385.5-103 385.5 103 279.5 279.5 103 385.5z"></path></symbol><symbol id="ck-icon-trash" viewBox="0 0 1792 1792"><path d="M704 1376v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm-544-992h448l-48-117q-7-9-17-11h-317q-10 2-17 11zm928 32v64q0 14-9 23t-23 9h-96v948q0 83-47 143.5t-113 60.5h-832q-66 0-113-58.5t-47-141.5v-952h-96q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h309l70-167q15-37 54-63t79-26h320q40 0 79 26t54 63l70 167h309q14 0 23 9t9 23z"></path></symbol><symbol id="ck-icon-undo" viewBox="0 0 1792 1792"><path d="M1664 896q0 156-61 298t-164 245-245 164-298 61q-172 0-327-72.5t-264-204.5q-7-10-6.5-22.5t8.5-20.5l137-138q10-9 25-9 16 2 23 12 73 95 179 147t225 52q104 0 198.5-40.5t163.5-109.5 109.5-163.5 40.5-198.5-40.5-198.5-109.5-163.5-163.5-109.5-198.5-40.5q-98 0-188 35.5t-160 101.5l137 138q31 30 14 69-17 40-59 40h-448q-26 0-45-19t-19-45v-448q0-42 40-59 39-17 69 14l130 129q107-101 244.5-156.5t284.5-55.5q156 0 298 61t245 164 164 245 61 298z"></path></symbol></svg>
+
+<!--Clipkit(R) v15.9.0-20260915 Copyright (C) 2026 VECTOR Inc.-->
+
+
+
+
+
+<div class="dynmsg alert alert-info" style="display:none;"><button class="close"><span class="fa fa-times"></span></button><div class="message"></div></div><div class="dynmsg alert alert-danger" style="display:none;"><button class="close"><span class="fa fa-times"></span></button><div class="message"></div></div></body></html>

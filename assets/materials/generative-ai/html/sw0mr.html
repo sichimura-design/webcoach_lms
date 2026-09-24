@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<!-- clipkit-source-url: https://learn.webcoach.jp/generative-ai/AI_coding/%E6%95%99%E6%9D%906%20%E6%A1%88%E4%BB%B6%E7%8D%B2%E5%BE%97%E3%81%A8%E3%82%B5%E3%82%A4%E3%83%88%E9%81%8B%E7%94%A8%E6%88%A6%E7%95%A5/sW0Mr -->
+<!-- clipkit-fetched-at: 2026-09-17T11:14:00.275Z -->
+<html lang="ja"><head>
+    <!-- headタグ内の上部に挿入されます -->
+
+    <meta charset="UTF-8">
+    <title>4章 納品して終わりじゃない！サイト運用入門 - WEBCOACH</title>
+
+    <!-- resetcssのCDNでのCSS読み込み -->
+    <link rel="stylesheet" href="../../_assets/17f8e278dc.css">
+
+    <!-- fontawesomeのCDNでのCSS読み込み -->
+    <link rel="stylesheet" href="../../_assets/799aeb25cc.css">
+
+    <!-- BootstrapのCDNでのCSS読み込み -->
+    <link href="../../_assets/7633b7c0c9.css" rel="stylesheet">
+
+    <!-- highlight.jsの読み込み -->
+    <link rel="stylesheet" href="../../_assets/e31ce2dd8c.css">
+
+    <!-- カスタムCSS -->
+    <link rel="stylesheet" href="../../_assets/c533dd7750.css">
+
+    <!-- clipkitデフォルトのCSS -->
+    <!--<link rel="stylesheet" media="screen" href="https://cdn.clipkit.co/clipkit/stylesheets/application-1.0.css?v=v15.9.0-20260915">-->
+
+    <!-- jQuery -->
+    
+
+    <!-- カスタムJS -->
+    
+    
+
+    <!-- clipkitデフォルトのJS -->
+    
+
+    <!-- フォント -->
+    <link rel="preconnect" href="https://fonts.googleapis.com/">
+    <link rel="preconnect" href="https://fonts.gstatic.com/">
+    <link href="../../_assets/8b5713f1fc.css" rel="stylesheet">
+
+    <link href="../../_assets/b83ae8ba65.webp" rel="shortcut icon" type="image/vnd.microsoft.icon">
+    <link rel="apple-touch-icon" href="../../_assets/ea0aba163d.webp">
+    <link rel="alternate" type="application/rss+xml" href="https://learn.webcoach.jp/media.rss" title="WEBCOACH">
+    
+<link rel="canonical" href="https://learn.webcoach.jp/generative-ai/AI_coding/%E6%95%99%E6%9D%906%20%E6%A1%88%E4%BB%B6%E7%8D%B2%E5%BE%97%E3%81%A8%E3%82%B5%E3%82%A4%E3%83%88%E9%81%8B%E7%94%A8%E6%88%A6%E7%95%A5/sW0Mr">
+
+<meta name="description" content="">
+<meta name="keywords" content="">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:domain" content="learn.webcoach.jp">
+<meta name="twitter:title" content="4章 納品して終わりじゃない！サイト運用入門 - WEBCOACH">
+<meta name="twitter:image" content="https://cdn.clipkit.co/clipkit/images/medium/missing.png">
+<meta name="twitter:description" content="">
+<meta property="og:site_name" content="WEBCOACH">
+<meta property="og:title" content="4章 納品して終わりじゃない！サイト運用入門">
+<meta property="og:description" content="">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://learn.webcoach.jp/generative-ai/AI_coding/%E6%95%99%E6%9D%906%20%E6%A1%88%E4%BB%B6%E7%8D%B2%E5%BE%97%E3%81%A8%E3%82%B5%E3%82%A4%E3%83%88%E9%81%8B%E7%94%A8%E6%88%A6%E7%95%A5/sW0Mr">
+<meta property="og:image" content="https://cdn.clipkit.co/clipkit/images/large/missing.png">
+
+
+    <!-- headタグ内の下部に挿入されます -->
+
+
+<meta name="csrf-param" content="authenticity_token">
+<meta name="csrf-token" content="DiNrerXnftjcLKesx5v_YOJY6l8vFyQZow3rOzIto3wtDgJM2qFihYzCfXqxfWtYjN-41au9xzRylQg5N-PX_g"><meta content="" name="routing-root-path"><meta content="media" name="site-name"><meta content="ja" name="i18n-default-locale"><meta content="ja" name="i18n-locale"><style data-clipkit-snapshot="force-visible">[data-aos],.reveal,.wow,.fade-in,.animate__animated,.js-reveal{opacity:1!important;transform:none!important;visibility:visible!important;animation:none!important;transition:none!important}</style></head>
+
+<body class="device-desktop" style="visibility: visible;">
+    <!-- bodyタグ内の上部に挿入されます -->
+
+
+    <!-- サイドバーとコンテンツのコンテナ -->
+    <div class="d-flex flex-row w-100 mb-5" style="min-height: calc(100vh - 400px);">
+
+        <!-- サイドバー -->
+        <!--<nav id="side-bar" class="d-flex flex-column fixed-top" style="width: 250px;">-->
+        <!--    <h1 class="d-block w-100 text-center">-->
+        <!--        <a class="d-block" href="/">-->
+        <!--            <img class="mw-100 p-3" src="https://cdn.clipkit.co/tenants/589/sites/logos/000/000/001/logo_sm/a8defd4b-1cc7-433b-a61c-08e7db0e3e4f.png?1714459367" alt="WEBCOACH">-->
+        <!--        </a>-->
+        <!--    </h1>-->
+        <!--    <ul class="nav flex-column m-0 p-3 fw-bold">-->
+        <!--        <li id="sidebar-top" class="nav-item mb-2" style="display: none;"><a href="/"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;" src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/233/original/home.png?1715353458">-->
+        <!--                <div>ホーム</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-knowledges" class="nav-item mb-2" style="display: none;"><a href="/knowledges"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;" src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/232/original/book.png?1715353458">-->
+        <!--                <div>学習の心得</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-web-designs" class="nav-item mb-2" style="display: none;"><a href="/web-designs"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/231/original/design.png?1715353457">-->
+        <!--                <div>WEBデザイン</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-web-marketing" class="nav-item mb-2" style="display: none;"><a href="/web-marketings"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/230/original/marketing.png?1715353457">-->
+        <!--                <div>WEBマーケティング</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-codings" class="nav-item mb-2" style="display: none;"><a href="/codings"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/229/original/website.png?1715353457">-->
+        <!--                <div>WEBサイト構築</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-business-skills" class="nav-item mb-2" style="display: none;"><a href="/business-skills"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/228/original/business.png?1715353456">-->
+        <!--                <div>ビジネススキル</div>-->
+        <!--            </a></li>-->
+        <!--    </ul>-->
+        <!--</nav>-->
+
+        <!-- コンテンツ -->
+        <!--<main class="ms-auto" style="width: calc(100vw - 250px);">-->
+        <main class="ms-auto" style="width: calc(100vw);">
+            <div id="sb-site">
+                
+
+
+<div class="container">
+  <div class="row">
+    <div class="article">
+      <div class="mb-3 text-light" style="
+        height: 180px;
+        background-image: url(&quot;../../_assets/e1d58e2b8a.webp&quot;);
+        background-repeat: no-repeat;
+        background-size: cover;
+        display: flex;
+        align-items: flex-end;
+      ">
+        <div style="
+          margin: 0 0 30px 30px;
+        ">
+          <div>教材6 案件獲得とサイト運用戦略</div>
+
+          <div class="fw-bold h2">4章 納品して終わりじゃない！サイト運用入門</div>
+        </div>
+      </div>
+      <div class="article-content">
+        <!-- 目次 -->
+        <div class="index mb-3" style="background-color: #FDF5E8;">
+          <div>
+            <div class="fw-light">INDEX</div>
+            <div class="h3">目次</div>
+          </div>
+          <div class="toc"><ul><li><a href="#heading0" class="tocLink">4章 納品して終わりじゃない！サイト運用入門</a><ul><li><a href="#heading1" class="tocLink">この章の目安学習時間：50分</a></li><li><a href="#heading2" class="tocLink">この章で到達できるゴール：</a></li></ul><ul><li><a href="#heading3" class="tocLink">【4-1】継続案件に繋げる保守・運用の知識</a><ul><li><a href="#heading4" class="tocLink">目安の学習時間：20分</a></li></ul></li><li><a href="#heading5" class="tocLink">なぜサイトの保守・運用が必要なのか？</a></li><li><a href="#heading6" class="tocLink">これだけは！最低限の基本保守タスク</a></li></ul></li><li><a href="#heading7" class="tocLink">【4-2】保守・運用サービスの提案</a><ul><li><a href="#heading8" class="tocLink">目安の学習時間：20分</a></li></ul><ul><li><a href="#heading9" class="tocLink">保守契約の提案と料金設定の考え方</a></li><li><a href="#heading10" class="tocLink">考えてみよう！</a></li></ul></li><li><a href="#heading11" class="tocLink">【4-3】4章 -章末課題- [保守・運用プランの提案]</a><ul><li><a href="#heading12" class="tocLink">目安の学習時間：10分</a></li></ul><ul><li><a href="#heading13" class="tocLink"> 問題</a></li><li><a href="#heading14" class="tocLink">解答</a></li><li><a href="#heading15" class="tocLink">この章のまとめ</a></li></ul></li></ul></div>
+        </div>
+        
+        <div class="back-to-roadmap mb-4 text-center"></div>
+
+        <!-- コンテンツ -->
+        
+        
+        <div class="article-item item_html " id="item37776" data-item-id="37776" data-item-type="ItemHtml"><div class="item-body"><div class="pagenation-buttons" style="justify-content: space-between;">
+  <a href="https://learn.webcoach.jp/generative-ai/AI_coding/%E6%95%99%E6%9D%906%20%E6%A1%88%E4%BB%B6%E7%8D%B2%E5%BE%97%E3%81%A8%E3%82%B5%E3%82%A4%E3%83%88%E9%81%8B%E7%94%A8%E6%88%A6%E7%95%A5/IXoUF" class="pagenation-buttons_prev"><img src="../../_assets/47498cfebf.svg" class="pagenation-buttons_icon">前の章に戻る</a>
+  <a href="https://learn.webcoach.jp/generative-ai/AI_coding/%E6%95%99%E6%9D%906%20%E6%A1%88%E4%BB%B6%E7%8D%B2%E5%BE%97%E3%81%A8%E3%82%B5%E3%82%A4%E3%83%88%E9%81%8B%E7%94%A8%E6%88%A6%E7%95%A5/lBZSl" class="pagenation-buttons_next">次の章に進む<img src="../../_assets/47498cfebf.svg" class="pagenation-buttons_icon"></a>
+</div></div></div>
+        
+        <div class="article-item item_heading " id="item37714" data-item-id="37714" data-item-type="ItemHeading"><h2 class="item-body" id="heading0">4章 納品して終わりじゃない！サイト運用入門</h2></div>
+        
+        <div class="article-item item_markdown " id="item37715" data-item-id="37715" data-item-type="ItemMarkdown"><h4 id="heading1">この章の目安学習時間：50分</h4>
+</div>
+        
+        <div class="article-item item_markdown " id="item37716" data-item-id="37716" data-item-type="ItemMarkdown"><h4 id="heading2">この章で到達できるゴール：</h4>
+</div>
+        
+        <div class="article-item item_html " id="item37717" data-item-id="37717" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li>Webサイトの保守・運用の重要性を理解し、クライアントに説明できる。</li>
+  <li>保守・運用をサービスとして提案し、継続的な収益に繋げる方法を学べる。</li>
+</ul>
+</div></div>
+        
+        <div class="article-item item_heading " id="item37718" data-item-id="37718" data-item-type="ItemHeading"><h3 class="item-body" id="heading3">【4-1】継続案件に繋げる保守・運用の知識</h3></div>
+        
+        <div class="article-item item_markdown " id="item37719" data-item-id="37719" data-item-type="ItemMarkdown"><h4 id="heading4">目安の学習時間：20分</h4>
+</div>
+        
+        <div class="article-item item_heading " id="item37720" data-item-id="37720" data-item-type="ItemHeading"><h3 class="item-body" id="heading5">なぜサイトの保守・運用が必要なのか？</h3></div>
+        
+        <div class="article-item item_rich_text " id="item37721" data-item-id="37721" data-item-type="ItemRichText"><div class="item-body-hbr">多くのクライアントは、Webサイトを「一度作れば、あとは何もしなくて良いもの」と考えがちです。<br>
+しかし、それは大きな間違いです。<br>
+家が定期的な掃除やメンテナンスを必要とするのと同じで、Webサイトも<span class="decoration-02">公開してからが本当のスタート</span>であり、適切な<span class="decoration-02">保守・運用</span>をしなければ、様々な問題が発生します。</div></div>
+        
+        <div class="article-item item_html " id="item37722" data-item-id="37722" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li>
+    <span class="decoration-01">セキュリティリスク</span>：<br>Webサイトを動かすソフトウェア（特にWordPressなど）には、日々新しい脆弱性（セキュリティ上の弱点）が発見されます。アップデートを怠ると、そこを狙ったサイバー攻撃を受け、サイトが改ざんされたり、顧客情報が盗まれたりする危険性があります。
+  </li>
+  <li>
+    <span class="decoration-01">ソフトウェアの陳腐化</span>：<br>ブラウザやサーバーの仕様は常に進化しています。メンテナンスをしないと、ある日突然サイトが表示されなくなったり、機能が動かなくなったりすることがあります。
+  </li>
+  <li>
+    <span class="decoration-01">機会損失</span>：<br>サイトの内容が古いままでは、ユーザーからの信頼を失い、ビジネスチャンスを逃すことになります。
+  </li>
+</ul>
+</div></div>
+        
+        <div class="article-item item_rich_text " id="item37723" data-item-id="37723" data-item-type="ItemRichText"><div class="item-body-hbr">これらのリスクをクライアントに分かりやすく説明し、<span class="decoration-02">「サイトを安全で健康な状態に保つこと」</span><span class="decoration-02">の重要性</span>を理解してもらうことが、プロの制作者の務めです。</div></div>
+        
+        <div class="article-item item_heading " id="item37724" data-item-id="37724" data-item-type="ItemHeading"><h3 class="item-body" id="heading6">これだけは！最低限の基本保守タスク</h3></div>
+        
+        <div class="article-item item_rich_text " id="item37725" data-item-id="37725" data-item-type="ItemRichText"><div class="item-body-hbr">保守・運用の内容は多岐にわたりますが、多くのWebサイト（特にWordPressサイト）で共通して必要となる、最低限の基本タスクは以下の通りです。<br>
+これらをサービスとして提供することを考えましょう。</div></div>
+        
+        <div class="article-item item_html " id="item37726" data-item-id="37726" data-item-type="ItemHtml"><div class="item-body"><div class="callout white">
+    <div class="title-area">
+        <div class="icon bulb"></div>
+        <div class="title"><strong>基本保守タスク（月次）</strong></div>
+    </div>
+    <div class="content-area">
+        <ul>
+            <li><span class="decoration-02">① 定期的なバックアップ</span>：<br>サイトの全データ（ファイル、データベース）のバックアップを取り、万が一の際に復元できるように備える。</li>
+            <li><span class="decoration-02">② ソフトウェアのアップデート</span>：<br>WordPress本体、使用しているテーマやプラグインを、常に最新の安全なバージョンに更新する。</li>
+            <li><span class="decoration-02">③ 簡易的な動作確認</span>：<br>アップデート後に、サイトが正しく表示されているか、フォームは正常に動作するかなどを一通り確認する。</li>
+        </ul>
+    </div>
+</div></div></div>
+        
+        <div class="article-item item_heading " id="item37727" data-item-id="37727" data-item-type="ItemHeading"><h2 class="item-body" id="heading7">【4-2】保守・運用サービスの提案</h2></div>
+        
+        <div class="article-item item_markdown " id="item37728" data-item-id="37728" data-item-type="ItemMarkdown"><h4 id="heading8">目安の学習時間：20分</h4>
+</div>
+        
+        <div class="article-item item_heading " id="item37729" data-item-id="37729" data-item-type="ItemHeading"><h3 class="item-body" id="heading9">保守契約の提案と料金設定の考え方</h3></div>
+        
+        <div class="article-item item_rich_text " id="item37730" data-item-id="37730" data-item-type="ItemRichText"><div class="item-body-hbr">これらの保守タスクを、単発の案件とは別に<span class="decoration-02">「月額制の保守・運用サービス」</span>としてパッケージ化し、クライアントに提案することで、継続的で安定した収益源を確保することができます。<br>
+<br>
+料金プランは、クライアントが選びやすいように、複数の選択肢を用意するのが一般的です。</div></div>
+        
+        <div class="article-item item_html " id="item37731" data-item-id="37731" data-item-type="ItemHtml"><div class="item-body"><table class="simple">
+    <tbody>
+        </tbody><thead>
+            <tr>
+                <th scope="col"><div><div>プラン名</div></div></th>
+                <th scope="col"><div><div>月額料金（例）</div></div></th>
+                <th scope="col"><div><div>サービス内容（例）</div></div></th>
+            </tr>
+        </thead>
+        <tbody><tr>
+            <th scope="row"><div><div>ライトプラン</div></div></th>
+            <td>5,000円</td>
+            <td>月1回の基本保守タスク（バックアップ、アップデート）</td>
+        </tr>
+        <tr>
+            <th scope="row"><div><div>スタンダードプラン</div></div></th>
+            <td>15,000円</td>
+            <td>基本保守タスク ＋ 簡単なテキスト・画像修正（月2回まで） ＋ 技術相談</td>
+        </tr>
+        <tr>
+            <th scope="row"><div><div>プレミアムプラン</div></div></th>
+            <td>30,000円〜</td>
+            <td>スタンダードプランの内容 ＋ コンテンツ更新（ブログ投稿代行など） ＋ 月次レポート</td>
+        </tr>
+    </tbody>
+</table></div></div>
+        
+        <div class="article-item item_rich_text " id="item37732" data-item-id="37732" data-item-type="ItemRichText"><div class="item-body-hbr">価格設定に決まりはありませんが、まずは<span class="decoration-02">自分が提供できるサービス内容と、それにかかる時間を考慮し</span>、納得感のある価格を設定することから始めましょう。</div></div>
+        
+        <div class="article-item item_heading " id="item37733" data-item-id="37733" data-item-type="ItemHeading"><h3 class="item-body" id="heading10">考えてみよう！</h3></div>
+        
+        <div class="article-item item_rich_text " id="item37734" data-item-id="37734" data-item-type="ItemRichText"><div class="item-body-hbr">あなたがクライアントなら、月額5,000円の保守プランにどのようなサービス内容が含まれていれば「お得だ」「契約したい」と感じますか？<br>
+クライアント目線で、魅力的なプランを考えてみましょう。</div></div>
+        
+        <div class="article-item item_rich_text " id="item37735" data-item-id="37735" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">解答例</span></div></div>
+        
+        <div class="article-item item_html " id="item37736" data-item-id="37736" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li>
+    <span class="decoration-01">基本サービス</span>：月1回のWordPress本体・プラグインのアップデート、月1回のサイト全体のバックアップ。
+  </li>
+  <li>
+    <span class="decoration-01">付加価値サービス</span>：
+    <ul>
+      <li>簡単なテキスト修正なら月3回まで無料で対応。</li>
+      <li>サイトの表示や動作に問題が発生した際の、緊急メール相談（月1回まで）。</li>
+      <li>（もし可能なら）月間のアクセス状況の簡易レポート。</li>
+    </ul>
+  </li>
+</ul>
+</div></div>
+        
+        <div class="article-item item_rich_text " id="item37737" data-item-id="37737" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">解説</span><br>
+ただメンテナンスをするだけでなく、「簡単な修正ならすぐ対応してくれる」「困った時に相談できる」といった安心感や、サイトの状況が分かる透明性を提供することで、クライアントは単なる費用以上の価値を感じ、喜んで契約してくれる可能性が高まります。</div></div>
+        
+        <div class="article-item item_heading " id="item37738" data-item-id="37738" data-item-type="ItemHeading"><h2 class="item-body" id="heading11">【4-3】4章 -章末課題- [保守・運用プランの提案]</h2></div>
+        
+        <div class="article-item item_markdown " id="item37739" data-item-id="37739" data-item-type="ItemMarkdown"><h4 id="heading12">目安の学習時間：10分</h4>
+</div>
+        
+        <div class="article-item item_heading " id="item37740" data-item-id="37740" data-item-type="ItemHeading"><h3 class="item-body" id="heading13"> 問題</h3></div>
+        
+        <div class="article-item item_rich_text " id="item37741" data-item-id="37741" data-item-type="ItemRichText"><div class="item-body-hbr">あなたはクライアントにWebサイトを無事納品しました。<br>
+サイトの納品報告と共に、保守契約を提案するためのメール文を作成してください。<br>
+なぜ定期的なバックアップやアップデートが必要なのか、その重要性を専門用語を避けつつ、クライアントのビジネスを守るという視点で説明しましょう。</div></div>
+        
+        <div class="article-item item_heading " id="item37742" data-item-id="37742" data-item-type="ItemHeading"><h3 class="item-body" id="heading14">解答</h3></div>
+        
+        <div class="article-item item_code " id="item37743" data-item-id="37743" data-item-type="ItemCode"><div class="item-body"><div class="CodeRay">
+  <div class="code"><pre>件名：【株式会社〇〇様】Webサイトの納品と、今後の運用についてのご提案
+
+〇〇様
+
+いつもお世話になっております。
+Web制作者の〇〇です。
+
+この度は、Webサイト制作をご依頼いただき、誠にありがとうございました。
+ご依頼のサイトが完成いたしましたので、ご確認の上、公開の手続きを進めさせていただけますと幸いです。
+[サイトの確認用URL]
+
+さて、Webサイトは公開してからが本当のスタートとなります。
+車に定期的な点検が必要なように、Webサイトも常に安全で快適な状態を保つためには、
+公開後のメンテナンスが欠かせません。
+
+例えば、サイトを動かすためのソフトウェアは、セキュリティ強化のために日々更新されています。
+この更新作業を怠ってしまうと、悪意のある第三者から攻撃を受け、サイトが見られなくなったり、
+情報を盗まれたりする危険性が高まります。
+
+また、万が一のトラブルに備え、定期的にサイトのデータを丸ごと保存（バックアップ）しておくことで、
+何か問題が起きてもすぐに元の状態に戻すことができ、ビジネスへの影響を最小限に食い止められます。
+
+つきましては、〇〇様のWebサイトという大切な資産をお守りするための「保守・運用プラン」をご用意いたしました。
+詳しい内容は添付の資料にまとめておりますので、ぜひ一度ご覧いただけますと幸いです。
+
+ご不明な点がございましたら、いつでもお気軽にご連絡ください。
+今後とも、貴社のビジネスの成功をサポートできますことを楽しみにしております。</pre></div>
+</div>
+<div class="cite"><cite class="item-source">解答例</cite></div></div></div>
+        
+        <div class="article-item item_heading " id="item37744" data-item-id="37744" data-item-type="ItemHeading"><h3 class="item-body" id="heading15">この章のまとめ</h3></div>
+        
+        <div class="article-item item_rich_text " id="item37745" data-item-id="37745" data-item-type="ItemRichText"><div class="item-body-hbr">これで「4章：納品して終わりじゃない！サイト運用入門」の解説を終わります。<br>
+<br>
+制作スキルだけでなく、サイトを守り育てる運用スキルと、それを提案するビジネススキルが身につきました。<br>
+これにより、単発の仕事だけでなく、クライアントと長期的な関係を築き、安定した収益基盤を作ることが可能になります。<br>
+<br>
+いよいよ次が、このロードマップの本当の最終章です。<br>
+これまでの学びを胸に、プロフェッショナルへの扉を開きましょう。</div></div>
+        
+        <div class="article-item item_html " id="item37775" data-item-id="37775" data-item-type="ItemHtml"><div class="item-body"><div class="pagenation-buttons" style="justify-content: space-between;">
+  <a href="https://learn.webcoach.jp/generative-ai/AI_coding/%E6%95%99%E6%9D%906%20%E6%A1%88%E4%BB%B6%E7%8D%B2%E5%BE%97%E3%81%A8%E3%82%B5%E3%82%A4%E3%83%88%E9%81%8B%E7%94%A8%E6%88%A6%E7%95%A5/IXoUF" class="pagenation-buttons_prev"><img src="../../_assets/47498cfebf.svg" class="pagenation-buttons_icon">前の章に戻る</a>
+  <a href="https://learn.webcoach.jp/generative-ai/AI_coding/%E6%95%99%E6%9D%906%20%E6%A1%88%E4%BB%B6%E7%8D%B2%E5%BE%97%E3%81%A8%E3%82%B5%E3%82%A4%E3%83%88%E9%81%8B%E7%94%A8%E6%88%A6%E7%95%A5/lBZSl" class="pagenation-buttons_next">次の章に進む<img src="../../_assets/47498cfebf.svg" class="pagenation-buttons_icon"></a>
+</div></div></div>
+        
+        
+        
+        <div class="back-to-roadmap mb-4 text-center"></div>
+      </div>
+    </div>
+    
+    <div class="lightbox-modal" id="lightboxModal">
+      <img src="" alt="">
+    </div>
+    
+    <div id="modal" class="fixed-menu-modal">
+      <div class="fixed-menu-modal-content">
+        <div class="index mb-3" style="background-color: #FDF5E8;">
+          <div>
+            <div class="fw-light">INDEX</div>
+            <div class="h3">目次</div>
+          </div>
+          <div class="toc"><ul><li><a href="#heading0" class="tocLink">4章 納品して終わりじゃない！サイト運用入門</a><ul><li><a href="#heading1" class="tocLink">この章の目安学習時間：50分</a></li><li><a href="#heading2" class="tocLink">この章で到達できるゴール：</a></li></ul><ul><li><a href="#heading3" class="tocLink">【4-1】継続案件に繋げる保守・運用の知識</a><ul><li><a href="#heading4" class="tocLink">目安の学習時間：20分</a></li></ul></li><li><a href="#heading5" class="tocLink">なぜサイトの保守・運用が必要なのか？</a></li><li><a href="#heading6" class="tocLink">これだけは！最低限の基本保守タスク</a></li></ul></li><li><a href="#heading7" class="tocLink">【4-2】保守・運用サービスの提案</a><ul><li><a href="#heading8" class="tocLink">目安の学習時間：20分</a></li></ul><ul><li><a href="#heading9" class="tocLink">保守契約の提案と料金設定の考え方</a></li><li><a href="#heading10" class="tocLink">考えてみよう！</a></li></ul></li><li><a href="#heading11" class="tocLink">【4-3】4章 -章末課題- [保守・運用プランの提案]</a><ul><li><a href="#heading12" class="tocLink">目安の学習時間：10分</a></li></ul><ul><li><a href="#heading13" class="tocLink"> 問題</a></li><li><a href="#heading14" class="tocLink">解答</a></li><li><a href="#heading15" class="tocLink">この章のまとめ</a></li></ul></li></ul></div>
+        </div>
+        
+        <!-- ボタン類 -->
+        <div id="fixed-menu_buttons" class="fixed-menu_buttons">
+  <a href="https://learn.webcoach.jp/generative-ai/AI_coding/%E6%95%99%E6%9D%906%20%E6%A1%88%E4%BB%B6%E7%8D%B2%E5%BE%97%E3%81%A8%E3%82%B5%E3%82%A4%E3%83%88%E9%81%8B%E7%94%A8%E6%88%A6%E7%95%A5/IXoUF" class="pagenation-buttons_prev"><img src="../../_assets/47498cfebf.svg" class="pagenation-buttons_icon">前の章に戻る</a>
+  <a href="https://learn.webcoach.jp/generative-ai/AI_coding/%E6%95%99%E6%9D%906%20%E6%A1%88%E4%BB%B6%E7%8D%B2%E5%BE%97%E3%81%A8%E3%82%B5%E3%82%A4%E3%83%88%E9%81%8B%E7%94%A8%E6%88%A6%E7%95%A5/lBZSl" class="pagenation-buttons_next">次の章に進む<img src="../../_assets/47498cfebf.svg" class="pagenation-buttons_icon"></a>
+</div>
+        
+        <div class="back-to-roadmap text-center"></div>
+      </div>
+    </div>
+    
+    <button id="toggleBtn" class="floating-btn">
+      <img id="iconOpen" src="../../_assets/5feefcfc55.svg" alt="メニューを開く">
+      <img id="iconClose" src="../../_assets/ae4a1129c9.svg" alt="メニューを閉じる" style="display:none;">
+    </button>
+  </div>
+</div>
+</div>
+<!-- <script src="https://cdn.clipkit.co/clipkit/javascripts/item-shopify-1.0.js?v=v15.9.0-20260915" async></script> -->
+            </main></div>
+        
+
+    
+
+    <div class="p-5" style="background-color: #B73E3D; color: white; height: 300px;">
+        <div class="">
+            <div class="h4 ps-3" style="border-left: 5px solid white;">WEBCOACH | キャリアチェンジまでの全てを学ぶマンツーマンWEBスクール</div>
+            <ul class="nav flex-column m-0 p-3 fw-light">
+                <li class="nav-item mb-2"><a href="https://www.webcoach.jp/" target="_blank">WEBCOACH | 公式HP</a></li>
+                <li class="nav-item mb-2"><a href="https://www.instagram.com/webcoach_officials/" target="_blank">WEBCOACH | 公式Instagram</a></li>
+                <li class="nav-item mb-2"><a href="https://vectorinc.co.jp/groupservice/webcoach-career/" target="_blank">WEBCOACH 公式メディア | WEBCOACH career</a></li>
+            </ul>
+        </div>
+        <div class="text-center">
+            <small>© 2020 by WEBCOACH</small>
+        </div>
+    </div>
+
+    
+
+    <!-- bodyタグ内の下部に挿入されます -->
+
+
+    <!-- BootstrapのCDNでのjs読み込み -->
+    
+
+    <!-- シンタックスハイライトの生成 -->
+    
+    
+
+    <!-- 目次の生成 -->
+    
+
+    <!-- ブックマークの生成 -->
+    
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="ck-icon-arrow-down" viewBox="0 0 1792 1792"><path d="M1675 832q0 53-37 90l-651 652q-39 37-91 37-53 0-90-37l-651-652q-38-36-38-90 0-53 38-91l74-75q39-37 91-37 53 0 90 37l294 294v-704q0-52 38-90t90-38h128q52 0 90 38t38 90v704l294-294q37-37 90-37 52 0 91 37l75 75q37 39 37 91z"></path></symbol><symbol id="ck-icon-arrow-up" viewBox="0 0 1792 1792"><path d="M1675 971q0 51-37 90l-75 75q-38 38-91 38-54 0-90-38l-294-293v704q0 52-37.5 84.5t-90.5 32.5h-128q-53 0-90.5-32.5t-37.5-84.5v-704l-294 293q-36 38-90 38t-90-38l-75-75q-38-38-38-90 0-53 38-91l651-651q35-37 90-37 54 0 91 37l651 651q37 39 37 91z"></path></symbol><symbol id="ck-icon-calendar" viewBox="0 0 1792 1792"><path d="M192 1664h288v-288h-288v288zm352 0h320v-288h-320v288zm-352-352h288v-320h-288v320zm352 0h320v-320h-320v320zm-352-384h288v-288h-288v288zm736 736h320v-288h-320v288zm-384-736h320v-288h-320v288zm768 736h288v-288h-288v288zm-384-352h320v-320h-320v320zm-352-864v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm736 864h288v-320h-288v320zm-384-384h320v-288h-320v288zm384 0h288v-288h-288v288zm32-480v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm384-64v1280q0 52-38 90t-90 38h-1408q-52 0-90-38t-38-90v-1280q0-52 38-90t90-38h128v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h384v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h128q52 0 90 38t38 90z"></path></symbol><symbol id="ck-icon-chevron-left" viewBox="0 0 1792 1792"><path d="M1427 301l-531 531 531 531q19 19 19 45t-19 45l-166 166q-19 19-45 19t-45-19l-742-742q-19-19-19-45t19-45l742-742q19-19 45-19t45 19l166 166q19 19 19 45t-19 45z"></path></symbol><symbol id="ck-icon-chevron-right" viewBox="0 0 1792 1792"><path d="M1363 877l-742 742q-19 19-45 19t-45-19l-166-166q-19-19-19-45t19-45l531-531-531-531q-19-19-19-45t19-45l166-166q19-19 45-19t45 19l742 742q19 19 19 45t-19 45z"></path></symbol><symbol id="ck-icon-clock-o" viewBox="0 0 1792 1792"><path d="M1024 544v448q0 14-9 23t-23 9h-320q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h224v-352q0-14 9-23t23-9h64q14 0 23 9t9 23zm416 352q0-148-73-273t-198-198-273-73-273 73-198 198-73 273 73 273 198 198 273 73 273-73 198-198 73-273zm224 0q0 209-103 385.5t-279.5 279.5-385.5 103-385.5-103-279.5-279.5-103-385.5 103-385.5 279.5-279.5 385.5-103 385.5 103 279.5 279.5 103 385.5z"></path></symbol><symbol id="ck-icon-trash" viewBox="0 0 1792 1792"><path d="M704 1376v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm-544-992h448l-48-117q-7-9-17-11h-317q-10 2-17 11zm928 32v64q0 14-9 23t-23 9h-96v948q0 83-47 143.5t-113 60.5h-832q-66 0-113-58.5t-47-141.5v-952h-96q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h309l70-167q15-37 54-63t79-26h320q40 0 79 26t54 63l70 167h309q14 0 23 9t9 23z"></path></symbol><symbol id="ck-icon-undo" viewBox="0 0 1792 1792"><path d="M1664 896q0 156-61 298t-164 245-245 164-298 61q-172 0-327-72.5t-264-204.5q-7-10-6.5-22.5t8.5-20.5l137-138q10-9 25-9 16 2 23 12 73 95 179 147t225 52q104 0 198.5-40.5t163.5-109.5 109.5-163.5 40.5-198.5-40.5-198.5-109.5-163.5-163.5-109.5-198.5-40.5q-98 0-188 35.5t-160 101.5l137 138q31 30 14 69-17 40-59 40h-448q-26 0-45-19t-19-45v-448q0-42 40-59 39-17 69 14l130 129q107-101 244.5-156.5t284.5-55.5q156 0 298 61t245 164 164 245 61 298z"></path></symbol></svg>
+
+<!--Clipkit(R) v15.9.0-20260915 Copyright (C) 2026 VECTOR Inc.-->
+
+
+
+
+
+<div class="dynmsg alert alert-info" style="display:none;"><button class="close"><span class="fa fa-times"></span></button><div class="message"></div></div><div class="dynmsg alert alert-danger" style="display:none;"><button class="close"><span class="fa fa-times"></span></button><div class="message"></div></div></body></html>

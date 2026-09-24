@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+  <html lang="ja">
+
+<head><script async="async" data-label="saas" nonce="0teVxEkcsznafvPvHtGC1w==" src="//b.clipkit.co/"></script><script src="//cdn.clipkit.co/clipkit_assets/beacon-787bbf3225ec43d93f198af35f7d56fdef40fb50440a2909500bdf5b99225aab.js" async="async" id="clipkit-beacon" data-page-type="article" data-page-id="696" data-domain="learn.webcoach.jp" data-url="/web-design/Vpdcs" data-href="https://learn.webcoach.jp/media/beacon"></script>
+    <!-- headタグ内の上部に挿入されます -->
+
+    <meta charset="UTF-8">
+    <title>Adobe Photoshop｜4章 ピクセルと画像解像度を知ろう  - WEBCOACH</title>
+
+    <!-- resetcssのCDNでのCSS読み込み -->
+    <link rel="stylesheet" href="https://unpkg.com/modern-css-reset/dist/reset.min.css" />
+
+    <!-- fontawesomeのCDNでのCSS読み込み -->
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/fontawesome/4.7.0/css/font-awesome.min.css">
+
+    <!-- BootstrapのCDNでのCSS読み込み -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous" />
+
+    <!-- highlight.jsの読み込み -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.1/styles/dracula.min.css">
+
+    <!-- カスタムCSS -->
+    <link rel="stylesheet" href="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/168/original/style.css?1788081716">
+
+    <!-- clipkitデフォルトのCSS -->
+    <!--<link rel="stylesheet" media="screen" href="https://cdn.clipkit.co/clipkit/stylesheets/application-1.0.css?v=v15.9.0-20260915">-->
+
+    <!-- jQuery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <!-- カスタムJS -->
+    <script src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/202/original/script.js?1788946194"></script>
+    <script src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/535/original/script.js?1743681771"></script>
+
+    <!-- clipkitデフォルトのJS -->
+    <script src="https://cdn.clipkit.co/clipkit/javascripts/default-1.0.js?v=v15.9.0-20260915"></script>
+
+    <!-- フォント -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;700&display=swap" rel="stylesheet">
+
+    <link href="https://cdn.clipkit.co/clipkit/favicons/square/missing.png" rel="shortcut icon" type="image/vnd.microsoft.icon">
+    <link rel="apple-touch-icon" href="https://cdn.clipkit.co/clipkit/touch_icons/square/missing.png">
+    <link rel="alternate" type="application/rss+xml"
+        href="https://learn.webcoach.jp/media.rss" title="WEBCOACH">
+    
+<link rel="canonical" href="https://learn.webcoach.jp/web-design/Vpdcs">
+
+<meta name="description" content="">
+<meta name="keywords" content="">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:domain" content="learn.webcoach.jp">
+<meta name="twitter:title" content="Adobe Photoshop｜4章 ピクセルと画像解像度を知ろう  - WEBCOACH">
+<meta name="twitter:image" content="https://cdn.clipkit.co/tenants/589/articles/images/000/000/696/medium/e0b900ab-f96b-4962-94b7-0e2d42ea4db5.png?1739683650">
+<meta name="twitter:description" content="">
+<meta property="og:site_name" content="WEBCOACH">
+<meta property="og:title" content="Adobe Photoshop｜4章 ピクセルと画像解像度を知ろう ">
+<meta property="og:description" content="">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://learn.webcoach.jp/web-design/Vpdcs">
+<meta property="og:image" content="https://cdn.clipkit.co/tenants/589/articles/images/000/000/696/large/e0b900ab-f96b-4962-94b7-0e2d42ea4db5.png?1739683650">
+<script type="application/ld+json">
+  {
+    "@context": "http://schema.org",
+    "@type": "NewsArticle",
+    "mainEntityOfPage":{
+      "@type":"WebPage",
+      "@id": "https://learn.webcoach.jp/web-design/Vpdcs"
+    },
+    "headline": "Adobe Photoshop｜4章 ピクセルと画像解像度を知ろう ",
+    "image": {
+      "@type": "ImageObject",
+      "url": "https://cdn.clipkit.co/tenants/589/articles/images/000/000/696/medium/e0b900ab-f96b-4962-94b7-0e2d42ea4db5.png?1739683650",
+      "width": 800,
+      "height": 600
+    },
+    "datePublished": "2025-04-18T18:48:06+09:00",
+    "dateModified": "2026-08-23T22:06:45+09:00",
+    "author": {
+      "@type": "Person",
+      "name": "管理者"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "WEBCOACH",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://cdn.clipkit.co/tenants/589/sites/logos/000/000/001/logo_sm/a8defd4b-1cc7-433b-a61c-08e7db0e3e4f.png?1714459367"
+      }
+    },
+    "description": ""
+  }
+  </script>
+
+    <!-- headタグ内の下部に挿入されます -->
+
+
+<meta name="csrf-param" content="authenticity_token" />
+<meta name="csrf-token" content="48Cb3KsxTwht7WiqFgtA-T2VLcoBXtAMwJFQuJmUFD8OFa57UEKlDJBCA1pDffk3zj87oJ-7iRf3Und6fDGWPQ" /><meta content="" name="routing-root-path" /><meta content="media" name="site-name" /><meta content="ja" name="i18n-default-locale" /><meta content="ja" name="i18n-locale" /></head>
+
+<body class="device-desktop">
+    <!-- bodyタグ内の上部に挿入されます -->
+
+
+    <!-- サイドバーとコンテンツのコンテナ -->
+    <div class="d-flex flex-row w-100 mb-5" style="min-height: calc(100vh - 400px);">
+
+        <!-- サイドバー -->
+        <!--<nav id="side-bar" class="d-flex flex-column fixed-top" style="width: 250px;">-->
+        <!--    <h1 class="d-block w-100 text-center">-->
+        <!--        <a class="d-block" href="/">-->
+        <!--            <img class="mw-100 p-3" src="https://cdn.clipkit.co/tenants/589/sites/logos/000/000/001/logo_sm/a8defd4b-1cc7-433b-a61c-08e7db0e3e4f.png?1714459367" alt="WEBCOACH">-->
+        <!--        </a>-->
+        <!--    </h1>-->
+        <!--    <ul class="nav flex-column m-0 p-3 fw-bold">-->
+        <!--        <li id="sidebar-top" class="nav-item mb-2" style="display: none;"><a href="/"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;" src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/233/original/home.png?1715353458">-->
+        <!--                <div>ホーム</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-knowledges" class="nav-item mb-2" style="display: none;"><a href="/knowledges"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;" src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/232/original/book.png?1715353458">-->
+        <!--                <div>学習の心得</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-web-designs" class="nav-item mb-2" style="display: none;"><a href="/web-designs"-->
+        <!--                class="nav-link text-body d-flex align-items-center active">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/231/original/design.png?1715353457">-->
+        <!--                <div>WEBデザイン</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-web-marketing" class="nav-item mb-2" style="display: none;"><a href="/web-marketings"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/230/original/marketing.png?1715353457">-->
+        <!--                <div>WEBマーケティング</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-codings" class="nav-item mb-2" style="display: none;"><a href="/codings"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/229/original/website.png?1715353457">-->
+        <!--                <div>WEBサイト構築</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-business-skills" class="nav-item mb-2" style="display: none;"><a href="/business-skills"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/228/original/business.png?1715353456">-->
+        <!--                <div>ビジネススキル</div>-->
+        <!--            </a></li>-->
+        <!--    </ul>-->
+        <!--</nav>-->
+
+        <!-- コンテンツ -->
+        <!--<main class="ms-auto" style="width: calc(100vw - 250px);">-->
+        <main class="ms-auto" style="width: calc(100vw);">
+            <div id="sb-site">
+                
+
+
+<div class="container">
+  <div class="row">
+    <div class="article">
+      <div class="mb-3 text-light" style="
+        height: 180px;
+        background-image: url(https://cdn.clipkit.co/tenants/589/resources/assets/000/000/270/original/article-header.png?1717761933);
+        background-repeat: no-repeat;
+        background-size: cover;
+        display: flex;
+        align-items: flex-end;
+      ">
+        <div style="
+          margin: 0 0 30px 30px;
+        ">
+          <div>WEBデザイン</div>
+
+          <div class="fw-bold h2">Adobe Photoshop｜4章 ピクセルと画像解像度を知ろう </div>
+        </div>
+      </div>
+      <div class="article-content">
+        <!-- 目次 -->
+        <div class="index mb-3" style="background-color: #FDF5E8;">
+          <div>
+            <div class="fw-light">INDEX</div>
+            <div class="h3">目次</div>
+          </div>
+          <div class="toc"></div>
+        </div>
+        
+        <div class="back-to-roadmap mb-4 text-center"></div>
+
+        <!-- コンテンツ -->
+        
+        
+        <div class="article-item item_html " id="item25572" data-item-id="25572" data-item-type="ItemHtml"><div class="item-body"><div class="pagenation-buttons">
+  <a href="0WUlb" class="pagenation-buttons_prev"><img src="/theme/webcoach/img/icons/arrow-right.svg" class="pagenation-buttons_icon">前の章に戻る</a>
+  <a href="Eu9Ta" class="pagenation-buttons_next">次の章に進む<img src="/theme/webcoach/img/icons/arrow-right.svg" class="pagenation-buttons_icon"></a>
+</div></div></div>
+        
+        <div class="article-item item_heading " id="item36487" data-item-id="36487" data-item-type="ItemHeading"><h2 class="item-body">4章 ピクセルと画像解像度を知ろう </h2></div>
+        
+        <div class="article-item item_markdown " id="item39426" data-item-id="39426" data-item-type="ItemMarkdown"><h4 id="section">この教材の学習時間:90分</h4>
+</div>
+        
+        <div class="article-item item_text " id="item7331" data-item-id="7331" data-item-type="ItemText"><div class="item-body-hbr">この章では、ピクセルと画像解像度の関係について学習します。</div></div>
+        
+        <div class="article-item item_rich_text " id="item7332" data-item-id="7332" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-02"><span class="decoration-01">デジタル画像の最小単位である「ピクセル」と、その密度を表す「画像解像度」</span></span>。これらの関係を理解することは、<span class="decoration-02"><span class="decoration-01">デザイン制作の基礎として非常に重要</span></span>です。しっかり学びましょう。</div></div>
+        
+        <div class="article-item item_link " id="item36535" data-item-id="36535" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=Vpdcs&amp;item_id=36535" rel="nofollow noopener noreferrer" target="_blank">Photoshop 4-1【使用素材】</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="Photoshop 4-1【使用素材】" data-reference="https://www.dropbox.com/scl/fi/qq1vx3crfnlnmwtmt1isg/vermeer.jpg?rlkey=rvuteld9rtw7bwwctrq1snsc3&amp;st=hdagvu7l&amp;dl=0" src="https://cdn.clipkit.co/tenants/589/item_links/images/000/036/535/thumb/a2e9f8b9-e942-4604-bb62-84bd135436e2.png?1754440914" width="75" height="75" /></div><div class="media-body"><div class="item-body">vermeer.jpg </div></div></div></div></div>
+        
+        <div class="article-item item_link " id="item36536" data-item-id="36536" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=Vpdcs&amp;item_id=36536" rel="nofollow noopener noreferrer" target="_blank">Photoshop 4-2【使用素材】</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="Photoshop 4-2【使用素材】" data-reference="https://www.dropbox.com/scl/fi/xqwr2lda5m24kz48z2d09/pasta.jpg?rlkey=ane0xtxr9ygjjynhdyim7e2vb&amp;st=10gomnv4&amp;dl=0" src="https://cdn.clipkit.co/tenants/589/item_links/images/000/036/536/thumb/793176b4-a98d-4a37-a501-31dc08622f17.png?1754440925" width="75" height="75" /></div><div class="media-body"><div class="item-body">pasta.jpg</div></div></div></div></div>
+        
+        <div class="article-item item_link " id="item36537" data-item-id="36537" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=Vpdcs&amp;item_id=36537" rel="nofollow noopener noreferrer" target="_blank">photoshop 4-3【使用素材】</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="photoshop 4-3【使用素材】" data-reference="https://www.dropbox.com/scl/fi/c5uobqns9raa4bpf2j40a/burger.jpg?rlkey=nix8ni76fq8knmt6cz7lp93bw&amp;st=s26yukq2&amp;dl=0" src="https://cdn.clipkit.co/tenants/589/item_links/images/000/036/537/thumb/3b336a98-0f09-4228-a5a1-f9358b2fc25d.png?1754440936" width="75" height="75" /></div><div class="media-body"><div class="item-body">burger.jpg </div></div></div></div></div>
+        
+        <div class="article-item item_heading " id="item36505" data-item-id="36505" data-item-type="ItemHeading"><h2 class="item-body">【4-1】写真ファイルをPhotoshopで開こう</h2></div>
+        
+        <div class="article-item item_rich_text " id="item7335" data-item-id="7335" data-item-type="ItemRichText"><div class="item-body-hbr">ダウンロードしたzipファイルを解凍してできた「PS4章画像素材」フォルダの中から、「vermeer.jpg」をPhotoshopで開きます。<br>
+写真ファイルをPhotoshopで開く方法は複数あります。<br>
+ここでは、<span class="decoration-02">メニューバーからの操作でファイルを開く方法と、ドラッグ・アンド・ドロップでファイル</span><span class="decoration-02"></span>を開く方法の2種類を説明します。</div></div>
+        
+        <div class="article-item item_heading " id="item36506" data-item-id="36506" data-item-type="ItemHeading"><h3 class="item-body">方法①「ファイル」から「開く」を選ぶ</h3></div>
+        
+        <div class="article-item item_text " id="item7337" data-item-id="7337" data-item-type="ItemText"><div class="item-body-hbr">1. メニューバーの「ファイル」から「開く」を選びます</div></div>
+        
+        <div class="article-item item_image " id="item7338" data-item-id="7338" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/007/338/medium/41cf961e-8a9a-4660-9748-7056dcfb529a.png?1739680326" title=""><img class="img-responsive item-image" alt=" (7338)" data-reference="" src="https://cdn.clipkit.co/tenants/589/item_images/images/000/007/338/medium/41cf961e-8a9a-4660-9748-7056dcfb529a.png?1739680326" width="640" height="427" /></a><h4></h4></div></div>
+        
+        <div class="article-item item_html " id="item36488" data-item-id="36488" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_text " id="item7339" data-item-id="7339" data-item-type="ItemText"><div class="item-body-hbr">2. 開きたいファイルを選択してから、右下の「開く」をクリックします。</div></div>
+        
+        <div class="article-item item_image " id="item7342" data-item-id="7342" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/007/342/medium/e6f31527-6760-4f22-9d2f-d4b6d52313c4.png?1739680435" title=""><img class="img-responsive item-image" alt=" (7342)" data-reference="" src="https://cdn.clipkit.co/tenants/589/item_images/images/000/007/342/medium/e6f31527-6760-4f22-9d2f-d4b6d52313c4.png?1739680435" width="640" height="427" /></a><h4></h4></div></div>
+        
+        <div class="article-item item_html " id="item36489" data-item-id="36489" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_text " id="item7340" data-item-id="7340" data-item-type="ItemText"><div class="item-body-hbr">3. 上記の手順にて目的のファイルを開くことができます。</div></div>
+        
+        <div class="article-item item_image " id="item7341" data-item-id="7341" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/007/341/medium/147f77ed-bb5c-4e24-a1f0-a9de3215affa.png?1739680420" title=""><img class="img-responsive item-image" alt=" (7341)" data-reference="" src="https://cdn.clipkit.co/tenants/589/item_images/images/000/007/341/medium/147f77ed-bb5c-4e24-a1f0-a9de3215affa.png?1739680420" width="640" height="427" /></a><h4></h4></div></div>
+        
+        <div class="article-item item_link " id="item38393" data-item-id="38393" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=Vpdcs&amp;item_id=38393" rel="nofollow noopener noreferrer" target="_blank">作業動画　Adobe Photoshop4-1</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="作業動画　Adobe Photoshop4-1" data-reference="https://www.dropbox.com/scl/fi/5u5puqt21us1lqom7ipgl/Adobe-Photoshop4-1_1.0_.mov?rlkey=wjvnuo6v1ygejxnorw52rgo1r&amp;st=ghmvrd41&amp;dl=0" src="https://cdn.clipkit.co/tenants/589/item_links/images/000/038/393/thumb/6ee64cb4-5a54-4890-8f67-bcb8e08e91b1.png?1756175656" width="75" height="75" /></div><div class="media-body"><div class="item-body">この動画はデモンストレーション動画になります。音声は入っておりません。</div></div></div></div></div>
+        
+        <div class="article-item item_heading " id="item36507" data-item-id="36507" data-item-type="ItemHeading"><h3 class="item-body">方法② ファイルアイコンをドラッグ&amp;ドロップする</h3></div>
+        
+        <div class="article-item item_text " id="item7344" data-item-id="7344" data-item-type="ItemText"><div class="item-body-hbr">1. 開きたい画像のファイルアイコンをPhotoshopのホーム画面上にドラッグ&amp;ドロップします。</div></div>
+        
+        <div class="article-item item_image " id="item7346" data-item-id="7346" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/007/346/medium/1486159d-e979-4659-952b-e9a8d914ffc5.png?1739680520" title=""><img class="img-responsive item-image" alt=" (7346)" data-reference="" src="https://cdn.clipkit.co/tenants/589/item_images/images/000/007/346/medium/1486159d-e979-4659-952b-e9a8d914ffc5.png?1739680520" width="640" height="427" /></a><h4></h4></div></div>
+        
+        <div class="article-item item_html " id="item36490" data-item-id="36490" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_text " id="item7345" data-item-id="7345" data-item-type="ItemText"><div class="item-body-hbr">2. 目的のファイルを開くことができます。</div></div>
+        
+        <div class="article-item item_image " id="item7347" data-item-id="7347" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/007/347/medium/e8f9fd6a-364c-446f-8260-c4492d6cdb94.png?1739680551" title=""><img class="img-responsive item-image" alt=" (7347)" data-reference="" src="https://cdn.clipkit.co/tenants/589/item_images/images/000/007/347/medium/e8f9fd6a-364c-446f-8260-c4492d6cdb94.png?1739680551" width="640" height="427" /></a><h4></h4></div></div>
+        
+        <div class="article-item item_link " id="item12198" data-item-id="12198" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=Vpdcs&amp;item_id=12198" rel="nofollow noopener noreferrer" target="_blank">作業動画 Adobe Photoshop4-2</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="作業動画 Adobe Photoshop4-2" data-reference="https://www.dropbox.com/scl/fi/1qb3x6qspip65w23uu2b7/Adobe-Photoshop4-2_1.0_.mov?rlkey=ou5uxar3pmvio3t5fb6631vzd&amp;e=1&amp;st=cdove7xn&amp;dl=0" src="https://cdn.clipkit.co/tenants/589/item_links/images/000/012/198/thumb/3f999ec3-32fa-4cf2-b536-7423fe2f7e33.png?1745426937" width="75" height="75" /></div><div class="media-body"><div class="item-body">この動画はデモンストレーション動画になります。
+音声は入っておりません。</div></div></div></div></div>
+        
+        <div class="article-item item_heading " id="item36508" data-item-id="36508" data-item-type="ItemHeading"><h2 class="item-body">【4-2】まずは拡大・縮小表示と画面スクロールを覚えよう</h2></div>
+        
+        <div class="article-item item_rich_text " id="item7349" data-item-id="7349" data-item-type="ItemRichText"><div class="item-body-hbr">ピクセルと画像解像度の説明をする前に、<span class="decoration-02">画像の拡大・縮小表示と、画像をスクロール移動する方法</span>を説明します。<br>
+画像の編集作業で<span class="decoration-01"><span class="decoration-02">頻繁に行う操作</span></span>ですので、ここで身につけてしまいましょう。</div></div>
+        
+        <div class="article-item item_heading " id="item36509" data-item-id="36509" data-item-type="ItemHeading"><h3 class="item-body">拡大・縮小表示（ズームツールの使い方）</h3></div>
+        
+        <div class="article-item item_text " id="item7351" data-item-id="7351" data-item-type="ItemText"><div class="item-body-hbr">・ 画像の拡大・縮小表示を行うためには、ズームツールを使用します。<br />・ ツールパネルから、ズームツール（虫眼鏡）のアイコンを選んで下さい。</div></div>
+        
+        <div class="article-item item_image " id="item7352" data-item-id="7352" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/007/352/medium/7068a81e-4ca8-4eaf-80a9-359f9cdef3e6.png?1739680662" title=""><img class="img-responsive item-image" alt=" (7352)" data-reference="" src="https://cdn.clipkit.co/tenants/589/item_images/images/000/007/352/medium/7068a81e-4ca8-4eaf-80a9-359f9cdef3e6.png?1739680662" width="146" height="97" /></a><h4></h4></div></div>
+        
+        <div class="article-item item_markdown " id="item7353" data-item-id="7353" data-item-type="ItemMarkdown"><h4 id="section">拡大表示</h4>
+</div>
+        
+        <div class="article-item item_text " id="item7354" data-item-id="7354" data-item-type="ItemText"><div class="item-body-hbr">マウスカーソルを画像の上に持っていき、クリックする度に拡大表示されていきます。<br />または、画像の上を右下にドラッグすることでも、拡大表示を行うことができます。</div></div>
+        
+        <div class="article-item item_image " id="item7355" data-item-id="7355" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/007/355/medium/47326d8f-39d4-493f-9253-5a69fd84a948.png?1739681260" title=""><img class="img-responsive item-image" alt=" (7355)" data-reference="" src="https://cdn.clipkit.co/tenants/589/item_images/images/000/007/355/medium/47326d8f-39d4-493f-9253-5a69fd84a948.png?1739681260" width="501" height="640" /></a><h4></h4></div></div>
+        
+        <div class="article-item item_image " id="item7356" data-item-id="7356" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/007/356/medium/b401b774-b1d6-440a-aaf0-6882c6989065.png?1739681285" title=""><img class="img-responsive item-image" alt=" (7356)" data-reference="" src="https://cdn.clipkit.co/tenants/589/item_images/images/000/007/356/medium/b401b774-b1d6-440a-aaf0-6882c6989065.png?1739681285" width="497" height="640" /></a><h4></h4></div></div>
+        
+        <div class="article-item item_markdown " id="item36512" data-item-id="36512" data-item-type="ItemMarkdown"><h4 id="section">縮小表示</h4>
+</div>
+        
+        <div class="article-item item_rich_text " id="item7358" data-item-id="7358" data-item-type="ItemRichText"><div class="item-body-hbr">縮小表示する場合も同じズームツールを使用します。<br>
+キーボードの<span class="decoration-01"><span class="decoration-02">Optionキー（WindowsはAltキー）</span></span>を押しながら画像をクリックすると、縮小表示されていきます。<br>
+または、<span class="decoration-01"><span class="decoration-02">Optionキー（Alt）</span></span>を使わずに、画像の上を左上にドラッグすることでも、縮小表示を行うことができます。</div></div>
+        
+        <div class="article-item item_image " id="item7359" data-item-id="7359" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/007/359/medium/88ca5be9-e60a-4ad2-b477-1cf7d81cace9.png?1739681382" title=""><img class="img-responsive item-image" alt=" (7359)" data-reference="" src="https://cdn.clipkit.co/tenants/589/item_images/images/000/007/359/medium/88ca5be9-e60a-4ad2-b477-1cf7d81cace9.png?1739681382" width="501" height="640" /></a><h4></h4></div></div>
+        
+        <div class="article-item item_image " id="item7360" data-item-id="7360" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/007/360/medium/a9f6f06f-602d-4b48-993c-a677e7430d54.png?1739681399" title=""><img class="img-responsive item-image" alt=" (7360)" data-reference="" src="https://cdn.clipkit.co/tenants/589/item_images/images/000/007/360/medium/a9f6f06f-602d-4b48-993c-a677e7430d54.png?1739681399" width="496" height="640" /></a><h4></h4></div></div>
+        
+        <div class="article-item item_html " id="item7361" data-item-id="7361" data-item-type="ItemHtml"><div class="item-body"><div class="callout white">
+    <div class="title-area">
+        <div class="icon bulb"></div>
+        <div class="title">ズームツールのショートカットキー</div>
+    </div>
+    <div class="content-area">
+        <ul>
+            <li>ツールパネルで他のツールが選ばれているときも、<span class="decoration-02">Space+⌘（WindowsはSpace+Ctrl）</span>のショートカットキーで、一時的にズームツールに切り替えることができます。</li>
+            <li>ズームツールは、他のツールを使った作業中に、ほんの一瞬だけ使用したい場合が多いため、こちらのショートカットキーを覚えておくと、とても便利です。</li>
+        </ul>
+    </div>
+</div></div></div>
+        
+        <div class="article-item item_link " id="item12200" data-item-id="12200" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=Vpdcs&amp;item_id=12200" rel="nofollow noopener noreferrer" target="_blank">作業動画 Adobe Photoshop4-3</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="作業動画 Adobe Photoshop4-3" data-reference="https://www.dropbox.com/scl/fi/93nrt1398z59itulxn8bg/Adobe-Photoshop4-3_1.0_.mov?rlkey=ydvjzdylhnd92clzyxfw1ib7l&amp;e=1&amp;st=c8yetles&amp;dl=0" src="https://cdn.clipkit.co/tenants/589/item_links/images/000/012/200/thumb/63e5c3d5-9599-4194-b311-05bb3ddf070a.png?1745427040" width="75" height="75" /></div><div class="media-body"><div class="item-body">この動画はデモンストレーション動画になります。
+音声は入っておりません。</div></div></div></div></div>
+        
+        <div class="article-item item_heading " id="item36513" data-item-id="36513" data-item-type="ItemHeading"><h3 class="item-body">スクロール移動（手のひらツールの使い方）</h3></div>
+        
+        <div class="article-item item_text " id="item7363" data-item-id="7363" data-item-type="ItemText"><div class="item-body-hbr">続いて、画像をスクロール移動する方法を説明します。<br /><br />1. ある程度のサイズまで、画像を拡大表示して下さい。<br />  それから、ツールパネルの「手のひらツール」を選択しましょう。</div></div>
+        
+        <div class="article-item item_image " id="item7365" data-item-id="7365" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/007/365/medium/2daad4a3-9678-4e11-8e9c-900f79421c19.png?1739681619" title=""><img class="img-responsive item-image" alt=" (7365)" data-reference="" src="https://cdn.clipkit.co/tenants/589/item_images/images/000/007/365/medium/2daad4a3-9678-4e11-8e9c-900f79421c19.png?1739681619" width="166" height="110" /></a><h4></h4></div></div>
+        
+        <div class="article-item item_text " id="item7364" data-item-id="7364" data-item-type="ItemText"><div class="item-body-hbr">2. 画面上をドラッグすると、画像を好きな方向にスクロール移動することができます。</div></div>
+        
+        <div class="article-item item_image " id="item7366" data-item-id="7366" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/007/366/medium/e77e4974-ca0a-45f3-879e-2dc7c4ed5ad2.png?1739681633" title=""><img class="img-responsive item-image" alt=" (7366)" data-reference="" src="https://cdn.clipkit.co/tenants/589/item_images/images/000/007/366/medium/e77e4974-ca0a-45f3-879e-2dc7c4ed5ad2.png?1739681633" width="640" height="427" /></a><h4></h4></div></div>
+        
+        <div class="article-item item_image " id="item7367" data-item-id="7367" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/007/367/medium/5ea12585-1f9e-4a34-8f95-7d8205b3e6f4.png?1739681657" title=""><img class="img-responsive item-image" alt=" (7367)" data-reference="" src="https://cdn.clipkit.co/tenants/589/item_images/images/000/007/367/medium/5ea12585-1f9e-4a34-8f95-7d8205b3e6f4.png?1739681657" width="640" height="427" /></a><h4></h4></div></div>
+        
+        <div class="article-item item_html " id="item7368" data-item-id="7368" data-item-type="ItemHtml"><div class="item-body"><div class="callout white">
+    <div class="title-area">
+        <div class="icon bulb"></div>
+        <div class="title">手のひらツールのショートカットキー</div>
+    </div>
+    <div class="content-area">
+        <ul>
+            <li>ツールパネルで他のツールが選ばれているときも、<span class="decoration-02">Spaceキー</span>を押している間は、一時的に手のひらツールに変更することができます。</li>
+            <li>ズームツールと同様に手のひらツールは、他のツールを使った作業中に、ほんの一瞬だけ使用したい場合が多いため、こちらのショートカットキーを覚えておくと、とても便利です。</li>
+        </ul>
+    </div>
+</div></div></div>
+        
+        <div class="article-item item_link " id="item12202" data-item-id="12202" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=Vpdcs&amp;item_id=12202" rel="nofollow noopener noreferrer" target="_blank">作業動画 Adobe Photoshop4-4</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="作業動画 Adobe Photoshop4-4" data-reference="https://www.dropbox.com/scl/fi/9ko33243d6r1kamg7v4np/Adobe-Photoshop4-4_1.0_.mov?rlkey=0kfh2o8v46roj7aak9iemzljl&amp;e=1&amp;st=mks1k75t&amp;dl=0" src="https://cdn.clipkit.co/tenants/589/item_links/images/000/012/202/thumb/d00fd840-5598-4cae-800e-801cd458fe08.png?1745427058" width="75" height="75" /></div><div class="media-body"><div class="item-body">この動画はデモンストレーション動画になります。
+音声は入っておりません。</div></div></div></div></div>
+        
+        <div class="article-item item_heading " id="item36514" data-item-id="36514" data-item-type="ItemHeading"><h2 class="item-body">【4-3】ピクセルとは</h2></div>
+        
+        <div class="article-item item_rich_text " id="item36491" data-item-id="36491" data-item-type="ItemRichText"><div class="item-body-hbr">ズームツールと手のひらツールの使い方を覚えたところで、<span class="decoration-02">ピクセル</span>について解説します。</div></div>
+        
+        <div class="article-item item_html " id="item7371" data-item-id="7371" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li>まずはズームツールで、今開いている画像を限界まで拡大表示して下さい。<br>
+    すると、画像が右のように表示されます。</li>
+  <li>このことから、デジタル画像は小さな正方形の点の集まりで構成されていることが分かります。</li>
+  <ul>
+    <li>この正方形の点のことを<span class="decoration-02">ピクセル</span>といいます。</li>
+    <li>ピクセルはデジタル画像の最小単位であり、各ピクセルは一色の色情報を持っています。</li>
+    <li>ピクセルが集合して形成された画像を、<span class="decoration-02">ピクセル画像</span>、または<span class="decoration-02">ラスター画像、ビットマップ画像</span>と呼びます。</li>
+  </ul>
+</ul></div></div>
+        
+        <div class="article-item item_image " id="item7372" data-item-id="7372" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/007/372/medium/21825210-7188-45b8-b6a9-0ef5355b3688.png?1739682060" title=""><img class="img-responsive item-image" alt=" (7372)" data-reference="" src="https://cdn.clipkit.co/tenants/589/item_images/images/000/007/372/medium/21825210-7188-45b8-b6a9-0ef5355b3688.png?1739682060" width="640" height="426" /></a><h4></h4></div></div>
+        
+        <div class="article-item item_link " id="item12204" data-item-id="12204" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=Vpdcs&amp;item_id=12204" rel="nofollow noopener noreferrer" target="_blank">作業動画 Adobe Photoshop4-5</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="作業動画 Adobe Photoshop4-5" data-reference="https://www.dropbox.com/scl/fi/tvd3buomnnxia11vld0kh/Adobe-Photoshop4-5_1.0_.mov?rlkey=c3r2a9j0hcmazxc8scoh1my19&amp;e=1&amp;st=o6pcnyyt&amp;dl=0" src="https://cdn.clipkit.co/tenants/589/item_links/images/000/012/204/thumb/1bba2150-31ea-4c49-b5aa-94c3ee9898ee.png?1745427084" width="75" height="75" /></div><div class="media-body"><div class="item-body">この動画はデモンストレーション動画になります。
+音声は入っておりません。</div></div></div></div></div>
+        
+        <div class="article-item item_heading " id="item36515" data-item-id="36515" data-item-type="ItemHeading"><h2 class="item-body">【4-4】画像解像度とは</h2></div>
+        
+        <div class="article-item item_html " id="item7374" data-item-id="7374" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li>画像解像度とは、<span class="decoration-02">デジタル画像データ中のピクセル密度</span>のことをいいます。</li>
+  <ul>
+    <li>つまり、「画像のきめ細かさ」を表す数値であると考えれば良いでしょう。</li>
+  </ul>
+  <li>単位は「ppi」。これは「pixel per inch」の略です。</li>
+  <ul>
+    <li>1インチ（2.54cm）あたりに、<span class="decoration-02">いくつのピクセルが含まれているか、その密度を数値で表したものが「画像解像度」</span>です。</li>
+  </ul>
+</ul></div></div>
+        
+        <div class="article-item item_image " id="item7375" data-item-id="7375" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/007/375/medium/25ee89e8-31b4-4261-8aae-dc3ed0ae5a3b.png?1739682223" title=""><img class="img-responsive item-image" alt=" (7375)" data-reference="" src="https://cdn.clipkit.co/tenants/589/item_images/images/000/007/375/medium/25ee89e8-31b4-4261-8aae-dc3ed0ae5a3b.png?1739682223" width="640" height="337" /></a><h4></h4></div></div>
+        
+        <div class="article-item item_heading " id="item36516" data-item-id="36516" data-item-type="ItemHeading"><h3 class="item-body">印刷に適切な解像度は300～350ppi</h3></div>
+        
+        <div class="article-item item_html " id="item36492" data-item-id="36492" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li>印刷に必要な画像解像度は、<span class="decoration-02">300～350ppi（推奨は350ppi）</span>です。</li>
+  <li>一般的なデジタルカメラやスマートフォンで撮影した写真、インターネット上の画像の多くは解像度が<span class="decoration-02">72ppi</span>のため、そのまま印刷すると解像度が足りず、仕上がりが粗く不鮮明な印象になります。</li>
+</ul>
+</div></div>
+        
+        <div class="article-item item_image " id="item7378" data-item-id="7378" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/007/378/medium/f0c1ed86-ac16-4111-b721-0a54b3ff054f.png?1739682290" title=""><img class="img-responsive item-image" alt=" (7378)" data-reference="" src="https://cdn.clipkit.co/tenants/589/item_images/images/000/007/378/medium/f0c1ed86-ac16-4111-b721-0a54b3ff054f.png?1739682290" width="640" height="212" /></a><h4></h4></div></div>
+        
+        <div class="article-item item_heading " id="item36493" data-item-id="36493" data-item-type="ItemHeading"><h3 class="item-body">Webページに使用する画像の解像度は72ppi</h3></div>
+        
+        <div class="article-item item_html " id="item7379" data-item-id="7379" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li><span class="decoration-02">Webページに使用する画像の解像度は、パソコンのディスプレイの解像度に合わせます。</span></li>
+  <li>一般的なパソコンのディスプレイの解像度は72～96ppiですので、<span class="decoration-02">Webデザインでは72ppiが基準</span>となっています。</li>
+  <li>同じピクセル寸法であれば、解像度が72ppiの画像と350ppiの画像をディスプレイで表示しても見た目の違いはありません。しかし、<span class="decoration-02">解像度が高いほどファイルサイズは大きくなる</span>ため、Webサイトでの表示に時間がかかってしまいます。</li>
+  <ul>
+    <li>そのため、Webデザインの場合は、必要最小限の72ppiで画像を制作することが一般的です。</li>
+    <li>ただし、Webサイト上の画像をMacの高解像度ディスプレイでも鮮明に表示させるためには、<span class="decoration-02">幅・高さを表示サイズの2倍にした画像を作成する必要があります。</span></li>
+  </ul>
+</ul></div></div>
+        
+        <div class="article-item item_heading " id="item36517" data-item-id="36517" data-item-type="ItemHeading"><h3 class="item-body">画像解像度を変更してみよう</h3></div>
+        
+        <div class="article-item item_markdown " id="item7381" data-item-id="7381" data-item-type="ItemMarkdown"><h4 id="ppi300ppi">解像度72ppiの写真を300ppiに変更する</h4>
+</div>
+        
+        <div class="article-item item_html " id="item36494" data-item-id="36494" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li>デジタルカメラやスマートフォンで撮影した解像度72ppi の写真を、印刷に適した300ppi に変更する場合は、以下のように作業します。</li>
+  <li>その場合、ピクセル数は変えずに解像度のみを変更します。</li>
+</ul>
+</div></div>
+        
+        <div class="article-item item_rich_text " id="item36495" data-item-id="36495" data-item-type="ItemRichText"><div class="item-body-hbr">1.「burger.jpg」をPhotoshopで開いて下さい。</div></div>
+        
+        <div class="article-item item_image " id="item7394" data-item-id="7394" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/007/394/medium/7929909f-4ee4-49f9-8666-b5bb5efc7d36.png?1739682889" title=""><img class="img-responsive item-image" alt=" (7394)" data-reference="" src="https://cdn.clipkit.co/tenants/589/item_images/images/000/007/394/medium/7929909f-4ee4-49f9-8666-b5bb5efc7d36.png?1739682889" width="640" height="426" /></a><h4></h4></div></div>
+        
+        <div class="article-item item_html " id="item36496" data-item-id="36496" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_text " id="item7383" data-item-id="7383" data-item-type="ItemText"><div class="item-body-hbr">2. メニューバーの「イメージ」から「画像解像度」を選びます。</div></div>
+        
+        <div class="article-item item_image " id="item7395" data-item-id="7395" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/007/395/medium/9d2a2858-855c-4e92-b3bd-1a14025ee7fc.png?1739682906" title=""><img class="img-responsive item-image" alt=" (7395)" data-reference="" src="https://cdn.clipkit.co/tenants/589/item_images/images/000/007/395/medium/9d2a2858-855c-4e92-b3bd-1a14025ee7fc.png?1739682906" width="640" height="427" /></a><h4></h4></div></div>
+        
+        <div class="article-item item_image " id="item7396" data-item-id="7396" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/007/396/medium/a5a2c693-59ff-4acf-985e-ee414984249f.png?1739682921" title=""><img class="img-responsive item-image" alt=" (7396)" data-reference="" src="https://cdn.clipkit.co/tenants/589/item_images/images/000/007/396/medium/a5a2c693-59ff-4acf-985e-ee414984249f.png?1739682921" width="640" height="305" /></a><h4></h4></div></div>
+        
+        <div class="article-item item_html " id="item36497" data-item-id="36497" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_text " id="item7384" data-item-id="7384" data-item-type="ItemText"><div class="item-body-hbr">3. 「 再サンプル」のチェックを外します。</div></div>
+        
+        <div class="article-item item_image " id="item7397" data-item-id="7397" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/007/397/medium/2ab6022b-1c6c-431d-ae39-9981ad512509.png?1739682937" title=""><img class="img-responsive item-image" alt=" (7397)" data-reference="" src="https://cdn.clipkit.co/tenants/589/item_images/images/000/007/397/medium/2ab6022b-1c6c-431d-ae39-9981ad512509.png?1739682937" width="640" height="307" /></a><h4></h4></div></div>
+        
+        <div class="article-item item_html " id="item36498" data-item-id="36498" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_text " id="item7385" data-item-id="7385" data-item-type="ItemText"><div class="item-body-hbr">4. 解像度を300ppi に変更します。幅、高さが自動で計算されます。寸法のピクセル数は変わりません。</div></div>
+        
+        <div class="article-item item_image " id="item7398" data-item-id="7398" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/007/398/medium/e265bf83-dbdc-4966-ab0f-fd9ccd38f7b9.png?1739682953" title=""><img class="img-responsive item-image" alt=" (7398)" data-reference="" src="https://cdn.clipkit.co/tenants/589/item_images/images/000/007/398/medium/e265bf83-dbdc-4966-ab0f-fd9ccd38f7b9.png?1739682953" width="640" height="306" /></a><h4></h4></div></div>
+        
+        <div class="article-item item_html " id="item36499" data-item-id="36499" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_text " id="item7386" data-item-id="7386" data-item-type="ItemText"><div class="item-body-hbr">5. 「OK」ボタンをクリックします。</div></div>
+        
+        <div class="article-item item_image " id="item7399" data-item-id="7399" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/007/399/medium/9851a0df-552d-4924-afcb-4531895d6f03.png?1739682967" title=""><img class="img-responsive item-image" alt=" (7399)" data-reference="" src="https://cdn.clipkit.co/tenants/589/item_images/images/000/007/399/medium/9851a0df-552d-4924-afcb-4531895d6f03.png?1739682967" width="640" height="306" /></a><h4></h4></div></div>
+        
+        <div class="article-item item_link " id="item12206" data-item-id="12206" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=Vpdcs&amp;item_id=12206" rel="nofollow noopener noreferrer" target="_blank">作業動画 Adobe Photoshop4-6</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="作業動画 Adobe Photoshop4-6" data-reference="https://www.dropbox.com/scl/fi/fu5yk3bfo5zermwfkdo5m/Adobe-Photoshop4-6_1.0_.mov?rlkey=o3pii1fye4nepewab1hourzjv&amp;e=1&amp;st=76q3t9qt&amp;dl=0" src="https://cdn.clipkit.co/tenants/589/item_links/images/000/012/206/thumb/9b87fa6f-888a-4962-ba2f-6683438c94bd.png?1745427110" width="75" height="75" /></div><div class="media-body"><div class="item-body">この動画はデモンストレーション動画になります。
+音声は入っておりません。</div></div></div></div></div>
+        
+        <div class="article-item item_markdown " id="item38392" data-item-id="38392" data-item-type="ItemMarkdown"><h4 id="ppi-72ppi-">解像度300ppi の写真を72ppi に変更する</h4>
+</div>
+        
+        <div class="article-item item_text " id="item7388" data-item-id="7388" data-item-type="ItemText"><div class="item-body-hbr">印刷用の300ppi の画像データを、Webページに掲載するため解像度72ppiに変更する場合、ピクセル数を変更して画像を拡大・縮小します。<br /><br />1. 「pasta.jpg」をPhotoshopで開いて下さい。</div></div>
+        
+        <div class="article-item item_image " id="item7400" data-item-id="7400" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/007/400/medium/6cd531ad-bd8f-40ab-84fb-59a093ae44f1.png?1739682986" title=""><img class="img-responsive item-image" alt=" (7400)" data-reference="" src="https://cdn.clipkit.co/tenants/589/item_images/images/000/007/400/medium/6cd531ad-bd8f-40ab-84fb-59a093ae44f1.png?1739682986" width="640" height="426" /></a><h4></h4></div></div>
+        
+        <div class="article-item item_html " id="item36500" data-item-id="36500" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_text " id="item7389" data-item-id="7389" data-item-type="ItemText"><div class="item-body-hbr">2. メニューバーの「イメージ」から「画像解像度」を選びます。</div></div>
+        
+        <div class="article-item item_image " id="item7401" data-item-id="7401" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/007/401/medium/b52affac-d10c-4ada-bee2-bb6e9e0a396b.png?1739683003" title=""><img class="img-responsive item-image" alt=" (7401)" data-reference="" src="https://cdn.clipkit.co/tenants/589/item_images/images/000/007/401/medium/b52affac-d10c-4ada-bee2-bb6e9e0a396b.png?1739683003" width="640" height="427" /></a><h4></h4></div></div>
+        
+        <div class="article-item item_html " id="item36501" data-item-id="36501" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_text " id="item7390" data-item-id="7390" data-item-type="ItemText"><div class="item-body-hbr">3. 「 再サンプル」はチェックを入れたままにします。</div></div>
+        
+        <div class="article-item item_image " id="item7402" data-item-id="7402" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/007/402/medium/091b9184-56ab-4f74-b024-e6ca698663a2.png?1739683026"><img class="img-responsive item-image" alt=" (7402)" src="https://cdn.clipkit.co/tenants/589/item_images/images/000/007/402/medium/091b9184-56ab-4f74-b024-e6ca698663a2.png?1739683026" width="640" height="307" /></a><h4></h4></div></div>
+        
+        <div class="article-item item_html " id="item36502" data-item-id="36502" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_text " id="item7391" data-item-id="7391" data-item-type="ItemText"><div class="item-body-hbr">4. 解像度を72ppi に、幅、高さを希望の数値に変更します。ピクセル寸法が変わります。（Web用の画像の単位はピクセルに設定しておきます）</div></div>
+        
+        <div class="article-item item_image " id="item7404" data-item-id="7404" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/007/404/medium/8762427c-6e73-4299-9780-40f036baef3b.png?1739683070" title=""><img class="img-responsive item-image" alt=" (7404)" data-reference="" src="https://cdn.clipkit.co/tenants/589/item_images/images/000/007/404/medium/8762427c-6e73-4299-9780-40f036baef3b.png?1739683070" width="640" height="305" /></a><h4></h4></div></div>
+        
+        <div class="article-item item_html " id="item36503" data-item-id="36503" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_text " id="item7392" data-item-id="7392" data-item-type="ItemText"><div class="item-body-hbr">5. 「OK」ボタンをクリックします。</div></div>
+        
+        <div class="article-item item_image " id="item7406" data-item-id="7406" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/007/406/medium/a655c6d1-23de-428c-ae87-abe273265b6d.png?1739683109" title=""><img class="img-responsive item-image" alt=" (7406)" data-reference="" src="https://cdn.clipkit.co/tenants/589/item_images/images/000/007/406/medium/a655c6d1-23de-428c-ae87-abe273265b6d.png?1739683109" width="640" height="305" /></a><h4></h4></div></div>
+        
+        <div class="article-item item_link " id="item12208" data-item-id="12208" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=Vpdcs&amp;item_id=12208" rel="nofollow noopener noreferrer" target="_blank">作業動画 Adobe Photoshop4-7</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="作業動画 Adobe Photoshop4-7" data-reference="https://www.dropbox.com/scl/fi/huq9om6uc7ibkycvjzy51/Adobe-Photoshop4-7_1.0_.mov?rlkey=fb07s476iptt4f3ky3tgz8z9m&amp;st=wn2312a3&amp;dl=0" src="https://cdn.clipkit.co/tenants/589/item_links/images/000/012/208/thumb/2b8758b9-8aee-43f1-b9c6-b30575b06058.png?1745427131" width="75" height="75" /></div><div class="media-body"><div class="item-body">この動画はデモンストレーション動画になります。
+音声は入っておりません。</div></div></div></div></div>
+        
+        <div class="article-item item_html " id="item7393" data-item-id="7393" data-item-type="ItemHtml"><div class="item-body"><div class="card-with-icon attention">
+  <span class="bold">注意事項<br></span>
+    <ul>
+      <li>PCやスマートフォンなどで表示することが目的のWeb画像は、解像度の設定値にかかわらず、デバイスが持つ画面解像度以上の画質にはなりません。</li>
+      <li><span class="decoration-02">画面表示上重要なのは、解像度よりも縦横のピクセル数</span>となります。</li>
+    </ul>
+</div></div></div>
+        
+        <div class="article-item item_rich_text " id="item36504" data-item-id="36504" data-item-type="ItemRichText"><div class="item-body-hbr">これで「4章 ピクセルと画像解像度を知ろう」の解説を終わります。<br>
+次の章に進みましょう。</div></div>
+        
+        <div class="article-item item_html " id="item25573" data-item-id="25573" data-item-type="ItemHtml"><div class="item-body"><div class="pagenation-buttons">
+  <a href="0WUlb" class="pagenation-buttons_prev"><img src="/theme/webcoach/img/icons/arrow-right.svg" class="pagenation-buttons_icon">前の章に戻る</a>
+  <a href="Eu9Ta" class="pagenation-buttons_next">次の章に進む<img src="/theme/webcoach/img/icons/arrow-right.svg" class="pagenation-buttons_icon"></a>
+</div></div></div>
+        
+        
+        
+        <div class="back-to-roadmap mb-4 text-center"></div>
+      </div>
+    </div>
+    
+    <div class="lightbox-modal" id="lightboxModal">
+      <img src="" alt="">
+    </div>
+    
+    <div id="modal" class="fixed-menu-modal">
+      <div class="fixed-menu-modal-content">
+        <div class="index mb-3" style="background-color: #FDF5E8;">
+          <div>
+            <div class="fw-light">INDEX</div>
+            <div class="h3">目次</div>
+          </div>
+          <div class="toc"></div>
+        </div>
+        
+        <!-- ボタン類 -->
+        <div id="fixed-menu_buttons" class="fixed-menu_buttons"></div>
+        
+        <div class="back-to-roadmap text-center"></div>
+      </div>
+    </div>
+    
+    <button id="toggleBtn" class="floating-btn">
+      <img id="iconOpen" 
+           src="/theme/webcoach/img/icons/fixed-menu_modal-open.svg" 
+           alt="メニューを開く">
+      <img id="iconClose" 
+           src="/theme/webcoach/img/icons/fixed-menu_modal-close.svg" 
+           alt="メニューを閉じる" style="display:none;">
+    </button>
+  </div>
+</div>
+</div>
+<!-- <script src="https://cdn.clipkit.co/clipkit/javascripts/item-shopify-1.0.js?v=v15.9.0-20260915" async></script> -->
+            </div>
+        </main>
+
+    </div>
+
+    <div class="p-5" style="background-color: #B73E3D; color: white; height: 300px;">
+        <div class="">
+            <div class="h4 ps-3" style="border-left: 5px solid white;">WEBCOACH | キャリアチェンジまでの全てを学ぶマンツーマンWEBスクール</div>
+            <ul class="nav flex-column m-0 p-3 fw-light">
+                <li class="nav-item mb-2"><a href="https://www.webcoach.jp/" target="_blank">WEBCOACH | 公式HP</a></li>
+                <li class="nav-item mb-2"><a href="https://www.instagram.com/webcoach_officials/" target="_blank">WEBCOACH | 公式Instagram</a></li>
+                <li class="nav-item mb-2"><a href="https://vectorinc.co.jp/groupservice/webcoach-career/" target="_blank">WEBCOACH 公式メディア | WEBCOACH career</a></li>
+            </ul>
+        </div>
+        <div class="text-center">
+            <small>&copy; 2020 by WEBCOACH</small>
+        </div>
+    </div>
+
+    <script src="https://cdn.clipkit.co/clipkit/javascripts/application-1.0.js?v=v15.9.0-20260915" async></script>
+
+    <!-- bodyタグ内の下部に挿入されます -->
+
+
+    <!-- BootstrapのCDNでのjs読み込み -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+        crossorigin="anonymous"></script>
+
+    <!-- シンタックスハイライトの生成 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.1/highlight.min.js"></script>
+    <script>
+        // ハイライトを実行
+        hljs.initHighlightingOnLoad();
+    </script>
+
+    <!-- 目次の生成 -->
+    <script type="text/javascript">toc();</script>
+
+    <!-- ブックマークの生成 -->
+    <script type="text/javascript">displayLinks();</script>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="ck-icon-arrow-down" viewBox="0 0 1792 1792"><path d="M1675 832q0 53-37 90l-651 652q-39 37-91 37-53 0-90-37l-651-652q-38-36-38-90 0-53 38-91l74-75q39-37 91-37 53 0 90 37l294 294v-704q0-52 38-90t90-38h128q52 0 90 38t38 90v704l294-294q37-37 90-37 52 0 91 37l75 75q37 39 37 91z" /></symbol><symbol id="ck-icon-arrow-up" viewBox="0 0 1792 1792"><path d="M1675 971q0 51-37 90l-75 75q-38 38-91 38-54 0-90-38l-294-293v704q0 52-37.5 84.5t-90.5 32.5h-128q-53 0-90.5-32.5t-37.5-84.5v-704l-294 293q-36 38-90 38t-90-38l-75-75q-38-38-38-90 0-53 38-91l651-651q35-37 90-37 54 0 91 37l651 651q37 39 37 91z" /></symbol><symbol id="ck-icon-calendar" viewBox="0 0 1792 1792"><path d="M192 1664h288v-288h-288v288zm352 0h320v-288h-320v288zm-352-352h288v-320h-288v320zm352 0h320v-320h-320v320zm-352-384h288v-288h-288v288zm736 736h320v-288h-320v288zm-384-736h320v-288h-320v288zm768 736h288v-288h-288v288zm-384-352h320v-320h-320v320zm-352-864v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm736 864h288v-320h-288v320zm-384-384h320v-288h-320v288zm384 0h288v-288h-288v288zm32-480v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm384-64v1280q0 52-38 90t-90 38h-1408q-52 0-90-38t-38-90v-1280q0-52 38-90t90-38h128v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h384v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h128q52 0 90 38t38 90z" /></symbol><symbol id="ck-icon-chevron-left" viewBox="0 0 1792 1792"><path d="M1427 301l-531 531 531 531q19 19 19 45t-19 45l-166 166q-19 19-45 19t-45-19l-742-742q-19-19-19-45t19-45l742-742q19-19 45-19t45 19l166 166q19 19 19 45t-19 45z" /></symbol><symbol id="ck-icon-chevron-right" viewBox="0 0 1792 1792"><path d="M1363 877l-742 742q-19 19-45 19t-45-19l-166-166q-19-19-19-45t19-45l531-531-531-531q-19-19-19-45t19-45l166-166q19-19 45-19t45 19l742 742q19 19 19 45t-19 45z" /></symbol><symbol id="ck-icon-clock-o" viewBox="0 0 1792 1792"><path d="M1024 544v448q0 14-9 23t-23 9h-320q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h224v-352q0-14 9-23t23-9h64q14 0 23 9t9 23zm416 352q0-148-73-273t-198-198-273-73-273 73-198 198-73 273 73 273 198 198 273 73 273-73 198-198 73-273zm224 0q0 209-103 385.5t-279.5 279.5-385.5 103-385.5-103-279.5-279.5-103-385.5 103-385.5 279.5-279.5 385.5-103 385.5 103 279.5 279.5 103 385.5z" /></symbol><symbol id="ck-icon-trash" viewBox="0 0 1792 1792"><path d="M704 1376v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm-544-992h448l-48-117q-7-9-17-11h-317q-10 2-17 11zm928 32v64q0 14-9 23t-23 9h-96v948q0 83-47 143.5t-113 60.5h-832q-66 0-113-58.5t-47-141.5v-952h-96q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h309l70-167q15-37 54-63t79-26h320q40 0 79 26t54 63l70 167h309q14 0 23 9t9 23z" /></symbol><symbol id="ck-icon-undo" viewBox="0 0 1792 1792"><path d="M1664 896q0 156-61 298t-164 245-245 164-298 61q-172 0-327-72.5t-264-204.5q-7-10-6.5-22.5t8.5-20.5l137-138q10-9 25-9 16 2 23 12 73 95 179 147t225 52q104 0 198.5-40.5t163.5-109.5 109.5-163.5 40.5-198.5-40.5-198.5-109.5-163.5-163.5-109.5-198.5-40.5q-98 0-188 35.5t-160 101.5l137 138q31 30 14 69-17 40-59 40h-448q-26 0-45-19t-19-45v-448q0-42 40-59 39-17 69 14l130 129q107-101 244.5-156.5t284.5-55.5q156 0 298 61t245 164 164 245 61 298z" /></symbol></svg><script async="async" defer="defer" nonce="0teVxEkcsznafvPvHtGC1w==" src="//www.instagram.com/embed.js"></script>
+
+<!--Clipkit(R) v15.9.0-20260915 Copyright (C) 2026 VECTOR Inc.-->
+
+</body>
+
+</html>
+

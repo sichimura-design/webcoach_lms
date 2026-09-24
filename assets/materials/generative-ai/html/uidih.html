@@ -1,0 +1,1526 @@
+<!DOCTYPE html>
+<!-- clipkit-source-url: https://learn.webcoach.jp/generative-ai/AI_coding/%E6%95%99%E6%9D%905%20%E5%AE%9F%E8%B7%B5%EF%BC%81AI%E6%B4%BB%E7%94%A8Web%E3%82%B5%E3%82%A4%E3%83%88%E5%AE%9F%E8%A3%85%E3%81%A8%E6%9C%80%E9%81%A9%E5%8C%96/UiDIh -->
+<!-- clipkit-fetched-at: 2026-09-17T11:14:00.275Z -->
+<html lang="ja"><head>
+    <!-- headタグ内の上部に挿入されます -->
+
+    <meta charset="UTF-8">
+    <title>2章 やってみよう！AI活用LP実装ワークフロー - WEBCOACH</title>
+
+    <!-- resetcssのCDNでのCSS読み込み -->
+    <link rel="stylesheet" href="../../_assets/17f8e278dc.css">
+
+    <!-- fontawesomeのCDNでのCSS読み込み -->
+    <link rel="stylesheet" href="../../_assets/799aeb25cc.css">
+
+    <!-- BootstrapのCDNでのCSS読み込み -->
+    <link href="../../_assets/7633b7c0c9.css" rel="stylesheet">
+
+    <!-- highlight.jsの読み込み -->
+    <link rel="stylesheet" href="../../_assets/e31ce2dd8c.css">
+
+    <!-- カスタムCSS -->
+    <link rel="stylesheet" href="../../_assets/c533dd7750.css">
+
+    <!-- clipkitデフォルトのCSS -->
+    <!--<link rel="stylesheet" media="screen" href="https://cdn.clipkit.co/clipkit/stylesheets/application-1.0.css?v=v15.9.0-20260915">-->
+
+    <!-- jQuery -->
+    
+
+    <!-- カスタムJS -->
+    
+    
+
+    <!-- clipkitデフォルトのJS -->
+    
+
+    <!-- フォント -->
+    <link rel="preconnect" href="https://fonts.googleapis.com/">
+    <link rel="preconnect" href="https://fonts.gstatic.com/">
+    <link href="../../_assets/8b5713f1fc.css" rel="stylesheet">
+
+    <link href="../../_assets/b83ae8ba65.webp" rel="shortcut icon" type="image/vnd.microsoft.icon">
+    <link rel="apple-touch-icon" href="../../_assets/ea0aba163d.webp">
+    <link rel="alternate" type="application/rss+xml" href="https://learn.webcoach.jp/media.rss" title="WEBCOACH">
+    
+<link rel="canonical" href="https://learn.webcoach.jp/generative-ai/AI_coding/%E6%95%99%E6%9D%905%20%E5%AE%9F%E8%B7%B5%EF%BC%81AI%E6%B4%BB%E7%94%A8Web%E3%82%B5%E3%82%A4%E3%83%88%E5%AE%9F%E8%A3%85%E3%81%A8%E6%9C%80%E9%81%A9%E5%8C%96/UiDIh">
+
+<meta name="description" content="">
+<meta name="keywords" content="">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:domain" content="learn.webcoach.jp">
+<meta name="twitter:title" content="2章 やってみよう！AI活用LP実装ワークフロー - WEBCOACH">
+<meta name="twitter:image" content="https://cdn.clipkit.co/tenants/589/item_links/images/000/037/800/medium/63545d0d-7460-4723-aa1b-a2a10a9ac061.png?1754966060">
+<meta name="twitter:description" content="">
+<meta property="og:site_name" content="WEBCOACH">
+<meta property="og:title" content="2章 やってみよう！AI活用LP実装ワークフロー">
+<meta property="og:description" content="">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://learn.webcoach.jp/generative-ai/AI_coding/%E6%95%99%E6%9D%905%20%E5%AE%9F%E8%B7%B5%EF%BC%81AI%E6%B4%BB%E7%94%A8Web%E3%82%B5%E3%82%A4%E3%83%88%E5%AE%9F%E8%A3%85%E3%81%A8%E6%9C%80%E9%81%A9%E5%8C%96/UiDIh">
+<meta property="og:image" content="https://cdn.clipkit.co/tenants/589/item_links/images/000/037/800/large/63545d0d-7460-4723-aa1b-a2a10a9ac061.png?1754966060">
+
+
+    <!-- headタグ内の下部に挿入されます -->
+
+
+<meta name="csrf-param" content="authenticity_token">
+<meta name="csrf-token" content="FlFDhwTK4YPXQS-apq9obtepOGDfUd8UxwnKofs3NGAOaOBOT0TdwjSH2JSOppZv6EyjLwrbnR1qNL8zqOv9xA"><meta content="" name="routing-root-path"><meta content="media" name="site-name"><meta content="ja" name="i18n-default-locale"><meta content="ja" name="i18n-locale"><style data-clipkit-snapshot="force-visible">[data-aos],.reveal,.wow,.fade-in,.animate__animated,.js-reveal{opacity:1!important;transform:none!important;visibility:visible!important;animation:none!important;transition:none!important}</style></head>
+
+<body class="device-desktop" style="visibility: visible;">
+    <!-- bodyタグ内の上部に挿入されます -->
+
+
+    <!-- サイドバーとコンテンツのコンテナ -->
+    <div class="d-flex flex-row w-100 mb-5" style="min-height: calc(100vh - 400px);">
+
+        <!-- サイドバー -->
+        <!--<nav id="side-bar" class="d-flex flex-column fixed-top" style="width: 250px;">-->
+        <!--    <h1 class="d-block w-100 text-center">-->
+        <!--        <a class="d-block" href="/">-->
+        <!--            <img class="mw-100 p-3" src="https://cdn.clipkit.co/tenants/589/sites/logos/000/000/001/logo_sm/a8defd4b-1cc7-433b-a61c-08e7db0e3e4f.png?1714459367" alt="WEBCOACH">-->
+        <!--        </a>-->
+        <!--    </h1>-->
+        <!--    <ul class="nav flex-column m-0 p-3 fw-bold">-->
+        <!--        <li id="sidebar-top" class="nav-item mb-2" style="display: none;"><a href="/"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;" src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/233/original/home.png?1715353458">-->
+        <!--                <div>ホーム</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-knowledges" class="nav-item mb-2" style="display: none;"><a href="/knowledges"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;" src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/232/original/book.png?1715353458">-->
+        <!--                <div>学習の心得</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-web-designs" class="nav-item mb-2" style="display: none;"><a href="/web-designs"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/231/original/design.png?1715353457">-->
+        <!--                <div>WEBデザイン</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-web-marketing" class="nav-item mb-2" style="display: none;"><a href="/web-marketings"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/230/original/marketing.png?1715353457">-->
+        <!--                <div>WEBマーケティング</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-codings" class="nav-item mb-2" style="display: none;"><a href="/codings"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/229/original/website.png?1715353457">-->
+        <!--                <div>WEBサイト構築</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-business-skills" class="nav-item mb-2" style="display: none;"><a href="/business-skills"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/228/original/business.png?1715353456">-->
+        <!--                <div>ビジネススキル</div>-->
+        <!--            </a></li>-->
+        <!--    </ul>-->
+        <!--</nav>-->
+
+        <!-- コンテンツ -->
+        <!--<main class="ms-auto" style="width: calc(100vw - 250px);">-->
+        <main class="ms-auto" style="width: calc(100vw);">
+            <div id="sb-site">
+                
+
+
+<div class="container">
+  <div class="row">
+    <div class="article">
+      <div class="mb-3 text-light" style="
+        height: 180px;
+        background-image: url(&quot;../../_assets/e1d58e2b8a.webp&quot;);
+        background-repeat: no-repeat;
+        background-size: cover;
+        display: flex;
+        align-items: flex-end;
+      ">
+        <div style="
+          margin: 0 0 30px 30px;
+        ">
+          <div>教材5 実践！AI活用Webサイト実装と最適化</div>
+
+          <div class="fw-bold h2">2章 やってみよう！AI活用LP実装ワークフロー</div>
+        </div>
+      </div>
+      <div class="article-content">
+        <!-- 目次 -->
+        <div class="index mb-3" style="background-color: #FDF5E8;">
+          <div>
+            <div class="fw-light">INDEX</div>
+            <div class="h3">目次</div>
+          </div>
+          <div class="toc"><ul><li><a href="#heading0" class="tocLink">2章 やってみよう！AI活用LP実装ワークフロー</a><ul><li><a href="#heading1" class="tocLink">この章の目安学習時間：180分</a></li><li><a href="#heading2" class="tocLink">この章で到達できるゴール：</a></li></ul></li><li><a href="#heading3" class="tocLink">【2-1】Step1：AIと実装の最終準備</a><ul><li><a href="#heading4" class="tocLink">目安の学習時間：20分</a></li></ul><ul><li><a href="#heading5" class="tocLink">開発環境とファイルの準備</a></li><li><a href="#heading6" class="tocLink">AIとスタイルガイドを定義する</a></li></ul></li><li><a href="#heading7" class="tocLink">【2-2】Step2：AIとHTMLの骨格を組む</a><ul><li><a href="#heading8" class="tocLink">目安の学習時間：30分</a></li></ul><ul><li><a href="#heading9" class="tocLink">コメント駆動でHTML構造を生成！</a><ul><li><a href="#heading10" class="tocLink"></a></li></ul></li><li><a href="#heading11" class="tocLink">練習問題</a></li></ul></li><li><a href="#heading12" class="tocLink">【2-3】Step3：AIとCSSでデザインを再現する！</a><ul><li><a href="#heading13" class="tocLink">目安の学習時間：60分</a></li></ul><ul><li><a href="#heading14" class="tocLink">Copilot Chatで基本スタイルを当てる</a></li><li><a href="#heading15" class="tocLink">レスポンシブ対応もAIに相談しよう</a></li></ul></li><li><a href="#heading16" class="tocLink">【2-4】Step4：AIとJavaScriptで動きをつける(任意)</a><ul><li><a href="#heading17" class="tocLink">目安の学習時間：40分</a></li></ul><ul><li><a href="#heading18" class="tocLink">AIと作る「トップへ戻る」ボタン</a></li><li><a href="#heading19" class="tocLink">考えてみよう！</a></li></ul></li><li><a href="#heading20" class="tocLink">【2-5】2章 -章末課題- [2カラムレイアウトのセクション追加]</a><ul><li><a href="#heading21" class="tocLink">目安の学習時間：30分</a></li></ul><ul><li><a href="#heading22" class="tocLink">問題</a><ul><li><a href="#heading23" class="tocLink"></a></li></ul></li><li><a href="#heading24" class="tocLink">解答手順</a></li></ul></li></ul></div>
+        </div>
+        
+        <div class="back-to-roadmap mb-4 text-center"></div>
+
+        <!-- コンテンツ -->
+        
+        
+        <div class="article-item item_html " id="item37586" data-item-id="37586" data-item-type="ItemHtml"><div class="item-body"><div class="pagenation-buttons" style="justify-content: space-between;">
+  <a href="https://learn.webcoach.jp/generative-ai/AI_coding/%E6%95%99%E6%9D%905%20%E5%AE%9F%E8%B7%B5%EF%BC%81AI%E6%B4%BB%E7%94%A8Web%E3%82%B5%E3%82%A4%E3%83%88%E5%AE%9F%E8%A3%85%E3%81%A8%E6%9C%80%E9%81%A9%E5%8C%96/FBTP7" class="pagenation-buttons_prev"><img src="../../_assets/47498cfebf.svg" class="pagenation-buttons_icon">前の章に戻る</a>
+  <a href="https://learn.webcoach.jp/generative-ai/AI_coding/%E6%95%99%E6%9D%905%20%E5%AE%9F%E8%B7%B5%EF%BC%81AI%E6%B4%BB%E7%94%A8Web%E3%82%B5%E3%82%A4%E3%83%88%E5%AE%9F%E8%A3%85%E3%81%A8%E6%9C%80%E9%81%A9%E5%8C%96/DJIFh" class="pagenation-buttons_next">次の章に進む<img src="../../_assets/47498cfebf.svg" class="pagenation-buttons_icon"></a>
+</div></div></div>
+        
+        <div class="article-item item_heading " id="item37581" data-item-id="37581" data-item-type="ItemHeading"><h2 class="item-body" id="heading0">2章 やってみよう！AI活用LP実装ワークフロー</h2></div>
+        
+        <div class="article-item item_markdown " id="item37792" data-item-id="37792" data-item-type="ItemMarkdown"><h4 id="heading1">この章の目安学習時間：180分</h4>
+</div>
+        
+        <div class="article-item item_markdown " id="item37793" data-item-id="37793" data-item-type="ItemMarkdown"><h4 id="heading2">この章で到達できるゴール：</h4>
+</div>
+        
+        <div class="article-item item_html " id="item37794" data-item-id="37794" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li>AI（GitHub Copilot）を駆使して、デザインカンプに基づいたLPのHTML/CSS/JavaScriptを効率的に実装できる。</li>
+  <li>AIとの対話を通じて、レスポンシブ対応や簡単なインタラクションを実装できる。</li>
+</ul>
+</div></div>
+        
+        <div class="article-item item_heading " id="item37795" data-item-id="37795" data-item-type="ItemHeading"><h2 class="item-body" id="heading3">【2-1】Step1：AIと実装の最終準備</h2></div>
+        
+        <div class="article-item item_markdown " id="item37796" data-item-id="37796" data-item-type="ItemMarkdown"><h4 id="heading4">目安の学習時間：20分</h4>
+</div>
+        
+        <div class="article-item item_heading " id="item37797" data-item-id="37797" data-item-type="ItemHeading"><h3 class="item-body" id="heading5">開発環境とファイルの準備</h3></div>
+        
+        <div class="article-item item_rich_text " id="item37798" data-item-id="37798" data-item-type="ItemRichText"><div class="item-body-hbr">まずはコーディングを始めるための準備を整えましょう。</div></div>
+        
+        <div class="article-item item_html " id="item37799" data-item-id="37799" data-item-type="ItemHtml"><div class="item-body"><ol>
+  <li><span class="decoration-01">作業フォルダの作成</span>: PCの任意の場所に、<span class="decoration-02">lyna-lp</span>のような名前で新しいフォルダを作成します。</li>
+  <li><span class="decoration-01">ファイルの作成</span>: 作成したフォルダをVSCodeで開き、中に<span class="decoration-02">index.html</span>、<span class="decoration-02">style.css</span>、<span class="decoration-02">script.js</span>の3つの空ファイルを作成します。</li>
+  <li><span class="decoration-01">画像の配置</span>: 使用する画像が入ったフォルダを、2で作成した空ファイルと同じ階層に配置します。</li>
+</ol>
+</div></div>
+        
+        <div class="article-item item_link " id="item37800" data-item-id="37800" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=UiDIh&amp;item_id=37800" rel="nofollow noopener noreferrer" target="_blank">lyna-lp.zip</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="lyna-lp.zip" data-reference="https://www.dropbox.com/scl/fi/ezli2bug9k6odfzeyy8pv/image.zip?rlkey=x385lapuwo79vdwd1nxvpzigx&amp;st=4pxi2rp7&amp;dl=0" src="../../_assets/8068ac7adc.webp" width="75" height="75"></div><div class="media-body"><div class="item-body"></div></div></div></div></div>
+        
+        <div class="article-item item_heading " id="item37801" data-item-id="37801" data-item-type="ItemHeading"><h3 class="item-body" id="heading6">AIとスタイルガイドを定義する</h3></div>
+        
+        <div class="article-item item_rich_text " id="item37802" data-item-id="37802" data-item-type="ItemRichText"><div class="item-body-hbr">以前の教材では、SVGのコード解析などから正確なスタイル情報を抽出しました。<br>
+今回はJPG画像しかありませんので、AIの画像認識能力を使って、実装の指針となる<span class="decoration-02">スタイルガイド（CSS変数）</span>を作成します。</div></div>
+        
+        <div class="article-item item_html " id="item37803" data-item-id="37803" data-item-type="ItemHtml"><div class="item-body"><div class="card-with-icon check">
+  <span class="bold"><strong>操作手順</strong><br></span>
+  <div class="content-area">
+    <ol>
+      <li>デザインカンプのJPG画像をAIにアップロードします。</li>
+      <li>
+        以下のプロンプトを入力し、CSS変数を生成させます。
+        <div class="code-block">
+          <pre><code class="hljs markdown">このデザインカンプを分析し、Webサイト実装のベースとなるCSS変数を生成してください。
+以下の点を考慮してください：
+<span class="hljs-bullet"> - </span><span class="hljs-strong">**カラー**</span>:
+主要な色（背景色、テキスト色、アクセントカラーなど）を抽出し、
+<span class="hljs-code">`--color-primary`</span>のような役割ベースで命名してください。
+<span class="hljs-bullet">- </span><span class="hljs-strong">**フォント**</span>: 
+見出しと本文で使われているフォントファミリー（Serif系かSans-serif系か）と、
+おおよそのフォントサイズを推測し、<span class="hljs-code">`--font-family-heading`</span>や<span class="hljs-code">`--font-size-lg`</span>のように命名してください。
+生成した変数は:root内で定義し、
+それぞれの変数がデザインのどの部分に対応するかのコメントも追加してください。</code></pre>
+        </div>
+      </li>
+      <li>
+        生成されたCSS変数コードをコピーし、`style.css`ファイルの先頭に貼り付けます。
+      </li>
+    </ol>
+  </div>
+</div>
+</div></div>
+        
+        <div class="article-item item_code " id="item37804" data-item-id="37804" data-item-type="ItemCode"><div class="item-body"><div class="CodeRay">
+  <div class="code"><pre>:root {
+  /* Color Palette 
+    役割ベースで命名したカラー変数です。
+  */
+
+  /* 基本の背景色 (ほぼ白) */
+  --color-background: #FFFFFF; 
+  
+  /* 主要なテキストカラー (濃いグレー) */
+  --color-text-primary: #333333;
+
+  /* 薄いテキストや罫線の色 (ライトグレー) */
+  --color-text-secondary: #AAAAAA;
+
+  /* ボタンやアクセントに使われる色 (ゴールド/イエロー) */
+  --color-accent: #E5B842; 
+
+  /* メールマガジンセクションの背景色 (ミディアムグレー) */
+  --color-background-secondary: #707070;
+
+  /* フッターなどの背景色 (白) */
+  --color-surface: #FFFFFF; 
+
+
+  /* Typography 
+    フォントファミリーとサイズに関する変数です。
+  */
+
+  /* 見出し用フォント (セリフ体) */
+  --font-family-heading: "Garamond", "Times New Roman", serif;
+
+  /* 本文用フォント (サンセリフ体) */
+  --font-family-body: "Helvetica Neue", "Arial", sans-serif;
+
+  /* 特大サイズ (セクションタイトルなど) */
+  --font-size-xl: 2.25rem; /* 36px */
+
+  /* 大サイズ (小見出しなど) */
+  --font-size-lg: 1.5rem; /* 24px */
+
+  /* 中サイズ (基本の本文) */
+  --font-size-md: 1rem; /* 16px */
+
+  /* 小サイズ (商品価格や補足情報) */
+  --font-size-sm: 0.875rem; /* 14px */
+
+  /* 極小サイズ (フッターのリンクなど) */
+  --font-size-xs: 0.75rem; /* 12px */
+}</pre></div>
+</div>
+<div class="cite"><cite class="item-source">出力例</cite></div></div></div>
+        
+        <div class="article-item item_rich_text " id="item37805" data-item-id="37805" data-item-type="ItemRichText"><div class="item-body-hbr">この一手間により、後のコーディング作業で色やフォントの値を迷うことなく、一貫性のあるスタイルをスピーディーに適用できるようになります。</div></div>
+        
+        <div class="article-item item_heading " id="item37806" data-item-id="37806" data-item-type="ItemHeading"><h2 class="item-body" id="heading7">【2-2】Step2：AIとHTMLの骨格を組む</h2></div>
+        
+        <div class="article-item item_markdown " id="item37807" data-item-id="37807" data-item-type="ItemMarkdown"><h4 id="heading8">目安の学習時間：30分</h4>
+</div>
+        
+        <div class="article-item item_heading " id="item37808" data-item-id="37808" data-item-type="ItemHeading"><h3 class="item-body" id="heading9">コメント駆動でHTML構造を生成！</h3></div>
+        
+        <div class="article-item item_html " id="item37863" data-item-id="37863" data-item-type="ItemHtml"><div class="item-body"><p>
+  ここからは GitHub Copilot を相棒に、HTMLの骨格を効率的に組み上げていきます。<br>
+  <span class="decoration-02">index.html</span> の <span class="decoration-02">&lt;body&gt;</span> タグ内に、デザインカンプのセクション構成をコメントとして書き出していきましょう。<br><span class="decoration-02">GitHub Copilot</span> がコメントを解釈し、適切なHTML構造を提案してくれます。
+</p>
+</div></div>
+        
+        <div class="article-item item_rich_text " id="item37809" data-item-id="37809" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-02">index.html</span><span class="decoration-01">への記述例</span><br>
+このようにコメントを記述し、改行するとCopilotが<span class="decoration-02">header</span>タグや<span class="decoration-02">section</span>タグを使った構造案を灰色の文字でサジェストしてくれます。<br>
+「Tab」キーを押して、その提案を採用しながら、全体の骨格を素早く完成させましょう。</div></div>
+        
+        <div class="article-item item_image " id="item37810" data-item-id="37810" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/037/810/medium/a859aa4f-614d-45e9-9398-09c615c85f15.png?1754092516" title=""><img class="img-responsive item-image" alt=" (37810)" data-reference="" src="../../_assets/77fc1c5e4a.webp" width="640" height="374"></a><h4 id="heading10"></h4></div></div>
+        
+        <div class="article-item item_heading " id="item37811" data-item-id="37811" data-item-type="ItemHeading"><h3 class="item-body" id="heading11">練習問題</h3></div>
+        
+        <div class="article-item item_rich_text " id="item37812" data-item-id="37812" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">問題</span><br>
+LPのフッター部分について、以下の要素を含むHTMLをCopilotに生成させるプロンプトを記述してみましょう。</div></div>
+        
+        <div class="article-item item_html " id="item37813" data-item-id="37813" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li><span class="decoration-02">&lt;footer&gt;</span>タグを使用する</li>
+  <li>ロゴ画像を表示する</li>
+  <li>主要セクションへのナビゲーションリンク（例：CONCEPT, ONLINE STOREなど）をリスト形式で配置する</li>
+  <li>コピーライト表示を一番下に配置する</li>
+</ul>
+</div></div>
+        
+        <div class="article-item item_html " id="item37815" data-item-id="37815" data-item-type="ItemHtml"><div class="item-body"><p><span class="decoration-01">解答例</span><br>Copilotが <span class="decoration-02">&lt;footer&gt;</span> タグの中に、<span class="decoration-02">&lt;img&gt;</span> タグ（ロゴ）、ナビゲーション用の <span class="decoration-02">&lt;ul&gt;</span> と <span class="decoration-02">&lt;li&gt;</span>、そして <span class="decoration-02">&lt;p&gt;</span> タグを使ったコピーライト表示など、指定された要素を構造的に配置したHTMLを生成することを確認します。</p>
+</div></div>
+        
+        <div class="article-item item_code " id="item37816" data-item-id="37816" data-item-type="ItemCode"><div class="item-body"><div class="CodeRay">
+  <div class="code"><pre>&lt;footer class="footer"&gt;
+    &lt;div class="footer-inner"&gt;
+        &lt;img src="image/logo.png" alt="LYNAロゴ" class="footer-logo"&gt;
+        &lt;ul class="footer-nav"&gt;
+            &lt;li&gt;&lt;a href="#concept"&gt;CONCEPT&lt;/a&gt;&lt;/li&gt;
+            &lt;li&gt;&lt;a href="#products"&gt;ONLINE STORE&lt;/a&gt;&lt;/li&gt;
+            &lt;li&gt;&lt;a href="#voice"&gt;VOICE&lt;/a&gt;&lt;/li&gt;
+            &lt;li&gt;&lt;a href="#magazine"&gt;MAIL MAGAZINE&lt;/a&gt;&lt;/li&gt;
+        &lt;/ul&gt;
+    &lt;/div&gt;
+    &lt;div class="footer-copyrights"&gt;
+        &lt;p class="copyright"&gt;Copyright &amp;copy; LYNA ALL RIGHTS RESERVED.&lt;/p&gt;
+        &lt;ul class="sub-nav"&gt;
+            &lt;li&gt;プライバシーポリシー&lt;/li&gt;
+            &lt;li&gt;利用規約&lt;/li&gt;
+            &lt;li&gt;クッキー規定&lt;/li&gt;
+        &lt;/ul&gt;
+    &lt;/div&gt;
+&lt;/footer&gt;</pre></div>
+</div>
+<div class="cite"><cite class="item-source">HTML</cite></div></div></div>
+        
+        <div class="article-item item_rich_text " id="item37817" data-item-id="37817" data-item-type="ItemRichText"><div class="item-body-hbr">同様の方法でCopilotを活用しながらHTML全体を完成させましょう。</div></div>
+        
+        <div class="article-item item_rich_text " id="item37818" data-item-id="37818" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">HTML全体の制作例</span></div></div>
+        
+        <div class="article-item item_code " id="item37819" data-item-id="37819" data-item-type="ItemCode"><div class="item-body"><div class="CodeRay">
+  <div class="code"><pre>&lt;!DOCTYPE html&gt;
+&lt;html lang="en"&gt;
+&lt;head&gt;
+    &lt;meta charset="UTF-8"&gt;
+    &lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;
+    &lt;title&gt;Document&lt;/title&gt;
+    &lt;link rel="stylesheet" href="style.css"&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;!-- ヘッダー（ロゴ画像とナビゲーションを含むheader） --&gt;
+    &lt;header class="header" id="TOP"&gt;
+        &lt;div class="header-inner"&gt;
+            &lt;img src="image/logo.png" alt="LYNAロゴ" class="logo"&gt;
+            &lt;nav&gt;
+                &lt;button class="hamburger" aria-label="メニューを開く"&gt;
+                    &lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;
+                &lt;/button&gt;
+                &lt;ul class="nav-list"&gt;
+                    &lt;li&gt;&lt;a href="#TOP"&gt;TOP&lt;/a&gt;&lt;/li&gt;
+                    &lt;li&gt;&lt;a href="#concept"&gt;CONCEPT&lt;/a&gt;&lt;/li&gt;
+                    &lt;li&gt;&lt;a href="#products"&gt;ONLINE STORE&lt;/a&gt;&lt;/li&gt;
+                    &lt;li&gt;&lt;a href="#voice"&gt;VOICE&lt;/a&gt;&lt;/li&gt;
+                    &lt;li&gt;&lt;a href="#magazine"&gt;MAIL MAGAZINE&lt;/a&gt;&lt;/li&gt;
+                &lt;/ul&gt;
+            &lt;/nav&gt;
+        &lt;/div&gt;
+    &lt;/header&gt;
+
+    &lt;!-- メインビジュアル（キャッチコピーとCTAボタンを含むsection） --&gt;
+    &lt;section class="main-visual"&gt;
+        &lt;img src="image/main-visual.jpg" alt="メインビジュアル" class="main-visual-img"&gt;
+        &lt;div class="catchcopy"&gt;
+            &lt;h1&gt;10年先も、&lt;br&gt;愛せる一着を。&lt;/h1&gt;
+        &lt;/div&gt;
+    &lt;/section&gt;
+
+    &lt;!-- 商品コンセプト紹介（見出し、説明文、画像を含むsection） --&gt;
+    &lt;section id="concept" class="concept-section"&gt;
+        &lt;div class="concept-inner"&gt;
+            &lt;div class="concept-text"&gt;
+                &lt;h2&gt;CONCEPT&lt;/h2&gt;
+                &lt;p&gt;
+                    作り手の顔が見える、誠実なものづくり。都会の日常に自然に溶け込む、洗練されたデザイン。
+                    そして、肌に触れるたびに感じる、オーガニックな素材の心地よさ。&lt;br&gt;&lt;br&gt;
+                    LYNA（リナ）は、ただ服を届けるのではなく、あなたの毎日に、長く続くささやかな自信と輝きをお届けします。
+                &lt;/p&gt;
+            &lt;/div&gt;
+            &lt;div class="concept-image"&gt;
+                &lt;img src="image/concept.jpg" alt="コンセプトイメージ"&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/section&gt;
+
+    &lt;!-- ブランドストーリー（見出し、テキスト、画像を含むsection） --&gt;
+    &lt;section class="story-section"&gt;
+        &lt;div class="story-bg"&gt;
+            &lt;div class="story-inner"&gt;
+                &lt;div class="story-text"&gt;
+                    &lt;h2&gt;OUR STORY&lt;/h2&gt;
+                    &lt;p&gt;
+                        ブランド名「LYNA」に込めた想い。&lt;br&gt;&lt;br&gt;
+                        LYNA（リナ）は、Light（光・軽やかさ）You（あなた自身）Natural（自然体・調和）Aesthetic（美意識・感性）
+                        という4つの言葉から生まれた名前です。それは、「わたしらしく、軽やかに、美しくあるために」という願いを込めた、
+                        日常に寄り添うコンフォートウエアのあり方を象徴しています。忙しい毎日のなかでも、自分の感性を大切にしながら、
+                        無理なく心地よく過ごせること。肌にも地球にもやさしい選択を、自然体で楽しめること。
+                        そして、纏うたびにそっと自分を取り戻せるような、静かな自由と美しさを届けること。
+                        LYNAには、そんな私たちの哲学が込められています。
+                    &lt;/p&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/section&gt;
+
+    &lt;!-- オンライン商品紹介（商品リスト、各商品画像、価格、カートボタンを含むsection） --&gt;
+    &lt;section id="products" class="products-section"&gt;
+        &lt;h2&gt;ONLINE STORE&lt;/h2&gt;
+        &lt;h3&gt;DAILY WEAR&lt;/h3&gt;
+        &lt;div class="product-list"&gt;
+            &lt;!-- 商品カード（例） --&gt;
+            &lt;div class="product-card"&gt;
+                &lt;img src="image/product1.jpg" alt="デイリーシャツ（半袖）"&gt;
+                &lt;p&gt;デイリーシャツ（半袖）&lt;br&gt;￥8,900&lt;/p&gt;
+                &lt;button&gt;カートに追加&lt;/button&gt;
+            &lt;/div&gt;
+            &lt;div class="product-card"&gt;
+                &lt;img src="image/product2.jpg" alt="クロップドシャツ（半袖）"&gt;
+                &lt;p&gt;クロップドシャツ（半袖）&lt;br&gt;￥8,900&lt;/p&gt;
+                &lt;button&gt;カートに追加&lt;/button&gt;
+            &lt;/div&gt;
+            &lt;div class="product-card"&gt;
+                &lt;img src="image/product3.jpg" alt="デイリーシャツ（長袖）"&gt;
+                &lt;p&gt;デイリーシャツ（長袖）&lt;br&gt;￥12,000&lt;/p&gt;
+                &lt;button&gt;カートに追加&lt;/button&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+        &lt;h3&gt;HOME WEAR&lt;/h3&gt;
+        &lt;div class="product-list"&gt;
+            &lt;div class="product-card"&gt;
+                &lt;img src="image/product4.jpg" alt="ホームドレス（半袖）"&gt;
+                &lt;p&gt;ホームドレス（半袖）&lt;br&gt;￥12,000&lt;/p&gt;
+                &lt;button&gt;カートに追加&lt;/button&gt;
+            &lt;/div&gt;
+            &lt;div class="product-card"&gt;
+                &lt;img src="image/product5.jpg" alt="ホームパンツ"&gt;
+                &lt;p&gt;ホームパンツ&lt;br&gt;￥8,900&lt;/p&gt;
+                &lt;button&gt;カートに追加&lt;/button&gt;
+            &lt;/div&gt;
+            &lt;div class="product-card"&gt;
+                &lt;img src="image/product6.jpg" alt="ホームタンクトップ"&gt;
+                &lt;p&gt;ホームタンクトップ&lt;br&gt;￥5,800&lt;/p&gt;
+                &lt;button&gt;カートに追加&lt;/button&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/section&gt;
+
+    &lt;section class="commitment-section"&gt;
+    &lt;div class="commitment-inner"&gt;
+        &lt;div class="commitment-text"&gt;
+            &lt;h2&gt;Our Commitment&lt;/h2&gt;
+            &lt;h3&gt;一着に、未来への敬意を込めて。&lt;/h3&gt;
+            &lt;p&gt;
+                私たちは、ただ美しいだけの服は作りません。生産の過程で環境への負荷を最小限に抑え、
+                作り手の生活を持続可能にすること。そして、その一着があなたの日常を長く、豊かに彩ること。
+                LYNAの服作りは、未来の地球と、服を着るあなた自身への敬意から生まれています。
+            &lt;/p&gt;
+        &lt;/div&gt;
+        &lt;div class="commitment-image"&gt;
+            &lt;img src="image/commitment.jpg" alt="サステナビリティをイメージした写真"&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/section&gt;
+
+    &lt;!-- お客様の声（見出し、お客様のコメント、写真を含むsection） --&gt;
+    &lt;section id="voice" class="voice-section"&gt;
+        &lt;h2&gt;VOICE&lt;/h2&gt;
+        &lt;p&gt;お客様からの声をご紹介します。&lt;/p&gt;
+        &lt;div class="voice-list"&gt;
+            &lt;div class="voice-card"&gt;
+                &lt;p&gt;★★★★★&lt;br&gt;「LYNAの服を着ることで、自信が持てるようになりました。」&lt;/p&gt;
+                &lt;p&gt;安藤 美咲&lt;br&gt;PR、株式会社ABC&lt;/p&gt;
+            &lt;/div&gt;
+            &lt;div class="voice-card"&gt;
+                &lt;p&gt;★★★★★&lt;br&gt;「環境に優しいだけでなく、スタイリッシュです。」&lt;/p&gt;
+                &lt;p&gt;佐藤 香織&lt;br&gt;マーケター、株式会社DEF&lt;/p&gt;
+            &lt;/div&gt;
+            &lt;div class="voice-card"&gt;
+                &lt;p&gt;★★★★★&lt;br&gt;「このブランドの服は、等身大の自分を表現してくれます。。」&lt;/p&gt;
+                &lt;p&gt;山本 直子&lt;br&gt;デザイナー、株式会社GHI&lt;/p&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/section&gt;
+
+    &lt;!-- メールマガジン登録（見出し、入力フォーム、登録ボタンを含むsection） --&gt;
+    &lt;section id="magazine" class="magazine-section"&gt;
+        &lt;div class="magazine-inner"&gt;
+            &lt;h2&gt;MAIL MAGAZINE&lt;/h2&gt;
+            &lt;p&gt;最新のサステナブルファッション情報を&lt;br&gt;手にいれるチャンスはこちら&lt;/p&gt;
+            &lt;button&gt;購読する&lt;/button&gt;
+        &lt;/div&gt;
+    &lt;/section&gt;
+
+    &lt;!-- フッター（ロゴ、コピーライト、SNSリンクを含むfooter） --&gt;
+    &lt;footer class="footer"&gt;
+        &lt;div class="footer-inner"&gt;
+            &lt;img src="image/logo.png" alt="LYNAロゴ" class="footer-logo"&gt;
+            &lt;ul class="footer-nav"&gt;
+                &lt;li&gt;&lt;a href="#concept"&gt;CONCEPT&lt;/a&gt;&lt;/li&gt;
+                &lt;li&gt;&lt;a href="#products"&gt;ONLINE STORE&lt;/a&gt;&lt;/li&gt;
+                &lt;li&gt;&lt;a href="#voice"&gt;VOICE&lt;/a&gt;&lt;/li&gt;
+                &lt;li&gt;&lt;a href="#magazine"&gt;MAIL MAGAZINE&lt;/a&gt;&lt;/li&gt;
+            &lt;/ul&gt;
+        &lt;/div&gt;
+    &lt;/footer&gt;
+
+    &lt;button id="toTopBtn" aria-label="トップへ戻る"&gt;
+        ↑
+    &lt;/button&gt;
+
+    &lt;script src="script.js"&gt;&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre></div>
+</div>
+<div class="cite"><cite class="item-source">HTML</cite></div></div></div>
+        
+        <div class="article-item item_heading " id="item37820" data-item-id="37820" data-item-type="ItemHeading"><h2 class="item-body" id="heading12">【2-3】Step3：AIとCSSでデザインを再現する！</h2></div>
+        
+        <div class="article-item item_markdown " id="item37821" data-item-id="37821" data-item-type="ItemMarkdown"><h4 id="heading13">目安の学習時間：60分</h4>
+</div>
+        
+        <div class="article-item item_heading " id="item37822" data-item-id="37822" data-item-type="ItemHeading"><h3 class="item-body" id="heading14">Copilot Chatで基本スタイルを当てる</h3></div>
+        
+        <div class="article-item item_rich_text " id="item37823" data-item-id="37823" data-item-type="ItemRichText"><div class="item-body-hbr">HTMLの骨格ができたら、次はCSSでデザインを再現していきます。VSCodeのCopilot Chat機能を開き、対話形式でスタイリングを進めましょう。<br>
+<br>
+<span class="decoration-01">Copilot Chatへの指示例</span></div></div>
+        
+        <div class="article-item item_html " id="item37824" data-item-id="37824" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li>
+    「<span class="decoration-02">style.css</span> を開いて。まずは基本的なページ全体のスタイルを設定します。背景色は <span class="decoration-02">-color-background</span>、基本の文字色は <span class="decoration-02">-color-text-primary</span> を適用してください。」
+  </li>
+  <li>
+    「<span class="decoration-02">header</span> のスタイルを作成します。中のロゴとナビゲーションを横並びにして、上下中央に配置してください。」
+  </li>
+  <li>
+    「<span class="decoration-02">.button</span> というクラスのスタイルを作成します。背景色は <span class="decoration-02">-color-accent</span>、文字色は白、角を少し丸めて、内側に適度な余白（padding）を設定してください。」
+  </li>
+</ul>
+</div></div>
+        
+        <div class="article-item item_rich_text " id="item37825" data-item-id="37825" data-item-type="ItemRichText"><div class="item-body-hbr">このように、日本語で具体的な指示を出すことで、Copilot ChatがCSSコードを生成してくれます。<br>
+生成されたコードを<span class="decoration-02">style.css</span>に貼り付け、ブラウザで表示を確認しながら作業を進めます。</div></div>
+        
+        <div class="article-item item_rich_text " id="item37826" data-item-id="37826" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">制作例</span></div></div>
+        
+        <div class="article-item item_code " id="item37827" data-item-id="37827" data-item-type="ItemCode"><div class="item-body"><div class="CodeRay">
+  <div class="code"><pre>:root {
+  /* Color Palette 
+    役割ベースで命名したカラー変数です。
+  */
+
+  /* 基本の背景色 (ほぼ白) */
+  --color-background: #FFFFFF; 
+  
+  /* 主要なテキストカラー (濃いグレー) */
+  --color-text-primary: #333333;
+
+  /* 薄いテキストや罫線の色 (ライトグレー) */
+  --color-text-secondary: #AAAAAA;
+
+  /* ボタンやアクセントに使われる色 (ゴールド/イエロー) */
+  --color-accent: #E5B842; 
+
+  /* メールマガジンセクションの背景色 (ミディアムグレー) */
+  --color-background-secondary: #707070;
+
+  /* フッターなどの背景色 (白) */
+  --color-surface: #FFFFFF; 
+
+
+  /* Typography 
+    フォントファミリーとサイズに関する変数です。
+  */
+
+  /* 見出し用フォント (セリフ体) */
+  --font-family-heading: "Garamond", "Times New Roman", serif;
+
+  /* 本文用フォント (サンセリフ体) */
+  --font-family-body: "Helvetica Neue", "Arial", sans-serif;
+
+  /* 特大サイズ (セクションタイトルなど) */
+  --font-size-xl: 2.25rem; /* 36px */
+
+  /* 大サイズ (小見出しなど) */
+  --font-size-lg: 1.5rem; /* 24px */
+
+  /* 中サイズ (基本の本文) */
+  --font-size-md: 1rem; /* 16px */
+
+  /* 小サイズ (商品価格や補足情報) */
+  --font-size-sm: 0.875rem; /* 14px */
+
+  /* 極小サイズ (フッターのリンクなど) */
+  --font-size-xs: 0.75rem; /* 12px */
+}
+:root {
+  /* ...既存の変数定義... */
+}
+
+/* ベース設定 */
+body {
+  background: var(--color-background);
+  color: var(--color-text-primary);
+  font-family: var(--font-family-body);
+  font-size: var(--font-size-md);
+  margin: 0;
+  padding: 0;
+  line-height: 1.8;
+  letter-spacing: 0.05em;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* ヘッダー */
+.header {
+  width: 100%;
+  padding: 16px 0;
+  border-bottom: 1px solid var(--color-text-secondary);
+  background: var(--color-surface);
+}
+
+.header-inner {
+  max-width: 1100px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 24px;
+}
+
+.logo {
+  height: 28px;
+}
+
+.nav-list {
+  display: flex;
+  gap: 32px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.nav-list a {
+  color: var(--color-text-primary);
+  text-decoration: none;
+  font-size: var(--font-size-xs);
+  letter-spacing: 0.1em;
+  transition: color 0.2s;
+}
+
+.nav-list a:hover {
+  color: var(--color-accent);
+}
+
+/* メインビジュアル */
+.main-visual {
+  position: relative;
+  width: 100%;
+  height: 420px;
+  overflow: hidden;
+  margin-bottom: 56px;
+}
+
+.main-visual-img {
+  width: 100%;
+  height: 420px;
+  object-fit: cover;
+}
+
+.catchcopy {
+  position: absolute;
+  right: 8%;
+  bottom: 18%;
+  color: #fff;
+  text-align: right;
+  text-shadow: 0 2px 8px rgba(0,0,0,0.18);
+}
+
+.catchcopy h1 {
+  font-family: var(--font-family-heading);
+  font-size: var(--font-size-xl);
+  font-weight: normal;
+  margin: 0;
+  line-height: 1.4;
+}
+
+/* コンセプトセクション */
+.concept-section {
+  max-width: 1100px;
+  margin: 0 auto 64px auto;
+  display: flex;
+  gap: 48px;
+  align-items: flex-start;
+  padding: 0 24px;
+}
+
+.concept-inner {
+  display: flex;
+  gap: 48px;
+  align-items: flex-start;
+}
+
+.concept-text {
+  flex: 1.2;
+}
+
+.concept-text h2 {
+  font-family: var(--font-family-heading);
+  font-size: var(--font-size-lg);
+  letter-spacing: 0.15em;
+  margin-bottom: 16px;
+}
+
+.concept-text p {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-primary);
+}
+
+.concept-image {
+  flex: 1;
+  min-width: 260px;
+}
+
+/* ストーリーセクション */
+.story-section {
+  background: #f7f7f7;
+  margin-bottom: 64px;
+}
+
+.story-bg {
+  background: url("image/story.jpg") no-repeat center;
+}
+
+.story-inner {
+  max-width: 1100px;
+  margin: 0 auto;
+  display: flex;
+  gap: 48px;
+  align-items: center;
+  padding: 48px 24px;
+}
+
+.story-text {
+  flex: 1.2;
+  color: #fff;
+}
+
+.story-text h2 {
+  font-family: var(--font-family-heading);
+  font-size: var(--font-size-lg);
+  letter-spacing: 0.15em;
+  margin-bottom: 16px;
+}
+
+.story-text p {
+  font-size: var(--font-size-xs);
+  line-height: 2;
+}
+
+/* 商品セクション */
+.products-section {
+  max-width: 1100px;
+  margin: 0 auto 64px auto;
+  padding: 0 24px;
+}
+
+.products-section h2 {
+  font-family: var(--font-family-heading);
+  font-size: var(--font-size-lg);
+  letter-spacing: 0.15em;
+  margin-bottom: 24px;
+}
+
+.products-section h3 {
+  font-family: var(--font-family-body);
+  font-size: var(--font-size-sm);
+  margin: 32px 0 16px 0;
+  letter-spacing: 0.1em;
+}
+
+.product-list {
+  display: flex;
+  gap: 24px;
+  margin-bottom: 24px;
+}
+
+.product-card {
+  flex: 1;
+  background: #fff;
+  border: 1px solid var(--color-text-secondary);
+  padding: 16px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.product-card img {
+  width: 100%;
+  aspect-ratio: 1/1;
+  object-fit: cover;
+  margin-bottom: 8px;
+}
+
+.product-card p {
+  font-size: var(--font-size-sm);
+  margin: 0 0 8px 0;
+}
+
+.product-card button {
+  background: transparent;
+  border: 1px solid var(--color-text-secondary);
+  color: var(--color-text-primary);
+  padding: 8px 0;
+  border-radius: 2px;
+  font-size: var(--font-size-xs);
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+}
+
+.product-card button:hover {
+  background: var(--color-accent);
+  color: #fff;
+  border-color: var(--color-accent);
+}
+
+/* VOICEセクション */
+.voice-section {
+  max-width: 1100px;
+  margin: 0 auto 64px auto;
+  padding: 0 24px;
+}
+
+.voice-section h2 {
+  font-family: var(--font-family-heading);
+  font-size: var(--font-size-lg);
+  letter-spacing: 0.15em;
+  margin-bottom: 16px;
+}
+
+.voice-list {
+  display: flex;
+  gap: 16px;
+  margin-top: 24px;
+}
+
+.voice-card {
+  flex: 1;
+  background: #fff;
+  border: 1px solid var(--color-text-secondary);
+  padding: 16px;
+  font-size: var(--font-size-xs);
+  color: var(--color-text-primary);
+  border-radius: 2px;
+}
+
+/* メールマガジンセクション */
+.magazine-section {
+  background: var(--color-background-secondary);
+  color: #fff;
+  padding: 48px 0;
+  margin-bottom: 64px;
+}
+
+.magazine-inner {
+  max-width: 600px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.magazine-inner h2 {
+  font-family: var(--font-family-heading);
+  font-size: var(--font-size-lg);
+  letter-spacing: 0.15em;
+  margin-bottom: 16px;
+}
+
+.magazine-inner p {
+  font-size: var(--font-size-sm);
+  margin-bottom: 24px;
+}
+
+.magazine-inner form {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+}
+
+.magazine-inner input[type="email"] {
+  padding: 8px 12px;
+  border: none;
+  border-radius: 2px;
+  font-size: var(--font-size-sm);
+  width: 220px;
+}
+
+.magazine-inner button {
+  background: var(--color-accent);
+  color: #fff;
+  border: none;
+  border-radius: 2px;
+  padding: 8px 24px;
+  font-size: var(--font-size-sm);
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.magazine-inner button:hover {
+  background: #bfa02e;
+}
+
+/* フッター */
+.footer {
+  background: var(--color-surface);
+  border-top: 1px solid var(--color-text-secondary);
+  padding: 32px 0 16px 0;
+}
+
+.footer-inner {
+  max-width: 1100px;
+  margin: 0 auto;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  padding: 0 24px;
+}
+
+.footer-logo {
+  height: 24px;
+}
+
+.footer-nav {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.footer-nav a {
+  color: var(--color-text-primary);
+  text-decoration: none;
+  font-size: var(--font-size-xs);
+  letter-spacing: 0.1em;
+}
+
+.footer-nav a:hover {
+  color: var(--color-accent);
+}
+
+.copyright {
+  text-align: center;
+  font-size: var(--font-size-xs);
+  color: var(--color-text-secondary);
+  margin-top: 24px;
+}
+
+/* レスポンシブ対応 */
+@media (max-width: 900px) {
+  .concept-inner,
+  .story-inner,
+  .product-list,
+  .voice-list,
+  .footer-inner {
+    flex-direction: column;
+    gap: 24px;
+  }
+  .main-visual,
+  .main-visual-img {
+    height: 260px;
+  }
+}
+
+@media (max-width: 600px) {
+  .header-inner,
+  .concept-section,
+  .products-section,
+  .voice-section,
+  .footer-inner {
+    padding: 0 8px;
+    max-width: 100%;
+  }
+  .main-visual,
+  .main-visual-img {
+    height: 160px;
+  }
+  .magazine-inner {
+    padding: 0 8px;
+  }
+}</pre></div>
+</div>
+<div class="cite"><cite class="item-source">CSS</cite></div></div></div>
+        
+        <div class="article-item item_heading " id="item37828" data-item-id="37828" data-item-type="ItemHeading"><h3 class="item-body" id="heading15">レスポンシブ対応もAIに相談しよう</h3></div>
+        
+        <div class="article-item item_rich_text " id="item37829" data-item-id="37829" data-item-type="ItemRichText"><div class="item-body-hbr">PC版のスタイリングがある程度できたら、レスポンシブ対応も進めます。<br>
+<br>
+<span class="decoration-01">Copilot Chatへの相談例</span><br>
+「このLPのレスポンシブ対応について相談です。<br>
+画面幅が768px以下になったら、ヘッダーのナビゲーションメニューをハンバーガーメニューに変更したいです。<br>
+そのためのCSS（メディアクエリ）とJavaScriptのコードを提案してください。」<br>
+<br>
+AIが提案するコードを参考に実装することで、複雑に見えるレスポンシブ対応もスムーズに進めることができます。</div></div>
+        
+        <div class="article-item item_html " id="item37830" data-item-id="37830" data-item-type="ItemHtml"><div class="item-body"><div class="card-with-icon point">
+    <span class="bold"><strong>実務でのヒント：レスポンシブのデザイン指示がない場合</strong><br></span>
+    <div class="content-area">
+        <ul>
+            <li>実務の現場では、PC版のデザインのみが提供され、タブレットやスマートフォン版の具体的なデザイン指示がないケースは少なくありません。</li>
+            <li>このような場合、開発者にはPC版のデザイン原則やスタイルを引き継ぎつつ、<span class="decoration-02">モバイル環境で最適化されたレイアウトを自身で判断して実装する</span>ことが期待されます。</li>
+            <li>AIの提案にもあるような、以下のような対応が一般的な「よしなに計らう」範囲と言えるでしょう。
+                <ul class="nested-ul">
+                    <li>カラムレイアウト（横並びの要素）を1列にして縦に並べる。</li>
+                    <li>PCでは広すぎる余白を、画面幅に合わせて狭く調整する。</li>
+                    <li>フォントサイズや画像の大きさを、可読性を損なわない範囲で調整する。</li>
+                </ul>
+            </li>
+            <li>デザイン指示がない中で、<span class="decoration-02">ユーザーにとって最善の表示を考える力</span>も、開発者にとって重要なスキルの一つです。</li>
+        </ul>
+    </div>
+</div></div></div>
+        
+        <div class="article-item item_rich_text " id="item37831" data-item-id="37831" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">Copilot Chat出力例</span></div></div>
+        
+        <div class="article-item item_code " id="item37832" data-item-id="37832" data-item-type="ItemCode"><div class="item-body"><div class="CodeRay">
+  <div class="code"><pre>ハンバーガーメニュー化と、追加でおすすめのレスポンシブ対応（例：商品カードの縦並び、余白調整など）
+を含めたCSS・JavaScript例を提案します。
+
+1. HTMLの修正（ハンバーガーメニュー用ボタン追加）
+
+// ...既存の&lt;header&gt;内...
+&lt;nav&gt;
+    &lt;button class="hamburger" aria-label="メニューを開く"&gt;
+        &lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;
+    &lt;/button&gt;
+    &lt;ul class="nav-list"&gt;
+        &lt;!-- ...既存のリスト... --&gt;
+    &lt;/ul&gt;
+&lt;/nav&gt;
+// ...既存のコード...
+
+2. CSS（メディアクエリ含む）
+
+/* ハンバーガーメニュー初期状態（PCでは非表示） */
+.hamburger {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  gap: 6px;
+  padding: 0;
+}
+.hamburger span {
+  display: block;
+  height: 3px;
+  width: 100%;
+  background: var(--color-text-primary);
+  border-radius: 2px;
+  transition: all 0.3s;
+}
+
+/* 768px以下でハンバーガー表示＆ナビ非表示 */
+@media (max-width: 768px) {
+  .nav-list {
+    display: none;
+    position: absolute;
+    top: 56px;
+    right: 16px;
+    background: #fff;
+    flex-direction: column;
+    gap: 0;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+    border-radius: 4px;
+    min-width: 160px;
+    z-index: 100;
+  }
+  .nav-list.open {
+    display: flex;
+  }
+  .hamburger {
+    display: flex;
+    z-index: 101;
+  }
+  .header-inner {
+    position: relative;
+  }
+  /* 商品リストを縦並びに */
+  .product-list {
+    flex-direction: column;
+    gap: 16px;
+  }
+  /* voiceカードも縦並び */
+  .voice-list {
+    flex-direction: column;
+    gap: 16px;
+  }
+  /* 余白調整 */
+  .concept-section,
+  .products-section,
+  .voice-section {
+    padding: 0 8px;
+  }
+}
+
+/* 追加：ハンバーガー開閉時のアニメーション例 */
+.hamburger.active span:nth-child(1) {
+  transform: translateY(9px) rotate(45deg);
+}
+.hamburger.active span:nth-child(2) {
+  opacity: 0;
+}
+.hamburger.active span:nth-child(3) {
+  transform: translateY(-9px) rotate(-45deg);
+}
+
+3. JavaScript（ハンバーガーメニュー開閉）
+
+Downloads/lyna-lp.demo/script.js
+document.addEventListener('DOMContentLoaded', function() {
+  const hamburger = document.querySelector('.hamburger');
+  const navList = document.querySelector('.nav-list');
+  if (hamburger &amp;&amp; navList) {
+    hamburger.addEventListener('click', function() {
+      navList.classList.toggle('open');
+      hamburger.classList.toggle('active');
+    });
+    // メニュークリックで自動的に閉じる
+    navList.querySelectorAll('a').forEach(link =&gt; {
+      link.addEventListener('click', () =&gt; {
+        navList.classList.remove('open');
+        hamburger.classList.remove('active');
+      });
+    });
+  }
+});
+
+4. その他のレスポンシブ提案
+商品カードやVOICEカードを縦並びにすることでスマホで見やすく。
+セクションの余白を減らすことで画面幅が狭いときもバランス良く。
+必要に応じて画像の高さやフォントサイズも@mediaで調整。
+この内容を反映すれば、ハンバーガーメニューとスマホ向けの見やすいレイアウトが実現できます。</pre></div>
+</div>
+<div class="cite"><cite class="item-source">出力例</cite></div></div></div>
+        
+        <div class="article-item item_heading " id="item37833" data-item-id="37833" data-item-type="ItemHeading"><h2 class="item-body" id="heading16">【2-4】Step4：AIとJavaScriptで動きをつける(任意)</h2></div>
+        
+        <div class="article-item item_markdown " id="item37834" data-item-id="37834" data-item-type="ItemMarkdown"><h4 id="heading17">目安の学習時間：40分</h4>
+</div>
+        
+        <div class="article-item item_heading " id="item37835" data-item-id="37835" data-item-type="ItemHeading"><h3 class="item-body" id="heading18">AIと作る「トップへ戻る」ボタン</h3></div>
+        
+        <div class="article-item item_rich_text " id="item37836" data-item-id="37836" data-item-type="ItemRichText"><div class="item-body-hbr">LPが長くなると、ユーザーがページの先頭に戻るのが大変になります。<br>
+そこで、多くのWebサイトで採用されている「トップへ戻る」ボタンを実装してみましょう。<br>
+これもAIに相談すれば簡単です。</div></div>
+        
+        <div class="article-item item_html " id="item37837" data-item-id="37837" data-item-type="ItemHtml"><div class="item-body"><div class="card-with-icon point">
+    <span class="bold"><strong>JavaScript未学習の方へ</strong><br></span>
+    <div class="content-area">
+        <p>このセクション【2-4】では、JavaScriptを使ってWebサイトに「動き」を追加するインタラクションを実装します。</p>
+        <ul>
+            <li>JavaScriptをまだ学習していない、あるいは難しいと感じる場合は、<span class="decoration-02">このセクションを一旦スキップしても問題ありません。</span></li>
+            <li>まずはHTMLとCSSだけでデザインカンプの見た目を完成させることを目指しましょう。</li>
+            <li>JavaScriptの学習が進んだ後で、いつでもこの章に戻って挑戦することができます。</li>
+        </ul>
+    </div>
+</div></div></div>
+        
+        <div class="article-item item_rich_text " id="item37838" data-item-id="37838" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">Copilot Chatへの相談例</span><br>
+「Webサイトに『トップへ戻る』ボタンを実装したいです。<br>
+普段は隠れていて、ある程度下にスクロールしたら右下にフワッと表示され、クリックするとページ上部にスムーズにスクロールする、という仕様です。<br>
+この機能を実現するためのHTML, CSS, JavaScriptのコードをそれぞれ生成してください。」<br>
+<br>
+AIが生成したコードをそれぞれのファイルに追記するだけで、リッチなUIを実装できます。<br>
+これにより、Webサイトでよく使われるインタラクションの実装パターンを学びます。</div></div>
+        
+        <div class="article-item item_code " id="item37839" data-item-id="37839" data-item-type="ItemCode"><div class="item-body"><div class="CodeRay">
+  <div class="code"><pre>以下の手順で「トップへ戻る」ボタンを実装できます。
+
+1. HTML（&lt;/body&gt;直前に追加）
+
+&lt;!-- トップへ戻るボタン --&gt;
+&lt;button id="toTopBtn" aria-label="トップへ戻る"&gt;
+  ↑
+&lt;/button&gt;
+
+2. CSS（style.cssの末尾に追加）
+
+/* トップへ戻るボタン */
+#toTopBtn {
+  position: fixed;
+  right: 24px;
+  bottom: 32px;
+  width: 48px;
+  height: 48px;
+  border: none;
+  border-radius: 50%;
+  background: var(--color-accent);
+  color: #fff;
+  font-size: 1.5rem;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+  cursor: pointer;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s, transform 0.3s;
+  z-index: 999;
+}
+#toTopBtn.show {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(0);
+}
+#toTopBtn:hover {
+  background: #bfa02e;
+}
+
+3. JavaScript（script.jsに追加）
+
+document.addEventListener('DOMContentLoaded', function() {
+  // トップへ戻るボタン
+  const toTopBtn = document.getElementById('toTopBtn');
+  window.addEventListener('scroll', function() {
+    if (window.scrollY &gt; 200) {
+      toTopBtn.classList.add('show');
+    } else {
+      toTopBtn.classList.remove('show');
+    }
+  });
+  toTopBtn.addEventListener('click', function() {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+});
+
+これで、スクロール時に右下へ「トップへ戻る」ボタンが表示され、クリックでスムーズにページ上部へ戻ります。
+
+4. HTML（&lt;/body&gt;直前に追加）
+
+&lt;script src="script.js"&gt;&lt;/script&gt;</pre></div>
+</div>
+<div class="cite"><cite class="item-source">Copilot Chat出力例</cite></div></div></div>
+        
+        <div class="article-item item_heading " id="item37840" data-item-id="37840" data-item-type="ItemHeading"><h3 class="item-body" id="heading19">考えてみよう！</h3></div>
+        
+        <div class="article-item item_rich_text " id="item37841" data-item-id="37841" data-item-type="ItemRichText"><div class="item-body-hbr">このLPに、さらに追加するとユーザー体験が向上しそうな「動き（インタラクション）」はありますか？<br>
+AIに「このLPに加えると効果的な、さりげないインタラクションのアイデアを3つ提案して」と相談してみましょう。<br>
+<br>
+可能であれば提案されたアイデアをコードに落とし込むところまでチャレンジしてみましょう。</div></div>
+        
+        <div class="article-item item_rich_text " id="item37842" data-item-id="37842" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">解答例</span><br>
+AIの回答案：</div></div>
+        
+        <div class="article-item item_html " id="item37843" data-item-id="37843" data-item-type="ItemHtml"><div class="item-body"><ol>
+  <li><span class="decoration-01">画像の遅延読み込み（Lazy Loading）</span>: 画面に表示されるまで画像の読み込みを遅らせ、初期表示を高速化する。</li>
+  <li><span class="decoration-01">スクロールに応じたフェードイン効果</span>: 各セクションが画面に入ってきたときに、フワッと表示される効果。</li>
+  <li><span class="decoration-01">ボタンホバー時のエフェクト</span>: ONLINE STOREのボタンなどにマウスが乗ると、少しだけ浮き上がるような影（box-shadow）をつける。</li>
+</ol>
+</div></div>
+        
+        <div class="article-item item_heading " id="item37844" data-item-id="37844" data-item-type="ItemHeading"><h2 class="item-body" id="heading20">【2-5】2章 -章末課題- [2カラムレイアウトのセクション追加]</h2></div>
+        
+        <div class="article-item item_markdown " id="item37845" data-item-id="37845" data-item-type="ItemMarkdown"><h4 id="heading21">目安の学習時間：30分</h4>
+</div>
+        
+        <div class="article-item item_heading " id="item37847" data-item-id="37847" data-item-type="ItemHeading"><h3 class="item-body" id="heading22">問題</h3></div>
+        
+        <div class="article-item item_rich_text " id="item37848" data-item-id="37848" data-item-type="ItemRichText"><div class="item-body-hbr">LPの実装、お疲れ様です。クライアント（LYNAの担当者）から、ブランドの姿勢をより伝えるため、<span class="decoration-02">「OUR COMMITMENT（私たちの約束）」というセクションを追加してほしい</span>、と追加依頼が来ました。<br>
+<br>
+以下のテキストと画像を使い、<span class="decoration-02">左側にテキスト、右側に画像を配置する「2カラムレイアウト」</span>で実装してください。<br>
+AIと協力し、HTMLとCSSを追記してこのセクションを実装しましょう。</div></div>
+        
+        <div class="article-item item_rich_text " id="item37849" data-item-id="37849" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">クライアントからの支給テキスト</span></div></div>
+        
+        <div class="article-item item_html " id="item37850" data-item-id="37850" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li><span class="decoration-01">見出し</span>: Our Commitment</li>
+  <li><span class="decoration-01">タイトル</span>: 一着に、未来への敬意を込めて。</li>
+  <li><span class="decoration-01">本文</span>:<br>
+    私たちは、ただ美しいだけの服は作りません。生産の過程で環境への負荷を最小限に抑え、作り手の生活を持続可能にすること。そして、その一着があなたの日常を長く、豊かに彩ること。LYNAの服作りは、未来の地球と、服を着るあなた自身への敬意から生まれています。
+  </li>
+</ul>
+</div></div>
+        
+        <div class="article-item item_rich_text " id="item37851" data-item-id="37851" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">使用画像</span></div></div>
+        
+        <div class="article-item item_image " id="item37852" data-item-id="37852" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/037/852/medium/c498f2dd-06ec-454d-b808-71994d0e7273.png?1754093998" title=""><img class="img-responsive item-image" alt=" (37852)" data-reference="" src="../../_assets/189295c8ea.webp" width="640" height="349"></a><h4 id="heading23"></h4></div></div>
+        
+        <div class="article-item item_heading " id="item37853" data-item-id="37853" data-item-type="ItemHeading"><h3 class="item-body" id="heading24">解答手順</h3></div>
+        
+        <div class="article-item item_html " id="item37854" data-item-id="37854" data-item-type="ItemHtml"><div class="item-body"><ol>
+  <li>
+    <span class="decoration-01">HTMLの追加</span>:<br>
+    <span class="decoration-02">index.html</span> の適切な場所（例: <span class="decoration-02">VOICE</span>セクションの上）に、<span class="decoration-02">OUR COMMITMENTセクション</span> というコメントを記述します。GitHub Copilotに、支給されたテキスト（見出し、タイトル、本文）と画像を配置するための基本的なHTML構造を生成させます。
+  </li>
+  <li>
+    <span class="decoration-01">CSSでのレイアウト作成</span>:<br>
+    Copilot Chatを開き、「<span class="decoration-02">.commitment-section</span> というクラスを新しく作り、Flexboxを使って中のテキストエリアと画像エリアが横並びになるようにスタイリングしてください。カラム間の余白も設定してください」のように、具体的なレイアウトを指示します。
+  </li>
+  <li>
+    <span class="decoration-01">スタイルの微調整</span>:<br>
+    生成されたCSSを <span class="decoration-02">style.css</span> に追記します。AIに「テキストが見出し、タイトル、本文の順に並ぶようにしてください」や「テキストエリア全体が、画像の上下中央に配置されるようにしてください」といった指示を加え、デザインを整えます。
+  </li>
+  <li>
+    <span class="decoration-01">ブラウザで確認</span>:<br>
+    ブラウザで表示を確認し、指定されたテキストと画像が意図通りに左右の2カラムで表示されているか確かめて、完成です。
+  </li>
+</ol>
+</div></div>
+        
+        <div class="article-item item_rich_text " id="item37855" data-item-id="37855" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">解答例</span></div></div>
+        
+        <div class="article-item item_code " id="item37856" data-item-id="37856" data-item-type="ItemCode"><div class="item-body"><div class="CodeRay">
+  <div class="code"><pre>1. HTMLの追加
+index.htmlのVOICEセクションの上など、適切な場所に以下を追加します。
+
+&lt;!-- OUR COMMITMENTセクション --&gt;
+&lt;section class="commitment-section"&gt;
+    &lt;div class="commitment-inner"&gt;
+        &lt;div class="commitment-text"&gt;
+            &lt;h2&gt;Our Commitment&lt;/h2&gt;
+            &lt;h3&gt;一着に、未来への敬意を込めて。&lt;/h3&gt;
+            &lt;p&gt;
+              私たちは、ただ美しいだけの服は作りません。生産の過程で環境への負荷を最小限に抑え、
+              作り手の生活を持続可能にすること。そして、その一着があなたの日常を長く、豊かに彩ること。
+              LYNAの服作りは、未来の地球と、服を着るあなた自身への敬意から生まれています。
+            &lt;/p&gt;
+        &lt;/div&gt;
+        &lt;div class="commitment-image"&gt;
+            &lt;img src="image/commitment.jpg" alt="サステナビリティをイメージした写真"&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/section&gt;
+
+
+2. CSSの追加
+style.cssの末尾に以下を追加してください。
+
+/* OUR COMMITMENTセクション */
+.commitment-section {
+  max-width: 1100px;
+  margin: 0 auto 64px auto;
+  padding: 0 24px;
+}
+
+.commitment-inner {
+  display: flex;
+  gap: 48px;
+  align-items: center;
+}
+
+.commitment-text {
+  flex: 1.2;
+}
+
+.commitment-text h2 {
+  font-family: var(--font-family-heading);
+  font-size: var(--font-size-lg);
+  letter-spacing: 0.15em;
+  margin-bottom: 16px;
+}
+
+.commitment-text h3 {
+  font-size: 1.25rem;
+  margin-bottom: 16px;
+  font-weight: normal;
+  letter-spacing: 0.08em;
+}
+
+.commitment-text p {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-primary);
+}
+
+.commitment-image {
+  flex: 1;
+  min-width: 260px;
+}
+
+.commitment-image img {
+  width: 100%;
+  border-radius: 8px;
+  object-fit: cover;
+}
+
+/* レスポンシブ対応 */
+@media (max-width: 900px) {
+  .commitment-inner {
+    flex-direction: column;
+    gap: 24px;
+    align-items: flex-start;
+  }
+  .commitment-image {
+    width: 100%;
+  }</pre></div>
+</div>
+<div class="cite"><cite class="item-source">解答例</cite></div></div></div>
+        
+        <div class="article-item item_rich_text " id="item37857" data-item-id="37857" data-item-type="ItemRichText"><div class="item-body-hbr">ここまで完成したら、フォルダに画像を入れて一度制作物を確認してみましょう！<br>
+おそらくUIの細かい部分が再現できていないことに気づくと思います。</div></div>
+        
+        <div class="article-item item_rich_text " id="item37858" data-item-id="37858" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">制作例</span></div></div>
+        
+        <div class="article-item item_link " id="item37859" data-item-id="37859" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=UiDIh&amp;item_id=37859" rel="nofollow noopener noreferrer" target="_blank">lyna-lp.demo.zip</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="lyna-lp.demo.zip" data-reference="https://www.dropbox.com/scl/fi/u3i993gzpgfx2w3ir085f/lyna-lp.demo.zip?rlkey=y3haet6z72ifdnq61fuenxgxs&amp;st=gld9h1p7&amp;dl=0" src="../../_assets/8068ac7adc.webp" width="75" height="75"></div><div class="media-body"><div class="item-body"></div></div></div></div></div>
+        
+        <div class="article-item item_rich_text " id="item37860" data-item-id="37860" data-item-type="ItemRichText"><div class="item-body-hbr">ここから先は手動での修正作業がメインになっていきます！<br>
+今までの学習事項を活用して、完璧なLPページを再現してみましょう！（工数2~3時間）<br>
+<br>
+<span class="decoration-01">制作例</span></div></div>
+        
+        <div class="article-item item_link " id="item37861" data-item-id="37861" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=UiDIh&amp;item_id=37861" rel="nofollow noopener noreferrer" target="_blank">lyna-lp.revised.zip</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="lyna-lp.revised.zip" data-reference="https://www.dropbox.com/scl/fi/v363aqwqxy79ci288z84b/lyna-lp.revised.zip?rlkey=gwsrqsu7si4se4wl4djhvmaoa&amp;st=0n12kduh&amp;dl=0" src="../../_assets/8068ac7adc.webp" width="75" height="75"></div><div class="media-body"><div class="item-body"></div></div></div></div></div>
+        
+        <div class="article-item item_rich_text " id="item37862" data-item-id="37862" data-item-type="ItemRichText"><div class="item-body-hbr">これで「2章：やってみよう！AI活用LP実装ワークフロー」の解説を終わります。<br>
+次の章に進みましょう。</div></div>
+        
+        <div class="article-item item_html " id="item37864" data-item-id="37864" data-item-type="ItemHtml"><div class="item-body"><div class="pagenation-buttons" style="justify-content: space-between;">
+  <a href="https://learn.webcoach.jp/generative-ai/AI_coding/%E6%95%99%E6%9D%905%20%E5%AE%9F%E8%B7%B5%EF%BC%81AI%E6%B4%BB%E7%94%A8Web%E3%82%B5%E3%82%A4%E3%83%88%E5%AE%9F%E8%A3%85%E3%81%A8%E6%9C%80%E9%81%A9%E5%8C%96/FBTP7" class="pagenation-buttons_prev"><img src="../../_assets/47498cfebf.svg" class="pagenation-buttons_icon">前の章に戻る</a>
+  <a href="https://learn.webcoach.jp/generative-ai/AI_coding/%E6%95%99%E6%9D%905%20%E5%AE%9F%E8%B7%B5%EF%BC%81AI%E6%B4%BB%E7%94%A8Web%E3%82%B5%E3%82%A4%E3%83%88%E5%AE%9F%E8%A3%85%E3%81%A8%E6%9C%80%E9%81%A9%E5%8C%96/DJIFh" class="pagenation-buttons_next">次の章に進む<img src="../../_assets/47498cfebf.svg" class="pagenation-buttons_icon"></a>
+</div></div></div>
+        
+        
+        
+        <div class="back-to-roadmap mb-4 text-center"></div>
+      </div>
+    </div>
+    
+    <div class="lightbox-modal" id="lightboxModal">
+      <img src="" alt="">
+    </div>
+    
+    <div id="modal" class="fixed-menu-modal">
+      <div class="fixed-menu-modal-content">
+        <div class="index mb-3" style="background-color: #FDF5E8;">
+          <div>
+            <div class="fw-light">INDEX</div>
+            <div class="h3">目次</div>
+          </div>
+          <div class="toc"><ul><li><a href="#heading0" class="tocLink">2章 やってみよう！AI活用LP実装ワークフロー</a><ul><li><a href="#heading1" class="tocLink">この章の目安学習時間：180分</a></li><li><a href="#heading2" class="tocLink">この章で到達できるゴール：</a></li></ul></li><li><a href="#heading3" class="tocLink">【2-1】Step1：AIと実装の最終準備</a><ul><li><a href="#heading4" class="tocLink">目安の学習時間：20分</a></li></ul><ul><li><a href="#heading5" class="tocLink">開発環境とファイルの準備</a></li><li><a href="#heading6" class="tocLink">AIとスタイルガイドを定義する</a></li></ul></li><li><a href="#heading7" class="tocLink">【2-2】Step2：AIとHTMLの骨格を組む</a><ul><li><a href="#heading8" class="tocLink">目安の学習時間：30分</a></li></ul><ul><li><a href="#heading9" class="tocLink">コメント駆動でHTML構造を生成！</a><ul><li><a href="#heading10" class="tocLink"></a></li></ul></li><li><a href="#heading11" class="tocLink">練習問題</a></li></ul></li><li><a href="#heading12" class="tocLink">【2-3】Step3：AIとCSSでデザインを再現する！</a><ul><li><a href="#heading13" class="tocLink">目安の学習時間：60分</a></li></ul><ul><li><a href="#heading14" class="tocLink">Copilot Chatで基本スタイルを当てる</a></li><li><a href="#heading15" class="tocLink">レスポンシブ対応もAIに相談しよう</a></li></ul></li><li><a href="#heading16" class="tocLink">【2-4】Step4：AIとJavaScriptで動きをつける(任意)</a><ul><li><a href="#heading17" class="tocLink">目安の学習時間：40分</a></li></ul><ul><li><a href="#heading18" class="tocLink">AIと作る「トップへ戻る」ボタン</a></li><li><a href="#heading19" class="tocLink">考えてみよう！</a></li></ul></li><li><a href="#heading20" class="tocLink">【2-5】2章 -章末課題- [2カラムレイアウトのセクション追加]</a><ul><li><a href="#heading21" class="tocLink">目安の学習時間：30分</a></li></ul><ul><li><a href="#heading22" class="tocLink">問題</a><ul><li><a href="#heading23" class="tocLink"></a></li></ul></li><li><a href="#heading24" class="tocLink">解答手順</a></li></ul></li></ul></div>
+        </div>
+        
+        <!-- ボタン類 -->
+        <div id="fixed-menu_buttons" class="fixed-menu_buttons">
+  <a href="https://learn.webcoach.jp/generative-ai/AI_coding/%E6%95%99%E6%9D%905%20%E5%AE%9F%E8%B7%B5%EF%BC%81AI%E6%B4%BB%E7%94%A8Web%E3%82%B5%E3%82%A4%E3%83%88%E5%AE%9F%E8%A3%85%E3%81%A8%E6%9C%80%E9%81%A9%E5%8C%96/FBTP7" class="pagenation-buttons_prev"><img src="../../_assets/47498cfebf.svg" class="pagenation-buttons_icon">前の章に戻る</a>
+  <a href="https://learn.webcoach.jp/generative-ai/AI_coding/%E6%95%99%E6%9D%905%20%E5%AE%9F%E8%B7%B5%EF%BC%81AI%E6%B4%BB%E7%94%A8Web%E3%82%B5%E3%82%A4%E3%83%88%E5%AE%9F%E8%A3%85%E3%81%A8%E6%9C%80%E9%81%A9%E5%8C%96/DJIFh" class="pagenation-buttons_next">次の章に進む<img src="../../_assets/47498cfebf.svg" class="pagenation-buttons_icon"></a>
+</div>
+        
+        <div class="back-to-roadmap text-center"></div>
+      </div>
+    </div>
+    
+    <button id="toggleBtn" class="floating-btn">
+      <img id="iconOpen" src="../../_assets/5feefcfc55.svg" alt="メニューを開く">
+      <img id="iconClose" src="../../_assets/ae4a1129c9.svg" alt="メニューを閉じる" style="display:none;">
+    </button>
+  </div>
+</div>
+</div>
+<!-- <script src="https://cdn.clipkit.co/clipkit/javascripts/item-shopify-1.0.js?v=v15.9.0-20260915" async></script> -->
+            </main></div>
+        
+
+    
+
+    <div class="p-5" style="background-color: #B73E3D; color: white; height: 300px;">
+        <div class="">
+            <div class="h4 ps-3" style="border-left: 5px solid white;">WEBCOACH | キャリアチェンジまでの全てを学ぶマンツーマンWEBスクール</div>
+            <ul class="nav flex-column m-0 p-3 fw-light">
+                <li class="nav-item mb-2"><a href="https://www.webcoach.jp/" target="_blank">WEBCOACH | 公式HP</a></li>
+                <li class="nav-item mb-2"><a href="https://www.instagram.com/webcoach_officials/" target="_blank">WEBCOACH | 公式Instagram</a></li>
+                <li class="nav-item mb-2"><a href="https://vectorinc.co.jp/groupservice/webcoach-career/" target="_blank">WEBCOACH 公式メディア | WEBCOACH career</a></li>
+            </ul>
+        </div>
+        <div class="text-center">
+            <small>© 2020 by WEBCOACH</small>
+        </div>
+    </div>
+
+    
+
+    <!-- bodyタグ内の下部に挿入されます -->
+
+
+    <!-- BootstrapのCDNでのjs読み込み -->
+    
+
+    <!-- シンタックスハイライトの生成 -->
+    
+    
+
+    <!-- 目次の生成 -->
+    
+
+    <!-- ブックマークの生成 -->
+    
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="ck-icon-arrow-down" viewBox="0 0 1792 1792"><path d="M1675 832q0 53-37 90l-651 652q-39 37-91 37-53 0-90-37l-651-652q-38-36-38-90 0-53 38-91l74-75q39-37 91-37 53 0 90 37l294 294v-704q0-52 38-90t90-38h128q52 0 90 38t38 90v704l294-294q37-37 90-37 52 0 91 37l75 75q37 39 37 91z"></path></symbol><symbol id="ck-icon-arrow-up" viewBox="0 0 1792 1792"><path d="M1675 971q0 51-37 90l-75 75q-38 38-91 38-54 0-90-38l-294-293v704q0 52-37.5 84.5t-90.5 32.5h-128q-53 0-90.5-32.5t-37.5-84.5v-704l-294 293q-36 38-90 38t-90-38l-75-75q-38-38-38-90 0-53 38-91l651-651q35-37 90-37 54 0 91 37l651 651q37 39 37 91z"></path></symbol><symbol id="ck-icon-calendar" viewBox="0 0 1792 1792"><path d="M192 1664h288v-288h-288v288zm352 0h320v-288h-320v288zm-352-352h288v-320h-288v320zm352 0h320v-320h-320v320zm-352-384h288v-288h-288v288zm736 736h320v-288h-320v288zm-384-736h320v-288h-320v288zm768 736h288v-288h-288v288zm-384-352h320v-320h-320v320zm-352-864v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm736 864h288v-320h-288v320zm-384-384h320v-288h-320v288zm384 0h288v-288h-288v288zm32-480v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm384-64v1280q0 52-38 90t-90 38h-1408q-52 0-90-38t-38-90v-1280q0-52 38-90t90-38h128v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h384v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h128q52 0 90 38t38 90z"></path></symbol><symbol id="ck-icon-chevron-left" viewBox="0 0 1792 1792"><path d="M1427 301l-531 531 531 531q19 19 19 45t-19 45l-166 166q-19 19-45 19t-45-19l-742-742q-19-19-19-45t19-45l742-742q19-19 45-19t45 19l166 166q19 19 19 45t-19 45z"></path></symbol><symbol id="ck-icon-chevron-right" viewBox="0 0 1792 1792"><path d="M1363 877l-742 742q-19 19-45 19t-45-19l-166-166q-19-19-19-45t19-45l531-531-531-531q-19-19-19-45t19-45l166-166q19-19 45-19t45 19l742 742q19 19 19 45t-19 45z"></path></symbol><symbol id="ck-icon-clock-o" viewBox="0 0 1792 1792"><path d="M1024 544v448q0 14-9 23t-23 9h-320q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h224v-352q0-14 9-23t23-9h64q14 0 23 9t9 23zm416 352q0-148-73-273t-198-198-273-73-273 73-198 198-73 273 73 273 198 198 273 73 273-73 198-198 73-273zm224 0q0 209-103 385.5t-279.5 279.5-385.5 103-385.5-103-279.5-279.5-103-385.5 103-385.5 279.5-279.5 385.5-103 385.5 103 279.5 279.5 103 385.5z"></path></symbol><symbol id="ck-icon-trash" viewBox="0 0 1792 1792"><path d="M704 1376v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm-544-992h448l-48-117q-7-9-17-11h-317q-10 2-17 11zm928 32v64q0 14-9 23t-23 9h-96v948q0 83-47 143.5t-113 60.5h-832q-66 0-113-58.5t-47-141.5v-952h-96q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h309l70-167q15-37 54-63t79-26h320q40 0 79 26t54 63l70 167h309q14 0 23 9t9 23z"></path></symbol><symbol id="ck-icon-undo" viewBox="0 0 1792 1792"><path d="M1664 896q0 156-61 298t-164 245-245 164-298 61q-172 0-327-72.5t-264-204.5q-7-10-6.5-22.5t8.5-20.5l137-138q10-9 25-9 16 2 23 12 73 95 179 147t225 52q104 0 198.5-40.5t163.5-109.5 109.5-163.5 40.5-198.5-40.5-198.5-109.5-163.5-163.5-109.5-198.5-40.5q-98 0-188 35.5t-160 101.5l137 138q31 30 14 69-17 40-59 40h-448q-26 0-45-19t-19-45v-448q0-42 40-59 39-17 69 14l130 129q107-101 244.5-156.5t284.5-55.5q156 0 298 61t245 164 164 245 61 298z"></path></symbol></svg>
+
+<!--Clipkit(R) v15.9.0-20260915 Copyright (C) 2026 VECTOR Inc.-->
+
+
+
+
+
+<div class="dynmsg alert alert-info" style="display:none;"><button class="close"><span class="fa fa-times"></span></button><div class="message"></div></div><div class="dynmsg alert alert-danger" style="display:none;"><button class="close"><span class="fa fa-times"></span></button><div class="message"></div></div></body></html>

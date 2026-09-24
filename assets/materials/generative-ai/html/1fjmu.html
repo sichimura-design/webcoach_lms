@@ -1,0 +1,694 @@
+<!DOCTYPE html>
+<!-- clipkit-source-url: https://learn.webcoach.jp/generative-ai/passport/1FJMu -->
+<!-- clipkit-fetched-at: 2026-09-17T11:14:00.275Z -->
+<html lang="ja"><head>
+    <!-- headタグ内の上部に挿入されます -->
+
+    <meta charset="UTF-8">
+    <title>1章 AIの基本と仕組み - WEBCOACH</title>
+
+    <!-- resetcssのCDNでのCSS読み込み -->
+    <link rel="stylesheet" href="../../_assets/17f8e278dc.css">
+
+    <!-- fontawesomeのCDNでのCSS読み込み -->
+    <link rel="stylesheet" href="../../_assets/799aeb25cc.css">
+
+    <!-- BootstrapのCDNでのCSS読み込み -->
+    <link href="../../_assets/7633b7c0c9.css" rel="stylesheet">
+
+    <!-- highlight.jsの読み込み -->
+    <link rel="stylesheet" href="../../_assets/e31ce2dd8c.css">
+
+    <!-- カスタムCSS -->
+    <link rel="stylesheet" href="../../_assets/c533dd7750.css">
+
+    <!-- clipkitデフォルトのCSS -->
+    <!--<link rel="stylesheet" media="screen" href="https://cdn.clipkit.co/clipkit/stylesheets/application-1.0.css?v=v15.9.0-20260915">-->
+
+    <!-- jQuery -->
+    
+
+    <!-- カスタムJS -->
+    
+    
+
+    <!-- clipkitデフォルトのJS -->
+    
+
+    <!-- フォント -->
+    <link rel="preconnect" href="https://fonts.googleapis.com/">
+    <link rel="preconnect" href="https://fonts.gstatic.com/">
+    <link href="../../_assets/8b5713f1fc.css" rel="stylesheet">
+
+    <link href="../../_assets/b83ae8ba65.webp" rel="shortcut icon" type="image/vnd.microsoft.icon">
+    <link rel="apple-touch-icon" href="../../_assets/ea0aba163d.webp">
+    <link rel="alternate" type="application/rss+xml" href="https://learn.webcoach.jp/media.rss" title="WEBCOACH">
+    
+<link rel="canonical" href="https://learn.webcoach.jp/generative-ai/passport/1FJMu">
+
+<meta name="description" content="">
+<meta name="keywords" content="">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:domain" content="learn.webcoach.jp">
+<meta name="twitter:title" content="1章 AIの基本と仕組み - WEBCOACH">
+<meta name="twitter:image" content="https://cdn.clipkit.co/tenants/589/item_images/images/000/046/140/medium/e1696c05-59e4-4c76-be46-1a5454c937d4.png?1771243170">
+<meta name="twitter:description" content="">
+<meta property="og:site_name" content="WEBCOACH">
+<meta property="og:title" content="1章 AIの基本と仕組み">
+<meta property="og:description" content="">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://learn.webcoach.jp/generative-ai/passport/1FJMu">
+<meta property="og:image" content="https://cdn.clipkit.co/tenants/589/item_images/images/000/046/140/large/e1696c05-59e4-4c76-be46-1a5454c937d4.png?1771243170">
+
+
+    <!-- headタグ内の下部に挿入されます -->
+
+
+<meta name="csrf-param" content="authenticity_token">
+<meta name="csrf-token" content="gHF0WpAF7fDPIykV8tEfEACw3mQ7BZ-Eb4ztrwhmnMg00BDswl-Dp2Ort8Q4Px8bHQeR7bSc1Wexrk7R9XdVjA"><meta content="" name="routing-root-path"><meta content="media" name="site-name"><meta content="ja" name="i18n-default-locale"><meta content="ja" name="i18n-locale"><style data-clipkit-snapshot="force-visible">[data-aos],.reveal,.wow,.fade-in,.animate__animated,.js-reveal{opacity:1!important;transform:none!important;visibility:visible!important;animation:none!important;transition:none!important}</style></head>
+
+<body class="device-desktop" style="visibility: visible;">
+    <!-- bodyタグ内の上部に挿入されます -->
+
+
+    <!-- サイドバーとコンテンツのコンテナ -->
+    <div class="d-flex flex-row w-100 mb-5" style="min-height: calc(100vh - 400px);">
+
+        <!-- サイドバー -->
+        <!--<nav id="side-bar" class="d-flex flex-column fixed-top" style="width: 250px;">-->
+        <!--    <h1 class="d-block w-100 text-center">-->
+        <!--        <a class="d-block" href="/">-->
+        <!--            <img class="mw-100 p-3" src="https://cdn.clipkit.co/tenants/589/sites/logos/000/000/001/logo_sm/a8defd4b-1cc7-433b-a61c-08e7db0e3e4f.png?1714459367" alt="WEBCOACH">-->
+        <!--        </a>-->
+        <!--    </h1>-->
+        <!--    <ul class="nav flex-column m-0 p-3 fw-bold">-->
+        <!--        <li id="sidebar-top" class="nav-item mb-2" style="display: none;"><a href="/"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;" src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/233/original/home.png?1715353458">-->
+        <!--                <div>ホーム</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-knowledges" class="nav-item mb-2" style="display: none;"><a href="/knowledges"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;" src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/232/original/book.png?1715353458">-->
+        <!--                <div>学習の心得</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-web-designs" class="nav-item mb-2" style="display: none;"><a href="/web-designs"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/231/original/design.png?1715353457">-->
+        <!--                <div>WEBデザイン</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-web-marketing" class="nav-item mb-2" style="display: none;"><a href="/web-marketings"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/230/original/marketing.png?1715353457">-->
+        <!--                <div>WEBマーケティング</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-codings" class="nav-item mb-2" style="display: none;"><a href="/codings"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/229/original/website.png?1715353457">-->
+        <!--                <div>WEBサイト構築</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-business-skills" class="nav-item mb-2" style="display: none;"><a href="/business-skills"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/228/original/business.png?1715353456">-->
+        <!--                <div>ビジネススキル</div>-->
+        <!--            </a></li>-->
+        <!--    </ul>-->
+        <!--</nav>-->
+
+        <!-- コンテンツ -->
+        <!--<main class="ms-auto" style="width: calc(100vw - 250px);">-->
+        <main class="ms-auto" style="width: calc(100vw);">
+            <div id="sb-site">
+                
+
+
+<div class="container">
+  <div class="row">
+    <div class="article">
+      <div class="mb-3 text-light" style="
+        height: 180px;
+        background-image: url(&quot;../../_assets/e1d58e2b8a.webp&quot;);
+        background-repeat: no-repeat;
+        background-size: cover;
+        display: flex;
+        align-items: flex-end;
+      ">
+        <div style="
+          margin: 0 0 30px 30px;
+        ">
+          <div>生成AIパスポート試験対策講座</div>
+
+          <div class="fw-bold h2">1章 AIの基本と仕組み</div>
+        </div>
+      </div>
+      <div class="article-content">
+        <!-- 目次 -->
+        <div class="index mb-3" style="background-color: #FDF5E8;">
+          <div>
+            <div class="fw-light">INDEX</div>
+            <div class="h3">目次</div>
+          </div>
+          <div class="toc"><ul><li><a href="#heading0" class="tocLink">1章 AIの基本と仕組み</a><ul><li><a href="#heading1" class="tocLink">この章の目安学習時間：180分</a></li><li><a href="#heading2" class="tocLink">この章で到達できるゴール：</a></li></ul></li><li><a href="#heading3" class="tocLink">【1-1】AIの定義と研究の歴史</a><ul><li><a href="#heading4" class="tocLink">目安の学習時間：30分</a></li></ul><ul><li><a href="#heading5" class="tocLink">AIの定義と分類</a></li><li><a href="#heading6" class="tocLink">考えてみよう！：知能の定義</a><ul><li><a href="#heading7" class="tocLink">解答例</a></li></ul></li><li><a href="#heading8" class="tocLink">練習問題：AIの定義</a><ul><li><a href="#heading9" class="tocLink">問題</a></li><li><a href="#heading10" class="tocLink">解答</a></li></ul></li></ul></li><li><a href="#heading11" class="tocLink">【1-2】知能をもたらす仕組み</a><ul><li><a href="#heading12" class="tocLink">目安の学習時間：60分</a></li></ul><ul><li><a href="#heading13" class="tocLink">ルールベースと機械学習</a><ul><li><a href="#heading14" class="tocLink"></a></li></ul></li><li><a href="#heading15" class="tocLink">機械学習の3つの手法</a></li><li><a href="#heading16" class="tocLink">練習問題：学習手法の区別</a><ul><li><a href="#heading17" class="tocLink">問題</a></li><li><a href="#heading18" class="tocLink">解答</a></li></ul></li></ul></li><li><a href="#heading19" class="tocLink">【1-3】脳を模したネットワーク</a><ul><li><a href="#heading20" class="tocLink">目安の学習時間：60分</a></li></ul><ul><li><a href="#heading21" class="tocLink">ニューラルネットワークの基礎</a><ul><li><a href="#heading22" class="tocLink"></a></li></ul></li></ul></li><li><a href="#heading23" class="tocLink">ディープラーニングの進化</a><ul><li><a href="#heading24" class="tocLink"></a></li></ul></li><li><a href="#heading25" class="tocLink">【1-4】AIの歴史と発展段階</a><ul><li><a href="#heading26" class="tocLink">目安の学習時間：30分</a></li></ul><ul><li><a href="#heading27" class="tocLink">AIブームの変遷</a><ul><li><a href="#heading28" class="tocLink"></a></li></ul></li><li><a href="#heading29" class="tocLink">シンギュラリティへの道</a></li><li><a href="#heading30" class="tocLink">【1-5】1章 -章末課題- AIの基礎知識</a><ul><li><a href="#heading31" class="tocLink">問題</a></li><li><a href="#heading32" class="tocLink">解答・解説</a></li></ul></li></ul></li></ul></div>
+        </div>
+        
+        <div class="back-to-roadmap mb-4 text-center"></div>
+
+        <!-- コンテンツ -->
+        
+        
+        <div class="article-item item_html " id="item46073" data-item-id="46073" data-item-type="ItemHtml"><div class="item-body"><div class="pagenation-buttons" style="justify-content: space-between;">
+  <a href="https://learn.webcoach.jp/generative-ai/passport/xv8Dp" class="pagenation-buttons_prev"><img src="../../_assets/47498cfebf.svg" class="pagenation-buttons_icon">前の章に戻る</a>
+  <a href="https://learn.webcoach.jp/generative-ai/passport/ttV9W" class="pagenation-buttons_next">次の章に進む<img src="../../_assets/47498cfebf.svg" class="pagenation-buttons_icon"></a>
+</div>
+</div></div>
+        
+        <div class="article-item item_heading " id="item46114" data-item-id="46114" data-item-type="ItemHeading"><h2 class="item-body" id="heading0">1章 AIの基本と仕組み</h2></div>
+        
+        <div class="article-item item_markdown " id="item46115" data-item-id="46115" data-item-type="ItemMarkdown"><h4 id="heading1">この章の目安学習時間：180分</h4>
+</div>
+        
+        <div class="article-item item_markdown " id="item46116" data-item-id="46116" data-item-type="ItemMarkdown"><h4 id="heading2">この章で到達できるゴール：</h4>
+</div>
+        
+        <div class="article-item item_markdown " id="item46117" data-item-id="46117" data-item-type="ItemMarkdown"><ul>
+  <li>AIの定義と機械学習の基本原理を理解する</li>
+  <li>ニューラルネットワークとディープラーニングの構造を把握する</li>
+</ul>
+</div>
+        
+        <div class="article-item item_heading " id="item46118" data-item-id="46118" data-item-type="ItemHeading"><h2 class="item-body" id="heading3">【1-1】AIの定義と研究の歴史</h2></div>
+        
+        <div class="article-item item_markdown " id="item46119" data-item-id="46119" data-item-type="ItemMarkdown"><h4 id="heading4">目安の学習時間：30分</h4>
+</div>
+        
+        <div class="article-item item_heading " id="item46120" data-item-id="46120" data-item-type="ItemHeading"><h3 class="item-body" id="heading5">AIの定義と分類</h3></div>
+        
+        <div class="article-item item_rich_text " id="item46121" data-item-id="46121" data-item-type="ItemRichText"><div class="item-body-hbr">現代社会で欠かせない存在となった<span class="decoration-01"><span class="decoration-02">AI（人工知能）</span></span>。<br>
+その歴史は、1956年に開催された<span class="decoration-01"><span class="decoration-02">ダートマス会議</span></span>から始まりました。<br>
+この会議で、ジョン・マッカーシー教授によって初めて「人工知能」という言葉が提唱されたのです。</div></div>
+        
+        <div class="article-item item_rich_text " id="item46122" data-item-id="46122" data-item-type="ItemRichText"><div class="item-body-hbr"><br>
+AIと混同されやすいものに「ロボット」がありますが、<span class="decoration-01"><span class="decoration-02">AIとロボットの区別</span></span>は明確です。<br>
+ロボットは「物理的な体」を持つ機械を指すのに対し、AIは「知的な処理を行うプログラム」を指します。<br>
+いわば、ロボットが「体」なら、AIは「頭脳」の役割を果たします。</div></div>
+        
+        <div class="article-item item_rich_text " id="item46123" data-item-id="46123" data-item-type="ItemRichText"><div class="item-body-hbr"><br>
+AIの研究が進むにつれ、かつては「知的だ」と思われていた技術が、仕組みが解明され普及すると、当たり前の技術（自動化の一部）と見なされるようになります。<br>
+この現象を<span class="decoration-01"><span class="decoration-02">AI効果</span></span>と呼びます。</div></div>
+        
+        <div class="article-item item_rich_text " id="item46124" data-item-id="46124" data-item-type="ItemRichText"><div class="item-body-hbr"><br>
+また、AIはその能力に応じて、単純な制御から複雑な学習まで<span class="decoration-01"><span class="decoration-02">「AIの4つのレベル」</span></span>に分類されることが一般的です。</div></div>
+        
+        <div class="article-item item_html " id="item46125" data-item-id="46125" data-item-type="ItemHtml"><div class="item-body"><table class="simple">
+<tbody>
+</tbody><thead>
+<tr>
+<th scope="col">
+<div>
+<div>レベル</div>
+</div>
+</th>
+<th scope="col">
+<div>
+<div>特徴</div>
+</div>
+</th>
+<th scope="col">
+<div>
+<div>具体例</div>
+</div>
+</th>
+</tr>
+</thead>
+<tbody><tr>
+<th scope="row">
+<div>
+<div>レベル1</div>
+</div>
+</th>
+<td>
+<div>
+<div>単純な制御</div>
+</div>
+</td>
+<td>
+<div>
+<div>エアコンの温度調節</div>
+</div>
+</td>
+</tr>
+<tr>
+<th scope="row">
+<div>
+<div>レベル2</div>
+</div>
+</th>
+<td>
+<div>
+<div>古典的なAI（ルールベース）</div>
+</div>
+</td>
+<td>
+<div>
+<div>掃除ロボット、診断ゲーム</div>
+</div>
+</td>
+</tr>
+<tr>
+<th scope="row">
+<div>
+<div>レベル3</div>
+</div>
+</th>
+<td>
+<div>
+<div>機械学習</div>
+</div>
+</td>
+<td>
+<div>
+<div>検索エンジンの予測表示</div>
+</div>
+</td>
+</tr>
+<tr>
+<th scope="row">
+<div>
+<div>レベル4</div>
+</div>
+</th>
+<td>
+<div>
+<div>ディープラーニング</div>
+</div>
+</td>
+<td>
+<div>
+<div>画像生成、翻訳AI</div>
+</div>
+</td>
+</tr>
+</tbody>
+</table></div></div>
+        
+        <div class="article-item item_heading " id="item46126" data-item-id="46126" data-item-type="ItemHeading"><h3 class="item-body" id="heading6">考えてみよう！：知能の定義</h3></div>
+        
+        <div class="article-item item_rich_text " id="item46127" data-item-id="46127" data-item-type="ItemRichText"><div class="item-body-hbr">コンピュータが「知能を持っている」と判断される基準にはどのようなものがあるか考えてみましょう。</div></div>
+        
+        <div class="article-item item_markdown " id="item46128" data-item-id="46128" data-item-type="ItemMarkdown"><h4 id="heading7">解答例</h4>
+</div>
+        
+        <div class="article-item item_text " id="item46129" data-item-id="46129" data-item-type="ItemText"><div class="item-body-hbr">単なる計算の速さだけでなく、人間のように「言葉を理解する」「経験から学ぶ」「未知の問題に対して推論する」といった、柔軟な処理が行えるかどうかが一つの基準となります。</div></div>
+        
+        <div class="article-item item_heading " id="item46130" data-item-id="46130" data-item-type="ItemHeading"><h3 class="item-body" id="heading8">練習問題：AIの定義</h3></div>
+        
+        <div class="article-item item_markdown " id="item46131" data-item-id="46131" data-item-type="ItemMarkdown"><h4 id="heading9">問題</h4>
+</div>
+        
+        <div class="article-item item_markdown " id="item46132" data-item-id="46132" data-item-type="ItemMarkdown"><p>AIの定義について、正しく説明している記述を１つ選びなさい。</p>
+
+<ol>
+  <li>AIの定義は明確に定まっていないが、一般的には「人間の脳のつくりを模倣したコンピュータ」とされている。</li>
+  <li>AIの定義は明確に定まっていないが、一般的には「人間の知能に近い人工的な知能を持ったコンピュータ」とされている。</li>
+  <li>AIの定義は、「自己学習を行い、未知のデータに対して高い予測精度を持つコンピュータ」と定義されている。</li>
+  <li>AIという用語は、ダートマス会議で「人工的で、知的なプログラムで構築されたコンピュータ」と初めて定義された。</li>
+</ol>
+</div>
+        
+        <div class="article-item item_markdown " id="item46133" data-item-id="46133" data-item-type="ItemMarkdown"><h4 id="heading10">解答</h4>
+</div>
+        
+        <div class="article-item item_rich_text " id="item46134" data-item-id="46134" data-item-type="ItemRichText"><div class="item-body-hbr">2</div></div>
+        
+        <div class="article-item item_heading " id="item46135" data-item-id="46135" data-item-type="ItemHeading"><h2 class="item-body" id="heading11">【1-2】知能をもたらす仕組み</h2></div>
+        
+        <div class="article-item item_markdown " id="item46136" data-item-id="46136" data-item-type="ItemMarkdown"><h4 id="heading12">目安の学習時間：60分</h4>
+</div>
+        
+        <div class="article-item item_heading " id="item46137" data-item-id="46137" data-item-type="ItemHeading"><h3 class="item-body" id="heading13">ルールベースと機械学習</h3></div>
+        
+        <div class="article-item item_text " id="item46138" data-item-id="46138" data-item-type="ItemText"><div class="item-body-hbr">AIに知能を持たせる方法には、大きく分けて2つのアプローチがあります。</div></div>
+        
+        <div class="article-item item_rich_text " id="item46139" data-item-id="46139" data-item-type="ItemRichText"><div class="item-body-hbr">1つ目は、人間がすべてのルールを書き込む<span class="decoration-01"><span class="decoration-02">ルールベース</span></span>という手法です。<br>
+「もしAならばBせよ」という命令を組み合わせますが、複雑な現実世界に対応するには限界がありました。<br>
+<br>
+2つ目は、AI自らがデータから法則を見つけ出す<span class="decoration-01"><span class="decoration-02">機械学習</span></span>です。</div></div>
+        
+        <div class="article-item item_image " id="item46140" data-item-id="46140" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/046/140/medium/e1696c05-59e4-4c76-be46-1a5454c937d4.png?1771243170" title=""><img class="img-responsive item-image" alt=" (46140)" data-reference="" src="../../_assets/04aa4442f8.webp" width="640" height="358"></a><h4 id="heading14"></h4></div></div>
+        
+        <div class="article-item item_rich_text " id="item46141" data-item-id="46141" data-item-type="ItemRichText"><div class="item-body-hbr">この際、学習の結果として出来上がった判断基準の塊を<span class="decoration-01"><span class="decoration-02">学習済みモデル</span></span>と呼びます。</div></div>
+        
+        <div class="article-item item_html " id="item46142" data-item-id="46142" data-item-type="ItemHtml"><div class="item-body"><div class="callout white">
+<div class="title-area">
+<div class="icon bulb"></div>
+<div class="title"><strong>学習効率の真実</strong></div>
+</div>
+<div class="content-area">
+<ul>
+<li><span class="decoration-02">ノーフリーランチ定理</span></li>
+<ul class="nested-ul">
+<li>「あらゆる問題に対して、常に万能な学習アルゴリズムは存在しない」という定理です。</li>
+<li>問題の性質に合わせて、適切な手法を選ぶことが重要です。</li>
+</ul>
+</ul>
+</div>
+</div></div></div>
+        
+        <div class="article-item item_heading " id="item46143" data-item-id="46143" data-item-type="ItemHeading"><h3 class="item-body" id="heading15">機械学習の3つの手法</h3></div>
+        
+        <div class="article-item item_text " id="item46144" data-item-id="46144" data-item-type="ItemText"><div class="item-body-hbr">機械学習は、学習の進め方によって以下の3つに分類されます。</div></div>
+        
+        <div class="article-item item_html " id="item46145" data-item-id="46145" data-item-type="ItemHtml"><div class="item-body"><table class="simple">
+<tbody>
+</tbody><thead>
+<tr>
+<th scope="col">
+<div>
+<div>手法</div>
+</div>
+</th>
+<th scope="col">
+<div>
+<div>特徴</div>
+</div>
+</th>
+<th scope="col">
+<div>
+<div>具体的な活用例</div>
+</div>
+</th>
+</tr>
+</thead>
+<tbody><tr>
+<th scope="row">
+<div>
+<div>教師あり学習</div>
+</div>
+</th>
+<td>
+<div>
+<div>データと<span class="decoration-02">正解（ラベル）</span>をセットで与えて学習させる。</div>
+</div>
+</td>
+<td>
+<div>
+<div>迷惑メールの自動仕分け、画像内の物体検知</div>
+</div>
+</td>
+</tr>
+<tr>
+<th scope="row">
+<div>
+<div>教師なし学習</div>
+</div>
+</th>
+<td>
+<div>
+<div>正解を与えず、データ自体の構造や特徴を分析させる。</div>
+</div>
+</td>
+<td>
+<div>
+<div>顧客のグループ分け、データの圧縮</div>
+</div>
+</td>
+</tr>
+<tr>
+<th scope="row">
+<div>
+<div>強化学習</div>
+</div>
+</th>
+<td>
+<div>
+<div>行動に対して<span class="decoration-02">報酬</span>を与え、最大化する手順を学ぶ。</div>
+</div>
+</td>
+<td>
+<div>
+<div>囲碁や将棋、お掃除ロボットの効率的な経路走行</div>
+</div>
+</td>
+</tr>
+</tbody>
+</table></div></div>
+        
+        <div class="article-item item_rich_text " id="item46146" data-item-id="46146" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01"><span class="decoration-02">教師なし学習</span></span>の代表的な手法には、似たもの同士を分ける<span class="decoration-01"><span class="decoration-02">クラスタリング</span><span class="decoration-02"></span></span>や、情報の密度を凝縮する<span class="decoration-01"><span class="decoration-02">次元削減</span></span>があります。<br>
+また、少量の正解データと大量のラベルなしデータを組み合わせる<span class="decoration-01"><span class="decoration-02">半教師あり学習</span></span>も、効率的な学習手法として注目されています。</div></div>
+        
+        <div class="article-item item_heading " id="item46147" data-item-id="46147" data-item-type="ItemHeading"><h3 class="item-body" id="heading16">練習問題：学習手法の区別</h3></div>
+        
+        <div class="article-item item_markdown " id="item46148" data-item-id="46148" data-item-type="ItemMarkdown"><h4 id="heading17">問題</h4>
+</div>
+        
+        <div class="article-item item_text " id="item46149" data-item-id="46149" data-item-type="ItemText"><div class="item-body-hbr">教師あり学習の説明として適切な記述を１つ選びなさい。</div></div>
+        
+        <div class="article-item item_markdown " id="item46150" data-item-id="46150" data-item-type="ItemMarkdown"><ol>
+  <li>入力したデータに対して正解データのペアを与えてモデルをトレーニングする手法。</li>
+  <li>入力したデータに対して正解データのペアを与えず、代わりにデータ自体のパターンや構造をモデルが自己で発見することでトレーニングする手法。</li>
+  <li>入力したデータを似た特徴やパターンを持つグループに分類することでモデルをトレーニングする手法。</li>
+  <li>入力したデータに対して少量の正解データのペアを与えて、多量のラベルのないデータを効率的に学習する手法。</li>
+</ol>
+</div>
+        
+        <div class="article-item item_markdown " id="item46151" data-item-id="46151" data-item-type="ItemMarkdown"><h4 id="heading18">解答</h4>
+</div>
+        
+        <div class="article-item item_text " id="item46152" data-item-id="46152" data-item-type="ItemText"><div class="item-body-hbr">1</div></div>
+        
+        <div class="article-item item_heading " id="item46153" data-item-id="46153" data-item-type="ItemHeading"><h2 class="item-body" id="heading19">【1-3】脳を模したネットワーク</h2></div>
+        
+        <div class="article-item item_markdown " id="item46154" data-item-id="46154" data-item-type="ItemMarkdown"><h4 id="heading20">目安の学習時間：60分</h4>
+</div>
+        
+        <div class="article-item item_heading " id="item46156" data-item-id="46156" data-item-type="ItemHeading"><h3 class="item-body" id="heading21">ニューラルネットワークの基礎</h3></div>
+        
+        <div class="article-item item_rich_text " id="item46157" data-item-id="46157" data-item-type="ItemRichText"><div class="item-body-hbr">人間の脳内にある神経細胞を<span class="decoration-01"><span class="decoration-02">ニューロン</span></span>と呼びます。<br>
+ニューロン同士は<span class="decoration-01"><span class="decoration-02">シナプス</span></span>を通じて信号をやり取りしています。<br>
+これをコンピュータ上で模倣したものが<span class="decoration-01"><span class="decoration-02">人工ニューロン（ノード）</span></span>であり、それらを網目状につなげた構造を<span class="decoration-01"><span class="decoration-02">ニューラルネットワーク</span></span>と呼びます。<br>
+<br>
+信号が伝わる際、情報の重要度に応じて数値が変化します。<br>
+これを<span class="decoration-01"><span class="decoration-02">重み</span></span>と呼び、この調整作業が<span class="decoration-01"><span class="decoration-02">情報の重みづけ</span></span>にあたります。</div></div>
+        
+        <div class="article-item item_image " id="item46158" data-item-id="46158" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/046/158/medium/64ab075c-e6e5-4eee-bcb2-0dfdd06515ed.png?1771243410" title=""><img class="img-responsive item-image" alt=" (46158)" data-reference="" src="../../_assets/c47e7dbfac.webp" width="640" height="357"></a><h4 id="heading22"></h4></div></div>
+        
+        <div class="article-item item_heading " id="item46159" data-item-id="46159" data-item-type="ItemHeading"><h2 class="item-body" id="heading23">ディープラーニングの進化</h2></div>
+        
+        <div class="article-item item_rich_text " id="item46160" data-item-id="46160" data-item-type="ItemRichText"><div class="item-body-hbr">ニューラルネットワークの層を非常に深くしたものを<span class="decoration-01"><span class="decoration-02">ディープラーニング（深層学習）</span></span>と呼びます。<br>
+最大の特徴は、人間が指示しなくてもAI自らがデータの注目すべき点である<span class="decoration-01"><span class="decoration-02">特徴量</span></span>を見つけ出すことです。</div></div>
+        
+        <div class="article-item item_image " id="item46161" data-item-id="46161" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/046/161/medium/c103be4e-4931-45e6-9594-b950bb0c4b9a.png?1771243461" title=""><img class="img-responsive item-image" alt=" (46161)" data-reference="" src="../../_assets/561e4a10f5.webp" width="640" height="357"></a><h4 id="heading24"></h4></div></div>
+        
+        <div class="article-item item_rich_text " id="item46162" data-item-id="46162" data-item-type="ItemRichText"><div class="item-body-hbr">しかし、学習が進みすぎると、練習問題（学習データ）だけに強くなり、本番（未知のデータ）に弱くなる<span class="decoration-01"><span class="decoration-02">過学習</span></span>という現象が起こります。<br>
+これを防ぐために、モデルを複雑にしすぎない<span class="decoration-01"><span class="decoration-02">正則化</span></span>や、学習時に一部のノードをあえて無視する<span class="decoration-01"><span class="decoration-02">ドロップアウト</span></span>といった手法が使われます。</div></div>
+        
+        <div class="article-item item_rich_text " id="item46163" data-item-id="46163" data-item-type="ItemRichText"><div class="item-body-hbr">また、ある分野で学習した知識を別の分野に応用する手法を<span class="decoration-01"><span class="decoration-02">転移学習</span></span>と呼び、効率的な学習に役立っています。</div></div>
+        
+        <div class="article-item item_heading " id="item46164" data-item-id="46164" data-item-type="ItemHeading"><h2 class="item-body" id="heading25">【1-4】AIの歴史と発展段階</h2></div>
+        
+        <div class="article-item item_markdown " id="item46165" data-item-id="46165" data-item-type="ItemMarkdown"><h4 id="heading26">目安の学習時間：30分</h4>
+</div>
+        
+        <div class="article-item item_heading " id="item46166" data-item-id="46166" data-item-type="ItemHeading"><h3 class="item-body" id="heading27">AIブームの変遷</h3></div>
+        
+        <div class="article-item item_rich_text " id="item46167" data-item-id="46167" data-item-type="ItemRichText"><div class="item-body-hbr">AIの歴史は、期待と失望を繰り返す3つのブームで構成されています。</div></div>
+        
+        <div class="article-item item_html " id="item46168" data-item-id="46168" data-item-type="ItemHtml"><div class="item-body"><table class="simple">
+<tbody>
+</tbody><thead>
+<tr>
+<th scope="col">
+<div>
+<div>ブーム時期</div>
+</div>
+</th>
+<th scope="col">
+<div>
+<div>主な技術・キーワード</div>
+</div>
+</th>
+</tr>
+</thead>
+<tbody><tr>
+<th scope="row">
+<div>
+<div>第一次AIブーム</div>
+</div>
+</th>
+<td>
+<div>
+<div>パズルや迷路などの「探索」と「推論」が中心。</div>
+</div>
+</td>
+</tr>
+<tr>
+<th scope="row">
+<div>
+<div>第二次AIブーム</div>
+</div>
+</th>
+<td>
+<div>
+<div>専門家の知識を教え込む「エキスパートシステム」が登場。しかし膨大なデータの入力に挫折し「AIの冬」の時代へ。</div>
+</div>
+</td>
+</tr>
+<tr>
+<th scope="row">
+<div>
+<div>第三次AIブーム</div>
+</div>
+</th>
+<td>
+<div>
+<div>インターネットの普及による「ビッグデータ」と、ディープラーニングの登場。</div>
+</div>
+</td>
+</tr>
+</tbody>
+</table></div></div>
+        
+        <div class="article-item item_image " id="item46169" data-item-id="46169" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/046/169/medium/5b7cc2ad-5ccb-4367-bf89-b384eb6a9087.png?1771243561" title=""><img class="img-responsive item-image" alt=" (46169)" data-reference="" src="../../_assets/0fd814a6a8.webp" width="640" height="357"></a><h4 id="heading28"></h4></div></div>
+        
+        <div class="article-item item_rich_text " id="item46170" data-item-id="46170" data-item-type="ItemRichText"><div class="item-body-hbr">現在は、特定の作業のみを行う<span class="decoration-01"><span class="decoration-02">弱いAI（ANI）</span></span>が主流ですが、人間のようにあらゆる課題をこなせる<span class="decoration-01"><span class="decoration-02">強いAI（AGI）</span></span>の実現も研究されています。</div></div>
+        
+        <div class="article-item item_heading " id="item46171" data-item-id="46171" data-item-type="ItemHeading"><h3 class="item-body" id="heading29">シンギュラリティへの道</h3></div>
+        
+        <div class="article-item item_rich_text " id="item46172" data-item-id="46172" data-item-type="ItemRichText"><div class="item-body-hbr">AIが人類の知能を超える転換点を<span class="decoration-01"><span class="decoration-02">シンギュラリティ（技術的特異点）</span></span>と呼びます。</div></div>
+        
+        <div class="article-item item_html " id="item46173" data-item-id="46173" data-item-type="ItemHtml"><div class="item-body"><div class="card-with-icon note">
+<span class="bold"><strong>シンギュラリティの提唱者</strong><br></span>
+<div class="content-area">
+<ul>
+<li><span class="decoration-02">ヴァーナー・ヴィンジ</span></li>
+<ul class="nested-ul">
+<li>1993年に、技術的に超人類的な知性が誕生する可能性を指摘しました。</li>
+</ul>
+<li><span class="decoration-02">レイ・カーツワイル</span></li>
+<ul class="nested-ul">
+<li>2045年にシンギュラリティが訪れると予測しました。これを「2045年問題」とも呼びます。</li>
+</ul>
+</ul>
+</div>
+</div></div></div>
+        
+        <div class="article-item item_heading " id="item46174" data-item-id="46174" data-item-type="ItemHeading"><h3 class="item-body" id="heading30">【1-5】1章 -章末課題- AIの基礎知識</h3></div>
+        
+        <div class="article-item item_markdown " id="item46175" data-item-id="46175" data-item-type="ItemMarkdown"><h4 id="heading31">問題</h4>
+</div>
+        
+        <div class="article-item item_markdown " id="item46176" data-item-id="46176" data-item-type="ItemMarkdown"><ol>
+  <li>ディープラーニングにおいて、学習データに過剰に適合してしまい、未知のデータに対して性能が落ちる現象を何と呼びますか？</li>
+  <li>レイ・カーツワイルが予測した、AIが人類の知能を超える転換点を指す言葉を答えなさい。</li>
+  <li>学習効率に関する定理で、「万能なアルゴリズムは存在しない」ことを示す定理は何ですか？</li>
+</ol>
+</div>
+        
+        <div class="article-item item_markdown " id="item46177" data-item-id="46177" data-item-type="ItemMarkdown"><h4 id="heading32">解答・解説</h4>
+</div>
+        
+        <div class="article-item item_rich_text " id="item46178" data-item-id="46178" data-item-type="ItemRichText"><div class="item-body-hbr">1. <span class="decoration-01"><span class="decoration-02">過学習（オーバーフィッティング</span></span><span class="decoration-01"><span class="decoration-02">）</span></span><br>
+解説：特定のデータに特化しすぎた状態です。これを防ぐためにドロップアウトなどの手法が取られます。<br>
+<br>
+2.<span class="decoration-01"><span class="decoration-02"> シンギュラリティ（技術的特異点）</span></span><br>
+解説：レイ・カーツワイルは、これが2045年に到来すると予測しました。<br>
+<br>
+3. <span class="decoration-01"><span class="decoration-02">ノーフリーランチ定理</span></span><br>
+解説：どんな問題にも通用する最強の学習方法は存在しないため、目的に合わせたAI選びが必要です。</div></div>
+        
+        <div class="article-item item_html " id="item46179" data-item-id="46179" data-item-type="ItemHtml"><div class="item-body"><div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_text " id="item46180" data-item-id="46180" data-item-type="ItemText"><div class="item-body-hbr">これで「AIの基本と仕組み」の解説を終わります。<br>次の章に進みましょう。</div></div>
+        
+        <div class="article-item item_html " id="item46181" data-item-id="46181" data-item-type="ItemHtml"><div class="item-body"><div class="pagenation-buttons" style="justify-content: space-between;">
+  <a href="https://learn.webcoach.jp/generative-ai/passport/xv8Dp" class="pagenation-buttons_prev"><img src="../../_assets/47498cfebf.svg" class="pagenation-buttons_icon">前の章に戻る</a>
+  <a href="https://learn.webcoach.jp/generative-ai/passport/ttV9W" class="pagenation-buttons_next">次の章に進む<img src="../../_assets/47498cfebf.svg" class="pagenation-buttons_icon"></a>
+</div></div></div>
+        
+        
+        
+        <div class="back-to-roadmap mb-4 text-center"></div>
+      </div>
+    </div>
+    
+    <div class="lightbox-modal" id="lightboxModal">
+      <img src="" alt="">
+    </div>
+    
+    <div id="modal" class="fixed-menu-modal">
+      <div class="fixed-menu-modal-content">
+        <div class="index mb-3" style="background-color: #FDF5E8;">
+          <div>
+            <div class="fw-light">INDEX</div>
+            <div class="h3">目次</div>
+          </div>
+          <div class="toc"><ul><li><a href="#heading0" class="tocLink">1章 AIの基本と仕組み</a><ul><li><a href="#heading1" class="tocLink">この章の目安学習時間：180分</a></li><li><a href="#heading2" class="tocLink">この章で到達できるゴール：</a></li></ul></li><li><a href="#heading3" class="tocLink">【1-1】AIの定義と研究の歴史</a><ul><li><a href="#heading4" class="tocLink">目安の学習時間：30分</a></li></ul><ul><li><a href="#heading5" class="tocLink">AIの定義と分類</a></li><li><a href="#heading6" class="tocLink">考えてみよう！：知能の定義</a><ul><li><a href="#heading7" class="tocLink">解答例</a></li></ul></li><li><a href="#heading8" class="tocLink">練習問題：AIの定義</a><ul><li><a href="#heading9" class="tocLink">問題</a></li><li><a href="#heading10" class="tocLink">解答</a></li></ul></li></ul></li><li><a href="#heading11" class="tocLink">【1-2】知能をもたらす仕組み</a><ul><li><a href="#heading12" class="tocLink">目安の学習時間：60分</a></li></ul><ul><li><a href="#heading13" class="tocLink">ルールベースと機械学習</a><ul><li><a href="#heading14" class="tocLink"></a></li></ul></li><li><a href="#heading15" class="tocLink">機械学習の3つの手法</a></li><li><a href="#heading16" class="tocLink">練習問題：学習手法の区別</a><ul><li><a href="#heading17" class="tocLink">問題</a></li><li><a href="#heading18" class="tocLink">解答</a></li></ul></li></ul></li><li><a href="#heading19" class="tocLink">【1-3】脳を模したネットワーク</a><ul><li><a href="#heading20" class="tocLink">目安の学習時間：60分</a></li></ul><ul><li><a href="#heading21" class="tocLink">ニューラルネットワークの基礎</a><ul><li><a href="#heading22" class="tocLink"></a></li></ul></li></ul></li><li><a href="#heading23" class="tocLink">ディープラーニングの進化</a><ul><li><a href="#heading24" class="tocLink"></a></li></ul></li><li><a href="#heading25" class="tocLink">【1-4】AIの歴史と発展段階</a><ul><li><a href="#heading26" class="tocLink">目安の学習時間：30分</a></li></ul><ul><li><a href="#heading27" class="tocLink">AIブームの変遷</a><ul><li><a href="#heading28" class="tocLink"></a></li></ul></li><li><a href="#heading29" class="tocLink">シンギュラリティへの道</a></li><li><a href="#heading30" class="tocLink">【1-5】1章 -章末課題- AIの基礎知識</a><ul><li><a href="#heading31" class="tocLink">問題</a></li><li><a href="#heading32" class="tocLink">解答・解説</a></li></ul></li></ul></li></ul></div>
+        </div>
+        
+        <!-- ボタン類 -->
+        <div id="fixed-menu_buttons" class="fixed-menu_buttons">
+  <a href="https://learn.webcoach.jp/generative-ai/passport/xv8Dp" class="pagenation-buttons_prev"><img src="../../_assets/47498cfebf.svg" class="pagenation-buttons_icon">前の章に戻る</a>
+  <a href="https://learn.webcoach.jp/generative-ai/passport/ttV9W" class="pagenation-buttons_next">次の章に進む<img src="../../_assets/47498cfebf.svg" class="pagenation-buttons_icon"></a>
+</div>
+        
+        <div class="back-to-roadmap text-center"></div>
+      </div>
+    </div>
+    
+    <button id="toggleBtn" class="floating-btn">
+      <img id="iconOpen" src="../../_assets/5feefcfc55.svg" alt="メニューを開く">
+      <img id="iconClose" src="../../_assets/ae4a1129c9.svg" alt="メニューを閉じる" style="display:none;">
+    </button>
+  </div>
+</div>
+</div>
+<!-- <script src="https://cdn.clipkit.co/clipkit/javascripts/item-shopify-1.0.js?v=v15.9.0-20260915" async></script> -->
+            </main></div>
+        
+
+    
+
+    <div class="p-5" style="background-color: #B73E3D; color: white; height: 300px;">
+        <div class="">
+            <div class="h4 ps-3" style="border-left: 5px solid white;">WEBCOACH | キャリアチェンジまでの全てを学ぶマンツーマンWEBスクール</div>
+            <ul class="nav flex-column m-0 p-3 fw-light">
+                <li class="nav-item mb-2"><a href="https://www.webcoach.jp/" target="_blank">WEBCOACH | 公式HP</a></li>
+                <li class="nav-item mb-2"><a href="https://www.instagram.com/webcoach_officials/" target="_blank">WEBCOACH | 公式Instagram</a></li>
+                <li class="nav-item mb-2"><a href="https://vectorinc.co.jp/groupservice/webcoach-career/" target="_blank">WEBCOACH 公式メディア | WEBCOACH career</a></li>
+            </ul>
+        </div>
+        <div class="text-center">
+            <small>© 2020 by WEBCOACH</small>
+        </div>
+    </div>
+
+    
+
+    <!-- bodyタグ内の下部に挿入されます -->
+
+
+    <!-- BootstrapのCDNでのjs読み込み -->
+    
+
+    <!-- シンタックスハイライトの生成 -->
+    
+    
+
+    <!-- 目次の生成 -->
+    
+
+    <!-- ブックマークの生成 -->
+    
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="ck-icon-arrow-down" viewBox="0 0 1792 1792"><path d="M1675 832q0 53-37 90l-651 652q-39 37-91 37-53 0-90-37l-651-652q-38-36-38-90 0-53 38-91l74-75q39-37 91-37 53 0 90 37l294 294v-704q0-52 38-90t90-38h128q52 0 90 38t38 90v704l294-294q37-37 90-37 52 0 91 37l75 75q37 39 37 91z"></path></symbol><symbol id="ck-icon-arrow-up" viewBox="0 0 1792 1792"><path d="M1675 971q0 51-37 90l-75 75q-38 38-91 38-54 0-90-38l-294-293v704q0 52-37.5 84.5t-90.5 32.5h-128q-53 0-90.5-32.5t-37.5-84.5v-704l-294 293q-36 38-90 38t-90-38l-75-75q-38-38-38-90 0-53 38-91l651-651q35-37 90-37 54 0 91 37l651 651q37 39 37 91z"></path></symbol><symbol id="ck-icon-calendar" viewBox="0 0 1792 1792"><path d="M192 1664h288v-288h-288v288zm352 0h320v-288h-320v288zm-352-352h288v-320h-288v320zm352 0h320v-320h-320v320zm-352-384h288v-288h-288v288zm736 736h320v-288h-320v288zm-384-736h320v-288h-320v288zm768 736h288v-288h-288v288zm-384-352h320v-320h-320v320zm-352-864v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm736 864h288v-320h-288v320zm-384-384h320v-288h-320v288zm384 0h288v-288h-288v288zm32-480v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm384-64v1280q0 52-38 90t-90 38h-1408q-52 0-90-38t-38-90v-1280q0-52 38-90t90-38h128v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h384v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h128q52 0 90 38t38 90z"></path></symbol><symbol id="ck-icon-chevron-left" viewBox="0 0 1792 1792"><path d="M1427 301l-531 531 531 531q19 19 19 45t-19 45l-166 166q-19 19-45 19t-45-19l-742-742q-19-19-19-45t19-45l742-742q19-19 45-19t45 19l166 166q19 19 19 45t-19 45z"></path></symbol><symbol id="ck-icon-chevron-right" viewBox="0 0 1792 1792"><path d="M1363 877l-742 742q-19 19-45 19t-45-19l-166-166q-19-19-19-45t19-45l531-531-531-531q-19-19-19-45t19-45l166-166q19-19 45-19t45 19l742 742q19 19 19 45t-19 45z"></path></symbol><symbol id="ck-icon-clock-o" viewBox="0 0 1792 1792"><path d="M1024 544v448q0 14-9 23t-23 9h-320q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h224v-352q0-14 9-23t23-9h64q14 0 23 9t9 23zm416 352q0-148-73-273t-198-198-273-73-273 73-198 198-73 273 73 273 198 198 273 73 273-73 198-198 73-273zm224 0q0 209-103 385.5t-279.5 279.5-385.5 103-385.5-103-279.5-279.5-103-385.5 103-385.5 279.5-279.5 385.5-103 385.5 103 279.5 279.5 103 385.5z"></path></symbol><symbol id="ck-icon-trash" viewBox="0 0 1792 1792"><path d="M704 1376v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm-544-992h448l-48-117q-7-9-17-11h-317q-10 2-17 11zm928 32v64q0 14-9 23t-23 9h-96v948q0 83-47 143.5t-113 60.5h-832q-66 0-113-58.5t-47-141.5v-952h-96q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h309l70-167q15-37 54-63t79-26h320q40 0 79 26t54 63l70 167h309q14 0 23 9t9 23z"></path></symbol><symbol id="ck-icon-undo" viewBox="0 0 1792 1792"><path d="M1664 896q0 156-61 298t-164 245-245 164-298 61q-172 0-327-72.5t-264-204.5q-7-10-6.5-22.5t8.5-20.5l137-138q10-9 25-9 16 2 23 12 73 95 179 147t225 52q104 0 198.5-40.5t163.5-109.5 109.5-163.5 40.5-198.5-40.5-198.5-109.5-163.5-163.5-109.5-198.5-40.5q-98 0-188 35.5t-160 101.5l137 138q31 30 14 69-17 40-59 40h-448q-26 0-45-19t-19-45v-448q0-42 40-59 39-17 69 14l130 129q107-101 244.5-156.5t284.5-55.5q156 0 298 61t245 164 164 245 61 298z"></path></symbol></svg>
+
+<!--Clipkit(R) v15.9.0-20260915 Copyright (C) 2026 VECTOR Inc.-->
+
+
+
+
+
+<div class="dynmsg alert alert-info" style="display:none;"><button class="close"><span class="fa fa-times"></span></button><div class="message"></div></div><div class="dynmsg alert alert-danger" style="display:none;"><button class="close"><span class="fa fa-times"></span></button><div class="message"></div></div></body></html>

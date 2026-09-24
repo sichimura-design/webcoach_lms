@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+  <html lang="ja">
+
+<head><script async="async" data-label="saas" nonce="8MV0ugh84+Xnz/19Ykafxg==" src="//b.clipkit.co/"></script><script src="//cdn.clipkit.co/clipkit_assets/beacon-787bbf3225ec43d93f198af35f7d56fdef40fb50440a2909500bdf5b99225aab.js" async="async" id="clipkit-beacon" data-page-type="article" data-page-id="1751" data-domain="learn.webcoach.jp" data-url="/generative-ai/AI_movie_editing/%E6%95%99%E6%9D%903%20%E7%94%9F%E6%88%90AI%E7%B4%A0%E6%9D%90%E3%81%AE%E5%8B%95%E7%94%BB%E7%B7%A8%E9%9B%86%E3%81%AB%E3%81%8A%E3%81%91%E3%82%8B%E6%B4%BB%E7%94%A8%E8%A1%93/S3PpU" data-href="https://learn.webcoach.jp/media/beacon"></script>
+    <!-- headタグ内の上部に挿入されます -->
+
+    <meta charset="UTF-8">
+    <title>5章：【実践】AI素材を編集ソフトで組み合わせる - WEBCOACH</title>
+
+    <!-- resetcssのCDNでのCSS読み込み -->
+    <link rel="stylesheet" href="https://unpkg.com/modern-css-reset/dist/reset.min.css" />
+
+    <!-- fontawesomeのCDNでのCSS読み込み -->
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/fontawesome/4.7.0/css/font-awesome.min.css">
+
+    <!-- BootstrapのCDNでのCSS読み込み -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous" />
+
+    <!-- highlight.jsの読み込み -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.1/styles/dracula.min.css">
+
+    <!-- カスタムCSS -->
+    <link rel="stylesheet" href="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/168/original/style.css?1788081716">
+
+    <!-- clipkitデフォルトのCSS -->
+    <!--<link rel="stylesheet" media="screen" href="https://cdn.clipkit.co/clipkit/stylesheets/application-1.0.css?v=v15.9.0-20260915">-->
+
+    <!-- jQuery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <!-- カスタムJS -->
+    <script src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/202/original/script.js?1788946194"></script>
+    <script src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/535/original/script.js?1743681771"></script>
+
+    <!-- clipkitデフォルトのJS -->
+    <script src="https://cdn.clipkit.co/clipkit/javascripts/default-1.0.js?v=v15.9.0-20260915"></script>
+
+    <!-- フォント -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;700&display=swap" rel="stylesheet">
+
+    <link href="https://cdn.clipkit.co/clipkit/favicons/square/missing.png" rel="shortcut icon" type="image/vnd.microsoft.icon">
+    <link rel="apple-touch-icon" href="https://cdn.clipkit.co/clipkit/touch_icons/square/missing.png">
+    <link rel="alternate" type="application/rss+xml"
+        href="https://learn.webcoach.jp/media.rss" title="WEBCOACH">
+    
+<link rel="canonical" href="https://learn.webcoach.jp/generative-ai/AI_movie_editing/%E6%95%99%E6%9D%903%20%E7%94%9F%E6%88%90AI%E7%B4%A0%E6%9D%90%E3%81%AE%E5%8B%95%E7%94%BB%E7%B7%A8%E9%9B%86%E3%81%AB%E3%81%8A%E3%81%91%E3%82%8B%E6%B4%BB%E7%94%A8%E8%A1%93/S3PpU">
+
+<meta name="description" content="">
+<meta name="keywords" content="">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:domain" content="learn.webcoach.jp">
+<meta name="twitter:title" content="5章：【実践】AI素材を編集ソフトで組み合わせる - WEBCOACH">
+<meta name="twitter:image" content="https://cdn.clipkit.co/tenants/589/item_links/images/000/037/125/medium/d11437dd-ea84-4890-8008-3f59568dab13.png?1754961804">
+<meta name="twitter:description" content="">
+<meta property="og:site_name" content="WEBCOACH">
+<meta property="og:title" content="5章：【実践】AI素材を編集ソフトで組み合わせる">
+<meta property="og:description" content="">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://learn.webcoach.jp/generative-ai/AI_movie_editing/%E6%95%99%E6%9D%903%20%E7%94%9F%E6%88%90AI%E7%B4%A0%E6%9D%90%E3%81%AE%E5%8B%95%E7%94%BB%E7%B7%A8%E9%9B%86%E3%81%AB%E3%81%8A%E3%81%91%E3%82%8B%E6%B4%BB%E7%94%A8%E8%A1%93/S3PpU">
+<meta property="og:image" content="https://cdn.clipkit.co/tenants/589/item_links/images/000/037/125/large/d11437dd-ea84-4890-8008-3f59568dab13.png?1754961804">
+<script type="application/ld+json">
+  {
+    "@context": "http://schema.org",
+    "@type": "NewsArticle",
+    "mainEntityOfPage":{
+      "@type":"WebPage",
+      "@id": "https://learn.webcoach.jp/generative-ai/AI_movie_editing/%E6%95%99%E6%9D%903%20%E7%94%9F%E6%88%90AI%E7%B4%A0%E6%9D%90%E3%81%AE%E5%8B%95%E7%94%BB%E7%B7%A8%E9%9B%86%E3%81%AB%E3%81%8A%E3%81%91%E3%82%8B%E6%B4%BB%E7%94%A8%E8%A1%93/S3PpU"
+    },
+    "headline": "5章：【実践】AI素材を編集ソフトで組み合わせる",
+    "image": {
+      "@type": "ImageObject",
+      "url": "https://cdn.clipkit.co/tenants/589/item_links/images/000/037/125/medium/d11437dd-ea84-4890-8008-3f59568dab13.png?1754961804",
+      "width": 800,
+      "height": 600
+    },
+    "datePublished": "2025-07-30T13:24:47+09:00",
+    "dateModified": "2025-09-26T10:33:58+09:00",
+    "author": {
+      "@type": "Person",
+      "name": "m_takenaga"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "WEBCOACH",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://cdn.clipkit.co/tenants/589/sites/logos/000/000/001/logo_sm/a8defd4b-1cc7-433b-a61c-08e7db0e3e4f.png?1714459367"
+      }
+    },
+    "description": ""
+  }
+  </script>
+
+    <!-- headタグ内の下部に挿入されます -->
+
+
+<meta name="csrf-param" content="authenticity_token" />
+<meta name="csrf-token" content="i3Dl4C-Dorl7vSNetlPbPZTHSWK2-pU6iFw6NyiFexLOVIMvCLRPxb77oHTKBQUQppcMO7pu5YFEkFOtUzDMKw" /><meta content="" name="routing-root-path" /><meta content="media" name="site-name" /><meta content="ja" name="i18n-default-locale" /><meta content="ja" name="i18n-locale" /></head>
+
+<body class="device-desktop">
+    <!-- bodyタグ内の上部に挿入されます -->
+
+
+    <!-- サイドバーとコンテンツのコンテナ -->
+    <div class="d-flex flex-row w-100 mb-5" style="min-height: calc(100vh - 400px);">
+
+        <!-- サイドバー -->
+        <!--<nav id="side-bar" class="d-flex flex-column fixed-top" style="width: 250px;">-->
+        <!--    <h1 class="d-block w-100 text-center">-->
+        <!--        <a class="d-block" href="/">-->
+        <!--            <img class="mw-100 p-3" src="https://cdn.clipkit.co/tenants/589/sites/logos/000/000/001/logo_sm/a8defd4b-1cc7-433b-a61c-08e7db0e3e4f.png?1714459367" alt="WEBCOACH">-->
+        <!--        </a>-->
+        <!--    </h1>-->
+        <!--    <ul class="nav flex-column m-0 p-3 fw-bold">-->
+        <!--        <li id="sidebar-top" class="nav-item mb-2" style="display: none;"><a href="/"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;" src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/233/original/home.png?1715353458">-->
+        <!--                <div>ホーム</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-knowledges" class="nav-item mb-2" style="display: none;"><a href="/knowledges"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;" src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/232/original/book.png?1715353458">-->
+        <!--                <div>学習の心得</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-web-designs" class="nav-item mb-2" style="display: none;"><a href="/web-designs"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/231/original/design.png?1715353457">-->
+        <!--                <div>WEBデザイン</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-web-marketing" class="nav-item mb-2" style="display: none;"><a href="/web-marketings"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/230/original/marketing.png?1715353457">-->
+        <!--                <div>WEBマーケティング</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-codings" class="nav-item mb-2" style="display: none;"><a href="/codings"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/229/original/website.png?1715353457">-->
+        <!--                <div>WEBサイト構築</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-business-skills" class="nav-item mb-2" style="display: none;"><a href="/business-skills"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/228/original/business.png?1715353456">-->
+        <!--                <div>ビジネススキル</div>-->
+        <!--            </a></li>-->
+        <!--    </ul>-->
+        <!--</nav>-->
+
+        <!-- コンテンツ -->
+        <!--<main class="ms-auto" style="width: calc(100vw - 250px);">-->
+        <main class="ms-auto" style="width: calc(100vw);">
+            <div id="sb-site">
+                
+
+
+<div class="container">
+  <div class="row">
+    <div class="article">
+      <div class="mb-3 text-light" style="
+        height: 180px;
+        background-image: url(https://cdn.clipkit.co/tenants/589/resources/assets/000/000/270/original/article-header.png?1717761933);
+        background-repeat: no-repeat;
+        background-size: cover;
+        display: flex;
+        align-items: flex-end;
+      ">
+        <div style="
+          margin: 0 0 30px 30px;
+        ">
+          <div>教材3 生成AI素材の動画編集における活用術</div>
+
+          <div class="fw-bold h2">5章：【実践】AI素材を編集ソフトで組み合わせる</div>
+        </div>
+      </div>
+      <div class="article-content">
+        <!-- 目次 -->
+        <div class="index mb-3" style="background-color: #FDF5E8;">
+          <div>
+            <div class="fw-light">INDEX</div>
+            <div class="h3">目次</div>
+          </div>
+          <div class="toc"></div>
+        </div>
+        
+        <div class="back-to-roadmap mb-4 text-center"></div>
+
+        <!-- コンテンツ -->
+        
+        
+        <div class="article-item item_html " id="item37138" data-item-id="37138" data-item-type="ItemHtml"><div class="item-body"><div class="pagenation-buttons">
+  <a href="P4VKk" class="pagenation-buttons_prev"><img src="/theme/webcoach/img/icons/arrow-right.svg" class="pagenation-buttons_icon">前の章に戻る</a>
+  <a href="izuC4" class="pagenation-buttons_next">次の章に進む<img src="/theme/webcoach/img/icons/arrow-right.svg" class="pagenation-buttons_icon"></a>
+</div></div></div>
+        
+        <div class="article-item item_heading " id="item37093" data-item-id="37093" data-item-type="ItemHeading"><h2 class="item-body">5章：【実践】AI素材を編集ソフトで組み合わせる</h2></div>
+        
+        <div class="article-item item_markdown " id="item37094" data-item-id="37094" data-item-type="ItemMarkdown"><h4 id="section">この章の目安学習時間：1時間10分</h4>
+</div>
+        
+        <div class="article-item item_markdown " id="item37095" data-item-id="37095" data-item-type="ItemMarkdown"><h4 id="section">この章で到達できるゴール：</h4>
+</div>
+        
+        <div class="article-item item_html " id="item37096" data-item-id="37096" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li>これまで個別に生成してきた画像、音声、動画素材を、編集ソフト上で一つにまとめ、映像として成立させられる。</li>
+  <li>BGMの選定と、ナレーションとの音量バランスを適切に調整するミキシングの基本ができるようになる</li>
+</ul>
+</div></div>
+        
+        <div class="article-item item_heading " id="item37097" data-item-id="37097" data-item-type="ItemHeading"><h2 class="item-body">【5-1】タイムライン上で世界観を構築する</h2></div>
+        
+        <div class="article-item item_markdown " id="item37098" data-item-id="37098" data-item-type="ItemMarkdown"><h4 id="section">目安の学習時間：20分</h4>
+</div>
+        
+        <div class="article-item item_rich_text " id="item37099" data-item-id="37099" data-item-type="ItemRichText"><div class="item-body-hbr">これまでの章で、動画を構成するパーツ（画像、音声、動画クリップ）が揃いました。<br>
+このセクションでは、それらを編集ソフトのタイムライン上で組み合わせ、一つの世界観を持つ映像として構築していくプロセスを学びます。</div></div>
+        
+        <div class="article-item item_heading " id="item37100" data-item-id="37100" data-item-type="ItemHeading"><h3 class="item-body">映像制作の基本：音から合わせる</h3></div>
+        
+        <div class="article-item item_rich_text " id="item37101" data-item-id="37101" data-item-type="ItemRichText"><div class="item-body-hbr">映像編集では、まず音声、特にナレーションやセリフをタイムラインの主軸に置くのが基本です。<br>
+なぜなら、動画で伝えたいメッセージの多くは「音」に含まれており、映像のタイミングや尺は、この音声に合わせて調整されるからです。</div></div>
+        
+        <div class="article-item item_html " id="item37102" data-item-id="37102" data-item-type="ItemHtml"><div class="item-body"><div class="card-with-icon check">
+    <span class="bold"><strong>基本的な組み立て手順</strong><br></span>
+    <div class="content-area">
+        <ol>
+            <li>まず、3章の課題で作成したナレーション音声をタイムラインに配置します。</li>
+            <li>次に、ナレーションのタイミングや内容に合わせて、2章の課題で作成したAI画像を配置していきます。</li>
+            <li>画像の表示時間（デュレーション）を調整し、ナレーションと映像が気持ちよく連携するようにします。</li>
+        </ol>
+    </div>
+</div></div></div>
+        
+        <div class="article-item item_heading " id="item37103" data-item-id="37103" data-item-type="ItemHeading"><h3 class="item-body">AI動画クリップでアクセントを加える</h3></div>
+        
+        <div class="article-item item_rich_text " id="item37104" data-item-id="37104" data-item-type="ItemRichText"><div class="item-body-hbr">タイムラインの骨格ができたら、4章の課題で作成したAI動画クリップでアクセントを加えていきます。</div></div>
+        
+        <div class="article-item item_html " id="item37105" data-item-id="37105" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li>
+    <span class="decoration-01">トランジションとして</span>：<br>
+    画像と画像の間に、AI動画クリップを挿入し、スムーズな場面転換を演出します。
+  </li>
+  <li>
+    <span class="decoration-01">インサートカットとして</span>：<br>
+    ナレーションの合間や、内容を補足したい箇所に、イメージ映像としてAI動画クリップを配置します。
+  </li>
+</ul>
+</div></div>
+        
+        <div class="article-item item_heading " id="item37106" data-item-id="37106" data-item-type="ItemHeading"><h2 class="item-body">【5-2】BGM選定とプロレベルの音響ミックス</h2></div>
+        
+        <div class="article-item item_markdown " id="item37107" data-item-id="37107" data-item-type="ItemMarkdown"><h4 id="section">目安の学習時間：20分</h4>
+</div>
+        
+        <div class="article-item item_rich_text " id="item37108" data-item-id="37108" data-item-type="ItemRichText"><div class="item-body-hbr">映像の骨格が組み上がったら、最後にBGMを追加し、音の最終調整（ミキシング）を行います。<br>
+BGMは動画の雰囲気を決定づける重要な要素です。</div></div>
+        
+        <div class="article-item item_heading " id="item37109" data-item-id="37109" data-item-type="ItemHeading"><h3 class="item-body">動画の雰囲気を決めるBGMの選び方</h3></div>
+        
+        <div class="article-item item_rich_text " id="item37110" data-item-id="37110" data-item-type="ItemRichText"><div class="item-body-hbr">BGMを選ぶ際は、動画のコンセプトやターゲットに合わせて、適切な雰囲気の曲を選ぶことが重要です。</div></div>
+        
+        <div class="article-item item_html " id="item37111" data-item-id="37111" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li>
+    <span class="decoration-01">著作権フリー音源サイトの活用</span>：<br>
+    クライアントワークでも安心して使える、商用利用可能な音源サイトを利用するのが一般的です。Premiere Proには「Adobe Stockオーディオ」が統合されており、高品質な音源を探せます。その他にも、ArtlistやEpidemic Sound、YouTubeオーディオライブラリといったサイトがあります。
+  </li>
+  <li>
+    <span class="decoration-01">キーワードで探す</span>：<br>
+    「感動的」「シネマティック」「Vlog」「企業VP」「ポップ」「静か」「瞑想」といったキーワードで検索すると、イメージに近い曲を見つけやすくなります。
+  </li>
+</ul>
+</div></div>
+        
+        <div class="article-item item_heading " id="item37112" data-item-id="37112" data-item-type="ItemHeading"><h3 class="item-body">Premiere Proでのミキシング</h3></div>
+        
+        <div class="article-item item_rich_text " id="item37113" data-item-id="37113" data-item-type="ItemRichText"><div class="item-body-hbr">動画の音響ミックスで最も重要なのは、主役であるナレーションが、BGMにかき消されることなく、クリアに聞こえることです。</div></div>
+        
+        <div class="article-item item_html " id="item37114" data-item-id="37114" data-item-type="ItemHtml"><div class="item-body"><div class="callout white">
+    <div class="title-area">
+        <div class="icon bulb"></div>
+        <div class="title"><strong>音量バランスの基本</strong></div>
+    </div>
+    <div class="content-area">
+        <ul>
+            <li>一般的に、ナレーションの音量レベルは-6dB 〜 -3dB程度に調整します。</li>
+            <li>一方、BGMの音量レベルは、ナレーションを邪魔しないように、-18dB 〜 -25dB程度まで大きく下げるのが基本です。</li>
+        </ul>
+    </div>
+</div></div></div>
+        
+        <div class="article-item item_rich_text " id="item37115" data-item-id="37115" data-item-type="ItemRichText"><div class="item-body-hbr">この音量調整を効率的に行うために、編集ソフトのAI機能が役立ちます。</div></div>
+        
+        <div class="article-item item_html " id="item37116" data-item-id="37116" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li><span class="decoration-01">Premiere Proの「自動ダッキング」</span>：<br>ナレーション音声に「会話」、BGMに「ミュージック」のタグを設定し、「自動ダッキング」機能を有効にするだけで、AIがナレーションの入るタイミングを検知し、自動でBGMの音量を下げてくれます。</li>
+</ul></div></div>
+        
+        <div class="article-item item_heading " id="item37117" data-item-id="37117" data-item-type="ItemHeading"><h2 class="item-body">【5-3】5章 -章末課題- [マインドフルネスアプリのコンセプト映像作成]</h2></div>
+        
+        <div class="article-item item_markdown " id="item40149" data-item-id="40149" data-item-type="ItemMarkdown"><h4 id="section">目安の学習時間：30分</h4>
+</div>
+        
+        <div class="article-item item_heading " id="item37118" data-item-id="37118" data-item-type="ItemHeading"><h3 class="item-body">問題</h3></div>
+        
+        <div class="article-item item_rich_text " id="item37119" data-item-id="37119" data-item-type="ItemRichText"><div class="item-body-hbr">これまでの各章の課題で作成した以下の「SereneMind」の素材を使い、20秒程度のコンセプト映像を完成させてください。</div></div>
+        
+        <div class="article-item item_html " id="item37120" data-item-id="37120" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li>
+    <span class="decoration-01">画像素材</span>：2章で作成した、水面の波紋や瞑想する人物などのコンセプト画像
+  </li>
+  <li>
+    <span class="decoration-01">音声素材</span>：3章で作成した、「SereneMind」紹介用のナレーション音声
+  </li>
+  <li>
+    <span class="decoration-01">動画素材</span>：4章で作成した、光のオーラや波形などのアクセント動画クリップ
+  </li>
+  <li>
+    <span class="decoration-01">BGM</span>：ご自身で、静かでリラックスできる雰囲気のフリーBGMを選定してください。
+  </li>
+</ul>
+</div></div>
+        
+        <div class="article-item item_html " id="item37121" data-item-id="37121" data-item-type="ItemHtml"><div class="item-body"><div class="callout white">
+    <div class="title-area">
+        <div class="icon bulb"></div>
+        <div class="title"><strong>この章の学習目的について</strong></div>
+    </div>
+    <div class="content-area">
+        <ul>
+            <li>この章の目的は、これまでの章で生成した<span class="decoration-02">AI素材（画像・音声・動画）だけを組み合わせて</span>、1本の映像を完成させる技術を学ぶことです。</li>
+            <li>出力した企画書や詳細な台本に基づいた、より実践的な制作ワークフローは、ロードマップの集大成である<strong>「教材5: 実践！AI活用SNS広告動画制作ワークフロー」</strong>で詳しく学びます。</li>
+            <li>まずはAI素材だけでどこまでの表現ができるのか、その可能性と現在の限界を体感してみましょう。</li>
+        </ul>
+    </div>
+</div></div></div>
+        
+        <div class="article-item item_heading " id="item37122" data-item-id="37122" data-item-type="ItemHeading"><h3 class="item-body">解答手順</h3></div>
+        
+        <div class="article-item item_html " id="item37123" data-item-id="37123" data-item-type="ItemHtml"><div class="item-body"><div class="card-with-icon check">
+    <span class="bold"><strong>操作手順</strong><br></span>
+    <div class="content-area">
+        <ol>
+            <li>編集ソフトで新規シーケンスを作成します。</li>
+            <li>3章で作成（または提供された）ナレーション音声をタイムラインに配置します。</li>
+            <li>ナレーションの内容とタイミングに合わせて、2章で作成（または提供された）AI画像を配置し、キーフレームで動きをつけます。</li>
+            <li>画像の切り替わり部分などに、4章で作成したアクセント用のAI動画クリップを効果的に配置します。</li>
+            <li>動画の雰囲気に合うフリーBGMを探し、タイムラインに配置します。</li>
+            <li>ナレーションの邪魔にならないよう、BGMの音量を調整します（自動ダッキングやキーフレームを活用）。</li>
+            <li>全体を再生し、映像と音が一体となった、アプリのコンセプトが伝わる映像になっていれば完成です。</li>
+        </ol>
+    </div>
+</div></div></div>
+        
+        <div class="article-item item_markdown " id="item37124" data-item-id="37124" data-item-type="ItemMarkdown"><h4 id="section">制作例</h4>
+</div>
+        
+        <div class="article-item item_link " id="item37125" data-item-id="37125" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=S3PpU&amp;item_id=37125" rel="nofollow noopener noreferrer" target="_blank">教材3 生成AI素材の動画編集における活用術 5-1</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="教材3 生成AI素材の動画編集における活用術 5-1" data-reference="https://www.dropbox.com/scl/fi/ou3y2hgvzwjwlgqv4h01k/VideoEditor-Techniques_5.1.1.0_.mp4?rlkey=1said4xoc4qec4e2mgge7uyph&amp;st=2qsewq2m&amp;dl=0" src="https://cdn.clipkit.co/tenants/589/item_links/images/000/037/125/thumb/d11437dd-ea84-4890-8008-3f59568dab13.png?1754961804" width="75" height="75" /></div><div class="media-body"><div class="item-body"></div></div></div></div></div>
+        
+        <div class="article-item item_rich_text " id="item37126" data-item-id="37126" data-item-type="ItemRichText"><div class="item-body-hbr">これで「5章：【実践】AI素材を編集ソフトで組み合わせる」の解説を終わります。<br>
+次の章に進みましょう。</div></div>
+        
+        <div class="article-item item_html " id="item37137" data-item-id="37137" data-item-type="ItemHtml"><div class="item-body"><div class="pagenation-buttons">
+  <a href="P4VKk" class="pagenation-buttons_prev"><img src="/theme/webcoach/img/icons/arrow-right.svg" class="pagenation-buttons_icon">前の章に戻る</a>
+  <a href="izuC4" class="pagenation-buttons_next">次の章に進む<img src="/theme/webcoach/img/icons/arrow-right.svg" class="pagenation-buttons_icon"></a>
+</div></div></div>
+        
+        
+        
+        <div class="back-to-roadmap mb-4 text-center"></div>
+      </div>
+    </div>
+    
+    <div class="lightbox-modal" id="lightboxModal">
+      <img src="" alt="">
+    </div>
+    
+    <div id="modal" class="fixed-menu-modal">
+      <div class="fixed-menu-modal-content">
+        <div class="index mb-3" style="background-color: #FDF5E8;">
+          <div>
+            <div class="fw-light">INDEX</div>
+            <div class="h3">目次</div>
+          </div>
+          <div class="toc"></div>
+        </div>
+        
+        <!-- ボタン類 -->
+        <div id="fixed-menu_buttons" class="fixed-menu_buttons"></div>
+        
+        <div class="back-to-roadmap text-center"></div>
+      </div>
+    </div>
+    
+    <button id="toggleBtn" class="floating-btn">
+      <img id="iconOpen" 
+           src="/theme/webcoach/img/icons/fixed-menu_modal-open.svg" 
+           alt="メニューを開く">
+      <img id="iconClose" 
+           src="/theme/webcoach/img/icons/fixed-menu_modal-close.svg" 
+           alt="メニューを閉じる" style="display:none;">
+    </button>
+  </div>
+</div>
+</div>
+<!-- <script src="https://cdn.clipkit.co/clipkit/javascripts/item-shopify-1.0.js?v=v15.9.0-20260915" async></script> -->
+            </div>
+        </main>
+
+    </div>
+
+    <div class="p-5" style="background-color: #B73E3D; color: white; height: 300px;">
+        <div class="">
+            <div class="h4 ps-3" style="border-left: 5px solid white;">WEBCOACH | キャリアチェンジまでの全てを学ぶマンツーマンWEBスクール</div>
+            <ul class="nav flex-column m-0 p-3 fw-light">
+                <li class="nav-item mb-2"><a href="https://www.webcoach.jp/" target="_blank">WEBCOACH | 公式HP</a></li>
+                <li class="nav-item mb-2"><a href="https://www.instagram.com/webcoach_officials/" target="_blank">WEBCOACH | 公式Instagram</a></li>
+                <li class="nav-item mb-2"><a href="https://vectorinc.co.jp/groupservice/webcoach-career/" target="_blank">WEBCOACH 公式メディア | WEBCOACH career</a></li>
+            </ul>
+        </div>
+        <div class="text-center">
+            <small>&copy; 2020 by WEBCOACH</small>
+        </div>
+    </div>
+
+    <script src="https://cdn.clipkit.co/clipkit/javascripts/application-1.0.js?v=v15.9.0-20260915" async></script>
+
+    <!-- bodyタグ内の下部に挿入されます -->
+
+
+    <!-- BootstrapのCDNでのjs読み込み -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+        crossorigin="anonymous"></script>
+
+    <!-- シンタックスハイライトの生成 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.1/highlight.min.js"></script>
+    <script>
+        // ハイライトを実行
+        hljs.initHighlightingOnLoad();
+    </script>
+
+    <!-- 目次の生成 -->
+    <script type="text/javascript">toc();</script>
+
+    <!-- ブックマークの生成 -->
+    <script type="text/javascript">displayLinks();</script>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="ck-icon-arrow-down" viewBox="0 0 1792 1792"><path d="M1675 832q0 53-37 90l-651 652q-39 37-91 37-53 0-90-37l-651-652q-38-36-38-90 0-53 38-91l74-75q39-37 91-37 53 0 90 37l294 294v-704q0-52 38-90t90-38h128q52 0 90 38t38 90v704l294-294q37-37 90-37 52 0 91 37l75 75q37 39 37 91z" /></symbol><symbol id="ck-icon-arrow-up" viewBox="0 0 1792 1792"><path d="M1675 971q0 51-37 90l-75 75q-38 38-91 38-54 0-90-38l-294-293v704q0 52-37.5 84.5t-90.5 32.5h-128q-53 0-90.5-32.5t-37.5-84.5v-704l-294 293q-36 38-90 38t-90-38l-75-75q-38-38-38-90 0-53 38-91l651-651q35-37 90-37 54 0 91 37l651 651q37 39 37 91z" /></symbol><symbol id="ck-icon-calendar" viewBox="0 0 1792 1792"><path d="M192 1664h288v-288h-288v288zm352 0h320v-288h-320v288zm-352-352h288v-320h-288v320zm352 0h320v-320h-320v320zm-352-384h288v-288h-288v288zm736 736h320v-288h-320v288zm-384-736h320v-288h-320v288zm768 736h288v-288h-288v288zm-384-352h320v-320h-320v320zm-352-864v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm736 864h288v-320h-288v320zm-384-384h320v-288h-320v288zm384 0h288v-288h-288v288zm32-480v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm384-64v1280q0 52-38 90t-90 38h-1408q-52 0-90-38t-38-90v-1280q0-52 38-90t90-38h128v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h384v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h128q52 0 90 38t38 90z" /></symbol><symbol id="ck-icon-chevron-left" viewBox="0 0 1792 1792"><path d="M1427 301l-531 531 531 531q19 19 19 45t-19 45l-166 166q-19 19-45 19t-45-19l-742-742q-19-19-19-45t19-45l742-742q19-19 45-19t45 19l166 166q19 19 19 45t-19 45z" /></symbol><symbol id="ck-icon-chevron-right" viewBox="0 0 1792 1792"><path d="M1363 877l-742 742q-19 19-45 19t-45-19l-166-166q-19-19-19-45t19-45l531-531-531-531q-19-19-19-45t19-45l166-166q19-19 45-19t45 19l742 742q19 19 19 45t-19 45z" /></symbol><symbol id="ck-icon-clock-o" viewBox="0 0 1792 1792"><path d="M1024 544v448q0 14-9 23t-23 9h-320q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h224v-352q0-14 9-23t23-9h64q14 0 23 9t9 23zm416 352q0-148-73-273t-198-198-273-73-273 73-198 198-73 273 73 273 198 198 273 73 273-73 198-198 73-273zm224 0q0 209-103 385.5t-279.5 279.5-385.5 103-385.5-103-279.5-279.5-103-385.5 103-385.5 279.5-279.5 385.5-103 385.5 103 279.5 279.5 103 385.5z" /></symbol><symbol id="ck-icon-trash" viewBox="0 0 1792 1792"><path d="M704 1376v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm-544-992h448l-48-117q-7-9-17-11h-317q-10 2-17 11zm928 32v64q0 14-9 23t-23 9h-96v948q0 83-47 143.5t-113 60.5h-832q-66 0-113-58.5t-47-141.5v-952h-96q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h309l70-167q15-37 54-63t79-26h320q40 0 79 26t54 63l70 167h309q14 0 23 9t9 23z" /></symbol><symbol id="ck-icon-undo" viewBox="0 0 1792 1792"><path d="M1664 896q0 156-61 298t-164 245-245 164-298 61q-172 0-327-72.5t-264-204.5q-7-10-6.5-22.5t8.5-20.5l137-138q10-9 25-9 16 2 23 12 73 95 179 147t225 52q104 0 198.5-40.5t163.5-109.5 109.5-163.5 40.5-198.5-40.5-198.5-109.5-163.5-163.5-109.5-198.5-40.5q-98 0-188 35.5t-160 101.5l137 138q31 30 14 69-17 40-59 40h-448q-26 0-45-19t-19-45v-448q0-42 40-59 39-17 69 14l130 129q107-101 244.5-156.5t284.5-55.5q156 0 298 61t245 164 164 245 61 298z" /></symbol></svg><script async="async" defer="defer" nonce="8MV0ugh84+Xnz/19Ykafxg==" src="//www.instagram.com/embed.js"></script>
+
+<!--Clipkit(R) v15.9.0-20260915 Copyright (C) 2026 VECTOR Inc.-->
+
+</body>
+
+</html>
+

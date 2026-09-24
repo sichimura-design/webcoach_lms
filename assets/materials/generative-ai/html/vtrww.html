@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<!-- clipkit-source-url: https://learn.webcoach.jp/generative-ai/ai_web_marketing/A-5/vtRww -->
+<!-- clipkit-fetched-at: 2026-09-17T11:14:00.275Z -->
+<html lang="ja"><head><style data-clipkit-snapshot="force-visible">[data-aos],.reveal,.wow,.fade-in,.animate__animated,.js-reveal{opacity:1!important;transform:none!important;visibility:visible!important;animation:none!important;transition:none!important}</style></head><body><div>
+  
+    <div>
+      
+      
+        
+          <div class="article-item item_html " id="item48602" data-item-id="48602" data-item-type="ItemHtml"><div class="item-body">
+
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>マーケティングブリーフとは——クライアントとのズレをなくす設計書</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Hiragino Sans', 'Hiragino Kaku Gothic ProN', 'Noto Sans JP', sans-serif; background: #F7F8FA; color: #3D3D3D; line-height: 1.7; }
+
+  .hero {
+    background: linear-gradient(135deg, #E85D4A 0%, #F5A64A 100%);
+    padding: 48px 24px 40px;
+    color: white;
+    text-align: center;
+  }
+  .hero__label { font-size: 12px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; opacity: 0.85; margin-bottom: 12px; }
+  .hero__title { font-size: 26px; font-weight: 800; line-height: 1.35; margin-bottom: 16px; }
+  .hero__meta { font-size: 13px; opacity: 0.85; display: flex; align-items: center; justify-content: center; gap: 16px; flex-wrap: wrap; }
+
+  .container { max-width: 860px; margin: 0 auto; padding: 32px 16px 64px; }
+
+  .card {
+    background: white;
+    border-radius: 12px;
+    padding: 28px;
+    margin-bottom: 24px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.07);
+    position: relative;
+    overflow: hidden;
+  }
+  .card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, #E85D4A, #F5A64A);
+  }
+  .card__title { font-size: 17px; font-weight: 700; color: #3D3D3D; margin-bottom: 16px; display: flex; align-items: center; gap: 8px; }
+  .card__title::before { content: ''; display: inline-block; width: 4px; height: 18px; background: linear-gradient(180deg, #E85D4A, #F5A64A); border-radius: 2px; }
+
+  .intro-box {
+    background: linear-gradient(135deg, #FAE8E0 0%, #FEF3EA 100%);
+    border-radius: 10px;
+    padding: 24px;
+    margin-bottom: 24px;
+    border-left: 4px solid #E85D4A;
+  }
+  .intro-box__text { font-size: 15px; color: #3D3D3D; line-height: 1.8; }
+  .intro-box__text strong { color: #E85D4A; }
+
+  /* 問題シナリオ */
+  .scenario { background: #F7F8FA; border-radius: 10px; padding: 20px; margin: 16px 0; }
+  .scenario__role { font-size: 12px; font-weight: 700; color: #888; margin-bottom: 8px; }
+  .scenario__dialog { font-size: 14px; line-height: 1.75; color: #3D3D3D; }
+  .dialog-client { color: #5B7BE8; font-weight: 600; }
+  .dialog-creator { color: #E85D4A; font-weight: 600; }
+  .scenario__result { margin-top: 12px; padding: 10px 14px; border-radius: 6px; font-size: 13px; font-weight: 600; }
+  .scenario__result--ng { background: #FFF5F5; color: #C0392B; border-left: 3px solid #FFBDBD; }
+  .scenario__result--ok { background: #F0FBF4; color: #2E9B6E; border-left: 3px solid #6DCFA0; }
+
+  /* ブリーフの役割 */
+  .brief-role-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; margin: 20px 0; }
+  .brief-role-card { border-radius: 10px; padding: 18px; text-align: center; border-top: 3px solid; }
+  .brief-role-card:nth-child(1) { background: #EBF0FF; border-color: #5B7BE8; }
+  .brief-role-card:nth-child(2) { background: #FFF3E6; border-color: #E0882A; }
+  .brief-role-card:nth-child(3) { background: #FFE8E4; border-color: #E85D4A; }
+  .brief-role-card__icon { font-size: 28px; margin-bottom: 8px; }
+  .brief-role-card__title { font-size: 14px; font-weight: 700; margin-bottom: 6px; }
+  .brief-role-card:nth-child(1) .brief-role-card__title { color: #5B7BE8; }
+  .brief-role-card:nth-child(2) .brief-role-card__title { color: #E0882A; }
+  .brief-role-card:nth-child(3) .brief-role-card__title { color: #E85D4A; }
+  .brief-role-card__desc { font-size: 12px; color: #555; line-height: 1.6; }
+
+  /* 7項目 */
+  .brief-items { display: flex; flex-direction: column; gap: 12px; margin: 20px 0; }
+  .brief-item { display: flex; gap: 14px; align-items: flex-start; background: #F7F8FA; border-radius: 8px; padding: 14px; }
+  .brief-item__num {
+    width: 28px; height: 28px; border-radius: 50%; background: linear-gradient(135deg, #E85D4A, #F5A64A);
+    color: white; font-size: 12px; font-weight: 800; display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+  }
+  .brief-item__name { font-size: 14px; font-weight: 700; margin-bottom: 3px; }
+  .brief-item__desc { font-size: 13px; color: #666; line-height: 1.65; }
+  .brief-item__example { font-size: 12px; color: #888; margin-top: 4px; font-style: italic; }
+
+  /* ヒアリングシート活用 */
+  .hearing-comparison { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 16px 0; }
+  .hearing-card { border-radius: 10px; padding: 18px; }
+  .hearing-card--without { background: #F7F7F7; border: 1.5px solid #DDD; }
+  .hearing-card--with { background: #FFF0ED; border: 1.5px solid #E85D4A; }
+  .hearing-card__label { font-size: 11px; font-weight: 700; display: inline-block; padding: 2px 8px; border-radius: 4px; margin-bottom: 10px; }
+  .hearing-card--without .hearing-card__label { background: #DDD; color: #666; }
+  .hearing-card--with .hearing-card__label { background: #E85D4A; color: white; }
+  .hearing-card__title { font-size: 14px; font-weight: 700; margin-bottom: 8px; }
+  .hearing-list { list-style: none; }
+  .hearing-list li { font-size: 13px; padding: 5px 0; border-bottom: 1px solid rgba(0,0,0,0.06); display: flex; gap: 8px; align-items: flex-start; color: #555; }
+  .hearing-list li:last-child { border-bottom: none; }
+  .hearing-list li::before { content: '×'; color: #C0392B; font-weight: 700; flex-shrink: 0; }
+  .hearing-card--with .hearing-list li::before { content: '✓'; color: #2E9B6E; }
+  .hearing-card--with .hearing-list li { color: #3D3D3D; }
+
+  /* まとめカード */
+  .summary-card {
+    background: linear-gradient(135deg, #E85D4A 0%, #F5A64A 100%);
+    border-radius: 12px;
+    padding: 28px;
+    color: white;
+    text-align: center;
+  }
+  .summary-card__title { font-size: 14px; font-weight: 700; opacity: 0.85; margin-bottom: 10px; }
+  .summary-card__main { font-size: 20px; font-weight: 800; line-height: 1.45; margin-bottom: 16px; }
+  .summary-card__sub { font-size: 13px; opacity: 0.9; line-height: 1.7; }
+
+  p { font-size: 14px; line-height: 1.8; color: #4A4A4A; margin-bottom: 12px; }
+
+  .reveal { opacity: 0; transform: translateY(20px); transition: opacity 0.5s ease, transform 0.5s ease; }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+
+  @media (max-width: 600px) {
+    .brief-role-grid { grid-template-columns: 1fr; }
+    .hearing-comparison { grid-template-columns: 1fr; }
+    .hero__title { font-size: 22px; }
+  }
+</style>
+<meta name="csrf-param" content="authenticity_token">
+<meta name="csrf-token" content="PsnPrWn3RMHzFE_rPP27ohuV8z3aKXI6Fb11taM7jSnUIH5ALW6q__QcJH5GRsqMoBfIRc7sgjJ-XonSRC0w3Q"><meta content="" name="routing-root-path"><meta content="media" name="site-name"><meta content="ja" name="i18n-default-locale"><meta content="ja" name="i18n-locale">
+
+
+<div class="hero">
+  <div class="hero__label">Course A — Chapter 5 / Lesson 1</div>
+  <div class="hero__title">マーケティングブリーフとは<br>——クライアントとのズレをなくす設計書</div>
+  <div class="hero__meta">
+    <span>⏱ 25分</span>
+    <span>📖 知識</span>
+    <span>🎯 SNS・デザイン・動画</span>
+  </div>
+</div>
+
+<!-- ロードマップに戻るボタンの場合 --> 
+<div style="display: flex; justify-content: center; align-items: center; padding: 24px 0; margin-top: 24px;">
+  <a href="https://learn.webcoach.jp/2Q/ai_web_marketing" style="display: inline-block; background: #fff; color: #E85D4A; border: 2px solid #E85D4A; font-weight: 700; padding: 10px clamp(24px, 7vw, 48px); border-radius: 8px; text-decoration: none; white-space: nowrap;">ロードマップに戻る</a>  
+</div>
+<!-- 次の章に進むボタンの場合 -->  
+<div style="display: flex; justify-content: flex-end; align-items: center; padding: 24px 0; margin-top: 24px;">
+  <a href="https://learn.webcoach.jp/generative-ai/ai_web_marketing/A-5/qJUh2" style="position: relative; display: inline-block; background: linear-gradient(135deg, #E85D4A, #F5A64A); color: #fff; font-weight: 700; padding: 12px clamp(24px, 7vw, 48px); border-radius: 8px; text-decoration: none;">次の章に進む<img src="../../_assets/47498cfebf.svg" style="position: absolute; top: 50%; transform: translateY(-50%); right: 12px; filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(125deg) brightness(103%) contrast(103%);"></a>
+</div>
+<div class="container">
+
+  <div class="intro-box reveal visible">
+    <div class="intro-box__text">
+      「イメージと違う」「何度も修正が続く」——クリエイターが最も消耗する体験の原因は「最初の認識のズレ」です。<br>
+      マーケティングブリーフは、制作開始前に<strong>目的・ターゲット・メッセージ・KPIを一枚に集約する「設計書」</strong>。これがあると、方向性のズレがほぼなくなります。
+    </div>
+  </div>
+
+  <!-- セクション1: ブリーフなし制作の問題 -->
+  <div class="card reveal visible">
+    <div class="card__title">ブリーフなし制作が生む「方向性ズレ」のリアル</div>
+
+    <div class="scenario">
+      <div class="scenario__role">よくあるシナリオ: SNS運用の依頼</div>
+      <div class="scenario__dialog">
+        <p><span class="dialog-client">クライアント:</span> 「Instagram投稿、お願いしたいです。おしゃれな感じで、20代向けに。」</p>
+        <p><span class="dialog-creator">クリエイター:</span> 「わかりました！」→ 2週間後に投稿デザインを提出</p>
+        <p><span class="dialog-client">クライアント:</span> 「なんか…イメージと違うんですよね。もっとポップにしてほしかったし、商品の紹介もして欲しかったんですが…」</p>
+      </div>
+      <div class="scenario__result scenario__result--ng">→ 2週間の作業がほぼゼロリセット。原因は「おしゃれ」「20代向け」の解釈が両者で全然違ったこと。</div>
+    </div>
+
+    <div class="scenario" style="margin-top: 16px;">
+      <div class="scenario__role">ブリーフを使った場合</div>
+      <div class="scenario__dialog">
+        <p><span class="dialog-creator">クリエイター:</span> 「ありがとうございます！制作前に確認させてください。こちらのシートに沿って、目的・ターゲット・トーンを一緒に決めさせてください。」</p>
+        <p>→ ヒアリング10分でブリーフを作成 → 共有・承認 → 制作開始</p>
+      </div>
+      <div class="scenario__result scenario__result--ok">→ 提出した投稿に「これ！！これです！！」。修正対応はゼロ。クライアントの信頼度が急上昇。</div>
+    </div>
+  </div>
+
+  <!-- セクション2: ブリーフの役割 -->
+  <div class="card reveal visible">
+    <div class="card__title">マーケティングブリーフの3つの役割</div>
+
+    <div class="brief-role-grid">
+      <div class="brief-role-card">
+        <div class="brief-role-card__icon">🎯</div>
+        <div class="brief-role-card__title">①認識を揃える</div>
+        <div class="brief-role-card__desc">クライアントと「誰に・何を・なぜ」を合意してから制作開始。「なんか違う」を防ぐ。</div>
+      </div>
+      <div class="brief-role-card">
+        <div class="brief-role-card__icon">📝</div>
+        <div class="brief-role-card__title">②制作の道しるべ</div>
+        <div class="brief-role-card__desc">「さつきさん向けに、ご褒美感を伝える」など、制作中に迷ったときに立ち戻れる基準になる。</div>
+      </div>
+      <div class="brief-role-card">
+        <div class="brief-role-card__icon">📊</div>
+        <div class="brief-role-card__title">③成果評価の基準</div>
+        <div class="brief-role-card__desc">「KPIはフォロワー+100/月」と決めておけば、成果報告時に「達成/未達成」を客観的に評価できる。</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- セクション3: 7項目 -->
+  <div class="card reveal visible">
+    <div class="card__title">マーケティングブリーフの7項目</div>
+    <p>このブリーフを埋めることで、Course Aで学んだすべてが統合されます。</p>
+
+    <div class="brief-items">
+      <div class="brief-item">
+        <div class="brief-item__num">1</div>
+        <div>
+          <div class="brief-item__name">背景・現状</div>
+          <div class="brief-item__desc">なぜこの制作が必要か。現状の課題は何か。</div>
+          <div class="brief-item__example">例: 「現在HPからの月次問い合わせが3件。競合比較で見てもらえていない段階で離脱している可能性。」</div>
+        </div>
+      </div>
+      <div class="brief-item">
+        <div class="brief-item__num">2</div>
+        <div>
+          <div class="brief-item__name">目的・ゴール</div>
+          <div class="brief-item__desc">この制作物が達成すべきビジネス上の目的。</div>
+          <div class="brief-item__example">例: 「体験レッスン申し込み数を月10件に増やす」</div>
+        </div>
+      </div>
+      <div class="brief-item">
+        <div class="brief-item__num">3</div>
+        <div>
+          <div class="brief-item__name">ターゲット / ペルソナ</div>
+          <div class="brief-item__desc">誰のために作るか。Chapter 2で作ったペルソナをここに貼る。</div>
+          <div class="brief-item__example">例: 「田中さつき（27歳・IT企業・残業多め・自分の時間を作りたい）」</div>
+        </div>
+      </div>
+      <div class="brief-item">
+        <div class="brief-item__num">4</div>
+        <div>
+          <div class="brief-item__name">コアメッセージ</div>
+          <div class="brief-item__desc">この制作物で最も伝えたい1つのこと。ベネフィット・USPと連動する。</div>
+          <div class="brief-item__example">例: 「残業帰りでも来られる。仕事を頑張る自分へのご褒美ヨガ。」</div>
+        </div>
+      </div>
+      <div class="brief-item">
+        <div class="brief-item__num">5</div>
+        <div>
+          <div class="brief-item__name">トーン＆マナー</div>
+          <div class="brief-item__desc">ビジュアル・言葉のテイスト。「やわらかい/引き締まった」「カジュアル/フォーマル」など。</div>
+          <div class="brief-item__example">例: 「ナチュラル・落ち着いた・夜の空気感。ギラギラしていない。」</div>
+        </div>
+      </div>
+      <div class="brief-item">
+        <div class="brief-item__num">6</div>
+        <div>
+          <div class="brief-item__name">KPI（成功指標）</div>
+          <div class="brief-item__desc">何をもって「成功」と判断するか。具体的な数値で設定する。</div>
+          <div class="brief-item__example">例: 「体験申し込みCTRが現状1.2%→2.5%以上」「Instagramプロフィール遷移率5%以上」</div>
+        </div>
+      </div>
+      <div class="brief-item">
+        <div class="brief-item__num">7</div>
+        <div>
+          <div class="brief-item__name">制約条件</div>
+          <div class="brief-item__desc">使用できない表現・競合禁止ワード・ブランドカラー指定・納期など。</div>
+          <div class="brief-item__example">例: 「#〇〇色を必ず使う」「〇月〇日までに初稿」「競合スタジオ名は出さない」</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- セクション4: ヒアリングシートとしての使い方 -->
+  <div class="card reveal visible">
+    <div class="card__title">ブリーフをヒアリングシートとして使う</div>
+    <p>ブリーフはクライアントに送って「記入してもらう」だけでなく、<strong>対話しながらクリエイター自身が埋める</strong>ことで「上質なヒアリング」になります。</p>
+
+    <div class="hearing-comparison">
+      <div class="hearing-card hearing-card--without">
+        <span class="hearing-card__label">ブリーフなしのヒアリング</span>
+        <div class="hearing-card__title">曖昧なまま制作開始</div>
+        <ul class="hearing-list">
+          <li>「おしゃれに」「かわいく」「プロっぽく」しか決まっていない</li>
+          <li>誰に届けるかが曖昧</li>
+          <li>KPIがないため、後から「成果が出ない」になりやすい</li>
+          <li>修正が何度も発生し、時間と信頼を消耗</li>
+        </ul>
+      </div>
+      <div class="hearing-card hearing-card--with">
+        <span class="hearing-card__label">ブリーフを使ったヒアリング</span>
+        <div class="hearing-card__title">7項目で認識が揃う</div>
+        <ul class="hearing-list">
+          <li>目的・ゴールが数値で明確になる</li>
+          <li>ペルソナが具体化される</li>
+          <li>コアメッセージが1つに絞られる</li>
+          <li>成果評価の基準が合意される</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- まとめ -->
+  <div class="summary-card reveal">
+    <div class="summary-card__title">このレッスンのまとめ</div>
+    <div class="summary-card__main">ブリーフは制作前の「認識合わせの設計書」。<br>7項目を埋めれば方向性ズレはほぼなくなる。</div>
+    <div class="summary-card__sub">
+      ブリーフの3役割: ①認識を揃える ②制作の道しるべ ③成果評価の基準<br>
+      7項目: 背景・目的・ペルソナ・コアメッセージ・トーン・KPI・制約条件<br><br>
+      次のレッスンでは、実際にブリーフを作成する演習（+Claudeでの叩き台作成）を行います。Course Aの総まとめです。
+    </div>
+  </div>
+
+</div>
+<!-- 次の章に進むボタンの場合 -->  
+<div style="display: flex; justify-content: flex-end; align-items: center; padding: 24px 0; margin-top: 24px;">
+  <a href="https://learn.webcoach.jp/generative-ai/ai_web_marketing/A-5/qJUh2" style="position: relative; display: inline-block; background: linear-gradient(135deg, #E85D4A, #F5A64A); color: #fff; font-weight: 700; padding: 12px clamp(24px, 7vw, 48px); border-radius: 8px; text-decoration: none;">次の章に進む<img src="../../_assets/47498cfebf.svg" style="position: absolute; top: 50%; transform: translateY(-50%); right: 12px; filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(125deg) brightness(103%) contrast(103%);"></a>
+</div>
+<!-- ロードマップに戻るボタンの場合 --> 
+<div style="display: flex; justify-content: center; align-items: center; padding: 24px 0; margin-top: 24px;">
+  <a href="https://learn.webcoach.jp/2Q/ai_web_marketing" style="display: inline-block; background: #fff; color: #E85D4A; border: 2px solid #E85D4A; font-weight: 700; padding: 10px clamp(24px, 7vw, 48px); border-radius: 8px; text-decoration: none; white-space: nowrap;">ロードマップに戻る</a>  
+</div>
+
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="ck-icon-arrow-down" viewBox="0 0 1792 1792"><path d="M1675 832q0 53-37 90l-651 652q-39 37-91 37-53 0-90-37l-651-652q-38-36-38-90 0-53 38-91l74-75q39-37 91-37 53 0 90 37l294 294v-704q0-52 38-90t90-38h128q52 0 90 38t38 90v704l294-294q37-37 90-37 52 0 91 37l75 75q37 39 37 91z"></path></symbol><symbol id="ck-icon-arrow-up" viewBox="0 0 1792 1792"><path d="M1675 971q0 51-37 90l-75 75q-38 38-91 38-54 0-90-38l-294-293v704q0 52-37.5 84.5t-90.5 32.5h-128q-53 0-90.5-32.5t-37.5-84.5v-704l-294 293q-36 38-90 38t-90-38l-75-75q-38-38-38-90 0-53 38-91l651-651q35-37 90-37 54 0 91 37l651 651q37 39 37 91z"></path></symbol><symbol id="ck-icon-calendar" viewBox="0 0 1792 1792"><path d="M192 1664h288v-288h-288v288zm352 0h320v-288h-320v288zm-352-352h288v-320h-288v320zm352 0h320v-320h-320v320zm-352-384h288v-288h-288v288zm736 736h320v-288h-320v288zm-384-736h320v-288h-320v288zm768 736h288v-288h-288v288zm-384-352h320v-320h-320v320zm-352-864v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm736 864h288v-320h-288v320zm-384-384h320v-288h-320v288zm384 0h288v-288h-288v288zm32-480v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm384-64v1280q0 52-38 90t-90 38h-1408q-52 0-90-38t-38-90v-1280q0-52 38-90t90-38h128v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h384v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h128q52 0 90 38t38 90z"></path></symbol><symbol id="ck-icon-chevron-left" viewBox="0 0 1792 1792"><path d="M1427 301l-531 531 531 531q19 19 19 45t-19 45l-166 166q-19 19-45 19t-45-19l-742-742q-19-19-19-45t19-45l742-742q19-19 45-19t45 19l166 166q19 19 19 45t-19 45z"></path></symbol><symbol id="ck-icon-chevron-right" viewBox="0 0 1792 1792"><path d="M1363 877l-742 742q-19 19-45 19t-45-19l-166-166q-19-19-19-45t19-45l531-531-531-531q-19-19-19-45t19-45l166-166q19-19 45-19t45 19l742 742q19 19 19 45t-19 45z"></path></symbol><symbol id="ck-icon-clock-o" viewBox="0 0 1792 1792"><path d="M1024 544v448q0 14-9 23t-23 9h-320q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h224v-352q0-14 9-23t23-9h64q14 0 23 9t9 23zm416 352q0-148-73-273t-198-198-273-73-273 73-198 198-73 273 73 273 198 198 273 73 273-73 198-198 73-273zm224 0q0 209-103 385.5t-279.5 279.5-385.5 103-385.5-103-279.5-279.5-103-385.5 103-385.5 279.5-279.5 385.5-103 385.5 103 279.5 279.5 103 385.5z"></path></symbol><symbol id="ck-icon-trash" viewBox="0 0 1792 1792"><path d="M704 1376v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm-544-992h448l-48-117q-7-9-17-11h-317q-10 2-17 11zm928 32v64q0 14-9 23t-23 9h-96v948q0 83-47 143.5t-113 60.5h-832q-66 0-113-58.5t-47-141.5v-952h-96q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h309l70-167q15-37 54-63t79-26h320q40 0 79 26t54 63l70 167h309q14 0 23 9t9 23z"></path></symbol><symbol id="ck-icon-undo" viewBox="0 0 1792 1792"><path d="M1664 896q0 156-61 298t-164 245-245 164-298 61q-172 0-327-72.5t-264-204.5q-7-10-6.5-22.5t8.5-20.5l137-138q10-9 25-9 16 2 23 12 73 95 179 147t225 52q104 0 198.5-40.5t163.5-109.5 109.5-163.5 40.5-198.5-40.5-198.5-109.5-163.5-163.5-109.5-198.5-40.5q-98 0-188 35.5t-160 101.5l137 138q31 30 14 69-17 40-59 40h-448q-26 0-45-19t-19-45v-448q0-42 40-59 39-17 69 14l130 129q107-101 244.5-156.5t284.5-55.5q156 0 298 61t245 164 164 245 61 298z"></path></symbol></svg>
+
+<!--Clipkit(R) v15.9.0-20260915 Copyright (C) 2026 VECTOR Inc.-->
+
+
+
+</div></div>
+        
+      
+    </div>
+  
+  </div>
+
+<!-- <script src="https://cdn.clipkit.co/clipkit/javascripts/item-shopify-1.0.js?v=v15.9.0-20260915" async></script> -->
+</body></html>

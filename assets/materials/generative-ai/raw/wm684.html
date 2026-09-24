@@ -1,0 +1,706 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+  <html lang="ja">
+
+<head><script async="async" data-label="saas" nonce="y3XzlnvgIxrIR/nyP4DK6Q==" src="//b.clipkit.co/"></script><script src="//cdn.clipkit.co/clipkit_assets/beacon-787bbf3225ec43d93f198af35f7d56fdef40fb50440a2909500bdf5b99225aab.js" async="async" id="clipkit-beacon" data-page-type="article" data-page-id="1466" data-domain="learn.webcoach.jp" data-url="/generative-ai/AI_SNS/%E6%95%99%E6%9D%90%EF%BC%90AI%E6%99%82%E4%BB%A3%E3%81%AESNS%E9%81%8B%E7%94%A8%E6%88%A6%E7%95%A5%20-%20%E5%8A%B9%E7%8E%87%E5%8C%96%E3%81%A8%E6%88%90%E6%9E%9C%E6%9C%80%E5%A4%A7%E5%8C%96%E3%81%B8%E3%81%AE%E9%81%93/Wm684" data-href="https://learn.webcoach.jp/media/beacon"></script>
+    <!-- headタグ内の上部に挿入されます -->
+
+    <meta charset="UTF-8">
+    <title>3章 AIを賢く安全に使うために -メリットと注意点- - WEBCOACH</title>
+
+    <!-- resetcssのCDNでのCSS読み込み -->
+    <link rel="stylesheet" href="https://unpkg.com/modern-css-reset/dist/reset.min.css" />
+
+    <!-- fontawesomeのCDNでのCSS読み込み -->
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/fontawesome/4.7.0/css/font-awesome.min.css">
+
+    <!-- BootstrapのCDNでのCSS読み込み -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous" />
+
+    <!-- highlight.jsの読み込み -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.1/styles/dracula.min.css">
+
+    <!-- カスタムCSS -->
+    <link rel="stylesheet" href="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/168/original/style.css?1788081716">
+
+    <!-- clipkitデフォルトのCSS -->
+    <!--<link rel="stylesheet" media="screen" href="https://cdn.clipkit.co/clipkit/stylesheets/application-1.0.css?v=v15.9.0-20260915">-->
+
+    <!-- jQuery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <!-- カスタムJS -->
+    <script src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/202/original/script.js?1788946194"></script>
+    <script src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/535/original/script.js?1743681771"></script>
+
+    <!-- clipkitデフォルトのJS -->
+    <script src="https://cdn.clipkit.co/clipkit/javascripts/default-1.0.js?v=v15.9.0-20260915"></script>
+
+    <!-- フォント -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;700&display=swap" rel="stylesheet">
+
+    <link href="https://cdn.clipkit.co/clipkit/favicons/square/missing.png" rel="shortcut icon" type="image/vnd.microsoft.icon">
+    <link rel="apple-touch-icon" href="https://cdn.clipkit.co/clipkit/touch_icons/square/missing.png">
+    <link rel="alternate" type="application/rss+xml"
+        href="https://learn.webcoach.jp/media.rss" title="WEBCOACH">
+    
+<link rel="canonical" href="https://learn.webcoach.jp/generative-ai/AI_SNS/%E6%95%99%E6%9D%90%EF%BC%90AI%E6%99%82%E4%BB%A3%E3%81%AESNS%E9%81%8B%E7%94%A8%E6%88%A6%E7%95%A5%20-%20%E5%8A%B9%E7%8E%87%E5%8C%96%E3%81%A8%E6%88%90%E6%9E%9C%E6%9C%80%E5%A4%A7%E5%8C%96%E3%81%B8%E3%81%AE%E9%81%93/Wm684">
+
+<meta name="description" content="">
+<meta name="keywords" content="">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:domain" content="learn.webcoach.jp">
+<meta name="twitter:title" content="3章 AIを賢く安全に使うために -メリットと注意点- - WEBCOACH">
+<meta name="twitter:image" content="https://cdn.clipkit.co/tenants/589/item_images/images/000/027/688/medium/c9996d1a-3331-4077-9a9f-e1b48bbba0ba.png?1751260460">
+<meta name="twitter:description" content="">
+<meta property="og:site_name" content="WEBCOACH">
+<meta property="og:title" content="3章 AIを賢く安全に使うために -メリットと注意点-">
+<meta property="og:description" content="">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://learn.webcoach.jp/generative-ai/AI_SNS/%E6%95%99%E6%9D%90%EF%BC%90AI%E6%99%82%E4%BB%A3%E3%81%AESNS%E9%81%8B%E7%94%A8%E6%88%A6%E7%95%A5%20-%20%E5%8A%B9%E7%8E%87%E5%8C%96%E3%81%A8%E6%88%90%E6%9E%9C%E6%9C%80%E5%A4%A7%E5%8C%96%E3%81%B8%E3%81%AE%E9%81%93/Wm684">
+<meta property="og:image" content="https://cdn.clipkit.co/tenants/589/item_images/images/000/027/688/large/c9996d1a-3331-4077-9a9f-e1b48bbba0ba.png?1751260460">
+<script type="application/ld+json">
+  {
+    "@context": "http://schema.org",
+    "@type": "NewsArticle",
+    "mainEntityOfPage":{
+      "@type":"WebPage",
+      "@id": "https://learn.webcoach.jp/generative-ai/AI_SNS/%E6%95%99%E6%9D%90%EF%BC%90AI%E6%99%82%E4%BB%A3%E3%81%AESNS%E9%81%8B%E7%94%A8%E6%88%A6%E7%95%A5%20-%20%E5%8A%B9%E7%8E%87%E5%8C%96%E3%81%A8%E6%88%90%E6%9E%9C%E6%9C%80%E5%A4%A7%E5%8C%96%E3%81%B8%E3%81%AE%E9%81%93/Wm684"
+    },
+    "headline": "3章 AIを賢く安全に使うために -メリットと注意点-",
+    "image": {
+      "@type": "ImageObject",
+      "url": "https://cdn.clipkit.co/tenants/589/item_images/images/000/027/688/medium/c9996d1a-3331-4077-9a9f-e1b48bbba0ba.png?1751260460",
+      "width": 800,
+      "height": 600
+    },
+    "datePublished": "2025-06-30T14:24:55+09:00",
+    "dateModified": "2025-09-21T18:30:04+09:00",
+    "author": {
+      "@type": "Person",
+      "name": "m_takenaga"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "WEBCOACH",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://cdn.clipkit.co/tenants/589/sites/logos/000/000/001/logo_sm/a8defd4b-1cc7-433b-a61c-08e7db0e3e4f.png?1714459367"
+      }
+    },
+    "description": ""
+  }
+  </script>
+
+    <!-- headタグ内の下部に挿入されます -->
+
+
+<meta name="csrf-param" content="authenticity_token" />
+<meta name="csrf-token" content="RSFPSwV2sxrTqI9Vgor9c0ev4wZbmRWSBsRaMvrS51CaWev0BdU44fjJvsO6aaUvyu0aj5jodjdNUNA-3zE_3w" /><meta content="" name="routing-root-path" /><meta content="media" name="site-name" /><meta content="ja" name="i18n-default-locale" /><meta content="ja" name="i18n-locale" /></head>
+
+<body class="device-desktop">
+    <!-- bodyタグ内の上部に挿入されます -->
+
+
+    <!-- サイドバーとコンテンツのコンテナ -->
+    <div class="d-flex flex-row w-100 mb-5" style="min-height: calc(100vh - 400px);">
+
+        <!-- サイドバー -->
+        <!--<nav id="side-bar" class="d-flex flex-column fixed-top" style="width: 250px;">-->
+        <!--    <h1 class="d-block w-100 text-center">-->
+        <!--        <a class="d-block" href="/">-->
+        <!--            <img class="mw-100 p-3" src="https://cdn.clipkit.co/tenants/589/sites/logos/000/000/001/logo_sm/a8defd4b-1cc7-433b-a61c-08e7db0e3e4f.png?1714459367" alt="WEBCOACH">-->
+        <!--        </a>-->
+        <!--    </h1>-->
+        <!--    <ul class="nav flex-column m-0 p-3 fw-bold">-->
+        <!--        <li id="sidebar-top" class="nav-item mb-2" style="display: none;"><a href="/"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;" src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/233/original/home.png?1715353458">-->
+        <!--                <div>ホーム</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-knowledges" class="nav-item mb-2" style="display: none;"><a href="/knowledges"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;" src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/232/original/book.png?1715353458">-->
+        <!--                <div>学習の心得</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-web-designs" class="nav-item mb-2" style="display: none;"><a href="/web-designs"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/231/original/design.png?1715353457">-->
+        <!--                <div>WEBデザイン</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-web-marketing" class="nav-item mb-2" style="display: none;"><a href="/web-marketings"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/230/original/marketing.png?1715353457">-->
+        <!--                <div>WEBマーケティング</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-codings" class="nav-item mb-2" style="display: none;"><a href="/codings"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/229/original/website.png?1715353457">-->
+        <!--                <div>WEBサイト構築</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-business-skills" class="nav-item mb-2" style="display: none;"><a href="/business-skills"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/228/original/business.png?1715353456">-->
+        <!--                <div>ビジネススキル</div>-->
+        <!--            </a></li>-->
+        <!--    </ul>-->
+        <!--</nav>-->
+
+        <!-- コンテンツ -->
+        <!--<main class="ms-auto" style="width: calc(100vw - 250px);">-->
+        <main class="ms-auto" style="width: calc(100vw);">
+            <div id="sb-site">
+                
+
+
+<div class="container">
+  <div class="row">
+    <div class="article">
+      <div class="mb-3 text-light" style="
+        height: 180px;
+        background-image: url(https://cdn.clipkit.co/tenants/589/resources/assets/000/000/270/original/article-header.png?1717761933);
+        background-repeat: no-repeat;
+        background-size: cover;
+        display: flex;
+        align-items: flex-end;
+      ">
+        <div style="
+          margin: 0 0 30px 30px;
+        ">
+          <div>教材０AI時代のSNS運用戦略 - 効率化と成果最大化への道</div>
+
+          <div class="fw-bold h2">3章 AIを賢く安全に使うために -メリットと注意点-</div>
+        </div>
+      </div>
+      <div class="article-content">
+        <!-- 目次 -->
+        <div class="index mb-3" style="background-color: #FDF5E8;">
+          <div>
+            <div class="fw-light">INDEX</div>
+            <div class="h3">目次</div>
+          </div>
+          <div class="toc"></div>
+        </div>
+        
+        <div class="back-to-roadmap mb-4 text-center"></div>
+
+        <!-- コンテンツ -->
+        
+        
+        <div class="article-item item_html " id="item27768" data-item-id="27768" data-item-type="ItemHtml"><div class="item-body"><div class="pagenation-buttons">
+  <a href="DywaW" class="pagenation-buttons_prev"><img src="/theme/webcoach/img/icons/arrow-right.svg" class="pagenation-buttons_icon">前の章に戻る</a>
+  <a href="wQJFi" class="pagenation-buttons_next">次の章に進む<img src="/theme/webcoach/img/icons/arrow-right.svg" class="pagenation-buttons_icon"></a>
+</div></div></div>
+        
+        <div class="article-item item_heading " id="item27678" data-item-id="27678" data-item-type="ItemHeading"><h2 class="item-body">3章 AIを賢く安全に使うために -メリットと注意点-</h2></div>
+        
+        <div class="article-item item_markdown " id="item27679" data-item-id="27679" data-item-type="ItemMarkdown"><h4 id="section">この章の目安学習時間: 40分</h4>
+</div>
+        
+        <div class="article-item item_markdown " id="item27680" data-item-id="27680" data-item-type="ItemMarkdown"><h4 id="section">この章で到達できるゴール</h4>
+</div>
+        
+        <div class="article-item item_html " id="item27681" data-item-id="27681" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li>AI活用がもたらす具体的なメリットを理解し、導入への期待を高めることができる</li>
+  <li>AI利用に伴うリスクを認識し、安全に活用するための心構えができる</li>
+  <li>すぐに試せる無料のAIツールを知り、学習へのハードルを下げることができる</li>
+</ul>
+</div></div>
+        
+        <div class="article-item item_heading " id="item27682" data-item-id="27682" data-item-type="ItemHeading"><h2 class="item-body">【3-1】AI活用のメリットとデメリット</h2></div>
+        
+        <div class="article-item item_markdown " id="item27683" data-item-id="27683" data-item-type="ItemMarkdown"><h4 id="section">目安の学習時間：20分</h4>
+</div>
+        
+        <div class="article-item item_rich_text " id="item27684" data-item-id="27684" data-item-type="ItemRichText"><div class="item-body-hbr">AIをSNS運用に導入することは、多くのメリットをもたらしますが、同時に注意すべき点も存在します。<br>
+このセクションでは、AI活用の光と影を具体的に見ていき、賢くAIと付き合っていくための知識を深めます。</div></div>
+        
+        <div class="article-item item_heading " id="item27685" data-item-id="27685" data-item-type="ItemHeading"><h3 class="item-body">メリット１：圧倒的な時間短縮</h3></div>
+        
+        <div class="article-item item_rich_text " id="item27686" data-item-id="27686" data-item-type="ItemRichText"><div class="item-body-hbr">SNS運用におけるAI活用の最大のメリットの一つは、<span class="decoration-02">作業時間の大幅な削減</span>です。</div></div>
+        
+        <div class="article-item item_html " id="item27687" data-item-id="27687" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li>
+    <span class="decoration-01">ルーティンワークの自動化：</span>
+    <ul>
+      <li>投稿文の草案作成、ハッシュタグの提案、コメントへの一次返信案作成、定型的なレポート作成など、これまで多くの時間を費やしていた繰り返し作業の多くをAIに任せることができます。</li>
+      <li>例えば、毎日数時間かかっていた情報収集や投稿準備が、AIのサポートで数十分単位に短縮されることも夢ではありません。</li>
+    </ul>
+  </li>
+  <li>
+    <span class="decoration-01">創出された時間でより本質的な業務へ：</span>
+    <ul>
+      <li>AIによって生み出された時間は、SNS運用の
+        <span class="decoration-02">戦略設計、よりクリエイティブなコンテンツの企画、フォロワーとの深いコミュニケーション、データ分析に基づく改善策の立案</span> など、
+        人間ならではの価値を発揮できる、より本質的で高度な業務に充てることができます。
+      </li>
+      <li>結果として、SNS運用の質そのものを向上させることが期待できます。</li>
+    </ul>
+  </li>
+</ul>
+</div></div>
+        
+        <div class="article-item item_image " id="item27688" data-item-id="27688" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/027/688/medium/c9996d1a-3331-4077-9a9f-e1b48bbba0ba.png?1751260460" title=""><img class="img-responsive item-image" alt=" (27688)" data-reference="" src="https://cdn.clipkit.co/tenants/589/item_images/images/000/027/688/medium/c9996d1a-3331-4077-9a9f-e1b48bbba0ba.png?1751260460" width="640" height="427" /></a><h4></h4></div></div>
+        
+        <div class="article-item item_heading " id="item27689" data-item-id="27689" data-item-type="ItemHeading"><h3 class="item-body">メリット２：アイデア枯渇の防止と質の向上</h3></div>
+        
+        <div class="article-item item_rich_text " id="item27690" data-item-id="27690" data-item-type="ItemRichText"><div class="item-body-hbr">「今日の投稿ネタどうしよう…」という悩みは、多くのSNS運用担当者が抱えるものです。<br>
+AIは、このアイデア創出の面でも強力な味方となります。</div></div>
+        
+        <div class="article-item item_html " id="item27691" data-item-id="27691" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li>
+    <span class="decoration-01">24時間365日、いつでもアイデアを出してくれる最高のブレストパートナー：</span>
+    <ul>
+      <li>人間のように疲れたり、気分にムラがあったりすることなく、AIはいつでも、何度でも、新しいアイデアを提案してくれます。</li>
+      <li>キーワードやテーマを与えるだけで、多様な切り口のコンテンツ案、キャッチーなコピー、キャンペーン企画などを無数に生み出してくれるため、<span class="decoration-02">アイデアの枯渇を防ぐ</span>ことができます。</li>
+    </ul>
+  </li>
+  <li>
+    <span class="decoration-01">人間の思考の枠を超えた、意外な切り口のアイデアを得られる可能性：</span>
+    <ul>
+      <li>AIは、過去の膨大なデータや学習パターンに基づいてアイデアを生成するため、時には人間では思いもよらないような斬新な視点や、意外な組み合わせの提案をしてくれることがあります。</li>
+      <li>これにより、マンネリ化しがちなコンテンツに新しい風を吹き込み、<span class="decoration-02">投稿の質を向上させる</span>きっかけを得られるかもしれません。</li>
+    </ul>
+  </li>
+</ul>
+</div></div>
+        
+        <div class="article-item item_heading " id="item27692" data-item-id="27692" data-item-type="ItemHeading"><h3 class="item-body">メリット３：データに基づいた意思決定の支援</h3></div>
+        
+        <div class="article-item item_rich_text " id="item27693" data-item-id="27693" data-item-type="ItemRichText"><div class="item-body-hbr">勘や経験だけに頼ったSNS運用から脱却し、客観的なデータに基づいて戦略を立て、施策を実行することは、成果を最大化するために不可欠です。</div></div>
+        
+        <div class="article-item item_html " id="item27694" data-item-id="27694" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li>
+    <span class="decoration-01">勘や経験だけに頼らない、客観的なデータに基づいた戦略立案が可能になる：</span>
+    <ul>
+      <li>AIは、大量のSNSデータを高速に分析し、どの投稿が効果的だったのか、どのようなターゲットに情報が届いているのか、といった <span class="decoration-02">インサイトを抽出</span> する手助けをします。</li>
+      <li>これにより、経験則だけでなく、具体的なデータという根拠を持って、「なぜこの施策を行うのか」「どのような成果が期待できるのか」を判断できるようになります。</li>
+    </ul>
+  </li>
+  <li>
+    <span class="decoration-01">施策の成功確率を高め、クライアントへの説得力も増す：</span>
+    <ul>
+      <li>データに基づいた意思決定は、施策の成功確率を高めるだけでなく、社内やクライアントに対して戦略の妥当性を説明する際の <span class="decoration-02">説得力を格段に向上</span> させます。</li>
+      <li>「なんとなく良さそう」ではなく、「データがこう示しているので、この戦略が有効です」と自信を持って提案できるようになるでしょう。</li>
+    </ul>
+  </li>
+</ul>
+</div></div>
+        
+        <div class="article-item item_heading " id="item27695" data-item-id="27695" data-item-type="ItemHeading"><h3 class="item-body">デメリットと注意点１：情報の正確性（ハルシネーション）</h3></div>
+        
+        <div class="article-item item_rich_text " id="item27696" data-item-id="27696" data-item-type="ItemRichText"><div class="item-body-hbr">AIは非常に便利ですが、その出力が常に100%正しいとは限りません。<br>
+特に注意すべきなのが「ハルシネーション」です。</div></div>
+        
+        <div class="article-item item_html " id="item27697" data-item-id="27697" data-item-type="ItemHtml"><div class="item-body"><div class="card-with-icon attention">
+    <span class="bold"><strong>注意：ハルシネーション（再掲）</strong><br></span>
+    <div class="content-area">
+        <ul>
+            <li><strong>ハルシネーションとは</strong>：AIが、事実に基づいていない情報や、文脈に合わない不正確な情報を、あたかも事実であるかのように生成してしまう現象のことです。<span class="decoration-02">AIは「正しさ」を保証するものではありません。</span></li>
+            <li><strong>ファクトチェックの重要性</strong>：AIが生成した情報（統計データ、専門知識、事例など）をそのまま鵜呑みにせず、<span class="decoration-02">必ず信頼できる情報源（公式サイト、専門機関の発表、一次情報など）で事実確認（ファクトチェック）を行う習慣</span>をつけましょう。特に、医療や法律、金融など、誤情報が大きな問題を引き起こす可能性のある分野では、細心の注意が必要です。</li>
+            <li>SNSで発信する情報は、企業の信頼性にも直結します。誤った情報を発信してしまわないよう、人間による最終確認は不可欠です。</li>
+        </ul>
+    </div>
+</div></div></div>
+        
+        <div class="article-item item_heading " id="item27698" data-item-id="27698" data-item-type="ItemHeading"><h3 class="item-body">デメリットと注意点２：著作権とプライバシー</h3></div>
+        
+        <div class="article-item item_rich_text " id="item27699" data-item-id="27699" data-item-type="ItemRichText"><div class="item-body-hbr">AIを利用してコンテンツを生成する際には、著作権やプライバシーといった法的な側面に十分配慮する必要があります。</div></div>
+        
+        <div class="article-item item_html " id="item27700" data-item-id="27700" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li>
+    <span class="decoration-01">AIの生成物が他者の著作権を侵害する可能性：</span>
+    <ul>
+      <li>AIは、学習データに含まれる既存の著作物と類似したコンテンツを生成してしまうことがあります。</li>
+      <li>意図せず他者の著作権（文章、画像、音楽など）を侵害してしまうリスクがあるため、生成されたコンテンツは <span class="decoration-02">オリジナリティの観点からもチェック</span> が必要です。</li>
+      <li>特に、AIに画像や音楽を生成させる場合は、学習元のデータや利用規約をよく確認しましょう。</li>
+    </ul>
+  </li>
+
+  <li>
+    <span class="decoration-01">入力した情報がAIの学習に使われるリスク（機密情報を入力しない）：</span>
+    <ul>
+      <li>利用するAIサービスによっては、ユーザーが入力した情報がAIのさらなる学習データとして利用される場合があります。</li>
+      <li><span class="decoration-02">社外秘の情報、個人情報、顧客情報などの機密性の高い情報は、原則としてAIに入力しない</span> ようにしましょう。</li>
+      <li>各AIツールのプライバシーポリシーや利用規約を確認し、情報がどのように扱われるのかを理解しておくことが重要です。</li>
+    </ul>
+  </li>
+
+  <li>
+    <span class="decoration-01">各プラットフォームの利用規約の確認の重要性：</span>
+    <ul>
+      <li>SNSプラットフォーム側も、AI生成コンテンツの扱いについて規約を設けている場合があります。</li>
+      <li>例えば、AIが生成したことを明示する必要がある、特定の種類のAIコンテンツの投稿を禁止している、といったケースが考えられます。</li>
+      <li><span class="decoration-02">利用するSNSの規約も必ず確認</span>しましょう。</li>
+    </ul>
+  </li>
+</ul>
+</div></div>
+        
+        <div class="article-item item_heading " id="item27701" data-item-id="27701" data-item-type="ItemHeading"><h3 class="item-body">デメリットと注意点３：炎上リスクと倫理</h3></div>
+        
+        <div class="article-item item_rich_text " id="item27702" data-item-id="27702" data-item-type="ItemRichText"><div class="item-body-hbr">AIは倫理的な判断能力を持たないため、その生成物が意図せず社会的な問題を引き起こす（炎上する）リスクも考慮しなければなりません。</div></div>
+        
+        <div class="article-item item_html " id="item27703" data-item-id="27703" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li>
+    <span class="decoration-01">意図せず不適切・差別的な表現を生成してしまう可能性：</span>
+    <ul>
+      <li>AIの学習データには、世の中の偏見や差別的な情報が含まれている可能性があります。</li>
+      <li>そのため、AIが生成した文章や画像が、特定の個人や集団を傷つけたり、差別を助長したりするような不適切な表現を含んでしまうことがあります。</li>
+    </ul>
+  </li>
+
+  <li>
+    <span class="decoration-01">公開前には必ず人間の目でチェックし、倫理的な判断を加える責任がある：</span>
+    <ul>
+      <li>AIが生成したコンテンツは、<span class="decoration-02">必ず公開前に人間の目で多角的にチェック</span>し、倫理的に問題がないか、誤解を招く表現はないか、誰かを不快にさせる可能性はないかなどを慎重に判断する必要があります。</li>
+      <li><span class="decoration-02">最終的な発信責任は人間にある</span>ということを常に意識しましょう。</li>
+      <li>多様な視点を持つチームでレビューする体制も有効です。</li>
+    </ul>
+  </li>
+</ul>
+</div></div>
+        
+        <div class="article-item item_heading " id="item27704" data-item-id="27704" data-item-type="ItemHeading"><h2 class="item-body">【3-2】すぐに始められる！AIツールと学習の心構え</h2></div>
+        
+        <div class="article-item item_markdown " id="item27705" data-item-id="27705" data-item-type="ItemMarkdown"><h4 id="section">目安の学習時間：10分</h4>
+</div>
+        
+        <div class="article-item item_rich_text " id="item27706" data-item-id="27706" data-item-type="ItemRichText"><div class="item-body-hbr">AI活用のメリットと注意点を理解したところで、実際にAIに触れてみることが次のステップです。<br>
+幸いなことに、現在では無料で利用できる高機能なAIツールがたくさんあります。<br>
+ここでは代表的なツールを紹介するとともに、AIを学び続けるための心構えをお伝えします。</div></div>
+        
+        <div class="article-item item_heading " id="item27707" data-item-id="27707" data-item-type="ItemHeading"><h3 class="item-body"> (復習)無料で使える主要AIツール紹介</h3></div>
+        
+        <div class="article-item item_rich_text " id="item27708" data-item-id="27708" data-item-type="ItemRichText"><div class="item-body-hbr">様々なAIがツールありそれぞれ異なった特徴を持つことは「生成AI基礎講座」で学習しました。<br>
+どんなツールがあったか復習しましょう。</div></div>
+        
+        <div class="article-item item_html " id="item27709" data-item-id="27709" data-item-type="ItemHtml"><div class="item-body"><table class="simple">
+    <tbody>
+        <thead>
+            <tr>
+                <th scope="col">
+                    <div>
+                        <div>カテゴリ</div>
+                    </div>
+                </th>
+                <th scope="col">
+                    <div>
+                        <div>ツール名</div>
+                    </div>
+                </th>
+                <th scope="col">
+                    <div>
+                        <div>主な特徴</div>
+                    </div>
+                </th>
+            </tr>
+        </thead>
+        <tr>
+            <th scope="row">
+                <div>
+                    <div>テキスト生成AI</div>
+                </div>
+            </th>
+            <td>
+                <div>
+                    <div><strong>ChatGPT (無料版)</strong></div>
+                </div>
+            </td>
+            <td>
+                <div>
+                    <div>OpenAI社が開発。自然な文章生成、アイデア出し、翻訳、要約など、汎用性が高い。本講座でも中心的に扱います。</div>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <th scope="row">
+                <div>
+                    <div>テキスト生成AI</div>
+                </div>
+            </th>
+            <td>
+                <div>
+                    <div><strong>Gemini (旧Bard)</strong></div>
+                </div>
+            </td>
+            <td>
+                <div>
+                    <div>Google社が開発。Google検索との連携が強く、最新情報に基づいた回答や、より創造的な文章生成が期待できる。</div>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <th scope="row">
+                <div>
+                    <div>テキスト生成AI</div>
+                </div>
+            </th>
+            <td>
+                <div>
+                    <div><strong>Microsoft Copilot (旧Bing AI)</strong></div>
+                </div>
+            </td>
+            <td>
+                <div>
+                    <div>Microsoft社が提供。Edgeブラウザ等で利用可能。検索エンジンBingと連携し、情報収集や文章生成をサポート。一部画像生成も可能。</div>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <th scope="row">
+                <div>
+                    <div>画像生成AI</div>
+                </div>
+            </th>
+            <td>
+                <div>
+                    <div><strong>Canva AI (無料枠あり)</strong></div>
+                </div>
+            </td>
+            <td>
+                <div>
+                    <div>デザインツールCanva内で利用可能。「Text to Image」機能でテキストから画像を生成。無料枠でも試せる。 (AI×デザイン教材で詳しく学習)</div>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <th scope="row">
+                <div>
+                    <div>画像生成AI</div>
+                </div>
+            </th>
+            <td>
+                <div>
+                    <div><strong>Adobe Firefly</strong></div>
+                </div>
+            </td>
+            <td>
+                <div>
+                    <div>Adobe社が提供。テキストから画像を生成したり、既存の画像を編集したりできるAI。商用利用可能で、Adobe製品との連携もスムーズ。</div>
+                </div>
+            </td>
+        </tr>
+    </tbody>
+</table></div></div>
+        
+        <div class="article-item item_html " id="item27710" data-item-id="27710" data-item-type="ItemHtml"><div class="item-body"><div class="card-with-icon point">
+    <span class="bold"><strong>まずは触ってみよう！</strong><br></span>
+    <div class="content-area">
+        <ul>
+            <li>これらのツールは、多くがWebブラウザから簡単にアクセスでき、アカウント登録だけで無料版を試すことができます。</li>
+            <li>この教材では、これらのツールの<span class="decoration-02">詳細な操作方法は解説しません。</span>まずは「こんなツールがあるんだな」と知っていただき、興味を持ったものがあれば、ぜひ公式サイトを訪れて実際に触れてみてください。</li>
+            <li>具体的なSNS運用特化のAIツール活用法は、教材-1以降でステップバイステップで学んでいきますのでご安心ください。</li>
+        </ul>
+    </div>
+</div></div></div>
+        
+        <div class="article-item item_heading " id="item27711" data-item-id="27711" data-item-type="ItemHeading"><h3 class="item-body"> AIを学び続けるための心構え</h3></div>
+        
+        <div class="article-item item_rich_text " id="item27712" data-item-id="27712" data-item-type="ItemRichText"><div class="item-body-hbr">AI技術は日進月歩で進化しており、新しいツールや活用法が次々と登場します。<br>
+この変化の速い時代に対応し、AIを効果的に活用し続けるためには、以下の心構えが大切です。</div></div>
+        
+        <div class="article-item item_html " id="item27713" data-item-id="27713" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li><strong>完璧を目指さない、まずは試してみる</strong>：最初から完璧なプロンプトを書こうとしたり、すべての機能を使いこなそうとしたりする必要はありません。<span class="decoration-02">まずは「とりあえず使ってみる」「小さなことから試してみる」という姿勢が重要</span>です。失敗やうまくいかないことも学びの一部と捉え、試行錯誤を繰り返しましょう。</li>
+  <li><strong>常に最新情報をキャッチアップする意識を持つ</strong>：AIの世界は変化が非常に速いため、<span class="decoration-02">新しい情報やトレンドにアンテナを張っておく</span>ことが大切です。信頼できるニュースサイト、専門家のSNSアカウント、業界のコミュニティなどを活用して、継続的に情報をアップデートしていく意識を持ちましょう。</li>
+  <li><strong>楽しむこと！</strong>：AIは、私たちの仕事や創造性を拡張してくれる可能性に満ちた、エキサイティングな技術です。<span class="decoration-02">新しいツールに触れること、新しいことができるようになることを、ぜひ楽しんでください。</span>好奇心を持ってAIと向き合うことが、継続的な学習の最大のモチベーションになります。</li>
+</ul></div></div>
+        
+        <div class="article-item item_rich_text " id="item27714" data-item-id="27714" data-item-type="ItemRichText"><div class="item-body-hbr">AIを学ぶことは、決して難しいことばかりではありません。<br>
+<br>
+むしろ、これからの時代を生き抜くための強力な武器を手に入れる、ワクワクする冒険のようなものです。ぜひ、前向きな気持ちで取り組んでいきましょう。</div></div>
+        
+        <div class="article-item item_heading " id="item27715" data-item-id="27715" data-item-type="ItemHeading"><h2 class="item-body">【3-3】3章 -章末課題- [リスク管理シミュレーション]</h2></div>
+        
+        <div class="article-item item_markdown " id="item39124" data-item-id="39124" data-item-type="ItemMarkdown"><h4 id="section">目安の学習時間：10分</h4>
+</div>
+        
+        <div class="article-item item_heading " id="item27716" data-item-id="27716" data-item-type="ItemHeading"><h3 class="item-body">問題</h3></div>
+        
+        <div class="article-item item_rich_text " id="item27717" data-item-id="27717" data-item-type="ItemRichText"><div class="item-body-hbr">あなたはAIを使って、新商品のキャンペーン投稿を作成しました。<br>
+AIが生成した以下の文章には、どのようなリスクが潜んでいる可能性があるか指摘し、あなたがSNS担当者として公開前に行うべきチェック項目を2つ挙げてください。</div></div>
+        
+        <div class="article-item item_code " id="item29689" data-item-id="29689" data-item-type="ItemCode"><div class="item-body"><div class="CodeRay">
+  <div class="code"><pre>「奇跡のダイエットティー新発売！
+あの有名女優Aさんも愛用していると噂のこのお茶で、あなたもたった1週間で-5kgの減量を体験しませんか？
+医学的にも効果が証明済みです！今なら限定価格！」</pre></div>
+</div>
+<div class="cite"><cite class="item-source">AIが生成した文章</cite></div></div></div>
+        
+        <div class="article-item item_heading " id="item27719" data-item-id="27719" data-item-type="ItemHeading"><h3 class="item-body">解答</h3></div>
+        
+        <div class="article-item item_rich_text " id="item27720" data-item-id="27720" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">潜んでいるリスク:</span></div></div>
+        
+        <div class="article-item item_html " id="item27721" data-item-id="27721" data-item-type="ItemHtml"><div class="item-body"><ol>
+  <li>
+    <span class="decoration-01">景品表示法違反のリスク（優良誤認・有利誤認表示）：</span>
+    <ul>
+      <li>「たった1週間で-5kgの減量を体験しませんか？」という表現は、効果を保証するかのような誤解を与える可能性があります。合理的な根拠がない場合、<span class="decoration-02">優良誤認表示</span>にあたる恐れがあります。</li>
+      <li>「医学的にも効果が証明済みです！」という表現も、具体的な科学的根拠（論文や臨床試験データなど）がなければ、同様に<span class="decoration-02">優良誤認表示</span>となる可能性があります。</li>
+      <li>「限定価格」という表現も、いつまでの限定なのか、通常価格との比較など、有利な取引条件について誤解を与える表示であれば<span class="decoration-02">有利誤認表示</span>にあたる可能性があります。</li>
+    </ul>
+  </li>
+  <li>
+    <span class="decoration-01">薬機法（旧薬事法）違反のリスク：</span>
+    <ul>
+      <li>「ダイエットティー」という商品で、「減量」という身体の組織機能の一般的変化を標ぼうすることは、医薬品的な効果効能の暗示とみなされ、<span class="decoration-02">未承認医薬品の広告</span>として薬機法に抵触する可能性があります。</li>
+    </ul>
+  </li>
+  <li>
+    <span class="decoration-01">権利侵害のリスク（パブリシティ権・名誉毀損など）：</span>
+    <ul>
+      <li>「有名女優Aさんも愛用していると噂」という表現は、事実でなければ<span class="decoration-02">虚偽表示</span>であり、女優Aさんの社会的評価を低下させる場合は<span class="decoration-02">名誉毀損</span>にあたる可能性があります。</li>
+      <li>たとえ事実であっても、女優Aさんの許可なく氏名や肖像（写真などがあれば）を使用すれば、顧客誘引力に着目した<span class="decoration-02">パブリシティ権の侵害</span>にあたる可能性があります。</li>
+    </ul>
+  </li>
+</ol>
+</div></div>
+        
+        <div class="article-item item_rich_text " id="item27722" data-item-id="27722" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">行うべきチェック項目:</span></div></div>
+        
+        <div class="article-item item_html " id="item27723" data-item-id="27723" data-item-type="ItemHtml"><div class="item-body"><ol>
+  <li>
+    <span class="decoration-01">ファクトチェックと根拠確認：</span>
+    <ul>
+      <li>「1週間で-5kg」という効果の根拠となる客観的なデータ（自社での臨床試験結果など、合理的な範囲でのデータ）が存在するかを確認します。</li>
+      <li>「医学的に証明済み」という部分について、その根拠となる具体的な論文、研究機関、専門家の見解などを確認し、その情報を正確に引用できるか、または表現を修正する必要があるかを検討します。</li>
+      <li>女優Aさんが実際に商品を愛用しているという事実確認、および氏名や情報の使用について事務所等から正式な許諾を得ているかを確認します。</li>
+    </ul>
+  </li>
+  <li>
+    <span class="decoration-01">法令・ガイドライン遵守チェック：</span>
+    <ul>
+      <li>
+        <span class="decoration-02">景品表示法：</span>
+        <ul>
+          <li>「No.1表示」「最大級表現」「効果効能の保証表現」など、消費者に誤解を与えないか、誇大広告になっていないかを確認します。</li>
+          <li>有利な取引条件の表示が適切かも確認します。</li>
+        </ul>
+      </li>
+      <li>
+        <span class="decoration-02">薬機法：</span>
+        <ul>
+          <li>化粧品や健康食品の場合、医薬品と誤認されるような効果効能（「治る」「痩せる」など身体の変化を保証する表現）を標ぼうしていないかを確認します。</li>
+          <li>業界団体の広告自主基準なども参照します。</li>
+        </ul>
+      </li>
+      <li>
+        <span class="decoration-02">著作権・肖像権（パブリシティ権）：</span>
+        <ul>
+          <li>使用している画像、文章、タレント情報などが、他者の権利を侵害していないかを確認します。</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ol>
+</div></div>
+        
+        <div class="article-item item_rich_text " id="item27725" data-item-id="27725" data-item-type="ItemRichText"><div class="item-body-hbr">これで「AIを賢く、安全に使うために -メリットと注意点-」の解説を終わります。<br>
+次の章に進みましょう。</div></div>
+        
+        <div class="article-item item_html " id="item27767" data-item-id="27767" data-item-type="ItemHtml"><div class="item-body"><div class="pagenation-buttons">
+  <a href="DywaW" class="pagenation-buttons_prev"><img src="/theme/webcoach/img/icons/arrow-right.svg" class="pagenation-buttons_icon">前の章に戻る</a>
+  <a href="wQJFi" class="pagenation-buttons_next">次の章に進む<img src="/theme/webcoach/img/icons/arrow-right.svg" class="pagenation-buttons_icon"></a>
+</div></div></div>
+        
+        
+        
+        <div class="back-to-roadmap mb-4 text-center"></div>
+      </div>
+    </div>
+    
+    <div class="lightbox-modal" id="lightboxModal">
+      <img src="" alt="">
+    </div>
+    
+    <div id="modal" class="fixed-menu-modal">
+      <div class="fixed-menu-modal-content">
+        <div class="index mb-3" style="background-color: #FDF5E8;">
+          <div>
+            <div class="fw-light">INDEX</div>
+            <div class="h3">目次</div>
+          </div>
+          <div class="toc"></div>
+        </div>
+        
+        <!-- ボタン類 -->
+        <div id="fixed-menu_buttons" class="fixed-menu_buttons"></div>
+        
+        <div class="back-to-roadmap text-center"></div>
+      </div>
+    </div>
+    
+    <button id="toggleBtn" class="floating-btn">
+      <img id="iconOpen" 
+           src="/theme/webcoach/img/icons/fixed-menu_modal-open.svg" 
+           alt="メニューを開く">
+      <img id="iconClose" 
+           src="/theme/webcoach/img/icons/fixed-menu_modal-close.svg" 
+           alt="メニューを閉じる" style="display:none;">
+    </button>
+  </div>
+</div>
+</div>
+<!-- <script src="https://cdn.clipkit.co/clipkit/javascripts/item-shopify-1.0.js?v=v15.9.0-20260915" async></script> -->
+            </div>
+        </main>
+
+    </div>
+
+    <div class="p-5" style="background-color: #B73E3D; color: white; height: 300px;">
+        <div class="">
+            <div class="h4 ps-3" style="border-left: 5px solid white;">WEBCOACH | キャリアチェンジまでの全てを学ぶマンツーマンWEBスクール</div>
+            <ul class="nav flex-column m-0 p-3 fw-light">
+                <li class="nav-item mb-2"><a href="https://www.webcoach.jp/" target="_blank">WEBCOACH | 公式HP</a></li>
+                <li class="nav-item mb-2"><a href="https://www.instagram.com/webcoach_officials/" target="_blank">WEBCOACH | 公式Instagram</a></li>
+                <li class="nav-item mb-2"><a href="https://vectorinc.co.jp/groupservice/webcoach-career/" target="_blank">WEBCOACH 公式メディア | WEBCOACH career</a></li>
+            </ul>
+        </div>
+        <div class="text-center">
+            <small>&copy; 2020 by WEBCOACH</small>
+        </div>
+    </div>
+
+    <script src="https://cdn.clipkit.co/clipkit/javascripts/application-1.0.js?v=v15.9.0-20260915" async></script>
+
+    <!-- bodyタグ内の下部に挿入されます -->
+
+
+    <!-- BootstrapのCDNでのjs読み込み -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+        crossorigin="anonymous"></script>
+
+    <!-- シンタックスハイライトの生成 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.1/highlight.min.js"></script>
+    <script>
+        // ハイライトを実行
+        hljs.initHighlightingOnLoad();
+    </script>
+
+    <!-- 目次の生成 -->
+    <script type="text/javascript">toc();</script>
+
+    <!-- ブックマークの生成 -->
+    <script type="text/javascript">displayLinks();</script>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="ck-icon-arrow-down" viewBox="0 0 1792 1792"><path d="M1675 832q0 53-37 90l-651 652q-39 37-91 37-53 0-90-37l-651-652q-38-36-38-90 0-53 38-91l74-75q39-37 91-37 53 0 90 37l294 294v-704q0-52 38-90t90-38h128q52 0 90 38t38 90v704l294-294q37-37 90-37 52 0 91 37l75 75q37 39 37 91z" /></symbol><symbol id="ck-icon-arrow-up" viewBox="0 0 1792 1792"><path d="M1675 971q0 51-37 90l-75 75q-38 38-91 38-54 0-90-38l-294-293v704q0 52-37.5 84.5t-90.5 32.5h-128q-53 0-90.5-32.5t-37.5-84.5v-704l-294 293q-36 38-90 38t-90-38l-75-75q-38-38-38-90 0-53 38-91l651-651q35-37 90-37 54 0 91 37l651 651q37 39 37 91z" /></symbol><symbol id="ck-icon-calendar" viewBox="0 0 1792 1792"><path d="M192 1664h288v-288h-288v288zm352 0h320v-288h-320v288zm-352-352h288v-320h-288v320zm352 0h320v-320h-320v320zm-352-384h288v-288h-288v288zm736 736h320v-288h-320v288zm-384-736h320v-288h-320v288zm768 736h288v-288h-288v288zm-384-352h320v-320h-320v320zm-352-864v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm736 864h288v-320h-288v320zm-384-384h320v-288h-320v288zm384 0h288v-288h-288v288zm32-480v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm384-64v1280q0 52-38 90t-90 38h-1408q-52 0-90-38t-38-90v-1280q0-52 38-90t90-38h128v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h384v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h128q52 0 90 38t38 90z" /></symbol><symbol id="ck-icon-chevron-left" viewBox="0 0 1792 1792"><path d="M1427 301l-531 531 531 531q19 19 19 45t-19 45l-166 166q-19 19-45 19t-45-19l-742-742q-19-19-19-45t19-45l742-742q19-19 45-19t45 19l166 166q19 19 19 45t-19 45z" /></symbol><symbol id="ck-icon-chevron-right" viewBox="0 0 1792 1792"><path d="M1363 877l-742 742q-19 19-45 19t-45-19l-166-166q-19-19-19-45t19-45l531-531-531-531q-19-19-19-45t19-45l166-166q19-19 45-19t45 19l742 742q19 19 19 45t-19 45z" /></symbol><symbol id="ck-icon-clock-o" viewBox="0 0 1792 1792"><path d="M1024 544v448q0 14-9 23t-23 9h-320q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h224v-352q0-14 9-23t23-9h64q14 0 23 9t9 23zm416 352q0-148-73-273t-198-198-273-73-273 73-198 198-73 273 73 273 198 198 273 73 273-73 198-198 73-273zm224 0q0 209-103 385.5t-279.5 279.5-385.5 103-385.5-103-279.5-279.5-103-385.5 103-385.5 279.5-279.5 385.5-103 385.5 103 279.5 279.5 103 385.5z" /></symbol><symbol id="ck-icon-trash" viewBox="0 0 1792 1792"><path d="M704 1376v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm-544-992h448l-48-117q-7-9-17-11h-317q-10 2-17 11zm928 32v64q0 14-9 23t-23 9h-96v948q0 83-47 143.5t-113 60.5h-832q-66 0-113-58.5t-47-141.5v-952h-96q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h309l70-167q15-37 54-63t79-26h320q40 0 79 26t54 63l70 167h309q14 0 23 9t9 23z" /></symbol><symbol id="ck-icon-undo" viewBox="0 0 1792 1792"><path d="M1664 896q0 156-61 298t-164 245-245 164-298 61q-172 0-327-72.5t-264-204.5q-7-10-6.5-22.5t8.5-20.5l137-138q10-9 25-9 16 2 23 12 73 95 179 147t225 52q104 0 198.5-40.5t163.5-109.5 109.5-163.5 40.5-198.5-40.5-198.5-109.5-163.5-163.5-109.5-198.5-40.5q-98 0-188 35.5t-160 101.5l137 138q31 30 14 69-17 40-59 40h-448q-26 0-45-19t-19-45v-448q0-42 40-59 39-17 69 14l130 129q107-101 244.5-156.5t284.5-55.5q156 0 298 61t245 164 164 245 61 298z" /></symbol></svg><script async="async" defer="defer" nonce="y3XzlnvgIxrIR/nyP4DK6Q==" src="//www.instagram.com/embed.js"></script>
+
+<!--Clipkit(R) v15.9.0-20260915 Copyright (C) 2026 VECTOR Inc.-->
+
+</body>
+
+</html>
+

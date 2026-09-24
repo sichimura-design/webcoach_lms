@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<!-- clipkit-source-url: https://learn.webcoach.jp/generative-ai/ai_web_marketing/A-1/ZLRRw -->
+<!-- clipkit-fetched-at: 2026-09-17T11:14:00.275Z -->
+<html lang="ja"><head><style data-clipkit-snapshot="force-visible">[data-aos],.reveal,.wow,.fade-in,.animate__animated,.js-reveal{opacity:1!important;transform:none!important;visibility:visible!important;animation:none!important;transition:none!important}</style></head><body><div>
+  
+    <div>
+      
+      
+        
+          <div class="article-item item_html " id="item48593" data-item-id="48593" data-item-type="ItemHtml"><div class="item-body">
+
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>マーケティングとは何か——クリエイターのための再定義</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Hiragino Sans', 'Hiragino Kaku Gothic ProN', 'Noto Sans JP', sans-serif; background: #F7F8FA; color: #3D3D3D; line-height: 1.7; }
+
+  .hero {
+    background: linear-gradient(135deg, #E85D4A 0%, #F5A64A 100%);
+    padding: 48px 24px 40px;
+    color: white;
+    text-align: center;
+  }
+  .hero__label { font-size: 12px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; opacity: 0.85; margin-bottom: 12px; }
+  .hero__title { font-size: 26px; font-weight: 800; line-height: 1.35; margin-bottom: 16px; }
+  .hero__meta { font-size: 13px; opacity: 0.85; display: flex; align-items: center; justify-content: center; gap: 16px; flex-wrap: wrap; }
+  .hero__meta span { display: flex; align-items: center; gap: 4px; }
+
+  .container { max-width: 860px; margin: 0 auto; padding: 32px 16px 64px; }
+
+  .card {
+    background: white;
+    border-radius: 12px;
+    padding: 28px;
+    margin-bottom: 24px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.07);
+    position: relative;
+    overflow: hidden;
+  }
+  .card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, #E85D4A, #F5A64A);
+  }
+  .card__title { font-size: 17px; font-weight: 700; color: #3D3D3D; margin-bottom: 16px; display: flex; align-items: center; gap: 8px; }
+  .card__title::before { content: ''; display: inline-block; width: 4px; height: 18px; background: linear-gradient(180deg, #E85D4A, #F5A64A); border-radius: 2px; }
+
+  .intro-box {
+    background: linear-gradient(135deg, #FAE8E0 0%, #FEF3EA 100%);
+    border-radius: 10px;
+    padding: 24px;
+    margin-bottom: 24px;
+    border-left: 4px solid #E85D4A;
+  }
+  .intro-box__text { font-size: 15px; color: #3D3D3D; line-height: 1.8; }
+  .intro-box__text strong { color: #E85D4A; }
+
+  /* 誤解バスター */
+  .myth-grid { display: flex; flex-direction: column; gap: 14px; margin: 20px 0; }
+  .myth-item { display: flex; gap: 16px; align-items: flex-start; }
+  .myth-badge {
+    width: 48px; height: 48px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
+    font-size: 20px; flex-shrink: 0;
+  }
+  .myth-badge--myth { background: #FFF0ED; }
+  .myth-badge--truth { background: #F0FBF4; }
+  .myth-content { flex: 1; }
+  .myth-content__label { font-size: 11px; font-weight: 700; letter-spacing: 0.08em; margin-bottom: 4px; }
+  .myth-badge--myth + .myth-content .myth-content__label { color: #C0392B; }
+  .myth-badge--truth + .myth-content .myth-content__label { color: #2E9B6E; }
+  .myth-content__text { font-size: 14px; line-height: 1.65; }
+  .myth-divider { height: 1px; background: #F0F0F0; margin: 4px 0; }
+
+  /* 定義ボックス */
+  .definition-box {
+    background: linear-gradient(135deg, #3D3D3D 0%, #555 100%);
+    border-radius: 12px;
+    padding: 28px;
+    color: white;
+    text-align: center;
+    margin: 24px 0;
+  }
+  .definition-box__label { font-size: 12px; font-weight: 700; letter-spacing: 0.1em; opacity: 0.65; margin-bottom: 12px; }
+  .definition-box__main { font-size: 18px; font-weight: 800; line-height: 1.55; margin-bottom: 14px; }
+  .definition-box__main em { color: #F5A64A; font-style: normal; }
+  .definition-box__sub { font-size: 13px; opacity: 0.8; line-height: 1.7; }
+
+  /* 3要素 */
+  .three-elements { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin: 20px 0; }
+  .element-card { background: #F7F8FA; border-radius: 10px; padding: 18px; text-align: center; border-top: 3px solid; }
+  .element-card--1 { border-color: #E85D4A; }
+  .element-card--2 { border-color: #F5A64A; }
+  .element-card--3 { border-color: #4CAF7C; }
+  .element-card__icon { font-size: 24px; margin-bottom: 8px; }
+  .element-card__title { font-size: 14px; font-weight: 800; margin-bottom: 6px; }
+  .element-card__desc { font-size: 12px; color: #666; line-height: 1.6; }
+
+  /* 4P テーブル */
+  .four-p { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; margin: 20px 0; }
+  .p-card { border-radius: 10px; padding: 18px; }
+  .p-card--product { background: #F0F4FF; border: 1.5px solid #A0B4E8; }
+  .p-card--price { background: #F0FBF4; border: 1.5px solid #6DCFA0; }
+  .p-card--place { background: #FFF8F0; border: 1.5px solid #F5A64A; }
+  .p-card--promotion { background: #FFF0ED; border: 1.5px solid #E85D4A; }
+  .p-card__p { font-size: 22px; font-weight: 900; margin-bottom: 4px; }
+  .p-card--product .p-card__p { color: #5B7BE8; }
+  .p-card--price .p-card__p { color: #2E9B6E; }
+  .p-card--place .p-card__p { color: #E0882A; }
+  .p-card--promotion .p-card__p { color: #E85D4A; }
+  .p-card__name { font-size: 14px; font-weight: 700; margin-bottom: 8px; }
+  .p-card__desc { font-size: 12px; color: #555; line-height: 1.65; margin-bottom: 8px; }
+  .p-card__creator { font-size: 12px; padding: 6px 10px; border-radius: 6px; font-weight: 600; }
+  .p-card--product .p-card__creator { background: #E8EEFF; color: #5B7BE8; }
+  .p-card--price .p-card__creator { background: #E0F7EC; color: #2E9B6E; }
+  .p-card--place .p-card__creator { background: #FFF0D6; color: #E0882A; }
+  .p-card--promotion .p-card__creator { background: #FFE8E4; color: #E85D4A; }
+
+  /* クリエイターの関与ゾーン */
+  .involvement-map { margin: 20px 0; }
+  .involvement-row { display: flex; align-items: center; gap: 12px; padding: 12px; border-radius: 8px; margin-bottom: 8px; }
+  .involvement-row--high { background: #FFF0ED; }
+  .involvement-row--mid { background: #FFF8F0; }
+  .involvement-row--low { background: #F7F8FA; }
+  .involvement-label { width: 90px; font-size: 12px; font-weight: 700; flex-shrink: 0; }
+  .involvement-row--high .involvement-label { color: #E85D4A; }
+  .involvement-row--mid .involvement-label { color: #E0882A; }
+  .involvement-row--low .involvement-label { color: #888; }
+  .involvement-bar { height: 6px; border-radius: 3px; flex-shrink: 0; }
+  .involvement-row--high .involvement-bar { width: 80px; background: linear-gradient(90deg, #E85D4A, #F5A64A); }
+  .involvement-row--mid .involvement-bar { width: 48px; background: #F5A64A; }
+  .involvement-row--low .involvement-bar { width: 24px; background: #CCC; }
+  .involvement-text { font-size: 13px; color: #4A4A4A; flex: 1; min-width: 0; }
+
+  /* まとめカード */
+  .summary-card {
+    background: linear-gradient(135deg, #E85D4A 0%, #F5A64A 100%);
+    border-radius: 12px;
+    padding: 28px;
+    color: white;
+    text-align: center;
+  }
+  .summary-card__title { font-size: 14px; font-weight: 700; opacity: 0.85; margin-bottom: 10px; letter-spacing: 0.05em; }
+  .summary-card__main { font-size: 20px; font-weight: 800; line-height: 1.45; margin-bottom: 16px; }
+  .summary-card__sub { font-size: 13px; opacity: 0.9; line-height: 1.7; }
+
+  /* ポイントボックス */
+  .point-box {
+    background: linear-gradient(135deg, #3D3D3D 0%, #555 100%);
+    border-radius: 10px;
+    padding: 22px 24px;
+    color: white;
+    margin: 20px 0;
+  }
+  .point-box__title { font-size: 13px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; opacity: 0.7; margin-bottom: 10px; }
+  .point-box__text { font-size: 15px; line-height: 1.75; }
+  .point-box__text strong { color: #F5A64A; }
+
+  p { font-size: 14px; line-height: 1.8; color: #4A4A4A; margin-bottom: 12px; }
+  .text-emphasis { font-size: 15px; font-weight: 700; color: #E85D4A; }
+
+  .reveal { opacity: 0; transform: translateY(20px); transition: opacity 0.5s ease, transform 0.5s ease; }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+
+  @media (max-width: 600px) {
+    .three-elements { grid-template-columns: 1fr; }
+    .four-p { grid-template-columns: 1fr; }
+    .hero__title { font-size: 22px; }
+  }
+</style>
+<meta name="csrf-param" content="authenticity_token">
+<meta name="csrf-token" content="ntuiQSPf_eSqoz38Apqn0uTR6xK08_NSuQUBD9SqyV1LO17redvQKm2YcYDZIiVqcB0IWDR1md71FuEoQii0Zw"><meta content="" name="routing-root-path"><meta content="media" name="site-name"><meta content="ja" name="i18n-default-locale"><meta content="ja" name="i18n-locale">
+
+
+<div class="hero">
+  <div class="hero__label">Course A — Chapter 1 / Lesson 2</div>
+  <div class="hero__title">マーケティングとは何か<br>——クリエイターのための再定義</div>
+  <div class="hero__meta">
+    <span>⏱ 25分</span>
+    <span>📖 知識</span>
+    <span>🎯 SNS運用者・Webデザイナー・動画編集者</span>
+  </div>
+</div>
+
+<!-- ロードマップに戻るボタンの場合 --> 
+<div style="display: flex; justify-content: center; align-items: center; padding: 24px 0; margin-top: 24px;">
+  <a href="https://learn.webcoach.jp/2Q/ai_web_marketing" style="display: inline-block; background: #fff; color: #E85D4A; border: 2px solid #E85D4A; font-weight: 700; padding: 10px clamp(24px, 7vw, 48px); border-radius: 8px; text-decoration: none; white-space: nowrap;">ロードマップに戻る</a>  
+</div>
+<!-- 前の章に戻るボタンの場合 -->  
+<div style="display: flex; justify-content: flex-start; align-items: center; padding: 24px 0; margin-top: 24px;">
+  <a href="https://learn.webcoach.jp/generative-ai/ai_web_marketing/A-1/ZRltA" style="position: relative; display: inline-block; background: linear-gradient(135deg, #E85D4A, #F5A64A); color: #fff; font-weight: 700; padding: 12px clamp(24px, 7vw, 48px); border-radius: 8px; text-decoration: none;"><img src="../../_assets/47498cfebf.svg" style="position: absolute; top: 50%; transform: translateY(-50%); left: 12px; filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(125deg) brightness(103%) contrast(103%); transform: translateY(-50%) rotate(180deg);">前の章に戻る</a>
+</div>
+
+
+<div class="container">
+
+  <div class="intro-box reveal visible">
+    <div class="intro-box__text">
+      「マーケティング＝広告・宣伝」と思っていませんか？ 実はこれは大きな誤解です。<br>
+      マーケティングを正しく理解することで、クリエイターとしての<strong>仕事の設計・提案・成果評価</strong>がまったく変わります。このレッスンでマーケティングの本質を掴みましょう。
+    </div>
+  </div>
+
+  <!-- セクション1: よくある誤解 -->
+  <div class="card reveal visible">
+    <div class="card__title">まず、よくある3つの誤解を解消しよう</div>
+
+    <div class="myth-grid">
+      <div class="myth-item">
+        <div class="myth-badge myth-badge--myth">✗</div>
+        <div class="myth-content">
+          <div class="myth-content__label">誤解①</div>
+          <div class="myth-content__text"><strong>「マーケティング＝広告運用」</strong><br>
+          広告はマーケティングの一部（プロモーション）にすぎません。マーケティングはもっと広い概念です。</div>
+        </div>
+      </div>
+      <div class="myth-divider"></div>
+      <div class="myth-item">
+        <div class="myth-badge myth-badge--myth">✗</div>
+        <div class="myth-content">
+          <div class="myth-content__label">誤解②</div>
+          <div class="myth-content__text"><strong>「マーケティングはマーケターの仕事」</strong><br>
+          クリエイターが作るすべての制作物は、何らかのマーケティング目的を持っています。関係ないという立場はありません。</div>
+        </div>
+      </div>
+      <div class="myth-divider"></div>
+      <div class="myth-item">
+        <div class="myth-badge myth-badge--myth">✗</div>
+        <div class="myth-content">
+          <div class="myth-content__label">誤解③</div>
+          <div class="myth-content__text"><strong>「センスや直感で制作すればいい」</strong><br>
+          センスは大切ですが、それだけでは再現性がありません。マーケティング思考を加えることで、「なぜこれが刺さるか」を言語化でき、次にも活かせます。</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- セクション2: マーケティングの定義 -->
+  <div class="card reveal visible">
+    <div class="card__title">マーケティングの本質——3つの言葉で理解する</div>
+    <p>
+      マーケティングの本質は、ドラッカー（経営学者）の言葉がわかりやすいです。
+    </p>
+
+    <div class="definition-box">
+      <div class="definition-box__label">マーケティングの本質（ドラッカー的解釈）</div>
+      <div class="definition-box__main">
+        「売れる仕組みを作ること」——<br>
+        <em>顧客を理解し</em>、<em>価値を創り</em>、<em>届け続ける</em>プロセス
+      </div>
+      <div class="definition-box__sub">「セールス（売り込み）」とは逆。マーケティングが成功すれば、売り込まなくても売れる状態が作れる。</div>
+    </div>
+
+    <div class="three-elements">
+      <div class="element-card element-card--1">
+        <div class="element-card__icon">🔍</div>
+        <div class="element-card__title">顧客を理解する</div>
+        <div class="element-card__desc">誰が・何に困っているか・何を求めているかを深く知ること。ペルソナ・インサイト設計がここに当たる</div>
+      </div>
+      <div class="element-card element-card--2">
+        <div class="element-card__icon">💡</div>
+        <div class="element-card__title">価値を創る</div>
+        <div class="element-card__desc">顧客の課題を解決する製品・サービス・コンテンツを作ること。クリエイターの制作物はここに直結する</div>
+      </div>
+      <div class="element-card element-card--3">
+        <div class="element-card__icon">🔄</div>
+        <div class="element-card__title">届け続ける</div>
+        <div class="element-card__desc">適切なタイミングで・適切なチャネルで・継続的に届けること。一発で終わらせない仕組み化</div>
+      </div>
+    </div>
+
+    <div class="point-box">
+      <div class="point-box__title">クリエイターへの示唆</div>
+      <div class="point-box__text">
+        あなたが作るデザイン・動画・SNS投稿は「<strong>顧客に価値を届けるもの</strong>」です。つまり、マーケティングの重要な実行手段。クリエイターはマーケティングの中心にいます。
+      </div>
+    </div>
+  </div>
+
+  <!-- セクション3: 4Pフレームワーク -->
+  <div class="card reveal visible">
+    <div class="card__title">マーケティングの4P——クリエイターはどこに関与するか</div>
+    <p>
+      マーケティングの全体像を整理するフレームワークとして「4P」があります。Product（製品）・Price（価格）・Place（流通）・Promotion（プロモーション）の4要素です。
+    </p>
+
+    <div class="four-p">
+      <div class="p-card p-card--product">
+        <div class="p-card__p">P1</div>
+        <div class="p-card__name">Product（製品・サービス）</div>
+        <div class="p-card__desc">何を提供するか。品質・特徴・デザイン・ブランドなど「価値の中身」を決める</div>
+        <div class="p-card__creator">クリエイター関与度：中（制作物自体がプロダクト）</div>
+      </div>
+      <div class="p-card p-card--price">
+        <div class="p-card__p">P2</div>
+        <div class="p-card__name">Price（価格）</div>
+        <div class="p-card__desc">いくらで提供するか。価格設定はブランドポジションや需要・コストで決まる</div>
+        <div class="p-card__creator">クリエイター関与度：低（直接は関わらないことが多い）</div>
+      </div>
+      <div class="p-card p-card--place">
+        <div class="p-card__p">P3</div>
+        <div class="p-card__name">Place（流通・チャネル）</div>
+        <div class="p-card__desc">どこで届けるか。SNS・Webサイト・店舗・広告媒体など、届ける経路の設計</div>
+        <div class="p-card__creator">クリエイター関与度：高（SNS・LP・動画プラットフォームの選定）</div>
+      </div>
+      <div class="p-card p-card--promotion">
+        <div class="p-card__p">P4</div>
+        <div class="p-card__name">Promotion（プロモーション）</div>
+        <div class="p-card__desc">どう知らせるか。広告・SNS・コンテンツマーケ・PRなど「伝え方」全般</div>
+        <div class="p-card__creator">クリエイター関与度：非常に高（制作の中心領域）</div>
+      </div>
+    </div>
+
+    <p style="margin-top:4px;">
+      クリエイターが最も関与するのは <strong>P3（チャネル）とP4（プロモーション）</strong>です。クライアントから依頼を受けるほぼすべての仕事はここに集中しています。
+    </p>
+  </div>
+
+  <!-- セクション4: クリエイターの関与ゾーン -->
+  <div class="card reveal visible">
+    <div class="card__title">職種別——マーケティングへの関与ゾーン</div>
+    <p>あなたの職種によって、マーケティングに関わる範囲・深さが異なります。</p>
+
+    <div style="margin: 20px 0;">
+      <p style="font-size: 13px; font-weight: 700; color: #888; margin-bottom: 10px;">SNS運用者の関与ゾーン</p>
+      <div class="involvement-map">
+        <div class="involvement-row involvement-row--high">
+          <div class="involvement-label">コンテンツ戦略</div>
+          <div class="involvement-bar"></div>
+          <div class="involvement-text">誰に何を届けるか——マーケ思考の中核</div>
+        </div>
+        <div class="involvement-row involvement-row--high">
+          <div class="involvement-label">チャネル設計</div>
+          <div class="involvement-bar"></div>
+          <div class="involvement-text">どのSNSでどう届けるか</div>
+        </div>
+        <div class="involvement-row involvement-row--mid">
+          <div class="involvement-label">KPI測定</div>
+          <div class="involvement-bar"></div>
+          <div class="involvement-text">数字を見て改善する</div>
+        </div>
+        <div class="involvement-row involvement-row--low">
+          <div class="involvement-label">価格・製品</div>
+          <div class="involvement-bar"></div>
+          <div class="involvement-text">直接関与は少ない</div>
+        </div>
+      </div>
+    </div>
+
+    <div style="margin: 20px 0;">
+      <p style="font-size: 13px; font-weight: 700; color: #888; margin-bottom: 10px;">Webデザイナーの関与ゾーン</p>
+      <div class="involvement-map">
+        <div class="involvement-row involvement-row--high">
+          <div class="involvement-label">LP・UI設計</div>
+          <div class="involvement-bar"></div>
+          <div class="involvement-text">コンバージョンに直結する動線設計</div>
+        </div>
+        <div class="involvement-row involvement-row--high">
+          <div class="involvement-label">ブランド表現</div>
+          <div class="involvement-bar"></div>
+          <div class="involvement-text">視覚的なプロモーションの実行</div>
+        </div>
+        <div class="involvement-row involvement-row--mid">
+          <div class="involvement-label">ユーザー理解</div>
+          <div class="involvement-bar"></div>
+          <div class="involvement-text">ペルソナ・行動モデルの理解</div>
+        </div>
+        <div class="involvement-row involvement-row--low">
+          <div class="involvement-label">価格・流通</div>
+          <div class="involvement-bar"></div>
+          <div class="involvement-text">直接関与は少ない</div>
+        </div>
+      </div>
+    </div>
+
+    <div style="margin: 20px 0;">
+      <p style="font-size: 13px; font-weight: 700; color: #888; margin-bottom: 10px;">動画編集者の関与ゾーン</p>
+      <div class="involvement-map">
+        <div class="involvement-row involvement-row--high">
+          <div class="involvement-label">動画制作</div>
+          <div class="involvement-bar"></div>
+          <div class="involvement-text">プロモーション実行の主力手段</div>
+        </div>
+        <div class="involvement-row involvement-row--high">
+          <div class="involvement-label">コンテンツ戦略</div>
+          <div class="involvement-bar"></div>
+          <div class="involvement-text">何を・誰向けに・どう届けるか</div>
+        </div>
+        <div class="involvement-row involvement-row--mid">
+          <div class="involvement-label">視聴データ分析</div>
+          <div class="involvement-bar"></div>
+          <div class="involvement-text">KPIを見て次回の制作に反映</div>
+        </div>
+        <div class="involvement-row involvement-row--low">
+          <div class="involvement-label">価格・製品</div>
+          <div class="involvement-bar"></div>
+          <div class="involvement-text">直接関与は少ない</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- セクション5: このコースの立ち位置 -->
+  <div class="card reveal visible">
+    <div class="card__title">「マーケティング担当」でなくても学ぶべき理由</div>
+    <p>「私はクリエイターなので、マーケティングは専門外」という考え方は、これからのクリエイター市場では通用しなくなっています。</p>
+
+    <div style="background: #F7F8FA; border-radius: 10px; padding: 20px; margin: 16px 0;">
+      <p style="font-size: 14px; font-weight: 700; color: #3D3D3D; margin-bottom: 12px;">マーケティング思考を持つクリエイターが選ばれる3つの理由</p>
+      <div style="display: flex; flex-direction: column; gap: 12px;">
+        <div style="display: flex; gap: 12px; align-items: flex-start;">
+          <span style="background: #E85D4A; color: white; border-radius: 50%; width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; flex-shrink: 0; margin-top: 1px;">1</span>
+          <div>
+            <div style="font-size: 14px; font-weight: 700; margin-bottom: 3px;">「なぜそのデザイン/投稿/動画なのか」を言語化できる</div>
+            <div style="font-size: 13px; color: #666;">クライアントへの提案・修正交渉・価値説明が圧倒的にしやすくなる</div>
+          </div>
+        </div>
+        <div style="display: flex; gap: 12px; align-items: flex-start;">
+          <span style="background: #F5A64A; color: white; border-radius: 50%; width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; flex-shrink: 0; margin-top: 1px;">2</span>
+          <div>
+            <div style="font-size: 14px; font-weight: 700; margin-bottom: 3px;">成果を数字で語れる</div>
+            <div style="font-size: 13px; color: #666;">「センスのいい制作」より「CVを上げた制作」のほうが単価が上がりやすい</div>
+          </div>
+        </div>
+        <div style="display: flex; gap: 12px; align-items: flex-start;">
+          <span style="background: #4CAF7C; color: white; border-radius: 50%; width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; flex-shrink: 0; margin-top: 1px;">3</span>
+          <div>
+            <div style="font-size: 14px; font-weight: 700; margin-bottom: 3px;">AIに代替されにくい</div>
+            <div style="font-size: 13px; color: #666;">技術の実行はAIで代替可能になってきている。でも「誰のための・何のための制作か」という思考はまだ人間が担っている</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- まとめ -->
+  <div class="summary-card reveal">
+    <div class="summary-card__title">このレッスンのまとめ</div>
+    <div class="summary-card__main">マーケティングは「売れる仕組みを作ること」。<br>クリエイターはその中心的な実行者。</div>
+    <div class="summary-card__sub">
+      広告≠マーケティング。価値を創り・届け続けるプロセス全体を指す。<br>
+      4PのうちP3・P4がクリエイターの主戦場。「なぜこれを作るか」を言語化できるクリエイターが選ばれる時代。<br><br>
+      次のChapter 2では「誰に届けるか」——ターゲットとペルソナの設計を学びます。
+    </div>
+  </div>
+
+</div>
+  
+<!-- 前の章に戻るボタンの場合 -->  
+<div style="display: flex; justify-content: flex-start; align-items: center; padding: 24px 0; margin-top: 24px;">
+  <a href="https://learn.webcoach.jp/generative-ai/ai_web_marketing/A-1/ZRltA" style="position: relative; display: inline-block; background: linear-gradient(135deg, #E85D4A, #F5A64A); color: #fff; font-weight: 700; padding: 12px clamp(24px, 7vw, 48px); border-radius: 8px; text-decoration: none;"><img src="../../_assets/47498cfebf.svg" style="position: absolute; top: 50%; transform: translateY(-50%); left: 12px; filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(125deg) brightness(103%) contrast(103%); transform: translateY(-50%) rotate(180deg);">前の章に戻る</a>
+</div>
+<!-- ロードマップに戻るボタンの場合 --> 
+<div style="display: flex; justify-content: center; align-items: center; padding: 24px 0; margin-top: 24px;">
+  <a href="https://learn.webcoach.jp/2Q/ai_web_marketing" style="display: inline-block; background: #fff; color: #E85D4A; border: 2px solid #E85D4A; font-weight: 700; padding: 10px clamp(24px, 7vw, 48px); border-radius: 8px; text-decoration: none; white-space: nowrap;">ロードマップに戻る</a>  
+</div>
+
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="ck-icon-arrow-down" viewBox="0 0 1792 1792"><path d="M1675 832q0 53-37 90l-651 652q-39 37-91 37-53 0-90-37l-651-652q-38-36-38-90 0-53 38-91l74-75q39-37 91-37 53 0 90 37l294 294v-704q0-52 38-90t90-38h128q52 0 90 38t38 90v704l294-294q37-37 90-37 52 0 91 37l75 75q37 39 37 91z"></path></symbol><symbol id="ck-icon-arrow-up" viewBox="0 0 1792 1792"><path d="M1675 971q0 51-37 90l-75 75q-38 38-91 38-54 0-90-38l-294-293v704q0 52-37.5 84.5t-90.5 32.5h-128q-53 0-90.5-32.5t-37.5-84.5v-704l-294 293q-36 38-90 38t-90-38l-75-75q-38-38-38-90 0-53 38-91l651-651q35-37 90-37 54 0 91 37l651 651q37 39 37 91z"></path></symbol><symbol id="ck-icon-calendar" viewBox="0 0 1792 1792"><path d="M192 1664h288v-288h-288v288zm352 0h320v-288h-320v288zm-352-352h288v-320h-288v320zm352 0h320v-320h-320v320zm-352-384h288v-288h-288v288zm736 736h320v-288h-320v288zm-384-736h320v-288h-320v288zm768 736h288v-288h-288v288zm-384-352h320v-320h-320v320zm-352-864v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm736 864h288v-320h-288v320zm-384-384h320v-288h-320v288zm384 0h288v-288h-288v288zm32-480v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm384-64v1280q0 52-38 90t-90 38h-1408q-52 0-90-38t-38-90v-1280q0-52 38-90t90-38h128v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h384v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h128q52 0 90 38t38 90z"></path></symbol><symbol id="ck-icon-chevron-left" viewBox="0 0 1792 1792"><path d="M1427 301l-531 531 531 531q19 19 19 45t-19 45l-166 166q-19 19-45 19t-45-19l-742-742q-19-19-19-45t19-45l742-742q19-19 45-19t45 19l166 166q19 19 19 45t-19 45z"></path></symbol><symbol id="ck-icon-chevron-right" viewBox="0 0 1792 1792"><path d="M1363 877l-742 742q-19 19-45 19t-45-19l-166-166q-19-19-19-45t19-45l531-531-531-531q-19-19-19-45t19-45l166-166q19-19 45-19t45 19l742 742q19 19 19 45t-19 45z"></path></symbol><symbol id="ck-icon-clock-o" viewBox="0 0 1792 1792"><path d="M1024 544v448q0 14-9 23t-23 9h-320q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h224v-352q0-14 9-23t23-9h64q14 0 23 9t9 23zm416 352q0-148-73-273t-198-198-273-73-273 73-198 198-73 273 73 273 198 198 273 73 273-73 198-198 73-273zm224 0q0 209-103 385.5t-279.5 279.5-385.5 103-385.5-103-279.5-279.5-103-385.5 103-385.5 279.5-279.5 385.5-103 385.5 103 279.5 279.5 103 385.5z"></path></symbol><symbol id="ck-icon-trash" viewBox="0 0 1792 1792"><path d="M704 1376v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm-544-992h448l-48-117q-7-9-17-11h-317q-10 2-17 11zm928 32v64q0 14-9 23t-23 9h-96v948q0 83-47 143.5t-113 60.5h-832q-66 0-113-58.5t-47-141.5v-952h-96q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h309l70-167q15-37 54-63t79-26h320q40 0 79 26t54 63l70 167h309q14 0 23 9t9 23z"></path></symbol><symbol id="ck-icon-undo" viewBox="0 0 1792 1792"><path d="M1664 896q0 156-61 298t-164 245-245 164-298 61q-172 0-327-72.5t-264-204.5q-7-10-6.5-22.5t8.5-20.5l137-138q10-9 25-9 16 2 23 12 73 95 179 147t225 52q104 0 198.5-40.5t163.5-109.5 109.5-163.5 40.5-198.5-40.5-198.5-109.5-163.5-163.5-109.5-198.5-40.5q-98 0-188 35.5t-160 101.5l137 138q31 30 14 69-17 40-59 40h-448q-26 0-45-19t-19-45v-448q0-42 40-59 39-17 69 14l130 129q107-101 244.5-156.5t284.5-55.5q156 0 298 61t245 164 164 245 61 298z"></path></symbol></svg>
+
+<!--Clipkit(R) v15.9.0-20260915 Copyright (C) 2026 VECTOR Inc.-->
+
+
+
+</div></div>
+        
+      
+    </div>
+  
+  </div>
+
+<!-- <script src="https://cdn.clipkit.co/clipkit/javascripts/item-shopify-1.0.js?v=v15.9.0-20260915" async></script> -->
+</body></html>

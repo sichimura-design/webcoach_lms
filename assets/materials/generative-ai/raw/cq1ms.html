@@ -1,0 +1,537 @@
+
+
+
+<div>
+  
+    <div>
+      
+      
+        
+          <div class="article-item item_html " id="item48531" data-item-id="48531" data-item-type="ItemHtml"><div class="item-body"><!DOCTYPE html>
+<html lang="ja">
+<head><script async="async" data-label="saas" nonce="pfnPpqEDrkDOhVVQk2elRA==" src="//b.clipkit.co/"></script><script src="//cdn.clipkit.co/clipkit_assets/beacon-787bbf3225ec43d93f198af35f7d56fdef40fb50440a2909500bdf5b99225aab.js" async="async" id="clipkit-beacon" data-page-type="article" data-page-id="1263" data-domain="learn.webcoach.jp" data-url="/generative-ai/introduction-to-generative-ai/%E4%BD%93%E9%A8%93-%E3%83%86%E3%82%AD%E3%82%B9%E3%83%88%E7%94%9F%E6%88%90AI%E3%83%AF%E3%83%BC%E3%83%AB%E3%83%89/cQ1MS" data-href="https://learn.webcoach.jp/media/beacon"></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>【特別編】Geminiを使って出力の違いを比べてみよう | WEBCOACH</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; }
+  body {
+    font-family: 'Noto Sans JP', -apple-system, BlinkMacSystemFont, 'Hiragino Sans', sans-serif;
+    color: #3D3D3D; font-size: 16px; line-height: 1.9;
+    -webkit-font-smoothing: antialiased;
+  }
+  img { max-width: 100%; height: auto; display: block; }
+  h2.section-heading {
+    font-size: 24px; font-weight: 700; color: #3D3D3D;
+    margin: 48px 0 20px; padding-bottom: 10px;
+    border-bottom: 3px solid #FAE8E0; line-height: 1.4;
+  }
+  .text-body { font-size: 16px; line-height: 1.9; color: #444; margin: 0 0 16px; }
+  .accent { color: #E85D4A; font-weight: 700; }
+  .point-box {
+    background: #FFFBF0; border-left: 4px solid #F5A64A;
+    padding: 18px 22px; border-radius: 0 12px 12px 0; margin: 24px 0;
+  }
+  .point-box .label { font-size: 12px; font-weight: 700; color: #F5A64A; letter-spacing: 0.15em; margin-bottom: 6px; }
+  .point-box p { margin: 0; font-size: 15px; line-height: 1.8; color: #555; }
+  .note-box {
+    background: #FFF3F0; border-left: 4px solid #E85D4A;
+    padding: 18px 22px; border-radius: 0 12px 12px 0; margin: 24px 0;
+  }
+  .note-box .label { font-size: 12px; font-weight: 700; color: #E85D4A; letter-spacing: 0.15em; margin-bottom: 6px; }
+  .note-box p { margin: 0; font-size: 15px; line-height: 1.8; color: #555; }
+  .imagine-box {
+    background: #fff; border: 2px solid #E85D4A;
+    border-radius: 16px; padding: 24px; margin: 24px 0;
+  }
+  .imagine-box .label { font-size: 12px; font-weight: 700; color: #E85D4A; letter-spacing: 0.1em; margin-bottom: 8px; }
+  .imagine-box p { font-size: 16px; line-height: 1.8; color: #3D3D3D; margin: 0; }
+  .stumbling-box {
+    background: linear-gradient(135deg, #FFF8F0, #FFFBF0); border: 2px solid #F5A64A;
+    border-radius: 16px; padding: 24px; margin: 24px 0;
+  }
+  .stumbling-box .label { font-size: 12px; font-weight: 700; color: #F5A64A; letter-spacing: 0.1em; margin-bottom: 8px; }
+  .stumbling-box ul { margin: 0; padding-left: 18px; font-size: 15px; line-height: 2; color: #555; }
+  .usecase-box {
+    background: #F0F7FF; border: 1px solid #C2DFF5;
+    border-radius: 12px; padding: 18px 22px; margin: 24px 0;
+  }
+  .usecase-box .label { font-size: 12px; font-weight: 700; color: #2E86DE; letter-spacing: 0.1em; margin-bottom: 6px; }
+  .usecase-box p { margin: 0; font-size: 15px; line-height: 1.8; color: #444; }
+  .inline-quiz {
+    background: #FFF8F0; border: 2px solid #FAE8E0;
+    border-radius: 16px; padding: 24px; margin: 36px 0;
+  }
+  .inline-quiz .quiz-label { font-size: 12px; font-weight: 700; color: #F5A64A; letter-spacing: 0.1em; margin-bottom: 12px; }
+  .inline-quiz .quiz-question { font-size: 16px; font-weight: 700; color: #3D3D3D; margin: 0 0 16px; line-height: 1.6; }
+  .quiz-options { display: flex; flex-direction: column; gap: 8px; }
+  .quiz-opt {
+    display: block; width: 100%; text-align: left;
+    background: #fff; border: 2px solid #E8E8E8; border-radius: 10px;
+    padding: 12px 16px; font-size: 15px;
+    font-family: 'Noto Sans JP', sans-serif; color: #3D3D3D;
+    cursor: pointer; transition: border-color 0.2s, background 0.2s; line-height: 1.6;
+  }
+  .quiz-opt:hover:not(.answered) { border-color: #F5A64A; background: #FFFBF0; }
+  .quiz-feedback {
+    display: none; margin-top: 16px; padding: 14px 18px;
+    border-radius: 8px; font-size: 14px; line-height: 1.7; color: #444;
+  }
+  .summary-box {
+    background: linear-gradient(135deg, #FDF0ED, #FFFBF0);
+    border: 2px solid #FAE8E0; border-radius: 16px;
+    padding: 28px; margin: 48px 0 28px;
+  }
+  .summary-box .label { font-size: 13px; font-weight: 700; color: #E85D4A; letter-spacing: 0.15em; margin-bottom: 18px; }
+  .summary-box ul { margin: 0; padding-left: 18px; font-size: 14px; line-height: 2; color: #444; }
+  .toc-link { color: #555; text-decoration: none; }
+  .toc-link:hover { color: #E85D4A; }
+  .prompt-example {
+    background: #F5F5F5; border-left: 4px solid #F5A64A;
+    border-radius: 0 12px 12px 0; padding: 18px 22px; margin: 20px 0;
+    font-size: 15px; line-height: 1.8; color: #444;
+  }
+  .prompt-example .prompt-label {
+    font-size: 11px; font-weight: 700; color: #F5A64A; letter-spacing: 0.1em; margin-bottom: 6px;
+  }
+  .ai-response {
+    background: #F0F7FF; border: 1px solid #C2DFF5;
+    border-radius: 12px; padding: 18px 22px; margin: 16px 0;
+    font-size: 14px; line-height: 1.8; color: #444;
+  }
+  .lesson-wrapper { max-width: 70%; margin: 0 auto; }
+  @media (max-width: 600px) {
+    .lesson-wrapper { max-width: 92%; }
+    h2.section-heading { font-size: 20px; }
+  }
+</style>
+<meta name="csrf-param" content="authenticity_token" />
+<meta name="csrf-token" content="FeVvUw5gqR88ohh7gN9noZ8md_PUIJVknbDXhIiklIos0_0ywM5CMj2DWu_aKCEg-xbI2kqB1qs-sv2neK7Ebg" /><meta content="" name="routing-root-path" /><meta content="media" name="site-name" /><meta content="ja" name="i18n-default-locale" /><meta content="ja" name="i18n-locale" /></head>
+<body>
+<div class="lesson-wrapper">
+
+<!-- ヘッダー -->
+<div style="background: linear-gradient(135deg, #E85D4A, #F5A64A); color: #fff; padding: 32px 32px 28px; border-radius: 16px 16px 0 0; margin-top: 32px;">
+  <div style="font-size: 12px; font-weight: 700; opacity: 0.85; letter-spacing: 0.15em;">LESSON 3-5</div>
+  <h1 style="margin: 8px 0 0; font-size: 28px; font-weight: 700; line-height: 1.4; color: #fff;">【特別編】Geminiを使って出力の違いを比べてみよう</h1>
+  <p style="margin: 10px 0 0; font-size: 14px; opacity: 0.85; color: #fff;">Chapter 3: テキストAIハンズオン ／ 所要時間：約20分</p>
+</div>
+
+<!-- ゴールボックス -->
+<div style="background: #FAE8E0; padding: 18px 26px; border-radius: 0 0 16px 16px; margin-bottom: 36px;">
+  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
+    <div style="font-size: 12px; font-weight: 700; color: #E85D4A; letter-spacing: 0.15em;">このレッスンのゴール</div>
+    <div style="font-size: 12px; font-weight: 500; color: #E85D4A;">⏱ 約20分</div>
+  </div>
+  <p style="margin: 0; font-size: 16px; font-weight: 700; color: #3D3D3D; line-height: 1.6;">テキスト生成AIには様々な種類と個性があることを理解し、同じ指示でもAIによって出力が異なることを体験する</p>
+</div>
+<!-- ロードマップに戻るボタンの場合 --> 
+<div style="display: flex; justify-content: center; align-items: center; padding: 24px 0; margin-top: 24px;">
+  <a href="https://learn.webcoach.jp/2Q/introduction-to-generative-ai" style="display: inline-block; background: #fff; color: #E85D4A; border: 2px solid #E85D4A; font-weight: 700; padding: 10px clamp(24px, 7vw, 48px); border-radius: 8px; text-decoration: none; white-space: nowrap;">ロードマップに戻る</a>
+</div>
+  <!-- 前の章に戻るボタン / 次の章に進むボタン がある場合 -->  
+<div style="display: flex; justify-content: space-between; align-items: center; padding: 24px 0; margin-top: 24px;">
+  <a href="VgTU0" style="position: relative; display: inline-block; background: linear-gradient(135deg, #E85D4A, #F5A64A); color: #fff; font-weight: 700; padding: 12px clamp(24px, 7vw, 48px); border-radius: 8px; text-decoration: none;"><img src="/theme/webcoach/img/icons/arrow-right.svg" style="position: absolute; top: 50%; transform: translateY(-50%); left: 12px; filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(125deg) brightness(103%) contrast(103%); transform: translateY(-50%) rotate(180deg);">前の章に戻る</a>
+  <a href="cva2b" style="position: relative; display: inline-block; background: linear-gradient(135deg, #E85D4A, #F5A64A); color: #fff; font-weight: 700; padding: 12px clamp(24px, 7vw, 48px); border-radius: 8px; text-decoration: none;">次の章に進む<img src="/theme/webcoach/img/icons/arrow-right.svg" style="position: absolute; top: 50%; transform: translateY(-50%); right: 12px; filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(125deg) brightness(103%) contrast(103%);"></a>
+</div>
+
+<!-- 目次 -->
+<div style="background: #fff; border: 1px solid #E8E8E8; border-radius: 12px; padding: 22px 26px; margin-bottom: 40px;">
+  <div style="font-size: 13px; font-weight: 700; color: #F5A64A; letter-spacing: 0.1em; margin-bottom: 12px;">目次</div>
+  <ol style="margin: 0; padding-left: 22px; font-size: 15px; color: #555; line-height: 2.2;">
+    <li><a href="#sec1" class="toc-link">なぜ他のAIも試すのか？</a></li>
+    <li><a href="#sec2" class="toc-link">GoogleのAI「Gemini」を使ってみよう</a></li>
+    <li><a href="#sec3" class="toc-link">【比較演習】同じ「お願い」、違う「答え」</a></li>
+    <li><a href="#sec4" class="toc-link">章末課題：AIの「得意技」発見レポート</a></li>
+  </ol>
+</div>
+
+
+<!-- イメージしてみよう -->
+<div class="imagine-box">
+  <div class="label">🎬 イメージしてみよう</div>
+  <p>
+    「ChatGPTの使い方はわかったけど、他のAIはどうなんだろう？」<br>
+    「同じ質問をしたら、同じ答えが返ってくるの？」<br><br>
+    実は、AIにも<strong class="accent">人間と同じように「個性」</strong>があります。<br>
+    同じ質問をしても、AIによって答え方や得意分野が違うのです。<br>
+    今回はGoogleの<strong class="accent">「Gemini（ジェミニ）」</strong>を使って、その違いを体感してみましょう。
+  </p>
+</div>
+
+
+<!-- 躓きポイント -->
+<div class="stumbling-box">
+  <div class="label">⚡ このレッスンで躓きやすいポイント</div>
+  <ul>
+    <li>Geminiの画面がChatGPTと違うので戸惑うが、<strong class="accent">チャットでお願いする基本操作は同じ</strong></li>
+    <li>「どちらが正解？」と比較しがちだが、<strong class="accent">違いを見つけて楽しむことが目的</strong>（優劣ではない）</li>
+  </ul>
+</div>
+
+
+<!-- ============================================================
+  セクション 1: なぜ他のAIも試すのか？
+============================================================ -->
+<h2 class="section-heading" id="sec1">1. なぜ他のAIも試すのか？</h2>
+
+<p class="text-body">
+  これまでChatGPTを使って、その便利さや面白さを体験してきました。ChatGPTは非常に優秀なテキスト生成AIですが、世の中には他にもたくさんのAIが存在します。
+</p>
+
+<p class="text-body">
+  そして重要なのは、<strong class="accent">それぞれのAIには個性がある</strong>ということです。
+</p>
+
+<!-- 個性カード -->
+<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 24px 0;">
+  <div style="background: #fff; border: 2px solid #FAE8E0; border-radius: 16px; padding: 22px;">
+    <h3 style="font-size: 17px; font-weight: 700; color: #E85D4A; margin: 0 0 8px;">学習したデータ</h3>
+    <p style="font-size: 14px; line-height: 1.7; color: #555; margin: 0;">得意な知識分野や情報源が異なる</p>
+  </div>
+  <div style="background: #fff; border: 2px solid #FAE8E0; border-radius: 16px; padding: 22px;">
+    <h3 style="font-size: 17px; font-weight: 700; color: #E85D4A; margin: 0 0 8px;">得意なタスク</h3>
+    <p style="font-size: 14px; line-height: 1.7; color: #555; margin: 0;">文章作成、要約、翻訳、アイデア出しなど</p>
+  </div>
+  <div style="background: #fff; border: 2px solid #FAE8E0; border-radius: 16px; padding: 22px;">
+    <h3 style="font-size: 17px; font-weight: 700; color: #E85D4A; margin: 0 0 8px;">文章のスタイル</h3>
+    <p style="font-size: 14px; line-height: 1.7; color: #555; margin: 0;">論理的、創造的、簡潔、丁寧など</p>
+  </div>
+  <div style="background: #fff; border: 2px solid #FAE8E0; border-radius: 16px; padding: 22px;">
+    <h3 style="font-size: 17px; font-weight: 700; color: #E85D4A; margin: 0 0 8px;">開発元の方針</h3>
+    <p style="font-size: 14px; line-height: 1.7; color: #555; margin: 0;">Google、OpenAI、Anthropicなどの思想</p>
+  </div>
+</div>
+
+<p class="text-body">
+  人間に例えると、同じ質問をしてもAさんとBさんでは答え方や得意な話題が違うのと似ています。だからこそ、<strong class="accent">目的に応じて最適なAIツールを選択するスキル</strong>が重要になってくるのです。
+</p>
+
+<!-- イラスト -->
+<div style="margin: 24px 0; text-align: center;">
+  <a href="/theme/webcoach/img/introduction-to-generative-ai/text-ai-hands-on/img15.png" class="lightbox" style="display: inline-block;">
+    <img src="/theme/webcoach/img/introduction-to-generative-ai/text-ai-hands-on/img15.png" alt="" class="lightbox-img" style="display: block; margin: 0 auto; max-width: 100%;">
+  </a>
+  <p style="font-size: 13px; color: #999; margin-top: 8px;">AI比較イメージ</p>
+</div>
+
+<div class="point-box">
+  <div class="label">ポイント</div>
+  <p>ChatGPTやGemini以外にも、Anthropic社が開発した「<strong class="accent">Claude（クロード）</strong>」など、無料で利用できる優秀なテキスト生成AIがあります。Claudeは論理的な文章作成やコーディングに定評があり、比較対象として試してみるとAIの個性の違いをより深く実感できます。</p>
+</div>
+
+
+<!-- ============================================================
+  セクション 2: GoogleのAI「Gemini」を使ってみよう
+============================================================ -->
+<h2 class="section-heading" id="sec2">2. GoogleのAI「Gemini」を使ってみよう</h2>
+
+<p class="text-body">
+  「<strong class="accent">Gemini（ジェミニ）</strong>」は、Googleによって開発された最新の生成AIモデル群の総称です。以前は「Bard」という名称で提供されていた対話型AIサービスが、このGeminiモデルを搭載して新しくなりました。
+</p>
+
+<!-- 比較テーブル -->
+<div style="overflow-x: auto; margin: 20px 0; border-radius: 12px; box-shadow: 0 1px 6px rgba(0,0,0,0.06);">
+  <table style="width: 100%; border-collapse: separate; border-spacing: 0; border-radius: 12px; overflow: hidden; font-size: 15px;">
+    <thead>
+      <tr>
+        <th style="background: #E85D4A; color: #fff; padding: 12px 16px; font-weight: 700; text-align: left;">特徴</th>
+        <th style="background: #E85D4A; color: #fff; padding: 12px 16px; font-weight: 700; text-align: left;">Gemini（Google）</th>
+        <th style="background: #E85D4A; color: #fff; padding: 12px 16px; font-weight: 700; text-align: left;">ChatGPT（OpenAI）</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td style="padding: 12px 16px; border-bottom: 1px solid #FAE8E0; font-weight: 700;">開発元</td>
+        <td style="padding: 12px 16px; border-bottom: 1px solid #FAE8E0;">Google</td>
+        <td style="padding: 12px 16px; border-bottom: 1px solid #FAE8E0;">OpenAI</td>
+      </tr>
+      <tr style="background: #FDF0ED;">
+        <td style="padding: 12px 16px; border-bottom: 1px solid #FAE8E0; font-weight: 700;">強み・連携</td>
+        <td style="padding: 12px 16px; border-bottom: 1px solid #FAE8E0;">Google検索との連携による最新情報へのアクセス、Googleサービスとの連携</td>
+        <td style="padding: 12px 16px; border-bottom: 1px solid #FAE8E0;">自然で創造的な文章生成、GPTsによる機能拡張、画像生成対応</td>
+      </tr>
+      <tr>
+        <td style="padding: 12px 16px; border-bottom: 1px solid #FAE8E0; font-weight: 700;">情報源</td>
+        <td style="padding: 12px 16px; border-bottom: 1px solid #FAE8E0;">リアルタイムに近いWeb情報（Google検索経由）</td>
+        <td style="padding: 12px 16px; border-bottom: 1px solid #FAE8E0;">Web検索に対応（無料版でも利用可能）</td>
+      </tr>
+      <tr style="background: #FDF0ED;">
+        <td style="padding: 12px 16px; font-weight: 700;">マルチモーダル</td>
+        <td style="padding: 12px 16px;">テキスト＋画像の理解・生成（一部プラン）</td>
+        <td style="padding: 12px 16px;">テキスト・画像の理解と生成（DALL-E連携）</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<p class="text-body">
+  GeminiはGoogleアカウントを持っていれば誰でも<strong class="accent">無料で利用を開始</strong>できます。
+</p>
+
+<h3 style="font-size: 18px; font-weight: 700; color: #3D3D3D; margin: 36px 0 16px;">Geminiへのアクセス方法と基本的な使い方</h3>
+
+<!-- スクリーンショット -->
+<div style="margin: 24px 0; text-align: center;">
+  <a href="/theme/webcoach/img/introduction-to-generative-ai/text-ai-hands-on/img16.png" class="lightbox" style="display: inline-block;">
+    <img src="/theme/webcoach/img/introduction-to-generative-ai/text-ai-hands-on/img16.png" alt="" class="lightbox-img" style="display: block; margin: 0 auto; max-width: 100%;">
+  </a>
+  <p style="font-size: 13px; color: #999; margin-top: 8px;">Geminiアクセス画面1</p>
+</div>
+<div style="margin: 24px 0; text-align: center;">
+  <a href="/theme/webcoach/img/introduction-to-generative-ai/text-ai-hands-on/img17.png" class="lightbox" style="display: inline-block;">
+    <img src="/theme/webcoach/img/introduction-to-generative-ai/text-ai-hands-on/img17.png" alt="" class="lightbox-img" style="display: block; margin: 0 auto; max-width: 100%;">
+  </a>
+  <p style="font-size: 13px; color: #999; margin-top: 8px;">Geminiアクセス画面2</p>
+</div>
+  
+<!-- 手順 -->
+<div style="background: #fff; border: 2px solid #FAE8E0; border-radius: 16px; padding: 24px; margin: 24px 0;">
+  <ol style="margin: 0; padding-left: 22px; font-size: 15px; line-height: 2.4; color: #444;">
+    <li><strong>Gemini公式サイトへアクセス：</strong>Webブラウザで <code style="background: #F5F5F5; padding: 2px 8px; border-radius: 4px; font-size: 14px;">https://gemini.google.com/</code> にアクセス</li>
+    <li><strong>Googleアカウントでログイン：</strong>「ログイン」や「Geminiを試す」ボタンをクリック</li>
+    <li><strong>利用開始：</strong>初回利用時には利用規約への同意を確認して進む</li>
+    <li><strong>プロンプトの入力と送信：</strong>画面下部の入力欄に、ChatGPTと同じようにお願いを入力し送信</li>
+  </ol>
+</div>
+
+<div class="note-box">
+  <div class="label">注意</div>
+  <p>ChatGPTとは画面のデザインが異なりますが、心配いりません。基本的な操作は<strong class="accent">「チャット形式でAIにお願いする」</strong>という点で共通です。</p>
+</div>
+
+<!-- 確認クイズ #1 -->
+<div class="inline-quiz">
+  <div class="quiz-label">✏️ 確認クイズ</div>
+  <p class="quiz-question">複数のAIを試す主な目的として最も適切なのは？</p>
+  <div class="quiz-options">
+    <button class="quiz-opt" data-correct="false">A. どのAIが一番賢いかランキングをつけるため</button>
+    <button class="quiz-opt" data-correct="false">B. すべてのAIの操作方法を暗記するため</button>
+    <button class="quiz-opt" data-correct="true">C. AIの個性の違いを理解し、目的に応じて使い分けるスキルを身につけるため</button>
+    <button class="quiz-opt" data-correct="false">D. 無料AIをたくさん知っておくため</button>
+  </div>
+  <div class="quiz-feedback">
+    <strong>正解！</strong> それぞれのAIには個性があります。優劣をつけるのではなく、個性を理解して「目的に応じてAIを使い分ける」スキルを身につけることが大切です。
+  </div>
+</div>
+
+
+<!-- ============================================================
+  セクション 3: 比較演習
+============================================================ -->
+<h2 class="section-heading" id="sec3">3. 【比較演習】同じ「お願い」、違う「答え」</h2>
+
+<p class="text-body">
+  実際にChatGPTとGeminiで、同じ「お願い」をした時にどんな違いが出るか体験してみましょう。前のレッスンで使ったアイデア出しのお願いを、今度はGeminiにもしてみます。
+</p>
+
+<div class="prompt-example">
+  <div class="prompt-label">お願いの例（ChatGPTとGemini両方に送信）</div>
+  週末を楽しく過ごすためのブログ記事のテーマを、できるだけたくさん、箇条書きで提案してほしいな。例えば、近所の散歩コースの紹介とか、簡単レシピとか、そんな感じで。
+</div>
+
+<p class="text-body"><strong>手順：</strong></p>
+<ol style="margin: 16px 0; padding-left: 20px; font-size: 15px; line-height: 2.2; color: #444;">
+  <li>上のお願いをコピーする</li>
+  <li><strong>ChatGPT</strong>のチャット画面で送信し、回答を確認</li>
+  <li>次に<strong>Gemini</strong>のチャット画面で同じお願いを送信し、回答を確認</li>
+</ol>
+
+<!-- 比較カード -->
+<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 24px 0;">
+  <div style="background: #FDF0ED; border-radius: 16px; padding: 22px;">
+    <h4 style="font-size: 15px; font-weight: 700; color: #E85D4A; margin: 0 0 12px;">ChatGPTの回答傾向</h4>
+    <ul style="margin: 0; padding-left: 16px; font-size: 14px; line-height: 1.9; color: #555;">
+      <li>近場お散歩コース5選</li>
+      <li>週末ご褒美レシピ集</li>
+      <li>映画マラソン テーマ別おすすめ</li>
+      <li>週末DIYチャレンジ</li>
+    </ul>
+    <p style="font-size: 13px; color: #999; margin: 12px 0 0; line-height: 1.6;">個人の趣味やライフスタイルに寄り添った、内面的な充実感を促す提案が多い傾向</p>
+  </div>
+  <div style="background: #F0F7FF; border-radius: 16px; padding: 22px;">
+    <h4 style="font-size: 15px; font-weight: 700; color: #2E86DE; margin: 0 0 12px;">Geminiの回答傾向</h4>
+    <ul style="margin: 0; padding-left: 16px; font-size: 14px; line-height: 1.9; color: #555;">
+      <li>【最新イベント】フードフェス体験レポ</li>
+      <li>Googleマップで見つけた隠れ家カフェ</li>
+      <li>週末限定の特別展レポート</li>
+      <li>話題の日帰り旅行プラン</li>
+    </ul>
+    <p style="font-size: 13px; color: #999; margin: 12px 0 0; line-height: 1.6;">Google検索連携を活かした、具体的で時事性のある情報や場所に基づく提案が多い傾向</p>
+  </div>
+</div>
+
+<h3 style="font-size: 18px; font-weight: 700; color: #3D3D3D; margin: 36px 0 16px;">比較の観点</h3>
+
+<div style="background: #fff; border: 2px solid #FAE8E0; border-radius: 16px; padding: 24px; margin: 24px 0;">
+  <ul style="margin: 0; padding-left: 18px; font-size: 15px; line-height: 2.2; color: #444;">
+    <li><strong>提案内容の具体性</strong> — より詳細な情報が含まれているか？</li>
+    <li><strong>独自性・斬新さ</strong> — 自分では思いつかないユニークな提案があるか？</li>
+    <li><strong>表現のスタイル</strong> — 文章のトーンや言葉遣いはどうか？</li>
+    <li><strong>情報の新しさ</strong> — 最新のトレンドが反映されていそうか？</li>
+    <li><strong>網羅性</strong> — 多様なジャンルからの提案があるか？</li>
+    <li><strong>あなたの好み</strong> — 純粋に「やってみたい」と感じたのはどちら？</li>
+  </ul>
+</div>
+
+<div class="point-box">
+  <div class="label">ポイント</div>
+  <p>この比較は、<strong class="accent">どちらのAIが良い・悪いを判断するためではありません</strong>。「違いを見つけて楽しむ」そして「使い分けのヒントを得る」ことが目的です。</p>
+</div>
+
+
+<!-- ============================================================
+  セクション 4: 章末課題
+============================================================ -->
+<h2 class="section-heading" id="sec4">4. 章末課題：AIの「得意技」発見レポート</h2>
+
+<p class="text-body">
+  今回の比較演習を通じて、あなたが感じた<strong class="accent">「ChatGPTが得意そうなこと」と「Geminiが得意そうなこと」</strong>を、それぞれ1つ以上、具体的な理由や例を交えて書き出してみてください。正解はありません。
+</p>
+
+<!-- 解答方向性 -->
+<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 24px 0;">
+  <div style="background: #FDF0ED; border-radius: 16px; padding: 22px;">
+    <h4 style="font-size: 15px; font-weight: 700; color: #E85D4A; margin: 0 0 12px;">ChatGPTが得意そうなこと（例）</h4>
+    <p style="font-size: 14px; line-height: 1.7; color: #555; margin: 0 0 8px;"><strong>例：</strong>創造的な文章の生成や、人間らしい対話を通じた壁打ち</p>
+    <p style="font-size: 13px; line-height: 1.7; color: #999; margin: 0;"><strong>理由：</strong>ユーザーの意図を深く理解し、柔軟に思考を広げてくれる人間味のある応答が印象的だったから</p>
+  </div>
+  <div style="background: #F0F7FF; border-radius: 16px; padding: 22px;">
+    <h4 style="font-size: 15px; font-weight: 700; color: #2E86DE; margin: 0 0 12px;">Geminiが得意そうなこと（例）</h4>
+    <p style="font-size: 14px; line-height: 1.7; color: #555; margin: 0 0 8px;"><strong>例：</strong>最新情報に基づいたリサーチや、場所名を含んだ実用的なアイデア出し</p>
+    <p style="font-size: 13px; line-height: 1.7; color: #999; margin: 0;"><strong>理由：</strong>Google検索と連携しているため、リアルタイムなトレンドや地図情報を反映した出力が得意だと感じたから</p>
+  </div>
+</div>
+
+<!-- 確認クイズ #2 -->
+<div class="inline-quiz">
+  <div class="quiz-label">✏️ 確認クイズ</div>
+  <p class="quiz-question">GeminiがChatGPTと比べて特に強みを持つとされるのは？</p>
+  <div class="quiz-options">
+    <button class="quiz-opt" data-correct="false">A. 小説のような創造的な長文を書くこと</button>
+    <button class="quiz-opt" data-correct="true">B. Google検索と連携した最新情報へのアクセスやGoogleサービスとの連携</button>
+    <button class="quiz-opt" data-correct="false">C. プログラミングコードの自動生成</button>
+    <button class="quiz-opt" data-correct="false">D. 外国語への翻訳精度</button>
+  </div>
+  <div class="quiz-feedback">
+    <strong>正解！</strong> GeminiはGoogle検索との連携が大きな強みで、リアルタイムに近いWeb情報を活用した回答が得意です。ChatGPTは自然で創造的な文章生成やGPTsによる機能拡張に強みがあります。
+  </div>
+</div>
+
+<div class="usecase-box">
+  <div class="label">💡 こんな場面で使える！</div>
+  <p><strong class="accent">タスクや目的に応じてAIを使い分ける</strong>という視点を持つことで、AI活用の幅はさらに広がります。最新トレンドを調べたいならGemini、じっくりアイデアを練りたいならChatGPT、といった具合に使い分けてみましょう。</p>
+</div>
+
+
+<!-- ============================================================
+  まとめ
+============================================================ -->
+<div class="summary-box">
+  <div class="label">まとめ</div>
+  <ul>
+    <li><strong style="color: #3D3D3D;">AIには個性がある</strong> — 学習データ、得意タスク、文章スタイル、開発元の方針が異なる</li>
+    <li><strong style="color: #3D3D3D;">Geminiの特徴</strong> — Google検索連携で最新情報にアクセスでき、Googleアカウントで無料利用可能</li>
+    <li><strong style="color: #3D3D3D;">使い分けが大切</strong> — 優劣ではなく、目的に応じて最適なAIを選ぶスキルが重要</li>
+    <li><strong style="color: #3D3D3D;">他のAIも存在</strong> — Claude（Anthropic社）など、それぞれ個性のあるAIが無料で利用可能</li>
+  </ul>
+</div>
+
+
+<!-- ============================================================
+  理解度チェック
+============================================================ -->
+<details style="background: #F0FAF0; border: 1px solid #C8E6C9; border-radius: 12px; padding: 0; margin: 36px 0;">
+  <summary style="padding: 18px 24px; font-size: 14px; font-weight: 700; color: #4CAF50; cursor: pointer; letter-spacing: 0.1em;">理解度チェック（クリックして開く）</summary>
+  <div style="padding: 0 24px 18px;">
+
+    <details style="background: #fff; border: 1px solid #BBF7D0; border-radius: 10px; padding: 0; margin: 8px 0; overflow: hidden;">
+      <summary style="padding: 14px 18px; font-size: 15px; font-weight: 600; color: #166534; cursor: pointer;">AIに「個性」がある理由を説明できる</summary>
+      <div style="padding: 0 18px 14px; font-size: 14px; color: #555; line-height: 1.7;">学習したデータ、得意なタスク、文章スタイル、開発元の方針がAIごとに異なるため、同じ質問をしても返ってくる答えの内容や表現が変わります。</div>
+    </details>
+
+    <details style="background: #fff; border: 1px solid #BBF7D0; border-radius: 10px; padding: 0; margin: 8px 0; overflow: hidden;">
+      <summary style="padding: 14px 18px; font-size: 15px; font-weight: 600; color: #166534; cursor: pointer;">Geminiの基本的な使い方とアクセス方法がわかった</summary>
+      <div style="padding: 0 18px 14px; font-size: 14px; color: #555; line-height: 1.7;">gemini.google.comにアクセスし、Googleアカウントでログインするだけで無料で利用開始できます。操作はChatGPTと同じチャット形式です。</div>
+    </details>
+
+    <details style="background: #fff; border: 1px solid #BBF7D0; border-radius: 10px; padding: 0; margin: 8px 0; overflow: hidden;">
+      <summary style="padding: 14px 18px; font-size: 15px; font-weight: 600; color: #166534; cursor: pointer;">ChatGPTとGeminiの回答の傾向の違いを体験した</summary>
+      <div style="padding: 0 18px 14px; font-size: 14px; color: #555; line-height: 1.7;">ChatGPTはライフスタイルに寄り添った提案、GeminiはGoogle検索連携を活かした時事性のある提案と、それぞれ異なる傾向があることを確認しました。</div>
+    </details>
+
+    <details style="background: #fff; border: 1px solid #BBF7D0; border-radius: 10px; padding: 0; margin: 8px 0; overflow: hidden;">
+      <summary style="padding: 14px 18px; font-size: 15px; font-weight: 600; color: #166534; cursor: pointer;">AIの「使い分け」の重要性を理解した</summary>
+      <div style="padding: 0 18px 14px; font-size: 14px; color: #555; line-height: 1.7;">どちらが良い・悪いではなく、タスクや目的に応じて最適なAIを選択するスキルが、効果的なAI活用の鍵になります。</div>
+    </details>
+
+  </div>
+</details>
+    <!-- 前の章に戻るボタン / 次の章に進むボタン がある場合 -->  
+<div style="display: flex; justify-content: space-between; align-items: center; padding: 24px 0; margin-top: 24px;">
+  <a href="VgTU0" style="position: relative; display: inline-block; background: linear-gradient(135deg, #E85D4A, #F5A64A); color: #fff; font-weight: 700; padding: 12px clamp(24px, 7vw, 48px); border-radius: 8px; text-decoration: none;"><img src="/theme/webcoach/img/icons/arrow-right.svg" style="position: absolute; top: 50%; transform: translateY(-50%); left: 12px; filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(125deg) brightness(103%) contrast(103%); transform: translateY(-50%) rotate(180deg);">前の章に戻る</a>
+  <a href="cva2b" style="position: relative; display: inline-block; background: linear-gradient(135deg, #E85D4A, #F5A64A); color: #fff; font-weight: 700; padding: 12px clamp(24px, 7vw, 48px); border-radius: 8px; text-decoration: none;">次の章に進む<img src="/theme/webcoach/img/icons/arrow-right.svg" style="position: absolute; top: 50%; transform: translateY(-50%); right: 12px; filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(125deg) brightness(103%) contrast(103%);"></a>
+</div>
+<!-- ロードマップに戻るボタンの場合 --> 
+<div style="display: flex; justify-content: center; align-items: center; padding: 24px 0; margin-top: 24px;">
+  <a href="https://learn.webcoach.jp/2Q/introduction-to-generative-ai" style="display: inline-block; background: #fff; color: #E85D4A; border: 2px solid #E85D4A; font-weight: 700; padding: 10px clamp(24px, 7vw, 48px); border-radius: 8px; text-decoration: none; white-space: nowrap;">ロードマップに戻る</a>
+</div>
+
+
+</div><!-- /.lesson-wrapper -->
+
+<!-- ============================================================
+  JavaScript
+============================================================ -->
+<script>
+// Inline Quiz
+document.querySelectorAll('.inline-quiz').forEach(function(quiz) {
+  var options = quiz.querySelectorAll('.quiz-opt');
+  var feedback = quiz.querySelector('.quiz-feedback');
+  var answered = false;
+  options.forEach(function(opt) {
+    opt.addEventListener('click', function() {
+      if (answered) return;
+      answered = true;
+      var isCorrect = opt.dataset.correct === 'true';
+      options.forEach(function(o) {
+        o.style.pointerEvents = 'none';
+        o.style.opacity = '0.6';
+        o.classList.add('answered');
+        if (o.dataset.correct === 'true') {
+          o.style.borderColor = '#4CAF50';
+          o.style.background = '#E8F5E9';
+          o.style.opacity = '1';
+          o.style.color = '#2E7D32';
+        }
+      });
+      if (!isCorrect) {
+        opt.style.borderColor = '#E85D4A';
+        opt.style.background = '#FFF3F0';
+        opt.style.color = '#C62828';
+        opt.style.opacity = '1';
+      }
+      feedback.style.display = 'block';
+      feedback.style.background = isCorrect ? '#E8F5E9' : '#FFF3E0';
+      feedback.style.borderLeft = '4px solid ' + (isCorrect ? '#4CAF50' : '#E85D4A');
+    });
+  });
+});
+</script>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="ck-icon-arrow-down" viewBox="0 0 1792 1792"><path d="M1675 832q0 53-37 90l-651 652q-39 37-91 37-53 0-90-37l-651-652q-38-36-38-90 0-53 38-91l74-75q39-37 91-37 53 0 90 37l294 294v-704q0-52 38-90t90-38h128q52 0 90 38t38 90v704l294-294q37-37 90-37 52 0 91 37l75 75q37 39 37 91z" /></symbol><symbol id="ck-icon-arrow-up" viewBox="0 0 1792 1792"><path d="M1675 971q0 51-37 90l-75 75q-38 38-91 38-54 0-90-38l-294-293v704q0 52-37.5 84.5t-90.5 32.5h-128q-53 0-90.5-32.5t-37.5-84.5v-704l-294 293q-36 38-90 38t-90-38l-75-75q-38-38-38-90 0-53 38-91l651-651q35-37 90-37 54 0 91 37l651 651q37 39 37 91z" /></symbol><symbol id="ck-icon-calendar" viewBox="0 0 1792 1792"><path d="M192 1664h288v-288h-288v288zm352 0h320v-288h-320v288zm-352-352h288v-320h-288v320zm352 0h320v-320h-320v320zm-352-384h288v-288h-288v288zm736 736h320v-288h-320v288zm-384-736h320v-288h-320v288zm768 736h288v-288h-288v288zm-384-352h320v-320h-320v320zm-352-864v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm736 864h288v-320h-288v320zm-384-384h320v-288h-320v288zm384 0h288v-288h-288v288zm32-480v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm384-64v1280q0 52-38 90t-90 38h-1408q-52 0-90-38t-38-90v-1280q0-52 38-90t90-38h128v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h384v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h128q52 0 90 38t38 90z" /></symbol><symbol id="ck-icon-chevron-left" viewBox="0 0 1792 1792"><path d="M1427 301l-531 531 531 531q19 19 19 45t-19 45l-166 166q-19 19-45 19t-45-19l-742-742q-19-19-19-45t19-45l742-742q19-19 45-19t45 19l166 166q19 19 19 45t-19 45z" /></symbol><symbol id="ck-icon-chevron-right" viewBox="0 0 1792 1792"><path d="M1363 877l-742 742q-19 19-45 19t-45-19l-166-166q-19-19-19-45t19-45l531-531-531-531q-19-19-19-45t19-45l166-166q19-19 45-19t45 19l742 742q19 19 19 45t-19 45z" /></symbol><symbol id="ck-icon-clock-o" viewBox="0 0 1792 1792"><path d="M1024 544v448q0 14-9 23t-23 9h-320q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h224v-352q0-14 9-23t23-9h64q14 0 23 9t9 23zm416 352q0-148-73-273t-198-198-273-73-273 73-198 198-73 273 73 273 198 198 273 73 273-73 198-198 73-273zm224 0q0 209-103 385.5t-279.5 279.5-385.5 103-385.5-103-279.5-279.5-103-385.5 103-385.5 279.5-279.5 385.5-103 385.5 103 279.5 279.5 103 385.5z" /></symbol><symbol id="ck-icon-trash" viewBox="0 0 1792 1792"><path d="M704 1376v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm-544-992h448l-48-117q-7-9-17-11h-317q-10 2-17 11zm928 32v64q0 14-9 23t-23 9h-96v948q0 83-47 143.5t-113 60.5h-832q-66 0-113-58.5t-47-141.5v-952h-96q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h309l70-167q15-37 54-63t79-26h320q40 0 79 26t54 63l70 167h309q14 0 23 9t9 23z" /></symbol><symbol id="ck-icon-undo" viewBox="0 0 1792 1792"><path d="M1664 896q0 156-61 298t-164 245-245 164-298 61q-172 0-327-72.5t-264-204.5q-7-10-6.5-22.5t8.5-20.5l137-138q10-9 25-9 16 2 23 12 73 95 179 147t225 52q104 0 198.5-40.5t163.5-109.5 109.5-163.5 40.5-198.5-40.5-198.5-109.5-163.5-163.5-109.5-198.5-40.5q-98 0-188 35.5t-160 101.5l137 138q31 30 14 69-17 40-59 40h-448q-26 0-45-19t-19-45v-448q0-42 40-59 39-17 69 14l130 129q107-101 244.5-156.5t284.5-55.5q156 0 298 61t245 164 164 245 61 298z" /></symbol></svg><script async="async" defer="defer" nonce="pfnPpqEDrkDOhVVQk2elRA==" src="//www.instagram.com/embed.js"></script>
+
+<!--Clipkit(R) v15.9.0-20260915 Copyright (C) 2026 VECTOR Inc.-->
+
+</body>
+</html></div></div>
+        
+      
+    </div>
+  
+  </div>
+</div>
+<!-- <script src="https://cdn.clipkit.co/clipkit/javascripts/item-shopify-1.0.js?v=v15.9.0-20260915" async></script> -->

@@ -1,0 +1,724 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+  <html lang="ja">
+
+<head><script async="async" data-label="saas" nonce="gNbLNYDdhQQkjWi+V0nOgA==" src="//b.clipkit.co/"></script><script src="//cdn.clipkit.co/clipkit_assets/beacon-787bbf3225ec43d93f198af35f7d56fdef40fb50440a2909500bdf5b99225aab.js" async="async" id="clipkit-beacon" data-page-type="article" data-page-id="2760" data-domain="learn.webcoach.jp" data-url="/web-design/uiux/chap4/YomXf" data-href="https://learn.webcoach.jp/media/beacon"></script>
+    <!-- headタグ内の上部に挿入されます -->
+
+    <meta charset="UTF-8">
+    <title>4-3 改善 — テストで見つかった課題を直し、なぜ直したかを説明できるようにする - WEBCOACH</title>
+
+    <!-- resetcssのCDNでのCSS読み込み -->
+    <link rel="stylesheet" href="https://unpkg.com/modern-css-reset/dist/reset.min.css" />
+
+    <!-- fontawesomeのCDNでのCSS読み込み -->
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/fontawesome/4.7.0/css/font-awesome.min.css">
+
+    <!-- BootstrapのCDNでのCSS読み込み -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous" />
+
+    <!-- highlight.jsの読み込み -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.1/styles/dracula.min.css">
+
+    <!-- カスタムCSS -->
+    <link rel="stylesheet" href="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/168/original/style.css?1788081716">
+
+    <!-- clipkitデフォルトのCSS -->
+    <!--<link rel="stylesheet" media="screen" href="https://cdn.clipkit.co/clipkit/stylesheets/application-1.0.css?v=v15.9.0-20260915">-->
+
+    <!-- jQuery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <!-- カスタムJS -->
+    <script src="https://cdn.clipkit.co/tenants/589/resources/assets/000/002/350/original/script.js?1779642402"></script>
+    <script src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/535/original/script.js?1743681771"></script>
+
+    <!-- clipkitデフォルトのJS -->
+    <script src="https://cdn.clipkit.co/clipkit/javascripts/default-1.0.js?v=v15.9.0-20260915"></script>
+
+    <!-- フォント -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;700&display=swap" rel="stylesheet">
+
+    <link href="https://cdn.clipkit.co/clipkit/favicons/square/missing.png" rel="shortcut icon" type="image/vnd.microsoft.icon">
+    <link rel="apple-touch-icon" href="https://cdn.clipkit.co/clipkit/touch_icons/square/missing.png">
+    <link rel="alternate" type="application/rss+xml"
+        href="https://learn.webcoach.jp/media.rss" title="WEBCOACH">
+    
+  <link rel="canonical" href="https://learn.webcoach.jp/web-design/uiux/chap4/YomXf">
+  
+  <meta name="description" content="">
+  <meta name="keywords" content="">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:domain" content="learn.webcoach.jp">
+  <meta name="twitter:title" content="4-3 改善 — テストで見つかった課題を直し、なぜ直したかを説明できるようにする - WEBCOACH">
+  <meta name="twitter:image" content="https://cdn.clipkit.co/clipkit/images/medium/missing.png">
+  <meta name="twitter:description" content="">
+  <meta property="og:site_name" content="WEBCOACH">
+  <meta property="og:title" content="4-3 改善 — テストで見つかった課題を直し、なぜ直したかを説明できるようにする">
+  <meta property="og:description" content="">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://learn.webcoach.jp/web-design/uiux/chap4/YomXf">
+  <meta property="og:image" content="https://cdn.clipkit.co/clipkit/images/large/missing.png">
+  <script type="application/ld+json">
+  {
+    "@context": "http://schema.org",
+    "@type": "NewsArticle",
+    "mainEntityOfPage":{
+      "@type":"WebPage",
+      "@id": "https://learn.webcoach.jp/web-design/uiux/chap4/YomXf"
+    },
+    "headline": "4-3 改善 — テストで見つかった課題を直し、なぜ直したかを説明できるようにする",
+    "image": {
+      "@type": "ImageObject",
+      "url": "https://cdn.clipkit.co/clipkit/images/medium/missing.png",
+      "width": 800,
+      "height": 600
+    },
+    "datePublished": "2026-07-28T15:50:00+09:00",
+    "dateModified": "2026-07-28T19:48:07+09:00",
+    "author": {
+      "@type": "Person",
+      "name": "l_kamezaki"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "WEBCOACH",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://cdn.clipkit.co/tenants/589/sites/logos/000/000/001/logo_sm/a8defd4b-1cc7-433b-a61c-08e7db0e3e4f.png?1714459367"
+      }
+    },
+    "description": ""
+  }
+  </script>
+
+    <!-- headタグ内の下部に挿入されます -->
+
+
+<meta name="csrf-param" content="authenticity_token" />
+<meta name="csrf-token" content="aLMiAEoKa1vXxP4BH7WTecwpeHILaQ-pr--cIZevE-GYe0RLJnaxHeLSh2AtY8eBJlcNbfn0qjttoiMocZfYLQ" /><meta content="" name="routing-root-path" /><meta content="media" name="site-name" /><meta content="ja" name="i18n-default-locale" /><meta content="ja" name="i18n-locale" /></head>
+
+<body class="device-desktop">
+    <!-- bodyタグ内の上部に挿入されます -->
+
+
+    <!-- サイドバーとコンテンツのコンテナ -->
+    <div class="d-flex flex-row w-100 mb-5" style="min-height: calc(100vh - 400px);">
+
+        <!-- コンテンツ -->
+        <!--<main class="ms-auto" style="width: calc(100vw - 250px);">-->
+        <main class="ms-auto" style="width: calc(100vw);">
+            <div id="sb-site">
+                
+
+
+<div>
+  
+    <div>
+      
+      
+        
+          <div class="article-item item_html " id="item51089" data-item-id="51089" data-item-type="ItemHtml"><div class="item-body"><meta charset="UTF-8">
+<!--
+  AI×UX/UIデザイナー育成講座（Reスキル認定申請予定・レベル3）
+  UX/UIデザイン教材 第4章「プロトタイピングと検証」 レッスン3（4-3）※申請書類上は第Ⅲ部
+  題材: 改善（実践課題型・学習時間90分・UXデザインプロセスの⑥試して直す にあたる）
+  範囲: ユーザビリティテスト（4-2）で見つかった課題を重要度で並べる / 課題→原因→改善案の順で考える / 改善版UIに反映する（改善前後をHTML実物の.dodontで見比べる。リフトの予約UI・色はスウォッチ＋HEX＋名前）/ なぜ直したかを意図シートに言語化する
+  通し課題: 前回（4-2）のテスト記録を入力に、改善版UIを作り、改善判断の根拠を意図シートにまとめる。提出物＝改善版UI・意図シート（011の成果物#12・修了評価⑥改善に直結）
+  体裁の正: chapter-02_research-requirements/lesson-02.html（F5テンプレ・ClipKit目次対策込み）
+  図版: 後日画像生成（fig-ph）は本レッスンでは不使用
+-->
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Noto Sans JP', sans-serif; color: #3D3D3D; font-size: 16px; line-height: 1.9; background: #fff; }
+.lesson-wrapper { max-width: 70%; margin: 0 auto; padding: 40px 0 80px; }
+@media (max-width: 600px) { .lesson-wrapper { max-width: 92%; } }
+
+h2 { font-size: 24px; font-weight: 700; color: #2D2D2D; margin: 64px 0 24px; padding: 0 0 14px; position: relative; letter-spacing: -0.02em; line-height: 1.4; }
+h2::after { content: ''; position: absolute; bottom: 0; left: 0; width: 48px; height: 4px; border-radius: 2px; background: linear-gradient(90deg, #E85D4A, #F5A64A); }
+h3 { font-size: 18px; font-weight: 700; color: #2D2D2D; margin: 48px 0 16px; border-left: 3px solid #2D2D2D; padding-left: 14px; }
+p { font-size: 16px; line-height: 2.0; color: #555; margin: 0 0 16px; }
+ul, ol { padding-left: 1.5em; margin: 0 0 16px; }
+li { font-size: 16px; line-height: 2.0; color: #555; margin-bottom: 6px; }
+strong { color: #2D2D2D; font-weight: 700; }
+
+/* ClipKit対策: アンカージャンプ先が固定ヘッダーに隠れないようオフセット */
+section[id] { scroll-margin-top: 96px; }
+
+/* ヘッダー */
+.lesson-hero { background: linear-gradient(135deg, #F84744 0%, #FB9A3F 100%); border-radius: 16px; padding: 22px 28px; margin: 0 0 40px; color: #fff; }
+.lesson-hero__badge { display: inline-block; background: #fff; color: #E85D4A; padding: 5px 14px; border-radius: 8px; font-size: 11px; font-weight: 800; letter-spacing: 0.18em; margin-bottom: 14px; font-family: 'Inter', sans-serif; }
+.lesson-hero__title { font-size: 22px; font-weight: 800; line-height: 1.4; margin-bottom: 16px; letter-spacing: -0.01em; }
+.lesson-hero__meta { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+.lesson-hero__chip { display: inline-flex; align-items: center; background: #fff; color: #333; padding: 5px 11px; border-radius: 6px; font-size: 11.5px; font-weight: 700; font-family: 'Inter', sans-serif; letter-spacing: 0.04em; }
+.lesson-hero__topic { font-size: 13px; font-weight: 600; opacity: 0.95; }
+.lesson-hero__time { display: inline-flex; align-items: center; gap: 5px; font-size: 13px; font-weight: 600; opacity: 0.95; }
+
+/* ゴールボックス */
+.goal-box { background: #fff; border-radius: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); padding: 20px 24px; margin: 0 0 40px; }
+.goal-box__head { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; }
+.goal-box__pill { display: inline-block; background: linear-gradient(135deg, #F84744 0%, #FB9A3F 100%); color: #fff; padding: 6px 16px; border-radius: 50px; font-size: 11px; font-weight: 700; letter-spacing: 0.18em; }
+.goal-box__sub { font-size: 14px; font-weight: 700; color: #333; letter-spacing: 0.02em; }
+.goal-box__time { margin-left: auto; font-size: 13px; font-weight: 700; color: #C2402F; }
+.goal-box ul { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 6px; }
+.goal-box li { display: flex; gap: 12px; padding: 10px 14px; background: linear-gradient(135deg, #FFF5F0 0%, #FFFAEC 100%); border-radius: 10px; align-items: flex-start; transition: transform 0.2s; }
+.goal-box li:hover { transform: translateX(2px); }
+.goal-box__check { flex-shrink: 0; width: 22px; height: 22px; border-radius: 50%; background: linear-gradient(135deg, #F84744 0%, #FB9A3F 100%); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 800; margin-top: 1px; }
+.goal-box__text { flex: 1; font-size: 14px; color: #333; line-height: 1.7; font-weight: 500; }
+
+/* 目次 — ClipKit対策版（高詳細度＋!important） */
+.lesson-wrapper nav.toc { background: #fff !important; border-radius: 14px; padding: 22px 26px; box-shadow: 0 2px 12px rgba(0,0,0,0.05); margin: 0 0 48px; }
+.lesson-wrapper nav.toc .toc-head { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; }
+.lesson-wrapper nav.toc .toc-icon { width: 26px; height: 26px; border-radius: 7px; background: linear-gradient(135deg, #E85D4A, #F5A64A); display: flex; align-items: center; justify-content: center; color: #fff; font-size: 11px; font-weight: 700; }
+.lesson-wrapper nav.toc .toc-title { font-size: 15px; font-weight: 700; color: #2D2D2D; }
+.lesson-wrapper nav.toc ul { list-style: none !important; padding: 0 !important; margin: 0 !important; display: flex; flex-direction: column; gap: 3px; }
+.lesson-wrapper nav.toc ul li { list-style: none !important; margin: 0 !important; padding: 0 !important; }
+.lesson-wrapper nav.toc ul li::before { content: none !important; }
+.lesson-wrapper nav.toc ul li::marker { content: '' !important; }
+.lesson-wrapper nav.toc ul li a { display: flex !important; align-items: center; gap: 12px; padding: 8px 14px !important; background: #FAF9F8; border-radius: 8px; text-decoration: none !important; border-bottom: none !important; box-shadow: none; color: #2D2D2D !important; transition: background 0.2s; }
+.lesson-wrapper nav.toc ul li a:hover { background: #F5EFEC; text-decoration: none !important; color: #2D2D2D !important; }
+.lesson-wrapper nav.toc ul li a:visited { color: #2D2D2D !important; }
+.lesson-wrapper nav.toc .toc-num { font-size: 12px; font-weight: 700; color: #2D2D2D; letter-spacing: 0.05em; min-width: 22px; }
+.lesson-wrapper nav.toc .toc-text { flex: 1; font-size: 14px; color: #2D2D2D; font-weight: 500; }
+.lesson-wrapper nav.toc .toc-chev { color: #B8B8B8; font-size: 12px; }
+
+/* ポイントボックス */
+.point-box { background: #FFFBE6; border: 1.5px solid #F5C58F; border-radius: 10px; padding: 18px 22px 20px; margin: 0 0 28px; }
+.point-box__head { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+.point-box__tab { display: inline-flex; align-items: center; justify-content: center; gap: 5px; background: #F5A64A; color: #fff; font-size: 11px; font-weight: 700; padding: 5px 17px 5px 11px; min-width: 88px; letter-spacing: 0.05em; clip-path: polygon(0 0, 100% 0, calc(100% - 10px) 50%, 100% 100%, 0 100%); flex-shrink: 0; font-family: 'Inter', sans-serif; }
+.point-box__sub { font-size: 13.5px; font-weight: 700; color: #2D2D2D; }
+.point-box p { font-size: 15px; line-height: 1.9; color: #444; margin: 0; }
+
+/* 注意ボックス */
+.notice-box { background: #FFF5F4; border: 1.5px solid #F5A8A0; border-radius: 10px; padding: 18px 22px 20px; margin: 0 0 28px; }
+.notice-box__head { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+.notice-box__tab { display: inline-flex; align-items: center; justify-content: center; gap: 5px; background: #D9433A; color: #fff; font-size: 11px; font-weight: 700; padding: 5px 17px 5px 11px; min-width: 88px; letter-spacing: 0.05em; clip-path: polygon(0 0, 100% 0, calc(100% - 10px) 50%, 100% 100%, 0 100%); flex-shrink: 0; font-family: 'Inter', sans-serif; }
+.notice-box__icon { display: inline-flex; width: 14px; height: 14px; border-radius: 50%; background: #fff; color: #D9433A; font-size: 10px; font-weight: 700; align-items: center; justify-content: center; }
+.notice-box__sub { font-size: 13.5px; font-weight: 700; color: #2D2D2D; }
+.notice-box p { font-size: 14.5px; line-height: 1.85; color: #444; margin: 0; }
+
+/* v2テーブル（比較・マッピング） */
+.v2-table { width: 100%; border-collapse: separate; border-spacing: 0; margin: 24px 0 28px; border-radius: 12px; overflow: hidden; box-shadow: 0 2px 12px rgba(0,0,0,0.08); font-size: 15px; }
+.v2-table th { background: linear-gradient(135deg, #F84744 0%, #FB9A3F 100%); color: #fff; font-weight: 700; padding: 12px 16px; text-align: left; font-size: 14px; }
+.v2-table td { padding: 12px 16px; border-bottom: 1px solid #F0E6E1; color: #4A4A4A; background: #fff; vertical-align: top; line-height: 1.75; }
+.v2-table tr:last-child td { border-bottom: none; }
+.v2-table td:first-child { font-weight: 700; color: #2D2D2D; }
+
+/* HTML実物見本（.uidemo） */
+.uidemo { background: #fff; border: 1px solid #ECE7DE; border-radius: 14px; padding: 18px 20px; margin: 20px 0; box-shadow: 0 1px 8px rgba(0,0,0,0.05); }
+.uidemo__cap { font-size: 12px; font-weight: 700; color: #7A7A7A; letter-spacing: 0.08em; margin-bottom: 14px; }
+/* カラースウォッチ（色は必ず 見本＋HEX＋名前）*/
+.sw { display: inline-flex; align-items: center; gap: 6px; font-size: 13.5px; font-weight: 600; color: #3D3D3D; white-space: nowrap; vertical-align: middle; }
+.sw i { width: 16px; height: 16px; border-radius: 4px; border: 1px solid rgba(0,0,0,0.18); flex-shrink: 0; }
+
+/* 良い例・悪い例（Do/Don't）比較 — 改善前後を実物のミニUIで見比べる（010ルール4） */
+.dodont { display: flex; flex-direction: column; gap: 18px; margin: 28px 0; }
+.dodont__cap { font-size: 13.5px; font-weight: 800; color: #2D2D2D; margin: 4px 0 -8px; }
+.dodont__row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+@media (max-width: 600px) { .dodont__row { grid-template-columns: 1fr; } }
+.dodont__col { border-radius: 14px; padding: 18px 20px; }
+.dodont__col.bad { background: #FFF5F4; border: 1.5px solid #F5A8A0; }
+.dodont__col.good { background: #F1F9F4; border: 1.5px solid #A6D8BB; }
+.dodont__tag { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 800; letter-spacing: 0.06em; margin-bottom: 10px; }
+.dodont__col.bad .dodont__tag { color: #C2402F; }
+.dodont__col.good .dodont__tag { color: #2E7D4F; }
+.dodont__demo { background: #fff; border-radius: 10px; padding: 16px; margin-bottom: 10px; box-shadow: 0 1px 6px rgba(0,0,0,0.05); }
+.dodont__note { font-size: 13.5px; line-height: 1.8; color: #555; margin: 0; }
+
+/* クイズ */
+.quiz-box { background: linear-gradient(135deg, #FFF1F2 0%, #FCE7F3 100%); border-radius: 20px; padding: 20px 22px; margin: 28px 0; box-shadow: 0 2px 12px rgba(0,0,0,0.08); }
+.quiz-top { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+.quiz-icon { width: 30px; height: 30px; border-radius: 10px; background: #fff; color: #EC4899; display: flex; align-items: center; justify-content: center; font-size: 16px; box-shadow: 0 2px 8px rgba(236,72,153,0.15); font-weight: 700; }
+.quiz-title { font-size: 15px; font-weight: 700; color: #831843; }
+.quiz-q { font-size: 15px; font-weight: 700; color: #831843; margin-bottom: 12px; line-height: 1.6; background: #fff; padding: 12px 16px; border-radius: 12px; box-shadow: 0 2px 8px rgba(236,72,153,0.06); }
+.quiz-options { display: flex; flex-direction: column; gap: 7px; }
+.quiz-opt { display: flex; align-items: center; gap: 12px; padding: 10px 16px; background: #fff; border: 2px solid transparent; border-radius: 12px; cursor: pointer; transition: all 0.2s; font-family: inherit; text-align: left; width: 100%; box-shadow: 0 2px 6px rgba(236,72,153,0.05); }
+.quiz-opt:hover:not(:disabled) { border-color: #F9A8D4; transform: translateY(-1px); box-shadow: 0 4px 10px rgba(236,72,153,0.1); }
+.quiz-opt:disabled { cursor: default; }
+.quiz-letter { flex-shrink: 0; width: 28px; height: 28px; border-radius: 50%; background: #FCE7F3; color: #831843; font-size: 13px; font-weight: 700; display: flex; align-items: center; justify-content: center; }
+.quiz-opt-text { font-size: 14px; color: #1F1F1F; flex: 1; font-weight: 500; line-height: 1.55; }
+.quiz-opt.correct { background: #ECFCCB; border-color: #84CC16; }
+.quiz-opt.correct .quiz-letter { background: #84CC16; color: #fff; }
+.quiz-opt.correct .quiz-opt-text { color: #365314; font-weight: 700; }
+.quiz-opt.wrong { background: #FFE4E6; border-color: #FB7185; }
+.quiz-opt.wrong .quiz-letter { background: #FB7185; color: #fff; }
+.quiz-opt.wrong .quiz-opt-text { color: #881337; font-weight: 700; }
+.quiz-opt.dim { opacity: 0.4; }
+.quiz-feedback { display: none; gap: 12px; padding: 12px 16px; background: #fff; border-radius: 12px; margin-top: 10px; box-shadow: 0 2px 8px rgba(132,204,22,0.1); align-items: flex-start; }
+.quiz-feedback.show { display: flex; }
+.quiz-feedback.ng { box-shadow: 0 2px 8px rgba(251,113,133,0.1); }
+.quiz-feedback-icon { flex-shrink: 0; width: 28px; height: 28px; border-radius: 50%; background: #84CC16; color: #fff; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 700; }
+.quiz-feedback.ng .quiz-feedback-icon { background: #FB7185; }
+.quiz-feedback-body { flex: 1; }
+.quiz-feedback-title { font-size: 13px; font-weight: 800; color: #365314; margin-bottom: 4px; }
+.quiz-feedback.ng .quiz-feedback-title { color: #881337; }
+.quiz-feedback-text { font-size: 13px; color: #4D5552; line-height: 1.75; }
+.quiz-feedback.ng .quiz-feedback-text { color: #6B5258; }
+
+/* 演習ボックス */
+.work-box { background: #fff; border: 2px solid #F5A64A; border-radius: 14px; padding: 22px 24px; margin: 28px 0; box-shadow: 0 2px 12px rgba(0,0,0,0.08); }
+.work-box__badge { display: inline-block; background: linear-gradient(135deg, #F84744 0%, #FB9A3F 100%); color: #fff; padding: 5px 14px; border-radius: 8px; font-size: 11px; font-weight: 800; letter-spacing: 0.12em; margin-bottom: 14px; }
+.work-box h4 { font-size: 15px; font-weight: 700; color: #2D2D2D; margin: 16px 0 8px; }
+.work-box ol, .work-box ul { margin: 0 0 8px; padding-left: 1.4em; }
+.work-box li { font-size: 14.5px; color: #4A4A4A; line-height: 1.85; }
+.work-box .v2-table { margin: 10px 0 14px; }
+.prep-list { background: #fff; border-radius: 14px; padding: 24px 28px; margin: 28px 0; overflow: hidden; box-shadow: 0 2px 16px rgba(0,0,0,0.06); }
+.prep-list .prep-label { font-size: 12px; font-weight: 700; color: #4CAF50; letter-spacing: 0.15em; margin-bottom: 12px; }
+.prep-list ul { list-style: none; padding: 0; margin: 0; }
+.prep-list li { padding: 10px 0; border-bottom: 1px solid #E8F5E9; font-size: 15px; color: #3D3D3D; }
+.prep-list li:last-child { border-bottom: none; }
+.prep-list li .prep-bullet { color: #4CAF50; margin-right: 8px; }
+.submit-note { background: linear-gradient(135deg, #FFF5F0 0%, #FFFAEC 100%); border-radius: 10px; padding: 12px 16px; font-size: 14px; font-weight: 700; color: #C2402F; margin-top: 14px; text-align: center; }
+
+/* 理解度チェック — 白カード + グラデピル + 薄グラデ質問（Goalと統一） */
+.check-box { background: #fff; border-radius: 14px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); padding: 20px 24px; margin: 0 0 40px; }
+.check-box__head { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; padding-bottom: 12px; border-bottom: 2px solid; border-image: linear-gradient(90deg, #F84744 0%, #FB9A3F 100%) 1; }
+.check-box__pill { display: inline-block; background: linear-gradient(135deg, #F84744 0%, #FB9A3F 100%); color: #fff; padding: 5px 14px; border-radius: 50px; font-size: 11px; font-weight: 800; letter-spacing: 0.18em; }
+.check-box__sub { font-size: 14px; font-weight: 700; color: #333; }
+.check-box details { margin-bottom: 7px; }
+.check-box summary { padding: 11px 18px; cursor: pointer; display: flex; align-items: center; gap: 12px; font-size: 14px; color: #2D2D2D; background: linear-gradient(135deg, #FFF5F0 0%, #FFFAEC 100%); border-radius: 22px; transition: all 0.2s; border: 1.5px solid transparent; font-weight: 500; list-style: none; }
+.check-box summary:hover { border-color: #F5A64A; }
+.check-box summary::-webkit-details-marker { display: none; }
+.check-box summary::before { content: '＋'; color: #fff; background: linear-gradient(135deg, #F84744 0%, #FB9A3F 100%); width: 22px; height: 22px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 800; flex-shrink: 0; }
+.check-box details[open] summary { border-color: #F5A64A; }
+.check-box details[open] summary::before { content: '−'; }
+.check-box__detail { padding: 12px 20px 4px 48px; font-size: 13.5px; color: #555; line-height: 1.85; }
+
+.reveal { opacity: 0; transform: translateY(20px); transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1); }
+.reveal.visible { opacity: 1; transform: translateY(0); }
+</style>
+<div class="lesson-wrapper">
+
+<div class="lesson-hero">
+  <span class="lesson-hero__badge">第4章</span>
+  <div class="lesson-hero__title">改善 — テストで見つかった課題を直し、なぜ直したかを説明できるようにする</div>
+  <div class="lesson-hero__meta">
+    <span class="lesson-hero__chip">レッスン 4-3</span>
+    <span class="lesson-hero__topic">プロトタイピングと検証</span>
+    <span class="lesson-hero__time">⏱ 所要時間：約90分</span>
+  </div>
+</div>
+  
+  <div class="back-to-roadmap" style="display: flex; justify-content: center; align-items: center; padding: 24px 0; margin-top: 24px;"></div>
+  
+    <!-- 前の章に戻るボタン / 次の章に進むボタン がある場合 -->  
+<div style="display: flex; justify-content: space-between; align-items: center; padding: 24px 0; margin-top: 24px; max-width: 1775px; margin-left: auto; margin-right: auto; width: 100%;">
+  <a href="YDWlO" style="position: relative; display: inline-block; background: linear-gradient(135deg, #E85D4A, #F5A64A); color: #fff; font-weight: 700; padding: 12px clamp(24px, 7vw, 48px); border-radius: 8px; text-decoration: none;">
+    <img src="/theme/webcoach/img/icons/arrow-right.svg" style="position: absolute; top: 50%; transform: translateY(-50%); left: 12px; filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(125deg) brightness(103%) contrast(103%); transform: translateY(-50%) rotate(180deg);">
+    前の章に戻る
+  </a>
+  
+  <a href="Ffpd4" style="position: relative; display: inline-block; background: linear-gradient(135deg, #E85D4A, #F5A64A); color: #fff; font-weight: 700; padding: 12px clamp(24px, 7vw, 48px); border-radius: 8px; text-decoration: none;">
+    次の章に進む
+    <img src="/theme/webcoach/img/icons/arrow-right.svg" style="position: absolute; top: 50%; transform: translateY(-50%); right: 12px; filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(125deg) brightness(103%) contrast(103%);">
+  </a>
+</div>  
+
+<div class="goal-box">
+  <div class="goal-box__head">
+    <div class="goal-box__pill">GOAL</div>
+    <div class="goal-box__sub">このレッスンのゴール</div>
+    <div class="goal-box__time">⏱ 約90分</div>
+  </div>
+  <ul>
+    <li><div class="goal-box__check">✓</div><div class="goal-box__text">テストで見つかった課題を重要度で並べ、どこから直すかを決められる</div></li>
+    <li><div class="goal-box__check">✓</div><div class="goal-box__text">表面の不満でなく原因まで掘って改善案を考え、改善版UIに反映できる</div></li>
+    <li><div class="goal-box__check">✓</div><div class="goal-box__text">なぜそう直したかを意図シートに言語化し、根拠を説明できる</div></li>
+  </ul>
+</div>
+
+<!-- 目次: ClipKit対策のためインラインstyleを併記 -->
+<nav class="toc" style="background:#fff; border-radius:14px; padding:22px 26px; box-shadow:0 2px 12px rgba(0,0,0,0.05); margin:0 0 48px;">
+  <div class="toc-head" style="display:flex; align-items:center; gap:10px; margin-bottom:14px;">
+    <div class="toc-icon" style="width:26px; height:26px; border-radius:7px; background:linear-gradient(135deg,#E85D4A,#F5A64A); display:flex; align-items:center; justify-content:center; color:#fff; font-size:11px; font-weight:700;">≡</div>
+    <div class="toc-title" style="font-size:15px; font-weight:700; color:#2D2D2D;">目次</div>
+  </div>
+  <ul style="list-style:none; padding:0; margin:0; display:flex; flex-direction:column; gap:3px;">
+    <li style="list-style:none; margin:0; padding:0;"><a href="#s1" style="display:flex; align-items:center; gap:12px; padding:8px 14px; background:#FAF9F8; border-radius:8px; text-decoration:none; color:#2D2D2D;"><span class="toc-num" style="font-size:12px; font-weight:700; color:#2D2D2D; letter-spacing:0.05em; min-width:22px;">01</span><span class="toc-text" style="flex:1; font-size:14px; color:#2D2D2D; font-weight:500;">テスト結果を「直す材料」に変える</span><span class="toc-chev" style="color:#B8B8B8; font-size:12px;">›</span></a></li>
+    <li style="list-style:none; margin:0; padding:0;"><a href="#s2" style="display:flex; align-items:center; gap:12px; padding:8px 14px; background:#FAF9F8; border-radius:8px; text-decoration:none; color:#2D2D2D;"><span class="toc-num" style="font-size:12px; font-weight:700; color:#2D2D2D; letter-spacing:0.05em; min-width:22px;">02</span><span class="toc-text" style="flex:1; font-size:14px; color:#2D2D2D; font-weight:500;">表面の不満でなく原因を直す</span><span class="toc-chev" style="color:#B8B8B8; font-size:12px;">›</span></a></li>
+    <li style="list-style:none; margin:0; padding:0;"><a href="#s3" style="display:flex; align-items:center; gap:12px; padding:8px 14px; background:#FAF9F8; border-radius:8px; text-decoration:none; color:#2D2D2D;"><span class="toc-num" style="font-size:12px; font-weight:700; color:#2D2D2D; letter-spacing:0.05em; min-width:22px;">03</span><span class="toc-text" style="flex:1; font-size:14px; color:#2D2D2D; font-weight:500;">改善をUIに反映する（前と後を見比べる）</span><span class="toc-chev" style="color:#B8B8B8; font-size:12px;">›</span></a></li>
+    <li style="list-style:none; margin:0; padding:0;"><a href="#s4" style="display:flex; align-items:center; gap:12px; padding:8px 14px; background:#FAF9F8; border-radius:8px; text-decoration:none; color:#2D2D2D;"><span class="toc-num" style="font-size:12px; font-weight:700; color:#2D2D2D; letter-spacing:0.05em; min-width:22px;">04</span><span class="toc-text" style="flex:1; font-size:14px; color:#2D2D2D; font-weight:500;">なぜ直したかを言葉にする（意図シート）</span><span class="toc-chev" style="color:#B8B8B8; font-size:12px;">›</span></a></li>
+    <li style="list-style:none; margin:0; padding:0;"><a href="#s5" style="display:flex; align-items:center; gap:12px; padding:8px 14px; background:#FAF9F8; border-radius:8px; text-decoration:none; color:#2D2D2D;"><span class="toc-num" style="font-size:12px; font-weight:700; color:#2D2D2D; letter-spacing:0.05em; min-width:22px;">05</span><span class="toc-text" style="flex:1; font-size:14px; color:#2D2D2D; font-weight:500;">演習：改善版UIと意図シートを仕上げる</span><span class="toc-chev" style="color:#B8B8B8; font-size:12px;">›</span></a></li>
+  </ul>
+</nav>
+
+<!-- 通し課題の連続性: 前回の成果物 → 今回 → 仕上げる成果物 -->
+<div style="border:1px solid #E8DCC8; background:#FBF8F3; border-radius:14px; padding:18px 22px; margin:0 0 40px;">
+  <div style="display:inline-block; background:#8B6F3F; color:#fff; padding:4px 12px; border-radius:6px; font-size:11px; font-weight:800; letter-spacing:0.1em; margin-bottom:10px;">通し課題</div>
+  <p style="font-size:14.5px; line-height:1.9; color:#3D3D3D; margin:0;">前回（4-2）では、コーチに被験者役になってもらいプロトタイプを触ってもらう<strong>ユーザビリティテスト</strong>を行い、どこで迷い、どこで手が止まったかを<strong>テスト記録</strong>にまとめました。今回はその記録をもとに、リフトの予約UIを直して<strong>改善版UI</strong>を作り、なぜそう直したかを<strong>意図シート</strong>に言語化します。仕上げる成果物は、<strong>改善版UI</strong>と<strong>意図シート</strong>の2点です。</p>
+</div>
+
+<p>前回（4-2）のユーザビリティテストでは、コーチに実際にプロトタイプを触ってもらい、どこで迷い、どこで手が止まったかを記録しました。このレッスンでやるのは、その記録をもとに<strong>改善版のUIを作る</strong>ことです。第1章で学んだUXデザインの7ステップでいえば、ここは⑥の「試して直す」にあたります。ただし、ただ直すだけでは終わりません。実務では、<strong>なぜそう直したかを説明できること</strong>が同じくらい大切です。センスで直したのではなく、テストで分かった事実、第2章で定義した価値と要件、第3章で学んだUIの原則にもとづいて直した——そう言葉にできると、クライアントやチームの合意が取れます。そこでこのレッスンでは、改善案を考えてUIに反映し、その判断の根拠を意図シートに書き出すところまでを、リフトの予約サービスを題材に進めます。</p>
+
+<!-- ===== セクション1 ===== -->
+<section id="s1">
+<h2>テスト結果を「直す材料」に変える</h2>
+
+<p>改善の第一歩は、テストで起きたことを「直す材料」の形に整理することです。テスト記録には、迷った・つまずいた・手が止まったという場面がいくつも出てきます。それを一つずつ、直すべき課題として書き出します。</p>
+
+<p>ここで大事なのは、<strong>全部を一度に直そうとしない</strong>ことです。時間もかぎられていますし、あれもこれもと手を入れると、かえって画面全体がちぐはぐになります。そこで、書き出した課題を<strong>重要度で並べ</strong>、影響の大きいものから直していきます。下の表は、リフトのテストで見つかった課題を重要度で並べた例です。</p>
+
+<table class="v2-table">
+  <thead><tr><th>テストで見つかった課題</th><th>価値・目的への影響</th><th>起きた頻度</th><th>優先度</th></tr></thead>
+  <tbody>
+    <tr><td style="white-space:normal;">予約を確定するボタンで手が止まった（押した後どうなるか不安）</td><td>大（予約の完了に直結）</td><td>3人中3人</td><td>高</td></tr>
+    <tr><td style="white-space:normal;">選んだ日時が画面上で分かりにくく、合っているか何度も確認した</td><td>中（迷うが完了はできる）</td><td>3人中2人</td><td>中</td></tr>
+    <tr><td style="white-space:normal;">トップの説明文が長く、読み飛ばされた</td><td>小（操作には支障が出にくい）</td><td>3人中1人</td><td>低</td></tr>
+  </tbody>
+</table>
+
+<p>重要度は、<strong>困りごとの大きさ</strong>（価値や目的にどれだけ響くか）と、<strong>起きた頻度</strong>（何人に起きたか）の掛け合わせで見ます。予約を最後まで完了できないような課題は、真っ先に直す対象です。逆に、操作には支障が出にくい細かな点は、後回しにしてかまいません。</p>
+
+<div class="point-box reveal">
+  <div class="point-box__head">
+    <div class="point-box__tab">✓ Point !</div>
+    <div class="point-box__sub">重要度は「大きさ×頻度」で決める</div>
+  </div>
+  <p>どこから直すかは、好みや直しやすさで決めません。その課題が価値や目的にどれだけ響くか（大きさ）と、何人に起きたか（頻度）で決めます。多くの人が予約の完了でつまずく課題は、最優先で直します。基準をそろえておくと、限られた時間を効果の高い改善に使えます。</p>
+</div>
+
+<div class="quiz-box reveal">
+  <div class="quiz-top"><div class="quiz-icon">Q</div><div class="quiz-title">確認クイズ 1／3</div></div>
+  <div class="quiz-q">ユーザビリティテストの記録を、改善につなげる最初のステップとして最も適切なのはどれでしょう？</div>
+  <div class="quiz-options">
+    <button class="quiz-opt" data-q="q1" data-correct="false"><div class="quiz-letter">A</div><div class="quiz-opt-text">記録を見ながら、気になった画面をすべて一度に作り直す</div></button>
+    <button class="quiz-opt" data-q="q1" data-correct="true"><div class="quiz-letter">B</div><div class="quiz-opt-text">迷った・つまずいた場面を課題として書き出し、重要度で並べる</div></button>
+    <button class="quiz-opt" data-q="q1" data-correct="false"><div class="quiz-letter">C</div><div class="quiz-opt-text">自分が気に入らない配色を、まず好みで変える</div></button>
+    <button class="quiz-opt" data-q="q1" data-correct="false"><div class="quiz-letter">D</div><div class="quiz-opt-text">新しい便利な機能を思いついた順に追加していく</div></button>
+  </div>
+  <div class="quiz-feedback" id="q1-ok">
+    <div class="quiz-feedback-icon">✓</div>
+    <div class="quiz-feedback-body"><div class="quiz-feedback-title">正解です！</div><div class="quiz-feedback-text">まず課題を書き出し、重要度で並べます。全部を一度に直すと画面がちぐはぐになり、何が効いたかも分からなくなります。好みや思いつきではなく、影響と頻度で優先順位をつけるのが起点でした。</div></div>
+  </div>
+  <div class="quiz-feedback ng" id="q1-ng">
+    <div class="quiz-feedback-icon">✕</div>
+    <div class="quiz-feedback-body"><div class="quiz-feedback-title">惜しい！</div><div class="quiz-feedback-text">一度に作り直す（A）、好みで変える（C）、機能を足す（D）は、いずれも根拠のない改善です。まず迷った場面を課題として書き出し、重要度で並べるB が正解。順番を決めてから手を動かします。</div></div>
+  </div>
+</div>
+</section>
+
+<!-- ===== セクション2 ===== -->
+<section id="s2">
+<h2>表面の不満でなく原因を直す</h2>
+
+<p>課題が並んだら、次は改善案を考えます。ここでよくあるのが、<strong>表面の不満をそのまま直そうとする</strong>ことです。「ボタンが分かりにくい」と言われたからボタンを赤くする、では、なぜ分かりにくかったのかが置き去りになり、色を変えても迷いが消えないことがあります。</p>
+
+<p>改善案は、<strong>課題 → 原因 → 改善案</strong>の順で考えます。まず、なぜその課題が起きたのか、原因を見立てます。原因に手を当てれば、同じ理由で起きていた別の問題もまとめて解けることがあります。下の表は、リフトの課題を原因までさかのぼって改善案にした例です。</p>
+
+<table class="v2-table">
+  <thead><tr><th>課題（テストの事実）</th><th>原因の見立て</th><th>改善案</th></tr></thead>
+  <tbody>
+    <tr><td style="white-space:normal;">確定ボタンで手が止まる</td><td style="white-space:normal;">ラベルが「送信」で結果が想像できず、色も薄くて押せると感じない</td><td style="white-space:normal;">ラベルを「この内容で予約する」に変え、深緑 #2F5D50 でしっかり押せる見た目にする</td></tr>
+    <tr><td style="white-space:normal;">選んだ日時が分かりにくい</td><td style="white-space:normal;">選択中と未選択が同じ見た目で、今どれを選んだか区別できない</td><td style="white-space:normal;">選択中を深緑 #2F5D50 の枠とチェックで目立たせ、ひと目で分かるようにする</td></tr>
+  </tbody>
+</table>
+
+<p>原因は、テストで被験者が言った言葉やつまずいた場所から見立てます。「これで予約が終わるのか分からない」という声なら、原因はボタンのラベルと見た目にあります。第3章で学んだアフォーダンス（押せると感じさせる見た目）やコントラスト（文字と背景の明るさの差）は、こうした原因を言葉にするときの手がかりになります。</p>
+
+<div class="notice-box reveal">
+  <div class="notice-box__head">
+    <div class="notice-box__tab"><span class="notice-box__icon">!</span> 注意</div>
+    <div class="notice-box__sub">一度にたくさん変えすぎない</div>
+  </div>
+  <p>1つの課題につき、まずは1つの改善を当てるのが基本です。1画面をまとめて大きく作り変えると、次に確かめたときに、どの変更が効いたのかが分からなくなります。原因に対して的をしぼって直すほうが、効果を見きわめやすく、あとの説明もしやすくなります。</p>
+</div>
+
+<div class="quiz-box reveal">
+  <div class="quiz-top"><div class="quiz-icon">Q</div><div class="quiz-title">確認クイズ 2／3</div></div>
+  <div class="quiz-q">テストで「予約を確定するボタンが分かりにくい」という課題が見つかりました。改善案の考え方として最も適切なのはどれでしょう？</div>
+  <div class="quiz-options">
+    <button class="quiz-opt" data-q="q2" data-correct="false"><div class="quiz-letter">A</div><div class="quiz-opt-text">とりあえずボタンを大きく派手にして、目立たせれば解決する</div></button>
+    <button class="quiz-opt" data-q="q2" data-correct="true"><div class="quiz-letter">B</div><div class="quiz-opt-text">なぜ分かりにくいのか原因を見立て、その原因に手を当てる</div></button>
+    <button class="quiz-opt" data-q="q2" data-correct="false"><div class="quiz-letter">C</div><div class="quiz-opt-text">分かりにくいと言った人の感覚の問題なので、直さない</div></button>
+    <button class="quiz-opt" data-q="q2" data-correct="false"><div class="quiz-letter">D</div><div class="quiz-opt-text">画面全体を一度に大きく作り変えて、雰囲気ごと変える</div></button>
+  </div>
+  <div class="quiz-feedback" id="q2-ok">
+    <div class="quiz-feedback-icon">✓</div>
+    <div class="quiz-feedback-body"><div class="quiz-feedback-title">正解です！</div><div class="quiz-feedback-text">表面の見た目をいじる前に、なぜ分かりにくいのか原因を見立てます。ラベルで結果が想像できない・色が薄くて押せると感じない、といった原因に手を当てるのが、的を射た改善です。派手にするだけでは迷いは消えません。</div></div>
+  </div>
+  <div class="quiz-feedback ng" id="q2-ng">
+    <div class="quiz-feedback-icon">✕</div>
+    <div class="quiz-feedback-body"><div class="quiz-feedback-title">惜しい！</div><div class="quiz-feedback-text">派手にする（A）や全体を作り変える（D）は、原因を確かめないままの手当てです。感覚の問題として直さない（C）のも違います。課題→原因→改善案の順で、原因に手を当てる B が正解でした。</div></div>
+  </div>
+</div>
+</section>
+
+<!-- ===== セクション3 ===== -->
+<section id="s3">
+<h2>改善をUIに反映する（前と後を見比べる）</h2>
+
+<p>原因と改善案が決まったら、UIに反映して<strong>改善版</strong>を作ります。このとき、<strong>改善前と改善後を見比べられる形で残す</strong>と、何をどう変えたのかが自分にもコーチにも伝わります。ここでは、テストで迷った2つの画面を例に、改善前（✗）と改善後（◯）を並べます。</p>
+
+<div class="dodont reveal">
+  <div class="dodont__cap">① 予約を確定するボタン（テストで手が止まった画面）</div>
+  <div class="dodont__row">
+    <div class="dodont__col bad">
+      <div class="dodont__tag">✗ 改善前</div>
+      <div class="dodont__demo">
+        <div style="background:#F6F1E7; border:1px solid #E6DEC9; border-radius:10px; padding:14px;">
+          <div style="font-size:13px; font-weight:700; color:#2F5D50; margin-bottom:10px;">予約内容の確認</div>
+          <div style="background:#fff; border:1px solid #D8D3C8; border-radius:8px; padding:7px 10px; font-size:12px; color:#333; margin-bottom:8px;">3月10日(月) 10:00 ／ 1名</div>
+          <div style="background:#E4E4E4; color:#9A9A9A; text-align:center; font-weight:700; font-size:13px; padding:10px; border-radius:8px;">送信</div>
+        </div>
+      </div>
+      <p class="dodont__note">ラベルが「送信」で押した後どうなるか想像できず、色も薄くて押せるのかどうか判断できません。</p>
+    </div>
+    <div class="dodont__col good">
+      <div class="dodont__tag">◯ 改善後</div>
+      <div class="dodont__demo">
+        <div style="background:#F6F1E7; border:1px solid #E6DEC9; border-radius:10px; padding:14px;">
+          <div style="font-size:13px; font-weight:700; color:#2F5D50; margin-bottom:10px;">予約内容の確認</div>
+          <div style="background:#fff; border:1px solid #D8D3C8; border-radius:8px; padding:7px 10px; font-size:12px; color:#333; margin-bottom:8px;">3月10日(月) 10:00 ／ 1名</div>
+          <div style="background:#2F5D50; color:#fff; text-align:center; font-weight:700; font-size:13px; padding:10px; border-radius:8px;">この内容で予約する</div>
+        </div>
+      </div>
+      <p class="dodont__note">何が起きるかがラベルで分かり、<span class="sw"><i style="background:#2F5D50;"></i>深緑 #2F5D50</span>の塗りでしっかり押せると伝わります。</p>
+    </div>
+  </div>
+  <div class="dodont__cap">② 選んだ日時の見せ方（合っているか何度も確認した画面）</div>
+  <div class="dodont__row">
+    <div class="dodont__col bad">
+      <div class="dodont__tag">✗ 改善前</div>
+      <div class="dodont__demo">
+        <div style="background:#fff; border:1px solid #E6DEC9; border-radius:10px; padding:14px;">
+          <div style="font-size:12px; color:#777; margin-bottom:9px;">日時をえらぶ</div>
+          <div style="display:flex; gap:8px; flex-wrap:wrap;">
+            <span style="border:1px solid #D8D3C8; border-radius:8px; padding:8px 12px; font-size:12.5px; color:#333;">10:00</span>
+            <span style="border:1px solid #D8D3C8; border-radius:8px; padding:8px 12px; font-size:12.5px; color:#333;">11:00</span>
+            <span style="border:1px solid #D8D3C8; border-radius:8px; padding:8px 12px; font-size:12.5px; color:#333;">12:00</span>
+          </div>
+        </div>
+      </div>
+      <p class="dodont__note">どれを選んでも見た目が変わらず、今どの時間を選んだのかがひと目で分かりません。</p>
+    </div>
+    <div class="dodont__col good">
+      <div class="dodont__tag">◯ 改善後</div>
+      <div class="dodont__demo">
+        <div style="background:#fff; border:1px solid #E6DEC9; border-radius:10px; padding:14px;">
+          <div style="font-size:12px; color:#777; margin-bottom:9px;">日時をえらぶ</div>
+          <div style="display:flex; gap:8px; flex-wrap:wrap;">
+            <span style="border:1px solid #D8D3C8; border-radius:8px; padding:8px 12px; font-size:12.5px; color:#333;">10:00</span>
+            <span style="border:1.5px solid #2F5D50; background:#EAF1EE; border-radius:8px; padding:8px 12px; font-size:12.5px; color:#2F5D50; font-weight:700;">✓ 11:00</span>
+            <span style="border:1px solid #D8D3C8; border-radius:8px; padding:8px 12px; font-size:12.5px; color:#333;">12:00</span>
+          </div>
+        </div>
+      </div>
+      <p class="dodont__note">選択中が<span class="sw"><i style="background:#2F5D50;"></i>深緑 #2F5D50</span>の枠とチェックで目立ち、選んだ日時がひと目で分かります。</p>
+    </div>
+  </div>
+</div>
+
+<p>変えたのは、ボタンのラベルと色、そして選択中の見せ方だけです。使った<span class="sw"><i style="background:#2F5D50;"></i>深緑 #2F5D50</span>は、第3章のスタイルガイドで決めた予約ボタンの色なので、新しく色を増やしたわけではありません。テストで迷った原因に、ピンポイントで手を当てています。支給ロゴやブランドカラー、スタイルガイドのルールは、改善のときも変えずに守ります。</p>
+
+<div class="point-box reveal">
+  <div class="point-box__head">
+    <div class="point-box__tab">✓ Point !</div>
+    <div class="point-box__sub">前と後を並べて残す</div>
+  </div>
+  <p>改善は、直したものだけを見せても、どこがどう良くなったのか伝わりません。改善前と改善後を並べて残すと、変えた点と、その効果を確かめやすくなります。次にもう一度テストするときも、前後があれば「この変更で迷いが減ったか」を見比べられます。</p>
+</div>
+</section>
+
+<!-- ===== セクション4 ===== -->
+<section id="s4">
+<h2>なぜ直したかを言葉にする（意図シート）</h2>
+
+<p>改善版UIができても、それだけでは「なんとなく良くした」ように見えてしまいます。実務で本当に問われるのは、<strong>なぜそう直したのか</strong>です。その判断の根拠を言葉にしたものが<strong>意図シート</strong>です。改善版UIとセットで作ります。</p>
+
+<p>意図シートには、<strong>課題・原因・どう直したか・根拠</strong>の4つを書きます。とくに根拠が大事で、テストで分かった事実、第2章で定義した価値と要件、第3章で学んだUIの原則（アフォーダンス・コントラスト・一貫性など）に結びつけます。下の表は、確定ボタンの改善を意図シートに書いた例です。</p>
+
+<table class="v2-table">
+  <thead><tr><th>項目</th><th>書く内容（確定ボタンの例）</th></tr></thead>
+  <tbody>
+    <tr><td>課題</td><td style="white-space:normal;">テストで3人全員が、確定ボタンの前で手を止めた</td></tr>
+    <tr><td>原因</td><td style="white-space:normal;">ラベルが「送信」で結果が想像できず、色が薄く押せると感じなかった</td></tr>
+    <tr><td>どう直したか</td><td style="white-space:normal;">ラベルを「この内容で予約する」に変え、深緑 #2F5D50 の塗りにした</td></tr>
+    <tr><td>根拠</td><td style="white-space:normal;">「迷わず予約を完了できる」という定義した価値に直結。第3章のアフォーダンスとコントラストの原則にもとづく</td></tr>
+  </tbody>
+</table>
+
+<p>根拠まで書けると、コーチやクライアントに「ここは好みで変えたのではなく、こういう理由で直しました」と説明できます。この説明する力は、修了制作のプレゼン（第5章）でそのまま使います。設計判断の根拠を自分の言葉で語れることは、修了評価でも見られるポイントです。</p>
+
+<div class="point-box reveal">
+  <div class="point-box__head">
+    <div class="point-box__tab">✓ Point !</div>
+    <div class="point-box__sub">根拠は「事実・価値・原則」に結びつける</div>
+  </div>
+  <p>意図シートの根拠は、3つのどれかに結びつけると強くなります。テストで分かった事実、第2章で定義した価値や要件、第3章で学んだUIの原則です。「なんとなく」でなく、この3つに結びつけて書けば、改善が主観でないことを示せて、相手も納得しやすくなります。</p>
+</div>
+
+<div class="quiz-box reveal">
+  <div class="quiz-top"><div class="quiz-icon">Q</div><div class="quiz-title">確認クイズ 3／3</div></div>
+  <div class="quiz-q">改善に着手するとき、テストで見つかった次の3つの課題のうち、最初に直すべきものとして最も適切なのはどれでしょう？</div>
+  <div class="quiz-options">
+    <button class="quiz-opt" data-q="q3" data-correct="true"><div class="quiz-letter">A</div><div class="quiz-opt-text">3人全員が手を止めた「予約の確定ボタン」の分かりにくさ</div></button>
+    <button class="quiz-opt" data-q="q3" data-correct="false"><div class="quiz-letter">B</div><div class="quiz-opt-text">3人中1人が読み飛ばした「トップの長い説明文」</div></button>
+    <button class="quiz-opt" data-q="q3" data-correct="false"><div class="quiz-letter">C</div><div class="quiz-opt-text">誰も指摘しなかったが、自分が気になったアイコンの色</div></button>
+    <button class="quiz-opt" data-q="q3" data-correct="false"><div class="quiz-letter">D</div><div class="quiz-opt-text">直すのが一番かんたんで、すぐ終わりそうな余白の調整</div></button>
+  </div>
+  <div class="quiz-feedback" id="q3-ok">
+    <div class="quiz-feedback-icon">✓</div>
+    <div class="quiz-feedback-body"><div class="quiz-feedback-title">正解です！</div><div class="quiz-feedback-text">予約の完了に直結し（大きさ）、3人全員に起きた（頻度）課題が最優先です。読み飛ばしは影響が小さく、自分が気になっただけの点や直しやすさで選ぶのは、優先順位の基準からずれています。</div></div>
+  </div>
+  <div class="quiz-feedback ng" id="q3-ng">
+    <div class="quiz-feedback-icon">✕</div>
+    <div class="quiz-feedback-body"><div class="quiz-feedback-title">惜しい！</div><div class="quiz-feedback-text">優先度は「大きさ×頻度」で決めるのでした。予約の完了に直結し、全員が手を止めた確定ボタン（A）が最優先です。影響の小さい説明文（B）や、好み・直しやすさ（C・D）で選ぶのは基準からずれています。</div></div>
+  </div>
+</div>
+</section>
+
+<!-- ===== セクション5 ===== -->
+<section id="s5">
+<h2>演習：改善版UIと意図シートを仕上げる</h2>
+
+<p>ここからは実践です。前回（4-2）のテスト記録を材料に、リフトの予約UIを直して改善版を作り、なぜ直したかを意図シートにまとめます。4つのステップで進めます。</p>
+
+<p>なお、今回のテストはコーチ1名に協力してもらったものですが、実際のプロジェクトでは、可能なら複数人にテストしてもらいます。複数の人に共通して起きたつまずきほど優先度が高い、という見方で、改善の優先順位をつけていきます。</p>
+
+<div class="work-box reveal">
+  <div class="work-box__badge">演習 4-3</div>
+
+  <div class="prep-list">
+    <div class="prep-label">📋 事前準備</div>
+    <ul>
+      <li><span class="prep-bullet">●</span>前回（4-2）のテスト記録（迷った・つまずいた場面のメモ）を、手元に開いておく</li>
+      <li><span class="prep-bullet">●</span>第3章（3-5）で作ったUIデザインとスタイルガイド、支給ロゴ・ブランドカラーを、Figmaで開いておく</li>
+      <li><span class="prep-bullet">●</span>意図シートを書き込む場所（表を作れるドキュメントやスプレッドシート）を用意する</li>
+    </ul>
+  </div>
+
+  <h4>STEP 1：課題を重要度で並べる</h4>
+  <ul>
+    <li>テスト記録から、迷った・つまずいた場面を<strong>課題として書き出す</strong></li>
+    <li>各課題を、<strong>価値・目的への影響（大きさ）と、起きた頻度</strong>で見て、優先度（高・中・低）をつける</li>
+    <li>優先度の高いものから、この演習で直す課題を2〜3件えらぶ</li>
+  </ul>
+
+  <h4>STEP 2：各課題への改善案を考える</h4>
+  <ul>
+    <li>えらんだ課題ごとに、<strong>課題 → 原因 → 改善案</strong>の順で考える</li>
+    <li>表面の不満で止めず、<strong>なぜ起きたのか原因</strong>を見立ててから改善案を出す</li>
+    <li>1つの課題につき1つの改善を基本に、<strong>一度に変えすぎない</strong></li>
+  </ul>
+
+  <h4>STEP 3：改善案をUIに反映する</h4>
+  <ul>
+    <li>改善案を、3-5のUIデザインに反映して<strong>改善版UI</strong>を作る</li>
+    <li><strong>支給ロゴ・ブランドカラー・スタイルガイドのルールは変えずに守る</strong>（新しく色を増やさない）</li>
+    <li>改善前と改善後を<strong>見比べられる形で残す</strong>（前後を並べる、または変更点に印をつける）</li>
+  </ul>
+
+  <h4>STEP 4：なぜ直したかを意図シートにまとめる</h4>
+  <ul>
+    <li>直した課題ごとに、<strong>課題・原因・どう直したか・根拠</strong>の4項目を書く</li>
+    <li>根拠は、<strong>テストの事実・定義した価値や要件・UIの原則</strong>のどれかに結びつける</li>
+  </ul>
+
+  <h4>完了条件（提出物）</h4>
+  <p style="font-size:13.5px; color:#E85D4A; font-weight:700; margin:2px 0 8px;">この成果物は、章の最後でまとめてコーチに提出しましょう。</p>
+  <ul>
+    <li><strong>改善版UI</strong>（テストで見つかった課題を反映して直したもの。改善前と後が見比べられる状態）</li>
+    <li><strong>意図シート</strong>（直した課題ごとに、課題・原因・どう直したか・根拠の4項目を記入したもの）</li>
+  </ul>
+
+</div>
+
+<p>改善版UIと意図シートは、修了評価の「改善」の観点に直結する成果物です。凝った直しを増やすより、テストで分かった課題に的をしぼって直し、その根拠をきちんと言葉にすることを優先してください。ここで身につけた「直して、なぜ直したかを説明する」流れは、リリース後の改善提案（第5章）でもそのまま使います。</p>
+</section>
+
+<!-- 理解度チェック -->
+<div class="check-box reveal">
+  <div class="check-box__head">
+    <div class="check-box__pill">CHECK</div>
+    <div class="check-box__sub">理解度チェック</div>
+  </div>
+  <details>
+    <summary>テストで見つかった課題を重要度で並べ、どこから直すか決められる</summary>
+    <div class="check-box__detail">まず迷った・つまずいた場面を課題として書き出します。全部を一度に直さず、価値・目的への影響（大きさ）と起きた頻度の掛け合わせで優先度をつけ、影響の大きいものから直します。予約を完了できないような課題が最優先でした。</div>
+  </details>
+  <details>
+    <summary>表面の不満でなく原因を直し、改善版UIに反映できる</summary>
+    <div class="check-box__detail">課題 → 原因 → 改善案の順で考えます。「分かりにくい」で止めず、ラベルで結果が想像できない・色が薄く押せると感じない、といった原因に手を当てます。1課題1改善を基本に、支給ロゴ・ブランドカラー・スタイルガイドは変えずに反映します。改善前と後は見比べられる形で残しました。</div>
+  </details>
+  <details>
+    <summary>なぜそう直したかを意図シートに言語化できる</summary>
+    <div class="check-box__detail">意図シートには、課題・原因・どう直したか・根拠の4つを書きます。根拠は、テストの事実・定義した価値や要件・UIの原則のどれかに結びつけます。根拠まで書けると、好みでなく理由で直したことを説明でき、修了制作のプレゼンにもつながります。</div>
+  </details>
+</div>
+  
+      <!-- 前の章に戻るボタン / 次の章に進むボタン がある場合 -->  
+<div style="display: flex; justify-content: space-between; align-items: center; padding: 24px 0; margin-top: 24px; max-width: 1775px; margin-left: auto; margin-right: auto; width: 100%;">
+  <a href="YDWlO" style="position: relative; display: inline-block; background: linear-gradient(135deg, #E85D4A, #F5A64A); color: #fff; font-weight: 700; padding: 12px clamp(24px, 7vw, 48px); border-radius: 8px; text-decoration: none;">
+    <img src="/theme/webcoach/img/icons/arrow-right.svg" style="position: absolute; top: 50%; transform: translateY(-50%); left: 12px; filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(125deg) brightness(103%) contrast(103%); transform: translateY(-50%) rotate(180deg);">
+    前の章に戻る
+  </a>
+  
+  <a href="Ffpd4" style="position: relative; display: inline-block; background: linear-gradient(135deg, #E85D4A, #F5A64A); color: #fff; font-weight: 700; padding: 12px clamp(24px, 7vw, 48px); border-radius: 8px; text-decoration: none;">
+    次の章に進む
+    <img src="/theme/webcoach/img/icons/arrow-right.svg" style="position: absolute; top: 50%; transform: translateY(-50%); right: 12px; filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(125deg) brightness(103%) contrast(103%);">
+  </a>
+</div>  
+  
+  <div class="back-to-roadmap" style="display: flex; justify-content: center; align-items: center; padding: 24px 0; margin-top: 24px;"></div>
+
+</div><!-- /.lesson-wrapper -->
+
+<script>
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('visible'); });
+}, { threshold: 0.1 });
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+document.querySelectorAll('.quiz-opt').forEach(btn => {
+  btn.addEventListener('click', function() {
+    const q = this.dataset.q;
+    const correct = this.dataset.correct === 'true';
+    const opts = document.querySelectorAll(`[data-q="${q}"]`);
+    opts.forEach(o => o.disabled = true);
+    this.classList.add(correct ? 'correct' : 'wrong');
+    opts.forEach(o => {
+      if (o === this) return;
+      if (o.dataset.correct === 'true') o.classList.add('correct');
+      else o.classList.add('dim');
+    });
+    document.getElementById(`${q}-${correct ? 'ok' : 'ng'}`).classList.add('show');
+  });
+});
+</script></div></div>
+        
+      
+    </div>
+  
+  </div>
+</div>
+<!-- <script src="https://cdn.clipkit.co/clipkit/javascripts/item-shopify-1.0.js?v=v15.9.0-20260915" async></script> -->
+
+            </div>
+        </main>
+
+    </div>
+
+    <script src="https://cdn.clipkit.co/clipkit/javascripts/application-1.0.js?v=v15.9.0-20260915" async></script>
+
+    <!-- bodyタグ内の下部に挿入されます -->
+
+
+    <!-- BootstrapのCDNでのjs読み込み -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+        crossorigin="anonymous"></script>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="ck-icon-arrow-down" viewBox="0 0 1792 1792"><path d="M1675 832q0 53-37 90l-651 652q-39 37-91 37-53 0-90-37l-651-652q-38-36-38-90 0-53 38-91l74-75q39-37 91-37 53 0 90 37l294 294v-704q0-52 38-90t90-38h128q52 0 90 38t38 90v704l294-294q37-37 90-37 52 0 91 37l75 75q37 39 37 91z" /></symbol><symbol id="ck-icon-arrow-up" viewBox="0 0 1792 1792"><path d="M1675 971q0 51-37 90l-75 75q-38 38-91 38-54 0-90-38l-294-293v704q0 52-37.5 84.5t-90.5 32.5h-128q-53 0-90.5-32.5t-37.5-84.5v-704l-294 293q-36 38-90 38t-90-38l-75-75q-38-38-38-90 0-53 38-91l651-651q35-37 90-37 54 0 91 37l651 651q37 39 37 91z" /></symbol><symbol id="ck-icon-calendar" viewBox="0 0 1792 1792"><path d="M192 1664h288v-288h-288v288zm352 0h320v-288h-320v288zm-352-352h288v-320h-288v320zm352 0h320v-320h-320v320zm-352-384h288v-288h-288v288zm736 736h320v-288h-320v288zm-384-736h320v-288h-320v288zm768 736h288v-288h-288v288zm-384-352h320v-320h-320v320zm-352-864v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm736 864h288v-320h-288v320zm-384-384h320v-288h-320v288zm384 0h288v-288h-288v288zm32-480v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm384-64v1280q0 52-38 90t-90 38h-1408q-52 0-90-38t-38-90v-1280q0-52 38-90t90-38h128v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h384v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h128q52 0 90 38t38 90z" /></symbol><symbol id="ck-icon-chevron-left" viewBox="0 0 1792 1792"><path d="M1427 301l-531 531 531 531q19 19 19 45t-19 45l-166 166q-19 19-45 19t-45-19l-742-742q-19-19-19-45t19-45l742-742q19-19 45-19t45 19l166 166q19 19 19 45t-19 45z" /></symbol><symbol id="ck-icon-chevron-right" viewBox="0 0 1792 1792"><path d="M1363 877l-742 742q-19 19-45 19t-45-19l-166-166q-19-19-19-45t19-45l531-531-531-531q-19-19-19-45t19-45l166-166q19-19 45-19t45 19l742 742q19 19 19 45t-19 45z" /></symbol><symbol id="ck-icon-clock-o" viewBox="0 0 1792 1792"><path d="M1024 544v448q0 14-9 23t-23 9h-320q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h224v-352q0-14 9-23t23-9h64q14 0 23 9t9 23zm416 352q0-148-73-273t-198-198-273-73-273 73-198 198-73 273 73 273 198 198 273 73 273-73 198-198 73-273zm224 0q0 209-103 385.5t-279.5 279.5-385.5 103-385.5-103-279.5-279.5-103-385.5 103-385.5 279.5-279.5 385.5-103 385.5 103 279.5 279.5 103 385.5z" /></symbol><symbol id="ck-icon-trash" viewBox="0 0 1792 1792"><path d="M704 1376v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm-544-992h448l-48-117q-7-9-17-11h-317q-10 2-17 11zm928 32v64q0 14-9 23t-23 9h-96v948q0 83-47 143.5t-113 60.5h-832q-66 0-113-58.5t-47-141.5v-952h-96q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h309l70-167q15-37 54-63t79-26h320q40 0 79 26t54 63l70 167h309q14 0 23 9t9 23z" /></symbol><symbol id="ck-icon-undo" viewBox="0 0 1792 1792"><path d="M1664 896q0 156-61 298t-164 245-245 164-298 61q-172 0-327-72.5t-264-204.5q-7-10-6.5-22.5t8.5-20.5l137-138q10-9 25-9 16 2 23 12 73 95 179 147t225 52q104 0 198.5-40.5t163.5-109.5 109.5-163.5 40.5-198.5-40.5-198.5-109.5-163.5-163.5-109.5-198.5-40.5q-98 0-188 35.5t-160 101.5l137 138q31 30 14 69-17 40-59 40h-448q-26 0-45-19t-19-45v-448q0-42 40-59 39-17 69 14l130 129q107-101 244.5-156.5t284.5-55.5q156 0 298 61t245 164 164 245 61 298z" /></symbol></svg><script async="async" defer="defer" nonce="gNbLNYDdhQQkjWi+V0nOgA==" src="//www.instagram.com/embed.js"></script>
+
+<!--Clipkit(R) v15.9.0-20260915 Copyright (C) 2026 VECTOR Inc.-->
+
+</body>
+
+</html>

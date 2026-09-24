@@ -90,6 +90,8 @@ rds-migration/
 !frontend/public/images/**/*.png
 # public/mascot 配下も同様にアプリが配信する素材（CharacterAvatar が参照する）。
 !frontend/public/mascot/*.png
+# assets/thumbnails はサムネイル原本の保管庫（assets/README.md）なので追跡する。
+!assets/thumbnails/*.png
 
 # Documentation (non-essential)
 # Claude 作業ルールは追跡する

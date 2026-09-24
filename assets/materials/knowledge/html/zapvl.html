@@ -1,0 +1,982 @@
+<!DOCTYPE html>
+<!-- clipkit-source-url: https://learn.webcoach.jp/knowledge/ZApVL -->
+<!-- clipkit-fetched-at: 2026-09-17T11:14:00.275Z -->
+<html lang="ja"><head>
+    <!-- headタグ内の上部に挿入されます -->
+
+    <meta charset="UTF-8">
+    <title>学ぶスキルの全体像の理解 - WEBCOACH</title>
+
+    <!-- resetcssのCDNでのCSS読み込み -->
+    <link rel="stylesheet" href="../../_assets/17f8e278dc.css">
+
+    <!-- fontawesomeのCDNでのCSS読み込み -->
+    <link rel="stylesheet" href="../../_assets/799aeb25cc.css">
+
+    <!-- BootstrapのCDNでのCSS読み込み -->
+    <link href="../../_assets/7633b7c0c9.css" rel="stylesheet">
+
+    <!-- highlight.jsの読み込み -->
+    <link rel="stylesheet" href="../../_assets/e31ce2dd8c.css">
+
+    <!-- カスタムCSS -->
+    <link rel="stylesheet" href="../../_assets/c533dd7750.css">
+
+    <!-- clipkitデフォルトのCSS -->
+    <!--<link rel="stylesheet" media="screen" href="https://cdn.clipkit.co/clipkit/stylesheets/application-1.0.css?v=v15.9.0-20260915">-->
+
+    <!-- jQuery -->
+    
+
+    <!-- カスタムJS -->
+    
+    
+
+    <!-- clipkitデフォルトのJS -->
+    
+
+    <!-- フォント -->
+    <link rel="preconnect" href="https://fonts.googleapis.com/">
+    <link rel="preconnect" href="https://fonts.gstatic.com/">
+    <link href="../../_assets/8b5713f1fc.css" rel="stylesheet">
+
+    <link href="../../_assets/b83ae8ba65.webp" rel="shortcut icon" type="image/vnd.microsoft.icon">
+    <link rel="apple-touch-icon" href="../../_assets/ea0aba163d.webp">
+    <link rel="alternate" type="application/rss+xml" href="https://learn.webcoach.jp/media.rss" title="WEBCOACH">
+    
+<link rel="canonical" href="https://learn.webcoach.jp/knowledge/ZApVL">
+
+<meta name="description" content="">
+<meta name="keywords" content="">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:domain" content="learn.webcoach.jp">
+<meta name="twitter:title" content="学ぶスキルの全体像の理解 - WEBCOACH">
+<meta name="twitter:image" content="https://cdn.clipkit.co/tenants/589/item_images/images/000/042/739/medium/d8e6a461-dd8e-484a-b668-555faa74e82c.png?1761398800">
+<meta name="twitter:description" content="">
+<meta property="og:site_name" content="WEBCOACH">
+<meta property="og:title" content="学ぶスキルの全体像の理解">
+<meta property="og:description" content="">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://learn.webcoach.jp/knowledge/ZApVL">
+<meta property="og:image" content="https://cdn.clipkit.co/tenants/589/item_images/images/000/042/739/large/d8e6a461-dd8e-484a-b668-555faa74e82c.png?1761398800">
+
+
+    <!-- headタグ内の下部に挿入されます -->
+
+
+<meta name="csrf-param" content="authenticity_token">
+<meta name="csrf-token" content="Ck3JQcm8In0Bzq1_fZ9UXNdZUcitVnWap3WPQTKefBJs_uD4lnCceSgHolYy10Fd4pzwdEPPmV57x8dTIOmV-A"><meta content="" name="routing-root-path"><meta content="media" name="site-name"><meta content="ja" name="i18n-default-locale"><meta content="ja" name="i18n-locale"><style data-clipkit-snapshot="force-visible">[data-aos],.reveal,.wow,.fade-in,.animate__animated,.js-reveal{opacity:1!important;transform:none!important;visibility:visible!important;animation:none!important;transition:none!important}</style></head>
+
+<body class="device-desktop" style="visibility: visible;">
+    <!-- bodyタグ内の上部に挿入されます -->
+
+
+    <!-- サイドバーとコンテンツのコンテナ -->
+    <div class="d-flex flex-row w-100 mb-5" style="min-height: calc(100vh - 400px);">
+
+        <!-- サイドバー -->
+        <!--<nav id="side-bar" class="d-flex flex-column fixed-top" style="width: 250px;">-->
+        <!--    <h1 class="d-block w-100 text-center">-->
+        <!--        <a class="d-block" href="/">-->
+        <!--            <img class="mw-100 p-3" src="https://cdn.clipkit.co/tenants/589/sites/logos/000/000/001/logo_sm/a8defd4b-1cc7-433b-a61c-08e7db0e3e4f.png?1714459367" alt="WEBCOACH">-->
+        <!--        </a>-->
+        <!--    </h1>-->
+        <!--    <ul class="nav flex-column m-0 p-3 fw-bold">-->
+        <!--        <li id="sidebar-top" class="nav-item mb-2" style="display: none;"><a href="/"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;" src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/233/original/home.png?1715353458">-->
+        <!--                <div>ホーム</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-knowledges" class="nav-item mb-2" style="display: none;"><a href="/knowledges"-->
+        <!--                class="nav-link text-body d-flex align-items-center active">-->
+        <!--                <img class="me-3" style="width: 1.5rem;" src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/232/original/book.png?1715353458">-->
+        <!--                <div>学習の心得</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-web-designs" class="nav-item mb-2" style="display: none;"><a href="/web-designs"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/231/original/design.png?1715353457">-->
+        <!--                <div>WEBデザイン</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-web-marketing" class="nav-item mb-2" style="display: none;"><a href="/web-marketings"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/230/original/marketing.png?1715353457">-->
+        <!--                <div>WEBマーケティング</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-codings" class="nav-item mb-2" style="display: none;"><a href="/codings"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/229/original/website.png?1715353457">-->
+        <!--                <div>WEBサイト構築</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-business-skills" class="nav-item mb-2" style="display: none;"><a href="/business-skills"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/228/original/business.png?1715353456">-->
+        <!--                <div>ビジネススキル</div>-->
+        <!--            </a></li>-->
+        <!--    </ul>-->
+        <!--</nav>-->
+
+        <!-- コンテンツ -->
+        <!--<main class="ms-auto" style="width: calc(100vw - 250px);">-->
+        <main class="ms-auto" style="width: calc(100vw);">
+            <div id="sb-site">
+                
+
+
+<div class="container">
+  <div class="row">
+    <div class="article">
+      <div class="mb-3 text-light" style="
+        height: 180px;
+        background-image: url(&quot;../../_assets/e1d58e2b8a.webp&quot;);
+        background-repeat: no-repeat;
+        background-size: cover;
+        display: flex;
+        align-items: flex-end;
+      ">
+        <div style="
+          margin: 0 0 30px 30px;
+        ">
+          <div>学習の心得</div>
+
+          <div class="fw-bold h2">学ぶスキルの全体像の理解</div>
+        </div>
+      </div>
+      <div class="article-content">
+        <!-- 目次 -->
+        <div class="index mb-3" style="background-color: #FDF5E8;">
+          <div>
+            <div class="fw-light">INDEX</div>
+            <div class="h3">目次</div>
+          </div>
+          <div class="toc"><ul><li><a href="#heading0" class="tocLink">学ぶスキルの全体像の理解</a><ul><li><a href="#heading1" class="tocLink">この教材の学習時間：35分</a></li><li><a href="#heading2" class="tocLink">この章で到達できるゴール</a></li></ul></li><li><a href="#heading3" class="tocLink">はじめに</a><ul><li><a href="#heading4" class="tocLink">目安の学習時間：5分</a></li></ul><ul><li><a href="#heading5" class="tocLink">WEBCOACHでの学習へようこそ</a><ul><li><a href="#heading6" class="tocLink"></a></li></ul></li></ul></li><li><a href="#heading7" class="tocLink">習得するスキルの全体像を掴む</a><ul><li><a href="#heading8" class="tocLink">目安の学習時間：30分</a></li></ul><ul><li><a href="#heading9" class="tocLink">WEBCOACHで習得する8つのスキル</a></li><li><a href="#heading10" class="tocLink">1. ベーシックスキル</a><ul><li><a href="#heading11" class="tocLink"></a></li><li><a href="#heading12" class="tocLink">論理的思考力</a></li><li><a href="#heading13" class="tocLink">検索能力</a></li><li><a href="#heading14" class="tocLink">コミュニケーション能力</a></li><li><a href="#heading15" class="tocLink">自己学習スキル</a></li></ul></li><li><a href="#heading16" class="tocLink">2. WEBデザイン</a><ul><li><a href="#heading17" class="tocLink"></a></li><li><a href="#heading18" class="tocLink">Figma（フィグマ）</a></li><li><a href="#heading19" class="tocLink"></a></li><li><a href="#heading20" class="tocLink">Wix（ウィックス）</a></li><li><a href="#heading21" class="tocLink"></a></li><li><a href="#heading22" class="tocLink">その他のデザインツールについて</a></li></ul></li><li><a href="#heading23" class="tocLink">3. WEBマーケティング</a><ul><li><a href="#heading24" class="tocLink">WEBマーケティングとは</a></li><li><a href="#heading25" class="tocLink"></a></li><li><a href="#heading26" class="tocLink">WEBサイト改善スキル</a></li><li><a href="#heading27" class="tocLink"></a></li><li><a href="#heading28" class="tocLink">WEB広告運用</a></li></ul></li><li><a href="#heading29" class="tocLink">4. WEB制作スキル</a><ul><li><a href="#heading30" class="tocLink">WEB制作スキルとは</a></li><li><a href="#heading31" class="tocLink"></a></li><li><a href="#heading32" class="tocLink">WEBサイトの作り方</a></li><li><a href="#heading33" class="tocLink">WEBCOACHで学習できる内容</a></li><li><a href="#heading34" class="tocLink"></a></li></ul></li><li><a href="#heading35" class="tocLink">5. 動画編集</a><ul><li><a href="#heading36" class="tocLink">動画編集スキルとは</a></li><li><a href="#heading37" class="tocLink"></a></li><li><a href="#heading38" class="tocLink">WEBCOACHで学べる内容</a></li><li><a href="#heading39" class="tocLink"></a></li><li><a href="#heading40" class="tocLink"></a></li></ul></li><li><a href="#heading41" class="tocLink">6. SNS運用</a><ul><li><a href="#heading42" class="tocLink">SNS運用スキルとは</a></li><li><a href="#heading43" class="tocLink"></a></li><li><a href="#heading44" class="tocLink">WEBCOACHで学べる内容</a></li><li><a href="#heading45" class="tocLink"></a></li></ul></li><li><a href="#heading46" class="tocLink">7. AI生成基礎</a><ul><li><a href="#heading47" class="tocLink">AI生成基礎とは</a></li><li><a href="#heading48" class="tocLink"></a></li><li><a href="#heading49" class="tocLink">WEBCOACHで学べる内容</a></li><li><a href="#heading50" class="tocLink"></a></li></ul></li><li><a href="#heading51" class="tocLink">8. ビジネススキル</a><ul><li><a href="#heading52" class="tocLink">ビジネススキルとは</a></li><li><a href="#heading53" class="tocLink"></a></li><li><a href="#heading54" class="tocLink">案件獲得スキル</a></li><li><a href="#heading55" class="tocLink">納品・リピートスキル</a></li><li><a href="#heading56" class="tocLink">法務・税務知識</a></li></ul></li></ul></li><li><a href="#heading57" class="tocLink">学習していく順番</a><ul><li><a href="#heading58" class="tocLink">目安の学習時間：5分</a></li></ul><ul><li><a href="#heading59" class="tocLink">推奨される学習ステップ</a><ul><li><a href="#heading60" class="tocLink">1. まずは「WEBデザイン」から</a></li><li><a href="#heading61" class="tocLink">2. スキルを掛け合わせる</a></li><li><a href="#heading62" class="tocLink">3. 最後に「ビジネススキル」を学ぶ</a></li></ul></li></ul></li></ul></div>
+        </div>
+        
+        <div class="back-to-roadmap mb-4 text-center"></div>
+
+        <!-- コンテンツ -->
+        
+        
+        <div class="article-item item_html " id="item45883" data-item-id="45883" data-item-type="ItemHtml"><div class="item-body"><div class="pagenation-buttons" style="justify-content: flex-end;">
+  <a href="https://learn.webcoach.jp/knowledge/gdR01" class="pagenation-buttons_next">次の章に進む<img src="../../_assets/47498cfebf.svg" class="pagenation-buttons_icon"></a>
+</div></div></div>
+        
+        <div class="article-item item_html " id="item48897" data-item-id="48897" data-item-type="ItemHtml"><div class="item-body"><iframe src="https://www.dropbox.com/scl/fi/yjotqxpobp2vvjmufw5js/.pdf?rlkey=qozc3p8sxkrljlhezz6ssyqff&amp;st=86flz3tl&amp;raw=1" width="100%" height="700px" style="border:none;"></iframe>
+</div></div>
+        
+        <div class="article-item item_html " id="item48898" data-item-id="48898" data-item-type="ItemHtml"><div class="item-body"><div class="callout white">
+    <div class="title-area">
+        <div class="icon bulb"></div>
+        <div class="title"><span class="decoration-01">スライドで学習を進めよう！</span></div>
+    </div>
+    <div class="content-area">
+        <ul>
+            <li>本教材の内容はこちらのスライドで学習する事が可能です！</li>
+            <li>もっと詳しく内容が知りたいという方は、これより先の下のテキストを読みましょう！（スライドを確認した方は次の章へ進んでも大丈夫です！）</li>
+        </ul>
+    </div>
+</div></div></div>
+        
+        <div class="article-item item_heading " id="item42602" data-item-id="42602" data-item-type="ItemHeading"><h2 class="item-body" id="heading0">学ぶスキルの全体像の理解</h2></div>
+        
+        <div class="article-item item_markdown " id="item38837" data-item-id="38837" data-item-type="ItemMarkdown"><h4 id="heading1">この教材の学習時間：35分</h4>
+</div>
+        
+        <div class="article-item item_markdown " id="item42620" data-item-id="42620" data-item-type="ItemMarkdown"><h4 id="heading2">この章で到達できるゴール</h4>
+</div>
+        
+        <div class="article-item item_rich_text " id="item42601" data-item-id="42601" data-item-type="ItemRichText"><div class="item-body-hbr">・WEBCOACHで学習していくスキルの全体像を掴む<br>
+・どのような順番で、どんなスキルを習得し、どうやって仕事に繋げていくのかを理解する</div></div>
+        
+        <div class="article-item item_heading " id="item42603" data-item-id="42603" data-item-type="ItemHeading"><h2 class="item-body" id="heading3">はじめに</h2></div>
+        
+        <div class="article-item item_markdown " id="item42621" data-item-id="42621" data-item-type="ItemMarkdown"><h4 id="heading4">目安の学習時間：5分</h4>
+</div>
+        
+        <div class="article-item item_heading " id="item42622" data-item-id="42622" data-item-type="ItemHeading"><h3 class="item-body" id="heading5">WEBCOACHでの学習へようこそ</h3></div>
+        
+        <div class="article-item item_rich_text " id="item42606" data-item-id="42606" data-item-type="ItemRichText"><div class="item-body-hbr">この教材では、WEBCOACHで学習していくスキルの全体像をつかみます。<br>
+どのような順番で、どんなスキルを習得し、どうやって仕事に繋げていくのかを最初に理解しておくと、納得感を持って学習を進めることができます。<br>
+<br>
+このページでは必要なスキルについて大枠の説明をしています。</div></div>
+        
+        <div class="article-item item_image " id="item42739" data-item-id="42739" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/042/739/medium/d8e6a461-dd8e-484a-b668-555faa74e82c.png?1761398800" title=""><img class="img-responsive item-image" alt=" (42739)" data-reference="" src="../../_assets/18329db9c8.webp" width="640" height="358"></a><h4 id="heading6"></h4></div></div>
+        
+        <div class="article-item item_html " id="item42607" data-item-id="42607" data-item-type="ItemHtml"><div class="item-body"><div class="card-with-icon attention">
+  <span class="bold"><strong>注意</strong><br></span>
+  <div class="content-area">
+    <ul>
+      <li>学ぶ細かい順番などについては、一人ひとり異なる可能性があります。</li>
+        <li>学習の進め方については担当コーチと相談しながら調整していきましょう。</li>
+    </ul>
+  </div>
+</div></div></div>
+        
+        <div class="article-item item_heading " id="item224" data-item-id="224" data-item-type="ItemHeading"><h2 class="item-body" id="heading7">習得するスキルの全体像を掴む</h2></div>
+        
+        <div class="article-item item_markdown " id="item38838" data-item-id="38838" data-item-type="ItemMarkdown"><h4 id="heading8">目安の学習時間：30分</h4>
+</div>
+        
+        <div class="article-item item_heading " id="item226" data-item-id="226" data-item-type="ItemHeading"><h3 class="item-body" id="heading9">WEBCOACHで習得する8つのスキル</h3></div>
+        
+        <div class="article-item item_rich_text " id="item42608" data-item-id="42608" data-item-type="ItemRichText"><div class="item-body-hbr">WEBCOACHでは以下の8つのスキルを自由に習得していただくことを目的としています。<br>
+<br>
+<span class="decoration-01">1. 学習を進める上でのベーシックスキル<br>
+2. WEBデザイン<br>
+3. WEBマーケティング<br>
+4. WEB制作<br>
+5. 動画編集<br>
+6. SNS運用<br>
+7. AI生成基礎<br>
+8. ビジネススキル</span></div></div>
+        
+        <div class="article-item item_html " id="item230" data-item-id="230" data-item-type="ItemHtml"><div class="item-body"><div class="callout white">
+  <div class="title-area">
+    <div class="icon bulb"></div>
+    <div class="title"><strong>スキルの掛け算で価値を高める</strong></div>
+  </div>
+  <div class="content-area">
+    <ul>
+      <li>これらの<span class="decoration-02">複数のスキルを掛け算する</span>ことで、他の人にはない付加価値を発揮し、市場で活躍しやすくなります。</li>
+      <li>例えば、「WEBデザイン」と「AI生成基礎」を掛け合わせれば、「デザインスキル」に加えて「AIで効率的に素材を作成する」スキルを提案できる人材になれます。</li>
+    </ul>
+  </div>
+</div></div></div>
+        
+        <div class="article-item item_heading " id="item231" data-item-id="231" data-item-type="ItemHeading"><h3 class="item-body" id="heading10">1. ベーシックスキル</h3></div>
+        
+        <div class="article-item item_rich_text " id="item232" data-item-id="232" data-item-type="ItemRichText"><div class="item-body-hbr">ベーシックスキルは、WEBスキルを使いこなし継続的に活躍する上で土台となるようなスキルです。<br>
+<br>
+ベーシックスキルは全部で4つあります。それぞれなぜ必要なのか解説していきます。<br>
+・論理的思考力<br>
+・検索能力<br>
+・コミュニケーション能力<br>
+・自己学習スキル</div></div>
+        
+        <div class="article-item item_image " id="item42740" data-item-id="42740" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/042/740/medium/2da8d90f-b121-41a1-8d95-4402de070aee.png?1761398897" title=""><img class="img-responsive item-image" alt=" (42740)" data-reference="" src="../../_assets/d6f31345ea.webp" width="640" height="435"></a><h4 id="heading11"></h4></div></div>
+        
+        <div class="article-item item_markdown " id="item42609" data-item-id="42609" data-item-type="ItemMarkdown"><h4 id="heading12">論理的思考力</h4>
+</div>
+        
+        <div class="article-item item_rich_text " id="item235" data-item-id="235" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-02">論理的思考力</span>は、すべてのWEBスキルに共通して必要不可欠なスキルです。物事を順序立てて矛盾がないように考える思考法を指します。<br>
+<br>
+<span class="decoration-01">論理的思考力を習得すると得られるメリット</span></div></div>
+        
+        <div class="article-item item_html " id="item42610" data-item-id="42610" data-item-type="ItemHtml"><div class="item-body">  <ul>
+    <li>問題が発生しても冷静に筋道立てて考え対処することができる</li>
+    <li><span class="decoration-02">論理的な説明・議論</span>ができることでクライアントの信頼を得られる</li>
+    <li>クライアントの<span class="decoration-02">売上・利益に直結する提案</span>を論理的に考えて伝えることができる</li>
+    <li>自分が作ったデザインを論理的に言語化し「なぜそうしたのか？」を説明可能にすると、クライアントに納得してもらいやすくなる</li>
+  </ul></div></div>
+        
+        <div class="article-item item_rich_text " id="item42611" data-item-id="42611" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">論理的思考力をつけるためのTIPS</span></div></div>
+        
+        <div class="article-item item_html " id="item17100" data-item-id="17100" data-item-type="ItemHtml"><div class="item-body">  <ul>
+    <li>日頃のコミュニケーションから<span class="decoration-02">結論ファースト</span>で論理的なコミュニケーションを意識する</li>
+    <li>Slackでの質問から論理的にテキストで書けるように意識する</li>
+    <li>日頃の学習で疑問に思ったことは放置せず、<span class="decoration-02">「なぜ？」という疑問を持ち</span>、考える癖をつける</li>
+  </ul></div></div>
+        
+        <div class="article-item item_markdown " id="item42613" data-item-id="42613" data-item-type="ItemMarkdown"><h4 id="heading13">検索能力</h4>
+</div>
+        
+        <div class="article-item item_rich_text " id="item245" data-item-id="245" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-02">検索能力</span>とは、Google検索を使用して自分の疑問点を解消する能力のことです。<br>
+WEBスキルを仕事にするには検索能力を身につけることが必要不可欠です。</div></div>
+        
+        <div class="article-item item_rich_text " id="item42615" data-item-id="42615" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">検索能力を習得すると得られるメリット</span></div></div>
+        
+        <div class="article-item item_html " id="item42614" data-item-id="42614" data-item-type="ItemHtml"><div class="item-body">  <ul>
+    <li>大抵の情報は検索で見つかるため、ほぼ全ての問題を検索で解決可能になる</li>
+    <li>疑問点を自己解決することで作業効率・学習効率が飛躍的にアップする</li>
+  </ul></div></div>
+        
+        <div class="article-item item_html " id="item42616" data-item-id="42616" data-item-type="ItemHtml"><div class="item-body"><div class="callout white">
+  <div class="title-area">
+    <div class="icon bulb"></div>
+    <div class="title"><strong>フリーランスと検索能力</strong></div>
+  </div>
+  <div class="content-area">
+    <ul>
+      <li>フリーランスになるには、「大抵の問題・エラーはGoogle検索を使えば解決できる」と思える状態になっていることが必須です。</li>
+      <li>これは一朝一夕では身につきません。最初は検索しても解決できないことも多いですが、粘り強く取り組むことが重要です。</li>
+    </ul>
+  </div>
+</div></div></div>
+        
+        <div class="article-item item_rich_text " id="item42617" data-item-id="42617" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">検索能力をつけるためのTIPS</span></div></div>
+        
+        <div class="article-item item_html " id="item42618" data-item-id="42618" data-item-type="ItemHtml"><div class="item-body">  <ul>
+    <li>学習中の疑問点は、<span class="decoration-02">まずGoogle検索で解決できないか挑戦する</span></li>
+    <li>検索で解決できずに質問する場合には、「自分が検索したワード」をコーチに伝え、「どんなワードで検索するとよかったのか」を聞く</li>
+    <li>日頃から、小さな疑問でもGoogle検索を通して解決する癖をつける</li>
+  </ul></div></div>
+        
+        <div class="article-item item_markdown " id="item42619" data-item-id="42619" data-item-type="ItemMarkdown"><h4 id="heading14">コミュニケーション能力</h4>
+</div>
+        
+        <div class="article-item item_rich_text " id="item273" data-item-id="273" data-item-type="ItemRichText"><div class="item-body-hbr">WEB系では在宅によるリモートワークの仕事が増えており、そこでは<span class="decoration-02">テキストコミュニケーション</span>が極めて重要です。</div></div>
+        
+        <div class="article-item item_markdown " id="item277" data-item-id="277" data-item-type="ItemMarkdown"><p><strong>テキストコミュニケーション能力を身につけると得られるメリット</strong></p>
+
+<ul>
+  <li>相手の時間を奪わずに情報を伝えることができる</li>
+  <li>論理的に書くことで、口頭よりも伝えやすい場合がある</li>
+  <li>情報を過不足なく伝えやすい</li>
+</ul>
+</div>
+        
+        <div class="article-item item_markdown " id="item279" data-item-id="279" data-item-type="ItemMarkdown"><p><strong>電話やビデオ会議に比べたテキストコミュニケーションのデメリット</strong></p>
+
+<ul>
+  <li>言いづらい話、感情的な話などはテキストでは伝わりづらい</li>
+  <li>活発な議論するのにはあまり向いていない</li>
+</ul>
+
+</div>
+        
+        <div class="article-item item_rich_text " id="item42623" data-item-id="42623" data-item-type="ItemRichText"><div class="item-body-hbr">WEB系の仕事では、基本的にまずテキストで議論や報告を行い、テキストで難しい場合に電話やビデオ会議を使うスタイルが多いです。</div></div>
+        
+        <div class="article-item item_html " id="item42624" data-item-id="42624" data-item-type="ItemHtml"><div class="item-body"><div class="card-with-icon point">
+  <span class="bold"><strong>理想的なWEBフリーランスのスキル・マインドセット</strong><br></span>
+  <div class="content-area">
+    <ul>
+      <li>テキストでコミュニケーションするのが苦ではない。</li>
+      <li>テキストで論理的に文章を伝えることができる。</li>
+      <li>チャットで画像や動画なども使いながら、わかりやすく情報を伝えることができる。</li>
+      <li>Slackなど、適宜チャットツールを使いこなすことができる。</li>
+    </ul>
+  </div>
+</div></div></div>
+        
+        <div class="article-item item_rich_text " id="item42625" data-item-id="42625" data-item-type="ItemRichText"><div class="item-body-hbr">WEBCOACHにおいても、リモートワークに対応できるように学習中からコーチとのテキストコミュニケーションの練習を行います。<br>
+<span class="decoration-02">コーチを実際のクライアントだと思って、論理的に情報を整理して質問する練習をしてみてください。</span></div></div>
+        
+        <div class="article-item item_markdown " id="item42626" data-item-id="42626" data-item-type="ItemMarkdown"><h4 id="heading15">自己学習スキル</h4>
+</div>
+        
+        <div class="article-item item_rich_text " id="item42627" data-item-id="42627" data-item-type="ItemRichText"><div class="item-body-hbr">WEB業界では、トレンドに追いつくために日々新しい情報やツールをキャッチアップすることが必要です。<br>
+そのため、一度スキルを学習して終わりではなく、新しいものが出てくるたびに学習し続けることが重要になります。</div></div>
+        
+        <div class="article-item item_markdown " id="item291" data-item-id="291" data-item-type="ItemMarkdown"><p><strong>自己学習スキルを身につけるメリット</strong></p>
+
+<ul>
+  <li>学習スキルが高い人は、新しいものを身につけ続け、長く活躍し続けられる傾向にある</li>
+  <li>自分で学習して、活躍できる領域を広げることができる</li>
+</ul>
+</div>
+        
+        <div class="article-item item_markdown " id="item295" data-item-id="295" data-item-type="ItemMarkdown"><p><strong>自己学習スキルを身につけるためのTIPS</strong></p>
+</div>
+        
+        <div class="article-item item_html " id="item42628" data-item-id="42628" data-item-type="ItemHtml"><div class="item-body">  <ul>
+    <li><span class="decoration-02">枝葉に捉われず、まずは幹（本質）を理解することに努める</span>
+      <ul class="nested-ul">
+        <li>プロはツールの細かい機能まで全て暗記しているわけではなく、本質を理解した上で、細かいところは検索しながら使っています。</li>
+      </ul>
+    </li>
+    <li><span class="decoration-02">完璧主義にならず、まずは手を動かして学ぶことを意識する</span>
+      <ul class="nested-ul">
+        <li>完璧主義になるといつまでも前に進めません。「動いたらOK」くらいの気持ちで進めましょう。</li>
+      </ul>
+    </li>
+    <li><span class="decoration-02">学習を管理する</span>
+      <ul class="nested-ul">
+        <li>「学習記録を残す」「目標を決める」「学習時間を決める」など、学習計画を立て管理することで、計画的にスキルを習得できます。</li>
+      </ul>
+    </li>
+    <li><span class="decoration-02">アウトプットし、フィードバックをもらう</span>
+      <ul class="nested-ul">
+        <li>学習したらアウトプットし、コーチなどにフィードバックしてもらうのがおすすめです。客観的な目線でフィードバックをもらうことで、更なる成長が期待できます。</li>
+      </ul>
+    </li>
+  </ul></div></div>
+        
+        <div class="article-item item_rich_text " id="item42629" data-item-id="42629" data-item-type="ItemRichText"><div class="item-body-hbr">「ずっと勉強しないといけないのか…」と思われた方もいるかもしれませんが、安心してください。<br>
+ツールが変わっても本質的な部分や機能は変わらないことも多く、いくつかしっかりと学習すれば、<span class="decoration-02">新しいことを勉強する時間もどんどん短縮されていきます。</span></div></div>
+        
+        <div class="article-item item_heading " id="item323" data-item-id="323" data-item-type="ItemHeading"><h3 class="item-body" id="heading16">2. WEBデザイン</h3></div>
+        
+        <div class="article-item item_rich_text " id="item42639" data-item-id="42639" data-item-type="ItemRichText"><div class="item-body-hbr">WEBデザインの領域では、主に<span class="decoration-02">Figma</span>と<span class="decoration-02">Wix</span>という2つのツールを軸に学習します。</div></div>
+        
+        <div class="article-item item_image " id="item42741" data-item-id="42741" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/042/741/medium/e3dd272b-d564-4ac2-b709-f3dab7da28bb.png?1761398957" title=""><img class="img-responsive item-image" alt=" (42741)" data-reference="" src="../../_assets/0efa6142e7.webp" width="640" height="434"></a><h4 id="heading17"></h4></div></div>
+        
+        <div class="article-item item_markdown " id="item42640" data-item-id="42640" data-item-type="ItemMarkdown"><h4 id="heading18">Figma（フィグマ）</h4>
+</div>
+        
+        <div class="article-item item_rich_text " id="item42641" data-item-id="42641" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-02">Figma</span>は、WEBサイトやアプリのデザインを作成するためのツールです。 <br>
+基本無料で使える上に、WEBデザインに必要な機能が全て詰まっており、GoogleやNetflixなど世界的な企業も導入しています。</div></div>
+        
+        <div class="article-item item_image " id="item42742" data-item-id="42742" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/042/742/medium/3be21b93-7aed-45d0-b55e-180605eb035e.png?1761399084" title=""><img class="img-responsive item-image" alt=" (42742)" data-reference="" src="../../_assets/a9a0b9de19.webp" width="640" height="388"></a><h4 id="heading19"></h4></div></div>
+        
+        <div class="article-item item_rich_text " id="item42644" data-item-id="42644" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">Figmaでできること</span></div></div>
+        
+        <div class="article-item item_html " id="item42642" data-item-id="42642" data-item-type="ItemHtml"><div class="item-body">
+  <ul>
+    <li>WEBサイトデザインの作成</li>
+    <li>スマホアプリデザインの作成</li>
+    <li>プレゼン資料の作成</li>
+    <li>チラシデザインの作成</li>
+    <li>WEB広告（バナー）の作成</li>
+    <li>SNSの投稿画像の作成</li>
+  </ul>
+</div></div>
+        
+        <div class="article-item item_rich_text " id="item42645" data-item-id="42645" data-item-type="ItemRichText"><div class="item-body-hbr">基本的なWEB制作の仕事は、Figmaで作成した「デザインの設計図」をもとに、クライアントとすり合わせを行い、その後の実装（WEB制作）に移る流れが一般的です。</div></div>
+        
+        <div class="article-item item_markdown " id="item42646" data-item-id="42646" data-item-type="ItemMarkdown"><h4 id="heading20">Wix（ウィックス）</h4>
+</div>
+        
+        <div class="article-item item_rich_text " id="item42647" data-item-id="42647" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-02">Wix</span>は、HTMLやCSSなどのコーディングを行わずに、ドラッグ＆ドロップなどの直感的な操作でWEBサイトを制作できる「ノーコード」ツールの一つです。</div></div>
+        
+        <div class="article-item item_image " id="item42743" data-item-id="42743" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/042/743/medium/88229ebc-0ab4-4e3a-9424-4684350a68db.png?1761399688" title=""><img class="img-responsive item-image" alt=" (42743)" data-reference="" src="../../_assets/91960f388b.webp" width="640" height="317"></a><h4 id="heading21"></h4></div></div>
+        
+        <div class="article-item item_rich_text " id="item42648" data-item-id="42648" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">Wixの強み</span></div></div>
+        
+        <div class="article-item item_html " id="item42643" data-item-id="42643" data-item-type="ItemHtml"><div class="item-body">
+    <ul>
+        <li>より直感的に、ドラッグ&amp;ドロップでサイトを作りやすい</li>
+        <li>よりスピーディーに開発できる</li>
+        <li>クライアントでも操作しやすい</li>
+    </ul>
+</div></div>
+        
+        <div class="article-item item_rich_text " id="item42649" data-item-id="42649" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">Wixを使用すべきシチュエーション</span></div></div>
+        
+        <div class="article-item item_html " id="item42650" data-item-id="42650" data-item-type="ItemHtml"><div class="item-body">  <ul>
+    <li>制作後、クライアント側でも自分で操作（ブログ更新など）をしたい</li>
+    <li>細かいカスタマイズまでする予定はなく、とにかくスピーディーにサイトを立ち上げたい</li>
+  </ul></div></div>
+        
+        <div class="article-item item_markdown " id="item42653" data-item-id="42653" data-item-type="ItemMarkdown"><h4 id="heading22">その他のデザインツールについて</h4>
+</div>
+        
+        <div class="article-item item_rich_text " id="item42654" data-item-id="42654" data-item-type="ItemRichText"><div class="item-body-hbr">他にも様々なデザインツールがありますが、FigmaやWixを一度習得してしまえば似ているところも多いため、キャッチアップしやすいです。</div></div>
+        
+        <div class="article-item item_html " id="item42655" data-item-id="42655" data-item-type="ItemHtml"><div class="item-body">    <ul>
+        <li><strong>Adobe Illustrator / Photoshop</strong>：Figmaが主流になる前から使われているプロ用ツール。画像の加工や、印刷物のデザインにも強いです。</li>
+        <li><strong>Canva</strong>：Figmaよりもさらに直感的で、SNSの投稿画像や簡単な資料作成に特化しています。</li>
+    </ul></div></div>
+        
+        <div class="article-item item_heading " id="item453" data-item-id="453" data-item-type="ItemHeading"><h3 class="item-body" id="heading23">3. WEBマーケティング</h3></div>
+        
+        <div class="article-item item_markdown " id="item42656" data-item-id="42656" data-item-type="ItemMarkdown"><h4 id="heading24">WEBマーケティングとは</h4>
+</div>
+        
+        <div class="article-item item_rich_text " id="item42657" data-item-id="42657" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-02">WEBマーケティング</span>は、WEBを活用して商品・サービスの購入を促す全ての活動を含みます。<br>
+SNS運用もWEBマーケティングの一部ですが、ここではより広い範囲のスキルを指します。</div></div>
+        
+        <div class="article-item item_image " id="item42745" data-item-id="42745" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/042/745/medium/b4ea8d86-6124-4c01-a8a4-a6b9c7710aa5.png?1761399855" title=""><img class="img-responsive item-image" alt=" (42745)" data-reference="" src="../../_assets/6dc08da48a.webp" width="640" height="437"></a><h4 id="heading25"></h4></div></div>
+        
+        <div class="article-item item_html " id="item42658" data-item-id="42658" data-item-type="ItemHtml"><div class="item-body"><div class="callout white">
+  <div class="title-area">
+    <div class="icon bulb"></div>
+    <div class="title"><strong>求められるクリエイター像の変化</strong></div>
+  </div>
+  <div class="content-area">
+    <ul>
+      <li>近年、ただ「WEBデザインができる」「サイトが作れる」だけではなく、<span class="decoration-02">WEBマーケティング領域まで踏み込んでクライアントの売上・利益に貢献できる人材</span>が求められています。</li>
+    </ul>
+  </div>
+</div></div></div>
+        
+        <div class="article-item item_rich_text " id="item42661" data-item-id="42661" data-item-type="ItemRichText"><div class="item-body-hbr">具体的には以下のようなスキルを学んでいきます。</div></div>
+        
+        <div class="article-item item_html " id="item42660" data-item-id="42660" data-item-type="ItemHtml"><div class="item-body">
+    <ul>
+        <li>WEBサイト改善スキル</li>
+        <li>WEB広告</li>
+    </ul></div></div>
+        
+        <div class="article-item item_markdown " id="item42662" data-item-id="42662" data-item-type="ItemMarkdown"><h4 id="heading26">WEBサイト改善スキル</h4>
+</div>
+        
+        <div class="article-item item_rich_text " id="item42663" data-item-id="42663" data-item-type="ItemRichText"><div class="item-body-hbr">WEBサイトに分析ツールを設定することで、ユーザーの動き（例：どのページがよく見られているか）を分析できます。 <br>
+WEBサイトは作って終わりではなく、常に分析して継続的に改善し続ける必要があります。</div></div>
+        
+        <div class="article-item item_image " id="item42744" data-item-id="42744" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/042/744/medium/084252df-a1f4-4e81-9265-f87f16c502f8.png?1761400226" title=""><img class="img-responsive item-image" alt=" (42744)" data-reference="" src="../../_assets/7ded2a5dba.webp" width="640" height="293"></a><h4 id="heading27"></h4></div></div>
+        
+        <div class="article-item item_rich_text " id="item42664" data-item-id="42664" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">WEBCOACHで学べる内容</span></div></div>
+        
+        <div class="article-item item_html " id="item42665" data-item-id="42665" data-item-type="ItemHtml"><div class="item-body">    <ul>
+        <li>Google Analyticsなどの分析ツールを活用して、サイト分析し改善点を考えるスキル</li>
+        <li>改善点を実際にサイトに反映するスキル</li>
+        <li>集客力のあるWEBサイトに必要な要素は何か？という根本的な考え方</li>
+    </ul></div></div>
+        
+        <div class="article-item item_markdown " id="item42666" data-item-id="42666" data-item-type="ItemMarkdown"><h4 id="heading28">WEB広告運用</h4>
+</div>
+        
+        <div class="article-item item_rich_text " id="item42667" data-item-id="42667" data-item-type="ItemRichText"><div class="item-body-hbr">WEB広告の市場規模は年々増加しており、今後も更なる需要の増加が見込まれます。近年はツールの自動化機能が強くなっており、比較的簡単に広告を出すことができます。 <br>
+WEBサイトを作って終わりではなく、WEB広告の提案などを行うことによってさらに単価を上げていくことが可能になります。</div></div>
+        
+        <div class="article-item item_heading " id="item464" data-item-id="464" data-item-type="ItemHeading"><h3 class="item-body" id="heading29">4. WEB制作スキル</h3></div>
+        
+        <div class="article-item item_markdown " id="item42668" data-item-id="42668" data-item-type="ItemMarkdown"><h4 id="heading30">WEB制作スキルとは</h4>
+</div>
+        
+        <div class="article-item item_rich_text " id="item42669" data-item-id="42669" data-item-type="ItemRichText"><div class="item-body-hbr">ここでは、Figmaなどで作成されたデザインに基づき、WEBサイトを実装し公開できるスキルを示します。WEBCOACHでは、<span class="decoration-02">CMS（WordPress）</span>と<span class="decoration-02">スクラッチ開発（コーディング）</span>の2つを学びます。</div></div>
+        
+        <div class="article-item item_image " id="item42746" data-item-id="42746" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/042/746/medium/9702be9e-a1d3-485a-ad58-5f5b1c29837d.png?1761399930" title=""><img class="img-responsive item-image" alt=" (42746)" data-reference="" src="../../_assets/367f2c5404.webp" width="640" height="414"></a><h4 id="heading31"></h4></div></div>
+        
+        <div class="article-item item_markdown " id="item42670" data-item-id="42670" data-item-type="ItemMarkdown"><h4 id="heading32">WEBサイトの作り方</h4>
+</div>
+        
+        <div class="article-item item_rich_text " id="item42671" data-item-id="42671" data-item-type="ItemRichText"><div class="item-body-hbr">WEBサイトの作り方には大きく以下の二つがあります。</div></div>
+        
+        <div class="article-item item_html " id="item42672" data-item-id="42672" data-item-type="ItemHtml"><div class="item-body"><table class="simple">
+  <tbody>
+    </tbody><thead>
+      <tr>
+        <th scope="col">
+          <div>
+            <div>カテゴリ</div>
+          </div>
+        </th>
+        <th scope="col">
+          <div>
+            <div>特徴</div>
+          </div>
+        </th>
+      </tr>
+    </thead>
+    <tbody><tr>
+      <th scope="row">
+        <div>
+          <div><strong>CMS</strong></div>
+        </div>
+      </th>
+      <td>
+        <div>
+          <ul>
+            <li><span class="decoration-02">CMS（コンテンツマネジメントシステム）<span>とは、WEBサイトのコンテンツを管理・更新できるシステムです。</span></span></li>
+            <li>多くの案件で活用されます。</li>
+          </ul>
+        </div>
+      </td>
+    </tr>
+    <tr>
+      <th scope="row">
+        <div>
+          <div><strong>スクラッチ開発</strong></div>
+        </div>
+      </th>
+      <td>
+        <div>
+          <ul>
+            <li>「0から作る」という意味で、<span class="decoration-02">ツールに頼らずコードを書いて作っていく<span>こと。</span></span></li>
+            <li>工数（時間・手間）がかかり費用が高額になるため、スクラッチ開発するケースは稀になっています。</li>
+          </ul>
+        </div>
+      </td>
+    </tr>
+  </tbody>
+</table></div></div>
+        
+        <div class="article-item item_markdown " id="item42673" data-item-id="42673" data-item-type="ItemMarkdown"><h4 id="heading33">WEBCOACHで学習できる内容</h4>
+</div>
+        
+        <div class="article-item item_rich_text " id="item42674" data-item-id="42674" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">CMSで学べること</span> <br>
+WEBCOACHではCMSとして<span class="decoration-02">WordPress</span>を学びます。 WordPressは世界のWEBサイトの多くを占めており、カスタマイズ性が非常に高いのが特徴です。企業のホームページからECサイトまで幅広く対応できます。</div></div>
+        
+        <div class="article-item item_image " id="item42747" data-item-id="42747" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/042/747/medium/c59e060f-d9a7-4047-be03-117428f9045c.png?1761400043" title=""><img class="img-responsive item-image" alt=" (42747)" data-reference="" src="../../_assets/c82b2bf88c.webp" width="640" height="331"></a><h4 id="heading34"></h4></div></div>
+        
+        <div class="article-item item_rich_text " id="item42675" data-item-id="42675" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">スクラッチ開発で学べること </span><br>
+WEBCOACHでは、以下のコーディングを学びます。</div></div>
+        
+        <div class="article-item item_html " id="item42676" data-item-id="42676" data-item-type="ItemHtml"><div class="item-body">    <ul>
+        <li><strong>HTML：</strong>WEBサイトの「骨組み」を作る言語</li>
+        <li><strong>CSS：</strong>サイトの「デザイン・装飾」を指定する言語</li>
+        <li><strong>JavaScript：</strong>サイトに「動き」（例：スライドショー、ポップアップ）をつける言語</li>
+        <li><strong>jQuery：</strong>JavaScriptをより簡単に書くための便利なライブラリ（道具箱）</li>
+    </ul></div></div>
+        
+        <div class="article-item item_rich_text " id="item42677" data-item-id="42677" data-item-type="ItemRichText"><div class="item-body-hbr">これらはWEBサイトの基礎であり、WordPressの既存のテーマ（デザインテンプレート）を細かくカスタマイズする上でも必要となる重要な知識です。</div></div>
+        
+        <div class="article-item item_heading " id="item42678" data-item-id="42678" data-item-type="ItemHeading"><h3 class="item-body" id="heading35">5. 動画編集</h3></div>
+        
+        <div class="article-item item_markdown " id="item42679" data-item-id="42679" data-item-type="ItemMarkdown"><h4 id="heading36">動画編集スキルとは</h4>
+</div>
+        
+        <div class="article-item item_rich_text " id="item42680" data-item-id="42680" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-02">動画編集</span>は、撮影された映像素材を、カット、テロップ（字幕）、BGM、エフェクトなどを加えて、一つの魅力的なコンテンツに仕上げるスキルです。<br>
+近年、<span class="decoration-02">YouTube</span>や<span class="decoration-02">SNS</span>（TikTok, Instagramリールなど）における動画コンテンツの需要が爆発的に増加しており、動画編集スキルは非常に市場価値の高いスキルとなっています。</div></div>
+        
+        <div class="article-item item_image " id="item42748" data-item-id="42748" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/042/748/medium/4e868eeb-4875-45a1-b5f6-0fc2be8a32b0.png?1761400432" title=""><img class="img-responsive item-image" alt=" (42748)" data-reference="" src="../../_assets/478e1e3bf5.webp" width="640" height="437"></a><h4 id="heading37"></h4></div></div>
+        
+        <div class="article-item item_markdown " id="item42681" data-item-id="42681" data-item-type="ItemMarkdown"><h4 id="heading38">WEBCOACHで学べる内容</h4>
+</div>
+        
+        <div class="article-item item_rich_text " id="item42683" data-item-id="42683" data-item-type="ItemRichText"><div class="item-body-hbr">WEBCOACHでは、主に以下のようなツールと技術を学びます。</div></div>
+        
+        <div class="article-item item_rich_text " id="item42684" data-item-id="42684" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">編集ツール</span></div></div>
+        
+        <div class="article-item item_html " id="item42682" data-item-id="42682" data-item-type="ItemHtml"><div class="item-body">    <ul>
+        <li><strong>Adobe Premiere Pro</strong>：YouTubeなど、プロフェッショナルな現場で使われる高機能ソフト</li>
+        <li><strong>CapCut</strong>：<span class="decoration-02">縦型動画</span>（TikTokやInstagramリール）の編集に強く、直感的に操作できるソフト</li>
+    </ul></div></div>
+        
+        <div class="article-item item_image " id="item42749" data-item-id="42749" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/042/749/medium/2a1f7d29-56a1-4105-b12a-4d2aef1c5a9f.png?1761400735" title=""><img class="img-responsive item-image" alt=" (42749)" data-reference="" src="../../_assets/6f3d9cd8fd.webp" width="640" height="378"></a><h4 id="heading39"></h4></div></div>
+        
+        <div class="article-item item_rich_text " id="item42685" data-item-id="42685" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">学ぶ技術・知識</span></div></div>
+        
+        <div class="article-item item_html " id="item42686" data-item-id="42686" data-item-type="ItemHtml"><div class="item-body">
+    <ul>
+        <li>カット編集（不要な部分を切り取る）</li>
+        <li>テロップ・字幕の挿入</li>
+        <li>BGM・効果音（SE）の挿入</li>
+        <li>色味の調整（カラーグレーディング）</li>
+        <li><strong>サムネイル制作</strong>（Canva）</li>
+        <li><strong>動画素材の集め方</strong>（フリー素材サイトの活用法など）</li>
+    </ul></div></div>
+        
+        <div class="article-item item_image " id="item42750" data-item-id="42750" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/042/750/medium/4607ab8e-d45d-4049-9fbb-367a970049c2.png?1761400842" title=""><img class="img-responsive item-image" alt=" (42750)" data-reference="" src="../../_assets/fca5566076.webp" width="640" height="355"></a><h4 id="heading40"></h4></div></div>
+        
+        <div class="article-item item_rich_text " id="item42687" data-item-id="42687" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-02">WEBデザインやSNS運用スキルと掛け合わせる</span>ことで、WEBサイトに掲載するプロモーション動画の制作や、SNSアカウントの動画コンテンツ制作まで一貫して請け負うことが可能になります。</div></div>
+        
+        <div class="article-item item_heading " id="item42688" data-item-id="42688" data-item-type="ItemHeading"><h3 class="item-body" id="heading41">6. SNS運用</h3></div>
+        
+        <div class="article-item item_markdown " id="item42689" data-item-id="42689" data-item-type="ItemMarkdown"><h4 id="heading42">SNS運用スキルとは</h4>
+</div>
+        
+        <div class="article-item item_rich_text " id="item42690" data-item-id="42690" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-02">SNS運用</span>は、Instagram、X（旧Twitter）、LINEなどを用いて企業の情報を発信し、ファンを増やし、最終的に商品・サービスの購入につなげるスキルです。<br>
+多くの企業が集客のためにSNSアカウントを開設しており、「運用代行」の需要が非常に高まっています。</div></div>
+        
+        <div class="article-item item_image " id="item42751" data-item-id="42751" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/042/751/medium/99b219dc-6d6d-4093-9265-285e4cbab0fa.png?1761400905" title=""><img class="img-responsive item-image" alt=" (42751)" data-reference="" src="../../_assets/7033f15169.webp" width="640" height="437"></a><h4 id="heading43"></h4></div></div>
+        
+        <div class="article-item item_markdown " id="item42691" data-item-id="42691" data-item-type="ItemMarkdown"><h4 id="heading44">WEBCOACHで学べる内容</h4>
+</div>
+        
+        <div class="article-item item_rich_text " id="item42692" data-item-id="42692" data-item-type="ItemRichText"><div class="item-body-hbr">単に投稿を作成するだけでなく、クライアントの目的に合わせた運用戦略を学びます。 <br>
+まずは、クライアントの代わりに投稿を作成する「<span class="decoration-02">投稿代行</span>」から案件獲得を目指すことを目標にします。</div></div>
+        
+        <div class="article-item item_rich_text " id="item42693" data-item-id="42693" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">戦略策定</span></div></div>
+        
+        <div class="article-item item_html " id="item42694" data-item-id="42694" data-item-type="ItemHtml"><div class="item-body">    <ul>
+        <li>ペルソナ（ターゲット層）を詳しい深掘り</li>
+        <li>アカウントのコンセプト（世界観）設計</li>
+    </ul></div></div>
+        
+        <div class="article-item item_rich_text " id="item42695" data-item-id="42695" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">コンテンツ企画・制作</span></div></div>
+        
+        <div class="article-item item_html " id="item42696" data-item-id="42696" data-item-type="ItemHtml"><div class="item-body">    <ul>
+        <li><strong>カルーセル投稿の制作：</strong> <span class="decoration-02">Canva</span>を使い、複数枚の画像（例：図解、情報まとめ）をデザインし、スワイプして読ませる形式の投稿を作成するスキルを学びます。</li>
+        <li><strong>リール投稿の制作：</strong> <span class="decoration-02">CapCut</span>を使い、縦型動画のカット編集、テロップ挿入、BGM追加を行い、短時間でユーザーを引きつける動画コンテンツを作成するスキルを学びます。</li>
+        <li><strong>投稿内容（テキスト）のライティング：</strong>ターゲット層の特徴に合わせながら、ユーザーの関心を引くタイトルや本文を作成するスキルも含まれます。</li>
+    </ul></div></div>
+        
+        <div class="article-item item_image " id="item42752" data-item-id="42752" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/042/752/medium/35e26bba-6c2c-4a81-b03c-57951139d64c.png?1761401692" title=""><img class="img-responsive item-image" alt=" (42752)" data-reference="" src="../../_assets/b62582caab.webp" width="640" height="335"></a><h4 id="heading45"></h4></div></div>
+        
+        <div class="article-item item_rich_text " id="item42697" data-item-id="42697" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">分析・改善</span></div></div>
+        
+        <div class="article-item item_html " id="item42701" data-item-id="42701" data-item-type="ItemHtml"><div class="item-body">   <ul>
+       <li>投稿の反応（いいね、保存数など）を分析</li>
+       <li>分析結果をもとに次回の投稿内容を改善する</li>
+   </ul></div></div>
+        
+        <div class="article-item item_html " id="item42700" data-item-id="42700" data-item-type="ItemHtml"><div class="item-body"><div class="card-with-icon point">
+   <span class="bold"><strong>SNS運用の案件例</strong><br></span>
+   <div class="content-area">
+       <ul>
+           <li>例えばInstagram運用代行の例では、提案内容（例：毎日1投稿＋ストーリーズ更新）によりますが、<span class="decoration-02">月5〜30万円ほど</span>の単価で案件を受けることも可能です。</li>
+           <li>WEBマーケティング全体の知識と掛け合わせると、提案の幅がさらに広がります。</li>
+       </ul>
+   </div>
+</div></div></div>
+        
+        <div class="article-item item_heading " id="item42702" data-item-id="42702" data-item-type="ItemHeading"><h3 class="item-body" id="heading46">7. AI生成基礎</h3></div>
+        
+        <div class="article-item item_markdown " id="item42703" data-item-id="42703" data-item-type="ItemMarkdown"><h4 id="heading47">AI生成基礎とは</h4>
+</div>
+        
+        <div class="article-item item_rich_text " id="item42704" data-item-id="42704" data-item-type="ItemRichText"><div class="item-body-hbr">近年急速に進化している<span class="decoration-02">AI（人工知能）</span>を活用して、コンテンツ（文章、画像、コードなど）を生成するための基礎スキルです。<br>
+デザイン、ライティング、マーケティング、コーディングなど、<span class="decoration-02">あらゆるWEBスキルの効率と質を飛躍的に向上させる</span>可能性があります。</div></div>
+        
+        <div class="article-item item_image " id="item42753" data-item-id="42753" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/042/753/medium/21c4a9bd-1660-4e0b-bfd2-ae12b8c3200a.png?1761401899" title=""><img class="img-responsive item-image" alt=" (42753)" data-reference="" src="../../_assets/0c445387e7.webp" width="640" height="436"></a><h4 id="heading48"></h4></div></div>
+        
+        <div class="article-item item_markdown " id="item42705" data-item-id="42705" data-item-type="ItemMarkdown"><h4 id="heading49">WEBCOACHで学べる内容</h4>
+</div>
+        
+        <div class="article-item item_rich_text " id="item42706" data-item-id="42706" data-item-type="ItemRichText"><div class="item-body-hbr">WEBCOACHでは主に、以下のようなツールの使い方と、それを活用するための指示（プロンプト）の出し方を学びます。</div></div>
+        
+        <div class="article-item item_rich_text " id="item42707" data-item-id="42707" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">テキスト生成AI（例：ChatGPT）</span></div></div>
+        
+        <div class="article-item item_html " id="item42708" data-item-id="42708" data-item-type="ItemHtml"><div class="item-body">    <ul>
+        <li>ブログ記事やSNS投稿の原稿作成</li>
+        <li>キャッチコピーのアイデア出し</li>
+        <li>コーディング時のエラー修正やコード生成</li>
+    </ul></div></div>
+        
+        <div class="article-item item_rich_text " id="item42709" data-item-id="42709" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">画像生成AI（例：Canva Ai, Midjourney,）</span></div></div>
+        
+        <div class="article-item item_html " id="item42710" data-item-id="42710" data-item-type="ItemHtml"><div class="item-body">    <ul>
+        <li>WEBサイトやバナーデザインに使用する画像素材の生成</li>
+        <li>デザインのインスピレーションを得るためのアイデア出し</li>
+    </ul></div></div>
+        
+        <div class="article-item item_image " id="item42754" data-item-id="42754" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/042/754/medium/ebd12944-0437-4b44-865e-f9630bee680f.png?1761402030" title=""><img class="img-responsive item-image" alt=" (42754)" data-reference="" src="../../_assets/b18054a03d.webp" width="640" height="346"></a><h4 id="heading50"></h4></div></div>
+        
+        <div class="article-item item_rich_text " id="item42711" data-item-id="42711" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">プロンプトエンジニアリング</span></div></div>
+        
+        <div class="article-item item_html " id="item42712" data-item-id="42712" data-item-type="ItemHtml"><div class="item-body">    <ul>
+        <li>AIは「指示（プロンプト）の出し方」次第で、成果物が大きく変わります。</li>
+        <li><span class="decoration-02">AIから期待通りの回答や高品質な生成物を引き出すための、具体的かつ効果的な指示方法</span>を学びます。</li>
+    </ul></div></div>
+        
+        <div class="article-item item_html " id="item42713" data-item-id="42713" data-item-type="ItemHtml"><div class="item-body"><div class="card-with-icon note">
+    <span class="bold"><strong>用語説明：プロンプトエンジニアリング</strong><br></span>
+    <div class="content-area">
+        <ul>
+            <li>「プロンプト（Prompt）」とは、AIに対する「指示や命令文」のことです。</li>
+            <li>「プロンプトエンジニアリング」とは、<span class="decoration-02">AIから期待通りの回答や高品質な生成物を引き出すために、プロンプトを工夫し、設計・最適化する技術</span>のことを指します。</li>
+        </ul>
+    </div>
+</div></div></div>
+        
+        <div class="article-item item_html " id="item42714" data-item-id="42714" data-item-type="ItemHtml"><div class="item-body"><div class="callout white">
+  <div class="title-area">
+    <div class="icon bulb"></div>
+    <div class="title"><strong>AIは「アシスタント」</strong></div>
+  </div>
+  <div class="content-area">
+    <ul>
+      <li>AIはあくまで強力な「アシスタント」です。最終的な判断やクリエイティブな仕上げは人間の役割です。</li>
+      <li>AIを使いこなし、<span class="decoration-02">作業を効率化するスキル</span>を身につけることが、今後のクリエイターにとって非常に重要になります。</li>
+      <li>著作権や倫理的な側面についても理解を深め、適切に活用するスキルを学びます。</li>
+    </ul>
+  </div>
+</div></div></div>
+        
+        <div class="article-item item_heading " id="item476" data-item-id="476" data-item-type="ItemHeading"><h3 class="item-body" id="heading51">8. ビジネススキル</h3></div>
+        
+        <div class="article-item item_markdown " id="item42715" data-item-id="42715" data-item-type="ItemMarkdown"><h4 id="heading52">ビジネススキルとは</h4>
+</div>
+        
+        <div class="article-item item_rich_text " id="item477" data-item-id="477" data-item-type="ItemRichText"><div class="item-body-hbr">WEBスキルだけではなく、<span class="decoration-02">ビジネススキル</span>がないと案件につなげることは難しいです。<br>
+</div></div>
+        
+        <div class="article-item item_image " id="item42755" data-item-id="42755" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/042/755/medium/4cdfe2be-6529-42f9-afc6-90b87126d143.png?1761402062" title=""><img class="img-responsive item-image" alt=" (42755)" data-reference="" src="../../_assets/d152fd57e6.webp" width="640" height="436"></a><h4 id="heading53"></h4></div></div>
+        
+        <div class="article-item item_html " id="item42716" data-item-id="42716" data-item-type="ItemHtml"><div class="item-body"><div class="card-with-icon attention">
+  <span class="bold"><strong>学習の順序</strong><br></span>
+  <div class="content-area">
+    <ul>
+      <li>あくまで大前提としてWEBスキルがないと始まらないので、順序としては一番最後に学習するのをおすすめしています。</li>
+    </ul>
+  </div>
+</div></div></div>
+        
+        <div class="article-item item_rich_text " id="item42717" data-item-id="42717" data-item-type="ItemRichText"><div class="item-body-hbr">ビジネススキルとして、主に以下の内容を学習します。</div></div>
+        
+        <div class="article-item item_html " id="item42718" data-item-id="42718" data-item-type="ItemHtml"><div class="item-body">    <ul>
+        <li>案件獲得スキル</li>
+        <li>納品・リピートスキル</li>
+        <li>法務・税務知識</li>
+    </ul></div></div>
+        
+        <div class="article-item item_markdown " id="item42719" data-item-id="42719" data-item-type="ItemMarkdown"><h4 id="heading54">案件獲得スキル</h4>
+</div>
+        
+        <div class="article-item item_rich_text " id="item42720" data-item-id="42720" data-item-type="ItemRichText"><div class="item-body-hbr">提案力・提案資料の作成・営業力など、案件獲得に必要なスキル全てを指します。<br>
+ 未経験からのスタートの場合、最初は単価が低くても実績作りという気持ちで、仕事を選びず頑張っていく姿勢が重要になります。<br>
+<br>
+案件獲得方法には以下のように多岐に渡ります。さまざまな方法にトライしましょう。</div></div>
+        
+        <div class="article-item item_html " id="item42721" data-item-id="42721" data-item-type="ItemHtml"><div class="item-body">    <ul>
+        <li>クラウドソーシング</li>
+        <li>知人・紹介</li>
+        <li>飛び込み営業</li>
+        <li>副業・フリーランスエージェント</li>
+        <li>SNS発信</li>
+        <li>パートナー企業提携</li>
+    </ul></div></div>
+        
+        <div class="article-item item_markdown " id="item42722" data-item-id="42722" data-item-type="ItemMarkdown"><h4 id="heading55">納品・リピートスキル</h4>
+</div>
+        
+        <div class="article-item item_rich_text " id="item42723" data-item-id="42723" data-item-type="ItemRichText"><div class="item-body-hbr">案件は獲得するだけでなく、しっかりと納品してクライアントに満足していただく必要があります。</div></div>
+        
+        <div class="article-item item_html " id="item42724" data-item-id="42724" data-item-type="ItemHtml"><div class="item-body"><div class="callout white">
+ <div class="title-area">
+   <div class="icon bulb"></div>
+   <div class="title"><strong>信頼獲得の鍵</strong></div>
+  </div>
+  <div class="content-area">
+    <ul>
+      <li>クライアントの信頼を第一に行動しましょう。</li>
+      <li>一番大切なことは <span class="decoration-02">満足度 &gt; 期待値 となるように調整していくこと</span>です。</li>
+      <li>相手の期待値を超えるような納品を行い、リピートや紹介がもらえるようなスキルを習得していただきます。</li>
+    </ul>
+  </div>
+</div></div></div>
+        
+        <div class="article-item item_markdown " id="item42725" data-item-id="42725" data-item-type="ItemMarkdown"><h4 id="heading56">法務・税務知識</h4>
+</div>
+        
+        <div class="article-item item_rich_text " id="item42726" data-item-id="42726" data-item-type="ItemRichText"><div class="item-body-hbr">副業やフリーランスとして活動する場合、<span class="decoration-02">法律の知識</span>や<span class="decoration-02">税務の知識</span>も必要になります。<br>
+具体的にはクライアントと結ぶ契約書の確認、税金の計算・申告などです。<br>
+ これらの基本的なビジネススキルについても学習し、不安なく仕事の獲得にチャレンジできるようにしましょう。</div></div>
+        
+        <div class="article-item item_heading " id="item488" data-item-id="488" data-item-type="ItemHeading"><h2 class="item-body" id="heading57">学習していく順番</h2></div>
+        
+        <div class="article-item item_markdown " id="item38836" data-item-id="38836" data-item-type="ItemMarkdown"><h4 id="heading58">目安の学習時間：5分</h4>
+</div>
+        
+        <div class="article-item item_heading " id="item42727" data-item-id="42727" data-item-type="ItemHeading"><h3 class="item-body" id="heading59">推奨される学習ステップ</h3></div>
+        
+        <div class="article-item item_rich_text " id="item42728" data-item-id="42728" data-item-type="ItemRichText"><div class="item-body-hbr">WEBCOACHでは学ぶスキルが多岐にわたるため、学習の順番は非常に重要です。<br>
+<span class="decoration-02">個々の目標によって最適な順番は異なります</span>が、ここでは推奨される学習ステップの考え方を紹介します。</div></div>
+        
+        <div class="article-item item_markdown " id="item42729" data-item-id="42729" data-item-type="ItemMarkdown"><h4 id="heading60">1. まずは「WEBデザイン」から</h4>
+</div>
+        
+        <div class="article-item item_rich_text " id="item42731" data-item-id="42731" data-item-type="ItemRichText"><div class="item-body-hbr">初学者の方に一番お勧めしたいのが、<span class="decoration-02">WEBデザイン</span>です。<br>
+WixやFigmaは学習がしやすいのに加え、LP制作など高単価な案件を狙うことができます！</div></div>
+        
+        <div class="article-item item_html " id="item42730" data-item-id="42730" data-item-type="ItemHtml"><div class="item-body"><div class="callout white">
+  <div class="title-area">
+    <div class="icon bulb"></div>
+    <div class="title"><strong>推奨ステップ：まずはWEBデザインから</strong></div>
+  </div>
+  <div class="content-area">
+    <ul>
+      <li>まずは、<span class="decoration-02">WEBデザイン（WixやFigma）</span>を学習することをおすすめします。</li>
+      <li>視覚的に成果物が見えやすく、特にノーコード（Wix）は比較的短期間で「WEBサイトを作れた」という成功体験を積みやすいためです。</li>
+    </ul>
+  </div>
+</div></div></div>
+        
+        <div class="article-item item_markdown " id="item42732" data-item-id="42732" data-item-type="ItemMarkdown"><h4 id="heading61">2. スキルを掛け合わせる</h4>
+</div>
+        
+        <div class="article-item item_rich_text " id="item42733" data-item-id="42733" data-item-type="ItemRichText"><div class="item-body-hbr">WEBデザインの基礎を学んだ後は、自分の興味や目指すキャリアに合わせて、以下のスキルを掛け合わせていきます。</div></div>
+        
+        <div class="article-item item_html " id="item42734" data-item-id="42734" data-item-type="ItemHtml"><div class="item-body">  <ul>
+    <li><strong>集客や売上に貢献したい方：</strong>
+      <ul class="nested-ul">
+        <li><span class="decoration-02">WEBマーケティング</span>や<span class="decoration-02">WEB制作（WordPress）</span>に進むのがおすすめです。デザインと合わせて提案できると、クライアントのより根本的な課題解決につながります。</li>
+      </ul>
+    </li>
+    <li><strong>さらに幅広い分野に挑戦したい方：</strong>
+      <ul class="nested-ul">
+        <li><span class="decoration-02">SNS運用</span>や<span class="decoration-02">動画編集</span>がおすすめです。SNS投稿画像や動画サムネイルの制作など、WEBデザインスキルを直接活かせます。</li>
+      </ul>
+    </li>
+    <li><strong>業務の効率化を進めたい方：</strong>
+      <ul class="nested-ul">
+        <li><span class="decoration-02">AI生成基礎</span>の学習がおすすめです。デザイン素材の生成やSNS投稿文の作成など、あらゆる作業の効率を上げることができます。</li>
+      </ul>
+    </li>
+  </ul></div></div>
+        
+        <div class="article-item item_markdown " id="item42735" data-item-id="42735" data-item-type="ItemMarkdown"><h4 id="heading62">3. 最後に「ビジネススキル」を学ぶ</h4>
+</div>
+        
+        <div class="article-item item_rich_text " id="item42736" data-item-id="42736" data-item-type="ItemRichText"><div class="item-body-hbr">どのようなスキルを選んだ場合でも、案件獲得に挑戦する前に、必ず「ビジネススキル」を学習しましょう。<br>
+ここで案件獲得の方法や契約の知識を学び、準備を整えます。</div></div>
+        
+        <div class="article-item item_html " id="item42737" data-item-id="42737" data-item-type="ItemHtml"><div class="item-body"><div class="card-with-icon attention">
+  <span class="bold"><strong>コーチと相談しましょう</strong><br></span>
+  <div class="content-area">
+    <ul>
+      <li>これはあくまで一例です。細かい学習の順番は、担当コーチと相談しながら最適なプランを決めていきましょう。</li>
+      <li>教材はボリュームが多いため、コンテンツは卒業後も閲覧可能としております。焦らず自分のペースで進めましょう。</li>
+    </ul>
+  </div>
+</div></div></div>
+        
+        <div class="article-item item_rich_text " id="item42738" data-item-id="42738" data-item-type="ItemRichText"><div class="item-body-hbr">お疲れ様でした！ <br>
+これで、WEBCOACHで学ぶスキルの全体像と、学習の進め方が掴めたはずです。<br>
+<br>
+これから学ぶ内容は、決して簡単なことばかりではないかもしれません。時には手が止まってしまったり、デザインが思い通りにいかなかったりすることもあるでしょう。<br>
+ですが、心配しないでください<span class="decoration-02">。一つ一つのスキルをコツコツと身につけた先には、新しい働き方や、自信を持って価値を提供できる未来が待っています。</span><br>
+<br>
+<span class="decoration-02">いよいよ、WEBCOACHでの本格的な学習が始まります。</span>私たちと一緒に、楽しみながら頑張っていきましょう！</div></div>
+        
+        <div class="article-item item_html " id="item45884" data-item-id="45884" data-item-type="ItemHtml"><div class="item-body"><div class="pagenation-buttons" style="justify-content: flex-end;">
+  <a href="https://learn.webcoach.jp/knowledge/gdR01" class="pagenation-buttons_next">次の章に進む<img src="../../_assets/47498cfebf.svg" class="pagenation-buttons_icon"></a>
+</div></div></div>
+        
+        
+        
+        <div class="back-to-roadmap mb-4 text-center"></div>
+      </div>
+    </div>
+    
+    <div class="lightbox-modal" id="lightboxModal">
+      <img src="" alt="">
+    </div>
+    
+    <div id="modal" class="fixed-menu-modal">
+      <div class="fixed-menu-modal-content">
+        <div class="index mb-3" style="background-color: #FDF5E8;">
+          <div>
+            <div class="fw-light">INDEX</div>
+            <div class="h3">目次</div>
+          </div>
+          <div class="toc"><ul><li><a href="#heading0" class="tocLink">学ぶスキルの全体像の理解</a><ul><li><a href="#heading1" class="tocLink">この教材の学習時間：35分</a></li><li><a href="#heading2" class="tocLink">この章で到達できるゴール</a></li></ul></li><li><a href="#heading3" class="tocLink">はじめに</a><ul><li><a href="#heading4" class="tocLink">目安の学習時間：5分</a></li></ul><ul><li><a href="#heading5" class="tocLink">WEBCOACHでの学習へようこそ</a><ul><li><a href="#heading6" class="tocLink"></a></li></ul></li></ul></li><li><a href="#heading7" class="tocLink">習得するスキルの全体像を掴む</a><ul><li><a href="#heading8" class="tocLink">目安の学習時間：30分</a></li></ul><ul><li><a href="#heading9" class="tocLink">WEBCOACHで習得する8つのスキル</a></li><li><a href="#heading10" class="tocLink">1. ベーシックスキル</a><ul><li><a href="#heading11" class="tocLink"></a></li><li><a href="#heading12" class="tocLink">論理的思考力</a></li><li><a href="#heading13" class="tocLink">検索能力</a></li><li><a href="#heading14" class="tocLink">コミュニケーション能力</a></li><li><a href="#heading15" class="tocLink">自己学習スキル</a></li></ul></li><li><a href="#heading16" class="tocLink">2. WEBデザイン</a><ul><li><a href="#heading17" class="tocLink"></a></li><li><a href="#heading18" class="tocLink">Figma（フィグマ）</a></li><li><a href="#heading19" class="tocLink"></a></li><li><a href="#heading20" class="tocLink">Wix（ウィックス）</a></li><li><a href="#heading21" class="tocLink"></a></li><li><a href="#heading22" class="tocLink">その他のデザインツールについて</a></li></ul></li><li><a href="#heading23" class="tocLink">3. WEBマーケティング</a><ul><li><a href="#heading24" class="tocLink">WEBマーケティングとは</a></li><li><a href="#heading25" class="tocLink"></a></li><li><a href="#heading26" class="tocLink">WEBサイト改善スキル</a></li><li><a href="#heading27" class="tocLink"></a></li><li><a href="#heading28" class="tocLink">WEB広告運用</a></li></ul></li><li><a href="#heading29" class="tocLink">4. WEB制作スキル</a><ul><li><a href="#heading30" class="tocLink">WEB制作スキルとは</a></li><li><a href="#heading31" class="tocLink"></a></li><li><a href="#heading32" class="tocLink">WEBサイトの作り方</a></li><li><a href="#heading33" class="tocLink">WEBCOACHで学習できる内容</a></li><li><a href="#heading34" class="tocLink"></a></li></ul></li><li><a href="#heading35" class="tocLink">5. 動画編集</a><ul><li><a href="#heading36" class="tocLink">動画編集スキルとは</a></li><li><a href="#heading37" class="tocLink"></a></li><li><a href="#heading38" class="tocLink">WEBCOACHで学べる内容</a></li><li><a href="#heading39" class="tocLink"></a></li><li><a href="#heading40" class="tocLink"></a></li></ul></li><li><a href="#heading41" class="tocLink">6. SNS運用</a><ul><li><a href="#heading42" class="tocLink">SNS運用スキルとは</a></li><li><a href="#heading43" class="tocLink"></a></li><li><a href="#heading44" class="tocLink">WEBCOACHで学べる内容</a></li><li><a href="#heading45" class="tocLink"></a></li></ul></li><li><a href="#heading46" class="tocLink">7. AI生成基礎</a><ul><li><a href="#heading47" class="tocLink">AI生成基礎とは</a></li><li><a href="#heading48" class="tocLink"></a></li><li><a href="#heading49" class="tocLink">WEBCOACHで学べる内容</a></li><li><a href="#heading50" class="tocLink"></a></li></ul></li><li><a href="#heading51" class="tocLink">8. ビジネススキル</a><ul><li><a href="#heading52" class="tocLink">ビジネススキルとは</a></li><li><a href="#heading53" class="tocLink"></a></li><li><a href="#heading54" class="tocLink">案件獲得スキル</a></li><li><a href="#heading55" class="tocLink">納品・リピートスキル</a></li><li><a href="#heading56" class="tocLink">法務・税務知識</a></li></ul></li></ul></li><li><a href="#heading57" class="tocLink">学習していく順番</a><ul><li><a href="#heading58" class="tocLink">目安の学習時間：5分</a></li></ul><ul><li><a href="#heading59" class="tocLink">推奨される学習ステップ</a><ul><li><a href="#heading60" class="tocLink">1. まずは「WEBデザイン」から</a></li><li><a href="#heading61" class="tocLink">2. スキルを掛け合わせる</a></li><li><a href="#heading62" class="tocLink">3. 最後に「ビジネススキル」を学ぶ</a></li></ul></li></ul></li></ul></div>
+        </div>
+        
+        <!-- ボタン類 -->
+        <div id="fixed-menu_buttons" class="fixed-menu_buttons">
+  <a href="https://learn.webcoach.jp/knowledge/gdR01" class="pagenation-buttons_next">次の章に進む<img src="../../_assets/47498cfebf.svg" class="pagenation-buttons_icon"></a>
+</div>
+        
+        <div class="back-to-roadmap text-center"></div>
+      </div>
+    </div>
+    
+    <button id="toggleBtn" class="floating-btn">
+      <img id="iconOpen" src="../../_assets/5feefcfc55.svg" alt="メニューを開く">
+      <img id="iconClose" src="../../_assets/ae4a1129c9.svg" alt="メニューを閉じる" style="display:none;">
+    </button>
+  </div>
+</div>
+</div>
+<!-- <script src="https://cdn.clipkit.co/clipkit/javascripts/item-shopify-1.0.js?v=v15.9.0-20260915" async></script> -->
+            </main></div>
+        
+
+    
+
+    <div class="p-5" style="background-color: #B73E3D; color: white; height: 300px;">
+        <div class="">
+            <div class="h4 ps-3" style="border-left: 5px solid white;">WEBCOACH | キャリアチェンジまでの全てを学ぶマンツーマンWEBスクール</div>
+            <ul class="nav flex-column m-0 p-3 fw-light">
+                <li class="nav-item mb-2"><a href="https://www.webcoach.jp/" target="_blank">WEBCOACH | 公式HP</a></li>
+                <li class="nav-item mb-2"><a href="https://www.instagram.com/webcoach_officials/" target="_blank">WEBCOACH | 公式Instagram</a></li>
+                <li class="nav-item mb-2"><a href="https://vectorinc.co.jp/groupservice/webcoach-career/" target="_blank">WEBCOACH 公式メディア | WEBCOACH career</a></li>
+            </ul>
+        </div>
+        <div class="text-center">
+            <small>© 2020 by WEBCOACH</small>
+        </div>
+    </div>
+
+    
+
+    <!-- bodyタグ内の下部に挿入されます -->
+
+
+    <!-- BootstrapのCDNでのjs読み込み -->
+    
+
+    <!-- シンタックスハイライトの生成 -->
+    
+    
+
+    <!-- 目次の生成 -->
+    
+
+    <!-- ブックマークの生成 -->
+    
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="ck-icon-arrow-down" viewBox="0 0 1792 1792"><path d="M1675 832q0 53-37 90l-651 652q-39 37-91 37-53 0-90-37l-651-652q-38-36-38-90 0-53 38-91l74-75q39-37 91-37 53 0 90 37l294 294v-704q0-52 38-90t90-38h128q52 0 90 38t38 90v704l294-294q37-37 90-37 52 0 91 37l75 75q37 39 37 91z"></path></symbol><symbol id="ck-icon-arrow-up" viewBox="0 0 1792 1792"><path d="M1675 971q0 51-37 90l-75 75q-38 38-91 38-54 0-90-38l-294-293v704q0 52-37.5 84.5t-90.5 32.5h-128q-53 0-90.5-32.5t-37.5-84.5v-704l-294 293q-36 38-90 38t-90-38l-75-75q-38-38-38-90 0-53 38-91l651-651q35-37 90-37 54 0 91 37l651 651q37 39 37 91z"></path></symbol><symbol id="ck-icon-calendar" viewBox="0 0 1792 1792"><path d="M192 1664h288v-288h-288v288zm352 0h320v-288h-320v288zm-352-352h288v-320h-288v320zm352 0h320v-320h-320v320zm-352-384h288v-288h-288v288zm736 736h320v-288h-320v288zm-384-736h320v-288h-320v288zm768 736h288v-288h-288v288zm-384-352h320v-320h-320v320zm-352-864v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm736 864h288v-320h-288v320zm-384-384h320v-288h-320v288zm384 0h288v-288h-288v288zm32-480v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm384-64v1280q0 52-38 90t-90 38h-1408q-52 0-90-38t-38-90v-1280q0-52 38-90t90-38h128v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h384v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h128q52 0 90 38t38 90z"></path></symbol><symbol id="ck-icon-chevron-left" viewBox="0 0 1792 1792"><path d="M1427 301l-531 531 531 531q19 19 19 45t-19 45l-166 166q-19 19-45 19t-45-19l-742-742q-19-19-19-45t19-45l742-742q19-19 45-19t45 19l166 166q19 19 19 45t-19 45z"></path></symbol><symbol id="ck-icon-chevron-right" viewBox="0 0 1792 1792"><path d="M1363 877l-742 742q-19 19-45 19t-45-19l-166-166q-19-19-19-45t19-45l531-531-531-531q-19-19-19-45t19-45l166-166q19-19 45-19t45 19l742 742q19 19 19 45t-19 45z"></path></symbol><symbol id="ck-icon-clock-o" viewBox="0 0 1792 1792"><path d="M1024 544v448q0 14-9 23t-23 9h-320q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h224v-352q0-14 9-23t23-9h64q14 0 23 9t9 23zm416 352q0-148-73-273t-198-198-273-73-273 73-198 198-73 273 73 273 198 198 273 73 273-73 198-198 73-273zm224 0q0 209-103 385.5t-279.5 279.5-385.5 103-385.5-103-279.5-279.5-103-385.5 103-385.5 279.5-279.5 385.5-103 385.5 103 279.5 279.5 103 385.5z"></path></symbol><symbol id="ck-icon-trash" viewBox="0 0 1792 1792"><path d="M704 1376v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm-544-992h448l-48-117q-7-9-17-11h-317q-10 2-17 11zm928 32v64q0 14-9 23t-23 9h-96v948q0 83-47 143.5t-113 60.5h-832q-66 0-113-58.5t-47-141.5v-952h-96q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h309l70-167q15-37 54-63t79-26h320q40 0 79 26t54 63l70 167h309q14 0 23 9t9 23z"></path></symbol><symbol id="ck-icon-undo" viewBox="0 0 1792 1792"><path d="M1664 896q0 156-61 298t-164 245-245 164-298 61q-172 0-327-72.5t-264-204.5q-7-10-6.5-22.5t8.5-20.5l137-138q10-9 25-9 16 2 23 12 73 95 179 147t225 52q104 0 198.5-40.5t163.5-109.5 109.5-163.5 40.5-198.5-40.5-198.5-109.5-163.5-163.5-109.5-198.5-40.5q-98 0-188 35.5t-160 101.5l137 138q31 30 14 69-17 40-59 40h-448q-26 0-45-19t-19-45v-448q0-42 40-59 39-17 69 14l130 129q107-101 244.5-156.5t284.5-55.5q156 0 298 61t245 164 164 245 61 298z"></path></symbol></svg>
+
+<!--Clipkit(R) v15.9.0-20260915 Copyright (C) 2026 VECTOR Inc.-->
+
+
+
+
+
+<div class="dynmsg alert alert-info" style="display:none;"><button class="close"><span class="fa fa-times"></span></button><div class="message"></div></div><div class="dynmsg alert alert-danger" style="display:none;"><button class="close"><span class="fa fa-times"></span></button><div class="message"></div></div></body></html>

@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<!-- clipkit-source-url: https://learn.webcoach.jp/SNS/camera-chap5/bg7CG -->
+<!-- clipkit-fetched-at: 2026-09-17T11:14:00.275Z -->
+<html lang="ja"><head><style data-clipkit-snapshot="force-visible">[data-aos],.reveal,.wow,.fade-in,.animate__animated,.js-reveal{opacity:1!important;transform:none!important;visibility:visible!important;animation:none!important;transition:none!important}</style></head><body><div>
+  
+    <div>
+      
+      
+        
+          <div class="article-item item_html " id="item49494" data-item-id="49494" data-item-type="ItemHtml"><div class="item-body">
+
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>動画撮影の基本設定</title>
+<link rel="preconnect" href="https://fonts.googleapis.com/">
+<link href="../../_assets/e9c67fa5e8.css" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Noto Sans JP', sans-serif; color: #3D3D3D; font-size: 16px; line-height: 1.9; background: #fff; -webkit-font-smoothing: antialiased; }
+.lesson-wrapper { max-width: 70%; margin: 0 auto; padding: 40px 0 80px; }
+@media (max-width: 600px) { .lesson-wrapper { max-width: 92%; } }
+
+h2 { font-size: 24px; font-weight: 700; color: #2D2D2D; margin: 64px 0 24px; padding: 0 0 14px; position: relative; letter-spacing: -0.02em; line-height: 1.4; }
+h2::after { content: ''; position: absolute; bottom: 0; left: 0; width: 48px; height: 4px; border-radius: 2px; background: linear-gradient(90deg, #E85D4A, #F5A64A); }
+.item-head { font-size: 16px; font-weight: 700; color: #2D2D2D; margin: 32px 0 10px; display: flex; align-items: center; gap: 8px; }
+.item-head::before { content: ''; display: block; width: 6px; height: 6px; background: linear-gradient(135deg, #E85D4A, #F5A64A); border-radius: 50%; flex-shrink: 0; }
+p { font-size: 16px; line-height: 2.0; color: #555; margin: 0 0 16px; }
+ul, ol { padding-left: 1.5em; margin: 0 0 16px; }
+li { font-size: 16px; line-height: 2.0; color: #555; margin-bottom: 6px; }
+strong { color: #2D2D2D; font-weight: 700; }
+
+.lesson-hero { background: linear-gradient(135deg, #F84744 0%, #FB9A3F 100%); border-radius: 16px; padding: 22px 28px; margin: 0 0 40px; color: #fff; }
+.lesson-hero__badge { display: inline-block; background: #fff; color: #E85D4A; padding: 5px 14px; border-radius: 8px; font-size: 11px; font-weight: 800; letter-spacing: 0.18em; margin-bottom: 14px; font-family: 'Inter', sans-serif; }
+.lesson-hero__title { font-size: 22px; font-weight: 800; line-height: 1.4; margin-bottom: 16px; letter-spacing: -0.01em; }
+.lesson-hero__meta { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+.lesson-hero__chip { display: inline-flex; align-items: center; background: #fff; color: #333; padding: 5px 11px; border-radius: 6px; font-size: 11.5px; font-weight: 700; font-family: 'Inter', sans-serif; letter-spacing: 0.04em; }
+.lesson-hero__topic { font-size: 13px; font-weight: 600; opacity: 0.95; }
+.lesson-hero__time { display: inline-flex; align-items: center; gap: 5px; font-size: 13px; font-weight: 600; opacity: 0.95; }
+
+.goal-box { background: #fff; border-radius: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); padding: 20px 24px; margin: 0 0 40px; }
+.goal-box__head { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; }
+.goal-box__pill { display: inline-block; background: linear-gradient(135deg, #F84744 0%, #FB9A3F 100%); color: #fff; padding: 6px 16px; border-radius: 50px; font-size: 11px; font-weight: 700; letter-spacing: 0.18em; }
+.goal-box__sub { font-size: 14px; font-weight: 700; color: #333; letter-spacing: 0.02em; }
+.goal-box ul { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 6px; }
+.goal-box li { display: flex; gap: 12px; padding: 10px 14px; background: linear-gradient(135deg, #FFF5F0 0%, #FFFAEC 100%); border-radius: 10px; align-items: flex-start; transition: transform 0.2s; }
+.goal-box li:hover { transform: translateX(2px); }
+.goal-box__check { flex-shrink: 0; width: 22px; height: 22px; border-radius: 50%; background: linear-gradient(135deg, #F84744 0%, #FB9A3F 100%); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 800; margin-top: 1px; }
+.goal-box__text { flex: 1; font-size: 14px; color: #333; line-height: 1.7; font-weight: 500; }
+
+.toc { background: #fff; border-radius: 14px; padding: 22px 26px; box-shadow: 0 2px 12px rgba(0,0,0,0.05); margin: 0 0 48px; }
+.toc-head { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; }
+.toc-icon { width: 26px; height: 26px; border-radius: 7px; background: linear-gradient(135deg, #E85D4A, #F5A64A); display: flex; align-items: center; justify-content: center; color: #fff; font-size: 11px; font-weight: 700; }
+.toc-title { font-size: 15px; font-weight: 700; color: #2D2D2D; }
+.toc ul { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 3px; }
+.toc li { list-style: none; }
+.toc li a { display: flex; align-items: center; gap: 12px; padding: 8px 14px; background: #FAF9F8; border-radius: 8px; text-decoration: none; transition: background 0.2s; }
+.toc li a:hover { background: #F5EFEC; }
+.toc-num { font-size: 12px; font-weight: 700; color: #2D2D2D; letter-spacing: 0.05em; min-width: 22px; font-family: 'Inter', sans-serif; }
+.toc-text { flex: 1; font-size: 14px; color: #2D2D2D; font-weight: 500; }
+.toc-chev { color: #B8B8B8; font-size: 12px; }
+
+.slide-img { width: 100%; border-radius: 12px; display: block; box-shadow: 0 4px 24px rgba(0,0,0,0.10); margin: 28px 0; }
+.lightbox-img { width: 100%; border-radius: 12px; display: block; box-shadow: 0 4px 24px rgba(0,0,0,0.10); }
+
+.img-placeholder { background: #FAF5F3; border: 2px dashed #E8D5CC; border-radius: 12px 12px 0 0; padding: 24px 20px; text-align: center; margin: 28px 0 0; }
+.img-placeholder-label { font-size: 10px; font-weight: 700; letter-spacing: 0.15em; color: #C4A59A; margin-bottom: 6px; }
+.img-placeholder-name { font-size: 12px; color: #B08880; font-family: monospace; }
+.prompt-box { background: #2A2220; border-radius: 0 0 12px 12px; padding: 16px 20px; margin: 0 0 28px; }
+.prompt-box-label { font-size: 10px; font-weight: 700; letter-spacing: 0.15em; color: #F5A64A; margin-bottom: 8px; }
+.prompt-text { color: #E8DDD8; font-size: 12px; line-height: 1.7; font-family: 'Courier New', monospace; white-space: pre-wrap; word-break: break-word; margin: 0; }
+
+.point-box { background: #FFFBE6; border: 1.5px solid #F5C58F; border-radius: 10px; padding: 18px 22px 20px; margin: 0 0 28px; }
+.point-box__head { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+.point-box__tab { display: inline-flex; align-items: center; justify-content: center; gap: 5px; background: #F5A64A; color: #fff; font-size: 11px; font-weight: 700; padding: 5px 17px 5px 11px; min-width: 88px; letter-spacing: 0.05em; clip-path: polygon(0 0, 100% 0, calc(100% - 10px) 50%, 100% 100%, 0 100%); flex-shrink: 0; font-family: 'Inter', sans-serif; }
+.point-box__sub { font-size: 13.5px; font-weight: 700; color: #2D2D2D; }
+.point-box p { font-size: 15px; line-height: 1.9; color: #444; margin: 0; }
+
+.quiz-box { background: linear-gradient(135deg, #FFF1F2 0%, #FCE7F3 100%); border-radius: 20px; padding: 20px 22px; margin: 28px 0; }
+.quiz-top { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+.quiz-icon { width: 30px; height: 30px; border-radius: 10px; background: #fff; color: #EC4899; display: flex; align-items: center; justify-content: center; font-size: 16px; box-shadow: 0 2px 8px rgba(236,72,153,0.15); font-weight: 700; }
+.quiz-title { font-size: 15px; font-weight: 700; color: #831843; }
+.quiz-q { font-size: 15px; font-weight: 700; color: #831843; margin-bottom: 12px; line-height: 1.6; background: #fff; padding: 12px 16px; border-radius: 12px; box-shadow: 0 2px 8px rgba(236,72,153,0.06); }
+.quiz-options { display: flex; flex-direction: column; gap: 7px; }
+.quiz-opt { display: flex; align-items: center; gap: 12px; padding: 10px 16px; background: #fff; border: 2px solid transparent; border-radius: 12px; cursor: pointer; transition: all 0.2s; font-family: inherit; text-align: left; width: 100%; box-shadow: 0 2px 6px rgba(236,72,153,0.05); }
+.quiz-opt:hover:not(:disabled) { border-color: #F9A8D4; transform: translateY(-1px); box-shadow: 0 4px 10px rgba(236,72,153,0.1); }
+.quiz-opt:disabled { cursor: default; }
+.quiz-letter { flex-shrink: 0; width: 28px; height: 28px; border-radius: 50%; background: #FCE7F3; color: #831843; font-size: 13px; font-weight: 700; display: flex; align-items: center; justify-content: center; font-family: 'Inter', sans-serif; }
+.quiz-opt-text { font-size: 14px; color: #1F1F1F; flex: 1; font-weight: 500; line-height: 1.55; }
+.quiz-opt.correct { background: #ECFCCB; border-color: #84CC16; }
+.quiz-opt.correct .quiz-letter { background: #84CC16; color: #fff; }
+.quiz-opt.correct .quiz-opt-text { color: #365314; font-weight: 700; }
+.quiz-opt.wrong { background: #FFE4E6; border-color: #FB7185; }
+.quiz-opt.wrong .quiz-letter { background: #FB7185; color: #fff; }
+.quiz-opt.wrong .quiz-opt-text { color: #881337; font-weight: 700; }
+.quiz-opt.dim { opacity: 0.4; }
+.quiz-feedback { display: none; gap: 12px; padding: 12px 16px; background: #fff; border-radius: 12px; margin-top: 10px; box-shadow: 0 2px 8px rgba(132,204,22,0.1); align-items: flex-start; }
+.quiz-feedback.show { display: flex; }
+.quiz-feedback.ng { box-shadow: 0 2px 8px rgba(251,113,133,0.1); }
+.quiz-feedback-icon { flex-shrink: 0; width: 28px; height: 28px; border-radius: 50%; background: #84CC16; color: #fff; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 700; }
+.quiz-feedback.ng .quiz-feedback-icon { background: #FB7185; }
+.quiz-feedback-body { flex: 1; }
+.quiz-feedback-title { font-size: 13px; font-weight: 800; color: #365314; margin-bottom: 4px; }
+.quiz-feedback.ng .quiz-feedback-title { color: #881337; }
+.quiz-feedback-text { font-size: 13px; color: #4D5552; line-height: 1.75; }
+.quiz-feedback.ng .quiz-feedback-text { color: #6B5258; }
+
+.summary-box { background: #E8F5E0; border-radius: 14px; padding: 20px 24px; margin: 48px 0 40px; }
+.summary-box__head { margin-bottom: 14px; }
+.summary-box__badge { display: inline-block; background: linear-gradient(135deg, #4A8024 0%, #6BAA45 100%); color: #fff; padding: 6px 14px; border-radius: 8px; font-size: 12px; font-weight: 700; letter-spacing: 0.18em; }
+.summary-box ol { list-style: none; padding: 0; margin: 0; counter-reset: sbc; }
+.summary-box li { counter-increment: sbc; position: relative; padding: 7px 0 7px 30px; font-size: 14.5px; line-height: 1.8; color: #2D2D2D; font-weight: 500; }
+.summary-box li::before { content: counter(sbc, decimal-leading-zero); position: absolute; left: 0; top: 7px; color: #4A8024; font-weight: 800; font-size: 13px; font-family: 'Inter', sans-serif; letter-spacing: -0.02em; }
+
+.check-box { background: #fff; border-radius: 14px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); padding: 20px 24px; margin: 0 0 40px; }
+.check-box__head { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; padding-bottom: 12px; border-bottom: 2px solid; border-image: linear-gradient(90deg, #F84744 0%, #FB9A3F 100%) 1; }
+.check-box__pill { display: inline-block; background: linear-gradient(135deg, #F84744 0%, #FB9A3F 100%); color: #fff; padding: 5px 14px; border-radius: 50px; font-size: 11px; font-weight: 800; letter-spacing: 0.18em; }
+.check-box__sub { font-size: 14px; font-weight: 700; color: #333; }
+.check-box details { margin-bottom: 7px; }
+.check-box summary { padding: 11px 18px; cursor: pointer; display: flex; align-items: center; gap: 12px; font-size: 14px; color: #2D2D2D; background: linear-gradient(135deg, #FFF5F0 0%, #FFFAEC 100%); border-radius: 22px; transition: all 0.2s; border: 1.5px solid transparent; font-weight: 500; list-style: none; }
+.check-box summary:hover { border-color: #F5A64A; }
+.check-box summary::-webkit-details-marker { display: none; }
+.check-box summary::before { content: '＋'; color: #fff; background: linear-gradient(135deg, #F84744 0%, #FB9A3F 100%); width: 22px; height: 22px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 800; flex-shrink: 0; }
+.check-box details[open] summary { border-color: #F5A64A; }
+.check-box details[open] summary::before { content: '−'; }
+.check-box__detail { padding: 12px 20px 4px 48px; font-size: 13.5px; color: #555; line-height: 1.85; }
+
+.reveal { opacity: 0; transform: translateY(20px); transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1); }
+.reveal.visible { opacity: 1; transform: translateY(0); }
+
+/* ===== データテーブル ===== */
+.spec-table { width: 100%; border-collapse: separate; border-spacing: 0; overflow: hidden; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.04); margin: 0 0 28px; }
+.spec-table thead { background: linear-gradient(135deg, #E85D4A, #F5A64A); color: #fff; }
+.spec-table th { padding: 14px 16px; font-size: 13px; font-weight: 700; text-align: left; letter-spacing: 0.04em; }
+.spec-table td { padding: 14px 16px; font-size: 14px; color: #444; border-bottom: 1px solid #F0E5DC; vertical-align: top; line-height: 1.7; background: #fff; }
+.spec-table tr:nth-child(even) td { background: #FBF8F5; }
+.spec-table tr:last-child td { border-bottom: none; }
+.tbl-num { font-family: 'Inter', sans-serif; font-weight: 800; color: #E85D4A; font-size: 13px; margin-right: 4px; }
+.tbl-name { font-weight: 700; color: #2D2D2D; }
+
+/* ===== ステップ表示 ===== */
+.step-row { display: flex; align-items: flex-start; gap: 16px; margin: 0 0 24px; transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1); }
+.step-row__num { flex-shrink: 0; width: 38px; height: 38px; border-radius: 50%; background: linear-gradient(135deg, #E85D4A, #F5A64A); color: #fff; font-size: 16px; font-weight: 700; display: flex; align-items: center; justify-content: center; font-family: 'Inter', sans-serif; }
+.step-row__body { flex: 1; }
+.step-row__title { font-size: 16px; font-weight: 700; color: #2D2D2D; margin-bottom: 6px; line-height: 1.5; }
+.step-row__text { font-size: 14.5px; line-height: 1.9; color: #555; margin: 0; }
+h3 { font-size: 17px; font-weight: 700; color: #2D2D2D; margin: 40px 0 12px; padding-left: 14px; border-left: 3px solid #2D2D2D; }
+
+/* ===== 用語ツールチップ ===== */
+.tt { position: relative; display: inline; border-bottom: 1.5px dashed #E85D4A; cursor: help; }
+.tt__pop {
+  display: none; position: absolute; bottom: calc(100% + 10px); left: 50%;
+  transform: translateX(-50%); width: 210px; background: #fff;
+  border: 1.5px solid #F0DEDA; border-radius: 10px; padding: 10px 13px;
+  font-size: 12.5px; line-height: 1.75; color: #3D3D3D; font-weight: 400;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.13); z-index: 200;
+  white-space: normal; text-align: left; pointer-events: none;
+}
+.tt__pop-label { display: block; font-size: 10px; font-weight: 700; color: #E85D4A; letter-spacing: 0.1em; margin-bottom: 4px; }
+.tt__pop::after {
+  content: ''; position: absolute; bottom: -6px; left: 50%;
+  width: 11px; height: 11px; background: #fff;
+  border-bottom: 1.5px solid #F0DEDA; border-right: 1.5px solid #F0DEDA;
+  transform: translateX(-50%) rotate(45deg);
+}
+.tt:hover .tt__pop, .tt.open .tt__pop { display: block; }
+.tt__pop--below { top: calc(100% + 10px) !important; bottom: auto !important; }
+.tt__pop--below::after { top: -6px; bottom: auto; border-bottom: none; border-right: none; border-top: 1.5px solid #F0DEDA; border-left: 1.5px solid #F0DEDA; }
+</style>
+<meta name="csrf-param" content="authenticity_token">
+<meta name="csrf-token" content="_hUMBeWJQUwjhw3paz_8tyBjkqCTQ1LnnScgQeW9lP8ofq12aCTcn5lxm8QnccbdTTSHEilKTWbNj7n7vY6bMw"><meta content="" name="routing-root-path"><meta content="media" name="site-name"><meta content="ja" name="i18n-default-locale"><meta content="ja" name="i18n-locale">
+
+<div class="lesson-wrapper">
+
+<!-- ===== ヘッダー ===== -->
+<div class="lesson-hero">
+  <span class="lesson-hero__badge">CHAPTER 5</span>
+  <div class="lesson-hero__title">動画撮影の基本設定</div>
+  <div class="lesson-hero__meta">
+    <span class="lesson-hero__chip">LESSON 5-1</span>
+    <span class="lesson-hero__topic">フレームレート・シャッタースピード・解像度を理解して設定する</span>
+    <span class="lesson-hero__time">⏱ 所要時間：約15分</span>
+  </div>
+</div>
+  
+  <div class="back-to-roadmap" style="display: flex; justify-content: center; align-items: center; padding: 24px 0; margin-top: 24px;"></div>
+  <!-- 次の章に進むボタンの場合 -->    
+<div style="display: flex; justify-content: flex-end; align-items: center; padding: 24px 0; margin-top: 24px; max-width: 1775px; margin-left: auto; margin-right: auto;">
+  <a href="https://learn.webcoach.jp/SNS/camera-chap5/tI5o2" style="position: relative; display: inline-block; background: linear-gradient(135deg, #E85D4A, #F5A64A); color: #fff; font-weight: 700; padding: 12px clamp(24px, 7vw, 48px); border-radius: 8px; text-decoration: none;">
+    次の章に進む
+    <img src="../../_assets/47498cfebf.svg" style="position: absolute; top: 50%; transform: translateY(-50%); right: 12px; filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(125deg) brightness(103%) contrast(103%);">
+  </a>
+</div>
+
+
+
+<!-- ===== ゴールボックス ===== -->
+<div class="goal-box">
+  <div class="goal-box__head">
+    <div class="goal-box__pill">GOAL</div>
+    <div class="goal-box__sub">このレッスンのゴール</div>
+  </div>
+  <ul>
+    <li><div class="goal-box__check">✓</div><div class="goal-box__text">フレームレート・シャッタースピード・解像度の選び方を説明できる</div></li>
+    <li><div class="goal-box__check">✓</div><div class="goal-box__text">180度シャッタールールを理解して自然な動画を撮影できる</div></li>
+  </ul>
+</div>
+
+<!-- ===== 目次 ===== -->
+<nav class="toc">
+  <div class="toc-head">
+    <div class="toc-icon">≡</div>
+    <div class="toc-title">目次</div>
+  </div>
+  <ul>
+    <li><a href="#s0"><span class="toc-num">01</span><span class="toc-text">動画撮影で使う各部名称</span><span class="toc-chev">›</span></a></li>
+    <li><a href="#s1"><span class="toc-num">02</span><span class="toc-text">解像度・フレームレートの選び方</span><span class="toc-chev">›</span></a></li>
+    <li><a href="#s2"><span class="toc-num">03</span><span class="toc-text">動画のシャッタースピードと180度ルール</span><span class="toc-chev">›</span></a></li>
+  </ul>
+</nav>
+  
+<!-- ======== セクション0：各部名称 ======== -->
+<section id="s0">
+<h2>動画撮影で使う各部名称</h2>
+
+<p>動画撮影では写真と異なるボタン・ダイヤルを使います。Canon EOS R50 を例に、動画撮影でよく使う各部の名称と位置を確認しておきましょう。</p>
+
+<!-- =====================================================
+  📸 画像：ig-44a_video-parts-front-side.png（正面・上面の各部名称図）
+  ===================================================== -->
+<div style="margin: 24px 0; text-align: center;" class="reveal visible">
+  <a href="https://media.webcoach.jp/images/camera-practical-master/ch5/ig-44a_video-parts-front-side.png" class="lightbox" style="display: inline-block;" target="_blank" rel="noopener">
+    <img src="../../_assets/50ed4a649f.webp" alt="動画撮影で使う各部名称①" class="lightbox-img" style="display: block; margin: 0 auto; max-width: 100%;">
+  </a>
+</div>
+
+<!-- =====================================================
+  📸 画像：ig-44b_video-parts-back.png（背面の各部名称図）
+  ===================================================== -->
+<div style="margin: 24px 0; text-align: center;" class="reveal visible">
+  <a href="https://media.webcoach.jp/images/camera-practical-master/ch5/ig-44b_video-parts-back.png" class="lightbox" style="display: inline-block;" target="_blank" rel="noopener">
+    <img src="../../_assets/4baea1f9bb.webp" alt="動画撮影で使う各部名称②" class="lightbox-img" style="display: block; margin: 0 auto; max-width: 100%;">
+  </a>
+</div>
+
+<!-- =====================================================
+  📸 画像：ig-66_video-parts-side.png（側面の各部名称図）
+  ===================================================== -->
+<div style="margin: 24px 0; text-align: center;" class="reveal visible">
+  <a href="https://media.webcoach.jp/images/camera-practical-master/ch5/ig-66_video-parts-side.png" class="lightbox" style="display: inline-block;" target="_blank" rel="noopener">
+    <img src="../../_assets/f7417442a9.webp" alt="側面端子の位置" class="lightbox-img" style="display: block; margin: 0 auto; max-width: 100%;">
+  </a>
+</div>
+
+</section>
+
+<!-- ======== セクション1 ======== -->
+<section id="s1">
+<h2>解像度・フレームレートの選び方</h2>
+
+<!-- =====================================================
+  📸 画像：ig-62_video-quality-menu.png（動画画質設定のカメラメニュー操作図）
+  ===================================================== -->
+<div style="margin: 24px 0; text-align: center;" class="reveal visible">
+  <a href="https://media.webcoach.jp/images/camera-practical-master/ch5/ig-62_video-quality-menu.png" class="lightbox" style="display: inline-block;" target="_blank" rel="noopener">
+    <img src="../../_assets/ff1fb44750.webp" alt="動画画質の設定場所" class="lightbox-img" style="display: block; margin: 0 auto; max-width: 100%;">
+  </a>
+</div>
+
+<p style="font-size: 13px; color: #777; line-height: 1.8; margin: -8px 0 28px; background: #FAF9F8; border-radius: 8px; padding: 10px 14px;">📌 <strong>図はCanon EOS R50の操作例です。</strong>お持ちのカメラによって操作方法は異なります。「<strong>機種名 ＋ 動画画質設定 ＋ 使い方</strong>」で検索するか、説明書の「動画撮影設定」の項目をご確認ください。</p>
+
+<div class="step-row reveal visible">
+  <div class="step-row__num">1</div>
+  <div class="step-row__body">
+    <div class="step-row__title">MENUボタンを押す</div>
+    <p class="step-row__text">カメラ背面のMENUボタンを押してメニュー画面を開きます。</p>
+  </div>
+</div>
+<div class="step-row reveal visible">
+  <div class="step-row__num">2</div>
+  <div class="step-row__body">
+    <div class="step-row__title">「動画撮影」タブ →「動画画質」を選択</div>
+    <p class="step-row__text">ムービーカメラアイコンのタブを選択し、「動画画質」を探してSETボタンで選択します。</p>
+  </div>
+</div>
+<div class="step-row reveal visible">
+  <div class="step-row__num">3</div>
+  <div class="step-row__body">
+    <div class="step-row__title">解像度（4K / FHD）を選択</div>
+    <p class="step-row__text">画質の一覧から解像度を選択します。最初はFHDを選びましょう。</p>
+  </div>
+</div>
+<div class="step-row reveal visible">
+  <div class="step-row__num">4</div>
+  <div class="step-row__body">
+    <div class="step-row__title">フレームレート（24 / 30 / 60fps）を選択してSETで確定</div>
+    <p class="step-row__text">目的に合わせてフレームレートを選択し、SETボタンで確定します。SNS・ビジネス動画なら30fpsが最もバランスよく使えます。</p>
+  </div>
+</div>
+
+<p>動画撮影では写真と異なる設定項目が必要です。解像度（4K/FHD）とフレームレート（fps）の組み合わせによって、動画の画質・ファイルサイズ・用途が変わります。</p>
+
+<!-- =====================================================
+  画像：ig-34_video-resolution-fps.png（h2「解像度・フレームレートの選び方」用）
+  【差し替え手順】
+  ① 下の img-placeholder と prompt-box を丸ごと削除する
+  ② 実画像を以下のパターンに差し替える:
+  <div style="margin: 24px 0; text-align: center;" class="reveal">
+    <a href="[画像URL]" class="lightbox" style="display: inline-block;" target="_blank" rel="noopener">
+      <img src="[画像URL]" alt="解像度とフレームレートの選び方" class="lightbox-img" style="display: block; margin: 0 auto; max-width: 100%;">
+    </a>
+  </div>
+  ===================================================== -->
+<div style="margin: 24px 0; text-align: center;" class="reveal visible">
+  <a href="https://media.webcoach.jp/images/camera-practical-master/ch5/ig-34_video-resolution-fps.png" class="lightbox" style="display: inline-block;" target="_blank" rel="noopener">
+    <img src="../../_assets/55451e00dc.webp" alt="解像度・フレームレートの選び方" class="lightbox-img" style="display: block; margin: 0 auto; max-width: 100%;">
+  </a>
+</div>
+
+<table class="spec-table reveal visible">
+  <thead>
+    <tr>
+      <th style="width:200px">設定</th>
+      <th>特徴</th>
+      <th>推奨用途</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><span class="tbl-name">4K / 24fps</span></td>
+      <td>最高解像度・シネマティックな雰囲気</td>
+      <td>映画的な映像・高品質なブランド動画・後でクロップ編集したい場合</td>
+    </tr>
+    <tr>
+      <td><span class="tbl-name">4K / 30fps</span></td>
+      <td>最高解像度・自然な動き</td>
+      <td>製品紹介・インタビュー・高品質SNS動画</td>
+    </tr>
+    <tr>
+      <td><span class="tbl-name">FHD / 24fps</span></td>
+      <td>標準解像度・映画的なルック</td>
+      <td>YouTube・ブランド動画・映像重視のコンテンツ</td>
+    </tr>
+    <tr>
+      <td><span class="tbl-name">FHD / 30fps</span></td>
+      <td>標準解像度・最も汎用的</td>
+      <td>SNS・ビジネス動画・一般的なYouTube。最初の1選択にオススメ</td>
+    </tr>
+    <tr>
+      <td><span class="tbl-name">FHD / 60fps</span></td>
+      <td>滑らかな動き・スローモーション素材</td>
+      <td>スポーツ・料理・製品の動作紹介。編集で半速スローにできる</td>
+    </tr>
+    <tr>
+      <td><span class="tbl-name">FHD / 120fps以上</span></td>
+      <td>ハイスピード・スローモーション専用</td>
+      <td>アクション・水しぶきなど動きを強調したスロー映像</td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="point-box reveal visible">
+  <div class="point-box__head">
+    <div class="point-box__tab">✓ Point !</div>
+    <div class="point-box__sub">最初はFHD 30fps から始める</div>
+  </div>
+  <p>4Kは編集PC・ストレージへの負荷が高く初心者には扱いにくいです。まずFHD（1920×1080）30fpsで撮影・編集を習慣化してから4Kにステップアップするのが効率的です。</p>
+</div>
+
+<div class="quiz-box reveal visible">
+  <div class="quiz-top">
+    <div class="quiz-icon">Q</div>
+    <div class="quiz-title">確認クイズ</div>
+  </div>
+  <div class="quiz-q">SNS向けの汎用的なビジネス動画を撮影するとき、最もバランスが取れた設定はどれ？</div>
+  <div class="quiz-options">
+    <button class="quiz-opt" data-q="q1" data-correct="false"><div class="quiz-letter">A</div><div class="quiz-opt-text">4K / 24fps</div></button>
+    <button class="quiz-opt" data-q="q1" data-correct="false"><div class="quiz-letter">B</div><div class="quiz-opt-text">4K / 120fps</div></button>
+    <button class="quiz-opt" data-q="q1" data-correct="true"><div class="quiz-letter">C</div><div class="quiz-opt-text">FHD / 30fps</div></button>
+    <button class="quiz-opt" data-q="q1" data-correct="false"><div class="quiz-letter">D</div><div class="quiz-opt-text">FHD / 60fps</div></button>
+  </div>
+  <div class="quiz-feedback ok" id="q1-ok">
+    <div class="quiz-feedback-icon">✓</div>
+    <div class="quiz-feedback-body">
+      <div class="quiz-feedback-title">正解です！</div>
+      <div class="quiz-feedback-text">FHD / 30fps はSNS・ビジネス動画に最もバランスが取れた設定です。4Kは高品質ですが編集PC・ストレージへの負荷が高く、120fpsはスローモーション専用です。FHD 30fps は汎用性が高く、編集も軽いため最初の選択として最適です。</div>
+    </div>
+  </div>
+  <div class="quiz-feedback ng" id="q1-ng">
+    <div class="quiz-feedback-icon">✕</div>
+    <div class="quiz-feedback-body">
+      <div class="quiz-feedback-title">惜しい！</div>
+      <div class="quiz-feedback-text">正解はCです。FHD / 30fps がSNS・ビジネス動画に最もバランスが取れた設定です。4Kは編集負荷が高く、120fpsはスローモーション専用、60fpsはスポーツ向けです。FHD 30fps は汎用性・ファイルサイズ・編集のしやすさが揃った最初の1選択です。</div>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- ======== セクション2 ======== -->
+<section id="s2">
+<h2>動画のシャッタースピードと180度ルール</h2>
+
+<p>動画のシャッタースピードは写真と異なる考え方が必要です。「180度シャッタールール」を守ることで、自然な動きのある映像を撮影できます。</p>
+
+<!-- =====================================================
+  画像：ig-35_180-shutter-rule.png（h2「動画のシャッタースピードと180度ルール」用）
+  【差し替え手順】
+  ① 下の img-placeholder と prompt-box を丸ごと削除する
+  ② 実画像を以下のパターンに差し替える:
+  <div style="margin: 24px 0; text-align: center;" class="reveal">
+    <a href="[画像URL]" class="lightbox" style="display: inline-block;" target="_blank" rel="noopener">
+      <img src="[画像URL]" alt="180度シャッタールール" class="lightbox-img" style="display: block; margin: 0 auto; max-width: 100%;">
+    </a>
+  </div>
+  ===================================================== -->
+<div style="margin: 24px 0; text-align: center;" class="reveal visible">
+  <a href="https://media.webcoach.jp/images/camera-practical-master/ch5/ig-35_180-shutter-rule.png" class="lightbox" style="display: inline-block;" target="_blank" rel="noopener">
+    <img src="../../_assets/d65ed05a28.webp" alt="180度シャッタールール" class="lightbox-img" style="display: block; margin: 0 auto; max-width: 100%;">
+  </a>
+</div>
+
+<table class="spec-table reveal visible">
+  <thead>
+    <tr>
+      <th style="width:160px">フレームレート</th>
+      <th style="width:220px">180度ルールの SS</th>
+      <th>NDフィルターが必要になる場面</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><span class="tbl-name">24fps</span></td>
+      <td>1/48秒（一般的に 1/50秒で代用）</td>
+      <td>日中の明るい屋外では光が多すぎるためNDフィルターが必要</td>
+    </tr>
+    <tr>
+      <td><span class="tbl-name">30fps</span></td>
+      <td>1/60秒</td>
+      <td>日中の屋外・明るい室内ではNDフィルターを使って光量を制限する</td>
+    </tr>
+    <tr>
+      <td><span class="tbl-name">60fps</span></td>
+      <td>1/120秒（一般的に 1/125秒で代用）</td>
+      <td>スロー撮影でも同様にNDフィルターが必要になる場合がある</td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="quiz-box reveal visible">
+  <div class="quiz-top">
+    <div class="quiz-icon">Q</div>
+    <div class="quiz-title">確認クイズ</div>
+  </div>
+  <div class="quiz-q">30fpsで動画を撮影するとき、180度シャッタールールに従った適切なSSはどれ？</div>
+  <div class="quiz-options">
+    <button class="quiz-opt" data-q="q2" data-correct="false"><div class="quiz-letter">A</div><div class="quiz-opt-text">1/30秒</div></button>
+    <button class="quiz-opt" data-q="q2" data-correct="false"><div class="quiz-letter">B</div><div class="quiz-opt-text">1/125秒</div></button>
+    <button class="quiz-opt" data-q="q2" data-correct="true"><div class="quiz-letter">C</div><div class="quiz-opt-text">1/60秒</div></button>
+    <button class="quiz-opt" data-q="q2" data-correct="false"><div class="quiz-letter">D</div><div class="quiz-opt-text">1/500秒</div></button>
+  </div>
+  <div class="quiz-feedback ok" id="q2-ok">
+    <div class="quiz-feedback-icon">✓</div>
+    <div class="quiz-feedback-body">
+      <div class="quiz-feedback-title">正解です！</div>
+      <div class="quiz-feedback-text">180度ルールの公式は「SS = 1 ÷ (fps × 2)」です。30fpsの場合、1 ÷ (30 × 2) = 1/60秒になります。1/30秒は遅すぎてモーションブラーが過剰になり、1/125や1/500秒は速すぎてカクカクした動きになります。</div>
+    </div>
+  </div>
+  <div class="quiz-feedback ng" id="q2-ng">
+    <div class="quiz-feedback-icon">✕</div>
+    <div class="quiz-feedback-body">
+      <div class="quiz-feedback-title">惜しい！</div>
+      <div class="quiz-feedback-text">正解はCです。180度ルールの公式は「SS = 1 ÷ (fps × 2)」。30fpsなら 1 ÷ (30 × 2) = 1/60秒が基本です。1/30秒は遅すぎてブレが強くなり、1/125や1/500秒は速すぎて動きがカクカクして見えます。</div>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- ===== まとめ ===== -->
+<div class="summary-box reveal visible">
+  <div class="summary-box__head"><div class="summary-box__badge">SUMMARY</div></div>
+  <ol>
+    <li><strong>FHD 30fps が基本</strong> ― SNS・ビジネス動画に最もバランスが取れた設定</li>
+    <li><strong>60fps の使い方</strong> ― スロー素材として撮り、編集で半速スローモーションにする</li>
+    <li><strong>180度ルール</strong> ― SSはfps×2の逆数。30fps→1/60秒が基本</li>
+    <li><strong>NDフィルター</strong> ― 明るい環境で180度ルールを守るために光量を制限する必需品</li>
+  </ol>
+</div>
+
+<!-- ===== 理解度チェック ===== -->
+<div class="check-box reveal">
+  <div class="check-box__head">
+    <div class="check-box__pill">CHECK</div>
+    <div class="check-box__sub">理解度チェック</div>
+  </div>
+  <details>
+    <summary>FHDと4K、24fps/30fps/60fpsの使い分けを説明できる</summary>
+    <div class="check-box__detail">FHDはファイルが軽く汎用的でSNS・ビジネス動画に最適。4Kは最高画質だが編集負荷が高い。24fpsは映画的なシネマルック、30fpsは最も汎用的な標準、60fpsはスポーツやスローモーション素材として使います。</div>
+  </details>
+  <details>
+    <summary>180度シャッタールールとは何か、30fps時の設定値を答えられる</summary>
+    <div class="check-box__detail">180度ルールとはSSをfpsの2倍の逆数に設定するルールです。公式は「SS = 1 ÷ (fps × 2)」。30fps撮影では 1/60秒、24fpsでは 1/48秒（実用的には1/50秒）、60fpsでは 1/120秒（一般的に 1/125秒で代用）が適切なSSになります。</div>
+  </details>
+  <details>
+    <summary>明るい屋外でNDフィルターが必要な理由を説明できる</summary>
+    <div class="check-box__detail">動画では180度ルールによりSSが固定されます。明るい屋外では光が多すぎて適切な露出にならないため、NDフィルターで光量を減らす必要があります。NDフィルターはSSやF値を変えずに光だけを制限できるため動画撮影の必需品です。</div>
+  </details>
+</div>
+  
+    <!-- 次の章に進むボタンの場合 -->    
+<div style="display: flex; justify-content: flex-end; align-items: center; padding: 24px 0; margin-top: 24px; max-width: 1775px; margin-left: auto; margin-right: auto;">
+  <a href="https://learn.webcoach.jp/SNS/camera-chap5/tI5o2" style="position: relative; display: inline-block; background: linear-gradient(135deg, #E85D4A, #F5A64A); color: #fff; font-weight: 700; padding: 12px clamp(24px, 7vw, 48px); border-radius: 8px; text-decoration: none;">
+    次の章に進む
+    <img src="../../_assets/47498cfebf.svg" style="position: absolute; top: 50%; transform: translateY(-50%); right: 12px; filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(125deg) brightness(103%) contrast(103%);">
+  </a>
+</div>
+  <div class="back-to-roadmap" style="display: flex; justify-content: center; align-items: center; padding: 24px 0; margin-top: 24px;"></div>
+
+
+</div><!-- /.lesson-wrapper -->
+
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="ck-icon-arrow-down" viewBox="0 0 1792 1792"><path d="M1675 832q0 53-37 90l-651 652q-39 37-91 37-53 0-90-37l-651-652q-38-36-38-90 0-53 38-91l74-75q39-37 91-37 53 0 90 37l294 294v-704q0-52 38-90t90-38h128q52 0 90 38t38 90v704l294-294q37-37 90-37 52 0 91 37l75 75q37 39 37 91z"></path></symbol><symbol id="ck-icon-arrow-up" viewBox="0 0 1792 1792"><path d="M1675 971q0 51-37 90l-75 75q-38 38-91 38-54 0-90-38l-294-293v704q0 52-37.5 84.5t-90.5 32.5h-128q-53 0-90.5-32.5t-37.5-84.5v-704l-294 293q-36 38-90 38t-90-38l-75-75q-38-38-38-90 0-53 38-91l651-651q35-37 90-37 54 0 91 37l651 651q37 39 37 91z"></path></symbol><symbol id="ck-icon-calendar" viewBox="0 0 1792 1792"><path d="M192 1664h288v-288h-288v288zm352 0h320v-288h-320v288zm-352-352h288v-320h-288v320zm352 0h320v-320h-320v320zm-352-384h288v-288h-288v288zm736 736h320v-288h-320v288zm-384-736h320v-288h-320v288zm768 736h288v-288h-288v288zm-384-352h320v-320h-320v320zm-352-864v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm736 864h288v-320h-288v320zm-384-384h320v-288h-320v288zm384 0h288v-288h-288v288zm32-480v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm384-64v1280q0 52-38 90t-90 38h-1408q-52 0-90-38t-38-90v-1280q0-52 38-90t90-38h128v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h384v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h128q52 0 90 38t38 90z"></path></symbol><symbol id="ck-icon-chevron-left" viewBox="0 0 1792 1792"><path d="M1427 301l-531 531 531 531q19 19 19 45t-19 45l-166 166q-19 19-45 19t-45-19l-742-742q-19-19-19-45t19-45l742-742q19-19 45-19t45 19l166 166q19 19 19 45t-19 45z"></path></symbol><symbol id="ck-icon-chevron-right" viewBox="0 0 1792 1792"><path d="M1363 877l-742 742q-19 19-45 19t-45-19l-166-166q-19-19-19-45t19-45l531-531-531-531q-19-19-19-45t19-45l166-166q19-19 45-19t45 19l742 742q19 19 19 45t-19 45z"></path></symbol><symbol id="ck-icon-clock-o" viewBox="0 0 1792 1792"><path d="M1024 544v448q0 14-9 23t-23 9h-320q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h224v-352q0-14 9-23t23-9h64q14 0 23 9t9 23zm416 352q0-148-73-273t-198-198-273-73-273 73-198 198-73 273 73 273 198 198 273 73 273-73 198-198 73-273zm224 0q0 209-103 385.5t-279.5 279.5-385.5 103-385.5-103-279.5-279.5-103-385.5 103-385.5 279.5-279.5 385.5-103 385.5 103 279.5 279.5 103 385.5z"></path></symbol><symbol id="ck-icon-trash" viewBox="0 0 1792 1792"><path d="M704 1376v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm-544-992h448l-48-117q-7-9-17-11h-317q-10 2-17 11zm928 32v64q0 14-9 23t-23 9h-96v948q0 83-47 143.5t-113 60.5h-832q-66 0-113-58.5t-47-141.5v-952h-96q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h309l70-167q15-37 54-63t79-26h320q40 0 79 26t54 63l70 167h309q14 0 23 9t9 23z"></path></symbol><symbol id="ck-icon-undo" viewBox="0 0 1792 1792"><path d="M1664 896q0 156-61 298t-164 245-245 164-298 61q-172 0-327-72.5t-264-204.5q-7-10-6.5-22.5t8.5-20.5l137-138q10-9 25-9 16 2 23 12 73 95 179 147t225 52q104 0 198.5-40.5t163.5-109.5 109.5-163.5 40.5-198.5-40.5-198.5-109.5-163.5-163.5-109.5-198.5-40.5q-98 0-188 35.5t-160 101.5l137 138q31 30 14 69-17 40-59 40h-448q-26 0-45-19t-19-45v-448q0-42 40-59 39-17 69 14l130 129q107-101 244.5-156.5t284.5-55.5q156 0 298 61t245 164 164 245 61 298z"></path></symbol></svg>
+
+<!--Clipkit(R) v15.9.0-20260915 Copyright (C) 2026 VECTOR Inc.-->
+
+
+
+</div></div>
+        
+      
+    </div>
+  
+  </div>
+
+<!-- <script src="https://cdn.clipkit.co/clipkit/javascripts/item-shopify-1.0.js?v=v15.9.0-20260915" async></script> -->
+</body></html>

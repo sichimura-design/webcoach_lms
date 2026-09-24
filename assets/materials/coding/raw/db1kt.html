@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+  <html lang="ja">
+
+<head><script async="async" data-label="saas" nonce="qR/HiYO0zFTf2YIi2ovxPQ==" src="//b.clipkit.co/"></script><script src="//cdn.clipkit.co/clipkit_assets/beacon-787bbf3225ec43d93f198af35f7d56fdef40fb50440a2909500bdf5b99225aab.js" async="async" id="clipkit-beacon" data-page-type="article" data-page-id="829" data-domain="learn.webcoach.jp" data-url="/coding/Db1KT" data-href="https://learn.webcoach.jp/media/beacon"></script>
+    <!-- headタグ内の上部に挿入されます -->
+
+    <meta charset="UTF-8">
+    <title>Shopify-基礎編-【4章 ストアデザインをカスタマイズ】 - WEBCOACH</title>
+
+    <!-- resetcssのCDNでのCSS読み込み -->
+    <link rel="stylesheet" href="https://unpkg.com/modern-css-reset/dist/reset.min.css" />
+
+    <!-- fontawesomeのCDNでのCSS読み込み -->
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/fontawesome/4.7.0/css/font-awesome.min.css">
+
+    <!-- BootstrapのCDNでのCSS読み込み -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous" />
+
+    <!-- highlight.jsの読み込み -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.1/styles/dracula.min.css">
+
+    <!-- カスタムCSS -->
+    <link rel="stylesheet" href="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/168/original/style.css?1788081716">
+
+    <!-- clipkitデフォルトのCSS -->
+    <!--<link rel="stylesheet" media="screen" href="https://cdn.clipkit.co/clipkit/stylesheets/application-1.0.css?v=v15.9.0-20260915">-->
+
+    <!-- jQuery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <!-- カスタムJS -->
+    <script src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/202/original/script.js?1788946194"></script>
+    <script src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/535/original/script.js?1743681771"></script>
+
+    <!-- clipkitデフォルトのJS -->
+    <script src="https://cdn.clipkit.co/clipkit/javascripts/default-1.0.js?v=v15.9.0-20260915"></script>
+
+    <!-- フォント -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;700&display=swap" rel="stylesheet">
+
+    <link href="https://cdn.clipkit.co/clipkit/favicons/square/missing.png" rel="shortcut icon" type="image/vnd.microsoft.icon">
+    <link rel="apple-touch-icon" href="https://cdn.clipkit.co/clipkit/touch_icons/square/missing.png">
+    <link rel="alternate" type="application/rss+xml"
+        href="https://learn.webcoach.jp/media.rss" title="WEBCOACH">
+    
+<link rel="canonical" href="https://learn.webcoach.jp/coding/Db1KT">
+
+<meta name="description" content="目安学習時間：1時間50分">
+<meta name="keywords" content="4章,Shoptify">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:domain" content="learn.webcoach.jp">
+<meta name="twitter:title" content="Shopify-基礎編-【4章 ストアデザインをカスタマイズ】 - WEBCOACH">
+<meta name="twitter:image" content="https://cdn.clipkit.co/tenants/589/articles/images/000/000/829/medium/a567863d-f3b1-4944-bfaa-88128258e59e.png?1743584605">
+<meta name="twitter:description" content="目安学習時間：1時間50分">
+<meta property="og:site_name" content="WEBCOACH">
+<meta property="og:title" content="Shopify-基礎編-【4章 ストアデザインをカスタマイズ】">
+<meta property="og:description" content="目安学習時間：1時間50分">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://learn.webcoach.jp/coding/Db1KT">
+<meta property="og:image" content="https://cdn.clipkit.co/tenants/589/articles/images/000/000/829/large/a567863d-f3b1-4944-bfaa-88128258e59e.png?1743584605">
+<script type="application/ld+json">
+  {
+    "@context": "http://schema.org",
+    "@type": "NewsArticle",
+    "mainEntityOfPage":{
+      "@type":"WebPage",
+      "@id": "https://learn.webcoach.jp/coding/Db1KT"
+    },
+    "headline": "Shopify-基礎編-【4章 ストアデザインをカスタマイズ】",
+    "image": {
+      "@type": "ImageObject",
+      "url": "https://cdn.clipkit.co/tenants/589/articles/images/000/000/829/medium/a567863d-f3b1-4944-bfaa-88128258e59e.png?1743584605",
+      "width": 800,
+      "height": 600
+    },
+    "datePublished": "2025-04-18T18:59:54+09:00",
+    "dateModified": "2025-09-25T09:42:55+09:00",
+    "author": {
+      "@type": "Person",
+      "name": "n_ono"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "WEBCOACH",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://cdn.clipkit.co/tenants/589/sites/logos/000/000/001/logo_sm/a8defd4b-1cc7-433b-a61c-08e7db0e3e4f.png?1714459367"
+      }
+    },
+    "description": "目安学習時間：1時間50分
+"
+  }
+  </script>
+
+    <!-- headタグ内の下部に挿入されます -->
+
+
+<meta name="csrf-param" content="authenticity_token" />
+<meta name="csrf-token" content="E4hK3fZs9N5SO42IOjSoezXPMMJ-3ta7_i8p787b92D6INLrr6RXDxbuvDBwL5-8hwxBjO4VjUbOE2NqkStCMg" /><meta content="" name="routing-root-path" /><meta content="media" name="site-name" /><meta content="ja" name="i18n-default-locale" /><meta content="ja" name="i18n-locale" /></head>
+
+<body class="device-desktop">
+    <!-- bodyタグ内の上部に挿入されます -->
+
+
+    <!-- サイドバーとコンテンツのコンテナ -->
+    <div class="d-flex flex-row w-100 mb-5" style="min-height: calc(100vh - 400px);">
+
+        <!-- サイドバー -->
+        <!--<nav id="side-bar" class="d-flex flex-column fixed-top" style="width: 250px;">-->
+        <!--    <h1 class="d-block w-100 text-center">-->
+        <!--        <a class="d-block" href="/">-->
+        <!--            <img class="mw-100 p-3" src="https://cdn.clipkit.co/tenants/589/sites/logos/000/000/001/logo_sm/a8defd4b-1cc7-433b-a61c-08e7db0e3e4f.png?1714459367" alt="WEBCOACH">-->
+        <!--        </a>-->
+        <!--    </h1>-->
+        <!--    <ul class="nav flex-column m-0 p-3 fw-bold">-->
+        <!--        <li id="sidebar-top" class="nav-item mb-2" style="display: none;"><a href="/"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;" src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/233/original/home.png?1715353458">-->
+        <!--                <div>ホーム</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-knowledges" class="nav-item mb-2" style="display: none;"><a href="/knowledges"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;" src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/232/original/book.png?1715353458">-->
+        <!--                <div>学習の心得</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-web-designs" class="nav-item mb-2" style="display: none;"><a href="/web-designs"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/231/original/design.png?1715353457">-->
+        <!--                <div>WEBデザイン</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-web-marketing" class="nav-item mb-2" style="display: none;"><a href="/web-marketings"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/230/original/marketing.png?1715353457">-->
+        <!--                <div>WEBマーケティング</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-codings" class="nav-item mb-2" style="display: none;"><a href="/codings"-->
+        <!--                class="nav-link text-body d-flex align-items-center active">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/229/original/website.png?1715353457">-->
+        <!--                <div>WEBサイト構築</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-business-skills" class="nav-item mb-2" style="display: none;"><a href="/business-skills"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/228/original/business.png?1715353456">-->
+        <!--                <div>ビジネススキル</div>-->
+        <!--            </a></li>-->
+        <!--    </ul>-->
+        <!--</nav>-->
+
+        <!-- コンテンツ -->
+        <!--<main class="ms-auto" style="width: calc(100vw - 250px);">-->
+        <main class="ms-auto" style="width: calc(100vw);">
+            <div id="sb-site">
+                
+
+
+<div class="container">
+  <div class="row">
+    <div class="article">
+      <div class="mb-3 text-light" style="
+        height: 180px;
+        background-image: url(https://cdn.clipkit.co/tenants/589/resources/assets/000/000/270/original/article-header.png?1717761933);
+        background-repeat: no-repeat;
+        background-size: cover;
+        display: flex;
+        align-items: flex-end;
+      ">
+        <div style="
+          margin: 0 0 30px 30px;
+        ">
+          <div>WEB制作</div>
+
+          <div class="fw-bold h2">Shopify-基礎編-【4章 ストアデザインをカスタマイズ】</div>
+        </div>
+      </div>
+      <div class="article-content">
+        <!-- 目次 -->
+        <div class="index mb-3" style="background-color: #FDF5E8;">
+          <div>
+            <div class="fw-light">INDEX</div>
+            <div class="h3">目次</div>
+          </div>
+          <div class="toc"></div>
+        </div>
+        
+        <div class="back-to-roadmap mb-4 text-center"></div>
+
+        <!-- コンテンツ -->
+        
+        
+        <div class="article-item item_html " id="item25878" data-item-id="25878" data-item-type="ItemHtml"><div class="item-body"><div class="pagenation-buttons">
+  <a href="i6gz8" class="pagenation-buttons_prev"><img src="/theme/webcoach/img/icons/arrow-right.svg" class="pagenation-buttons_icon">前の章に戻る</a>
+  <a href="kzyqs" class="pagenation-buttons_next">次の章に進む<img src="/theme/webcoach/img/icons/arrow-right.svg" class="pagenation-buttons_icon"></a>
+</div></div></div>
+        
+        <div class="article-item item_heading " id="item10087" data-item-id="10087" data-item-type="ItemHeading"><h2 class="item-body">第4章：ストアデザインをカスタマイズしよう</h2></div>
+        
+        <div class="article-item item_markdown " id="item39842" data-item-id="39842" data-item-type="ItemMarkdown"><h4 id="section">この教材の学習時間:100分</h4>
+</div>
+        
+        <div class="article-item item_rich_text " id="item10093" data-item-id="10093" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">この章では、トップページのデザイン変更を行う手順について解説します。<br>
+<span class="decoration-02">ここからは手を動かして、実際に作成してみましょう！</span></span></div></div>
+        
+        <div class="article-item item_html " id="item10089" data-item-id="10089" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_heading " id="item10094" data-item-id="10094" data-item-type="ItemHeading"><h3 class="item-body">【4-1】 ヘッダー部分のデザインをカスタマイズ</h3></div>
+        
+        <div class="article-item item_html " id="item10090" data-item-id="10090" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_markdown " id="item39843" data-item-id="39843" data-item-type="ItemMarkdown"><h4 id="section">目安の学習時間:20分</h4>
+</div>
+        
+        <div class="article-item item_html " id="item10091" data-item-id="10091" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_rich_text " id="item10096" data-item-id="10096" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">1.管理画面の左メニューから、<span class="decoration-02">オンラインストア &gt; テーマ &gt; カスタマイズ</span> の順にクリック</span>　</div></div>
+        
+        <div class="article-item item_image " id="item10097" data-item-id="10097" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/010/097/medium/73ac450b-f2d8-4104-b10a-7592ad62fd15.png?1743585060" title=""><img class="img-responsive item-image" alt=" (10097)" data-reference="" src="https://cdn.clipkit.co/tenants/589/item_images/images/000/010/097/medium/73ac450b-f2d8-4104-b10a-7592ad62fd15.png?1743585060" width="640" height="262" /></a><h4></h4></div></div>
+        
+        <div class="article-item item_html " id="item10092" data-item-id="10092" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_rich_text " id="item10098" data-item-id="10098" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">2.<span class="decoration-02">ヘッダー &gt; 告知バー or ヘッダー</span>を選択して編集</span></div></div>
+        
+        <div class="article-item item_image " id="item10099" data-item-id="10099" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/010/099/medium/f55c78e6-5ab0-4bdb-b325-3be6b5e91ed0.png?1743585098" title=""><img class="img-responsive item-image" alt=" (10099)" data-reference="" src="https://cdn.clipkit.co/tenants/589/item_images/images/000/010/099/medium/f55c78e6-5ab0-4bdb-b325-3be6b5e91ed0.png?1743585098" width="640" height="89" /></a><h4></h4></div></div>
+        
+        <div class="article-item item_html " id="item10100" data-item-id="10100" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_rich_text " id="item10108" data-item-id="10108" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">3.告知バー（お知らせ欄）を編集（最大12個まで表示可能）</span></div></div>
+        
+        <div class="article-item item_image " id="item10109" data-item-id="10109" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/010/109/medium/b6017bd1-6b4d-4161-8872-1d3de1bc1cd7.png?1743585195" title=""><img class="img-responsive item-image" alt=" (10109)" data-reference="" src="https://cdn.clipkit.co/tenants/589/item_images/images/000/010/109/medium/b6017bd1-6b4d-4161-8872-1d3de1bc1cd7.png?1743585195" width="640" height="132" /></a><h4></h4></div></div>
+        
+        <div class="article-item item_html " id="item10101" data-item-id="10101" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_rich_text " id="item10110" data-item-id="10110" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">4.ヘッダーメニューを編集（ロゴの配置調整・メニューの変更）</span></div></div>
+        
+        <div class="article-item item_image " id="item10111" data-item-id="10111" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/010/111/medium/ab928322-0691-46ca-b018-fa1a79330dea.png?1743585224" title=""><img class="img-responsive item-image" alt=" (10111)" data-reference="" src="https://cdn.clipkit.co/tenants/589/item_images/images/000/010/111/medium/ab928322-0691-46ca-b018-fa1a79330dea.png?1743585224" width="640" height="160" /></a><h4></h4></div></div>
+        
+        <div class="article-item item_html " id="item10102" data-item-id="10102" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_rich_text " id="item10112" data-item-id="10112" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">5.<span class="decoration-02">メニュー &gt; 変更 &gt;メニューを変更 より、+ メニューを作成</span> をクリック</span></div></div>
+        
+        <div class="article-item item_image " id="item10113" data-item-id="10113" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/010/113/medium/72f51eaf-5e33-4130-878f-a109e43a0e9e.png?1743585271" title=""><img class="img-responsive item-image" alt=" (10113)" data-reference="" src="https://cdn.clipkit.co/tenants/589/item_images/images/000/010/113/medium/72f51eaf-5e33-4130-878f-a109e43a0e9e.png?1743585271" width="292" height="271" /></a><h4></h4></div></div>
+        
+        <div class="article-item item_html " id="item10103" data-item-id="10103" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_rich_text " id="item10114" data-item-id="10114" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">6.<span class="decoration-02">+メニュー項目を追加する</span>をクリックし、各項目名・リンク先を設定する</span><br>
+      ※各リンク先は、本ページ下部の完成品見本リンクから確認</div></div>
+        
+        <div class="article-item item_image " id="item10115" data-item-id="10115" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/010/115/medium/cb9d2591-b76d-4c93-99ca-a0a7f663a4e8.png?1743585327" title=""><img class="img-responsive item-image" alt=" (10115)" data-reference="" src="https://cdn.clipkit.co/tenants/589/item_images/images/000/010/115/medium/cb9d2591-b76d-4c93-99ca-a0a7f663a4e8.png?1743585327" width="640" height="407" /></a><h4></h4></div></div>
+        
+        <div class="article-item item_html " id="item10104" data-item-id="10104" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_rich_text " id="item10116" data-item-id="10116" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">7.メニュー変更後のヘッダー完成イメージ</span></div></div>
+        
+        <div class="article-item item_image " id="item10117" data-item-id="10117" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/010/117/medium/c3bffa00-3dbf-431e-bbbf-c7ef263fdec3.png?1743585361" title=""><img class="img-responsive item-image" alt=" (10117)" data-reference="" src="https://cdn.clipkit.co/tenants/589/item_images/images/000/010/117/medium/c3bffa00-3dbf-431e-bbbf-c7ef263fdec3.png?1743585361" width="640" height="175" /></a><h4></h4></div></div>
+        
+        <div class="article-item item_html " id="item10105" data-item-id="10105" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_heading " id="item10118" data-item-id="10118" data-item-type="ItemHeading"><h3 class="item-body">【4-2】 テンプレート部分のデザインをカスタマイズ</h3></div>
+        
+        <div class="article-item item_html " id="item10106" data-item-id="10106" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_markdown " id="item39844" data-item-id="39844" data-item-type="ItemMarkdown"><h4 id="section">目安の学習時間:60分</h4>
+</div>
+        
+        <div class="article-item item_html " id="item10107" data-item-id="10107" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_rich_text " id="item10128" data-item-id="10128" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">1.<span class="decoration-02">テンプレート &gt; スライドショー  &gt; 画像スライド</span> の順にクリック</span></div></div>
+        
+        <div class="article-item item_image " id="item10129" data-item-id="10129" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/010/129/medium/3cdbb466-a50c-4876-8d09-61d204bf21f2.png?1743585498" title=""><img class="img-responsive item-image" alt=" (10129)" data-reference="" src="https://cdn.clipkit.co/tenants/589/item_images/images/000/010/129/medium/3cdbb466-a50c-4876-8d09-61d204bf21f2.png?1743585498" width="640" height="271" /></a><h4></h4></div></div>
+        
+        <div class="article-item item_html " id="item10120" data-item-id="10120" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_rich_text " id="item10130" data-item-id="10130" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">2.<span class="decoration-02">画像・見出し</span>を変更（不要な項目内容は、削除して空欄に）</span></div></div>
+        
+        <div class="article-item item_image " id="item10131" data-item-id="10131" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/010/131/medium/e2c33d2c-8b2a-437e-aee1-d9db433bf1d9.png?1743585528" title=""><img class="img-responsive item-image" alt=" (10131)" data-reference="" src="https://cdn.clipkit.co/tenants/589/item_images/images/000/010/131/medium/e2c33d2c-8b2a-437e-aee1-d9db433bf1d9.png?1743585528" width="640" height="326" /></a><h4></h4></div></div>
+        
+        <div class="article-item item_html " id="item10121" data-item-id="10121" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_rich_text " id="item10132" data-item-id="10132" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">3. 配色を<span class="decoration-02">スキーム：3</span>に変更（文字色が白色に変わる）<br>
+    <span class="decoration-02">※白文字を背景に重ねる場合、背景画像を少し暗くすると文字が際立つ</span></span><br>
+      （画像のオーバーレイ不透明率：20%）</div></div>
+        
+        <div class="article-item item_image " id="item10133" data-item-id="10133" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/010/133/medium/2f1228a9-5ab4-4886-b4ab-6cca3368dba1.png?1743585593" title=""><img class="img-responsive item-image" alt=" (10133)" data-reference="" src="https://cdn.clipkit.co/tenants/589/item_images/images/000/010/133/medium/2f1228a9-5ab4-4886-b4ab-6cca3368dba1.png?1743585593" width="640" height="335" /></a><h4></h4></div></div>
+        
+        <div class="article-item item_html " id="item10122" data-item-id="10122" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_rich_text " id="item10134" data-item-id="10134" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">4.特集コレクション（コレクション内の商品紹介）の<span class="decoration-02">見出し・説明</span>を修正</span></div></div>
+        
+        <div class="article-item item_image " id="item10135" data-item-id="10135" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/010/135/medium/66d235e7-b081-40b1-890d-77b279dfaffa.png?1743585626" title=""><img class="img-responsive item-image" alt=" (10135)" data-reference="" src="https://cdn.clipkit.co/tenants/589/item_images/images/000/010/135/medium/66d235e7-b081-40b1-890d-77b279dfaffa.png?1743585626" width="640" height="276" /></a><h4></h4></div></div>
+        
+        <div class="article-item item_html " id="item10123" data-item-id="10123" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_rich_text " id="item10136" data-item-id="10136" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">5.<span class="decoration-02">商品カード &gt; 画像の形状 &gt; 塊</span> に変更</span><br>
+（デザインをオシャレに）</div></div>
+        
+        <div class="article-item item_image " id="item10137" data-item-id="10137" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/010/137/medium/a950b868-a5ce-42bd-86ae-2a76bdcd6ed3.png?1743585671" title=""><img class="img-responsive item-image" alt=" (10137)" data-reference="" src="https://cdn.clipkit.co/tenants/589/item_images/images/000/010/137/medium/a950b868-a5ce-42bd-86ae-2a76bdcd6ed3.png?1743585671" width="640" height="286" /></a><h4></h4></div></div>
+        
+        <div class="article-item item_html " id="item10124" data-item-id="10124" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_rich_text " id="item10138" data-item-id="10138" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">6.<span class="decoration-02">コレクション &gt; コレクションを選択 &gt; 選択ボタン</span>　を押して確定</span></div></div>
+        
+        <div class="article-item item_image " id="item10210" data-item-id="10210" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/010/210/medium/b79509e6-e85f-4b15-aadd-878899bc3dd7.png?1743652506" title=""><img class="img-responsive item-image" alt=" (10210)" data-reference="" src="https://cdn.clipkit.co/tenants/589/item_images/images/000/010/210/medium/b79509e6-e85f-4b15-aadd-878899bc3dd7.png?1743652506" width="640" height="286" /></a><h4></h4></div></div>
+        
+        <div class="article-item item_html " id="item10125" data-item-id="10125" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_rich_text " id="item10211" data-item-id="10211" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">7.不要なコレクションは、ゴミ箱のマークより削除</span></div></div>
+        
+        <div class="article-item item_image " id="item10212" data-item-id="10212" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/010/212/medium/3587fbb6-37c8-4f10-82d1-7e39ad4a5a65.png?1743652549" title=""><img class="img-responsive item-image" alt=" (10212)" data-reference="" src="https://cdn.clipkit.co/tenants/589/item_images/images/000/010/212/medium/3587fbb6-37c8-4f10-82d1-7e39ad4a5a65.png?1743652549" width="640" height="286" /></a><h4></h4></div></div>
+        
+        <div class="article-item item_html " id="item10126" data-item-id="10126" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_rich_text " id="item10213" data-item-id="10213" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">8.コレクションリストより、数に合わせて、<span class="decoration-02">デスクトップの列数</span>を変更</span></div></div>
+        
+        <div class="article-item item_image " id="item10214" data-item-id="10214" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/010/214/medium/c815eff4-d809-42d4-bec8-3c0ae6532460.png?1743652582" title=""><img class="img-responsive item-image" alt=" (10214)" data-reference="" src="https://cdn.clipkit.co/tenants/589/item_images/images/000/010/214/medium/c815eff4-d809-42d4-bec8-3c0ae6532460.png?1743652582" width="640" height="286" /></a><h4></h4></div></div>
+        
+        <div class="article-item item_html " id="item10127" data-item-id="10127" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_rich_text " id="item10215" data-item-id="10215" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">9.最下部に画像バナーを設置する</span></div></div>
+        
+        <div class="article-item item_image " id="item10216" data-item-id="10216" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/010/216/medium/649edca7-6feb-4e9f-9f53-8debcf952a8b.png?1743652619" title=""><img class="img-responsive item-image" alt=" (10216)" data-reference="" src="https://cdn.clipkit.co/tenants/589/item_images/images/000/010/216/medium/649edca7-6feb-4e9f-9f53-8debcf952a8b.png?1743652619" width="640" height="286" /></a><h4></h4></div></div>
+        
+        <div class="article-item item_html " id="item10217" data-item-id="10217" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_rich_text " id="item10225" data-item-id="10225" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">10.<span class="decoration-02">アニメーション &gt; 画像の挙動 &gt; 背景位置の固定</span> を選択し、動きをつける</span></div></div>
+        
+        <div class="article-item item_image " id="item10226" data-item-id="10226" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/010/226/medium/c8e97aec-0177-4814-8b32-a8c9b91e691d.png?1743652727"><img class="img-responsive item-image" alt=" (10226)" src="https://cdn.clipkit.co/tenants/589/item_images/images/000/010/226/medium/c8e97aec-0177-4814-8b32-a8c9b91e691d.png?1743652727" width="640" height="286" /></a><h4></h4></div></div>
+        
+        <div class="article-item item_html " id="item10218" data-item-id="10218" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_rich_text " id="item10228" data-item-id="10228" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">11.コンテンツ位置を <span class="decoration-02">中央</span> 、配色を <span class="decoration-02">スキーム:3</span> に設定し、中央・白文字に変更</span></div></div>
+        
+        <div class="article-item item_image " id="item10229" data-item-id="10229" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/010/229/medium/52589663-114c-40bb-8057-9ce7b6ec2e27.png?1743652789" title=""><img class="img-responsive item-image" alt=" (10229)" data-reference="" src="https://cdn.clipkit.co/tenants/589/item_images/images/000/010/229/medium/52589663-114c-40bb-8057-9ce7b6ec2e27.png?1743652789" width="640" height="286" /></a><h4></h4></div></div>
+        
+        <div class="article-item item_html " id="item10219" data-item-id="10219" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_rich_text " id="item10230" data-item-id="10230" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">12.<span class="decoration-02">画像バナー &gt; ブロック追加</span>よりに見出しを追加</span></div></div>
+        
+        <div class="article-item item_image " id="item10231" data-item-id="10231" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/010/231/medium/3f15fc46-0d43-456c-8e82-1767b8ec0e47.png?1743652817" title=""><img class="img-responsive item-image" alt=" (10231)" data-reference="" src="https://cdn.clipkit.co/tenants/589/item_images/images/000/010/231/medium/3f15fc46-0d43-456c-8e82-1767b8ec0e47.png?1743652817" width="640" height="286" /></a><h4></h4></div></div>
+        
+        <div class="article-item item_html " id="item10220" data-item-id="10220" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_heading " id="item10232" data-item-id="10232" data-item-type="ItemHeading"><h3 class="item-body">【4-3】 フッター部分のデザインをカスタマイズ</h3></div>
+        
+        <div class="article-item item_html " id="item10221" data-item-id="10221" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_markdown " id="item39845" data-item-id="39845" data-item-type="ItemMarkdown"><h4 id="section">目安の学習時間:10分</h4>
+</div>
+        
+        <div class="article-item item_html " id="item10222" data-item-id="10222" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_rich_text " id="item10234" data-item-id="10234" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">・<span class="decoration-02">フッター &gt; 見出し </span>よりメールマガジンの登録を促す</span></div></div>
+        
+        <div class="article-item item_image " id="item10235" data-item-id="10235" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/010/235/medium/908ad64d-e565-46fc-869f-b01e71d99dbb.png?1743652911" title=""><img class="img-responsive item-image" alt=" (10235)" data-reference="" src="https://cdn.clipkit.co/tenants/589/item_images/images/000/010/235/medium/908ad64d-e565-46fc-869f-b01e71d99dbb.png?1743652911" width="640" height="286" /></a><h4></h4></div></div>
+        
+        <div class="article-item item_html " id="item10223" data-item-id="10223" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_heading " id="item10236" data-item-id="10236" data-item-type="ItemHeading"><h3 class="item-body">【4-4】 テーマ全体のデザインをカスタマイズ</h3></div>
+        
+        <div class="article-item item_html " id="item10224" data-item-id="10224" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_markdown " id="item39846" data-item-id="39846" data-item-type="ItemMarkdown"><h4 id="section">目安の学習時間:10分</h4>
+</div>
+        
+        <div class="article-item item_html " id="item10238" data-item-id="10238" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_rich_text " id="item10243" data-item-id="10243" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">1.左上の<span class="decoration-02">設定</span>より、<span class="decoration-02">タイポグラフィー &gt; フォント</span> より文字タイプを変更</span></div></div>
+        
+        <div class="article-item item_image " id="item10244" data-item-id="10244" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/010/244/medium/75ce1fd6-c2bc-4bab-8d5f-d8fffecaabe5.png?1743653040" title=""><img class="img-responsive item-image" alt=" (10244)" data-reference="" src="https://cdn.clipkit.co/tenants/589/item_images/images/000/010/244/medium/75ce1fd6-c2bc-4bab-8d5f-d8fffecaabe5.png?1743653040" width="640" height="286" /></a><h4></h4></div></div>
+        
+        <div class="article-item item_html " id="item10239" data-item-id="10239" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_rich_text " id="item10245" data-item-id="10245" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">2.フォントタイプから、<span class="decoration-02">日本語 Noto Serif Japanese </span>を選択</span></div></div>
+        
+        <div class="article-item item_image " id="item10246" data-item-id="10246" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/010/246/medium/9c6fa6d1-32c0-4580-a95f-cc52b3294905.png?1743653085" title=""><img class="img-responsive item-image" alt=" (10246)" data-reference="" src="https://cdn.clipkit.co/tenants/589/item_images/images/000/010/246/medium/9c6fa6d1-32c0-4580-a95f-cc52b3294905.png?1743653085" width="640" height="286" /></a><h4></h4></div></div>
+        
+        <div class="article-item item_html " id="item10240" data-item-id="10240" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_text " id="item10247" data-item-id="10247" data-item-type="ItemText"><div class="item-body-hbr">以上で、ストア全体のカスタマイズが完成です。<br /><br />最後に、作成したものをプレビューにて全体を確認してみましょう。</div></div>
+        
+        <div class="article-item item_html " id="item10241" data-item-id="10241" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_rich_text " id="item10248" data-item-id="10248" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">・左上の ••• を選択し、<span class="decoration-02">表示</span> をクリック </span></div></div>
+        
+        <div class="article-item item_image " id="item10249" data-item-id="10249" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/010/249/medium/654b29f5-3ed6-4db4-abf8-3073deef800d.png?1743653139" title=""><img class="img-responsive item-image" alt=" (10249)" data-reference="" src="https://cdn.clipkit.co/tenants/589/item_images/images/000/010/249/medium/654b29f5-3ed6-4db4-abf8-3073deef800d.png?1743653139" width="640" height="304" /></a><h4></h4></div></div>
+        
+        <div class="article-item item_html " id="item10242" data-item-id="10242" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_rich_text " id="item10251" data-item-id="10251" data-item-type="ItemRichText"><div class="item-body-hbr">★完成品の見本は下記から、閲覧可能です！<span class="decoration-01">（閲覧PASS：test）</span></div></div>
+        
+        <div class="article-item item_link " id="item10252" data-item-id="10252" data-item-type="ItemLink"><div class="item-link-inline style-button"><div class="media"><div class="media-body"><div><a class="btn btn-item-link noext" href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=Db1KT&amp;item_id=10252" rel="nofollow noopener noreferrer" style="" target="_blank">Shoptify完成品見本</a></div></div></div></div></div>
+        
+        <div class="article-item item_html " id="item10250" data-item-id="10250" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_rich_text " id="item10253" data-item-id="10253" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">これで「4章 ストアデザインをカスタマイズ」の解説を終わります。<br>
+<br>
+次の章に進みましょう。</span></div></div>
+        
+        <div class="article-item item_html " id="item25877" data-item-id="25877" data-item-type="ItemHtml"><div class="item-body"><div class="pagenation-buttons">
+  <a href="i6gz8" class="pagenation-buttons_prev"><img src="/theme/webcoach/img/icons/arrow-right.svg" class="pagenation-buttons_icon">前の章に戻る</a>
+  <a href="kzyqs" class="pagenation-buttons_next">次の章に進む<img src="/theme/webcoach/img/icons/arrow-right.svg" class="pagenation-buttons_icon"></a>
+</div></div></div>
+        
+        
+        
+        <div class="back-to-roadmap mb-4 text-center"></div>
+      </div>
+    </div>
+    
+    <div class="lightbox-modal" id="lightboxModal">
+      <img src="" alt="">
+    </div>
+    
+    <div id="modal" class="fixed-menu-modal">
+      <div class="fixed-menu-modal-content">
+        <div class="index mb-3" style="background-color: #FDF5E8;">
+          <div>
+            <div class="fw-light">INDEX</div>
+            <div class="h3">目次</div>
+          </div>
+          <div class="toc"></div>
+        </div>
+        
+        <!-- ボタン類 -->
+        <div id="fixed-menu_buttons" class="fixed-menu_buttons"></div>
+        
+        <div class="back-to-roadmap text-center"></div>
+      </div>
+    </div>
+    
+    <button id="toggleBtn" class="floating-btn">
+      <img id="iconOpen" 
+           src="/theme/webcoach/img/icons/fixed-menu_modal-open.svg" 
+           alt="メニューを開く">
+      <img id="iconClose" 
+           src="/theme/webcoach/img/icons/fixed-menu_modal-close.svg" 
+           alt="メニューを閉じる" style="display:none;">
+    </button>
+  </div>
+</div>
+</div>
+<!-- <script src="https://cdn.clipkit.co/clipkit/javascripts/item-shopify-1.0.js?v=v15.9.0-20260915" async></script> -->
+            </div>
+        </main>
+
+    </div>
+
+    <div class="p-5" style="background-color: #B73E3D; color: white; height: 300px;">
+        <div class="">
+            <div class="h4 ps-3" style="border-left: 5px solid white;">WEBCOACH | キャリアチェンジまでの全てを学ぶマンツーマンWEBスクール</div>
+            <ul class="nav flex-column m-0 p-3 fw-light">
+                <li class="nav-item mb-2"><a href="https://www.webcoach.jp/" target="_blank">WEBCOACH | 公式HP</a></li>
+                <li class="nav-item mb-2"><a href="https://www.instagram.com/webcoach_officials/" target="_blank">WEBCOACH | 公式Instagram</a></li>
+                <li class="nav-item mb-2"><a href="https://vectorinc.co.jp/groupservice/webcoach-career/" target="_blank">WEBCOACH 公式メディア | WEBCOACH career</a></li>
+            </ul>
+        </div>
+        <div class="text-center">
+            <small>&copy; 2020 by WEBCOACH</small>
+        </div>
+    </div>
+
+    <script src="https://cdn.clipkit.co/clipkit/javascripts/application-1.0.js?v=v15.9.0-20260915" async></script>
+
+    <!-- bodyタグ内の下部に挿入されます -->
+
+
+    <!-- BootstrapのCDNでのjs読み込み -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+        crossorigin="anonymous"></script>
+
+    <!-- シンタックスハイライトの生成 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.1/highlight.min.js"></script>
+    <script>
+        // ハイライトを実行
+        hljs.initHighlightingOnLoad();
+    </script>
+
+    <!-- 目次の生成 -->
+    <script type="text/javascript">toc();</script>
+
+    <!-- ブックマークの生成 -->
+    <script type="text/javascript">displayLinks();</script>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="ck-icon-arrow-down" viewBox="0 0 1792 1792"><path d="M1675 832q0 53-37 90l-651 652q-39 37-91 37-53 0-90-37l-651-652q-38-36-38-90 0-53 38-91l74-75q39-37 91-37 53 0 90 37l294 294v-704q0-52 38-90t90-38h128q52 0 90 38t38 90v704l294-294q37-37 90-37 52 0 91 37l75 75q37 39 37 91z" /></symbol><symbol id="ck-icon-arrow-up" viewBox="0 0 1792 1792"><path d="M1675 971q0 51-37 90l-75 75q-38 38-91 38-54 0-90-38l-294-293v704q0 52-37.5 84.5t-90.5 32.5h-128q-53 0-90.5-32.5t-37.5-84.5v-704l-294 293q-36 38-90 38t-90-38l-75-75q-38-38-38-90 0-53 38-91l651-651q35-37 90-37 54 0 91 37l651 651q37 39 37 91z" /></symbol><symbol id="ck-icon-calendar" viewBox="0 0 1792 1792"><path d="M192 1664h288v-288h-288v288zm352 0h320v-288h-320v288zm-352-352h288v-320h-288v320zm352 0h320v-320h-320v320zm-352-384h288v-288h-288v288zm736 736h320v-288h-320v288zm-384-736h320v-288h-320v288zm768 736h288v-288h-288v288zm-384-352h320v-320h-320v320zm-352-864v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm736 864h288v-320h-288v320zm-384-384h320v-288h-320v288zm384 0h288v-288h-288v288zm32-480v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm384-64v1280q0 52-38 90t-90 38h-1408q-52 0-90-38t-38-90v-1280q0-52 38-90t90-38h128v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h384v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h128q52 0 90 38t38 90z" /></symbol><symbol id="ck-icon-chevron-left" viewBox="0 0 1792 1792"><path d="M1427 301l-531 531 531 531q19 19 19 45t-19 45l-166 166q-19 19-45 19t-45-19l-742-742q-19-19-19-45t19-45l742-742q19-19 45-19t45 19l166 166q19 19 19 45t-19 45z" /></symbol><symbol id="ck-icon-chevron-right" viewBox="0 0 1792 1792"><path d="M1363 877l-742 742q-19 19-45 19t-45-19l-166-166q-19-19-19-45t19-45l531-531-531-531q-19-19-19-45t19-45l166-166q19-19 45-19t45 19l742 742q19 19 19 45t-19 45z" /></symbol><symbol id="ck-icon-clock-o" viewBox="0 0 1792 1792"><path d="M1024 544v448q0 14-9 23t-23 9h-320q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h224v-352q0-14 9-23t23-9h64q14 0 23 9t9 23zm416 352q0-148-73-273t-198-198-273-73-273 73-198 198-73 273 73 273 198 198 273 73 273-73 198-198 73-273zm224 0q0 209-103 385.5t-279.5 279.5-385.5 103-385.5-103-279.5-279.5-103-385.5 103-385.5 279.5-279.5 385.5-103 385.5 103 279.5 279.5 103 385.5z" /></symbol><symbol id="ck-icon-trash" viewBox="0 0 1792 1792"><path d="M704 1376v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm-544-992h448l-48-117q-7-9-17-11h-317q-10 2-17 11zm928 32v64q0 14-9 23t-23 9h-96v948q0 83-47 143.5t-113 60.5h-832q-66 0-113-58.5t-47-141.5v-952h-96q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h309l70-167q15-37 54-63t79-26h320q40 0 79 26t54 63l70 167h309q14 0 23 9t9 23z" /></symbol><symbol id="ck-icon-undo" viewBox="0 0 1792 1792"><path d="M1664 896q0 156-61 298t-164 245-245 164-298 61q-172 0-327-72.5t-264-204.5q-7-10-6.5-22.5t8.5-20.5l137-138q10-9 25-9 16 2 23 12 73 95 179 147t225 52q104 0 198.5-40.5t163.5-109.5 109.5-163.5 40.5-198.5-40.5-198.5-109.5-163.5-163.5-109.5-198.5-40.5q-98 0-188 35.5t-160 101.5l137 138q31 30 14 69-17 40-59 40h-448q-26 0-45-19t-19-45v-448q0-42 40-59 39-17 69 14l130 129q107-101 244.5-156.5t284.5-55.5q156 0 298 61t245 164 164 245 61 298z" /></symbol></svg><script async="async" defer="defer" nonce="qR/HiYO0zFTf2YIi2ovxPQ==" src="//www.instagram.com/embed.js"></script>
+
+<!--Clipkit(R) v15.9.0-20260915 Copyright (C) 2026 VECTOR Inc.-->
+
+</body>
+
+</html>
+

@@ -1,0 +1,839 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+  <html lang="ja">
+
+<head><script async="async" data-label="saas" nonce="88ocLEb+A62BdYQzXpWFug==" src="//b.clipkit.co/"></script><script src="//cdn.clipkit.co/clipkit_assets/beacon-787bbf3225ec43d93f198af35f7d56fdef40fb50440a2909500bdf5b99225aab.js" async="async" id="clipkit-beacon" data-page-type="article" data-page-id="1725" data-domain="learn.webcoach.jp" data-url="/generative-ai/AI_coding/%E6%95%99%E6%9D%903%20AI%E3%82%A2%E3%82%B7%E3%82%B9%E3%83%88%E5%AE%9F%E8%A3%85%E3%81%AE%E6%BA%96%E5%82%99/b2kEt" data-href="https://learn.webcoach.jp/media/beacon"></script>
+    <!-- headタグ内の上部に挿入されます -->
+
+    <meta charset="UTF-8">
+    <title>2章 AIでデザイン情報を&quot;丸ごと&quot;スキャン - WEBCOACH</title>
+
+    <!-- resetcssのCDNでのCSS読み込み -->
+    <link rel="stylesheet" href="https://unpkg.com/modern-css-reset/dist/reset.min.css" />
+
+    <!-- fontawesomeのCDNでのCSS読み込み -->
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/fontawesome/4.7.0/css/font-awesome.min.css">
+
+    <!-- BootstrapのCDNでのCSS読み込み -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous" />
+
+    <!-- highlight.jsの読み込み -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.1/styles/dracula.min.css">
+
+    <!-- カスタムCSS -->
+    <link rel="stylesheet" href="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/168/original/style.css?1788081716">
+
+    <!-- clipkitデフォルトのCSS -->
+    <!--<link rel="stylesheet" media="screen" href="https://cdn.clipkit.co/clipkit/stylesheets/application-1.0.css?v=v15.9.0-20260915">-->
+
+    <!-- jQuery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <!-- カスタムJS -->
+    <script src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/202/original/script.js?1788946194"></script>
+    <script src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/535/original/script.js?1743681771"></script>
+
+    <!-- clipkitデフォルトのJS -->
+    <script src="https://cdn.clipkit.co/clipkit/javascripts/default-1.0.js?v=v15.9.0-20260915"></script>
+
+    <!-- フォント -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;700&display=swap" rel="stylesheet">
+
+    <link href="https://cdn.clipkit.co/clipkit/favicons/square/missing.png" rel="shortcut icon" type="image/vnd.microsoft.icon">
+    <link rel="apple-touch-icon" href="https://cdn.clipkit.co/clipkit/touch_icons/square/missing.png">
+    <link rel="alternate" type="application/rss+xml"
+        href="https://learn.webcoach.jp/media.rss" title="WEBCOACH">
+    
+<link rel="canonical" href="https://learn.webcoach.jp/generative-ai/AI_coding/%E6%95%99%E6%9D%903%20AI%E3%82%A2%E3%82%B7%E3%82%B9%E3%83%88%E5%AE%9F%E8%A3%85%E3%81%AE%E6%BA%96%E5%82%99/b2kEt">
+
+<meta name="description" content="">
+<meta name="keywords" content="">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:domain" content="learn.webcoach.jp">
+<meta name="twitter:title" content="2章 AIでデザイン情報を&quot;丸ごと&quot;スキャン - WEBCOACH">
+<meta name="twitter:image" content="https://cdn.clipkit.co/tenants/589/item_images/images/000/036/321/medium/65b4b7f4-7043-4ad4-9543-7e44dd347b39.png?1754088064">
+<meta name="twitter:description" content="">
+<meta property="og:site_name" content="WEBCOACH">
+<meta property="og:title" content="2章 AIでデザイン情報を&quot;丸ごと&quot;スキャン">
+<meta property="og:description" content="">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://learn.webcoach.jp/generative-ai/AI_coding/%E6%95%99%E6%9D%903%20AI%E3%82%A2%E3%82%B7%E3%82%B9%E3%83%88%E5%AE%9F%E8%A3%85%E3%81%AE%E6%BA%96%E5%82%99/b2kEt">
+<meta property="og:image" content="https://cdn.clipkit.co/tenants/589/item_images/images/000/036/321/large/65b4b7f4-7043-4ad4-9543-7e44dd347b39.png?1754088064">
+<script type="application/ld+json">
+  {
+    "@context": "http://schema.org",
+    "@type": "NewsArticle",
+    "mainEntityOfPage":{
+      "@type":"WebPage",
+      "@id": "https://learn.webcoach.jp/generative-ai/AI_coding/%E6%95%99%E6%9D%903%20AI%E3%82%A2%E3%82%B7%E3%82%B9%E3%83%88%E5%AE%9F%E8%A3%85%E3%81%AE%E6%BA%96%E5%82%99/b2kEt"
+    },
+    "headline": "2章 AIでデザイン情報を&quot;丸ごと&quot;スキャン",
+    "image": {
+      "@type": "ImageObject",
+      "url": "https://cdn.clipkit.co/tenants/589/item_images/images/000/036/321/medium/65b4b7f4-7043-4ad4-9543-7e44dd347b39.png?1754088064",
+      "width": 800,
+      "height": 600
+    },
+    "datePublished": "2025-07-25T10:55:59+09:00",
+    "dateModified": "2025-08-12T11:16:45+09:00",
+    "author": {
+      "@type": "Person",
+      "name": "m_takenaga"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "WEBCOACH",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://cdn.clipkit.co/tenants/589/sites/logos/000/000/001/logo_sm/a8defd4b-1cc7-433b-a61c-08e7db0e3e4f.png?1714459367"
+      }
+    },
+    "description": ""
+  }
+  </script>
+
+    <!-- headタグ内の下部に挿入されます -->
+
+
+<meta name="csrf-param" content="authenticity_token" />
+<meta name="csrf-token" content="Tk-ygkddW4ywaWzfn7nRL8qke5O6aR9T0WXme4Zh3xApFW9rdsTee7kcv2WW9oc6JdOq_z2a7GRq_g-S6LIevg" /><meta content="" name="routing-root-path" /><meta content="media" name="site-name" /><meta content="ja" name="i18n-default-locale" /><meta content="ja" name="i18n-locale" /></head>
+
+<body class="device-desktop">
+    <!-- bodyタグ内の上部に挿入されます -->
+
+
+    <!-- サイドバーとコンテンツのコンテナ -->
+    <div class="d-flex flex-row w-100 mb-5" style="min-height: calc(100vh - 400px);">
+
+        <!-- サイドバー -->
+        <!--<nav id="side-bar" class="d-flex flex-column fixed-top" style="width: 250px;">-->
+        <!--    <h1 class="d-block w-100 text-center">-->
+        <!--        <a class="d-block" href="/">-->
+        <!--            <img class="mw-100 p-3" src="https://cdn.clipkit.co/tenants/589/sites/logos/000/000/001/logo_sm/a8defd4b-1cc7-433b-a61c-08e7db0e3e4f.png?1714459367" alt="WEBCOACH">-->
+        <!--        </a>-->
+        <!--    </h1>-->
+        <!--    <ul class="nav flex-column m-0 p-3 fw-bold">-->
+        <!--        <li id="sidebar-top" class="nav-item mb-2" style="display: none;"><a href="/"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;" src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/233/original/home.png?1715353458">-->
+        <!--                <div>ホーム</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-knowledges" class="nav-item mb-2" style="display: none;"><a href="/knowledges"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;" src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/232/original/book.png?1715353458">-->
+        <!--                <div>学習の心得</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-web-designs" class="nav-item mb-2" style="display: none;"><a href="/web-designs"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/231/original/design.png?1715353457">-->
+        <!--                <div>WEBデザイン</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-web-marketing" class="nav-item mb-2" style="display: none;"><a href="/web-marketings"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/230/original/marketing.png?1715353457">-->
+        <!--                <div>WEBマーケティング</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-codings" class="nav-item mb-2" style="display: none;"><a href="/codings"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/229/original/website.png?1715353457">-->
+        <!--                <div>WEBサイト構築</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-business-skills" class="nav-item mb-2" style="display: none;"><a href="/business-skills"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/228/original/business.png?1715353456">-->
+        <!--                <div>ビジネススキル</div>-->
+        <!--            </a></li>-->
+        <!--    </ul>-->
+        <!--</nav>-->
+
+        <!-- コンテンツ -->
+        <!--<main class="ms-auto" style="width: calc(100vw - 250px);">-->
+        <main class="ms-auto" style="width: calc(100vw);">
+            <div id="sb-site">
+                
+
+
+<div class="container">
+  <div class="row">
+    <div class="article">
+      <div class="mb-3 text-light" style="
+        height: 180px;
+        background-image: url(https://cdn.clipkit.co/tenants/589/resources/assets/000/000/270/original/article-header.png?1717761933);
+        background-repeat: no-repeat;
+        background-size: cover;
+        display: flex;
+        align-items: flex-end;
+      ">
+        <div style="
+          margin: 0 0 30px 30px;
+        ">
+          <div>教材3 AIアシスト実装の準備</div>
+
+          <div class="fw-bold h2">2章 AIでデザイン情報を&quot;丸ごと&quot;スキャン</div>
+        </div>
+      </div>
+      <div class="article-content">
+        <!-- 目次 -->
+        <div class="index mb-3" style="background-color: #FDF5E8;">
+          <div>
+            <div class="fw-light">INDEX</div>
+            <div class="h3">目次</div>
+          </div>
+          <div class="toc"></div>
+        </div>
+        
+        <div class="back-to-roadmap mb-4 text-center"></div>
+
+        <!-- コンテンツ -->
+        
+        
+        <div class="article-item item_html " id="item37557" data-item-id="37557" data-item-type="ItemHtml"><div class="item-body"><div class="pagenation-buttons">
+  <a href="vKrqO" class="pagenation-buttons_prev"><img src="/theme/webcoach/img/icons/arrow-right.svg" class="pagenation-buttons_icon">前の章に戻る</a>
+  <a href="Cgvu2" class="pagenation-buttons_next">次の章に進む<img src="/theme/webcoach/img/icons/arrow-right.svg" class="pagenation-buttons_icon"></a>
+</div></div></div>
+        
+        <div class="article-item item_heading " id="item36307" data-item-id="36307" data-item-type="ItemHeading"><h2 class="item-body">2章 AIでデザイン情報を&quot;丸ごと&quot;スキャン</h2></div>
+        
+        <div class="article-item item_markdown " id="item36308" data-item-id="36308" data-item-type="ItemMarkdown"><h4 id="section">この章の目安学習時間：2時間</h4>
+</div>
+        
+        <div class="article-item item_markdown " id="item36309" data-item-id="36309" data-item-type="ItemMarkdown"><h4 id="section">この章で到達できるゴール：</h4>
+</div>
+        
+        <div class="article-item item_html " id="item36310" data-item-id="36310" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li>SVGとJPG/PNGの特性を理解し、デザインカンプの形式に応じて適切な情報抽出方法を選択できる。</li>
+  <li><span class="decoration-01">SVGファイルの中身を読み解き、テキストがアウトライン化されているかなどの状態を判断できる。</span></li>
+  <li>テキスト情報が保持されたSVGからは、AIで正確なスタイル情報を抽出し、<span class="decoration-01">それ以外の場合はJPG/PNGと同様のアプローチで賢く推測できる。</span></li>
+</ul>
+</div></div>
+        
+        <div class="article-item item_heading " id="item36311" data-item-id="36311" data-item-type="ItemHeading"><h2 class="item-body">【2-1】はじめに：デザインカンプの形式を確認しよう</h2></div>
+        
+        <div class="article-item item_markdown " id="item36312" data-item-id="36312" data-item-type="ItemMarkdown"><h4 id="section">目安の学習時間：10分</h4>
+</div>
+        
+        <div class="article-item item_heading " id="item36313" data-item-id="36313" data-item-type="ItemHeading"><h3 class="item-body">SVG vs JPG/PNG：あなたに渡されるデータはどっち？</h3></div>
+        
+        <div class="article-item item_rich_text " id="item36314" data-item-id="36314" data-item-type="ItemRichText"><div class="item-body-hbr">Web制作の実務では、クライアントやデザイナーから様々な形式でデザインデータが提供されます。<br>
+特に代表的なのが、<span class="decoration-02">SVG（ベクター形式）とJPG/PNG（ラスター形式）</span>です。<br>
+この2つは根本的に構造が異なるため、AIで情報を抽出する際のアプローチも変わってきます。<br>
+<br>
+まずは、それぞれの特徴を理解しましょう。</div></div>
+        
+        <div class="article-item item_html " id="item36315" data-item-id="36315" data-item-type="ItemHtml"><div class="item-body"><table class="simple">
+    <tbody>
+        <thead>
+            <tr>
+                <th scope="col"><div><div>項目</div></div></th>
+                <th scope="col"><div><div>SVG (ベクター形式)</div></div></th>
+                <th scope="col"><div><div>JPG/PNG (ラスター形式)</div></div></th>
+            </tr>
+        </thead>
+        <tr>
+            <th scope="row"><div><div>データの正体</div></div></th>
+            <td><div><div>点や線の座標、色などを<span class="decoration-02">数値で記録したコード</span></div></div></td>
+            <td><div><div>ピクセルという<span class="decoration-02">色のついた点の集合体</span></div></div></td>
+        </tr>
+        <tr>
+            <th scope="row"><div><div>特徴</div></div></th>
+            <td><div><div>拡大・縮小しても画質が劣化しない</div></div></td>
+            <td><div><div>拡大すると画像が荒くなることがある</div></div></td>
+        </tr>
+        <tr>
+            <th scope="row"><div><div>主な用途</div></div></th>
+            <td><div><div>ロゴ、アイコンなど、シャープさが求められる図形</div></div></td>
+            <td><div><div>写真、複雑なイラスト、Webサイト全体のデザインカンプ</div></div></td>
+        </tr>
+        <tr>
+            <th scope="row"><div><div>情報抽出</div></div></th>
+            <td><div><div>コードを<span class="decoration-02">「解析」</span>して正確な値を取得可能</div></div></td>
+            <td><div><div>画像を見て<span class="decoration-02">「推測」</span>する必要がある</div></div></td>
+        </tr>
+    </tbody>
+</table></div></div>
+        
+        <div class="article-item item_rich_text " id="item36316" data-item-id="36316" data-item-type="ItemRichText"><div class="item-body-hbr">実務では、「ロゴはSVG、サイト全体のデザインカンプはJPGで」というように、複数の形式が混在して提供されることも少なくありません。</div></div>
+        
+        <div class="article-item item_heading " id="item36317" data-item-id="36317" data-item-type="ItemHeading"><h3 class="item-body">形式と&quot;中身&quot;によって戦略を変える！</h3></div>
+        
+        <div class="article-item item_rich_text " id="item36318" data-item-id="36318" data-item-type="ItemRichText"><div class="item-body-hbr">このような特徴の違いから、AIに情報を抽出させる際の戦略を立てる必要があります。</div></div>
+        
+        <div class="article-item item_html " id="item36319" data-item-id="36319" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li><span class="decoration-01">理想的なSVGの場合</span>：<br>AIの<span class="decoration-02">頭脳（コード解析能力）を使い、書かれているコードを解析させ、「正確な答え」</span>を引き出します。</li>
+  <li><span class="decoration-01">JPG/PNGや"訳あり"SVGの場合</span>：<br>AIの<span class="decoration-02">眼（画像認識能力）を使い、描かれている内容を認識させ、「賢い推測」</span>を引き出します。</li>
+</ul>
+</div></div>
+        
+        <div class="article-item item_rich_text " id="item36320" data-item-id="36320" data-item-type="ItemRichText"><div class="item-body-hbr">この章では、この2つのアプローチを両方学び、どのような状況にも対応できるスキルを身につけていきます。</div></div>
+        
+        <div class="article-item item_image " id="item36321" data-item-id="36321" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/036/321/medium/65b4b7f4-7043-4ad4-9543-7e44dd347b39.png?1754088064" title=""><img class="img-responsive item-image" alt=" (36321)" data-reference="" src="https://cdn.clipkit.co/tenants/589/item_images/images/000/036/321/medium/65b4b7f4-7043-4ad4-9543-7e44dd347b39.png?1754088064" width="640" height="427" /></a><h4></h4></div></div>
+        
+        <div class="article-item item_heading " id="item36322" data-item-id="36322" data-item-type="ItemHeading"><h2 class="item-body">【2-2】ケース1：SVGから&quot;正確な&quot;情報を抜き出す方法（と、その限界）</h2></div>
+        
+        <div class="article-item item_markdown " id="item36323" data-item-id="36323" data-item-type="ItemMarkdown"><h4 id="section">目安の学習時間：40分</h4>
+</div>
+        
+        <div class="article-item item_heading " id="item36324" data-item-id="36324" data-item-type="ItemHeading"><h3 class="item-body">SVGファイルの中身を覗いてみよう</h3></div>
+        
+        <div class="article-item item_rich_text " id="item36325" data-item-id="36325" data-item-type="ItemRichText"><div class="item-body-hbr">SVGファイルは、その実体は画像データではなく、<span class="decoration-02">XML（eXtensible Markup Language）</span>というマークアップ言語で記述されたテキストファイルです。<br>
+つまり、HTMLのようにタグで構造が定義されています。<br>
+そのため、テキストエディタ（Visual Studio Codeなど）でファイルを開くことで、その中身を直接確認できます。<br>
+<br>
+</div></div>
+        
+        <div class="article-item item_rich_text " id="item36388" data-item-id="36388" data-item-type="ItemRichText"><div class="item-body-hbr"><br>
+例えば以下のSVGファイル（クリップボード）をテキストエディタで読み込むと</div></div>
+        
+        <div class="article-item item_link " id="item36389" data-item-id="36389" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=b2kEt&amp;item_id=36389" rel="nofollow noopener noreferrer" target="_blank">使用素材【SVG】</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="使用素材【SVG】" data-reference="https://www.dropbox.com/scl/fi/gn8a1gsmdz9nozt0lxt4f/Ai-Coding-Assist_ch2_.svg?rlkey=wn9hbdm5lzy67ufecwu8moa7t&amp;st=fzxhh04w&amp;dl=0" src="https://cdn.clipkit.co/tenants/589/item_links/images/000/036/389/thumb/72cf3eac-e4ad-4144-8c62-e3bfafe35916.png?1754964968" width="75" height="75" /></div><div class="media-body"><div class="item-body"></div></div></div></div></div>
+        
+        <div class="article-item item_image " id="item36326" data-item-id="36326" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/036/326/original/%E3%82%A2%E3%83%B3%E3%82%B1%E3%83%BC%E3%83%88%E7%94%A8%E7%B4%99%E3%81%AE%E3%82%A2%E3%82%A4%E3%82%B3%E3%83%B3%E7%B4%A0%E6%9D%90.svg?1753405684" title=""><img class="img-responsive item-image" alt=" (36326)" data-reference="" src="https://cdn.clipkit.co/tenants/589/item_images/images/000/036/326/original/%E3%82%A2%E3%83%B3%E3%82%B1%E3%83%BC%E3%83%88%E7%94%A8%E7%B4%99%E3%81%AE%E3%82%A2%E3%82%A4%E3%82%B3%E3%83%B3%E7%B4%A0%E6%9D%90.svg?1753405684" /></a><h4></h4></div></div>
+        
+        <div class="article-item item_rich_text " id="item36327" data-item-id="36327" data-item-type="ItemRichText"><div class="item-body-hbr">以下のようなXMLコードが表示されます。</div></div>
+        
+        <div class="article-item item_code " id="item36329" data-item-id="36329" data-item-type="ItemCode"><div class="item-body"><div class="CodeRay">
+  <div class="code"><pre>&lt;!--?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?--&gt;
+&lt;!-- Generator: Adobe Illustrator 15.1.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  --&gt;
+
+&lt;svg version=&quot;1.1&quot; id=&quot;_x32_&quot; xmlns=&quot;http://www.w3.org/2000/svg&quot; xmlns:xlink=&quot;http://ww
+w.w3.org/1999/xlink&quot; x=&quot;0px&quot; y=&quot;0px&quot; width=&quot;512px&quot; height=&quot;512px&quot; viewBox=&quot;0 0 512 512&quot; 
+style=&quot;width: 256px; height: 256px; opacity: 1;&quot; xml:space=&quot;preserve&quot;&gt;
+&lt;style type=&quot;text/css&quot;&gt;
+
+        .st0{fill:#4B4B4B;}
+
+&lt;/style&gt;
+&lt;g&gt;
+        &lt;path class=&quot;st0&quot; d=&quot;M449.891,87.953c-3.766-8.906-10.031-16.438-17.922-21.781c-7
+.891-5.328-17.5-8.469-27.719-8.469h-42.656
+                v-7.359h-61.828c0.281-2,0.438-4.063,0.438-6.141C300.203,19.828,280.375,0,256,
+0s-44.203,19.828-44.203,44.203
+                c0,2.078,0.156,4.141,0.438,6.141h-61.828v7.359H107.75c-6.813,0-13.359,1.391-1
+9.281,3.906
+                c-8.906,3.766-16.453,10.031-21.797,17.922c-5.328,7.906-8.469,17.5-8.469,27.719v3
+55.219c0,6.781,1.391,13.344,3.906,19.281
+                c3.766,8.906,10.031,16.438,17.922,21.781c7.906,5.344,17.5,8.469,27.719,8.469h29
+6.5c6.797,0,13.359-1.375,19.281-3.906
+                c8.922-3.75,16.453-10.031,21.797-17.922c5.328-7.891,8.469-17.5,8.469-27.703V10
+7.25
+                C453.797,100.438,452.422,93.891,449.891,87.953z M256,27.797c9.047,0,16.406,7.35
+9,16.406,16.406c0,2.172-0.438,4.234-1.203,6.141
+                h-30.391c-0.781-1.906-1.219-3.969-1.219-6.141C239.594,35.156,246.969,27.797,25
+6,27.797z M424.328,462.469
+                c0,2.813-0.563,5.406-1.578,7.797c-1.5,3.578-4.063,6.672-7.281,8.859c-3.219,2.156
+-7,3.406-11.219,3.406h-296.5
+                c-2.813,0-5.422-0.563-7.813-1.563c-3.594-1.516-6.672-4.094-8.844-7.297c-2.156-3
+.219-3.406-7-3.422-11.203V107.25
+                c0-2.813,0.563-5.422,1.578-7.813c1.516-3.594,4.078-6.688,7.281-8.844c3.219-2.15
+6,7-3.406,11.219-3.422h42.656v6.141
+                c0,11.531,9.344,20.875,20.891,20.875h169.422c11.531,0,20.875-9.344,20.875-20.8
+75v-6.141h42.656c2.813,0,5.422,0.563,7.813,1.578
+                c3.578,1.5,6.672,4.063,8.844,7.281s3.422,7,3.422,11.219V462.469z&quot; style=&quot;fill: rgb(7
+5, 75, 75);&quot;&gt;&lt;/path&gt;
+        &lt;rect x=&quot;156.141&quot; y=&quot;170.672&quot; class=&quot;st0&quot; width=&quot;31.625&quot; height=&quot;31.625&quot; style=&quot;fill: rg
+b(75, 75, 75);&quot;&gt;&lt;/rect&gt;
+        &lt;rect x=&quot;225.516&quot; y=&quot;170.672&quot; class=&quot;st0&quot; width=&quot;130.359&quot; height=&quot;31.625&quot; style=&quot;fill: rg
+b(75, 75, 75);&quot;&gt;&lt;/rect&gt;
+        &lt;rect x=&quot;156.141&quot; y=&quot;264.125&quot; class=&quot;st0&quot; width=&quot;31.625&quot; height=&quot;31.625&quot; style=&quot;fill: rg
+b(75, 75, 75);&quot;&gt;&lt;/rect&gt;
+        &lt;rect x=&quot;225.516&quot; y=&quot;264.125&quot; class=&quot;st0&quot; width=&quot;130.359&quot; height=&quot;31.625&quot; style=&quot;fill: rg
+b(75, 75, 75);&quot;&gt;&lt;/rect&gt;
+        &lt;rect x=&quot;156.141&quot; y=&quot;357.594&quot; class=&quot;st0&quot; width=&quot;31.625&quot; height=&quot;31.625&quot; style=&quot;fill: rgb
+(75, 75, 75);&quot;&gt;&lt;/rect&gt;
+        &lt;rect x=&quot;225.516&quot; y=&quot;357.594&quot; class=&quot;st0&quot; width=&quot;130.359&quot; height=&quot;31.625&quot; style=&quot;fill: rg
+b(75, 75, 75);&quot;&gt;&lt;/rect&gt;
+&lt;/g&gt;
+&lt;/svg&gt;
+</pre></div>
+</div>
+<div class="cite"><cite class="item-source">XMLコード</cite></div></div></div>
+        
+        <div class="article-item item_rich_text " id="item36331" data-item-id="36331" data-item-type="ItemRichText"><div class="item-body-hbr">コードの中には、図形の形を定義する&lt;path&gt;タグ、色を指定するfill属性、テキストを記述する&lt;text&gt;タグなどが含まれています。この構造をAIに読み解かせることで、正確な情報を引き出します。</div></div>
+        
+        <div class="article-item item_html " id="item36332" data-item-id="36332" data-item-type="ItemHtml"><div class="item-body"><div class="card-with-icon check">
+    <span class="bold"><strong>VS CodeでSVGのコードを表示する手順</strong><br></span>
+    <div class="content-area">
+        <p>VS Codeの拡張機能により、SVGが自動で画像として表示されることがあります。その場合、以下の手順でコード表示に切り替えられます。</p>
+        <ol>
+            <li>画面上部のファイル名が書かれた<span class="decoration-02">タブを右クリック</span>します。</li>
+            <li>表示されたメニューから<span class="decoration-02">「Reopen Editor With...」</span>を選択します。</li>
+            <li>次の選択肢で<span class="decoration-02">「Text Editor」</span>を選びます。</li>
+        </ol>
+    </div>
+</div></div></div>
+        
+        <div class="article-item item_heading " id="item36333" data-item-id="36333" data-item-type="ItemHeading"><h3 class="item-body"> 注意！SVGでも情報が取れない&quot;訳あり&quot;ケース</h3></div>
+        
+        <div class="article-item item_rich_text " id="item36334" data-item-id="36334" data-item-type="ItemRichText"><div class="item-body-hbr">SVGはコードベースであるため正確な情報を得やすい形式ですが、万能ではありません。<br>
+実務では、SVGファイルからでも直接情報を読み取れない「訳あり」ケースが存在します。</div></div>
+        
+        <div class="article-item item_html " id="item36335" data-item-id="36335" data-item-type="ItemHtml"><div class="item-body"><div class="card-with-icon attention">
+    <span class="bold"><strong>注意</strong><br></span>
+    <div class="content-area">
+        <p>SVGファイルを受け取ったからといって、必ずしも全ての情報がコードから読み取れるとは限りません。以下の2つのケースには特に注意が必要です。</p>
+        <ul>
+            <li><span class="decoration-02">ケースA：テキストが「アウトライン化」されている</span></li>
+            <li><span class="decoration-02">ケースB：SVG内に「画像が埋め込まれている」</span></li>
+        </ul>
+    </div>
+</div></div></div>
+        
+        <div class="article-item item_rich_text " id="item36336" data-item-id="36336" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">ケースA：テキストが「アウトライン化」されている</span><br>
+<span class="decoration-02">アウトライン化</span>とは、フォント情報を持つ「文字」を、形だけのデータである「図形（パス）」に変換する処理です。<br>
+これにより、どの環境でファイルを開いても同じ見た目を保てますが、元々のフォント名やサイズといったテキスト情報は失われます。</div></div>
+        
+        <div class="article-item item_rich_text " id="item36338" data-item-id="36338" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">ケースB：SVG内に「画像が埋め込まれている」</span><br>
+SVGファイルの中に、`&lt;image&gt;`タグを使ってJPGやPNGなどの画像（ラスター画像）を埋め込むこともできます。この場合、SVGは画像の「額縁」の役割しか果たしておらず、SVGコード自体には、埋め込まれた画像の色やフォントの情報は含まれていません。<br>
+<span class="decoration-02">これらの"訳あり"SVGの対応策</span><br>
+これらのケースでは、SVGであってもコード解析は有効ではありません。<br>
+そのため、<span class="decoration-02">次のセクションで学ぶJPG/PNGと同じアプローチ</span>、つまりAIの画像認識能力を使って「推測」する方法で攻略します。</div></div>
+        
+        <div class="article-item item_image " id="item36337" data-item-id="36337" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/036/337/medium/2693079d-cd92-4aa2-8b4e-4aa95f6444f0.jpg?1753406109" title=""><img class="img-responsive item-image" alt=" (36337)" data-reference="" src="https://cdn.clipkit.co/tenants/589/item_images/images/000/036/337/medium/2693079d-cd92-4aa2-8b4e-4aa95f6444f0.jpg?1753406109" width="640" height="427" /></a><h4></h4></div></div>
+        
+        <div class="article-item item_heading " id="item36339" data-item-id="36339" data-item-type="ItemHeading"><h3 class="item-body">AIに&quot;理想的な&quot;SVGコードを解析させる方法</h3></div>
+        
+        <div class="article-item item_rich_text " id="item36340" data-item-id="36340" data-item-type="ItemRichText"><div class="item-body-hbr">テキスト情報が保持されている、いわば「理想的な」SVGファイルであれば、AIのコード解析能力を最大限に活用できます。<br>
+最も確実な方法は、<span class="decoration-02">SVGファイルのコードを全てコピーし、AIのプロンプトに貼り付けて解析を依頼する</span>ことです。</div></div>
+        
+        <div class="article-item item_html " id="item36341" data-item-id="36341" data-item-type="ItemHtml"><div class="item-body"><div class="card-with-icon point">
+    <span class="bold"><strong>応用事項：長いコードを分割して送信する方法</strong><br></span>
+    <div class="content-area">
+        <p>万が一、SVGコードがAIの入力文字数制限を超えるほど長い場合の代替案です。</p>
+        <ol>
+            <li>まず、「これから非常に長いSVGコードを複数に分けて送信します。全てのパーツを送り終えたら合図するので、それから全体を解析してください。」のように、AIに事前通告します。</li>
+            <li>コードを複数に分割し、「SVG Part 1/3」のようなヘッダーを付けて、順番に送信します。</li>
+            <li>最後のパーツを送り終えたら、「全てのパーツを送信しました。解析を開始してください。」と指示します。</li>
+        </ol>
+        <p>この方法は手間がかかりますが、非常に複雑なSVGファイルを扱う際に役立つことがあります。</p>
+    </div>
+</div></div></div>
+        
+        <div class="article-item item_rich_text " id="item36342" data-item-id="36342" data-item-type="ItemRichText"><div class="item-body-hbr">この方法を使えば、テキスト情報が残っているSVGからは、1pxの狂いもない正確な情報を手に入れることができます。</div></div>
+        
+        <div class="article-item item_rich_text " id="item36344" data-item-id="36344" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">入力例</span></div></div>
+        
+        <div class="article-item item_code " id="item36343" data-item-id="36343" data-item-type="ItemCode"><div class="item-body"><div class="CodeRay">
+  <div class="code"><pre>このSVGファイルを解析して、使用されている色とフォントサイズを教えてください。
+
+
+&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;
+&lt;!-- Generator: Adobe Illustrator 27.5.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  --&gt;
+&lt;svg version=&quot;1.1&quot; xmlns=&quot;http://www.w3.org/2000/svg&quot; xmlns:xlink=&quot;http://www.w3.org/1999/xlink&quot; x=&quot;0px&quot; y=&quot;0px&quot;
+         viewBox=&quot;0 0 500 500&quot; style=&quot;enable-background:new 0 0 500 500;&quot; xml:space=&quot;preserve&quot;&gt;
+&lt;g id=&quot;BACKGROUND&quot;&gt;
+        &lt;rect x=&quot;0&quot; style=&quot;fill:#FFFFFF;&quot; width=&quot;499.999&quot; height=&quot;500&quot;/&gt;
+&lt;/g&gt;
+&lt;g id=&quot;OBJECTS&quot;&gt;
+        &lt;g&gt;
+                &lt;g&gt;
+                        &lt;polygon style=&quot;fill:none;&quot; points=&quot;274.376,151.378 274.377,151.378 274.376,151.378                         &quot;/&gt;
+                        &lt;polygon style=&quot;fill:#434A5B;&quot; points=&quot;274.376,151.378 261.43,133.221 232.48,173.629 190.585,115.149 118.19,216.202 
+                                144.144,216.202 153.229,216.202 148.686,209.861 148.686,209.861 190.585,151.378 219.503,191.743 201.98,216.202 
+                                227.935,216.202 232.481,209.857 237.026,216.202 262.98,216.202 245.458,191.743                         &quot;/&gt;
+                &lt;/g&gt;
+                &lt;polygon style=&quot;fill:#2C2E33;&quot; points=&quot;232.48,173.629 245.458,191.743 274.376,151.378 261.43,133.221                 &quot;/&gt;
+                &lt;g&gt;
+                        &lt;polygon style=&quot;fill:#FF2424;&quot; points=&quot;381.81,216.202 355.855,216.202 346.771,216.202 351.313,222.542 309.415,281.026 
+                                280.497,240.66 298.019,216.202 272.065,216.202 267.519,222.546 262.974,216.202 237.02,216.202 254.542,240.66 
+                                225.623,281.026 148.706,173.606 135.714,191.753 225.623,317.254 267.52,258.774 309.415,317.254 364.291,240.656 
+                                364.294,240.66                         &quot;/&gt;
+                        &lt;polygon style=&quot;fill:#991A5A;&quot; points=&quot;267.519,258.775 254.542,240.66 225.623,281.026 238.57,299.182                         &quot;/&gt;
+                &lt;/g&gt;
+                &lt;polygon style=&quot;fill:#2C2E33;&quot; points=&quot;219.503,191.743 201.98,216.202 237.02,216.202                 &quot;/&gt;
+                &lt;polygon style=&quot;fill:#991A5A;&quot; points=&quot;262.974,216.202 280.497,240.66 298.019,216.202                 &quot;/&gt;
+                &lt;polygon style=&quot;fill:#FF2424;&quot; points=&quot;227.934,216.202 201.98,216.202 249.999,283.229 262.977,265.115                 &quot;/&gt;
+                &lt;polygon style=&quot;fill:#434A5B;&quot; points=&quot;272.065,216.202 298.018,216.202 250,149.175 237.02,167.285                 &quot;/&gt;
+                &lt;polygon style=&quot;fill:#434A5B;&quot; points=&quot;274.376,151.378 274.377,151.378 280.497,159.96 274.377,151.378 350.046,260.539 
+                        364.294,240.66 274.376,115.149 261.43,133.221 274.376,151.378                 &quot;/&gt;
+        &lt;/g&gt;
+&lt;/g&gt;
+&lt;g id=&quot;TEXTS&quot;&gt;
+        &lt;g&gt;
+                &lt;g&gt;
+                        &lt;text transform=&quot;matrix(1 0 0 1 135.0597 361.6685)&quot;&gt;&lt;tspan x=&quot;0&quot; y=&quot;0&quot; style=&quot;fill:#3B4051; font-family:'Outfit-ExtraBold'; font-size:41.7059px;&quot;&gt;brand&lt;/tspan&gt;&lt;tspan x=&quot;125.783&quot; y=&quot;0&quot; style=&quot;fill:#FF2424; font-family:'Outfit-ExtraBold'; font-size:41.7059px;&quot;&gt;logo&lt;/tspan&gt;&lt;/text&gt;
+                        
+                                &lt;text transform=&quot;matrix(1 0 0 1 174.0441 378.9282)&quot; style=&quot;fill:#2C2E33; font-family:'Lato-Regular'; font-size:12.9752px; letter-spacing:2;&quot;&gt;tagline goes here&lt;/text&gt;
+                &lt;/g&gt;
+        &lt;/g&gt;
+&lt;/g&gt;
+&lt;/svg&gt;
+</pre></div>
+</div>
+<div class="cite"><cite class="item-source">入力例</cite></div></div></div>
+        
+        <div class="article-item item_rich_text " id="item36345" data-item-id="36345" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">出力例</span></div></div>
+        
+        <div class="article-item item_code " id="item36346" data-item-id="36346" data-item-type="ItemCode"><div class="item-body"><div class="CodeRay">
+  <div class="code"><pre>■ 使用色（fill）
+#FFFFFF：背景
+#434A5B：図形
+#2C2E33：図形・タグライン文字
+#FF2424：図形・「logo」文字
+#991A5A：図形
+#3B4051：文字「brand」
+none：線なし
+
+■ フォントとサイズ
+「brand」：41.71px、Outfit-ExtraBold、色 #3B4051
+「logo」：41.71px、Outfit-ExtraBold、色 #FF2424
+「tagline goes here」：12.98px、Lato-Regular、色 #2C2E33、字間2px</pre></div>
+</div>
+<div class="cite"><cite class="item-source">出力例</cite></div></div></div>
+        
+        <div class="article-item item_heading " id="item36347" data-item-id="36347" data-item-type="ItemHeading"><h3 class="item-body">練習問題：SVGコードを解析して正確な情報を抽出しよう</h3></div>
+        
+        <div class="article-item item_markdown " id="item36390" data-item-id="36390" data-item-type="ItemMarkdown"><h4 id="section">問題</h4>
+</div>
+        
+        <div class="article-item item_rich_text " id="item36348" data-item-id="36348" data-item-type="ItemRichText"><div class="item-body-hbr"><br>
+提供されたロゴファイル `logo_ac.svg` があります。<br>
+このSVGファイルは<span class="decoration-02">ア</span><span class="decoration-02">ウトライン化されておらず</span>、テキスト情報がコード内にそのまま保持されています。<br>
+<br>
+このSVGのコードをAIを使って<span class="decoration-02">コード解析</span>を行い、以下の情報をすべて正確に抽出してください。</div></div>
+        
+        <div class="article-item item_html " id="item36349" data-item-id="36349" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li><span class="decoration-01">オブジェクト（図形）</span>で使われている全ての色</li>
+  <li><span class="decoration-01">テキスト</span>で使われている全ての色</li>
+  <li><span class="decoration-01">各テキスト要素</span>のフォントファミリー (<span class="decoration-02">font-family</span>) とフォントサイズ (<span class="decoration-02">font-size</span>)</li>
+</ul>
+</div></div>
+        
+        <div class="article-item item_rich_text " id="item36350" data-item-id="36350" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">素材</span><br>
+<br>
+<a href="https://jp.freepik.com/free-vector/flat-design-ac-logo-design_28542127.htm#fromView=keyword&amp;page=1&amp;position=2&amp;uuid=3dbe7c2a-a14b-4904-94f0-6ec2c51ef216&amp;query=%E3%83%AD%E3%82%B4" class="default-link" target="_blank" rel="nofollow">https://jp.freepik.com/free-vector/flat-design-ac-logo-design_28542127.htm#fromView=keyword&amp;page=1&amp;position=2&amp;uuid=3dbe7c2a-a14b-4904-94f0-6ec2c51ef216&amp;query=%E3%83%AD%E3%82%B4<br>
+</a><br>
+url先のロゴをSVG形式でダウンロードして使用しましょう。</div></div>
+        
+        <div class="article-item item_markdown " id="item36391" data-item-id="36391" data-item-type="ItemMarkdown"><h4 id="section">解答・解説</h4>
+</div>
+        
+        <div class="article-item item_rich_text " id="item36392" data-item-id="36392" data-item-type="ItemRichText"><div class="item-body-hbr">このSVGはテキスト情報が保持されているため、「コード解析」が最適な方法です。<br>
+SVGのコードをすべてコピーし、AIに貼り付けて解析を依頼します。</div></div>
+        
+        <div class="article-item item_rich_text " id="item36393" data-item-id="36393" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">プロンプト例：</span></div></div>
+        
+        <div class="article-item item_code " id="item36394" data-item-id="36394" data-item-type="ItemCode"><div class="item-body"><div class="CodeRay">
+  <div class="code"><pre>以下のSVGコードを解析し、図形とテキストで使われている全ての色（fill）、
+および各テキスト要素のフォントファミリーとフォントサイズをリストアップしてください。
+
+（ここにコピーしたSVGコードを貼り付ける）</pre></div>
+</div>
+<div class="cite"><cite class="item-source">プロンプト例</cite></div></div></div>
+        
+        <div class="article-item item_rich_text " id="item36351" data-item-id="36351" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">抽出結果</span><br>
+以下が、AIがコードから抽出した正確な情報です。<br>
+<br>
+<span class="decoration-01">使用されている色（HEXコード）</span></div></div>
+        
+        <div class="article-item item_html " id="item36352" data-item-id="36352" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li>
+    <span class="decoration-01">オブジェクト:</span>
+    <ul>
+      <li>#FF2424 (赤)</li>
+      <li>#991A5A (紫)</li>
+      <li>#434A5B (濃い青灰色)</li>
+    </ul>
+  </li>
+  <li>
+    <span class="decoration-01">テキスト:</span>
+    <ul>
+      <li>#3B4051 (name)</li>
+      <li>#FF2424 (logo)</li>
+      <li>#2C2E33 (tagline goes here)</li>
+    </ul>
+  </li>
+</ul>
+</div></div>
+        
+        <div class="article-item item_rich_text " id="item36353" data-item-id="36353" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">フォント情報</span></div></div>
+        
+        <div class="article-item item_html " id="item36354" data-item-id="36354" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li>
+    <span class="decoration-01">"name logo" の部分:</span>
+    <ul>
+      <li>フォント名 (font-family): Outfit-ExtraBold</li>
+      <li>サイズ (font-size): 41.7059px</li>
+    </ul>
+  </li>
+  <li>
+    <span class="decoration-01">"tagline goes here" の部分:</span>
+    <ul>
+      <li>フォント名 (font-family): Lato-Regular</li>
+      <li>サイズ (font-size): 12.9752px</li>
+    </ul>
+  </li>
+</ul>
+</div></div>
+        
+        <div class="article-item item_rich_text " id="item36355" data-item-id="36355" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">テキスト情報</span></div></div>
+        
+        <div class="article-item item_image " id="item36356" data-item-id="36356" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/036/356/medium/f9c1cfdc-46a7-4aa0-aa51-69166f179b0b.png?1753407035" title=""><img class="img-responsive item-image" alt=" (36356)" data-reference="" src="https://cdn.clipkit.co/tenants/589/item_images/images/000/036/356/medium/f9c1cfdc-46a7-4aa0-aa51-69166f179b0b.png?1753407035" width="640" height="360" /></a><h4></h4></div></div>
+        
+        <div class="article-item item_link " id="item36357" data-item-id="36357" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=b2kEt&amp;item_id=36357" rel="nofollow noopener noreferrer" target="_blank">AIアシスト実装の準備 2-1</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="AIアシスト実装の準備 2-1" data-reference="https://www.dropbox.com/scl/fi/kzxighqnvpj3rb7ybad5x/Ai-Coding-Assist_2.1.1.0_.mp4?rlkey=7oneidkyreny0gg69nntv848b&amp;st=7o7we1jm&amp;dl=0" src="https://cdn.clipkit.co/tenants/589/item_links/images/000/036/357/thumb/644b7a70-cd98-43f3-a22e-371b48520115.png?1754964990" width="75" height="75" /></div><div class="media-body"><div class="item-body"></div></div></div></div></div>
+        
+        <div class="article-item item_heading " id="item36358" data-item-id="36358" data-item-type="ItemHeading"><h2 class="item-body">【2-3】ケース2：JPG/PNG（と&quot;訳あり&quot;SVG）から&quot;賢く&quot;情報を推測する方法</h2></div>
+        
+        <div class="article-item item_markdown " id="item36359" data-item-id="36359" data-item-type="ItemMarkdown"><h4 id="section">目安の学習時間：30分</h4>
+</div>
+        
+        <div class="article-item item_heading " id="item36360" data-item-id="36360" data-item-type="ItemHeading"><h3 class="item-body">AIの「眼」で画像をスキャンする基本</h3></div>
+        
+        <div class="article-item item_rich_text " id="item36361" data-item-id="36361" data-item-type="ItemRichText"><div class="item-body-hbr">次に、JPG/PNGのようなラスター画像や、先ほど学んだ「訳あり」SVGから情報を抽出する方法です。<br>
+こちらでは、AIの<span class="decoration-02">画像認識能力</span>を活用します。<br>
+このアプローチは、コードを読むのではなく、人間が絵を見るのと同じように、画像に何が描かれているかをAIに「見せて」判断させます。<br>
+サイト全体のデザインカンプ画像や、特定のコンポーネントだけを切り取ったスクリーンショットをAIにアップロードして、対話を開始します。</div></div>
+        
+        <div class="article-item item_rich_text " id="item36363" data-item-id="36363" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">入力例</span></div></div>
+        
+        <div class="article-item item_code " id="item36362" data-item-id="36362" data-item-type="ItemCode"><div class="item-body"><div class="CodeRay">
+  <div class="code"><pre>このWebサイト画像で使われている主要な色とアクセントカラーを推測し、
+それぞれのHEXコードを教えてください。</pre></div>
+</div>
+<div class="cite"><cite class="item-source">入力例</cite></div></div></div>
+        
+        <div class="article-item item_image " id="item36364" data-item-id="36364" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/036/364/medium/11b03da2-c679-4865-aa0b-caf2f0d994b6.png?1753407412" title=""><img class="img-responsive item-image" alt=" (36364)" data-reference="" src="https://cdn.clipkit.co/tenants/589/item_images/images/000/036/364/medium/11b03da2-c679-4865-aa0b-caf2f0d994b6.png?1753407412" width="640" height="614" /></a><h4></h4></div></div>
+        
+        <div class="article-item item_rich_text " id="item36365" data-item-id="36365" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">出力例</span></div></div>
+        
+        <div class="article-item item_code " id="item36366" data-item-id="36366" data-item-type="ItemCode"><div class="item-body"><div class="CodeRay">
+  <div class="code"><pre>推測される主要な色とアクセントカラー、およびそれぞれのHEXコードは以下の通りです。
+
+主要な色:
+
+背景色（白）: #FFFFFF
+
+ヘッダー/フッター/サイドバーの背景色（暗い赤）: #B12D2D (近似値)
+
+アクセントカラー:
+
+オレンジ色（「チュートリアル」や「環境セットアップ」の見出し背景など）: #F7931E (近似値)
+
+テキスト色（黒）: #333333 (近似値)
+
+サイドバーのアクティブな項目やアイコンの赤色: #E53935 (近似値)
+
+これらのHEXコードは画像からの視覚的な推測であり、
+正確なコードはWebサイトのCSSなどから取得する必要があります。</pre></div>
+</div>
+<div class="cite"><cite class="item-source">出力例</cite></div></div></div>
+        
+        <div class="article-item item_heading " id="item36367" data-item-id="36367" data-item-type="ItemHeading"><h3 class="item-body">色・フォント・余白を&quot;推測&quot;させるプロンプト術</h3></div>
+        
+        <div class="article-item item_rich_text " id="item36368" data-item-id="36368" data-item-type="ItemRichText"><div class="item-body-hbr">画像認識は非常に強力ですが、AIが提供する情報はあくまで<span class="decoration-02">「推測」</span>であるという点を理解しておくことが重要です。<br>
+ミリ単位の正確さではなく、実装の指針となるおおよその値を得ることを目的とします。<br>
+<br>
+以下に、部位ごとのプロンプト例を示します。</div></div>
+        
+        <div class="article-item item_html " id="item36369" data-item-id="36369" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li>色を抽出したい場合：<br>このWebサイト画像で使われている主要な色とアクセントカラーを推測し、それぞれのHEXコードを教えてください。</li>
+  <li>フォント情報を知りたい場合：<br>この画像の見出しと本文のテキストについて、フォントサイズとフォントの太さ（font-weight）を推測してください。</li>
+  <li>余白やレイアウトを知りたい場合：<br>このカードコンポーネントの内部の余白(padding)と、角の丸み(border-radius)の値をピクセル単位で推測してください。</li>
+</ul>
+</div></div>
+        
+        <div class="article-item item_html " id="item36370" data-item-id="36370" data-item-type="ItemHtml"><div class="item-body"><div class="callout white">
+    <div class="title-area">
+        <div class="icon bulb"></div>
+        <div class="title"><strong>重要：推測値の扱い方</strong></div>
+    </div>
+    <div class="content-area">
+        <ul>
+            <li>AIが提示した値は、<span class="decoration-02">絶対的な正解ではありません。</span></li>
+            <li>例えば、AIが余白を「23px」と回答した場合、デザインの意図はキリの良い「24px」である可能性が高いです。</li>
+            <li>このように、AIの回答を鵜呑みにせず、<span class="decoration-02">デザインの原則（8の倍数ルールなど）に照らし合わせて人間が最終判断を下す</span>ことが、品質を高める上で非常に重要です。この「判断力」こそが、AI時代に求められるスキルです。</li>
+        </ul>
+    </div>
+</div></div></div>
+        
+        <div class="article-item item_heading " id="item36371" data-item-id="36371" data-item-type="ItemHeading"><h2 class="item-body">【2-4】章末課題 - AIの「眼」でデザイン意図を読み解こう！</h2></div>
+        
+        <div class="article-item item_markdown " id="item36372" data-item-id="36372" data-item-type="ItemMarkdown"><h4 id="section">目安の学習時間： 15分</h4>
+</div>
+        
+        <div class="article-item item_heading " id="item36373" data-item-id="36373" data-item-type="ItemHeading"><h3 class="item-body">問題</h3></div>
+        
+        <div class="article-item item_rich_text " id="item36374" data-item-id="36374" data-item-type="ItemRichText"><div class="item-body-hbr">あなたはWeb制作の途中、デザイナーから「急ぎなので、まずはこの画像のデザインでボタンを実装しておいてください！」と、以下の画像ファイルだけを受け取りました。<br>
+<br>
+このボタンを実装するために、まずはAIの<span class="decoration-02">画像認識能力</span>を使って必要なCSSの値を<span class="decoration-02">推測</span>し、最終的なコードを完成させましょう。</div></div>
+        
+        <div class="article-item item_link " id="item36375" data-item-id="36375" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=b2kEt&amp;item_id=36375" rel="nofollow noopener noreferrer" target="_blank">使用素材（button_design.png）</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="使用素材（button_design.png）" data-reference="https://www.dropbox.com/scl/fi/d6kut701fzx9z9aydcngr/button_design.png?rlkey=gkusa50ig1j5vdfydgesx58ke&amp;st=7c502opp&amp;dl=0" src="https://cdn.clipkit.co/tenants/589/item_links/images/000/036/375/thumb/44e6d42b-ea49-4322-8343-4c80ceebb981.png?1754965003" width="75" height="75" /></div><div class="media-body"><div class="item-body"></div></div></div></div></div>
+        
+        <div class="article-item item_heading " id="item36376" data-item-id="36376" data-item-type="ItemHeading"><h3 class="item-body">解答手順</h3></div>
+        
+        <div class="article-item item_rich_text " id="item36377" data-item-id="36377" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">STEP 1: ボタンの画像を用意する</span><br>
+上の青い「詳しくはこちら」ボタンのスクリーンショットを撮り、`button_design.png`などのファイル名でPCに保存します。<br>
+<br>
+<span class="decoration-01">STEP 2: AIに画像をアップロードしてCSSの値を推測させる</span><br>
+保存したボタンの画像をAIにアップロードし、実装に必要な値を包括的に質問します。<br>
+<br>
+<span class="decoration-01">プロンプト例：</span><br>
+このボタンの画像から、以下のCSSプロパティの値を推測してください。</div></div>
+        
+        <div class="article-item item_html " id="item36378" data-item-id="36378" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li>背景色 (background-color)</li>
+  <li>文字色 (color)</li>
+  <li>角の丸み (border-radius)</li>
+  <li>内側の余白 (padding)</li>
+  <li>フォントサイズ (font-size)</li>
+</ul>
+</div></div>
+        
+        <div class="article-item item_rich_text " id="item36379" data-item-id="36379" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">STEP 3: AIの回答を元に最終的なCSSを記述する</span><br>
+AIはあくまで「推測」した値を返します。（例：`padding`が「11px 23px」など）<br>
+その回答を元に、「キリの良い数字にしよう」「デザインの原則（4や8の倍数）に合わせよう」といった<span class="decoration-02">あなた自身の判断</span>を加えて、最終的なCSSコードを完成させてください。<br>
+<br>
+<span class="decoration-01">STEP 4: 「判断」の理由を説明する</span><br>
+なぜそのCSSの値にしたのか、あなたの<span class="decoration-02">判断の根拠</span>を記述してください。<br>
+この「なぜそうしたか」を言語化する癖をつけることが、スキルアップの鍵となります。</div></div>
+        
+        <div class="article-item item_heading " id="item36380" data-item-id="36380" data-item-type="ItemHeading"><h3 class="item-body">解答例</h3></div>
+        
+        <div class="article-item item_rich_text " id="item36381" data-item-id="36381" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">AIからの回答（推測値の例）</span></div></div>
+        
+        <div class="article-item item_html " id="item36382" data-item-id="36382" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li><span class="decoration-01">背景色:</span> #007BFF</li>
+  <li><span class="decoration-01">文字色:</span> #FFFFFF</li>
+  <li><span class="decoration-01">角の丸み:</span> 7px</li>
+  <li><span class="decoration-01">内側の余白:</span> 11px 23px</li>
+  <li><span class="decoration-01">フォントサイズ:</span> 15.5px</li>
+</ul>
+</div></div>
+        
+        <div class="article-item item_rich_text " id="item36383" data-item-id="36383" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">あなたの最終判断とCSSコード</span></div></div>
+        
+        <div class="article-item item_code " id="item36384" data-item-id="36384" data-item-type="ItemCode"><div class="item-body"><div class="CodeRay">
+  <div class="code"><pre>.button {
+  /* 色はAIの推測が正確そうなのでそのまま採用 */
+  background-color: #007BFF;
+  color: #FFFFFF;
+
+  /* AIの推測値「7px」を、キリの良い「8px」に修正 */
+  border-radius: 8px;
+
+  /* AIの推測値「11px 23px」を、デザイン原則（4の倍数）を意識して「12px 24px」に修正 */
+  padding: 12px 24px;
+
+  /* AIの推測値「15.5px」を、標準的な「16px」に修正 */
+  font-size: 16px;
+
+  /* その他のスタイル */
+  font-weight: bold;
+  text-decoration: none;
+  display: inline-block;
+}</pre></div>
+</div>
+<div class="cite"><cite class="item-source">CSS</cite></div></div></div>
+        
+        <div class="article-item item_rich_text " id="item36385" data-item-id="36385" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">判断理由の記述例</span><br>
+AIが推測した値は、角の丸みが7px、余白が11px 23pxなど、少し不規則な数値でした。<br>
+Webデザインでは4や8の倍数で数値を設計することが多いため、デザイナーの意図は最も近いキリの良い数値だと判断しました。<br>
+そのため、角の丸みは8px、余白は12px 24px、フォントサイズは16pxにそれぞれ修正しました。</div></div>
+        
+        <div class="article-item item_rich_text " id="item37154" data-item-id="37154" data-item-type="ItemRichText"><div class="item-body-hbr">お疲れ様でした！<br>
+「2章 AIでデザイン情報を”丸ごと”スキャン」の解説を終わります。</div></div>
+        
+        <div class="article-item item_html " id="item37556" data-item-id="37556" data-item-type="ItemHtml"><div class="item-body"><div class="pagenation-buttons">
+  <a href="vKrqO" class="pagenation-buttons_prev"><img src="/theme/webcoach/img/icons/arrow-right.svg" class="pagenation-buttons_icon">前の章に戻る</a>
+  <a href="Cgvu2" class="pagenation-buttons_next">次の章に進む<img src="/theme/webcoach/img/icons/arrow-right.svg" class="pagenation-buttons_icon"></a>
+</div></div></div>
+        
+        
+        
+        <div class="back-to-roadmap mb-4 text-center"></div>
+      </div>
+    </div>
+    
+    <div class="lightbox-modal" id="lightboxModal">
+      <img src="" alt="">
+    </div>
+    
+    <div id="modal" class="fixed-menu-modal">
+      <div class="fixed-menu-modal-content">
+        <div class="index mb-3" style="background-color: #FDF5E8;">
+          <div>
+            <div class="fw-light">INDEX</div>
+            <div class="h3">目次</div>
+          </div>
+          <div class="toc"></div>
+        </div>
+        
+        <!-- ボタン類 -->
+        <div id="fixed-menu_buttons" class="fixed-menu_buttons"></div>
+        
+        <div class="back-to-roadmap text-center"></div>
+      </div>
+    </div>
+    
+    <button id="toggleBtn" class="floating-btn">
+      <img id="iconOpen" 
+           src="/theme/webcoach/img/icons/fixed-menu_modal-open.svg" 
+           alt="メニューを開く">
+      <img id="iconClose" 
+           src="/theme/webcoach/img/icons/fixed-menu_modal-close.svg" 
+           alt="メニューを閉じる" style="display:none;">
+    </button>
+  </div>
+</div>
+</div>
+<!-- <script src="https://cdn.clipkit.co/clipkit/javascripts/item-shopify-1.0.js?v=v15.9.0-20260915" async></script> -->
+            </div>
+        </main>
+
+    </div>
+
+    <div class="p-5" style="background-color: #B73E3D; color: white; height: 300px;">
+        <div class="">
+            <div class="h4 ps-3" style="border-left: 5px solid white;">WEBCOACH | キャリアチェンジまでの全てを学ぶマンツーマンWEBスクール</div>
+            <ul class="nav flex-column m-0 p-3 fw-light">
+                <li class="nav-item mb-2"><a href="https://www.webcoach.jp/" target="_blank">WEBCOACH | 公式HP</a></li>
+                <li class="nav-item mb-2"><a href="https://www.instagram.com/webcoach_officials/" target="_blank">WEBCOACH | 公式Instagram</a></li>
+                <li class="nav-item mb-2"><a href="https://vectorinc.co.jp/groupservice/webcoach-career/" target="_blank">WEBCOACH 公式メディア | WEBCOACH career</a></li>
+            </ul>
+        </div>
+        <div class="text-center">
+            <small>&copy; 2020 by WEBCOACH</small>
+        </div>
+    </div>
+
+    <script src="https://cdn.clipkit.co/clipkit/javascripts/application-1.0.js?v=v15.9.0-20260915" async></script>
+
+    <!-- bodyタグ内の下部に挿入されます -->
+
+
+    <!-- BootstrapのCDNでのjs読み込み -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+        crossorigin="anonymous"></script>
+
+    <!-- シンタックスハイライトの生成 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.1/highlight.min.js"></script>
+    <script>
+        // ハイライトを実行
+        hljs.initHighlightingOnLoad();
+    </script>
+
+    <!-- 目次の生成 -->
+    <script type="text/javascript">toc();</script>
+
+    <!-- ブックマークの生成 -->
+    <script type="text/javascript">displayLinks();</script>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="ck-icon-arrow-down" viewBox="0 0 1792 1792"><path d="M1675 832q0 53-37 90l-651 652q-39 37-91 37-53 0-90-37l-651-652q-38-36-38-90 0-53 38-91l74-75q39-37 91-37 53 0 90 37l294 294v-704q0-52 38-90t90-38h128q52 0 90 38t38 90v704l294-294q37-37 90-37 52 0 91 37l75 75q37 39 37 91z" /></symbol><symbol id="ck-icon-arrow-up" viewBox="0 0 1792 1792"><path d="M1675 971q0 51-37 90l-75 75q-38 38-91 38-54 0-90-38l-294-293v704q0 52-37.5 84.5t-90.5 32.5h-128q-53 0-90.5-32.5t-37.5-84.5v-704l-294 293q-36 38-90 38t-90-38l-75-75q-38-38-38-90 0-53 38-91l651-651q35-37 90-37 54 0 91 37l651 651q37 39 37 91z" /></symbol><symbol id="ck-icon-calendar" viewBox="0 0 1792 1792"><path d="M192 1664h288v-288h-288v288zm352 0h320v-288h-320v288zm-352-352h288v-320h-288v320zm352 0h320v-320h-320v320zm-352-384h288v-288h-288v288zm736 736h320v-288h-320v288zm-384-736h320v-288h-320v288zm768 736h288v-288h-288v288zm-384-352h320v-320h-320v320zm-352-864v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm736 864h288v-320h-288v320zm-384-384h320v-288h-320v288zm384 0h288v-288h-288v288zm32-480v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm384-64v1280q0 52-38 90t-90 38h-1408q-52 0-90-38t-38-90v-1280q0-52 38-90t90-38h128v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h384v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h128q52 0 90 38t38 90z" /></symbol><symbol id="ck-icon-chevron-left" viewBox="0 0 1792 1792"><path d="M1427 301l-531 531 531 531q19 19 19 45t-19 45l-166 166q-19 19-45 19t-45-19l-742-742q-19-19-19-45t19-45l742-742q19-19 45-19t45 19l166 166q19 19 19 45t-19 45z" /></symbol><symbol id="ck-icon-chevron-right" viewBox="0 0 1792 1792"><path d="M1363 877l-742 742q-19 19-45 19t-45-19l-166-166q-19-19-19-45t19-45l531-531-531-531q-19-19-19-45t19-45l166-166q19-19 45-19t45 19l742 742q19 19 19 45t-19 45z" /></symbol><symbol id="ck-icon-clock-o" viewBox="0 0 1792 1792"><path d="M1024 544v448q0 14-9 23t-23 9h-320q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h224v-352q0-14 9-23t23-9h64q14 0 23 9t9 23zm416 352q0-148-73-273t-198-198-273-73-273 73-198 198-73 273 73 273 198 198 273 73 273-73 198-198 73-273zm224 0q0 209-103 385.5t-279.5 279.5-385.5 103-385.5-103-279.5-279.5-103-385.5 103-385.5 279.5-279.5 385.5-103 385.5 103 279.5 279.5 103 385.5z" /></symbol><symbol id="ck-icon-trash" viewBox="0 0 1792 1792"><path d="M704 1376v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm-544-992h448l-48-117q-7-9-17-11h-317q-10 2-17 11zm928 32v64q0 14-9 23t-23 9h-96v948q0 83-47 143.5t-113 60.5h-832q-66 0-113-58.5t-47-141.5v-952h-96q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h309l70-167q15-37 54-63t79-26h320q40 0 79 26t54 63l70 167h309q14 0 23 9t9 23z" /></symbol><symbol id="ck-icon-undo" viewBox="0 0 1792 1792"><path d="M1664 896q0 156-61 298t-164 245-245 164-298 61q-172 0-327-72.5t-264-204.5q-7-10-6.5-22.5t8.5-20.5l137-138q10-9 25-9 16 2 23 12 73 95 179 147t225 52q104 0 198.5-40.5t163.5-109.5 109.5-163.5 40.5-198.5-40.5-198.5-109.5-163.5-163.5-109.5-198.5-40.5q-98 0-188 35.5t-160 101.5l137 138q31 30 14 69-17 40-59 40h-448q-26 0-45-19t-19-45v-448q0-42 40-59 39-17 69 14l130 129q107-101 244.5-156.5t284.5-55.5q156 0 298 61t245 164 164 245 61 298z" /></symbol></svg><script async="async" defer="defer" nonce="88ocLEb+A62BdYQzXpWFug==" src="//www.instagram.com/embed.js"></script>
+
+<!--Clipkit(R) v15.9.0-20260915 Copyright (C) 2026 VECTOR Inc.-->
+
+</body>
+
+</html>
+

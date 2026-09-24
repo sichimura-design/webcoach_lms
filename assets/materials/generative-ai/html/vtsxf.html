@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<!-- clipkit-source-url: https://learn.webcoach.jp/generative-ai/introduction-to-generative-ai/claude-chap2/VtsxF -->
+<!-- clipkit-fetched-at: 2026-09-17T11:14:00.275Z -->
+<html lang="ja"><head><style data-clipkit-snapshot="force-visible">[data-aos],.reveal,.wow,.fade-in,.animate__animated,.js-reveal{opacity:1!important;transform:none!important;visibility:visible!important;animation:none!important;transition:none!important}</style></head><body><div>
+  
+    <div>
+      
+      
+        
+          <div class="article-item item_html " id="item48858" data-item-id="48858" data-item-type="ItemHtml"><div class="item-body">
+
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>プロジェクトとは何か | Claude活用講座</title>
+<link rel="preconnect" href="https://fonts.googleapis.com/">
+<link rel="preconnect" href="https://fonts.gstatic.com/">
+<link href="../../_assets/edbf4ebbd2.css" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Noto Sans JP', sans-serif; color: #3D3D3D; font-size: 16px; line-height: 1.9; background: #F7F8FA; -webkit-font-smoothing: antialiased; }
+img { max-width: 100%; height: auto; display: block; }
+.lesson-wrapper { max-width: 70%; margin: 0 auto; padding: 40px 0 80px; }
+@media (max-width: 600px) { .lesson-wrapper { max-width: 92%; } }
+h2 { font-size: 22px; font-weight: 900; color: #2D2D2D; margin: 56px 0 20px; padding: 0 0 12px; position: relative; letter-spacing: -0.02em; line-height: 1.4; }
+h2::after { content: ''; position: absolute; bottom: 0; left: 0; width: 44px; height: 4px; border-radius: 2px; background: linear-gradient(90deg, #E85D4A, #F5A64A); }
+h3 { font-size: 18px; font-weight: 900; color: #2D2D2D; margin: 32px 0 14px; }
+p { font-size: 15px; line-height: 2.0; color: #555; margin: 0 0 14px; }
+.accent { color: #E85D4A; font-weight: 700; }
+.goal-box { background: #fff; padding: 24px 28px; border-radius: 16px; margin-bottom: 32px; box-shadow: 0 2px 16px rgba(0,0,0,0.06); position: relative; overflow: hidden; }
+.goal-box::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px; background: linear-gradient(90deg, #E85D4A, #F5A64A); }
+.goal-box__header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; }
+.goal-box__label { font-size: 11px; font-weight: 700; color: #E85D4A; letter-spacing: 0.15em; }
+.goal-box__time { font-size: 11px; font-weight: 500; color: #E85D4A; }
+.goal-box__text { font-size: 15px; font-weight: 700; color: #3D3D3D; line-height: 1.7; margin: 0; }
+.toc-box { background: #fff; border-radius: 14px; padding: 22px 26px; margin-bottom: 36px; box-shadow: 0 2px 16px rgba(0,0,0,0.06); }
+.toc-box .label { font-size: 11px; font-weight: 700; color: #F5A64A; letter-spacing: 0.15em; margin-bottom: 10px; }
+.toc-box ol { margin: 0; padding-left: 20px; font-size: 14px; color: #555; line-height: 2.2; }
+.toc-link { color: #555; text-decoration: none; transition: color 0.2s; }
+.toc-link:hover { color: #E85D4A; }
+.image-box { background: #FFF8F6; border-left: 4px solid #F5A64A; border-radius: 0 14px 14px 0; padding: 20px 24px; margin: 24px 0; }
+.image-box__label { font-size: 11px; font-weight: 700; color: #E0882A; letter-spacing: 0.12em; margin-bottom: 10px; }
+.image-box p { font-size: 14px; color: #6A5A50; line-height: 1.85; margin: 0; }
+.stumble-box { background: #FFF3F0; border-left: 4px solid #E85D4A; border-radius: 0 14px 14px 0; padding: 20px 24px; margin: 24px 0; }
+.stumble-box__label { font-size: 11px; font-weight: 700; color: #E85D4A; letter-spacing: 0.12em; margin-bottom: 10px; }
+.stumble-box p { font-size: 14px; color: #6A4A40; line-height: 1.85; margin: 0; }
+.point-box { background: #fff; border-left: 4px solid #E85D4A; padding: 20px 24px; border-radius: 0 12px 12px 0; margin: 24px 0; box-shadow: 0 2px 12px rgba(0,0,0,0.05); }
+.point-box__label { font-size: 11px; font-weight: 700; color: #E85D4A; letter-spacing: 0.15em; margin-bottom: 6px; }
+.point-box p { margin: 0; font-size: 14px; line-height: 1.8; color: #555; }
+.usage-box { background: linear-gradient(135deg, #FFF8F0, #FFF0EC); border-radius: 14px; padding: 20px 24px; margin: 24px 0; }
+.usage-box__label { font-size: 11px; font-weight: 700; color: #E85D4A; letter-spacing: 0.12em; margin-bottom: 10px; }
+.usage-box ul { list-style: none; padding: 0; margin: 0; }
+.usage-box li { font-size: 14px; color: #5A3A30; padding: 5px 0; display: flex; gap: 8px; line-height: 1.6; }
+.usage-box li::before { content: '→'; color: #E85D4A; font-weight: 700; flex-shrink: 0; }
+.compare-table { width: 100%; border-collapse: collapse; margin: 24px 0; font-size: 14px; }
+.compare-table th { background: #F7F8FA; color: #3D3D3D; padding: 12px 16px; text-align: left; font-weight: 700; font-size: 13px; border-bottom: 2px solid #E8E8E8; }
+.compare-table th:first-child { border-radius: 10px 0 0 0; }
+.compare-table th:last-child { border-radius: 0 10px 0 0; }
+.compare-table td { padding: 12px 16px; border-bottom: 1px solid #F0F0F0; background: #fff; line-height: 1.6; vertical-align: top; }
+.compare-table tr:last-child td { border-bottom: none; }
+.compare-table tr:last-child td:first-child { border-radius: 0 0 0 10px; }
+.compare-table tr:last-child td:last-child { border-radius: 0 0 10px 0; }
+.compare-table td.highlight { background: #FFF3F0; font-weight: 700; color: #E85D4A; }
+.badge { display: inline-block; padding: 2px 8px; border-radius: 20px; font-size: 11px; font-weight: 700; }
+.badge--good { background: #E8F5E9; color: #2E7D52; }
+.badge--avg { background: #F3F3F3; color: #888; }
+.deepdive { margin: 20px 0; }
+.deepdive summary { cursor: pointer; font-size: 13px; font-weight: 700; color: #E85D4A; padding: 10px 0; list-style: none; display: flex; align-items: center; gap: 6px; }
+.deepdive summary::before { content: '🔍'; }
+.deepdive summary::-webkit-details-marker { display: none; }
+.deepdive__body { background: #FFF8F6; border-radius: 10px; padding: 16px 20px; margin-top: 8px; font-size: 14px; color: #5A4A40; line-height: 1.8; }
+.quiz-block { background: #fff; border-radius: 16px; padding: 24px; margin: 32px 0; box-shadow: 0 2px 16px rgba(0,0,0,0.06); }
+.quiz-block__label { font-size: 11px; font-weight: 700; color: #F5A64A; letter-spacing: 0.15em; margin-bottom: 12px; }
+.quiz-block__q { font-size: 15px; font-weight: 700; color: #2D2D2D; margin-bottom: 16px; line-height: 1.6; }
+.quiz-choices { display: flex; flex-direction: column; gap: 8px; }
+.quiz-btn { background: #F7F8FA; border: 2px solid #E8E8E8; border-radius: 10px; padding: 12px 16px; font-size: 13px; font-family: inherit; color: #3D3D3D; cursor: pointer; text-align: left; transition: all 0.2s; line-height: 1.5; }
+.quiz-btn:hover:not(:disabled) { border-color: #E85D4A; background: #FFF0ED; }
+.quiz-btn.correct { background: #E8F5E9; border-color: #4CAF7C; color: #2E7D52; }
+.quiz-btn.wrong { background: #FFEBEE; border-color: #EF5350; color: #C62828; }
+.correct-fb, .wrong-fb { display: none; margin-top: 14px; padding: 14px 16px; border-radius: 10px; font-size: 13px; line-height: 1.7; }
+.correct-fb { background: #E8F5E9; color: #2E7D52; }
+.wrong-fb { background: #FFEBEE; color: #C62828; }
+.summary-box { background: #fff; border-radius: 16px; padding: 28px; margin: 48px 0 32px; box-shadow: 0 2px 16px rgba(0,0,0,0.06); }
+.summary-box__label { font-size: 11px; font-weight: 700; color: #E85D4A; letter-spacing: 0.15em; margin-bottom: 16px; }
+.summary-box ul { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 10px; }
+.summary-box li { font-size: 14px; color: #3D3D3D; display: flex; gap: 10px; align-items: flex-start; line-height: 1.7; }
+.summary-box li::before { content: '✅'; flex-shrink: 0; }
+.check-outer { background: #fff; border-radius: 16px; box-shadow: 0 2px 16px rgba(0,0,0,0.06); overflow: hidden; margin: 24px 0; }
+.check-outer > summary { cursor: pointer; padding: 20px 24px; font-size: 15px; font-weight: 700; color: #2D2D2D; list-style: none; display: flex; justify-content: space-between; align-items: center; }
+.check-outer > summary::-webkit-details-marker { display: none; }
+.check-outer > summary::after { content: '▼'; font-size: 12px; color: #AAA; transition: transform 0.2s; }
+.check-outer[open] > summary::after { transform: rotate(180deg); }
+.check-outer__label { font-size: 11px; font-weight: 700; color: #E85D4A; letter-spacing: 0.15em; }
+.check-inner { border-top: 1px solid #F0F0F0; padding: 20px 24px; }
+.check-item { margin-bottom: 12px; }
+.check-item details summary { cursor: pointer; font-size: 14px; color: #3D3D3D; list-style: none; padding: 8px 0; display: flex; gap: 10px; align-items: flex-start; line-height: 1.6; }
+.check-item details summary::-webkit-details-marker { display: none; }
+.check-item details summary::before { content: '☐'; color: #E85D4A; flex-shrink: 0; font-size: 16px; }
+.check-item details[open] summary::before { content: '☑'; color: #4CAF7C; }
+.check-item__answer { background: #F7F8FA; border-radius: 8px; padding: 12px 14px; margin-top: 6px; font-size: 13px; color: #555; line-height: 1.7; }
+.hero { background: linear-gradient(135deg, #E85D4A 0%, #F5A64A 100%); border-radius: 16px; padding: 48px 40px; margin-bottom: 40px; color: #fff; }
+.hero__label { font-size: 13px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; opacity: 0.85; margin-bottom: 12px; }
+.hero__title { font-size: 28px; font-weight: 800; line-height: 1.3; margin-bottom: 16px; }
+.hero__meta { display: flex; gap: 20px; font-size: 14px; opacity: 0.9; flex-wrap: wrap; }
+.hero__meta span { background: rgba(255,255,255,0.2); padding: 4px 12px; border-radius: 20px; }
+.plan-note { background: #FFF8F0; border: 1.5px solid #F5A64A; border-radius: 12px; padding: 14px 18px; margin: 20px 0; display: flex; align-items: flex-start; gap: 12px; font-size: 14px; color: #555; line-height: 1.7; }
+.plan-note__badge { background: linear-gradient(135deg, #F5A64A, #E85D4A); color: #fff; font-size: 11px; font-weight: 700; padding: 3px 10px; border-radius: 20px; white-space: nowrap; flex-shrink: 0; margin-top: 2px; }
+/* チャプター概要動画 */
+.chapter-intro-video { background: #fff; border-radius: 16px; padding: 24px 28px; margin-bottom: 32px; box-shadow: 0 2px 16px rgba(0,0,0,0.06); position: relative; overflow: hidden; }
+.chapter-intro-video::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px; background: linear-gradient(90deg, #E85D4A, #F5A64A); }
+.chapter-intro-video__label { font-size: 11px; font-weight: 700; color: #E85D4A; letter-spacing: 0.15em; margin-bottom: 14px; }
+.chapter-intro-video__player { width: 100%; border-radius: 8px; display: block; background: #F7F8FA; }
+</style>
+<meta name="csrf-param" content="authenticity_token">
+<meta name="csrf-token" content="lg-fUDNY_XBBZo3Sy3cfRL7RH683Ocqdg8NJClNWhNSlMfDVZfelyjwz-LGi6XRqnAQW5PQQ-Z3f-nTVEDGK1A"><meta content="" name="routing-root-path"><meta content="media" name="site-name"><meta content="ja" name="i18n-default-locale"><meta content="ja" name="i18n-locale">
+
+<div class="lesson-wrapper">
+
+  <!-- ヘッダー -->
+  <div class="hero">
+    <div class="hero__label">Chapter 2 — Lesson 1</div>
+    <div class="hero__title">プロジェクトとは何か</div>
+    <div class="hero__meta">
+      <span>🕐 約8分</span>
+      <span>📚 知識型</span>
+      <span>🔖 プロジェクト管理</span>
+    </div>
+  </div>
+
+ <!-- 次の章に進むボタンの場合 -->  
+<div style="display: flex; justify-content: flex-end; align-items: center; padding: 24px 0; margin-top: 24px;">
+  <a href="https://learn.webcoach.jp/generative-ai/introduction-to-generative-ai/claude-chap2/9tKze" style="position: relative; display: inline-block; background: linear-gradient(135deg, #E85D4A, #F5A64A); color: #fff; font-weight: 700; padding: 12px clamp(24px, 7vw, 48px); border-radius: 8px; text-decoration: none;">次の章に進む<img src="../../_assets/47498cfebf.svg" style="position: absolute; top: 50%; transform: translateY(-50%); right: 12px; filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(125deg) brightness(103%) contrast(103%);"></a>
+</div>
+  
+  
+  <!-- チャプター概要動画 -->
+  <!-- Dropbox URL: 共有リンクの末尾 ?dl=0 を ?raw=1 に変えてsrcに設定 -->
+  <div class="chapter-intro-video">
+    <div class="chapter-intro-video__label">チャプター概要動画</div>
+    <video src="../media/med-90e0c7e79f.mp4" controls="" preload="metadata" class="chapter-intro-video__player"></video>
+  </div>
+
+  <div class="goal-box">
+    <div class="goal-box__header">
+      <span class="goal-box__label">このレッスンのゴール</span>
+      <span class="goal-box__time">目安 8分</span>
+    </div>
+    <p class="goal-box__text">プロジェクトが「通常チャット」と何が違うのかを説明でき、<span class="accent">どんな場面で使うべきか自分の言葉で言える</span>ようになる。</p>
+  </div>
+
+  <div class="plan-note">
+    <span class="plan-note__badge">Pro 以上</span>
+    <span>このChapterで紹介する<strong>プロジェクトは、Proプラン以上が必要</strong>です。Freeプランをご利用の方は、このChapterをスキップして<strong>Chapter 3「Artifacts」</strong>に進んでください。ArtifactsはFreeプランでも利用できます。</span>
+  </div>
+
+  <div class="toc-box">
+    <div class="label">このレッスンの内容</div>
+    <ol>
+      <li><a href="#sec1" class="toc-link">通常チャットとプロジェクトの違い</a></li>
+      <li><a href="#sec2" class="toc-link">「育てる」という感覚で理解する</a></li>
+      <li><a href="#sec3" class="toc-link">デザイナーがプロジェクトを使うべき場面</a></li>
+    </ol>
+  </div>
+
+  <h2 id="sec1">通常チャットとプロジェクトの違い</h2>
+
+  <p>Claudeを使い始めると、まず「通常のチャット」から入る人がほとんどです。しかし案件が増えてくると、毎回「このクライアントは〇〇業で、ターゲットは〜で…」と説明し直す手間が生まれます。</p>
+  <p>そこで登場するのが <span class="accent">プロジェクト</span> です。プロジェクトは「案件・クライアントごとの専用部屋」として機能します。</p>
+
+  <table class="compare-table">
+    <thead>
+      <tr>
+        <th>比較項目</th>
+        <th>通常チャット</th>
+        <th>プロジェクト</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>会話をまたいだ文脈の保持</td>
+        <td><span class="badge badge--avg">✗ リセットされる</span></td>
+        <td class="highlight"><span class="badge badge--good">✓ 保持される</span></td>
+      </tr>
+      <tr>
+        <td>クライアント情報の登録</td>
+        <td><span class="badge badge--avg">✗ できない</span></td>
+        <td class="highlight"><span class="badge badge--good">✓ 常時参照される</span></td>
+      </tr>
+      <tr>
+        <td>複数案件の同時管理</td>
+        <td><span class="badge badge--avg">✗ 混ざりやすい</span></td>
+        <td class="highlight"><span class="badge badge--good">✓ 案件ごとに分離</span></td>
+      </tr>
+      <tr>
+        <td>利用可能プラン</td>
+        <td><span class="badge badge--good">✓ Free から使える</span></td>
+        <td><span class="badge badge--avg">Pro 以上</span></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="stumble-box">
+    <div class="stumble-box__label">よくある勘違い</div>
+    <p>「チャットのタイトルを変えればクライアントごとに管理できる」と思いがちですが、通常チャットは会話ごとにClaude の記憶がリセットされます。前の会話でどんな情報を共有していても、新しい会話では白紙からのスタートになります。</p>
+  </div>
+
+  <h2 id="sec2">「育てる」という感覚で理解する</h2>
+
+  <p>プロジェクトをうまく使うコツは、「案件のたびにClaudeを育てていく」感覚を持つことです。</p>
+
+  <div class="image-box">
+    <div class="image-box__label">イメージ</div>
+    <p>新しいアシスタントを採用したとき、最初は業務内容・クライアントの好み・NG事項を一から教えますよね。でも時間が経つにつれて「あのクライアントはこういう表現が嫌いで…」と細かいことまで把握してくれるようになります。プロジェクトはその感覚に近いものです。情報を追加するたびに、Claudeの理解が深まっていきます。</p>
+  </div>
+
+  <p>具体的には次のような流れです。</p>
+
+  <ul style="list-style: none; padding: 0; margin: 16px 0; display: flex; flex-direction: column; gap: 10px;">
+    <li style="display: flex; gap: 12px; align-items: flex-start; font-size: 14px; color: #555;">
+      <span style="background: linear-gradient(135deg, #E85D4A, #F5A64A); color: #fff; border-radius: 50%; width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; flex-shrink: 0; margin-top: 2px;">1</span>
+      <span>プロジェクトを作成してクライアント情報を登録する</span>
+    </li>
+    <li style="display: flex; gap: 12px; align-items: flex-start; font-size: 14px; color: #555;">
+      <span style="background: linear-gradient(135deg, #E85D4A, #F5A64A); color: #fff; border-radius: 50%; width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; flex-shrink: 0; margin-top: 2px;">2</span>
+      <span>そのプロジェクト内でタスクを依頼すると、登録情報を踏まえた回答が返ってくる</span>
+    </li>
+    <li style="display: flex; gap: 12px; align-items: flex-start; font-size: 14px; color: #555;">
+      <span style="background: linear-gradient(135deg, #E85D4A, #F5A64A); color: #fff; border-radius: 50%; width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; flex-shrink: 0; margin-top: 2px;">3</span>
+      <span>新しい情報（修正後の方向性・追加のNG事項など）をどんどん追記していく</span>
+    </li>
+    <li style="display: flex; gap: 12px; align-items: flex-start; font-size: 14px; color: #555;">
+      <span style="background: linear-gradient(135deg, #E85D4A, #F5A64A); color: #fff; border-radius: 50%; width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; flex-shrink: 0; margin-top: 2px;">4</span>
+      <span>案件が続くほど、ClaudeがそのクライアントのためのAIに育っていく</span>
+    </li>
+  </ul>
+
+  <div class="point-box">
+    <div class="point-box__label">ポイント</div>
+    <p>「完璧な情報を最初から登録しなければ」とは思わないでください。まず最低限の情報で始めて、使いながら少しずつ育てていくのが正解です。</p>
+  </div>
+
+  <h2 id="sec3">デザイナーがプロジェクトを使うべき場面</h2>
+
+  <p>副業・フリーランスのデザイナーにとって、プロジェクトが特に力を発揮するシーンがあります。</p>
+
+  <div class="usage-box">
+    <div class="usage-box__label">プロジェクトが活躍するシーン</div>
+    <ul>
+      <li>複数のクライアントを並行して抱えているとき（案件ごとに切り替えて使える）</li>
+      <li>継続案件で同じクライアントと長く付き合っているとき（蓄積情報が活きる）</li>
+      <li>クライアント独自のトンマナ・NG表現・用語統一が重要なコピーライティング業務</li>
+      <li>提案ラリーが何往復も続くような案件（方向性の変化を都度追記できる）</li>
+    </ul>
+  </div>
+
+  <details class="deepdive">
+    <summary>プロジェクトにファイルをアップロードすることもできる</summary>
+    <div class="deepdive__body">
+      <p>プロジェクトでは、テキストの指示だけでなくファイルもアップロードして登録できます。たとえば、クライアントのブランドガイドラインPDFやデザインコンセプト資料をアップロードしておくと、Claudeがその内容を参照しながら回答してくれます。</p>
+      <p>ただし、アップロードできるファイルサイズや合計容量には上限があります。テキストに変換できる内容はテキストで登録する方が確実です。</p>
+    </div>
+  </details>
+
+  <div class="quiz-block" id="q1">
+    <div class="quiz-block__label">確認クイズ</div>
+    <p class="quiz-block__q">通常チャットとプロジェクトの最大の違いはどれですか？</p>
+    <div class="quiz-choices">
+      <button class="quiz-btn" onclick="answer(this,'q1',false)">① モデルの種類が違う</button>
+      <button class="quiz-btn" onclick="answer(this,'q1',true)">② 会話をまたいで文脈・登録情報が保持される</button>
+      <button class="quiz-btn" onclick="answer(this,'q1',false)">③ プロジェクト では画像を添付できない</button>
+      <button class="quiz-btn" onclick="answer(this,'q1',false)">④ プロジェクト の方が回答速度が速い</button>
+    </div>
+    <div class="correct-fb">正解！ 通常チャットは会話のたびにリセットされますが、プロジェクトは登録情報が保持されたまま何度でも会話できます。これがプロジェクトを使う最大の理由です。</div>
+    <div class="wrong-fb">プロジェクトの本質は「会話をまたいで文脈・登録情報が保持される点」です。モデルや速度は通常チャットと変わりません。</div>
+  </div>
+
+  <div class="quiz-block" id="q2">
+    <div class="quiz-block__label">確認クイズ</div>
+    <p class="quiz-block__q">副業デザイナーがプロジェクトを活用するのに最も向いているシーンはどれですか？</p>
+    <div class="quiz-choices">
+      <button class="quiz-btn" onclick="answer(this,'q2',false)">① 1回だけの単発タスクを依頼するとき</button>
+      <button class="quiz-btn" onclick="answer(this,'q2',false)">② 一般的な情報をサッと調べたいとき</button>
+      <button class="quiz-btn" onclick="answer(this,'q2',true)">③ 複数クライアントの案件を並行して進めているとき</button>
+      <button class="quiz-btn" onclick="answer(this,'q2',false)">④ 新しいAIモデルを試したいとき</button>
+    </div>
+    <div class="correct-fb">正解！ プロジェクトは「クライアントごとに文脈を蓄積していく」機能なので、複数案件を並行している副業デザイナーに特に向いています。</div>
+    <div class="wrong-fb">単発の調べ物なら通常チャットで十分です。プロジェクトが威力を発揮するのは、複数案件の並行管理や継続的なクライアント案件です。</div>
+  </div>
+
+  <div class="summary-box">
+    <div class="summary-box__label">このレッスンのまとめ</div>
+    <ul>
+      <li>通常チャットは会話ごとにリセット、プロジェクトは<strong>会話をまたいで情報が保持される</strong></li>
+      <li>プロジェクトは「クライアント・案件ごとの専用部屋」として機能する</li>
+      <li>使うたびに情報を追記していく「<strong>育てる</strong>」感覚が成功の鍵</li>
+      <li>複数案件を抱えた副業デザイナーに特に威力を発揮する</li>
+      <li>プロジェクト 機能は <strong>Pro プラン以上</strong>で利用可能</li>
+    </ul>
+  </div>
+
+  <details class="check-outer">
+    <summary>
+      <span class="check-outer__label">理解度チェック</span>
+      <span>3項目で自分の理解を確認しよう</span>
+    </summary>
+    <div class="check-inner">
+      <div class="check-item">
+        <details>
+          <summary>通常チャットとプロジェクトの違いを2点説明できる</summary>
+          <div class="check-item__answer">①<strong>文脈の保持</strong>：通常チャットは会話ごとにリセットされるが、プロジェクトは登録情報が複数の会話にわたって保持される。②<strong>情報の登録</strong>：プロジェクトにはクライアント情報・案件情報を事前に登録でき、Claude がそれを踏まえて常に回答してくれる。</div>
+        </details>
+      </div>
+      <div class="check-item">
+        <details>
+          <summary>「育てる」感覚を具体的なシナリオで説明できる</summary>
+          <div class="check-item__answer">例）LP制作案件のプロジェクトを作り、クライアントの業種・ターゲット・NG表現を登録する → 以降の会話ではそれを踏まえたキャッチコピー案が生成される → 「このコピーはNGだった」などの情報を追記していく → 使うほどClaudeがそのクライアントを深く理解していく。</div>
+        </details>
+      </div>
+      <div class="check-item">
+        <details>
+          <summary>プロジェクトが活躍するシーンを1つ具体例で言える</summary>
+          <div class="check-item__answer">例）3社のクライアントと同時進行で案件を抱えているとき。それぞれのプロジェクトを作って情報を登録しておくと、「今日はAクライアント、明日はBクライアント」と切り替えるだけで、その案件に特化した回答がすぐに得られる。毎回説明し直す手間がなくなる。</div>
+        </details>
+      </div>
+    </div>
+  </details>
+  
+  <!-- 次の章に進むボタンの場合 -->  
+<div style="display: flex; justify-content: flex-end; align-items: center; padding: 24px 0; margin-top: 24px;">
+  <a href="https://learn.webcoach.jp/generative-ai/introduction-to-generative-ai/claude-chap2/9tKze" style="position: relative; display: inline-block; background: linear-gradient(135deg, #E85D4A, #F5A64A); color: #fff; font-weight: 700; padding: 12px clamp(24px, 7vw, 48px); border-radius: 8px; text-decoration: none;">次の章に進む<img src="../../_assets/47498cfebf.svg" style="position: absolute; top: 50%; transform: translateY(-50%); right: 12px; filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(125deg) brightness(103%) contrast(103%);"></a>
+</div>
+
+</div>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="ck-icon-arrow-down" viewBox="0 0 1792 1792"><path d="M1675 832q0 53-37 90l-651 652q-39 37-91 37-53 0-90-37l-651-652q-38-36-38-90 0-53 38-91l74-75q39-37 91-37 53 0 90 37l294 294v-704q0-52 38-90t90-38h128q52 0 90 38t38 90v704l294-294q37-37 90-37 52 0 91 37l75 75q37 39 37 91z"></path></symbol><symbol id="ck-icon-arrow-up" viewBox="0 0 1792 1792"><path d="M1675 971q0 51-37 90l-75 75q-38 38-91 38-54 0-90-38l-294-293v704q0 52-37.5 84.5t-90.5 32.5h-128q-53 0-90.5-32.5t-37.5-84.5v-704l-294 293q-36 38-90 38t-90-38l-75-75q-38-38-38-90 0-53 38-91l651-651q35-37 90-37 54 0 91 37l651 651q37 39 37 91z"></path></symbol><symbol id="ck-icon-calendar" viewBox="0 0 1792 1792"><path d="M192 1664h288v-288h-288v288zm352 0h320v-288h-320v288zm-352-352h288v-320h-288v320zm352 0h320v-320h-320v320zm-352-384h288v-288h-288v288zm736 736h320v-288h-320v288zm-384-736h320v-288h-320v288zm768 736h288v-288h-288v288zm-384-352h320v-320h-320v320zm-352-864v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm736 864h288v-320h-288v320zm-384-384h320v-288h-320v288zm384 0h288v-288h-288v288zm32-480v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm384-64v1280q0 52-38 90t-90 38h-1408q-52 0-90-38t-38-90v-1280q0-52 38-90t90-38h128v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h384v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h128q52 0 90 38t38 90z"></path></symbol><symbol id="ck-icon-chevron-left" viewBox="0 0 1792 1792"><path d="M1427 301l-531 531 531 531q19 19 19 45t-19 45l-166 166q-19 19-45 19t-45-19l-742-742q-19-19-19-45t19-45l742-742q19-19 45-19t45 19l166 166q19 19 19 45t-19 45z"></path></symbol><symbol id="ck-icon-chevron-right" viewBox="0 0 1792 1792"><path d="M1363 877l-742 742q-19 19-45 19t-45-19l-166-166q-19-19-19-45t19-45l531-531-531-531q-19-19-19-45t19-45l166-166q19-19 45-19t45 19l742 742q19 19 19 45t-19 45z"></path></symbol><symbol id="ck-icon-clock-o" viewBox="0 0 1792 1792"><path d="M1024 544v448q0 14-9 23t-23 9h-320q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h224v-352q0-14 9-23t23-9h64q14 0 23 9t9 23zm416 352q0-148-73-273t-198-198-273-73-273 73-198 198-73 273 73 273 198 198 273 73 273-73 198-198 73-273zm224 0q0 209-103 385.5t-279.5 279.5-385.5 103-385.5-103-279.5-279.5-103-385.5 103-385.5 279.5-279.5 385.5-103 385.5 103 279.5 279.5 103 385.5z"></path></symbol><symbol id="ck-icon-trash" viewBox="0 0 1792 1792"><path d="M704 1376v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm-544-992h448l-48-117q-7-9-17-11h-317q-10 2-17 11zm928 32v64q0 14-9 23t-23 9h-96v948q0 83-47 143.5t-113 60.5h-832q-66 0-113-58.5t-47-141.5v-952h-96q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h309l70-167q15-37 54-63t79-26h320q40 0 79 26t54 63l70 167h309q14 0 23 9t9 23z"></path></symbol><symbol id="ck-icon-undo" viewBox="0 0 1792 1792"><path d="M1664 896q0 156-61 298t-164 245-245 164-298 61q-172 0-327-72.5t-264-204.5q-7-10-6.5-22.5t8.5-20.5l137-138q10-9 25-9 16 2 23 12 73 95 179 147t225 52q104 0 198.5-40.5t163.5-109.5 109.5-163.5 40.5-198.5-40.5-198.5-109.5-163.5-163.5-109.5-198.5-40.5q-98 0-188 35.5t-160 101.5l137 138q31 30 14 69-17 40-59 40h-448q-26 0-45-19t-19-45v-448q0-42 40-59 39-17 69 14l130 129q107-101 244.5-156.5t284.5-55.5q156 0 298 61t245 164 164 245 61 298z"></path></symbol></svg>
+
+<!--Clipkit(R) v15.9.0-20260915 Copyright (C) 2026 VECTOR Inc.-->
+
+
+
+</div></div>
+        
+      
+    </div>
+  
+  </div>
+
+<!-- <script src="https://cdn.clipkit.co/clipkit/javascripts/item-shopify-1.0.js?v=v15.9.0-20260915" async></script> -->
+</body></html>

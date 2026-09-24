@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<!-- clipkit-source-url: https://learn.webcoach.jp/generative-ai/introduction-to-generative-ai/%E7%94%BB%E5%83%8F%E7%94%9F%E6%88%90AI%E3%81%A7%E6%8F%8F%E3%81%84%E3%81%A6%E3%81%BF%E3%82%88%E3%81%86/0rS6M -->
+<!-- clipkit-fetched-at: 2026-09-17T11:14:00.275Z -->
+<html lang="ja"><head><style data-clipkit-snapshot="force-visible">[data-aos],.reveal,.wow,.fade-in,.animate__animated,.js-reveal{opacity:1!important;transform:none!important;visibility:visible!important;animation:none!important;transition:none!important}</style></head><body><div>
+  
+    <div>
+      
+      
+        
+          <div class="article-item item_html " id="item48536" data-item-id="48536" data-item-type="ItemHtml"><div class="item-body">
+
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>はじめに - 画像生成AIの基本と準備 | WEBCOACH</title>
+<link rel="preconnect" href="https://fonts.googleapis.com/">
+<link rel="preconnect" href="https://fonts.gstatic.com/">
+<link href="../../_assets/318e5d4d49.css" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; }
+  body {
+    font-family: 'Noto Sans JP', -apple-system, BlinkMacSystemFont, 'Hiragino Sans', sans-serif;
+    color: #3D3D3D; font-size: 16px; line-height: 1.9;
+    -webkit-font-smoothing: antialiased;
+  }
+  img { max-width: 100%; height: auto; display: block; }
+  .toc-link { color: #555; text-decoration: none; transition: color 0.2s; }
+  .toc-link:hover { color: #E85D4A; }
+  h2.section-heading {
+    font-size: 24px; font-weight: 700; color: #3D3D3D;
+    margin: 48px 0 20px; padding-bottom: 10px;
+    border-bottom: 3px solid #FAE8E0; line-height: 1.4;
+  }
+  h3.sub-heading {
+    font-size: 19px; font-weight: 700; color: #3D3D3D;
+    margin: 32px 0 14px; line-height: 1.5;
+  }
+  .text-body { font-size: 16px; line-height: 1.9; color: #444; margin: 0 0 16px; }
+  .accent { color: #E85D4A; font-weight: 700; }
+  .point-box {
+    background: #FFFBF0; border-left: 4px solid #F5A64A;
+    padding: 18px 22px; border-radius: 0 12px 12px 0; margin: 24px 0;
+  }
+  .point-box .label { font-size: 12px; font-weight: 700; color: #F5A64A; letter-spacing: 0.15em; margin-bottom: 6px; }
+  .point-box p { margin: 0; font-size: 15px; line-height: 1.8; color: #555; }
+  .note-box {
+    background: #FFF3F0; border-left: 4px solid #E85D4A;
+    padding: 18px 22px; border-radius: 0 12px 12px 0; margin: 24px 0;
+  }
+  .note-box .label { font-size: 12px; font-weight: 700; color: #E85D4A; letter-spacing: 0.15em; margin-bottom: 6px; }
+  .note-box p { margin: 0; font-size: 15px; line-height: 1.8; color: #555; }
+  .imagine-box {
+    background: #fff; border: 2px solid #E85D4A;
+    border-radius: 16px; padding: 24px; margin: 24px 0;
+  }
+  .imagine-box .label { font-size: 12px; font-weight: 700; color: #E85D4A; letter-spacing: 0.1em; margin-bottom: 8px; }
+  .imagine-box p { font-size: 16px; line-height: 1.8; color: #3D3D3D; margin: 0; }
+  .stumbling-box {
+    background: linear-gradient(135deg, #FFF8F0, #FFFBF0); border: 2px solid #F5A64A;
+    border-radius: 16px; padding: 24px; margin: 24px 0;
+  }
+  .stumbling-box .label { font-size: 12px; font-weight: 700; color: #F5A64A; letter-spacing: 0.1em; margin-bottom: 8px; }
+  .stumbling-box ul { margin: 0; padding-left: 18px; font-size: 15px; line-height: 2; color: #555; }
+  .usecase-box {
+    background: #F0F7FF; border: 1px solid #C2DFF5;
+    border-radius: 12px; padding: 18px 22px; margin: 24px 0;
+  }
+  .usecase-box .label { font-size: 12px; font-weight: 700; color: #2E86DE; letter-spacing: 0.1em; margin-bottom: 6px; }
+  .usecase-box p { margin: 0; font-size: 15px; line-height: 1.8; color: #444; }
+  .card-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 24px 0; }
+  .card {
+    background: #fff; border: 2px solid #FAE8E0;
+    border-radius: 16px; padding: 22px;
+  }
+  .card h3 { font-size: 17px; font-weight: 700; color: #E85D4A; margin: 0 0 8px; }
+  .card p, .card ul { font-size: 14px; line-height: 1.7; color: #555; margin: 0; }
+  .card ul { padding-left: 16px; }
+  .inline-quiz {
+    background: #FFF8F0; border: 2px solid #FAE8E0;
+    border-radius: 16px; padding: 24px; margin: 36px 0;
+  }
+  .inline-quiz .quiz-label { font-size: 12px; font-weight: 700; color: #F5A64A; letter-spacing: 0.1em; margin-bottom: 12px; }
+  .inline-quiz .quiz-question { font-size: 16px; font-weight: 700; color: #3D3D3D; margin: 0 0 16px; line-height: 1.6; }
+  .quiz-options { display: flex; flex-direction: column; gap: 8px; }
+  .quiz-opt {
+    display: block; width: 100%; text-align: left;
+    background: #fff; border: 2px solid #E8E8E8; border-radius: 10px;
+    padding: 12px 16px; font-size: 15px;
+    font-family: 'Noto Sans JP', sans-serif; color: #3D3D3D;
+    cursor: pointer; transition: border-color 0.2s, background 0.2s; line-height: 1.6;
+  }
+  .quiz-opt:hover:not(.answered) { border-color: #F5A64A; background: #FFFBF0; }
+  .quiz-feedback {
+    display: none; margin-top: 16px; padding: 14px 18px;
+    border-radius: 8px; font-size: 14px; line-height: 1.7; color: #444;
+  }
+  .summary-box {
+    background: linear-gradient(135deg, #FDF0ED, #FFFBF0);
+    border: 2px solid #FAE8E0; border-radius: 16px;
+    padding: 28px; margin: 48px 0 28px;
+  }
+  .summary-box .label { font-size: 13px; font-weight: 700; color: #E85D4A; letter-spacing: 0.15em; margin-bottom: 18px; }
+  .summary-box ul { margin: 0; padding-left: 18px; font-size: 14px; line-height: 2; color: #444; }
+  .styled-table {
+    width: 100%; border-collapse: separate; border-spacing: 0;
+    border-radius: 12px; overflow: hidden; font-size: 15px;
+  }
+  .styled-table thead th {
+    background: #E85D4A; color: #fff; padding: 12px 16px;
+    font-weight: 700; text-align: left;
+  }
+  .styled-table tbody td {
+    padding: 12px 16px; border-bottom: 1px solid #FAE8E0;
+    vertical-align: top;
+  }
+  .styled-table tbody tr:nth-child(even) { background: #FDF0ED; }
+  .styled-table tbody td ul { margin: 4px 0; padding-left: 18px; }
+  .styled-table tbody td ul li { margin-bottom: 4px; font-size: 14px; line-height: 1.6; }
+  .img-caption {
+    font-size: 13px; color: #999; text-align: center; margin: -8px 0 20px;
+  }
+  .lesson-wrapper { max-width: 70%; margin: 0 auto; }
+  @media (max-width: 600px) {
+    .lesson-wrapper { max-width: 92%; }
+    .card-grid { grid-template-columns: 1fr; }
+    h2.section-heading { font-size: 20px; }
+    .styled-table { font-size: 13px; }
+    .styled-table thead th, .styled-table tbody td { padding: 10px 12px; }
+  }
+</style>
+<meta name="csrf-param" content="authenticity_token">
+<meta name="csrf-token" content="ZdNzNm3cUK2E7CJhNvV4ygGrYTunAQ5krLrTD7RvidWGUeGJgA6_rwNBJe4e9Uh35zHuyRY2hSAn5UdXjoa8vQ"><meta content="" name="routing-root-path"><meta content="media" name="site-name"><meta content="ja" name="i18n-default-locale"><meta content="ja" name="i18n-locale">
+
+<div class="lesson-wrapper">
+
+
+<!-- ヘッダー -->
+<div style="background: linear-gradient(135deg, #E85D4A, #F5A64A); color: #fff; padding: 32px 32px 28px; border-radius: 16px 16px 0 0; margin-top: 32px;">
+  <div style="font-size: 12px; font-weight: 700; opacity: 0.85; letter-spacing: 0.15em;">LESSON 4-1</div>
+  <h1 style="margin: 8px 0 0; font-size: 28px; font-weight: 700; line-height: 1.4; color: #fff;">はじめに - 画像生成AIの基本と準備</h1>
+  <p style="margin: 10px 0 0; font-size: 14px; opacity: 0.85; color: #fff;">Chapter 4: 画像AIハンズオン ／ 所要時間：約15分</p>
+</div>
+
+<!-- ゴールボックス -->
+<div style="background: #FAE8E0; padding: 18px 26px; border-radius: 0 0 16px 16px; margin-bottom: 36px;">
+  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
+    <div style="font-size: 12px; font-weight: 700; color: #E85D4A; letter-spacing: 0.15em;">このレッスンのゴール</div>
+    <div style="font-size: 12px; font-weight: 500; color: #E85D4A;">⏱ 約15分</div>
+  </div>
+  <p style="margin: 0; font-size: 16px; font-weight: 700; color: #3D3D3D; line-height: 1.6;">画像生成AIの基本的な仕組みと主要ツールの特徴を理解し、学習を始める準備ができている</p>
+</div>
+
+<!-- ロードマップに戻るボタンの場合 --> 
+<div style="display: flex; justify-content: center; align-items: center; padding: 24px 0; margin-top: 24px;">
+  <a href="https://learn.webcoach.jp/2Q/introduction-to-generative-ai" style="display: inline-block; background: #fff; color: #E85D4A; border: 2px solid #E85D4A; font-weight: 700; padding: 10px clamp(24px, 7vw, 48px); border-radius: 8px; text-decoration: none; white-space: nowrap;">ロードマップに戻る</a>
+</div>
+ <!-- 次の章に進むボタンの場合 -->  
+<div style="display: flex; justify-content: flex-end; align-items: center; padding: 24px 0; margin-top: 24px;">
+  <a href="https://learn.webcoach.jp/generative-ai/introduction-to-generative-ai/%E7%94%BB%E5%83%8F%E7%94%9F%E6%88%90AI%E3%81%A7%E6%8F%8F%E3%81%84%E3%81%A6%E3%81%BF%E3%82%88%E3%81%86/iGUCm" style="position: relative; display: inline-block; background: linear-gradient(135deg, #E85D4A, #F5A64A); color: #fff; font-weight: 700; padding: 12px clamp(24px, 7vw, 48px); border-radius: 8px; text-decoration: none;">次の章に進む<img src="../../_assets/47498cfebf.svg" style="position: absolute; top: 50%; transform: translateY(-50%); right: 12px; filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(125deg) brightness(103%) contrast(103%);"></a>
+</div>
+<!-- 目次 -->
+<div style="background: #fff; border: 1px solid #E8E8E8; border-radius: 12px; padding: 22px 26px; margin-bottom: 40px;">
+  <div style="font-size: 13px; font-weight: 700; color: #F5A64A; letter-spacing: 0.1em; margin-bottom: 12px;">目次</div>
+  <ol style="margin: 0; padding-left: 22px; font-size: 15px; color: #555; line-height: 2.2;">
+    <li><a href="#sec1" class="toc-link">AIが描く、多彩な表現</a></li>
+    <li><a href="#sec2" class="toc-link">画像生成AIを使う上での準備と心構え</a></li>
+    <li><a href="#sec3" class="toc-link">章末課題 - 私の「描きたい」イメージ宣言</a></li>
+  </ol>
+</div>
+
+
+<!-- イメージしてみよう -->
+<div class="imagine-box">
+  <div class="label">🎬 イメージしてみよう</div>
+  <p>
+    「美しい夕焼けに照らされた森で踊る妖精」<br>
+    この情景を、絵筆を持ったことがない人でも、数分で美しいイラストにできるとしたら？<br><br>
+    <strong class="accent">「絵心がない」は、もう関係ありません。</strong><br>
+    画像生成AIに必要なのは、絵を描く技術ではなく<strong class="accent">「どんな画像が欲しいか」を言葉で表現する力</strong>だけです。<br><br>
+    言葉で絵を描く体験を、一緒に始めましょう。
+  </p>
+</div>
+
+
+<!-- 躓きポイント -->
+<div class="stumbling-box">
+  <div class="label">⚡ このレッスンで躓きやすいポイント</div>
+  <ul>
+    <li>各ツールの<strong class="accent">無料プランの制限（クレジット数・ウォーターマーク）</strong>は頻繁に変更される。必ず公式サイトで最新情報を確認しよう</li>
+    <li>「プロンプト」という言葉に構える必要はない。<strong class="accent">まずは簡単なキーワードだけでOK</strong></li>
+    <li>著作権・倫理ルールは「知っている」だけでなく<strong class="accent">「使うたびに意識する」</strong>ことが大切</li>
+  </ul>
+</div>
+
+
+<!-- ============================================================
+  セクション 1: AIが描く、多彩な表現
+============================================================ -->
+<h2 class="section-heading" id="sec1">1. AIが描く、多彩な表現</h2>
+
+<h3 class="sub-heading">この教材について</h3>
+
+<p class="text-body">
+  この教材へようこそ。ここでは、画像生成AIの基本的な使い方と、その面白さ・可能性を、<strong class="accent">実際に手を動かしながら体験</strong>していきます。
+</p>
+
+<p class="text-body">
+  学習は、身近なデザインツール<strong class="accent">「Canva AI」</strong>と、より本格的な<strong class="accent">「Adobe Firefly」</strong>という2つのツールを使って進めます。ごく簡単なキーワードを入力するだけで、驚くほど多様な画像が生み出される様子をステップ・バイ・ステップで見ていきましょう。
+</p>
+
+<div style="margin: 24px 0; text-align: center;">
+  <a href="https://learn.webcoach.jp/theme/webcoach/img/introduction-to-generative-ai/image-ai-hands-on/img1.png" class="lightbox" style="display: inline-block;">
+    <img src="../../_assets/d7535188ca.webp" alt="" class="lightbox-img" style="display: block; margin: 0 auto; max-width: 100%;">
+  </a>
+  <p style="font-size: 13px; color: #999; margin-top: 8px;">画像生成AIの作例1</p>
+</div>
+<div style="margin: 24px 0; text-align: center;">
+  <a href="https://learn.webcoach.jp/theme/webcoach/img/introduction-to-generative-ai/image-ai-hands-on/img2.png" class="lightbox" style="display: inline-block;">
+    <img src="../../_assets/fd5218e273.webp" alt="" class="lightbox-img" style="display: block; margin: 0 auto; max-width: 100%;">
+  </a>
+  <p style="font-size: 13px; color: #999; margin-top: 8px;">画像生成AIの作例2</p>
+</div>
+<div class="point-box">
+  <div class="label">ポイント</div>
+  <p>この教材では、AIに複雑な指示を出す「プロンプト」の深い技術は扱いません。まずは<strong class="accent">「こんな簡単な言葉で、こんな絵が作れるんだ」</strong>という純粋な驚きと感動を味わうことを最優先します。より高度なテクニックは、次の教材『AIを味方に！プロンプト基本のキ』で学びます。</p>
+</div>
+
+<h3 class="sub-heading">この教材がおすすめの人</h3>
+
+<div class="card-grid">
+  <div class="card">
+    <h3>純粋に興味がある方</h3>
+    <p>「AIが絵を描くなんてすごい」と感じている方。絵心はないけれど、頭の中のイメージをビジュアルで表現してみたい方</p>
+  </div>
+  <div class="card">
+    <h3>実務で活用したい方</h3>
+    <p>SNS投稿やブログ、プレゼン資料にオリジナル画像を使いたい方。デザインのアイデア出しの新しいツールとして触れてみたい方</p>
+  </div>
+</div>
+
+<h3 class="sub-heading">本教材を通じて到達できるゴール</h3>
+
+<div style="margin: 24px 0;">
+  <div style="display: flex; align-items: flex-start; gap: 14px; margin-bottom: 20px;">
+    <div style="flex-shrink: 0; width: 36px; height: 36px; border-radius: 50%; background: linear-gradient(135deg, #E85D4A, #F5A64A); color: #fff; font-weight: 700; font-size: 15px; display: flex; align-items: center; justify-content: center;">1</div>
+    <div>
+      <div style="font-size: 16px; font-weight: 700; color: #3D3D3D; margin-bottom: 4px;">基本操作を体験する</div>
+      <p style="font-size: 14px; line-height: 1.7; color: #555; margin: 0;">主要な画像生成AIツール（Canva AI、Adobe Firefly）の基本的な使い方を体験し、ごく簡単なキーワードで画像を生成できるようになる</p>
+    </div>
+  </div>
+  <div style="display: flex; align-items: flex-start; gap: 14px; margin-bottom: 20px;">
+    <div style="flex-shrink: 0; width: 36px; height: 36px; border-radius: 50%; background: linear-gradient(135deg, #E85D4A, #F5A64A); color: #fff; font-weight: 700; font-size: 15px; display: flex; align-items: center; justify-content: center;">2</div>
+    <div>
+      <div style="font-size: 16px; font-weight: 700; color: #3D3D3D; margin-bottom: 4px;">スタイルの違いを実感する</div>
+      <p style="font-size: 14px; line-height: 1.7; color: #555; margin: 0;">同じキーワードでも、AIツールや「スタイル選択機能」によって全く異なる雰囲気の画像が生まれることを実感できる</p>
+    </div>
+  </div>
+  <div style="display: flex; align-items: flex-start; gap: 14px;">
+    <div style="flex-shrink: 0; width: 36px; height: 36px; border-radius: 50%; background: linear-gradient(135deg, #E85D4A, #F5A64A); color: #fff; font-weight: 700; font-size: 15px; display: flex; align-items: center; justify-content: center;">3</div>
+    <div>
+      <div style="font-size: 16px; font-weight: 700; color: #3D3D3D; margin-bottom: 4px;">AI表現の違いを発見する</div>
+      <p style="font-size: 14px; line-height: 1.7; color: #555; margin: 0;">生成された画像を見比べて、AIによる表現の違いや面白さを発見できるようになる</p>
+    </div>
+  </div>
+</div>
+
+<!-- 確認クイズ #1 -->
+<div class="inline-quiz">
+  <div class="quiz-label">✏️ 確認クイズ</div>
+  <p class="quiz-question">画像生成AIを使うために最も必要なスキルはどれ？</p>
+  <div class="quiz-options">
+    <button class="quiz-opt" data-correct="false">A. イラストを描く技術</button>
+    <button class="quiz-opt" data-correct="false">B. Photoshopの操作スキル</button>
+    <button class="quiz-opt" data-correct="true">C. どんな画像が欲しいかを言葉で表現する力</button>
+    <button class="quiz-opt" data-correct="false">D. プログラミングの知識</button>
+  </div>
+  <div class="quiz-feedback">
+    <strong>正解！</strong> 画像生成AIに必要なのは、絵を描く技術ではなく<strong>「どんな画像が欲しいか」を言葉で表現する力</strong>だけです。絵心やデザインセンスに自信がなくても大丈夫です。
+  </div>
+</div>
+
+
+<!-- ============================================================
+  セクション 2: 画像生成AIを使う上での準備と心構え
+============================================================ -->
+<h2 class="section-heading" id="sec2">2. 画像生成AIを使う上での準備と心構え</h2>
+
+<h3 class="sub-heading">今回体験するAIツールと無料利用の注意点</h3>
+
+<p class="text-body">
+  この教材では、代表的な2つの画像生成AIツール、<strong class="accent">「Canva AI」</strong>と<strong class="accent">「Adobe Firefly」</strong>を体験します。どちらも無料で利用開始できますが、いくつかの注意点があります。
+</p>
+
+<div style="overflow-x: auto; margin: 20px 0; border-radius: 12px; box-shadow: 0 1px 6px rgba(0,0,0,0.06);">
+  <table class="styled-table">
+    <thead>
+      <tr>
+        <th>ツール名</th>
+        <th>特徴</th>
+        <th>無料利用の注意点</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td style="font-weight: 700; white-space: nowrap;">Canva AI<br>(Magic Media)</td>
+        <td>
+          <ul>
+            <li>多くの人が使い慣れたデザインツールCanvaに搭載</li>
+            <li>Canvaアカウントがあれば手軽に試せる</li>
+          </ul>
+        </td>
+        <td>
+          <ul>
+            <li>無料プランでは生涯で利用できるクレジット（画像生成の権利）に上限がある場合がある</li>
+            <li>1回の画像生成で通常1クレジットを消費</li>
+            <li>上限に達すると、有料プランへのアップグレードが必要</li>
+          </ul>
+        </td>
+      </tr>
+      <tr>
+        <td style="font-weight: 700; white-space: nowrap;">Adobe Firefly</td>
+        <td>
+          <ul>
+            <li>Photoshopなどで有名なAdobe社が提供</li>
+            <li>高品質な画像生成が期待できる</li>
+          </ul>
+        </td>
+        <td>
+          <ul>
+            <li>毎月付与される生成クレジットに上限あり</li>
+            <li>クレジットは毎月リセットされる</li>
+            <li>無料プランでは透かし（ウォーターマーク）が入る場合あり</li>
+          </ul>
+        </td>
+      </tr>
+      <tr>
+        <td style="font-weight: 700; white-space: nowrap;">Gemini<br>(Imagen)</td>
+        <td>
+          <ul>
+            <li>Google提供のAI「Gemini」に搭載された画像生成機能</li>
+            <li>チャット画面から「○○の画像を生成して」と指示するだけ</li>
+            <li>写実的な画像からイラストまで幅広く対応</li>
+          </ul>
+        </td>
+        <td>
+          <ul>
+            <li>Googleアカウントがあれば無料で1日20〜100枚程度生成可能</li>
+            <li>人物の画像生成には一部制限あり</li>
+            <li>AI生成を示すメタデータ（SynthID）が埋め込まれる</li>
+            <li>高品質なImagen Pro（4K対応）は無料枠1日3枚程度</li>
+          </ul>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="note-box">
+  <div class="label">注意</div>
+  <p>上記は一般的な情報であり、各サービスの最新の利用条件やクレジット数については<strong class="accent">必ず公式サイトでご自身で確認してください</strong>。本教材では、無料範囲内で十分に体験できる内容で構成しています。</p>
+</div>
+
+<div style="margin: 24px 0; text-align: center;">
+  <a href="https://learn.webcoach.jp/theme/webcoach/img/introduction-to-generative-ai/image-ai-hands-on/img3.png" class="lightbox" style="display: inline-block;">
+    <img src="../../_assets/9be05bd1e5.webp" alt="" class="lightbox-img" style="display: block; margin: 0 auto; max-width: 100%;">
+  </a>
+  <p style="font-size: 13px; color: #999; margin-top: 8px;">AIツール比較イメージ</p>
+</div>
+<h3 class="sub-heading">大切なルールのおさらい（著作権と倫理）</h3>
+
+<p class="text-body">
+  画像生成AIは非常に強力なツールですが、使う上で守るべき大切なルールがあります。以前の教材『知らないと怖い！生成AIを使う前のルールブック』で学んだ内容を思い出しましょう。
+</p>
+
+<div class="card-grid">
+  <div class="card">
+    <h3>著作権の考え方</h3>
+    <p>AI生成物に関する著作権は法整備の途上にあります。商用利用には各ツールの利用規約を確認しましょう。</p>
+  </div>
+  <div class="card">
+    <h3>倫理的な配慮</h3>
+    <p>個人情報・機密情報の扱い、他者の権利を侵害しないことなど、責任ある利用を心がけましょう。</p>
+  </div>
+</div>
+
+<div class="point-box">
+  <div class="label">ポイント</div>
+  <p>楽しみながらも<strong class="accent">「責任ある利用」</strong>を常に意識することが大切です。この教材で生成する画像も、使い方によっては著作権や倫理のルールが関わってきます。</p>
+</div>
+
+<div class="usecase-box">
+  <div class="label">💡 こんな場面で使える！</div>
+  <p>ChatGPTやGeminiでも画像生成が可能です。ChatGPTにはDALL-EやGPT-4oの画像生成機能が搭載されており、無料版でも利用できます。テキスト生成AIの体験教材でChatGPTに慣れた方は、そちらでも試してみましょう。</p>
+</div>
+
+<!-- 確認クイズ #2 -->
+<div class="inline-quiz">
+  <div class="quiz-label">✏️ 確認クイズ</div>
+  <p class="quiz-question">Adobe Fireflyの無料プランについて正しいのはどれ？</p>
+  <div class="quiz-options">
+    <button class="quiz-opt" data-correct="false">A. クレジットの制限なく、無限に画像を生成できる</button>
+    <button class="quiz-opt" data-correct="true">B. 毎月の生成クレジットに上限があり、毎月リセットされる</button>
+    <button class="quiz-opt" data-correct="false">C. 無料プランでは画像のダウンロードができない</button>
+    <button class="quiz-opt" data-correct="false">D. Adobe IDがなくても利用できる</button>
+  </div>
+  <div class="quiz-feedback">
+    <strong>正解！</strong> Adobe Fireflyの無料プランでは、毎月付与される生成クレジットに上限があります。クレジットは毎月リセットされるため、使い切っても翌月にまた利用できます。また、無料プランでは透かし（ウォーターマーク）が入る場合もあります。
+  </div>
+</div>
+
+<!-- 確認クイズ #3 -->
+<div class="inline-quiz">
+  <div class="quiz-label">✏️ 確認クイズ</div>
+  <p class="quiz-question">画像生成AIを利用する際に最も重要な心構えはどれ？</p>
+  <div class="quiz-options">
+    <button class="quiz-opt" data-correct="false">A. できるだけ多くの画像を一度に生成すること</button>
+    <button class="quiz-opt" data-correct="false">B. 常に最高品質の有料プランを使うこと</button>
+    <button class="quiz-opt" data-correct="true">C. 著作権や倫理を意識し、責任ある利用を心がけること</button>
+    <button class="quiz-opt" data-correct="false">D. 他人の作品と全く同じ画像を生成すること</button>
+  </div>
+  <div class="quiz-feedback">
+    <strong>正解！</strong> 画像生成AIは強力なツールですが、著作権の考え方、個人情報の扱い、他者の権利を侵害しないといった<strong>倫理的な配慮</strong>が欠かせません。楽しみながらも責任ある利用を心がけましょう。
+  </div>
+</div>
+
+
+<!-- ============================================================
+  セクション 3: 章末課題
+============================================================ -->
+<h2 class="section-heading" id="sec3">3. 章末課題 - 私の「描きたい」イメージ宣言</h2>
+
+<p class="text-body">
+  これから、言葉で絵を描くという新しい体験をします。<strong class="accent">「こんな画像がAIで作れたら嬉しいな」「画像生成AIを使って、こんなことに挑戦してみたいな」</strong>という、今の「画像生成AIへの期待や夢」を自由に書き出してみましょう。
+</p>
+
+<p class="text-body">正解はありません。楽しみながら取り組んでみてください。</p>
+
+<div class="point-box">
+  <div class="label">ポイント</div>
+  <p>「未来の都市」というテーマで画像を描いてもらうなら、AIにどんなキーワードでお願いしますか？例えば「未来都市、空飛ぶ車」「きらめく高層ビル群、夜景」「緑豊かな未来の街、ロボットと人間」のように、<strong class="accent">ごく簡単なものでOK</strong>です。</p>
+</div>
+
+<div style="background: #fff; border: 2px solid #FAE8E0; border-radius: 16px; padding: 22px; margin: 24px 0;">
+  <div style="font-size: 14px; font-weight: 700; color: #E85D4A; margin-bottom: 12px;">解答の方向性の例</div>
+  <ul style="margin: 0; padding-left: 18px; font-size: 15px; line-height: 2; color: #555;">
+    <li>自分のペットの猫が、宇宙服を着て月面を散歩している絵</li>
+    <li>自分が考えたオリジナルキャラクターの、立ち絵イラスト</li>
+    <li>自分の部屋の理想のインテリアコーディネート画像</li>
+    <li>誰も見たことがないような、幻想的な風景画</li>
+  </ul>
+</div>
+
+<div class="usecase-box">
+  <div class="label">💡 こんな場面で使える！</div>
+  <p>良い目標です。この教材を通じて、その一部でも形にできるかもしれません。AIと一緒に、創造力をどこまでも広げていきましょう。</p>
+</div>
+
+
+<!-- まとめ -->
+<div class="summary-box">
+  <div class="label">まとめ</div>
+  <ul>
+    <li><strong style="color: #3D3D3D;">画像生成AIとは</strong> — 言葉（キーワード）を入力するだけで、AIが多彩な画像を生成してくれる技術。絵心は不要</li>
+    <li><strong style="color: #3D3D3D;">体験するツール</strong> — Canva AI（手軽で身近）と Adobe Firefly（高品質・権利面で安心）の2つ</li>
+    <li><strong style="color: #3D3D3D;">無料利用の注意</strong> — 各ツールにクレジット制限やウォーターマークあり。最新情報は公式サイトで確認</li>
+    <li><strong style="color: #3D3D3D;">大切なルール</strong> — 著作権と倫理を意識し、責任ある利用を心がける</li>
+  </ul>
+</div>
+
+
+<!-- 理解度チェック -->
+<details style="background: #F0FAF0; border: 1px solid #C8E6C9; border-radius: 12px; padding: 0; margin: 36px 0;">
+  <summary style="padding: 18px 24px; font-size: 14px; font-weight: 700; color: #4CAF50; cursor: pointer; letter-spacing: 0.1em;">理解度チェック（クリックして開く）</summary>
+  <div style="padding: 0 24px 18px;">
+
+    <details style="background: #fff; border: 1px solid #BBF7D0; border-radius: 10px; padding: 0; margin: 8px 0; overflow: hidden;">
+      <summary style="padding: 14px 18px; font-size: 15px; font-weight: 600; color: #166534; cursor: pointer;">画像生成AIに必要なスキルを説明できる</summary>
+      <div style="padding: 0 18px 14px; font-size: 14px; color: #555; line-height: 1.7;">画像生成AIに必要なのは「絵を描く技術」ではなく、「どんな画像が欲しいかを言葉で表現する力」です。絵心やデザインセンスは不要で、簡単なキーワードを入力するだけで画像を生成できます。</div>
+    </details>
+
+    <details style="background: #fff; border: 1px solid #BBF7D0; border-radius: 10px; padding: 0; margin: 8px 0; overflow: hidden;">
+      <summary style="padding: 14px 18px; font-size: 15px; font-weight: 600; color: #166534; cursor: pointer;">2つの体験ツールの特徴と違いを説明できる</summary>
+      <div style="padding: 0 18px 14px; font-size: 14px; color: #555; line-height: 1.7;">Canva AI（Magic Media）は身近なデザインツールに搭載された手軽な画像生成機能。Adobe Fireflyはプロ向けAdobe社提供で、権利的にクリアされた学習データを使用し商用利用にも比較的安全です。どちらも無料プランにクレジット制限があります。</div>
+    </details>
+
+    <details style="background: #fff; border: 1px solid #BBF7D0; border-radius: 10px; padding: 0; margin: 8px 0; overflow: hidden;">
+      <summary style="padding: 14px 18px; font-size: 15px; font-weight: 600; color: #166534; cursor: pointer;">画像生成AI利用時の著作権・倫理ルールを理解している</summary>
+      <div style="padding: 0 18px 14px; font-size: 14px; color: #555; line-height: 1.7;">AI生成物の著作権の考え方、個人情報・機密情報の扱い、他者の権利を侵害しないといった倫理的配慮が必要です。楽しみながらも「責任ある利用」を常に意識しましょう。</div>
+    </details>
+
+    <details style="background: #fff; border: 1px solid #BBF7D0; border-radius: 10px; padding: 0; margin: 8px 0; overflow: hidden;">
+      <summary style="padding: 14px 18px; font-size: 15px; font-weight: 600; color: #166534; cursor: pointer;">章末課題（画像生成AIへの期待や夢）を書き出せた</summary>
+      <div style="padding: 0 18px 14px; font-size: 14px; color: #555; line-height: 1.7;">自分が画像生成AIで作りたいもの（ペットのイラスト、オリジナルキャラクター、理想のインテリアなど）を自由に書き出せていればOKです。正解はありません。次章以降で実際に手を動かして体験していきます。</div>
+    </details>
+
+  </div>
+</details>
+   <!-- 次の章に進むボタンの場合 -->  
+<div style="display: flex; justify-content: flex-end; align-items: center; padding: 24px 0; margin-top: 24px;">
+  <a href="https://learn.webcoach.jp/generative-ai/introduction-to-generative-ai/%E7%94%BB%E5%83%8F%E7%94%9F%E6%88%90AI%E3%81%A7%E6%8F%8F%E3%81%84%E3%81%A6%E3%81%BF%E3%82%88%E3%81%86/iGUCm" style="position: relative; display: inline-block; background: linear-gradient(135deg, #E85D4A, #F5A64A); color: #fff; font-weight: 700; padding: 12px clamp(24px, 7vw, 48px); border-radius: 8px; text-decoration: none;">次の章に進む<img src="../../_assets/47498cfebf.svg" style="position: absolute; top: 50%; transform: translateY(-50%); right: 12px; filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(125deg) brightness(103%) contrast(103%);"></a>
+</div>
+ <!-- ロードマップに戻るボタンの場合 --> 
+<div style="display: flex; justify-content: center; align-items: center; padding: 24px 0; margin-top: 24px;">
+  <a href="https://learn.webcoach.jp/2Q/introduction-to-generative-ai" style="display: inline-block; background: #fff; color: #E85D4A; border: 2px solid #E85D4A; font-weight: 700; padding: 10px clamp(24px, 7vw, 48px); border-radius: 8px; text-decoration: none; white-space: nowrap;">ロードマップに戻る</a>
+</div>
+
+</div><!-- /.lesson-wrapper -->
+
+<!-- JavaScript -->
+
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="ck-icon-arrow-down" viewBox="0 0 1792 1792"><path d="M1675 832q0 53-37 90l-651 652q-39 37-91 37-53 0-90-37l-651-652q-38-36-38-90 0-53 38-91l74-75q39-37 91-37 53 0 90 37l294 294v-704q0-52 38-90t90-38h128q52 0 90 38t38 90v704l294-294q37-37 90-37 52 0 91 37l75 75q37 39 37 91z"></path></symbol><symbol id="ck-icon-arrow-up" viewBox="0 0 1792 1792"><path d="M1675 971q0 51-37 90l-75 75q-38 38-91 38-54 0-90-38l-294-293v704q0 52-37.5 84.5t-90.5 32.5h-128q-53 0-90.5-32.5t-37.5-84.5v-704l-294 293q-36 38-90 38t-90-38l-75-75q-38-38-38-90 0-53 38-91l651-651q35-37 90-37 54 0 91 37l651 651q37 39 37 91z"></path></symbol><symbol id="ck-icon-calendar" viewBox="0 0 1792 1792"><path d="M192 1664h288v-288h-288v288zm352 0h320v-288h-320v288zm-352-352h288v-320h-288v320zm352 0h320v-320h-320v320zm-352-384h288v-288h-288v288zm736 736h320v-288h-320v288zm-384-736h320v-288h-320v288zm768 736h288v-288h-288v288zm-384-352h320v-320h-320v320zm-352-864v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm736 864h288v-320h-288v320zm-384-384h320v-288h-320v288zm384 0h288v-288h-288v288zm32-480v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm384-64v1280q0 52-38 90t-90 38h-1408q-52 0-90-38t-38-90v-1280q0-52 38-90t90-38h128v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h384v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h128q52 0 90 38t38 90z"></path></symbol><symbol id="ck-icon-chevron-left" viewBox="0 0 1792 1792"><path d="M1427 301l-531 531 531 531q19 19 19 45t-19 45l-166 166q-19 19-45 19t-45-19l-742-742q-19-19-19-45t19-45l742-742q19-19 45-19t45 19l166 166q19 19 19 45t-19 45z"></path></symbol><symbol id="ck-icon-chevron-right" viewBox="0 0 1792 1792"><path d="M1363 877l-742 742q-19 19-45 19t-45-19l-166-166q-19-19-19-45t19-45l531-531-531-531q-19-19-19-45t19-45l166-166q19-19 45-19t45 19l742 742q19 19 19 45t-19 45z"></path></symbol><symbol id="ck-icon-clock-o" viewBox="0 0 1792 1792"><path d="M1024 544v448q0 14-9 23t-23 9h-320q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h224v-352q0-14 9-23t23-9h64q14 0 23 9t9 23zm416 352q0-148-73-273t-198-198-273-73-273 73-198 198-73 273 73 273 198 198 273 73 273-73 198-198 73-273zm224 0q0 209-103 385.5t-279.5 279.5-385.5 103-385.5-103-279.5-279.5-103-385.5 103-385.5 279.5-279.5 385.5-103 385.5 103 279.5 279.5 103 385.5z"></path></symbol><symbol id="ck-icon-trash" viewBox="0 0 1792 1792"><path d="M704 1376v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm-544-992h448l-48-117q-7-9-17-11h-317q-10 2-17 11zm928 32v64q0 14-9 23t-23 9h-96v948q0 83-47 143.5t-113 60.5h-832q-66 0-113-58.5t-47-141.5v-952h-96q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h309l70-167q15-37 54-63t79-26h320q40 0 79 26t54 63l70 167h309q14 0 23 9t9 23z"></path></symbol><symbol id="ck-icon-undo" viewBox="0 0 1792 1792"><path d="M1664 896q0 156-61 298t-164 245-245 164-298 61q-172 0-327-72.5t-264-204.5q-7-10-6.5-22.5t8.5-20.5l137-138q10-9 25-9 16 2 23 12 73 95 179 147t225 52q104 0 198.5-40.5t163.5-109.5 109.5-163.5 40.5-198.5-40.5-198.5-109.5-163.5-163.5-109.5-198.5-40.5q-98 0-188 35.5t-160 101.5l137 138q31 30 14 69-17 40-59 40h-448q-26 0-45-19t-19-45v-448q0-42 40-59 39-17 69 14l130 129q107-101 244.5-156.5t284.5-55.5q156 0 298 61t245 164 164 245 61 298z"></path></symbol></svg>
+
+<!--Clipkit(R) v15.9.0-20260915 Copyright (C) 2026 VECTOR Inc.-->
+
+
+</div></div>
+        
+      
+    </div>
+  
+  </div>
+
+<!-- <script src="https://cdn.clipkit.co/clipkit/javascripts/item-shopify-1.0.js?v=v15.9.0-20260915" async></script> -->
+</body></html>

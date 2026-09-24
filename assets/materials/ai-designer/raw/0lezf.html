@@ -1,0 +1,714 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+  <html lang="ja">
+
+<head><script async="async" data-label="saas" nonce="b3pbMJHFaHhswTPtjzKzDg==" src="//b.clipkit.co/"></script><script src="//cdn.clipkit.co/clipkit_assets/beacon-787bbf3225ec43d93f198af35f7d56fdef40fb50440a2909500bdf5b99225aab.js" async="async" id="clipkit-beacon" data-page-type="article" data-page-id="2528" data-domain="learn.webcoach.jp" data-url="/ai-designer/chapter-04/0lezf" data-href="https://learn.webcoach.jp/media/beacon"></script>
+    <!-- headタグ内の上部に挿入されます -->
+
+    <meta charset="UTF-8">
+    <title>Lesson1 ポートフォリオサイトの設計 - WEBCOACH</title>
+
+    <!-- resetcssのCDNでのCSS読み込み -->
+    <link rel="stylesheet" href="https://unpkg.com/modern-css-reset/dist/reset.min.css" />
+
+    <!-- fontawesomeのCDNでのCSS読み込み -->
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/fontawesome/4.7.0/css/font-awesome.min.css">
+
+    <!-- BootstrapのCDNでのCSS読み込み -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous" />
+
+    <!-- highlight.jsの読み込み -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.1/styles/dracula.min.css">
+
+    <!-- カスタムCSS -->
+    <link rel="stylesheet" href="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/168/original/style.css?1788081716">
+
+    <!-- clipkitデフォルトのCSS -->
+    <!--<link rel="stylesheet" media="screen" href="https://cdn.clipkit.co/clipkit/stylesheets/application-1.0.css?v=v15.9.0-20260915">-->
+
+    <!-- jQuery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <!-- カスタムJS -->
+    <script src="https://cdn.clipkit.co/tenants/589/resources/assets/000/002/350/original/script.js?1779642402"></script>
+    <script src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/535/original/script.js?1743681771"></script>
+
+    <!-- clipkitデフォルトのJS -->
+    <script src="https://cdn.clipkit.co/clipkit/javascripts/default-1.0.js?v=v15.9.0-20260915"></script>
+
+    <!-- フォント -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;700&display=swap" rel="stylesheet">
+
+    <link href="https://cdn.clipkit.co/clipkit/favicons/square/missing.png" rel="shortcut icon" type="image/vnd.microsoft.icon">
+    <link rel="apple-touch-icon" href="https://cdn.clipkit.co/clipkit/touch_icons/square/missing.png">
+    <link rel="alternate" type="application/rss+xml"
+        href="https://learn.webcoach.jp/media.rss" title="WEBCOACH">
+    
+  <link rel="canonical" href="https://learn.webcoach.jp/ai-designer/chapter-04/0lezf">
+  
+  <meta name="description" content="">
+  <meta name="keywords" content="">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:domain" content="learn.webcoach.jp">
+  <meta name="twitter:title" content="Lesson1 ポートフォリオサイトの設計 - WEBCOACH">
+  <meta name="twitter:image" content="https://cdn.clipkit.co/clipkit/images/medium/missing.png">
+  <meta name="twitter:description" content="">
+  <meta property="og:site_name" content="WEBCOACH">
+  <meta property="og:title" content="Lesson1 ポートフォリオサイトの設計">
+  <meta property="og:description" content="">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://learn.webcoach.jp/ai-designer/chapter-04/0lezf">
+  <meta property="og:image" content="https://cdn.clipkit.co/clipkit/images/large/missing.png">
+  <script type="application/ld+json">
+  {
+    "@context": "http://schema.org",
+    "@type": "NewsArticle",
+    "mainEntityOfPage":{
+      "@type":"WebPage",
+      "@id": "https://learn.webcoach.jp/ai-designer/chapter-04/0lezf"
+    },
+    "headline": "Lesson1 ポートフォリオサイトの設計",
+    "image": {
+      "@type": "ImageObject",
+      "url": "https://cdn.clipkit.co/clipkit/images/medium/missing.png",
+      "width": 800,
+      "height": 600
+    },
+    "datePublished": "2026-05-21T15:44:00+09:00",
+    "dateModified": "2026-05-21T16:46:48+09:00",
+    "author": {
+      "@type": "Person",
+      "name": "r_yoshitake"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "WEBCOACH",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://cdn.clipkit.co/tenants/589/sites/logos/000/000/001/logo_sm/a8defd4b-1cc7-433b-a61c-08e7db0e3e4f.png?1714459367"
+      }
+    },
+    "description": ""
+  }
+  </script>
+
+    <!-- headタグ内の下部に挿入されます -->
+
+
+<meta name="csrf-param" content="authenticity_token" />
+<meta name="csrf-token" content="A4elQlOEm8T-HiW-RO2JQffWgqfKVMrtaIHPNcQQmkJ9Bgj5xWOwBafbD1n_W_wLX-grPohhTeICp7R1Hy55hQ" /><meta content="" name="routing-root-path" /><meta content="media" name="site-name" /><meta content="ja" name="i18n-default-locale" /><meta content="ja" name="i18n-locale" /></head>
+
+<body class="device-desktop">
+    <!-- bodyタグ内の上部に挿入されます -->
+
+
+    <!-- サイドバーとコンテンツのコンテナ -->
+    <div class="d-flex flex-row w-100 mb-5" style="min-height: calc(100vh - 400px);">
+
+        <!-- コンテンツ -->
+        <!--<main class="ms-auto" style="width: calc(100vw - 250px);">-->
+        <main class="ms-auto" style="width: calc(100vw);">
+            <div id="sb-site">
+                
+
+
+<div>
+  
+    <div>
+      
+      
+        
+          <div class="article-item item_html " id="item48938" data-item-id="48938" data-item-type="ItemHtml"><div class="item-body"><style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Noto Sans JP', sans-serif; color: #3D3D3D; font-size: 16px; line-height: 1.9; background: #fff; }
+.lesson-wrapper { max-width: 70%; margin: 0 auto; padding: 40px 0 80px; }
+@media (max-width: 600px) { .lesson-wrapper { max-width: 92%; } }
+
+h2 { font-size: 24px; font-weight: 700; color: #2D2D2D; margin: 64px 0 24px; padding: 0 0 14px; position: relative; letter-spacing: -0.02em; line-height: 1.4; }
+h2::after { content: ''; position: absolute; bottom: 0; left: 0; width: 48px; height: 4px; border-radius: 2px; background: linear-gradient(90deg, #E85D4A, #F5A64A); }
+h3 { font-size: 18px; font-weight: 700; color: #2D2D2D; margin: 48px 0 16px; border-left: 3px solid #2D2D2D; padding-left: 14px; }
+p { font-size: 16px; line-height: 2.0; color: #555; margin: 0 0 16px; }
+ul, ol { padding-left: 1.5em; margin: 0 0 16px; }
+li { font-size: 16px; line-height: 2.0; color: #555; margin-bottom: 6px; }
+strong { color: #2D2D2D; font-weight: 700; }
+
+/* ヘッダー */
+.lesson-hero { background: linear-gradient(135deg, #F84744 0%, #FB9A3F 100%); border-radius: 16px; padding: 22px 28px; margin: 0 0 40px; color: #fff; }
+.lesson-hero__badge { display: inline-block; background: #fff; color: #E85D4A; padding: 5px 14px; border-radius: 8px; font-size: 11px; font-weight: 800; letter-spacing: 0.18em; margin-bottom: 14px; font-family: 'Inter', sans-serif; }
+.lesson-hero__title { font-size: 22px; font-weight: 800; line-height: 1.4; margin-bottom: 16px; letter-spacing: -0.01em; }
+.lesson-hero__meta { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+.lesson-hero__chip { display: inline-flex; align-items: center; background: #fff; color: #333; padding: 5px 11px; border-radius: 6px; font-size: 11.5px; font-weight: 700; font-family: 'Inter', sans-serif; letter-spacing: 0.04em; }
+.lesson-hero__topic { font-size: 13px; font-weight: 600; opacity: 0.95; }
+.lesson-hero__time { display: inline-flex; align-items: center; gap: 5px; font-size: 13px; font-weight: 600; opacity: 0.95; }
+
+/* ゴール */
+.goal-box { background: #fff; border-radius: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); padding: 20px 24px; margin: 0 0 40px; }
+.goal-box__head { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; }
+.goal-box__pill { display: inline-block; background: linear-gradient(135deg, #F84744 0%, #FB9A3F 100%); color: #fff; padding: 6px 16px; border-radius: 50px; font-size: 11px; font-weight: 700; letter-spacing: 0.18em; }
+.goal-box__sub { font-size: 14px; font-weight: 700; color: #333; letter-spacing: 0.02em; }
+.goal-box ul { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 6px; }
+.goal-box li { display: flex; gap: 12px; padding: 10px 14px; background: linear-gradient(135deg, #FFF5F0 0%, #FFFAEC 100%); border-radius: 10px; align-items: flex-start; transition: transform 0.2s; }
+.goal-box li:hover { transform: translateX(2px); }
+.goal-box__check { flex-shrink: 0; width: 22px; height: 22px; border-radius: 50%; background: linear-gradient(135deg, #F84744 0%, #FB9A3F 100%); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 800; margin-top: 1px; }
+.goal-box__text { flex: 1; font-size: 14px; color: #333; line-height: 1.7; font-weight: 500; }
+
+/* 目次 */
+.toc { background: #fff; border-radius: 14px; padding: 22px 26px; box-shadow: 0 2px 12px rgba(0,0,0,0.05); margin: 0 0 48px; }
+.toc-head { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; }
+.toc-icon { width: 26px; height: 26px; border-radius: 7px; background: linear-gradient(135deg, #E85D4A, #F5A64A); display: flex; align-items: center; justify-content: center; color: #fff; font-size: 11px; font-weight: 700; }
+.toc-title { font-size: 15px; font-weight: 700; color: #2D2D2D; }
+.toc ul { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 3px; }
+.toc li a { display: flex; align-items: center; gap: 12px; padding: 8px 14px; background: #FAF9F8; border-radius: 8px; text-decoration: none; transition: background 0.2s; }
+.toc li a:hover { background: #F5EFEC; }
+.toc-num { font-size: 12px; font-weight: 700; color: #2D2D2D; letter-spacing: 0.05em; min-width: 22px; font-family: 'Inter', sans-serif; }
+.toc-text { flex: 1; font-size: 14px; color: #2D2D2D; font-weight: 500; }
+.toc-chev { color: #B8B8B8; font-size: 12px; }
+
+/* 動画 */
+.video-wrap { position: relative; padding-top: 56.25%; margin: 0 0 28px; background: #2A2220; border-radius: 12px; overflow: hidden; }
+.video-wrap iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: none; }
+
+/* 画像系 */
+.slide-img { width: 100%; border-radius: 12px; display: block; box-shadow: 0 4px 24px rgba(0,0,0,0.10); margin: 28px 0; }
+.lightbox-img { width: 100%; border-radius: 12px; display: block; box-shadow: 0 4px 24px rgba(0,0,0,0.10); }
+.img-placeholder { background: #FAF5F3; border: 2px dashed #E8D5CC; border-radius: 12px 12px 0 0; padding: 24px 20px; text-align: center; margin: 28px 0 0; }
+.img-placeholder-label { font-size: 10px; font-weight: 700; letter-spacing: 0.15em; color: #C4A59A; margin-bottom: 6px; }
+.img-placeholder-name { font-size: 12px; color: #B08880; font-family: monospace; }
+.prompt-box { background: #2A2220; border-radius: 0 0 12px 12px; padding: 16px 20px; margin: 0 0 28px; }
+.prompt-box-label { font-size: 10px; font-weight: 700; letter-spacing: 0.15em; color: #F5A64A; margin-bottom: 8px; }
+.prompt-text { color: #E8DDD8; font-size: 12px; line-height: 1.7; font-family: 'Courier New', monospace; white-space: pre-wrap; word-break: break-word; margin: 0; }
+
+/* Point ボックス */
+.point-box { background: #FFFBE6; border: 1.5px solid #F5C58F; border-radius: 10px; padding: 18px 22px 20px; margin: 28px 0; transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1); }
+.point-box:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(0,0,0,0.08); }
+.point-box__head { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+.point-box__tab { display: inline-flex; align-items: center; justify-content: center; gap: 5px; background: #F5A64A; color: #fff; font-size: 11px; font-weight: 700; padding: 5px 17px 5px 11px; min-width: 88px; letter-spacing: 0.05em; clip-path: polygon(0 0, 100% 0, calc(100% - 10px) 50%, 100% 100%, 0 100%); flex-shrink: 0; font-family: 'Inter', sans-serif; }
+.point-box__sub { font-size: 13.5px; font-weight: 700; color: #2D2D2D; }
+.point-box p { font-size: 15px; line-height: 1.9; color: #444; margin: 0 0 10px; }
+.point-box p:last-child { margin-bottom: 0; }
+.point-box ol, .point-box ul { padding-left: 1.4em; margin: 0; }
+.point-box li { font-size: 14.5px; line-height: 1.9; color: #444; margin-bottom: 4px; }
+
+/* Notice ボックス */
+.notice-box { background: #FFF5F4; border: 1.5px solid #F5A8A0; border-radius: 10px; padding: 18px 22px 20px; margin: 28px 0; }
+.notice-box__head { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+.notice-box__tab { display: inline-flex; align-items: center; justify-content: center; gap: 5px; background: #D9433A; color: #fff; font-size: 11px; font-weight: 700; padding: 5px 17px 5px 11px; min-width: 88px; letter-spacing: 0.05em; clip-path: polygon(0 0, 100% 0, calc(100% - 10px) 50%, 100% 100%, 0 100%); flex-shrink: 0; }
+.notice-box__sub { font-size: 13.5px; font-weight: 700; color: #2D2D2D; }
+.notice-box p { font-size: 14.5px; line-height: 1.85; color: #444; margin: 0; }
+
+/* 仕様比較テーブル */
+.spec-table { width: 100%; border-collapse: collapse; border-radius: 12px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.04); margin: 0 0 28px; }
+.spec-table thead { background: linear-gradient(135deg, #E85D4A, #F5A64A); color: #fff; }
+.spec-table th { padding: 14px 16px; font-size: 13px; font-weight: 700; text-align: left; letter-spacing: 0.04em; }
+.spec-table td { padding: 14px 16px; font-size: 14px; color: #444; border-bottom: 1px solid #F0E5DC; vertical-align: top; line-height: 1.8; background: #fff; }
+.spec-table tr:nth-child(even) td { background: #FBF8F5; }
+.spec-table tr:last-child td { border-bottom: none; }
+.spec-table .tbl-name { font-weight: 700; color: #2D2D2D; }
+.spec-table .tbl-priority { font-family: 'Inter', sans-serif; font-weight: 800; color: #E85D4A; font-size: 13px; }
+
+/* コピー可能テンプレート */
+.slack-template { margin: 0 0 28px; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,0.10); background: #fff; border: 1px solid #EEE5E0; }
+.slack-template__head { display: flex; align-items: center; gap: 12px; background: #2A2220; padding: 11px 18px; }
+.slack-template__label { flex: 1; font-size: 12.5px; font-weight: 700; color: #E8DDD8; letter-spacing: 0.05em; }
+.slack-template__copy { display: inline-flex; align-items: center; gap: 6px; background: linear-gradient(135deg, #F84744 0%, #FB9A3F 100%); color: #fff; border: none; padding: 6px 14px; border-radius: 6px; font-size: 12px; font-weight: 700; cursor: pointer; font-family: inherit; transition: opacity 0.2s, transform 0.2s, background 0.2s; flex-shrink: 0; }
+.slack-template__copy:hover { opacity: 0.92; transform: translateY(-1px); }
+.slack-template__copy.copied { background: linear-gradient(135deg, #4A8024 0%, #6BAA45 100%); }
+.slack-template__desc { font-size: 13.5px; color: #555; line-height: 1.7; padding: 14px 20px 0; margin: 0; }
+.slack-template__body { font-family: 'Courier New', Consolas, monospace; font-size: 13px; line-height: 1.85; color: #2D2D2D; white-space: pre; overflow-x: auto; padding: 14px 20px 18px; margin: 10px 0 0; background: #fff; }
+
+/* まとめ */
+.summary-box { background: #E8F5E0; border-radius: 14px; padding: 20px 24px; margin: 48px 0 32px; }
+.summary-box__head { margin-bottom: 14px; }
+.summary-box__badge { display: inline-block; background: linear-gradient(135deg, #4A8024 0%, #6BAA45 100%); color: #fff; padding: 6px 14px; border-radius: 8px; font-size: 12px; font-weight: 700; letter-spacing: 0.18em; font-family: 'Inter', sans-serif; }
+.summary-box ol { list-style: none; padding: 0; margin: 0; counter-reset: sbc; }
+.summary-box li { counter-increment: sbc; position: relative; padding: 7px 0 7px 32px; font-size: 14.5px; line-height: 1.8; color: #2D2D2D; font-weight: 500; }
+.summary-box li::before { content: counter(sbc, decimal-leading-zero); position: absolute; left: 0; top: 7px; color: #4A8024; font-weight: 800; font-size: 13px; font-family: 'Inter', sans-serif; letter-spacing: -0.02em; }
+
+/* 理解度チェック */
+.check-box { background: #fff; border-radius: 14px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); padding: 20px 24px; margin: 0 0 40px; }
+.check-box__head { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; padding-bottom: 12px; border-bottom: 2px solid; border-image: linear-gradient(90deg, #F84744 0%, #FB9A3F 100%) 1; }
+.check-box__pill { display: inline-block; background: linear-gradient(135deg, #F84744 0%, #FB9A3F 100%); color: #fff; padding: 5px 14px; border-radius: 50px; font-size: 11px; font-weight: 800; letter-spacing: 0.18em; }
+.check-box__sub { font-size: 14px; font-weight: 700; color: #333; }
+.check-box details { margin-bottom: 7px; }
+.check-box summary { padding: 11px 18px; cursor: pointer; display: flex; align-items: center; gap: 12px; font-size: 14px; color: #2D2D2D; background: linear-gradient(135deg, #FFF5F0 0%, #FFFAEC 100%); border-radius: 22px; transition: all 0.2s; border: 1.5px solid transparent; font-weight: 500; list-style: none; }
+.check-box summary:hover { border-color: #F5A64A; }
+.check-box summary::-webkit-details-marker { display: none; }
+.check-box summary::before { content: '＋'; color: #fff; background: linear-gradient(135deg, #F84744 0%, #FB9A3F 100%); width: 22px; height: 22px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 800; flex-shrink: 0; }
+.check-box details[open] summary { border-color: #F5A64A; }
+.check-box details[open] summary::before { content: '−'; }
+.check-box__detail { padding: 12px 20px 4px 48px; font-size: 13.5px; color: #555; line-height: 1.85; }
+
+.reveal { opacity: 0; transform: translateY(20px); transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1); }
+.reveal.visible { opacity: 1; transform: translateY(0); }
+
+/* チャプター概要動画 */
+.chapter-intro-video { background: #fff; border-radius: 16px; padding: 24px 28px; margin-bottom: 32px; box-shadow: 0 2px 16px rgba(0,0,0,0.06); position: relative; overflow: hidden; }
+.chapter-intro-video::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px; background: linear-gradient(90deg, #E85D4A, #F5A64A); }
+.chapter-intro-video__label { font-size: 11px; font-weight: 700; color: #E85D4A; letter-spacing: 0.15em; margin-bottom: 14px; }
+.chapter-intro-video__player { width: 100%; border-radius: 8px; display: block; background: #F7F8FA; }
+</style>
+<div class="lesson-wrapper">
+
+<div class="lesson-hero">
+  <span class="lesson-hero__badge">CHAPTER 4</span>
+  <div class="lesson-hero__title">ポートフォリオサイトの設計 — 発注者が見るポイントを理解する</div>
+  <div class="lesson-hero__meta">
+    <span class="lesson-hero__chip">LESSON 4-1</span>
+    <span class="lesson-hero__topic">発注者の視点 → 推奨セクション構成 → 生成AI使用を一言添える</span>
+    <span class="lesson-hero__time">⏱ 所要時間：約25分</span>
+  </div>
+</div>
+<div class="back-to-roadmap" style="display: flex; justify-content: center; align-items: center; padding: 24px 0; margin-top: 24px;"></div>
+<!-- 次の章に進むボタンの場合 -->    
+<div style="display: flex; justify-content: flex-end; align-items: center; padding: 24px 0; margin-top: 24px; max-width: 1775px; margin-left: auto; margin-right: auto;">
+  <a href="Ff7Xe" style="position: relative; display: inline-block; background: linear-gradient(135deg, #E85D4A, #F5A64A); color: #fff; font-weight: 700; padding: 12px clamp(24px, 7vw, 48px); border-radius: 8px; text-decoration: none;">
+    次の章に進む
+    <img src="/theme/webcoach/img/icons/arrow-right.svg" style="position: absolute; top: 50%; transform: translateY(-50%); right: 12px; filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(125deg) brightness(103%) contrast(103%);">
+  </a>
+</div>
+<div class="chapter-intro-video">
+  <div class="chapter-intro-video__label">チャプター概要動画</div>
+  <video
+    src="https://www.dropbox.com/scl/fi/2qpe763bnissrkqlyt3r9/.mp4?rlkey=s0ygavsozry4ixh9ia8t4k8dp&st=n3i7xytd&raw=1"
+    controls
+    preload="metadata"
+    class="chapter-intro-video__player"
+  ></video>
+</div>
+
+<div class="goal-box">
+  <div class="goal-box__head">
+    <div class="goal-box__pill">GOAL</div>
+    <div class="goal-box__sub">このレッスンのゴール</div>
+  </div>
+  <ul>
+    <li><div class="goal-box__check">✓</div><div class="goal-box__text">発注者がポートフォリオで本当に評価しているのは作品数ではなく<strong>1案件あたりの説明の濃さ</strong>であることを理解する</div></li>
+    <li><div class="goal-box__check">✓</div><div class="goal-box__text">良いポートフォリオで頻出する<strong>6つの推奨セクション</strong>と、各セクションが担う役割を説明できる</div></li>
+    <li><div class="goal-box__check">✓</div><div class="goal-box__text">自分のポートフォリオの構成案を書き出して保存できる</div></li>
+    <li><div class="goal-box__check">✓</div><div class="goal-box__text">ABOUT文に<strong>生成AIのベネフィットと権利の安全性</strong>を伝える1段落を入れる意義を理解する</div></li>
+    <li><div class="goal-box__check">✓</div><div class="goal-box__text">ChatGPTでABOUT文（自己紹介）の下書きを生成し、自分の言葉でカスタマイズして保存できる</div></li>
+  </ul>
+</div>
+
+<nav class="toc">
+  <div class="toc-head">
+    <div class="toc-icon">≡</div>
+    <div class="toc-title">目次</div>
+  </div>
+  <ul>
+    <li><a href="#s1"><span class="toc-num">01</span><span class="toc-text">Chapter 4の全体像とこのレッスンで学ぶこと</span><span class="toc-chev">›</span></a></li>
+    <li><a href="#s2"><span class="toc-num">02</span><span class="toc-text">発注者がポートフォリオで見ているのは「考えるデザイナーか」</span><span class="toc-chev">›</span></a></li>
+    <li><a href="#s3"><span class="toc-num">03</span><span class="toc-text">良いポートフォリオの推奨セクション構成</span><span class="toc-chev">›</span></a></li>
+    <li><a href="#s4"><span class="toc-num">04</span><span class="toc-text">自分のポートフォリオ構成を書き出す</span><span class="toc-chev">›</span></a></li>
+    <li><a href="#s5"><span class="toc-num">05</span><span class="toc-text">ポートフォリオに生成AI使用を一言添えておく</span><span class="toc-chev">›</span></a></li>
+    <li><a href="#s6"><span class="toc-num">06</span><span class="toc-text">ChatGPTでABOUT文の下書きを作る</span><span class="toc-chev">›</span></a></li>
+  </ul>
+</nav>
+
+<!-- ===== セクション1 ===== -->
+<section id="s1">
+<h2>Chapter 4の全体像とこのレッスンで学ぶこと</h2>
+
+<p>Chapter 4では、応募時にURLを貼れるポートフォリオサイトを公開するところまでを進めます。一連のフローは、発注者の視点を理解してサイト構成を設計し、foriioで公開し、AI活用の透明性を明記して差別化する、という3レッスン構成です。</p>
+
+<p>ポートフォリオは公開した時点がスタートです。クラウドソーシングの応募欄にURLを貼れる状態を作り、案件を受けながら作品を追加し続けるサイクルが本番になります。<strong>公開状態でないとほぼ全ての発注者は判断材料を持てません</strong>。</p>
+</section>
+
+<!-- ===== セクション2 ===== -->
+<section id="s2">
+<h2>発注者がポートフォリオで見ているのは「考えるデザイナーか」</h2>
+
+<p>クラウドワークスやSNS経由で発注する側は、複数のデザイナーを短時間で比較しています。そこで見られているのは作品の本数や派手さではなく、1案件ごとの説明の濃さと、依頼を任せて大丈夫だと感じられる人柄です。</p>
+
+<div style="margin: 24px 0; text-align: center;" class="reveal">
+  <a href="https://www.dropbox.com/scl/fi/7acliyatwz9oecof5b7sw/01.png?rlkey=hrbsdmoq55t0g1skwrt53gixi&raw=1" class="lightbox" style="display: inline-block;" target="_blank" rel="noopener">
+    <img src="https://www.dropbox.com/scl/fi/7acliyatwz9oecof5b7sw/01.png?rlkey=hrbsdmoq55t0g1skwrt53gixi&raw=1" alt="発注者の判断視点" class="lightbox-img" style="display: block; margin: 0 auto; max-width: 100%;">
+  </a>
+</div>
+
+<p>発注者が短時間の比較のなかで判断するため、ぱっと見の見た目以上に、各作品の説明文があるかどうかが効きます。説明文があると、依頼内容を整理して制作できる人だと判断されやすくなります。</p>
+
+<div class="point-box reveal">
+  <div class="point-box__head">
+    <div class="point-box__tab">✓ Point !</div>
+    <div class="point-box__sub">作品の本数より、1案件あたりの情報密度</div>
+  </div>
+  <p>受講生によくある誤解は、作品を30件並べれば評価されるだろうという発想です。実際は逆で、5件から10件に厳選し、それぞれに依頼内容・担当範囲・工夫したポイントを200字から400字で添えた方が、はるかに発注者の評価は高まります。<strong>本数の競争ではなく、説明の濃さで差をつける</strong>と捉えてください。</p>
+</div>
+</section>
+
+<!-- ===== セクション3 ===== -->
+<section id="s3">
+<h2>良いポートフォリオの推奨セクション構成</h2>
+
+<p>業界横断で繰り返し言及される推奨セクションは6つです。次のレッスンでforiioに登録するときも、この6セクションを軸に構成すると、最初から発注者に伝わりやすい状態でスタートできます。</p>
+
+<div style="margin: 24px 0; text-align: center;" class="reveal">
+  <a href="https://www.dropbox.com/scl/fi/n04voybn6979k6jxi4h8l/02.png?rlkey=vzre38ir6f2auz6lbo9ck5iij&raw=1" class="lightbox" style="display: inline-block;" target="_blank" rel="noopener">
+    <img src="https://www.dropbox.com/scl/fi/n04voybn6979k6jxi4h8l/02.png?rlkey=vzre38ir6f2auz6lbo9ck5iij&raw=1" alt="推奨6セクション構成" class="lightbox-img" style="display: block; margin: 0 auto; max-width: 100%;">
+  </a>
+</div>
+
+<p>各セクションの役割と、最初の公開時にどこまで揃えるべきかを整理します。優先度が高いものから埋めれば、未経験スタートでも当日中に公開状態まで持ち込めます。</p>
+
+<table class="spec-table reveal">
+  <thead>
+    <tr>
+      <th style="width:22%;">セクション</th>
+      <th style="width:48%;">役割</th>
+      <th style="width:14%;">優先度</th>
+      <th style="width:16%;">本コースでの中身</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><span class="tbl-name">TOP / ファーストビュー</span></td>
+      <td>第一印象とポジショニングを伝える。AI×デザイナーであることを明示し、作品サムネへ即誘導する</td>
+      <td><span class="tbl-priority">★★★</span></td>
+      <td>キャッチコピー＋自己紹介の1文＋作品サムネ</td>
+    </tr>
+    <tr>
+      <td><span class="tbl-name">ABOUT / プロフィール</span></td>
+      <td>顔またはアイコン・氏名・経歴・強み・対応エリアを示し、発注者に人柄を伝える</td>
+      <td><span class="tbl-priority">★★★</span></td>
+      <td>このレッスンの最後（s6）でChatGPT生成＋自分でカスタマイズした文面を入れる</td>
+    </tr>
+    <tr>
+      <td><span class="tbl-name">WORKS / 作品</span></td>
+      <td>厳選した制作物を並べる。本数ではなく、各作品の見せ方の質で評価される</td>
+      <td><span class="tbl-priority">★★★</span></td>
+      <td>Chapter 3で制作した3クライアントぶんの作品を5から10点に厳選</td>
+    </tr>
+    <tr>
+      <td><span class="tbl-name">CASE STUDY / 作品詳細</span></td>
+      <td>1作品あたり依頼背景・担当範囲・工夫・使用ツールを200から400字で説明し、考えるデザイナーであることを示す</td>
+      <td><span class="tbl-priority">★★★</span></td>
+      <td>Chapter 3 lesson-05で言語化した「こだわりポイント」を流用</td>
+    </tr>
+    <tr>
+      <td><span class="tbl-name">SKILL / 使用ツール</span></td>
+      <td>得意領域・使用ツール・対応可能な案件種類を一覧化する</td>
+      <td><span class="tbl-priority">★★</span></td>
+      <td>Canva Proのような制作ソフトと、対応媒体（バナー・チラシ・SNS投稿）。AI使用は別欄（強み・役割分担）で一言添える</td>
+    </tr>
+    <tr>
+      <td><span class="tbl-name">CONTACT / 連絡先</span></td>
+      <td>問い合わせフォーム・メール・SNSを明示する。連絡しづらいと案件機会を失う</td>
+      <td><span class="tbl-priority">★★★</span></td>
+      <td>クラウドワークスのメッセージ機能＋必要に応じてSNSのDM</td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="point-box reveal">
+  <div class="point-box__head">
+    <div class="point-box__tab">✓ Point !</div>
+    <div class="point-box__sub">CASE STUDYに書く4要素</div>
+  </div>
+  <p>各作品ごとの説明文には、次の4要素を盛り込みます。これがそろっていると、たとえ作品が3件でも考えるデザイナーとして評価されます。</p>
+  <ol>
+    <li><strong>依頼背景</strong>：どんなクライアントが、何のために発注したか（例：架空カフェの新規集客を想定した模擬案件）</li>
+    <li><strong>担当範囲</strong>：AIに任せた部分と自分の判断で行った部分の両方を1行で書く（例：AI：素材ビジュアル生成 / 人間：プロンプト設計・構図・テキスト配置・トンマナ調整・最終納品判断）</li>
+    <li><strong>工夫したポイント</strong>：判断の根拠（例：朝の自然光を意識した構図で清潔感を出した）</li>
+    <li><strong>使用ツール</strong>：Canva Proなど制作ソフトを書く</li>
+  </ol>
+</div>
+
+<div class="notice-box reveal">
+  <div class="notice-box__head">
+    <div class="notice-box__tab">⚠ Notice</div>
+    <div class="notice-box__sub">やりがちなNGパターン</div>
+  </div>
+  <p>作品の羅列のみで説明文がない・作品数が多すぎる・連絡先が不明・更新が止まっている・著作権を意識せず実在企業のロゴを再現掲載する、といったNGパターンはどの記事でも繰り返し挙げられます。最初の公開段階では、本数を増やすより<strong>1作品ずつ説明文を埋め切る</strong>方を優先してください。</p>
+</div>
+</section>
+
+<!-- ===== セクション4 ===== -->
+<section id="s4">
+<h2>自分のポートフォリオ構成を書き出す</h2>
+
+<p>推奨6セクションを理解したら、自分のポートフォリオの構成案を書き出して保存します。foriioに登録する前に下書きを作っておくと、次のレッスンの作業がスムーズに進みます。</p>
+
+<div style="margin: 24px 0; text-align: center;" class="reveal">
+  <a href="https://www.dropbox.com/scl/fi/4d2go5mktlxeagmkvt1q4/03.png?rlkey=8g4yvg9mq6q44knosd2p3ycfm&raw=1" class="lightbox" style="display: inline-block;" target="_blank" rel="noopener">
+    <img src="https://www.dropbox.com/scl/fi/4d2go5mktlxeagmkvt1q4/03.png?rlkey=8g4yvg9mq6q44knosd2p3ycfm&raw=1" alt="ポートフォリオ構成の下書き" class="lightbox-img" style="display: block; margin: 0 auto; max-width: 100%;">
+  </a>
+</div>
+
+<p>下のテンプレートをコピーして、テキストエディタやNotionに貼り付けてください。6セクションそれぞれの欄に自分の情報を埋めて保存しておけば、次のレッスンでforiioに転記するだけで公開状態まで進めます。</p>
+
+<div class="slack-template reveal">
+  <div class="slack-template__head">
+    <div class="slack-template__label">ポートフォリオ構成案 — 下書きテンプレート</div>
+    <button class="slack-template__copy" type="button" data-copy-target="tpl-portfolio-draft">
+      <span class="slack-template__copy-text">コピー</span>
+    </button>
+  </div>
+  <p class="slack-template__desc">下記をそのままコピーして、自分用のメモに貼り付け、各項目を埋めてください。空欄のままでもOK、思いつく範囲で書き出すことが目的です。</p>
+  <div class="slack-template__body" id="tpl-portfolio-draft">━━━━━━━━━━━━━━━━━━━━
+ポートフォリオ構成案
+━━━━━━━━━━━━━━━━━━━━
+
+【01 TOP / ファーストビュー】
+キャッチコピー：（例：サービス業の集客を支えるバナー・チラシデザイナー）
+1文紹介：
+
+【02 ABOUT / プロフィール】
+名前またはニックネーム：
+拠点：
+強み（3つまで）：
+　・
+　・
+　・
+対応可能な案件：（例：SNSバナー / チラシ / SNS投稿）
+
+【03 WORKS / 掲載作品（5〜10点に厳選）】
+作品1：
+作品2：
+作品3：
+作品4：
+作品5：
+
+【04 CASE STUDY / 作品ごとの説明文】
+作品1の依頼背景：
+作品1の担当範囲（AI／人間の役割分担）：
+作品1の工夫したポイント：
+作品1の使用ツール：
+
+（作品2以降も同じ4項目で記入）
+
+【05 SKILL / 使用ツール・対応領域】
+使用ツール：Canva Pro
+対応媒体：
+得意ジャンル：
+
+【06 CONTACT / 連絡先】
+連絡手段：クラウドワークスのメッセージ機能
+SNS（任意）：
+
+━━━━━━━━━━━━━━━━━━━━</div>
+</div>
+
+<p>下書きは完璧でなくてかまいません。空欄が残っていてもOKです。次のレッスンでforiioに転記する段階で、書き直し・追加は何度でもできます。<strong>今日のこの時点では、構成があるという状態だけを作る</strong>のがゴールです。</p>
+</section>
+
+<!-- ===== セクション5 ===== -->
+<section id="s5">
+<h2>ポートフォリオに生成AI使用を一言添えておく</h2>
+
+<p>構成を書き出したら、ABOUT欄に入れる生成AI使用に関する一言を準備します。生成AIを使って制作していることを書いておくと、後で発注者が知ったときのトラブルを避けられるうえに、短期間で複数のバリエーション提案ができるというベネフィットを伝える材料にもなります。</p>
+
+<div style="margin: 24px 0; text-align: center;" class="reveal">
+  <a href="https://www.dropbox.com/scl/fi/86mdu81u9w3jp0sdruowe/04.png?rlkey=dg12g9vd7eym0d2yuji705yu6&raw=1" class="lightbox" style="display: inline-block;" target="_blank" rel="noopener">
+    <img src="https://www.dropbox.com/scl/fi/86mdu81u9w3jp0sdruowe/04.png?rlkey=dg12g9vd7eym0d2yuji705yu6&raw=1" alt="AI活用の一言を添える位置" class="lightbox-img" style="display: block; margin: 0 auto; max-width: 100%;">
+  </a>
+</div>
+
+<p>書く場所は決まっておらず、ABOUT欄に1段落入れるだけでも、各作品のCASE STUDYに役割分担を書き添えるだけでもかまいません。発注者が後でAI使用を知ったときに「先に書いてあったな」と思える状態にしておくことが目的です。</p>
+
+<div class="point-box reveal">
+  <div class="point-box__head">
+    <div class="point-box__tab">✓ Point !</div>
+    <div class="point-box__sub">一言添える2つの書き方</div>
+  </div>
+  <ol>
+    <li><strong>ABOUT文に1段落入れる</strong>：生成AIを使うことで<strong>短期間で複数のバリエーション提案ができる</strong>というベネフィットと、<strong>最終的なレイアウト・文字組みは手作業で行い権利関係の安全性を担保している</strong>という2点が伝わる1段落を自己紹介の末尾に入れる</li>
+    <li><strong>CASE STUDYの担当範囲で役割分担を書く</strong>：各作品の担当範囲欄に「AI：素材ビジュアル生成 / 人間：プロンプト設計・構図・テキスト配置・トンマナ調整・最終納品判断」のように、AIに任せた部分と自分の判断で行った部分の両方を書く</li>
+  </ol>
+</div>
+
+<p>以下の例文を参考に、<strong>ベネフィットと権利の安全性が伝わる形</strong>で記載しましょう。一字一句同じである必要はなく、自分の言葉で書き換えてかまいません。</p>
+
+<p>例：デザインの効率化とアイデア幅を広げるため、商用利用可能な生成AIを使用して制作を実施しております。最終的なレイアウトや文字組みは手作業で行い、権利関係の安全性を担保しております。</p>
+
+<p>次のセクションで、この一言を含むABOUT文の下書きをChatGPTで作ります。</p>
+</section>
+
+<!-- ===== セクション6 ===== -->
+<section id="s6">
+<h2>ChatGPTでABOUT文の下書きを作る</h2>
+
+<p>ポートフォリオのなかで、自分の言葉で書くのが一番ハードルが高いのはABOUT文（自己紹介）です。一発で完成形を書こうとせず、ChatGPTで3案の下書きを出して1案を選び、自分の言葉でカスタマイズする流れで進めます。完成したABOUT文は、次のレッスンでforiioのプロフィール欄にそのまま貼り付けて使います。</p>
+
+<div style="margin: 24px 0; text-align: center;" class="reveal">
+  <a href="https://www.dropbox.com/scl/fi/d79zzsxshpytqya8ulihq/05.png?rlkey=zp8v5x2o3f4z1aok02o1uq8jn&raw=1" class="lightbox" style="display: inline-block;" target="_blank" rel="noopener">
+    <img src="https://www.dropbox.com/scl/fi/d79zzsxshpytqya8ulihq/05.png?rlkey=zp8v5x2o3f4z1aok02o1uq8jn&raw=1" alt="ABOUTセクションの構成フロー" class="lightbox-img" style="display: block; margin: 0 auto; max-width: 100%;">
+  </a>
+</div>
+
+<h3>ChatGPTに渡すプロンプト雛形</h3>
+
+<p>下記をコピーしてChatGPTに貼り付け、◯◯部分を自分の情報に置き換えてから送信してください。プロンプトの中に、レッスンs5で扱った生成AI使用に関するベネフィットの一言を必ず含めるよう指示しています。</p>
+
+<div class="slack-template reveal">
+  <div class="slack-template__head">
+    <div class="slack-template__label">ABOUT文 生成プロンプト（ChatGPT用）</div>
+    <button class="slack-template__copy" type="button" data-copy-target="tpl-about-prompt">
+      <span class="slack-template__copy-text">コピー</span>
+    </button>
+  </div>
+  <p class="slack-template__desc">送信後に3案が出てきます。1案を選び、抽象語（プロ意識・こだわり等）を自分が制作した業種・媒体・工夫の言葉に書き換えてカスタマイズします。</p>
+  <div class="slack-template__body" id="tpl-about-prompt">あなたはAI活用に詳しい採用ライターです。
+foriioに掲載するデザイナーのABOUT文（自己紹介）を3案、それぞれ250字前後で書いてください。
+
+【依頼者情報】
+・名前またはニックネーム：◯◯
+・拠点：◯◯（例：オンライン中心 / 東京）
+・対応可能な案件：バナー / チラシ / SNS投稿
+・使用ツール：Canva Pro
+・強み（最大3つ）：
+　1. ◯◯（例：複数案を素早く提示できる）
+　2. ◯◯（例：サービス業のビジュアル制作が得意）
+　3. ◯◯（例：未経験から学習を経て市場デビュー中）
+
+【末尾に1〜2文挿入してほしい内容】
+以下の要素が伝わる文を1〜2文で末尾に挿入してください：
+・生成AIを使うことで短期間で複数のバリエーション提案ができるベネフィット
+・最終的なレイアウト・文字組みは手作業で行い、権利関係の安全性を担保していること
+
+参考例：デザインの効率化とアイデア幅を広げるため、商用利用可能な生成AIを使用して制作を実施しております。最終的なレイアウトや文字組みは手作業で行い、権利関係の安全性を担保しております。
+
+【トーン】
+・誠実で落ち着いた語り口（過剰な装飾なし）
+・カギ括弧での強調は使わない
+・「〜していきます」「〜と思います」のような曖昧表現は避ける
+・体言止めの多用は避け、です・ます調で統一
+
+【出力形式】
+案1：（250字前後・AI使用1段落込み）
+案2：（250字前後・AI使用1段落込み）
+案3：（250字前後・AI使用1段落込み）
+各案の下に、その案の方向性を1行で添えてください。</div>
+</div>
+
+<p>生成された3案のなかから、自分の声に一番近いものを1案選びます。気に入った案が無ければ、追加で「もう少し落ち着いたトーンで3案出して」と続けて指示してください。<strong>AI出力をそのまま貼らず</strong>、抽象語（プロ意識・こだわり等）を自分が制作した業種・媒体・工夫の言葉に書き換えてカスタマイズします。末尾のAI使用に関する1段落も、自分の言葉で書き換えてかまいません（ベネフィットと権利の安全性の2点が伝わっていればOK）。完成したABOUT文はテキストエディタやNotionに保存しておき、次のレッスンでforiioのプロフィール欄に貼り付けます。</p>
+</section>
+
+<!-- まとめ -->
+<div class="summary-box reveal">
+  <div class="summary-box__head"><div class="summary-box__badge">SUMMARY</div></div>
+  <ol>
+    <li>発注者が見ているのは作品本数ではなく、<strong>1案件あたりの情報密度と人柄</strong></li>
+    <li>推奨セクションはTOP・ABOUT・WORKS・CASE STUDY・SKILL・CONTACTの6つ</li>
+    <li>作品の説明文は<strong>依頼背景・担当範囲（AI/人間の役割分担）・工夫・使用ツール</strong>の4要素で組み立てる</li>
+    <li>下書きテンプレートで<strong>6セクションの構成案を書き出して保存</strong>する</li>
+    <li>ABOUT文に<strong>生成AIのベネフィット（短期間で複数案）と権利の安全性</strong>を伝える1段落を入れる（または各作品の担当範囲に役割分担を書く）</li>
+    <li>ABOUT文は<strong>ChatGPTで3案生成 → 自分の言葉でカスタマイズ</strong>し、テキストエディタに保存しておく</li>
+  </ol>
+</div>
+
+<!-- 理解度チェック -->
+<div class="check-box reveal">
+  <div class="check-box__head">
+    <div class="check-box__pill">CHECK</div>
+    <div class="check-box__sub">理解度チェック</div>
+  </div>
+  <details>
+    <summary>発注者がポートフォリオで評価しているポイントを説明できる</summary>
+    <div class="check-box__detail">作品の本数や派手さではなく、1案件あたりの情報密度（依頼背景・担当範囲・工夫の説明文）と、レスポンスの速さなど人柄が判断されています。</div>
+  </details>
+  <details>
+    <summary>推奨6セクションを言える</summary>
+    <div class="check-box__detail">TOP・ABOUT・WORKS・CASE STUDY・SKILL・CONTACTの6つです。優先度はSKILL以外のすべてが★★★で、SKILLは★★。</div>
+  </details>
+  <details>
+    <summary>CASE STUDYに書く4要素を挙げられる</summary>
+    <div class="check-box__detail">依頼背景・担当範囲（AI/人間の役割分担を1行）・工夫したポイント・使用ツールの4つです。1作品あたり200から400字を目安にします。</div>
+  </details>
+  <details>
+    <summary>自分のポートフォリオ構成案を書き出して保存できた</summary>
+    <div class="check-box__detail">6セクションの構成案を下書きテンプレートに沿って書き出し、テキストエディタやNotion等に保存できていればOKです。空欄が残っていても構いません。</div>
+  </details>
+  <details>
+    <summary>ポートフォリオに生成AI使用を一言添える2つの書き方を説明できる</summary>
+    <div class="check-box__detail">ABOUT文に<strong>生成AIのベネフィット（短期間で複数のバリエーション提案）と権利の安全性</strong>を伝える1段落を入れる、各作品のCASE STUDYの担当範囲にAIと人間の役割分担を1行書く、の2つです。SKILL欄の使用ツールはCanva Proのような制作ソフトを書く場所で、AI使用の明示は別の場所で一言添えます。どちらかに1つ入っていれば、後のトラブル予防と強みアピールが両立します。</div>
+  </details>
+  <details>
+    <summary>ChatGPTでABOUT文の3案を生成し、自分の言葉でカスタマイズして保存できた</summary>
+    <div class="check-box__detail">プロンプト雛形に自分の情報を埋めて送信し、3案出させたうえで1案を選び、抽象語を自分が制作した業種・媒体・工夫の言葉に書き換えてカスタマイズした文を保存できていればOKです。末尾のAI使用に関する1段落も、ベネフィットと権利の安全性が伝わっていれば自分の言葉で書き換えてかまいません。</div>
+  </details>
+</div>
+<!-- 次の章に進むボタンの場合 -->    
+<div style="display: flex; justify-content: flex-end; align-items: center; padding: 24px 0; margin-top: 24px; max-width: 1775px; margin-left: auto; margin-right: auto;">
+  <a href="Ff7Xe" style="position: relative; display: inline-block; background: linear-gradient(135deg, #E85D4A, #F5A64A); color: #fff; font-weight: 700; padding: 12px clamp(24px, 7vw, 48px); border-radius: 8px; text-decoration: none;">
+    次の章に進む
+    <img src="/theme/webcoach/img/icons/arrow-right.svg" style="position: absolute; top: 50%; transform: translateY(-50%); right: 12px; filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(125deg) brightness(103%) contrast(103%);">
+  </a>
+</div>
+<div class="back-to-roadmap" style="display: flex; justify-content: center; align-items: center; padding: 24px 0; margin-top: 24px;"></div>
+</div><!-- /.lesson-wrapper -->
+
+<script>
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) entry.target.classList.add('visible');
+  });
+}, { threshold: 0.1 });
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+document.querySelectorAll('.slack-template__copy').forEach(btn => {
+  btn.addEventListener('click', async function() {
+    const target = document.getElementById(this.dataset.copyTarget);
+    if (!target) return;
+    const text = target.textContent;
+    try {
+      await navigator.clipboard.writeText(text);
+    } catch (e) {
+      const ta = document.createElement('textarea');
+      ta.value = text;
+      ta.style.position = 'fixed';
+      ta.style.opacity = '0';
+      document.body.appendChild(ta);
+      ta.select();
+      document.execCommand('copy');
+      document.body.removeChild(ta);
+    }
+    const textEl = this.querySelector('.slack-template__copy-text');
+    const originalText = textEl.textContent;
+    this.classList.add('copied');
+    textEl.textContent = 'コピー完了';
+    setTimeout(() => {
+      this.classList.remove('copied');
+      textEl.textContent = originalText;
+    }, 1800);
+  });
+});
+</script>
+</div></div>
+        
+      
+    </div>
+  
+  </div>
+</div>
+<!-- <script src="https://cdn.clipkit.co/clipkit/javascripts/item-shopify-1.0.js?v=v15.9.0-20260915" async></script> -->
+
+            </div>
+        </main>
+
+    </div>
+
+    <script src="https://cdn.clipkit.co/clipkit/javascripts/application-1.0.js?v=v15.9.0-20260915" async></script>
+
+    <!-- bodyタグ内の下部に挿入されます -->
+
+
+    <!-- BootstrapのCDNでのjs読み込み -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+        crossorigin="anonymous"></script>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="ck-icon-arrow-down" viewBox="0 0 1792 1792"><path d="M1675 832q0 53-37 90l-651 652q-39 37-91 37-53 0-90-37l-651-652q-38-36-38-90 0-53 38-91l74-75q39-37 91-37 53 0 90 37l294 294v-704q0-52 38-90t90-38h128q52 0 90 38t38 90v704l294-294q37-37 90-37 52 0 91 37l75 75q37 39 37 91z" /></symbol><symbol id="ck-icon-arrow-up" viewBox="0 0 1792 1792"><path d="M1675 971q0 51-37 90l-75 75q-38 38-91 38-54 0-90-38l-294-293v704q0 52-37.5 84.5t-90.5 32.5h-128q-53 0-90.5-32.5t-37.5-84.5v-704l-294 293q-36 38-90 38t-90-38l-75-75q-38-38-38-90 0-53 38-91l651-651q35-37 90-37 54 0 91 37l651 651q37 39 37 91z" /></symbol><symbol id="ck-icon-calendar" viewBox="0 0 1792 1792"><path d="M192 1664h288v-288h-288v288zm352 0h320v-288h-320v288zm-352-352h288v-320h-288v320zm352 0h320v-320h-320v320zm-352-384h288v-288h-288v288zm736 736h320v-288h-320v288zm-384-736h320v-288h-320v288zm768 736h288v-288h-288v288zm-384-352h320v-320h-320v320zm-352-864v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm736 864h288v-320h-288v320zm-384-384h320v-288h-320v288zm384 0h288v-288h-288v288zm32-480v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm384-64v1280q0 52-38 90t-90 38h-1408q-52 0-90-38t-38-90v-1280q0-52 38-90t90-38h128v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h384v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h128q52 0 90 38t38 90z" /></symbol><symbol id="ck-icon-chevron-left" viewBox="0 0 1792 1792"><path d="M1427 301l-531 531 531 531q19 19 19 45t-19 45l-166 166q-19 19-45 19t-45-19l-742-742q-19-19-19-45t19-45l742-742q19-19 45-19t45 19l166 166q19 19 19 45t-19 45z" /></symbol><symbol id="ck-icon-chevron-right" viewBox="0 0 1792 1792"><path d="M1363 877l-742 742q-19 19-45 19t-45-19l-166-166q-19-19-19-45t19-45l531-531-531-531q-19-19-19-45t19-45l166-166q19-19 45-19t45 19l742 742q19 19 19 45t-19 45z" /></symbol><symbol id="ck-icon-clock-o" viewBox="0 0 1792 1792"><path d="M1024 544v448q0 14-9 23t-23 9h-320q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h224v-352q0-14 9-23t23-9h64q14 0 23 9t9 23zm416 352q0-148-73-273t-198-198-273-73-273 73-198 198-73 273 73 273 198 198 273 73 273-73 198-198 73-273zm224 0q0 209-103 385.5t-279.5 279.5-385.5 103-385.5-103-279.5-279.5-103-385.5 103-385.5 279.5-279.5 385.5-103 385.5 103 279.5 279.5 103 385.5z" /></symbol><symbol id="ck-icon-trash" viewBox="0 0 1792 1792"><path d="M704 1376v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm-544-992h448l-48-117q-7-9-17-11h-317q-10 2-17 11zm928 32v64q0 14-9 23t-23 9h-96v948q0 83-47 143.5t-113 60.5h-832q-66 0-113-58.5t-47-141.5v-952h-96q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h309l70-167q15-37 54-63t79-26h320q40 0 79 26t54 63l70 167h309q14 0 23 9t9 23z" /></symbol><symbol id="ck-icon-undo" viewBox="0 0 1792 1792"><path d="M1664 896q0 156-61 298t-164 245-245 164-298 61q-172 0-327-72.5t-264-204.5q-7-10-6.5-22.5t8.5-20.5l137-138q10-9 25-9 16 2 23 12 73 95 179 147t225 52q104 0 198.5-40.5t163.5-109.5 109.5-163.5 40.5-198.5-40.5-198.5-109.5-163.5-163.5-109.5-198.5-40.5q-98 0-188 35.5t-160 101.5l137 138q31 30 14 69-17 40-59 40h-448q-26 0-45-19t-19-45v-448q0-42 40-59 39-17 69 14l130 129q107-101 244.5-156.5t284.5-55.5q156 0 298 61t245 164 164 245 61 298z" /></symbol></svg><script async="async" defer="defer" nonce="b3pbMJHFaHhswTPtjzKzDg==" src="//www.instagram.com/embed.js"></script>
+
+<!--Clipkit(R) v15.9.0-20260915 Copyright (C) 2026 VECTOR Inc.-->
+
+</body>
+
+</html>

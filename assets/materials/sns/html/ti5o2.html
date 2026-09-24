@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<!-- clipkit-source-url: https://learn.webcoach.jp/SNS/camera-chap5/tI5o2 -->
+<!-- clipkit-fetched-at: 2026-09-17T11:14:00.275Z -->
+<html lang="ja"><head>
+    <!-- headタグ内の上部に挿入されます -->
+
+    <meta charset="UTF-8">
+    <title>5-2 カメラワークと音声 — 固定・パン・ティルトと外部マイク設定 - WEBCOACH</title>
+
+    <!-- resetcssのCDNでのCSS読み込み -->
+    <link rel="stylesheet" href="../../_assets/17f8e278dc.css">
+
+    <!-- fontawesomeのCDNでのCSS読み込み -->
+    <link rel="stylesheet" href="../../_assets/799aeb25cc.css">
+
+    <!-- BootstrapのCDNでのCSS読み込み -->
+    <link href="../../_assets/7633b7c0c9.css" rel="stylesheet">
+
+    <!-- highlight.jsの読み込み -->
+    <link rel="stylesheet" href="../../_assets/e31ce2dd8c.css">
+
+    <!-- カスタムCSS -->
+    <link rel="stylesheet" href="../../_assets/c533dd7750.css">
+
+    <!-- clipkitデフォルトのCSS -->
+    <!--<link rel="stylesheet" media="screen" href="https://cdn.clipkit.co/clipkit/stylesheets/application-1.0.css?v=v15.9.0-20260915">-->
+
+    <!-- jQuery -->
+    
+
+    <!-- カスタムJS -->
+    
+    
+
+    <!-- clipkitデフォルトのJS -->
+    
+
+    <!-- フォント -->
+    <link rel="preconnect" href="https://fonts.googleapis.com/">
+    <link rel="preconnect" href="https://fonts.gstatic.com/">
+    <link href="../../_assets/8b5713f1fc.css" rel="stylesheet">
+
+    <link href="../../_assets/b83ae8ba65.webp" rel="shortcut icon" type="image/vnd.microsoft.icon">
+    <link rel="apple-touch-icon" href="../../_assets/ea0aba163d.webp">
+    <link rel="alternate" type="application/rss+xml" href="https://learn.webcoach.jp/media.rss" title="WEBCOACH">
+    
+  <link rel="canonical" href="https://learn.webcoach.jp/SNS/camera-chap5/tI5o2">
+  
+  <meta name="description" content="">
+  <meta name="keywords" content="">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:domain" content="learn.webcoach.jp">
+  <meta name="twitter:title" content="5-2 カメラワークと音声 — 固定・パン・ティルトと外部マイク設定 - WEBCOACH">
+  <meta name="twitter:image" content="https://cdn.clipkit.co/clipkit/images/medium/missing.png">
+  <meta name="twitter:description" content="">
+  <meta property="og:site_name" content="WEBCOACH">
+  <meta property="og:title" content="5-2 カメラワークと音声 — 固定・パン・ティルトと外部マイク設定">
+  <meta property="og:description" content="">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://learn.webcoach.jp/SNS/camera-chap5/tI5o2">
+  <meta property="og:image" content="https://cdn.clipkit.co/clipkit/images/large/missing.png">
+  
+
+    <!-- headタグ内の下部に挿入されます -->
+
+
+<meta name="csrf-param" content="authenticity_token">
+<meta name="csrf-token" content="4tCTQWL7JJld6zj_e0lcl8JAjJ2P1kYrVrHmo4q2SOn-nBIUQDhpcSnq_pXZy2WaGpzUnAbnXvN-J_QYAZv33w"><meta content="" name="routing-root-path"><meta content="media" name="site-name"><meta content="ja" name="i18n-default-locale"><meta content="ja" name="i18n-locale"><style data-clipkit-snapshot="force-visible">[data-aos],.reveal,.wow,.fade-in,.animate__animated,.js-reveal{opacity:1!important;transform:none!important;visibility:visible!important;animation:none!important;transition:none!important}</style></head>
+
+<body class="device-desktop" style="visibility: visible;">
+    <!-- bodyタグ内の上部に挿入されます -->
+
+
+    <!-- サイドバーとコンテンツのコンテナ -->
+    <div class="d-flex flex-row w-100 mb-5" style="min-height: calc(100vh - 400px);">
+
+        <!-- コンテンツ -->
+        <!--<main class="ms-auto" style="width: calc(100vw - 250px);">-->
+        <main class="ms-auto" style="width: calc(100vw);">
+            <div id="sb-site">
+                
+
+
+<div>
+  
+    <div>
+      
+      
+        
+          <div class="article-item item_html " id="item49495" data-item-id="49495" data-item-type="ItemHtml"><div class="item-body"><style>
+  
+  .lesson-wrapper .lightbox { display: block; }
+.lesson-wrapper .lightbox-img { width: 100%; height: auto; }
+  
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Noto Sans JP',sans-serif;color:#3D3D3D;font-size:16px;line-height:1.9;background:#fff;-webkit-font-smoothing:antialiased}
+.lesson-wrapper{max-width:70%;margin:0 auto;padding:40px 0 80px}
+@media(max-width:600px){.lesson-wrapper{max-width:92%}}
+h2{font-size:24px;font-weight:700;color:#2D2D2D;margin:64px 0 24px;padding:0 0 14px;position:relative;letter-spacing:-0.02em;line-height:1.4}
+h2::after{content:'';position:absolute;bottom:0;left:0;width:48px;height:4px;border-radius:2px;background:linear-gradient(90deg,#E85D4A,#F5A64A)}
+p{font-size:16px;line-height:2.0;color:#555;margin:0 0 16px}
+ul,ol{padding-left:1.5em;margin:0 0 16px}
+li{font-size:16px;line-height:2.0;color:#555;margin-bottom:6px}
+strong{color:#2D2D2D;font-weight:700}
+.lesson-hero{background:linear-gradient(135deg,#F84744 0%,#FB9A3F 100%);border-radius:16px;padding:22px 28px;margin:0 0 40px;color:#fff}
+.lesson-hero__badge{display:inline-block;background:#fff;color:#E85D4A;padding:5px 14px;border-radius:8px;font-size:11px;font-weight:800;letter-spacing:0.18em;margin-bottom:14px;font-family:'Inter',sans-serif}
+.lesson-hero__title{font-size:22px;font-weight:800;line-height:1.4;margin-bottom:16px;letter-spacing:-0.01em}
+.lesson-hero__meta{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.lesson-hero__chip{display:inline-flex;align-items:center;background:#fff;color:#333;padding:5px 11px;border-radius:6px;font-size:11.5px;font-weight:700;font-family:'Inter',sans-serif;letter-spacing:0.04em}
+.lesson-hero__topic,.lesson-hero__time{font-size:13px;font-weight:600;opacity:0.95}
+.lesson-hero__time{display:inline-flex;align-items:center;gap:5px}
+.goal-box{background:#fff;border-radius:16px;box-shadow:0 4px 20px rgba(0,0,0,0.08);padding:20px 24px;margin:0 0 40px}
+.goal-box__head{display:flex;align-items:center;gap:12px;margin-bottom:14px}
+.goal-box__pill{display:inline-block;background:linear-gradient(135deg,#F84744 0%,#FB9A3F 100%);color:#fff;padding:6px 16px;border-radius:50px;font-size:11px;font-weight:700;letter-spacing:0.18em}
+.goal-box__sub{font-size:14px;font-weight:700;color:#333}
+.goal-box ul{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:6px}
+.goal-box li{display:flex;gap:12px;padding:10px 14px;background:linear-gradient(135deg,#FFF5F0 0%,#FFFAEC 100%);border-radius:10px;align-items:flex-start;transition:transform 0.2s}
+.goal-box li:hover{transform:translateX(2px)}
+.goal-box__check{flex-shrink:0;width:22px;height:22px;border-radius:50%;background:linear-gradient(135deg,#F84744 0%,#FB9A3F 100%);color:#fff;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;margin-top:1px}
+.goal-box__text{flex:1;font-size:14px;color:#333;line-height:1.7;font-weight:500}
+.toc{background:#fff;border-radius:14px;padding:22px 26px;box-shadow:0 2px 12px rgba(0,0,0,0.05);margin:0 0 48px}
+.toc-head{display:flex;align-items:center;gap:10px;margin-bottom:14px}
+.toc-icon{width:26px;height:26px;border-radius:7px;background:linear-gradient(135deg,#E85D4A,#F5A64A);display:flex;align-items:center;justify-content:center;color:#fff;font-size:11px;font-weight:700}
+.toc-title{font-size:15px;font-weight:700;color:#2D2D2D}
+.toc ul{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:3px}
+.toc li{list-style:none}
+.toc li a{display:flex;align-items:center;gap:12px;padding:8px 14px;background:#FAF9F8;border-radius:8px;text-decoration:none;transition:background 0.2s}
+.toc li a:hover{background:#F5EFEC}
+.toc-num{font-size:12px;font-weight:700;color:#2D2D2D;letter-spacing:0.05em;min-width:22px;font-family:'Inter',sans-serif}
+.toc-text{flex:1;font-size:14px;color:#2D2D2D;font-weight:500}
+.toc-chev{color:#B8B8B8;font-size:12px}
+.img-placeholder{background:#FAF5F3;border:2px dashed #E8D5CC;border-radius:12px 12px 0 0;padding:24px 20px;text-align:center;margin:28px 0 0}
+.img-placeholder-label{font-size:10px;font-weight:700;letter-spacing:0.15em;color:#C4A59A;margin-bottom:6px}
+.img-placeholder-name{font-size:12px;color:#B08880;font-family:monospace}
+.prompt-box{background:#2A2220;border-radius:0 0 12px 12px;padding:16px 20px;margin:0 0 28px}
+.prompt-box-label{font-size:10px;font-weight:700;letter-spacing:0.15em;color:#F5A64A;margin-bottom:8px}
+.prompt-text{color:#E8DDD8;font-size:12px;line-height:1.7;font-family:'Courier New',monospace;white-space:pre-wrap;word-break:break-word;margin:0}
+.quiz-box{background:linear-gradient(135deg,#FFF1F2 0%,#FCE7F3 100%);border-radius:20px;padding:20px 22px;margin:28px 0}
+.quiz-top{display:flex;align-items:center;gap:10px;margin-bottom:12px}
+.quiz-icon{width:30px;height:30px;border-radius:10px;background:#fff;color:#EC4899;display:flex;align-items:center;justify-content:center;font-size:16px;box-shadow:0 2px 8px rgba(236,72,153,0.15);font-weight:700}
+.quiz-title{font-size:15px;font-weight:700;color:#831843}
+.quiz-q{font-size:15px;font-weight:700;color:#831843;margin-bottom:12px;line-height:1.6;background:#fff;padding:12px 16px;border-radius:12px;box-shadow:0 2px 8px rgba(236,72,153,0.06)}
+.quiz-options{display:flex;flex-direction:column;gap:7px}
+.quiz-opt{display:flex;align-items:center;gap:12px;padding:10px 16px;background:#fff;border:2px solid transparent;border-radius:12px;cursor:pointer;transition:all 0.2s;font-family:inherit;text-align:left;width:100%}
+.quiz-opt:hover:not(:disabled){border-color:#F9A8D4;transform:translateY(-1px)}
+.quiz-opt:disabled{cursor:default}
+.quiz-letter{flex-shrink:0;width:28px;height:28px;border-radius:50%;background:#FCE7F3;color:#831843;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center;font-family:'Inter',sans-serif}
+.quiz-opt-text{font-size:14px;color:#1F1F1F;flex:1;font-weight:500;line-height:1.55}
+.quiz-opt.correct{background:#ECFCCB;border-color:#84CC16}
+.quiz-opt.correct .quiz-letter{background:#84CC16;color:#fff}
+.quiz-opt.correct .quiz-opt-text{color:#365314;font-weight:700}
+.quiz-opt.wrong{background:#FFE4E6;border-color:#FB7185}
+.quiz-opt.wrong .quiz-letter{background:#FB7185;color:#fff}
+.quiz-opt.wrong .quiz-opt-text{color:#881337;font-weight:700}
+.quiz-opt.dim{opacity:0.4}
+.quiz-feedback{display:none;gap:12px;padding:12px 16px;background:#fff;border-radius:12px;margin-top:10px;align-items:flex-start}
+.quiz-feedback.show{display:flex}
+.quiz-feedback-icon{flex-shrink:0;width:28px;height:28px;border-radius:50%;background:#84CC16;color:#fff;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700}
+.quiz-feedback.ng .quiz-feedback-icon{background:#FB7185}
+.quiz-feedback-body{flex:1}
+.quiz-feedback-title{font-size:13px;font-weight:800;color:#365314;margin-bottom:4px}
+.quiz-feedback.ng .quiz-feedback-title{color:#881337}
+.quiz-feedback-text{font-size:13px;color:#4D5552;line-height:1.75}
+.quiz-feedback.ng .quiz-feedback-text{color:#6B5258}
+.summary-box{background:#E8F5E0;border-radius:14px;padding:20px 24px;margin:48px 0 40px}
+.summary-box__head{margin-bottom:14px}
+.summary-box__badge{display:inline-block;background:linear-gradient(135deg,#4A8024 0%,#6BAA45 100%);color:#fff;padding:6px 14px;border-radius:8px;font-size:12px;font-weight:700;letter-spacing:0.18em}
+.summary-box ol{list-style:none;padding:0;margin:0;counter-reset:sbc}
+.summary-box li{counter-increment:sbc;position:relative;padding:7px 0 7px 30px;font-size:14.5px;line-height:1.8;color:#2D2D2D;font-weight:500}
+.summary-box li::before{content:counter(sbc,decimal-leading-zero);position:absolute;left:0;top:7px;color:#4A8024;font-weight:800;font-size:13px;font-family:'Inter',sans-serif;letter-spacing:-0.02em}
+.check-box{background:#fff;border-radius:14px;box-shadow:0 4px 20px rgba(0,0,0,0.08);padding:20px 24px;margin:0 0 40px}
+.check-box__head{display:flex;align-items:center;gap:12px;margin-bottom:14px;padding-bottom:12px;border-bottom:2px solid;border-image:linear-gradient(90deg,#F84744 0%,#FB9A3F 100%) 1}
+.check-box__pill{display:inline-block;background:linear-gradient(135deg,#F84744 0%,#FB9A3F 100%);color:#fff;padding:5px 14px;border-radius:50px;font-size:11px;font-weight:800;letter-spacing:0.18em}
+.check-box__sub{font-size:14px;font-weight:700;color:#333}
+.check-box details{margin-bottom:7px}
+.check-box summary{padding:11px 18px;cursor:pointer;display:flex;align-items:center;gap:12px;font-size:14px;color:#2D2D2D;background:linear-gradient(135deg,#FFF5F0 0%,#FFFAEC 100%);border-radius:22px;transition:all 0.2s;border:1.5px solid transparent;font-weight:500;list-style:none}
+.check-box summary:hover{border-color:#F5A64A}
+.check-box summary::-webkit-details-marker{display:none}
+.check-box summary::before{content:'＋';color:#fff;background:linear-gradient(135deg,#F84744 0%,#FB9A3F 100%);width:22px;height:22px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:14px;font-weight:800;flex-shrink:0}
+.check-box details[open] summary{border-color:#F5A64A}
+.check-box details[open] summary::before{content:'−'}
+.check-box__detail{padding:12px 20px 4px 48px;font-size:13.5px;color:#555;line-height:1.85}
+.reveal{opacity:0;transform:translateY(20px);transition:all 0.6s cubic-bezier(0.4,0,0.2,1)}
+.reveal.visible{opacity:1;transform:translateY(0)}
+.spec-table{width:100%;border-collapse:separate;border-spacing:0;overflow:hidden;border-radius:12px;box-shadow:0 2px 8px rgba(0,0,0,0.04);margin:0 0 28px}
+.spec-table thead{background:linear-gradient(135deg,#E85D4A,#F5A64A);color:#fff}
+.spec-table th{padding:14px 16px;font-size:13px;font-weight:700;text-align:left;letter-spacing:0.04em}
+.spec-table td{padding:14px 16px;font-size:14px;color:#444;border-bottom:1px solid #F0E5DC;vertical-align:top;line-height:1.7;background:#fff}
+.spec-table tr:nth-child(even) td{background:#FBF8F5}
+.spec-table tr:last-child td{border-bottom:none}
+.tbl-name{font-weight:700;color:#2D2D2D}
+.step-row{display:flex;align-items:flex-start;gap:16px;margin:0 0 24px;transition:all 0.25s cubic-bezier(0.4,0,0.2,1)}
+.step-row__num{flex-shrink:0;width:38px;height:38px;border-radius:50%;background:linear-gradient(135deg,#F84744 0%,#FB9A3F 100%);color:#fff;font-weight:800;font-size:15px;display:flex;align-items:center;justify-content:center;font-family:'Inter',sans-serif}
+.step-row__body{flex:1}
+.step-row__title{font-size:16px;font-weight:700;color:#2D2D2D;margin-bottom:6px;line-height:1.5}
+.step-row__text{font-size:14.5px;line-height:1.9;color:#555;margin:0}
+h3 { font-size: 17px; font-weight: 700; color: #2D2D2D; margin: 40px 0 12px; padding-left: 14px; border-left: 3px solid #2D2D2D; }
+</style>
+<meta name="csrf-param" content="authenticity_token">
+<meta name="csrf-token" content="4tCTQWL7JJld6zj_e0lcl8JAjJ2P1kYrVrHmo4q2SOn-nBIUQDhpcSnq_pXZy2WaGpzUnAbnXvN-J_QYAZv33w"><meta content="" name="routing-root-path"><meta content="media" name="site-name"><meta content="ja" name="i18n-default-locale"><meta content="ja" name="i18n-locale">
+
+<div class="lesson-wrapper">
+
+<div class="lesson-hero">
+  <span class="lesson-hero__badge">CHAPTER 5</span>
+  <div class="lesson-hero__title">カメラワークと音声 — 固定・パン・ティルトと外部マイク設定</div>
+  <div class="lesson-hero__meta">
+    <span class="lesson-hero__chip">LESSON 5-2</span>
+    <span class="lesson-hero__topic">3種類以上のカメラワークを使い分けて外部マイクを適切に設定する</span>
+    <span class="lesson-hero__time">⏱ 所要時間：約15分</span>
+  </div>
+</div>
+  
+  <div class="back-to-roadmap" style="display: flex; justify-content: center; align-items: center; padding: 24px 0; margin-top: 24px;"></div>
+  <!-- 前の章に戻るボタン / 次の章に進むボタン がある場合 -->  
+<div style="display: flex; justify-content: space-between; align-items: center; padding: 24px 0; margin-top: 24px; max-width: 1775px; margin-left: auto; margin-right: auto; width: 100%;">
+  <a href="https://learn.webcoach.jp/SNS/camera-chap5/bg7CG" style="position: relative; display: inline-block; background: linear-gradient(135deg, #E85D4A, #F5A64A); color: #fff; font-weight: 700; padding: 12px clamp(24px, 7vw, 48px); border-radius: 8px; text-decoration: none;">
+    <img src="../../_assets/47498cfebf.svg" style="position: absolute; top: 50%; transform: translateY(-50%); left: 12px; filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(125deg) brightness(103%) contrast(103%); transform: translateY(-50%) rotate(180deg);">
+    前の章に戻る
+  </a>
+  
+  <a href="https://learn.webcoach.jp/SNS/camera-chap5/v5QCE" style="position: relative; display: inline-block; background: linear-gradient(135deg, #E85D4A, #F5A64A); color: #fff; font-weight: 700; padding: 12px clamp(24px, 7vw, 48px); border-radius: 8px; text-decoration: none;">
+    次の章に進む
+    <img src="../../_assets/47498cfebf.svg" style="position: absolute; top: 50%; transform: translateY(-50%); right: 12px; filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(125deg) brightness(103%) contrast(103%);">
+  </a>
+</div>  
+
+
+<div class="goal-box">
+  <div class="goal-box__head"><div class="goal-box__pill">GOAL</div><div class="goal-box__sub">このレッスンのゴール</div></div>
+  <ul>
+    <li><div class="goal-box__check">✓</div><div class="goal-box__text">固定・パン・ティルトなど3種類以上のカメラワークを使い分けられる</div></li>
+    <li><div class="goal-box__check">✓</div><div class="goal-box__text">外部マイクを接続して音量を適切に設定できる</div></li>
+  </ul>
+</div>
+
+<nav class="toc">
+  <div class="toc-head"><div class="toc-icon">≡</div><div class="toc-title">目次</div></div>
+  <ul>
+    <li><a href="#s1"><span class="toc-num">01</span><span class="toc-text">基本カメラワークとその使い分け</span><span class="toc-chev">›</span></a></li>
+    <li><a href="#s2"><span class="toc-num">02</span><span class="toc-text">音声収録の基本設定</span><span class="toc-chev">›</span></a></li>
+  </ul>
+</nav>
+  
+ 
+<section id="s1">
+<h2>基本カメラワークとその使い分け</h2>
+<p>静止した映像（固定ショット）にカメラを動かす表現（カメラワーク）を組み合わせることで映像に動きとストーリー性が生まれます。まずは基本の動きを把握しましょう。</p>
+
+<div style="margin: 24px 0; text-align: center;" class="reveal visible">
+  <a href="https://www.dropbox.com/scl/fi/z9fpc1kcp6k5rrethve68/01.png?rlkey=mfnyt0xw57sczadn18qw18f9j&amp;st=sig1tmme&amp;raw=1" class="lightbox" style="display: inline-block;" target="_blank" rel="noopener">
+    <img src="../../_assets/db03e40280.webp" alt="基本カメラワーク" class="lightbox-img" style="display: block; margin: 0 auto; max-width: 100%;">
+  </a>
+</div>
+
+<table class="spec-table reveal visible">
+  <thead><tr><th style="width:200px">カメラワーク</th><th>動き・効果</th><th style="width:220px">向いているシーン</th></tr></thead>
+  <tbody>
+    <tr><td><span class="tbl-name">固定ショット（スタティック）</span></td><td>カメラを動かさない。安定感・信頼感</td><td>インタビュー・製品紹介・説明シーン。基本中の基本</td></tr>
+    <tr><td><span class="tbl-name">パン（Pan）</span></td><td>カメラの位置を固定したまま、左右に首を振る（向きを変える）</td><td>広い景色を見せる・被写体を追う。三脚のパンハンドルで滑らかに</td></tr>
+    <tr><td><span class="tbl-name">ティルト（Tilt）</span></td><td>カメラの位置を固定したまま、上下に首を振る（向きを変える）</td><td>建物全体を見せる・人物を足元から顔まで見せる</td></tr>
+    <tr><td><span class="tbl-name">プッシュ/プル（Push/Pull）</span></td><td>カメラを被写体に近づく・遠ざかる</td><td>プッシュ：強調・緊迫感。プル：全体像・余韻</td></tr>
+    <tr><td><span class="tbl-name">スライダーショット</span></td><td>カメラを横方向に平行移動</td><td>製品横並び紹介・シネマティックな雰囲気</td></tr>
+  </tbody>
+</table>
+
+<div class="quiz-box reveal visible">
+  <div class="quiz-top"><div class="quiz-icon">Q</div><div class="quiz-title">確認クイズ</div></div>
+  <div class="quiz-q">建物の全体像を下から上まで映したいとき使うカメラワークはどれ？</div>
+  <div class="quiz-options">
+    <button class="quiz-opt" data-q="q1" data-correct="false"><div class="quiz-letter">A</div><div class="quiz-opt-text">パン（左右に首を振る）</div></button>
+    <button class="quiz-opt" data-q="q1" data-correct="true"><div class="quiz-letter">B</div><div class="quiz-opt-text">ティルト（上下に首を振る）</div></button>
+    <button class="quiz-opt" data-q="q1" data-correct="false"><div class="quiz-letter">C</div><div class="quiz-opt-text">プッシュ（前進）</div></button>
+    <button class="quiz-opt" data-q="q1" data-correct="false"><div class="quiz-letter">D</div><div class="quiz-opt-text">スライダーショット</div></button>
+  </div>
+  <div class="quiz-feedback ok" id="q1-ok"><div class="quiz-feedback-icon">✓</div><div class="quiz-feedback-body"><div class="quiz-feedback-title">正解です！</div><div class="quiz-feedback-text">ティルトは上下方向にカメラを動かすカメラワークです。建物の下から上、または人物の足元から顔まで流れるように映したいときに使います。三脚のチルトハンドルでなめらかに動かせます。</div></div></div>
+  <div class="quiz-feedback ng" id="q1-ng"><div class="quiz-feedback-icon">✕</div><div class="quiz-feedback-body"><div class="quiz-feedback-title">惜しい！</div><div class="quiz-feedback-text">正解はBです。ティルトはカメラの位置を固定したまま上下に首を振るカメラワークです。パンは同じく位置固定で左右に首を振る動き、プッシュは前進（被写体に近づく）、スライダーショットは横方向の平行移動です。</div></div></div>
+</div>
+</section>
+
+<section id="s2">
+<h2>音声収録の基本設定</h2>
+<p>映像の品質と同じくらい視聴者体験に影響するのが「音声」です。内蔵マイクだけでは風切り音・周囲ノイズを拾いやすいため外部マイクの活用を検討しましょう。</p>
+
+<div style="margin: 24px 0; text-align: center;" class="reveal visible">
+  <a href="https://www.dropbox.com/scl/fi/6dy1tv4kmmkdn9kjolkqr/02.png?rlkey=f8ed3veawrsyw9nezwkr1iklw&amp;st=nf4yvk20&amp;raw=1" class="lightbox" style="display: inline-block;" target="_blank" rel="noopener">
+    <img src="../../_assets/78f8fcb923.webp" alt="音声収録の基本設定" class="lightbox-img" style="display: block; margin: 0 auto; max-width: 100%;">
+  </a>
+</div>
+
+<table class="spec-table reveal visible">
+  <thead><tr><th style="width:220px">マイクの種類・設定</th><th>特徴</th><th style="width:220px">向いているシーン</th></tr></thead>
+  <tbody>
+    <tr><td><span class="tbl-name">内蔵マイク</span></td><td>環境音向き・ノイズを拾いやすい</td><td>屋外や雑音の少ない場所での補助的な収録</td></tr>
+    <tr><td><span class="tbl-name">ショットガンマイク（外付け）</span></td><td>正面を指向性で収音。ホットシューに装着</td><td>インタビュー・解説動画。正面の声をクリアに収録</td></tr>
+    <tr><td><span class="tbl-name">ラベリアマイク（ピンマイク）</span></td><td>話者に装着・近距離収音</td><td>人物が動き回る撮影・インタビュー</td></tr>
+    <tr><td><span class="tbl-name">音量レベル設定</span></td><td>カメラ内で-12dBを目安に設定。音割れ（クリッピング）しないよう注意</td><td>すべての撮影シーン。ピークが0dBを超えないように設定する</td></tr>
+  </tbody>
+</table>
+
+<h3>カメラで音声入力レベル（ゲイン）を設定する手順</h3>
+
+<!-- =====================================================
+  📸 画像：ig-64_audio-level-setting.png（音声録音レベル設定のカメラメニュー操作図）
+  ===================================================== -->
+<div style="margin: 24px 0; text-align: center;" class="reveal visible">
+  <a href="https://media.webcoach.jp/images/camera-practical-master/ch5/ig-64_audio-level-setting.png" class="lightbox" style="display: inline-block;" target="_blank" rel="noopener">
+    <img src="../../_assets/54926ff0fb.webp" alt="音声録音レベルの設定" class="lightbox-img" style="display: block; margin: 0 auto; max-width: 100%;">
+  </a>
+</div>
+
+<p style="font-size: 13px; color: #777; line-height: 1.8; margin: -8px 0 28px; background: #FAF9F8; border-radius: 8px; padding: 10px 14px;">📌 <strong>図はCanon EOS R50の操作例です。</strong>お持ちのカメラによって操作方法は異なります。「<strong>機種名 ＋ 音声録音設定 ＋ 使い方</strong>」で検索するか、説明書の「音声録音」の項目をご確認ください。</p>
+
+<div class="step-row reveal visible">
+  <div class="step-row__num">1</div>
+  <div class="step-row__body">
+    <div class="step-row__title">MENUボタンを押す</div>
+    <p class="step-row__text">カメラ背面のMENUボタンを押してメニュー画面を開きます。</p>
+  </div>
+</div>
+<div class="step-row reveal visible">
+  <div class="step-row__num">2</div>
+  <div class="step-row__body">
+    <div class="step-row__title">「動画撮影」タブ →「音声録音」を選択</div>
+    <p class="step-row__text">ムービーカメラアイコンのタブを選択し、「音声録音」を選択します。</p>
+  </div>
+</div>
+<div class="step-row reveal visible">
+  <div class="step-row__num">3</div>
+  <div class="step-row__body">
+    <div class="step-row__title">録音レベルを「マニュアル」に変更</div>
+    <p class="step-row__text">「録音レベル」を「オート」から「マニュアル」に変更します。オートでは急な音量変化を自動調整してしまうため、マニュアルで制御するのがおすすめです。</p>
+  </div>
+</div>
+<div class="step-row reveal visible">
+  <div class="step-row__num">4</div>
+  <div class="step-row__body">
+    <div class="step-row__title">レベルメーターを見ながら音量を-12dBに調整</div>
+    <p class="step-row__text">声を出しながら録音レベルのメーターを確認し、ピーク時が-12dBになるよう数値を上下に調整します。0dBを超えると音割れが発生するため余裕を持たせます。</p>
+  </div>
+</div>
+
+<div class="quiz-box reveal visible">
+  <div class="quiz-top"><div class="quiz-icon">Q</div><div class="quiz-title">確認クイズ</div></div>
+  <div class="quiz-q">動画撮影時の適切な音声録音レベルの目安はどれ？</div>
+  <div class="quiz-options">
+    <button class="quiz-opt" data-q="q2" data-correct="false"><div class="quiz-letter">A</div><div class="quiz-opt-text">常に最大（0dB）にする</div></button>
+    <button class="quiz-opt" data-q="q2" data-correct="true"><div class="quiz-letter">B</div><div class="quiz-opt-text">ピーク-12dB〜-6dBを目安に設定する（音割れしないよう余裕を持つ）</div></button>
+    <button class="quiz-opt" data-q="q2" data-correct="false"><div class="quiz-letter">C</div><div class="quiz-opt-text">できるだけ低く設定する</div></button>
+    <button class="quiz-opt" data-q="q2" data-correct="false"><div class="quiz-letter">D</div><div class="quiz-opt-text">自動設定のみ使用する</div></button>
+  </div>
+  <div class="quiz-feedback ok" id="q2-ok"><div class="quiz-feedback-icon">✓</div><div class="quiz-feedback-body"><div class="quiz-feedback-title">正解です！</div><div class="quiz-feedback-text">音声レベルはピーク-12dB〜-6dBを目安に設定します。0dBを超えると音割れ（クリッピング）が発生し後から修正できません。余裕を持った設定が重要です。</div></div></div>
+  <div class="quiz-feedback ng" id="q2-ng"><div class="quiz-feedback-icon">✕</div><div class="quiz-feedback-body"><div class="quiz-feedback-title">惜しい！</div><div class="quiz-feedback-text">正解はBです。ピーク-12dB〜-6dBを目安に設定することで音割れを防ぎながら十分な音量を確保できます。0dBを超えると音割れが発生し後から修正できないため注意が必要です。</div></div></div>
+</div>
+</section>
+
+<div class="summary-box reveal visible">
+  <div class="summary-box__head"><div class="summary-box__badge">SUMMARY</div></div>
+  <ol>
+    <li><strong>固定ショットが基本</strong> ― まず固定ショットで安定した映像を確保する</li>
+    <li><strong>パン・ティルト</strong> ― 1動作1ショットで使う。多用しすぎない</li>
+    <li><strong>外部マイク推奨</strong> ― ホットシューにショットガンマイクを装着して音質を改善</li>
+    <li><strong>音量設定</strong> ― ピーク-12dB〜-6dBを目安。音割れ（0dB超え）は避ける</li>
+  </ol>
+</div>
+
+<div class="check-box reveal visible">
+  <div class="check-box__head"><div class="check-box__pill">CHECK</div><div class="check-box__sub">理解度チェック</div></div>
+  <details><summary>固定・パン・ティルト・プッシュの動きと効果を説明できる</summary><div class="check-box__detail">固定ショットはカメラを動かさず安定感がある。パンは位置を固定したまま左右に首を振る動きで景色や被写体の追跡に使う。ティルトは同じく位置固定で上下に首を振る動きで建物全体を見せるときに使う。プッシュは前進して強調や緊迫感を表現します。</div></details>
+  <details><summary>外部マイクの種類と向いているシーンを説明できる</summary><div class="check-box__detail">ショットガンマイクはホットシューに装着して正面を指向性で収音。インタビューや解説動画向き。ラベリアマイク（ピンマイク）は話者に装着して近距離収音。人物が動き回るシーン向きです。</div></details>
+  <details><summary>適切な音声録音レベルの目安を答えられる</summary><div class="check-box__detail">ピーク-12dB〜-6dBを目安に設定します。0dBを超えると音割れ（クリッピング）が発生して後から修正できません。余裕を持った設定で録音することが重要です。</div></details>
+</div>
+  
+    <!-- 前の章に戻るボタン / 次の章に進むボタン がある場合 -->  
+<div style="display: flex; justify-content: space-between; align-items: center; padding: 24px 0; margin-top: 24px; max-width: 1775px; margin-left: auto; margin-right: auto; width: 100%;">
+  <a href="https://learn.webcoach.jp/SNS/camera-chap5/bg7CG" style="position: relative; display: inline-block; background: linear-gradient(135deg, #E85D4A, #F5A64A); color: #fff; font-weight: 700; padding: 12px clamp(24px, 7vw, 48px); border-radius: 8px; text-decoration: none;">
+    <img src="../../_assets/47498cfebf.svg" style="position: absolute; top: 50%; transform: translateY(-50%); left: 12px; filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(125deg) brightness(103%) contrast(103%); transform: translateY(-50%) rotate(180deg);">
+    前の章に戻る
+  </a>
+  
+  <a href="https://learn.webcoach.jp/SNS/camera-chap5/v5QCE" style="position: relative; display: inline-block; background: linear-gradient(135deg, #E85D4A, #F5A64A); color: #fff; font-weight: 700; padding: 12px clamp(24px, 7vw, 48px); border-radius: 8px; text-decoration: none;">
+    次の章に進む
+    <img src="../../_assets/47498cfebf.svg" style="position: absolute; top: 50%; transform: translateY(-50%); right: 12px; filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(125deg) brightness(103%) contrast(103%);">
+  </a>
+</div>  
+  <div class="back-to-roadmap" style="display: flex; justify-content: center; align-items: center; padding: 24px 0; margin-top: 24px;"></div>
+
+
+</div>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="ck-icon-arrow-down" viewBox="0 0 1792 1792"><path d="M1675 832q0 53-37 90l-651 652q-39 37-91 37-53 0-90-37l-651-652q-38-36-38-90 0-53 38-91l74-75q39-37 91-37 53 0 90 37l294 294v-704q0-52 38-90t90-38h128q52 0 90 38t38 90v704l294-294q37-37 90-37 52 0 91 37l75 75q37 39 37 91z"></path></symbol><symbol id="ck-icon-arrow-up" viewBox="0 0 1792 1792"><path d="M1675 971q0 51-37 90l-75 75q-38 38-91 38-54 0-90-38l-294-293v704q0 52-37.5 84.5t-90.5 32.5h-128q-53 0-90.5-32.5t-37.5-84.5v-704l-294 293q-36 38-90 38t-90-38l-75-75q-38-38-38-90 0-53 38-91l651-651q35-37 90-37 54 0 91 37l651 651q37 39 37 91z"></path></symbol><symbol id="ck-icon-calendar" viewBox="0 0 1792 1792"><path d="M192 1664h288v-288h-288v288zm352 0h320v-288h-320v288zm-352-352h288v-320h-288v320zm352 0h320v-320h-320v320zm-352-384h288v-288h-288v288zm736 736h320v-288h-320v288zm-384-736h320v-288h-320v288zm768 736h288v-288h-288v288zm-384-352h320v-320h-320v320zm-352-864v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm736 864h288v-320h-288v320zm-384-384h320v-288h-320v288zm384 0h288v-288h-288v288zm32-480v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm384-64v1280q0 52-38 90t-90 38h-1408q-52 0-90-38t-38-90v-1280q0-52 38-90t90-38h128v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h384v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h128q52 0 90 38t38 90z"></path></symbol><symbol id="ck-icon-chevron-left" viewBox="0 0 1792 1792"><path d="M1427 301l-531 531 531 531q19 19 19 45t-19 45l-166 166q-19 19-45 19t-45-19l-742-742q-19-19-19-45t19-45l742-742q19-19 45-19t45 19l166 166q19 19 19 45t-19 45z"></path></symbol><symbol id="ck-icon-chevron-right" viewBox="0 0 1792 1792"><path d="M1363 877l-742 742q-19 19-45 19t-45-19l-166-166q-19-19-19-45t19-45l531-531-531-531q-19-19-19-45t19-45l166-166q19-19 45-19t45 19l742 742q19 19 19 45t-19 45z"></path></symbol><symbol id="ck-icon-clock-o" viewBox="0 0 1792 1792"><path d="M1024 544v448q0 14-9 23t-23 9h-320q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h224v-352q0-14 9-23t23-9h64q14 0 23 9t9 23zm416 352q0-148-73-273t-198-198-273-73-273 73-198 198-73 273 73 273 198 198 273 73 273-73 198-198 73-273zm224 0q0 209-103 385.5t-279.5 279.5-385.5 103-385.5-103-279.5-279.5-103-385.5 103-385.5 279.5-279.5 385.5-103 385.5 103 279.5 279.5 103 385.5z"></path></symbol><symbol id="ck-icon-trash" viewBox="0 0 1792 1792"><path d="M704 1376v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm-544-992h448l-48-117q-7-9-17-11h-317q-10 2-17 11zm928 32v64q0 14-9 23t-23 9h-96v948q0 83-47 143.5t-113 60.5h-832q-66 0-113-58.5t-47-141.5v-952h-96q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h309l70-167q15-37 54-63t79-26h320q40 0 79 26t54 63l70 167h309q14 0 23 9t9 23z"></path></symbol><symbol id="ck-icon-undo" viewBox="0 0 1792 1792"><path d="M1664 896q0 156-61 298t-164 245-245 164-298 61q-172 0-327-72.5t-264-204.5q-7-10-6.5-22.5t8.5-20.5l137-138q10-9 25-9 16 2 23 12 73 95 179 147t225 52q104 0 198.5-40.5t163.5-109.5 109.5-163.5 40.5-198.5-40.5-198.5-109.5-163.5-163.5-109.5-198.5-40.5q-98 0-188 35.5t-160 101.5l137 138q31 30 14 69-17 40-59 40h-448q-26 0-45-19t-19-45v-448q0-42 40-59 39-17 69 14l130 129q107-101 244.5-156.5t284.5-55.5q156 0 298 61t245 164 164 245 61 298z"></path></symbol></svg>
+
+<!--Clipkit(R) v15.9.0-20260915 Copyright (C) 2026 VECTOR Inc.-->
+
+
+
+</div></div>
+        
+      
+    </div>
+  
+  </div>
+</div>
+<!-- <script src="https://cdn.clipkit.co/clipkit/javascripts/item-shopify-1.0.js?v=v15.9.0-20260915" async></script> -->
+
+            </main></div>
+        
+
+    
+
+    
+
+    <!-- bodyタグ内の下部に挿入されます -->
+
+
+    <!-- BootstrapのCDNでのjs読み込み -->
+    
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="ck-icon-arrow-down" viewBox="0 0 1792 1792"><path d="M1675 832q0 53-37 90l-651 652q-39 37-91 37-53 0-90-37l-651-652q-38-36-38-90 0-53 38-91l74-75q39-37 91-37 53 0 90 37l294 294v-704q0-52 38-90t90-38h128q52 0 90 38t38 90v704l294-294q37-37 90-37 52 0 91 37l75 75q37 39 37 91z"></path></symbol><symbol id="ck-icon-arrow-up" viewBox="0 0 1792 1792"><path d="M1675 971q0 51-37 90l-75 75q-38 38-91 38-54 0-90-38l-294-293v704q0 52-37.5 84.5t-90.5 32.5h-128q-53 0-90.5-32.5t-37.5-84.5v-704l-294 293q-36 38-90 38t-90-38l-75-75q-38-38-38-90 0-53 38-91l651-651q35-37 90-37 54 0 91 37l651 651q37 39 37 91z"></path></symbol><symbol id="ck-icon-calendar" viewBox="0 0 1792 1792"><path d="M192 1664h288v-288h-288v288zm352 0h320v-288h-320v288zm-352-352h288v-320h-288v320zm352 0h320v-320h-320v320zm-352-384h288v-288h-288v288zm736 736h320v-288h-320v288zm-384-736h320v-288h-320v288zm768 736h288v-288h-288v288zm-384-352h320v-320h-320v320zm-352-864v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm736 864h288v-320h-288v320zm-384-384h320v-288h-320v288zm384 0h288v-288h-288v288zm32-480v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm384-64v1280q0 52-38 90t-90 38h-1408q-52 0-90-38t-38-90v-1280q0-52 38-90t90-38h128v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h384v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h128q52 0 90 38t38 90z"></path></symbol><symbol id="ck-icon-chevron-left" viewBox="0 0 1792 1792"><path d="M1427 301l-531 531 531 531q19 19 19 45t-19 45l-166 166q-19 19-45 19t-45-19l-742-742q-19-19-19-45t19-45l742-742q19-19 45-19t45 19l166 166q19 19 19 45t-19 45z"></path></symbol><symbol id="ck-icon-chevron-right" viewBox="0 0 1792 1792"><path d="M1363 877l-742 742q-19 19-45 19t-45-19l-166-166q-19-19-19-45t19-45l531-531-531-531q-19-19-19-45t19-45l166-166q19-19 45-19t45 19l742 742q19 19 19 45t-19 45z"></path></symbol><symbol id="ck-icon-clock-o" viewBox="0 0 1792 1792"><path d="M1024 544v448q0 14-9 23t-23 9h-320q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h224v-352q0-14 9-23t23-9h64q14 0 23 9t9 23zm416 352q0-148-73-273t-198-198-273-73-273 73-198 198-73 273 73 273 198 198 273 73 273-73 198-198 73-273zm224 0q0 209-103 385.5t-279.5 279.5-385.5 103-385.5-103-279.5-279.5-103-385.5 103-385.5 279.5-279.5 385.5-103 385.5 103 279.5 279.5 103 385.5z"></path></symbol><symbol id="ck-icon-trash" viewBox="0 0 1792 1792"><path d="M704 1376v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm-544-992h448l-48-117q-7-9-17-11h-317q-10 2-17 11zm928 32v64q0 14-9 23t-23 9h-96v948q0 83-47 143.5t-113 60.5h-832q-66 0-113-58.5t-47-141.5v-952h-96q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h309l70-167q15-37 54-63t79-26h320q40 0 79 26t54 63l70 167h309q14 0 23 9t9 23z"></path></symbol><symbol id="ck-icon-undo" viewBox="0 0 1792 1792"><path d="M1664 896q0 156-61 298t-164 245-245 164-298 61q-172 0-327-72.5t-264-204.5q-7-10-6.5-22.5t8.5-20.5l137-138q10-9 25-9 16 2 23 12 73 95 179 147t225 52q104 0 198.5-40.5t163.5-109.5 109.5-163.5 40.5-198.5-40.5-198.5-109.5-163.5-163.5-109.5-198.5-40.5q-98 0-188 35.5t-160 101.5l137 138q31 30 14 69-17 40-59 40h-448q-26 0-45-19t-19-45v-448q0-42 40-59 39-17 69 14l130 129q107-101 244.5-156.5t284.5-55.5q156 0 298 61t245 164 164 245 61 298z"></path></symbol></svg>
+
+<!--Clipkit(R) v15.9.0-20260915 Copyright (C) 2026 VECTOR Inc.-->
+
+
+
+
+<div class="dynmsg alert alert-info" style="display:none;"><button class="close"><span class="fa fa-times"></span></button><div class="message"></div></div><div class="dynmsg alert alert-danger" style="display:none;"><button class="close"><span class="fa fa-times"></span></button><div class="message"></div></div></body></html>

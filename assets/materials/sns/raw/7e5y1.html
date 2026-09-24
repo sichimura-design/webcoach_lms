@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+  <html lang="ja">
+
+<head><script async="async" data-label="saas" nonce="iB8TnLhawpyoHF07o5ibwQ==" src="//b.clipkit.co/"></script><script src="//cdn.clipkit.co/clipkit_assets/beacon-787bbf3225ec43d93f198af35f7d56fdef40fb50440a2909500bdf5b99225aab.js" async="async" id="clipkit-beacon" data-page-type="article" data-page-id="2618" data-domain="learn.webcoach.jp" data-url="/SNS/camera-chap4/7E5y1" data-href="https://learn.webcoach.jp/media/beacon"></script>
+    <!-- headタグ内の上部に挿入されます -->
+
+    <meta charset="UTF-8">
+    <title>4-1 RAW vs JPEG — 記録形式の違いと使い分けを理解する - WEBCOACH</title>
+
+    <!-- resetcssのCDNでのCSS読み込み -->
+    <link rel="stylesheet" href="https://unpkg.com/modern-css-reset/dist/reset.min.css" />
+
+    <!-- fontawesomeのCDNでのCSS読み込み -->
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/fontawesome/4.7.0/css/font-awesome.min.css">
+
+    <!-- BootstrapのCDNでのCSS読み込み -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous" />
+
+    <!-- highlight.jsの読み込み -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.1/styles/dracula.min.css">
+
+    <!-- カスタムCSS -->
+    <link rel="stylesheet" href="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/168/original/style.css?1788081716">
+
+    <!-- clipkitデフォルトのCSS -->
+    <!--<link rel="stylesheet" media="screen" href="https://cdn.clipkit.co/clipkit/stylesheets/application-1.0.css?v=v15.9.0-20260915">-->
+
+    <!-- jQuery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <!-- カスタムJS -->
+    <script src="https://cdn.clipkit.co/tenants/589/resources/assets/000/002/350/original/script.js?1779642402"></script>
+    <script src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/535/original/script.js?1743681771"></script>
+
+    <!-- clipkitデフォルトのJS -->
+    <script src="https://cdn.clipkit.co/clipkit/javascripts/default-1.0.js?v=v15.9.0-20260915"></script>
+
+    <!-- フォント -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;700&display=swap" rel="stylesheet">
+
+    <link href="https://cdn.clipkit.co/clipkit/favicons/square/missing.png" rel="shortcut icon" type="image/vnd.microsoft.icon">
+    <link rel="apple-touch-icon" href="https://cdn.clipkit.co/clipkit/touch_icons/square/missing.png">
+    <link rel="alternate" type="application/rss+xml"
+        href="https://learn.webcoach.jp/media.rss" title="WEBCOACH">
+    
+  <link rel="canonical" href="https://learn.webcoach.jp/SNS/camera-chap4/7E5y1">
+  
+  <meta name="description" content="">
+  <meta name="keywords" content="">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:domain" content="learn.webcoach.jp">
+  <meta name="twitter:title" content="4-1 RAW vs JPEG — 記録形式の違いと使い分けを理解する - WEBCOACH">
+  <meta name="twitter:image" content="https://cdn.clipkit.co/clipkit/images/medium/missing.png">
+  <meta name="twitter:description" content="">
+  <meta property="og:site_name" content="WEBCOACH">
+  <meta property="og:title" content="4-1 RAW vs JPEG — 記録形式の違いと使い分けを理解する">
+  <meta property="og:description" content="">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://learn.webcoach.jp/SNS/camera-chap4/7E5y1">
+  <meta property="og:image" content="https://cdn.clipkit.co/clipkit/images/large/missing.png">
+  <script type="application/ld+json">
+  {
+    "@context": "http://schema.org",
+    "@type": "NewsArticle",
+    "mainEntityOfPage":{
+      "@type":"WebPage",
+      "@id": "https://learn.webcoach.jp/SNS/camera-chap4/7E5y1"
+    },
+    "headline": "4-1 RAW vs JPEG — 記録形式の違いと使い分けを理解する",
+    "image": {
+      "@type": "ImageObject",
+      "url": "https://cdn.clipkit.co/clipkit/images/medium/missing.png",
+      "width": 800,
+      "height": 600
+    },
+    "datePublished": "2026-06-19T20:45:58+09:00",
+    "dateModified": "2026-06-21T17:04:56+09:00",
+    "author": {
+      "@type": "Person",
+      "name": "l_kamezaki"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "WEBCOACH",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://cdn.clipkit.co/tenants/589/sites/logos/000/000/001/logo_sm/a8defd4b-1cc7-433b-a61c-08e7db0e3e4f.png?1714459367"
+      }
+    },
+    "description": ""
+  }
+  </script>
+
+    <!-- headタグ内の下部に挿入されます -->
+
+
+<meta name="csrf-param" content="authenticity_token" />
+<meta name="csrf-token" content="0Qmlm-EsdPwyYKnBIZIWRaCeQAEEBYwwfY5S3M-3JQfWQ8evFXCXH8u3jHkV9oDiblzYSDtI862O1lxYE6rytQ" /><meta content="" name="routing-root-path" /><meta content="media" name="site-name" /><meta content="ja" name="i18n-default-locale" /><meta content="ja" name="i18n-locale" /></head>
+
+<body class="device-desktop">
+    <!-- bodyタグ内の上部に挿入されます -->
+
+
+    <!-- サイドバーとコンテンツのコンテナ -->
+    <div class="d-flex flex-row w-100 mb-5" style="min-height: calc(100vh - 400px);">
+
+        <!-- コンテンツ -->
+        <!--<main class="ms-auto" style="width: calc(100vw - 250px);">-->
+        <main class="ms-auto" style="width: calc(100vw);">
+            <div id="sb-site">
+                
+
+
+<div>
+  
+    <div>
+      
+      
+        
+          <div class="article-item item_html " id="item49490" data-item-id="49490" data-item-type="ItemHtml"><div class="item-body"><style>
+  
+  .lesson-wrapper .lightbox { display: block; }
+.lesson-wrapper .lightbox-img { width: 100%; height: auto; }
+  
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Noto Sans JP',sans-serif;color:#3D3D3D;font-size:16px;line-height:1.9;background:#fff;-webkit-font-smoothing:antialiased}
+.lesson-wrapper{max-width:70%;margin:0 auto;padding:40px 0 80px}
+@media(max-width:600px){.lesson-wrapper{max-width:92%}}
+h2{font-size:24px;font-weight:700;color:#2D2D2D;margin:64px 0 24px;padding:0 0 14px;position:relative;letter-spacing:-0.02em;line-height:1.4}
+h2::after{content:'';position:absolute;bottom:0;left:0;width:48px;height:4px;border-radius:2px;background:linear-gradient(90deg,#E85D4A,#F5A64A)}
+h3{font-size:17px;font-weight:700;color:#2D2D2D;margin:40px 0 12px;padding-left:14px;border-left:3px solid #2D2D2D}
+p{font-size:16px;line-height:2.0;color:#555;margin:0 0 16px}
+ul,ol{padding-left:1.5em;margin:0 0 16px}
+li{font-size:16px;line-height:2.0;color:#555;margin-bottom:6px}
+strong{color:#2D2D2D;font-weight:700}
+.lesson-hero{background:linear-gradient(135deg,#F84744 0%,#FB9A3F 100%);border-radius:16px;padding:22px 28px;margin:0 0 40px;color:#fff}
+.lesson-hero__badge{display:inline-block;background:#fff;color:#E85D4A;padding:5px 14px;border-radius:8px;font-size:11px;font-weight:800;letter-spacing:0.18em;margin-bottom:14px;font-family:'Inter',sans-serif}
+.lesson-hero__title{font-size:22px;font-weight:800;line-height:1.4;margin-bottom:16px;letter-spacing:-0.01em}
+.lesson-hero__meta{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.lesson-hero__chip{display:inline-flex;align-items:center;background:#fff;color:#333;padding:5px 11px;border-radius:6px;font-size:11.5px;font-weight:700;font-family:'Inter',sans-serif;letter-spacing:0.04em}
+.lesson-hero__topic{font-size:13px;font-weight:600;opacity:0.95}
+.lesson-hero__time{display:inline-flex;align-items:center;gap:5px;font-size:13px;font-weight:600;opacity:0.95}
+.goal-box{background:#fff;border-radius:16px;box-shadow:0 4px 20px rgba(0,0,0,0.08);padding:20px 24px;margin:0 0 40px}
+.goal-box__head{display:flex;align-items:center;gap:12px;margin-bottom:14px}
+.goal-box__pill{display:inline-block;background:linear-gradient(135deg,#F84744 0%,#FB9A3F 100%);color:#fff;padding:6px 16px;border-radius:50px;font-size:11px;font-weight:700;letter-spacing:0.18em}
+.goal-box__sub{font-size:14px;font-weight:700;color:#333}
+.goal-box ul{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:6px}
+.goal-box li{display:flex;gap:12px;padding:10px 14px;background:linear-gradient(135deg,#FFF5F0 0%,#FFFAEC 100%);border-radius:10px;align-items:flex-start;transition:transform 0.2s}
+.goal-box li:hover{transform:translateX(2px)}
+.goal-box__check{flex-shrink:0;width:22px;height:22px;border-radius:50%;background:linear-gradient(135deg,#F84744 0%,#FB9A3F 100%);color:#fff;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;margin-top:1px}
+.goal-box__text{flex:1;font-size:14px;color:#333;line-height:1.7;font-weight:500}
+.toc{background:#fff;border-radius:14px;padding:22px 26px;box-shadow:0 2px 12px rgba(0,0,0,0.05);margin:0 0 48px}
+.toc-head{display:flex;align-items:center;gap:10px;margin-bottom:14px}
+.toc-icon{width:26px;height:26px;border-radius:7px;background:linear-gradient(135deg,#E85D4A,#F5A64A);display:flex;align-items:center;justify-content:center;color:#fff;font-size:11px;font-weight:700}
+.toc-title{font-size:15px;font-weight:700;color:#2D2D2D}
+.toc ul{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:3px}
+.toc li{list-style:none}
+.toc li a{display:flex;align-items:center;gap:12px;padding:8px 14px;background:#FAF9F8;border-radius:8px;text-decoration:none;transition:background 0.2s}
+.toc li a:hover{background:#F5EFEC}
+.toc-num{font-size:12px;font-weight:700;color:#2D2D2D;letter-spacing:0.05em;min-width:22px;font-family:'Inter',sans-serif}
+.toc-text{flex:1;font-size:14px;color:#2D2D2D;font-weight:500}
+.toc-chev{color:#B8B8B8;font-size:12px}
+.img-placeholder{background:#FAF5F3;border:2px dashed #E8D5CC;border-radius:12px 12px 0 0;padding:24px 20px;text-align:center;margin:28px 0 0}
+.img-placeholder-label{font-size:10px;font-weight:700;letter-spacing:0.15em;color:#C4A59A;margin-bottom:6px}
+.img-placeholder-name{font-size:12px;color:#B08880;font-family:monospace}
+.prompt-box{background:#2A2220;border-radius:0 0 12px 12px;padding:16px 20px;margin:0 0 28px}
+.prompt-box-label{font-size:10px;font-weight:700;letter-spacing:0.15em;color:#F5A64A;margin-bottom:8px}
+.prompt-text{color:#E8DDD8;font-size:12px;line-height:1.7;font-family:'Courier New',monospace;white-space:pre-wrap;word-break:break-word;margin:0}
+.point-box{background:#FFFBE6;border:1.5px solid #F5C58F;border-radius:10px;padding:18px 22px 20px;margin:0 0 28px}
+.point-box__head{display:flex;align-items:center;gap:10px;margin-bottom:12px}
+.point-box__tab{display:inline-flex;align-items:center;justify-content:center;gap:5px;background:#F5A64A;color:#fff;font-size:11px;font-weight:700;padding:5px 17px 5px 11px;min-width:88px;letter-spacing:0.05em;clip-path:polygon(0 0,100% 0,calc(100% - 10px) 50%,100% 100%,0 100%);flex-shrink:0;font-family:'Inter',sans-serif}
+.point-box__sub{font-size:13.5px;font-weight:700;color:#2D2D2D}
+.point-box p{font-size:15px;line-height:1.9;color:#444;margin:0}
+.quiz-box{background:linear-gradient(135deg,#FFF1F2 0%,#FCE7F3 100%);border-radius:20px;padding:20px 22px;margin:28px 0}
+.quiz-top{display:flex;align-items:center;gap:10px;margin-bottom:12px}
+.quiz-icon{width:30px;height:30px;border-radius:10px;background:#fff;color:#EC4899;display:flex;align-items:center;justify-content:center;font-size:16px;box-shadow:0 2px 8px rgba(236,72,153,0.15);font-weight:700}
+.quiz-title{font-size:15px;font-weight:700;color:#831843}
+.quiz-q{font-size:15px;font-weight:700;color:#831843;margin-bottom:12px;line-height:1.6;background:#fff;padding:12px 16px;border-radius:12px;box-shadow:0 2px 8px rgba(236,72,153,0.06)}
+.quiz-options{display:flex;flex-direction:column;gap:7px}
+.quiz-opt{display:flex;align-items:center;gap:12px;padding:10px 16px;background:#fff;border:2px solid transparent;border-radius:12px;cursor:pointer;transition:all 0.2s;font-family:inherit;text-align:left;width:100%;box-shadow:0 2px 6px rgba(236,72,153,0.05)}
+.quiz-opt:hover:not(:disabled){border-color:#F9A8D4;transform:translateY(-1px)}
+.quiz-opt:disabled{cursor:default}
+.quiz-letter{flex-shrink:0;width:28px;height:28px;border-radius:50%;background:#FCE7F3;color:#831843;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center;font-family:'Inter',sans-serif}
+.quiz-opt-text{font-size:14px;color:#1F1F1F;flex:1;font-weight:500;line-height:1.55}
+.quiz-opt.correct{background:#ECFCCB;border-color:#84CC16}
+.quiz-opt.correct .quiz-letter{background:#84CC16;color:#fff}
+.quiz-opt.correct .quiz-opt-text{color:#365314;font-weight:700}
+.quiz-opt.wrong{background:#FFE4E6;border-color:#FB7185}
+.quiz-opt.wrong .quiz-letter{background:#FB7185;color:#fff}
+.quiz-opt.wrong .quiz-opt-text{color:#881337;font-weight:700}
+.quiz-opt.dim{opacity:0.4}
+.quiz-feedback{display:none;gap:12px;padding:12px 16px;background:#fff;border-radius:12px;margin-top:10px;box-shadow:0 2px 8px rgba(132,204,22,0.1);align-items:flex-start}
+.quiz-feedback.show{display:flex}
+.quiz-feedback.ng{box-shadow:0 2px 8px rgba(251,113,133,0.1)}
+.quiz-feedback-icon{flex-shrink:0;width:28px;height:28px;border-radius:50%;background:#84CC16;color:#fff;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700}
+.quiz-feedback.ng .quiz-feedback-icon{background:#FB7185}
+.quiz-feedback-body{flex:1}
+.quiz-feedback-title{font-size:13px;font-weight:800;color:#365314;margin-bottom:4px}
+.quiz-feedback.ng .quiz-feedback-title{color:#881337}
+.quiz-feedback-text{font-size:13px;color:#4D5552;line-height:1.75}
+.quiz-feedback.ng .quiz-feedback-text{color:#6B5258}
+.summary-box{background:#E8F5E0;border-radius:14px;padding:20px 24px;margin:48px 0 40px}
+.summary-box__head{margin-bottom:14px}
+.summary-box__badge{display:inline-block;background:linear-gradient(135deg,#4A8024 0%,#6BAA45 100%);color:#fff;padding:6px 14px;border-radius:8px;font-size:12px;font-weight:700;letter-spacing:0.18em}
+.summary-box ol{list-style:none;padding:0;margin:0;counter-reset:sbc}
+.summary-box li{counter-increment:sbc;position:relative;padding:7px 0 7px 30px;font-size:14.5px;line-height:1.8;color:#2D2D2D;font-weight:500}
+.summary-box li::before{content:counter(sbc,decimal-leading-zero);position:absolute;left:0;top:7px;color:#4A8024;font-weight:800;font-size:13px;font-family:'Inter',sans-serif;letter-spacing:-0.02em}
+.check-box{background:#fff;border-radius:14px;box-shadow:0 4px 20px rgba(0,0,0,0.08);padding:20px 24px;margin:0 0 40px}
+.check-box__head{display:flex;align-items:center;gap:12px;margin-bottom:14px;padding-bottom:12px;border-bottom:2px solid;border-image:linear-gradient(90deg,#F84744 0%,#FB9A3F 100%) 1}
+.check-box__pill{display:inline-block;background:linear-gradient(135deg,#F84744 0%,#FB9A3F 100%);color:#fff;padding:5px 14px;border-radius:50px;font-size:11px;font-weight:800;letter-spacing:0.18em}
+.check-box__sub{font-size:14px;font-weight:700;color:#333}
+.check-box details{margin-bottom:7px}
+.check-box summary{padding:11px 18px;cursor:pointer;display:flex;align-items:center;gap:12px;font-size:14px;color:#2D2D2D;background:linear-gradient(135deg,#FFF5F0 0%,#FFFAEC 100%);border-radius:22px;transition:all 0.2s;border:1.5px solid transparent;font-weight:500;list-style:none}
+.check-box summary:hover{border-color:#F5A64A}
+.check-box summary::-webkit-details-marker{display:none}
+.check-box summary::before{content:'＋';color:#fff;background:linear-gradient(135deg,#F84744 0%,#FB9A3F 100%);width:22px;height:22px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:14px;font-weight:800;flex-shrink:0}
+.check-box details[open] summary{border-color:#F5A64A}
+.check-box details[open] summary::before{content:'−'}
+.check-box__detail{padding:12px 20px 4px 48px;font-size:13.5px;color:#555;line-height:1.85}
+.reveal{opacity:0;transform:translateY(20px);transition:all 0.6s cubic-bezier(0.4,0,0.2,1)}
+.reveal.visible{opacity:1;transform:translateY(0)}
+.spec-table{width:100%;border-collapse:separate;border-spacing:0;overflow:hidden;border-radius:12px;box-shadow:0 2px 8px rgba(0,0,0,0.04);margin:0 0 28px}
+.spec-table thead{background:linear-gradient(135deg,#E85D4A,#F5A64A);color:#fff}
+.spec-table th{padding:14px 16px;font-size:13px;font-weight:700;text-align:left;letter-spacing:0.04em}
+.spec-table td{padding:14px 16px;font-size:14px;color:#444;border-bottom:1px solid #F0E5DC;vertical-align:top;line-height:1.7;background:#fff}
+.spec-table tr:nth-child(even) td{background:#FBF8F5}
+.spec-table tr:last-child td{border-bottom:none}
+.tbl-name{font-weight:700;color:#2D2D2D}
+.step-row{display:flex;align-items:flex-start;gap:16px;margin:0 0 24px}
+.step-row__num{flex-shrink:0;width:38px;height:38px;border-radius:50%;background:linear-gradient(135deg,#E85D4A,#F5A64A);color:#fff;font-size:16px;font-weight:700;display:flex;align-items:center;justify-content:center;font-family:'Inter',sans-serif}
+.step-row__body{flex:1}
+.step-row__title{font-size:16px;font-weight:700;color:#2D2D2D;margin-bottom:6px;line-height:1.5}
+.step-row__text{font-size:14.5px;line-height:1.9;color:#555;margin:0}
+.tt{position:relative;display:inline;border-bottom:1.5px dashed #E85D4A;cursor:help}
+.tt__pop{display:none;position:absolute;bottom:calc(100% + 10px);left:50%;transform:translateX(-50%);width:210px;background:#fff;border:1.5px solid #F0DEDA;border-radius:10px;padding:10px 13px;font-size:12.5px;line-height:1.75;color:#3D3D3D;font-weight:400;box-shadow:0 6px 20px rgba(0,0,0,0.13);z-index:200;white-space:normal;text-align:left;pointer-events:none}
+.tt__pop-label{display:block;font-size:10px;font-weight:700;color:#E85D4A;letter-spacing:0.1em;margin-bottom:4px}
+.tt__pop::after{content:'';position:absolute;bottom:-6px;left:50%;width:11px;height:11px;background:#fff;border-bottom:1.5px solid #F0DEDA;border-right:1.5px solid #F0DEDA;transform:translateX(-50%) rotate(45deg)}
+.tt:hover .tt__pop,.tt.open .tt__pop{display:block}
+.tt__pop--below{top:calc(100% + 10px) !important;bottom:auto !important}
+.tt__pop--below::after{top:-6px;bottom:auto;border-bottom:none;border-right:none;border-top:1.5px solid #F0DEDA;border-left:1.5px solid #F0DEDA}
+</style>
+<meta name="csrf-param" content="authenticity_token" />
+<meta name="csrf-token" content="0Qmlm-EsdPwyYKnBIZIWRaCeQAEEBYwwfY5S3M-3JQfWQ8evFXCXH8u3jHkV9oDiblzYSDtI862O1lxYE6rytQ" /><meta content="" name="routing-root-path" /><meta content="media" name="site-name" /><meta content="ja" name="i18n-default-locale" /><meta content="ja" name="i18n-locale" /></head>
+<body>
+<div class="lesson-wrapper">
+
+<div class="lesson-hero">
+  <span class="lesson-hero__badge">CHAPTER 4</span>
+  <div class="lesson-hero__title">RAW vs JPEG — 記録形式の違いと使い分けを理解する</div>
+  <div class="lesson-hero__meta">
+    <span class="lesson-hero__chip">LESSON 4-1</span>
+    <span class="lesson-hero__topic">用途に合った記録形式を選びカメラに設定する</span>
+    <span class="lesson-hero__time">⏱ 所要時間：約15分</span>
+  </div>
+</div>
+  
+  <div class="back-to-roadmap" style="display: flex; justify-content: center; align-items: center; padding: 24px 0; margin-top: 24px;"></div>
+  <!-- 次の章に進むボタンの場合 -->    
+<div style="display: flex; justify-content: flex-end; align-items: center; padding: 24px 0; margin-top: 24px; max-width: 1775px; margin-left: auto; margin-right: auto;">
+  <a href="MfgYp" style="position: relative; display: inline-block; background: linear-gradient(135deg, #E85D4A, #F5A64A); color: #fff; font-weight: 700; padding: 12px clamp(24px, 7vw, 48px); border-radius: 8px; text-decoration: none;">
+    次の章に進む
+    <img src="/theme/webcoach/img/icons/arrow-right.svg" style="position: absolute; top: 50%; transform: translateY(-50%); right: 12px; filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(125deg) brightness(103%) contrast(103%);">
+  </a>
+</div>
+  
+
+<div class="goal-box">
+  <div class="goal-box__head"><div class="goal-box__pill">GOAL</div><div class="goal-box__sub">このレッスンのゴール</div></div>
+  <ul>
+    <li><div class="goal-box__check">✓</div><div class="goal-box__text">RAWとJPEGの違いと用途を説明できる</div></li>
+    <li><div class="goal-box__check">✓</div><div class="goal-box__text">自分の用途に合った記録形式をカメラに設定できる</div></li>
+  </ul>
+</div>
+
+<nav class="toc">
+  <div class="toc-head"><div class="toc-icon">≡</div><div class="toc-title">目次</div></div>
+  <ul>
+    <li><a href="#s1"><span class="toc-num">01</span><span class="toc-text">RAWとJPEGの仕組みと違い</span><span class="toc-chev">›</span></a></li>
+    <li><a href="#s2"><span class="toc-num">02</span><span class="toc-text">用途別の使い分けと設定方法</span><span class="toc-chev">›</span></a></li>
+  </ul>
+</nav>
+
+
+  
+<section id="s1">
+<h2>RAWとJPEGの仕組みと違い</h2>
+<p>カメラで撮影した写真は主に「RAW」か「JPEG」のどちらかの形式で保存されます。どちらを選ぶかによって後の編集の自由度やファイルの使いやすさが大きく変わります。</p>
+
+<div style="margin: 24px 0; text-align: center;" class="reveal">
+  <a href="https://www.dropbox.com/scl/fi/qcbn4o1lbyu78vj9a5ybm/02.png?rlkey=u1x6a84vnubok4r387vtmule8&st=0w8urct3&raw=1" class="lightbox" style="display: inline-block;" target="_blank" rel="noopener">
+    <img src="https://www.dropbox.com/scl/fi/qcbn4o1lbyu78vj9a5ybm/02.png?rlkey=u1x6a84vnubok4r387vtmule8&st=0w8urct3&raw=1" alt="用途別 RAW/JPEG 使い分けガイド" class="lightbox-img" style="display: block; margin: 0 auto; max-width: 100%;">
+  </a>
+</div>
+
+<table class="spec-table reveal">
+  <thead><tr><th style="width:200px">比較項目</th><th>RAW</th><th>JPEG</th></tr></thead>
+  <tbody>
+    <tr><td><span class="tbl-name">データの性質</span></td><td>カメラが記録した生データ（未処理）</td><td>カメラ内で自動処理・圧縮済み</td></tr>
+    <tr><td><span class="tbl-name">ファイルサイズ</span></td><td>大きい（20〜50MB/枚）</td><td>小さい（3〜8MB/枚）</td></tr>
+    <tr><td><span class="tbl-name">編集の自由度</span></td><td>非常に高い。色・明るさ・WBを大幅に調整可能</td><td>限定的。大幅な後処理で画質が劣化しやすい</td></tr>
+    <tr><td><span class="tbl-name">失敗のリカバリ</span></td><td>露出±2〜3段の失敗も復元可</td><td>ほぼ不可</td></tr>
+    <tr><td><span class="tbl-name">すぐ使えるか</span></td><td>専用ソフト（Lightroom等）が必要</td><td>そのままSNS投稿・印刷OK</td></tr>
+  </tbody>
+</table>
+
+<div class="quiz-box reveal">
+  <div class="quiz-top"><div class="quiz-icon">Q</div><div class="quiz-title">確認クイズ</div></div>
+  <div class="quiz-q">RAW形式で撮影する最大のメリットはどれ？</div>
+  <div class="quiz-options">
+    <button class="quiz-opt" data-q="q1" data-correct="false"><div class="quiz-letter">A</div><div class="quiz-opt-text">ファイルサイズが小さく容量を節約できる</div></button>
+    <button class="quiz-opt" data-q="q1" data-correct="false"><div class="quiz-letter">B</div><div class="quiz-opt-text">撮影後すぐSNSにアップロードできる</div></button>
+    <button class="quiz-opt" data-q="q1" data-correct="true"><div class="quiz-letter">C</div><div class="quiz-opt-text">撮影後に色・明るさ・WBを大幅に調整できる</div></button>
+    <button class="quiz-opt" data-q="q1" data-correct="false"><div class="quiz-letter">D</div><div class="quiz-opt-text">カメラが自動で最高の色に仕上げてくれる</div></button>
+  </div>
+  <div class="quiz-feedback ok" id="q1-ok"><div class="quiz-feedback-icon">✓</div><div class="quiz-feedback-body"><div class="quiz-feedback-title">正解です！</div><div class="quiz-feedback-text">RAWは未加工の生データなので撮影後にLightroomなどで色・明るさ・WBを自由に調整できます。多少の露出ミスも後から修正できる点が最大の強みです。</div></div></div>
+  <div class="quiz-feedback ng" id="q1-ng"><div class="quiz-feedback-icon">✕</div><div class="quiz-feedback-body"><div class="quiz-feedback-title">惜しい！</div><div class="quiz-feedback-text">正解はCです。RAWは生データなので撮影後の調整幅が最大です。ファイルサイズが小さいのはJPEGの特徴で、RAWはその逆でサイズが大きくなります。</div></div></div>
+</div>
+</section>
+
+<section id="s2">
+<h2>用途別の使い分けと設定方法</h2>
+
+<p>RAWとJPEGはどちらか一方を選ぶだけでなく「RAW+JPEG同時保存」という設定も可能です。用途に合わせた選択方法と、カメラでの設定手順を確認しましょう。</p>
+
+<h3>設定方法</h3>
+
+<!-- =====================================================
+  📸 画像：ig-56_raw-jpeg-menu.png（RAW/JPEG設定のカメラメニュー操作）
+  【差し替え手順】① 下の img-placeholder と prompt-box を削除 ② 実画像に差し替える
+  ===================================================== -->
+<div style="margin: 24px 0; text-align: center;" class="reveal">
+  <a href="https://www.dropbox.com/scl/fi/xk7a0b22ccoeiwyizfyrc/00.png?rlkey=72qzr64f9uohvshbwfsaq1yyu&st=fmfpujpm&raw=1" class="lightbox" style="display: inline-block;" target="_blank" rel="noopener">
+    <img src="https://www.dropbox.com/scl/fi/xk7a0b22ccoeiwyizfyrc/00.png?rlkey=72qzr64f9uohvshbwfsaq1yyu&st=fmfpujpm&raw=1" alt="RAW/JPEG設定の変え方" class="lightbox-img" style="display: block; margin: 0 auto; max-width: 100%;">
+  </a>
+</div>
+
+<div class="step-row reveal">
+  <div class="step-row__num">1</div>
+  <div class="step-row__body"><div class="step-row__title">カメラのメニューを開く</div><p class="step-row__text">カメラのMENUボタンを押してメニュー画面を開きます。多くのカメラで「撮影設定」または「画質・記録」などの項目に記録形式の設定があります。</p></div>
+</div>
+<div class="step-row reveal">
+  <div class="step-row__num">2</div>
+  <div class="step-row__body"><div class="step-row__title">画質・記録形式の設定を探す</div><p class="step-row__text">「画質設定」「ファイル形式」「RAW/JPEG」などの項目を探します。メーカーによって名称が異なります（Canon「記録画質」/ Sony「画質」または「画質設定」/ FUJIFILM「画質設定」）。</p></div>
+</div>
+<div class="step-row reveal">
+  <div class="step-row__num">3</div>
+  <div class="step-row__body"><div class="step-row__title">用途に合わせて設定する</div><p class="step-row__text">RAWのみ・JPEGのみ・RAW+JPEGから選択します。初心者や学習中はRAW+JPEG同時保存がおすすめです。JPEGは「L（ラージ）・ファイン（高品質）」を選ぶのが基本です。</p></div>
+</div>
+<div class="step-row reveal">
+  <div class="step-row__num">4</div>
+  <div class="step-row__body"><div class="step-row__title">SDカードの残量を確認する</div><p class="step-row__text">RAW+JPEG同時保存はファイルサイズが大きくなります。64GB以上の高速SDカード（UHS-I以上）を用意しておきましょう。撮影前に残量を確認する習慣をつけてください。</p></div>
+</div>
+
+<h3>使い分け方を学習しよう</h3>
+<div style="margin: 24px 0; text-align: center;" class="reveal">
+  <a href="https://www.dropbox.com/scl/fi/lwtylynijcsknb72oc38g/01.png?rlkey=6jf4vw4jdccbs0sweg43p8kqb&st=8yibarl6&raw=1" class="lightbox" style="display: inline-block;" target="_blank" rel="noopener">
+    <img src="https://www.dropbox.com/scl/fi/lwtylynijcsknb72oc38g/01.png?rlkey=6jf4vw4jdccbs0sweg43p8kqb&st=8yibarl6&raw=1" alt="RAW vs JPEG 記録形式の違い" class="lightbox-img" style="display: block; margin: 0 auto; max-width: 100%;">
+  </a>
+</div>
+
+<table class="spec-table reveal">
+  <thead><tr><th style="width:200px">撮影目的</th><th>おすすめ</th><th>理由</th></tr></thead>
+  <tbody>
+    <tr><td><span class="tbl-name">SNS・ブログ投稿</span></td><td>JPEG</td><td>すぐ使える・軽い・そのまま投稿可</td></tr>
+    <tr><td><span class="tbl-name">本格的なレタッチ</span></td><td>RAW</td><td>色・明るさ・WBを後から大幅調整可</td></tr>
+    <tr><td><span class="tbl-name">イベント・旅行（枚数重視）</span></td><td>JPEG</td><td>ファイルが小さく大量撮影に向く</td></tr>
+    <tr><td><span class="tbl-name">商品撮影・ポートフォリオ</span></td><td>RAW</td><td>高品質な仕上がりが必要な場合に最適</td></tr>
+    <tr><td><span class="tbl-name">学習中・迷ったとき</span></td><td>RAW+JPEG</td><td>両方を確保できる。大容量SDカードが必要</td></tr>
+  </tbody>
+</table>
+
+<div class="quiz-box reveal">
+  <div class="quiz-top"><div class="quiz-icon">Q</div><div class="quiz-title">確認クイズ</div></div>
+  <div class="quiz-q">RAW+JPEG同時保存を選ぶメリットはどれ？</div>
+  <div class="quiz-options">
+    <button class="quiz-opt" data-q="q2" data-correct="true"><div class="quiz-letter">A</div><div class="quiz-opt-text">すぐ使えるJPEGと後処理できるRAWの両方を手元に残せる</div></button>
+    <button class="quiz-opt" data-q="q2" data-correct="false"><div class="quiz-letter">B</div><div class="quiz-opt-text">ファイルサイズが小さくなる</div></button>
+    <button class="quiz-opt" data-q="q2" data-correct="false"><div class="quiz-letter">C</div><div class="quiz-opt-text">バッテリーの消耗が減る</div></button>
+    <button class="quiz-opt" data-q="q2" data-correct="false"><div class="quiz-letter">D</div><div class="quiz-opt-text">SDカードの容量が2倍になる</div></button>
+  </div>
+  <div class="quiz-feedback ok" id="q2-ok"><div class="quiz-feedback-icon">✓</div><div class="quiz-feedback-body"><div class="quiz-feedback-title">正解です！</div><div class="quiz-feedback-text">RAW+JPEG同時保存なら、すぐSNSに使えるJPEGと後からLightroomで丁寧に仕上げられるRAWの両方を手元に残せます。学習中は特におすすめの設定です。</div></div></div>
+  <div class="quiz-feedback ng" id="q2-ng"><div class="quiz-feedback-icon">✕</div><div class="quiz-feedback-body"><div class="quiz-feedback-title">惜しい！</div><div class="quiz-feedback-text">正解はAです。RAW+JPEG同時保存はファイルが2枚になるためSDカードの容量を多く消費しますが、JPEGとRAWの両方を手元に残せるメリットがあります。</div></div></div>
+</div>
+</section>
+
+<div class="summary-box reveal">
+  <div class="summary-box__head"><div class="summary-box__badge">SUMMARY</div></div>
+  <ol>
+    <li><strong>RAWの特徴</strong> ― 生データ・大容量・後処理の自由度が最大</li>
+    <li><strong>JPEGの特徴</strong> ― カメラ内処理済み・小容量・そのまま使える</li>
+    <li><strong>RAW+JPEG同時保存</strong> ― 迷ったらこれ。SDカードは大容量を用意する</li>
+    <li><strong>失敗リカバリ</strong> ― RAWなら露出±2〜3段の失敗は後から修正できる</li>
+  </ol>
+</div>
+
+<div class="check-box reveal">
+  <div class="check-box__head"><div class="check-box__pill">CHECK</div><div class="check-box__sub">理解度チェック</div></div>
+  <details><summary>RAWとJPEGの違いと用途を説明できる</summary><div class="check-box__detail">RAWは生データで編集の自由度が最大ですが専用ソフトが必要で容量が大きい。JPEGはカメラ内処理済みで小容量・すぐ使えますが編集幅が限られます。</div></details>
+  <details><summary>自分の目的に合った記録形式を選べる</summary><div class="check-box__detail">本格的な撮影・後処理重視→RAW。手軽に使いたい→JPEG。迷ったら→RAW+JPEG同時保存が最も失敗が少ない選択です。</div></details>
+  <details><summary>カメラで記録形式を設定できる</summary><div class="check-box__detail">カメラのMENUから「撮影設定」または「画質・記録」の項目を探し、RAW/JPEG/RAW+JPEGから選択します。メーカーによって名称が異なるためマニュアルも確認しましょう。</div></details>
+</div>
+  
+  <!-- 次の章に進むボタンの場合 -->    
+<div style="display: flex; justify-content: flex-end; align-items: center; padding: 24px 0; margin-top: 24px; max-width: 1775px; margin-left: auto; margin-right: auto;">
+  <a href="MfgYp" style="position: relative; display: inline-block; background: linear-gradient(135deg, #E85D4A, #F5A64A); color: #fff; font-weight: 700; padding: 12px clamp(24px, 7vw, 48px); border-radius: 8px; text-decoration: none;">
+    次の章に進む
+    <img src="/theme/webcoach/img/icons/arrow-right.svg" style="position: absolute; top: 50%; transform: translateY(-50%); right: 12px; filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(125deg) brightness(103%) contrast(103%);">
+  </a>
+</div>
+  <div class="back-to-roadmap" style="display: flex; justify-content: center; align-items: center; padding: 24px 0; margin-top: 24px;"></div>
+
+</div>
+<script>
+(function(){var obs=new IntersectionObserver(function(entries){entries.forEach(function(e){if(e.isIntersecting){e.target.classList.add('visible');obs.unobserve(e.target)}})},{threshold:0.1});document.querySelectorAll('.reveal').forEach(function(el){obs.observe(el)})})();
+document.querySelectorAll('.quiz-opt').forEach(function(btn){btn.addEventListener('click',function(){var clicked=this;var q=this.dataset.q;var correct=this.dataset.correct==='true';var opts=document.querySelectorAll('[data-q="'+q+'"]');opts.forEach(function(o){o.disabled=true});clicked.classList.add(correct?'correct':'wrong');opts.forEach(function(o){if(o===clicked)return;if(o.dataset.correct==='true')o.classList.add('correct');else o.classList.add('dim')});document.getElementById(q+'-'+(correct?'ok':'ng')).classList.add('show')})});
+(function(){var openTip=null;document.querySelectorAll('.tt').forEach(function(el){var pop=document.createElement('span');pop.className='tt__pop';var lbl=document.createElement('span');lbl.className='tt__pop-label';lbl.textContent='用語解説';pop.appendChild(lbl);pop.appendChild(document.createTextNode(el.dataset.tip));el.appendChild(pop);el.addEventListener('click',function(e){e.stopPropagation();if(openTip&&openTip!==el){openTip.classList.remove('open');var op=openTip.querySelector('.tt__pop');if(op){op.style.left='';op.style.right='';op.style.transform='';op.classList.remove('tt__pop--below')}}el.classList.toggle('open');openTip=el.classList.contains('open')?el:null;if(openTip){pop.style.left='';pop.style.right='';pop.style.transform='';pop.classList.remove('tt__pop--below');requestAnimationFrame(function(){var r=pop.getBoundingClientRect();if(r.top<8){pop.classList.add('tt__pop--below')}var r2=pop.getBoundingClientRect();if(r2.right>window.innerWidth-8){pop.style.left='auto';pop.style.right='0';pop.style.transform='none'}else if(r2.left<8){pop.style.left='0';pop.style.transform='none'}})}})});document.addEventListener('click',function(){if(openTip){openTip.classList.remove('open');var op=openTip.querySelector('.tt__pop');if(op){op.style.left='';op.style.right='';op.style.transform='';op.classList.remove('tt__pop--below')}openTip=null}})})();
+</script>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="ck-icon-arrow-down" viewBox="0 0 1792 1792"><path d="M1675 832q0 53-37 90l-651 652q-39 37-91 37-53 0-90-37l-651-652q-38-36-38-90 0-53 38-91l74-75q39-37 91-37 53 0 90 37l294 294v-704q0-52 38-90t90-38h128q52 0 90 38t38 90v704l294-294q37-37 90-37 52 0 91 37l75 75q37 39 37 91z" /></symbol><symbol id="ck-icon-arrow-up" viewBox="0 0 1792 1792"><path d="M1675 971q0 51-37 90l-75 75q-38 38-91 38-54 0-90-38l-294-293v704q0 52-37.5 84.5t-90.5 32.5h-128q-53 0-90.5-32.5t-37.5-84.5v-704l-294 293q-36 38-90 38t-90-38l-75-75q-38-38-38-90 0-53 38-91l651-651q35-37 90-37 54 0 91 37l651 651q37 39 37 91z" /></symbol><symbol id="ck-icon-calendar" viewBox="0 0 1792 1792"><path d="M192 1664h288v-288h-288v288zm352 0h320v-288h-320v288zm-352-352h288v-320h-288v320zm352 0h320v-320h-320v320zm-352-384h288v-288h-288v288zm736 736h320v-288h-320v288zm-384-736h320v-288h-320v288zm768 736h288v-288h-288v288zm-384-352h320v-320h-320v320zm-352-864v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm736 864h288v-320h-288v320zm-384-384h320v-288h-320v288zm384 0h288v-288h-288v288zm32-480v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm384-64v1280q0 52-38 90t-90 38h-1408q-52 0-90-38t-38-90v-1280q0-52 38-90t90-38h128v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h384v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h128q52 0 90 38t38 90z" /></symbol><symbol id="ck-icon-chevron-left" viewBox="0 0 1792 1792"><path d="M1427 301l-531 531 531 531q19 19 19 45t-19 45l-166 166q-19 19-45 19t-45-19l-742-742q-19-19-19-45t19-45l742-742q19-19 45-19t45 19l166 166q19 19 19 45t-19 45z" /></symbol><symbol id="ck-icon-chevron-right" viewBox="0 0 1792 1792"><path d="M1363 877l-742 742q-19 19-45 19t-45-19l-166-166q-19-19-19-45t19-45l531-531-531-531q-19-19-19-45t19-45l166-166q19-19 45-19t45 19l742 742q19 19 19 45t-19 45z" /></symbol><symbol id="ck-icon-clock-o" viewBox="0 0 1792 1792"><path d="M1024 544v448q0 14-9 23t-23 9h-320q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h224v-352q0-14 9-23t23-9h64q14 0 23 9t9 23zm416 352q0-148-73-273t-198-198-273-73-273 73-198 198-73 273 73 273 198 198 273 73 273-73 198-198 73-273zm224 0q0 209-103 385.5t-279.5 279.5-385.5 103-385.5-103-279.5-279.5-103-385.5 103-385.5 279.5-279.5 385.5-103 385.5 103 279.5 279.5 103 385.5z" /></symbol><symbol id="ck-icon-trash" viewBox="0 0 1792 1792"><path d="M704 1376v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm-544-992h448l-48-117q-7-9-17-11h-317q-10 2-17 11zm928 32v64q0 14-9 23t-23 9h-96v948q0 83-47 143.5t-113 60.5h-832q-66 0-113-58.5t-47-141.5v-952h-96q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h309l70-167q15-37 54-63t79-26h320q40 0 79 26t54 63l70 167h309q14 0 23 9t9 23z" /></symbol><symbol id="ck-icon-undo" viewBox="0 0 1792 1792"><path d="M1664 896q0 156-61 298t-164 245-245 164-298 61q-172 0-327-72.5t-264-204.5q-7-10-6.5-22.5t8.5-20.5l137-138q10-9 25-9 16 2 23 12 73 95 179 147t225 52q104 0 198.5-40.5t163.5-109.5 109.5-163.5 40.5-198.5-40.5-198.5-109.5-163.5-163.5-109.5-198.5-40.5q-98 0-188 35.5t-160 101.5l137 138q31 30 14 69-17 40-59 40h-448q-26 0-45-19t-19-45v-448q0-42 40-59 39-17 69 14l130 129q107-101 244.5-156.5t284.5-55.5q156 0 298 61t245 164 164 245 61 298z" /></symbol></svg><script async="async" defer="defer" nonce="iB8TnLhawpyoHF07o5ibwQ==" src="//www.instagram.com/embed.js"></script>
+
+<!--Clipkit(R) v15.9.0-20260915 Copyright (C) 2026 VECTOR Inc.-->
+
+</body>
+</html>
+</div></div>
+        
+      
+    </div>
+  
+  </div>
+</div>
+<!-- <script src="https://cdn.clipkit.co/clipkit/javascripts/item-shopify-1.0.js?v=v15.9.0-20260915" async></script> -->
+
+            </div>
+        </main>
+
+    </div>
+
+    <script src="https://cdn.clipkit.co/clipkit/javascripts/application-1.0.js?v=v15.9.0-20260915" async></script>
+
+    <!-- bodyタグ内の下部に挿入されます -->
+
+
+    <!-- BootstrapのCDNでのjs読み込み -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+        crossorigin="anonymous"></script>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="ck-icon-arrow-down" viewBox="0 0 1792 1792"><path d="M1675 832q0 53-37 90l-651 652q-39 37-91 37-53 0-90-37l-651-652q-38-36-38-90 0-53 38-91l74-75q39-37 91-37 53 0 90 37l294 294v-704q0-52 38-90t90-38h128q52 0 90 38t38 90v704l294-294q37-37 90-37 52 0 91 37l75 75q37 39 37 91z" /></symbol><symbol id="ck-icon-arrow-up" viewBox="0 0 1792 1792"><path d="M1675 971q0 51-37 90l-75 75q-38 38-91 38-54 0-90-38l-294-293v704q0 52-37.5 84.5t-90.5 32.5h-128q-53 0-90.5-32.5t-37.5-84.5v-704l-294 293q-36 38-90 38t-90-38l-75-75q-38-38-38-90 0-53 38-91l651-651q35-37 90-37 54 0 91 37l651 651q37 39 37 91z" /></symbol><symbol id="ck-icon-calendar" viewBox="0 0 1792 1792"><path d="M192 1664h288v-288h-288v288zm352 0h320v-288h-320v288zm-352-352h288v-320h-288v320zm352 0h320v-320h-320v320zm-352-384h288v-288h-288v288zm736 736h320v-288h-320v288zm-384-736h320v-288h-320v288zm768 736h288v-288h-288v288zm-384-352h320v-320h-320v320zm-352-864v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm736 864h288v-320h-288v320zm-384-384h320v-288h-320v288zm384 0h288v-288h-288v288zm32-480v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm384-64v1280q0 52-38 90t-90 38h-1408q-52 0-90-38t-38-90v-1280q0-52 38-90t90-38h128v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h384v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h128q52 0 90 38t38 90z" /></symbol><symbol id="ck-icon-chevron-left" viewBox="0 0 1792 1792"><path d="M1427 301l-531 531 531 531q19 19 19 45t-19 45l-166 166q-19 19-45 19t-45-19l-742-742q-19-19-19-45t19-45l742-742q19-19 45-19t45 19l166 166q19 19 19 45t-19 45z" /></symbol><symbol id="ck-icon-chevron-right" viewBox="0 0 1792 1792"><path d="M1363 877l-742 742q-19 19-45 19t-45-19l-166-166q-19-19-19-45t19-45l531-531-531-531q-19-19-19-45t19-45l166-166q19-19 45-19t45 19l742 742q19 19 19 45t-19 45z" /></symbol><symbol id="ck-icon-clock-o" viewBox="0 0 1792 1792"><path d="M1024 544v448q0 14-9 23t-23 9h-320q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h224v-352q0-14 9-23t23-9h64q14 0 23 9t9 23zm416 352q0-148-73-273t-198-198-273-73-273 73-198 198-73 273 73 273 198 198 273 73 273-73 198-198 73-273zm224 0q0 209-103 385.5t-279.5 279.5-385.5 103-385.5-103-279.5-279.5-103-385.5 103-385.5 279.5-279.5 385.5-103 385.5 103 279.5 279.5 103 385.5z" /></symbol><symbol id="ck-icon-trash" viewBox="0 0 1792 1792"><path d="M704 1376v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm-544-992h448l-48-117q-7-9-17-11h-317q-10 2-17 11zm928 32v64q0 14-9 23t-23 9h-96v948q0 83-47 143.5t-113 60.5h-832q-66 0-113-58.5t-47-141.5v-952h-96q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h309l70-167q15-37 54-63t79-26h320q40 0 79 26t54 63l70 167h309q14 0 23 9t9 23z" /></symbol><symbol id="ck-icon-undo" viewBox="0 0 1792 1792"><path d="M1664 896q0 156-61 298t-164 245-245 164-298 61q-172 0-327-72.5t-264-204.5q-7-10-6.5-22.5t8.5-20.5l137-138q10-9 25-9 16 2 23 12 73 95 179 147t225 52q104 0 198.5-40.5t163.5-109.5 109.5-163.5 40.5-198.5-40.5-198.5-109.5-163.5-163.5-109.5-198.5-40.5q-98 0-188 35.5t-160 101.5l137 138q31 30 14 69-17 40-59 40h-448q-26 0-45-19t-19-45v-448q0-42 40-59 39-17 69 14l130 129q107-101 244.5-156.5t284.5-55.5q156 0 298 61t245 164 164 245 61 298z" /></symbol></svg><script async="async" defer="defer" nonce="iB8TnLhawpyoHF07o5ibwQ==" src="//www.instagram.com/embed.js"></script>
+
+<!--Clipkit(R) v15.9.0-20260915 Copyright (C) 2026 VECTOR Inc.-->
+
+</body>
+
+</html>

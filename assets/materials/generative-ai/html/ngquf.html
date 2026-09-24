@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<!-- clipkit-source-url: https://learn.webcoach.jp/generative-ai/introduction-to-generative-ai/claude-chap1/nGqUF -->
+<!-- clipkit-fetched-at: 2026-09-17T11:14:00.275Z -->
+<html lang="ja"><head><style data-clipkit-snapshot="force-visible">[data-aos],.reveal,.wow,.fade-in,.animate__animated,.js-reveal{opacity:1!important;transform:none!important;visibility:visible!important;animation:none!important;transition:none!important}</style></head><body><div>
+  
+    <div>
+      
+      
+        
+          <div class="article-item item_html " id="item48855" data-item-id="48855" data-item-type="ItemHtml"><div class="item-body">
+
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>料金プランの選び方 | Claude活用講座</title>
+<link rel="preconnect" href="https://fonts.googleapis.com/">
+<link rel="preconnect" href="https://fonts.gstatic.com/">
+<link href="../../_assets/edbf4ebbd2.css" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Noto Sans JP', sans-serif; color: #3D3D3D; font-size: 16px; line-height: 1.9; background: #F7F8FA; -webkit-font-smoothing: antialiased; }
+img { max-width: 100%; height: auto; display: block; }
+
+.lesson-wrapper { max-width: 70%; margin: 0 auto; padding: 40px 0 80px; }
+@media (max-width: 600px) { .lesson-wrapper { max-width: 92%; } }
+
+h2 { font-size: 22px; font-weight: 900; color: #2D2D2D; margin: 56px 0 20px; padding: 0 0 12px; position: relative; letter-spacing: -0.02em; line-height: 1.4; }
+h2::after { content: ''; position: absolute; bottom: 0; left: 0; width: 44px; height: 4px; border-radius: 2px; background: linear-gradient(90deg, #E85D4A, #F5A64A); }
+h3 { font-size: 18px; font-weight: 900; color: #2D2D2D; margin: 32px 0 14px; }
+p { font-size: 15px; line-height: 2.0; color: #555; margin: 0 0 14px; }
+.accent { color: #E85D4A; font-weight: 700; }
+
+/* ゴールボックス */
+.goal-box { background: #fff; padding: 24px 28px; border-radius: 16px; margin-bottom: 32px; box-shadow: 0 2px 16px rgba(0,0,0,0.06); position: relative; overflow: hidden; }
+.goal-box::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px; background: linear-gradient(90deg, #E85D4A, #F5A64A); }
+.goal-box__header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; }
+.goal-box__label { font-size: 11px; font-weight: 700; color: #E85D4A; letter-spacing: 0.15em; }
+.goal-box__time  { font-size: 11px; font-weight: 500; color: #E85D4A; }
+.goal-box__text  { font-size: 15px; font-weight: 700; color: #3D3D3D; line-height: 1.7; margin: 0; }
+
+/* 目次 */
+.toc-box { background: #fff; border-radius: 14px; padding: 22px 26px; margin-bottom: 36px; box-shadow: 0 2px 16px rgba(0,0,0,0.06); }
+.toc-box .label { font-size: 11px; font-weight: 700; color: #F5A64A; letter-spacing: 0.15em; margin-bottom: 10px; }
+.toc-box ol { margin: 0; padding-left: 20px; font-size: 14px; color: #555; line-height: 2.2; }
+.toc-link { color: #555; text-decoration: none; transition: color 0.2s; }
+.toc-link:hover { color: #E85D4A; }
+
+/* イメージボックス */
+.image-box { background: #FFF8F6; border-left: 4px solid #F5A64A; border-radius: 0 14px 14px 0; padding: 20px 24px; margin: 24px 0; }
+.image-box__label { font-size: 11px; font-weight: 700; color: #E0882A; letter-spacing: 0.12em; margin-bottom: 10px; }
+.image-box p { font-size: 14px; color: #6A5A50; line-height: 1.85; margin: 0; }
+
+/* ポイントボックス */
+.point-box { background: #fff; border-left: 4px solid #E85D4A; padding: 20px 24px; border-radius: 0 12px 12px 0; margin: 24px 0; box-shadow: 0 2px 12px rgba(0,0,0,0.05); }
+.point-box__label { font-size: 11px; font-weight: 700; color: #E85D4A; letter-spacing: 0.15em; margin-bottom: 6px; }
+.point-box p { margin: 0; font-size: 14px; line-height: 1.8; color: #555; }
+
+/* 注意ボックス */
+.note-box { background: #FFFBF0; border-left: 4px solid #F5A64A; border-radius: 0 14px 14px 0; padding: 18px 22px; margin: 24px 0; }
+.note-box__label { font-size: 11px; font-weight: 700; color: #E0882A; letter-spacing: 0.12em; margin-bottom: 8px; }
+.note-box p { font-size: 14px; color: #6A5A30; line-height: 1.85; margin: 0; }
+
+/* プランカードグリッド */
+.plan-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; margin: 24px 0; }
+@media (max-width: 600px) { .plan-grid { grid-template-columns: 1fr; } }
+.plan-card { background: #fff; border-radius: 16px; padding: 22px 20px; box-shadow: 0 2px 12px rgba(0,0,0,0.06); position: relative; }
+.plan-card--recommended { border: 2px solid #E85D4A; }
+.plan-card__badge { position: absolute; top: -10px; left: 50%; transform: translateX(-50%); background: linear-gradient(90deg, #E85D4A, #F5A64A); color: #fff; font-size: 11px; font-weight: 700; padding: 3px 12px; border-radius: 20px; white-space: nowrap; letter-spacing: 0.05em; }
+.plan-card__name { font-size: 18px; font-weight: 900; color: #2D2D2D; margin-bottom: 4px; }
+.plan-card__target { font-size: 11px; font-weight: 700; color: #E85D4A; letter-spacing: 0.1em; margin-bottom: 12px; }
+.plan-card__price { font-size: 13px; color: #888; margin-bottom: 14px; line-height: 1.6; }
+.plan-card__price strong { font-size: 15px; color: #3D3D3D; font-weight: 900; }
+.plan-card ul { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 7px; }
+.plan-card li { font-size: 13px; color: #555; display: flex; gap: 8px; align-items: flex-start; line-height: 1.5; }
+.plan-card li::before { content: '✓'; color: #4CAF7C; font-weight: 700; flex-shrink: 0; }
+.plan-card li.minus::before { content: '✗'; color: #CCC; }
+
+/* 比較テーブル */
+.compare-table { width: 100%; border-collapse: collapse; margin: 24px 0; font-size: 14px; }
+.compare-table th { background: #E85D4A; color: white; padding: 12px 16px; text-align: left; font-weight: 700; font-size: 13px; }
+.compare-table th:first-child { border-radius: 10px 0 0 0; }
+.compare-table th:last-child  { border-radius: 0 10px 0 0; }
+.compare-table td { padding: 12px 16px; border-bottom: 1px solid #F0F0F0; background: #fff; line-height: 1.6; vertical-align: top; }
+.compare-table tr:last-child td { border-bottom: none; }
+.compare-table tr:last-child td:first-child { border-radius: 0 0 0 10px; }
+.compare-table tr:last-child td:last-child  { border-radius: 0 0 10px 0; }
+.compare-table td.highlight { background: #FFF3F0; font-weight: 700; color: #E85D4A; }
+.badge { display: inline-block; padding: 2px 8px; border-radius: 20px; font-size: 11px; font-weight: 700; }
+.badge--good { background: #E8F5E9; color: #2E7D52; }
+.badge--avg  { background: #F3F3F3; color: #888; }
+.badge--pro  { background: #FFF3F0; color: #E85D4A; }
+
+/* フローチャート（テキスト版） */
+.flowchart { background: #fff; border-radius: 14px; padding: 24px 28px; margin: 24px 0; box-shadow: 0 2px 12px rgba(0,0,0,0.06); }
+.flowchart__label { font-size: 11px; font-weight: 700; color: #F5A64A; letter-spacing: 0.12em; margin-bottom: 16px; }
+.flow-step { display: flex; gap: 14px; align-items: flex-start; margin-bottom: 8px; }
+.flow-step__num { width: 28px; height: 28px; border-radius: 50%; background: linear-gradient(135deg, #E85D4A, #F5A64A); color: #fff; font-size: 12px; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 2px; }
+.flow-step__q { font-size: 14px; font-weight: 700; color: #2D2D2D; line-height: 1.6; }
+.flow-step__desc { font-size: 13px; color: #888; margin-top: 2px; }
+.flow-arrow { display: flex; align-items: center; gap: 10px; color: #F5A64A; margin: 8px 0; }
+.flow-arrow__icon { font-size: 20px; font-weight: 700; width: 28px; text-align: center; flex-shrink: 0; line-height: 1; }
+.flow-arrow__text { font-size: 13px; font-weight: 600; line-height: 1.5; }
+.flow-result { background: linear-gradient(135deg, #FFF0EC, #FFF8F0); border-radius: 10px; padding: 12px 16px; margin-top: 8px; font-size: 14px; font-weight: 700; color: #E85D4A; text-align: center; }
+
+/* 深掘りトグル */
+.deepdive { margin: 20px 0; }
+.deepdive summary { cursor: pointer; font-size: 13px; font-weight: 700; color: #E85D4A; padding: 10px 0; list-style: none; display: flex; align-items: center; gap: 6px; }
+.deepdive summary::before { content: '🔍'; }
+.deepdive summary::-webkit-details-marker { display: none; }
+.deepdive__body { background: #FFF8F6; border-radius: 10px; padding: 16px 20px; margin-top: 8px; font-size: 14px; color: #5A4A40; line-height: 1.8; }
+
+/* クイズ */
+.quiz-block { background: #fff; border-radius: 16px; padding: 24px; margin: 32px 0; box-shadow: 0 2px 16px rgba(0,0,0,0.06); }
+.quiz-block__label { font-size: 11px; font-weight: 700; color: #F5A64A; letter-spacing: 0.15em; margin-bottom: 12px; }
+.quiz-block__q { font-size: 15px; font-weight: 700; color: #2D2D2D; margin-bottom: 16px; line-height: 1.6; }
+.quiz-choices { display: flex; flex-direction: column; gap: 8px; }
+.quiz-btn { background: #F7F8FA; border: 2px solid #E8E8E8; border-radius: 10px; padding: 12px 16px; font-size: 13px; font-family: inherit; color: #3D3D3D; cursor: pointer; text-align: left; transition: all 0.2s; line-height: 1.5; }
+.quiz-btn:hover:not(:disabled) { border-color: #E85D4A; background: #FFF0ED; }
+.quiz-btn.correct  { background: #E8F5E9; border-color: #4CAF7C; color: #2E7D52; }
+.quiz-btn.wrong    { background: #FFEBEE; border-color: #EF5350; color: #C62828; }
+.correct-fb, .wrong-fb { display: none; margin-top: 14px; padding: 14px 16px; border-radius: 10px; font-size: 13px; line-height: 1.7; }
+.correct-fb { background: #E8F5E9; color: #2E7D52; }
+.wrong-fb   { background: #FFEBEE; color: #C62828; }
+
+/* まとめ */
+.summary-box { background: #fff; border-radius: 16px; padding: 28px; margin: 48px 0 32px; box-shadow: 0 2px 16px rgba(0,0,0,0.06); }
+.summary-box__label { font-size: 11px; font-weight: 700; color: #E85D4A; letter-spacing: 0.15em; margin-bottom: 16px; }
+.summary-box ul { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 10px; }
+.summary-box li { font-size: 14px; color: #3D3D3D; display: flex; gap: 10px; align-items: flex-start; line-height: 1.7; }
+.summary-box li::before { content: '✅'; flex-shrink: 0; }
+
+/* 理解度チェック（2層details） */
+.check-outer { background: #fff; border-radius: 16px; box-shadow: 0 2px 16px rgba(0,0,0,0.06); overflow: hidden; margin: 24px 0; }
+.check-outer > summary { cursor: pointer; padding: 20px 24px; font-size: 15px; font-weight: 700; color: #2D2D2D; list-style: none; display: flex; justify-content: space-between; align-items: center; }
+.check-outer > summary::-webkit-details-marker { display: none; }
+.check-outer > summary::after { content: '▼'; font-size: 12px; color: #AAA; transition: transform 0.2s; }
+.check-outer[open] > summary::after { transform: rotate(180deg); }
+.check-outer__label { font-size: 11px; font-weight: 700; color: #E85D4A; letter-spacing: 0.15em; }
+.check-inner { border-top: 1px solid #F0F0F0; padding: 20px 24px; }
+.check-item { margin-bottom: 12px; }
+.check-item details summary { cursor: pointer; font-size: 14px; color: #3D3D3D; list-style: none; padding: 8px 0; display: flex; gap: 10px; align-items: flex-start; line-height: 1.6; }
+.check-item details summary::-webkit-details-marker { display: none; }
+.check-item details summary::before { content: '☐'; color: #E85D4A; flex-shrink: 0; font-size: 16px; }
+.check-item details[open] summary::before { content: '☑'; color: #4CAF7C; }
+.check-item__answer { background: #F7F8FA; border-radius: 8px; padding: 12px 14px; margin-top: 6px; font-size: 13px; color: #555; line-height: 1.7; }
+.hero { background: linear-gradient(135deg, #E85D4A 0%, #F5A64A 100%); border-radius: 16px; padding: 48px 40px; margin-bottom: 40px; color: #fff; }
+.hero__label { font-size: 13px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; opacity: 0.85; margin-bottom: 12px; }
+.hero__title { font-size: 28px; font-weight: 800; line-height: 1.3; margin-bottom: 16px; }
+.hero__meta { display: flex; gap: 20px; font-size: 14px; opacity: 0.9; flex-wrap: wrap; }
+.hero__meta span { background: rgba(255,255,255,0.2); padding: 4px 12px; border-radius: 20px; }
+</style>
+<meta name="csrf-param" content="authenticity_token">
+<meta name="csrf-token" content="qCXM3_k8FNx5nboGacJNQbC_fBOVsetM4XCIQJybDhE6lStFnFLzBFBPHcNZh-rNiPHkp0GMWYqaccLSBVBYug"><meta content="" name="routing-root-path"><meta content="media" name="site-name"><meta content="ja" name="i18n-default-locale"><meta content="ja" name="i18n-locale">
+
+<div class="lesson-wrapper">
+
+  <!-- ヘッダー -->
+  <div class="hero">
+    <div class="hero__label">Chapter 1 — Lesson 2</div>
+    <div class="hero__title">料金プランの選び方</div>
+    <div class="hero__meta">
+      <span>🕐 約8分</span>
+      <span>📚 知識型</span>
+      <span>🔖 プラン選択</span>
+    </div>
+  </div>
+
+<!-- 前の章に戻るボタン / 次の章に進むボタン がある場合 -->  
+<div style="display: flex; justify-content: space-between; align-items: center; padding: 24px 0; margin-top: 24px;">
+  <a href="https://learn.webcoach.jp/generative-ai/introduction-to-generative-ai/claude-chap1/WthR8" style="position: relative; display: inline-block; background: linear-gradient(135deg, #E85D4A, #F5A64A); color: #fff; font-weight: 700; padding: 12px clamp(24px, 7vw, 48px); border-radius: 8px; text-decoration: none;"><img src="../../_assets/47498cfebf.svg" style="position: absolute; top: 50%; transform: translateY(-50%); left: 12px; filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(125deg) brightness(103%) contrast(103%); transform: translateY(-50%) rotate(180deg);">前の章に戻る</a>
+  <a href="https://learn.webcoach.jp/generative-ai/introduction-to-generative-ai/claude-chap1/XE4Lb" style="position: relative; display: inline-block; background: linear-gradient(135deg, #E85D4A, #F5A64A); color: #fff; font-weight: 700; padding: 12px clamp(24px, 7vw, 48px); border-radius: 8px; text-decoration: none;">次の章に進む<img src="../../_assets/47498cfebf.svg" style="position: absolute; top: 50%; transform: translateY(-50%); right: 12px; filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(125deg) brightness(103%) contrast(103%);"></a>
+</div>  
+  
+  <!-- ゴール -->
+  <div class="goal-box">
+    <div class="goal-box__header">
+      <span class="goal-box__label">このレッスンのゴール</span>
+      <span class="goal-box__time">目安 8分</span>
+    </div>
+    <p class="goal-box__text">Claude の料金プランを4つ把握し、<span class="accent">デザイナー・副業フリーランスとして自分に合ったプランを選べる</span>ようになる。</p>
+  </div>
+
+  <!-- 目次 -->
+  <div class="toc-box">
+    <div class="label">このレッスンの内容</div>
+    <ol>
+      <li><a href="#sec1" class="toc-link">4つのプランを一覧で知る</a></li>
+      <li><a href="#sec2" class="toc-link">各プランの詳細と使い分け</a></li>
+      <li><a href="#sec3" class="toc-link">あなたに合うプランを選ぶ</a></li>
+    </ol>
+  </div>
+
+  <!-- Section 1 -->
+  <h2 id="sec1">4つのプランを一覧で知る</h2>
+
+  <p>Claude には大きく4つのプランが用意されています。まず全体像をつかんでから、それぞれの詳細に入りましょう。</p>
+
+  <div class="image-box">
+    <div class="image-box__label">イメージ</div>
+    <p>「無料で試す → 物足りなければ有料へ」という自然なステップアップ設計になっています。最初からProを契約する必要はなく、まずFreeで使い心地を確認するのが正解です。</p>
+  </div>
+
+  <table class="compare-table">
+    <thead>
+      <tr>
+        <th>プラン</th>
+        <th>主な対象</th>
+        <th>月額</th>
+        <th>特徴</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Free</strong></td>
+        <td>まず試したい人</td>
+        <td>無料</td>
+        <td>利用量に上限あり。最新モデルも一部利用可</td>
+      </tr>
+      <tr>
+        <td class="highlight"><strong>Pro</strong> <span class="badge badge--pro">おすすめ</span></td>
+        <td>毎日使うデザイナー</td>
+        <td>公式サイト参照</td>
+        <td>上限大幅アップ。優先アクセス・Projects機能</td>
+      </tr>
+      <tr>
+        <td><strong>Max</strong></td>
+        <td>ヘビーユーザー</td>
+        <td>公式サイト参照</td>
+        <td>Pro の5〜20倍の利用上限。長時間の自律タスク向け</td>
+      </tr>
+      <tr>
+        <td><strong>API</strong></td>
+        <td>開発者・ツール組み込み</td>
+        <td>従量課金</td>
+        <td>プログラムからClaude を呼び出して自作ツールに組み込む</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="note-box">
+    <div class="note-box__label">価格について</div>
+    <p>月額料金は為替や改定で変わることがあるため、最新の金額は必ず <strong>claude.ai の公式ページ</strong>でご確認ください。このレッスンでは金額の記載を省略しています。</p>
+  </div>
+
+  <!-- Section 2 -->
+  <h2 id="sec2">各プランの詳細と使い分け</h2>
+
+  <div class="plan-grid">
+    <!-- Free -->
+    <div class="plan-card">
+      <div class="plan-card__name">Free</div>
+      <div class="plan-card__target">まず試したい人向け</div>
+      <div class="plan-card__price">無料</div>
+      <ul>
+        <li>Claudeの最新世代モデルを試用可能</li>
+        <li>1日の利用メッセージ数に上限あり</li>
+        <li class="minus">利用量上限に達すると数時間待機が必要</li>
+        <li class="minus">Projects 機能は利用不可</li>
+      </ul>
+    </div>
+
+    <!-- Pro（推奨） -->
+    <div class="plan-card plan-card--recommended">
+      <div class="plan-card__badge">デザイナーにおすすめ</div>
+      <div class="plan-card__name">Pro</div>
+      <div class="plan-card__target">毎日業務で使う人向け</div>
+      <div class="plan-card__price"><strong>公式サイト参照</strong>（月払い）</div>
+      <ul>
+        <li>Free の約5倍の利用上限</li>
+        <li>最新・高性能モデルへの優先アクセス</li>
+        <li>Projects で案件ごとに文脈を保存</li>
+        <li>混雑時も優先的に処理される</li>
+      </ul>
+    </div>
+
+    <!-- Max -->
+    <div class="plan-card">
+      <div class="plan-card__name">Max</div>
+      <div class="plan-card__target">超ヘビーユーザー向け</div>
+      <div class="plan-card__price"><strong>公式サイト参照</strong>（月払い）</div>
+      <ul>
+        <li>Pro の5〜20倍の利用上限</li>
+        <li>Claude Code など自律エージェント機能に対応</li>
+        <li>長時間タスクを任せたい人向け</li>
+        <li class="minus">コストが高いため個人利用は要検討</li>
+      </ul>
+    </div>
+
+    <!-- API -->
+    <div class="plan-card">
+      <div class="plan-card__name">API</div>
+      <div class="plan-card__target">ツール開発者向け</div>
+      <div class="plan-card__price"><strong>従量課金</strong>（使った分だけ）</div>
+      <ul>
+        <li>プログラムから Claude を呼び出せる</li>
+        <li>Claude Code（CLI ツール）の利用に必要</li>
+        <li>自作ツールへの組み込みに最適</li>
+        <li class="minus">ブラウザ UI（claude.ai）は別途必要</li>
+      </ul>
+    </div>
+  </div>
+
+  <details class="deepdive">
+    <summary>Pro の「Projects」機能とは？</summary>
+    <div class="deepdive__body">
+      <p>Projects は、複数の会話にまたがって<strong>文脈（コンテキスト）を保存・共有できる機能</strong>です。</p>
+      <p>たとえば「クライアントAのブランドガイドライン」を1つの Project に登録しておくと、その Project 内で始めた会話ではいちいち説明し直さなくても、クライアントの好みや禁止ルールを Claude が把握した状態で答えてくれます。</p>
+      <p>案件が複数ある副業デザイナーにとって特に便利な機能で、これが Pro を選ぶ主な理由のひとつです。</p>
+    </div>
+  </details>
+
+  <details class="deepdive">
+    <summary>API と claude.ai の違いは？</summary>
+    <div class="deepdive__body">
+      <p><strong>claude.ai</strong>：ブラウザやアプリで使う、誰でも使いやすいチャット画面です。Free / Pro / Max プランはすべてこちらを使います。</p>
+      <p><strong>API</strong>：プログラムから Claude を呼び出す仕組みです。自分でツールを作ったり、Claude Code（ターミナルで動くコーディング AI）を使う場合に必要になります。この講座の後半で扱う予定ですが、最初は claude.ai だけで十分です。</p>
+    </div>
+  </details>
+
+  <!-- Section 3 -->
+  <h2 id="sec3">あなたに合うプランを選ぶ</h2>
+
+  <p>「どのプランにすればいい？」と迷ったら、次のフローで考えてみてください。</p>
+
+  <div class="flowchart">
+    <div class="flowchart__label">プラン選択フロー</div>
+
+    <div class="flow-step">
+      <div class="flow-step__num">1</div>
+      <div>
+        <div class="flow-step__q">Claude を使ったことがない、または試したい段階？</div>
+        <div class="flow-step__desc">→ まずは <strong>Free</strong> で十分です。機能を試してから判断しましょう。</div>
+      </div>
+    </div>
+    <div class="flow-arrow">
+      <span class="flow-arrow__icon">↓</span>
+      <span class="flow-arrow__text">使ってみて「制限が気になる」「毎日使いたい」と感じたら</span>
+    </div>
+
+    <div class="flow-step">
+      <div class="flow-step__num">2</div>
+      <div>
+        <div class="flow-step__q">デザイン業務・副業・フリーランス案件で日常的に使う？</div>
+        <div class="flow-step__desc">→ <strong>Pro</strong> が最適。Projects で案件管理もできます。</div>
+      </div>
+    </div>
+    <div class="flow-arrow">
+      <span class="flow-arrow__icon">↓</span>
+      <span class="flow-arrow__text">さらに</span>
+    </div>
+
+    <div class="flow-step">
+      <div class="flow-step__num">3</div>
+      <div>
+        <div class="flow-step__q">プログラムからAIを呼び出すツールを作りたい？ / Claude Code を使いたい？</div>
+        <div class="flow-step__desc">→ <strong>API</strong> を追加で契約。Pro と併用するのが一般的です。</div>
+      </div>
+    </div>
+
+    <div class="flow-result">この講座では「まず Free → 慣れたら Pro」を推奨します</div>
+  </div>
+
+  <div class="point-box">
+    <div class="point-box__label">ポイント</div>
+    <p>Pro の利用上限は「一般的な業務利用では十分」な量です。ただし、長大なドキュメントを何十本も1日で処理するなど極端な使い方をすると上限に達することがあります。その場合は Max を検討してください。</p>
+  </div>
+
+  <h3>Freeで足りなくなるサイン</h3>
+
+  <p>以下に当てはまり始めたら、Pro への移行を考えましょう。</p>
+
+  <table class="compare-table">
+    <thead>
+      <tr>
+        <th>こんなことが起きたら</th>
+        <th>判断</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>「利用上限に達しました」と表示され、数時間待つ必要がある</td>
+        <td class="highlight">Pro へ移行のサイン</td>
+      </tr>
+      <tr>
+        <td>複数の案件・クライアントで同じ背景情報を毎回説明している</td>
+        <td class="highlight">Pro（Projects）で解決</td>
+      </tr>
+      <tr>
+        <td>1日に何度もClaude を使う業務フローになってきた</td>
+        <td><span class="badge badge--good">Pro が費用対効果◎</span></td>
+      </tr>
+      <tr>
+        <td>まだ週1〜2回ほどしか使っていない</td>
+        <td><span class="badge badge--avg">Free 継続で OK</span></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- クイズ -->
+  <div class="quiz-block" id="q1">
+    <div class="quiz-block__label">確認クイズ</div>
+    <p class="quiz-block__q">Claudeの「Projects」機能が使えるのはどのプランですか？</p>
+    <div class="quiz-choices">
+      <button class="quiz-btn" onclick="answer(this,'q1',false)">① Free</button>
+      <button class="quiz-btn" onclick="answer(this,'q1',true)">② Pro 以上</button>
+      <button class="quiz-btn" onclick="answer(this,'q1',false)">③ API のみ</button>
+      <button class="quiz-btn" onclick="answer(this,'q1',false)">④ どのプランでも使える</button>
+    </div>
+    <div class="correct-fb">正解です！ Projects は Pro / Max / API 利用者向けの機能です。複数案件を扱う場合に非常に便利なため、Pro を選ぶ主な理由のひとつになっています。</div>
+    <div class="wrong-fb">惜しい！ Projects が使えるのは Pro 以上です。Free プランでは会話をまたいで文脈を保存する機能は利用できません。</div>
+  </div>
+
+  <div class="quiz-block" id="q2">
+    <div class="quiz-block__label">確認クイズ</div>
+    <p class="quiz-block__q">Claude Code（ターミナルで動くコーディングAI）を使うために必要なものはどれですか？</p>
+    <div class="quiz-choices">
+      <button class="quiz-btn" onclick="answer(this,'q2',false)">① Free プランへの登録だけで使える</button>
+      <button class="quiz-btn" onclick="answer(this,'q2',false)">② Pro プランへの課金だけで使える</button>
+      <button class="quiz-btn" onclick="answer(this,'q2',true)">③ API の契約（APIキー）が必要</button>
+      <button class="quiz-btn" onclick="answer(this,'q2',false)">④ Max プランへの課金だけで使える</button>
+    </div>
+    <div class="correct-fb">正解！ Claude Code はプログラムから Claude を呼び出すため、API 契約が必要です。claude.ai のプラン（Free / Pro / Max）とは別の契約になります。この講座の後半でも詳しく解説します。</div>
+    <div class="wrong-fb">Claude Code は「API」契約が必要です。claude.ai の画面で使う Free / Pro / Max とは仕組みが異なり、プログラムから直接 Claude を呼び出します。</div>
+  </div>
+
+  <!-- まとめ -->
+  <div class="summary-box">
+    <div class="summary-box__label">このレッスンのまとめ</div>
+    <ul>
+      <li>Claude には Free・Pro・Max・API の4プランがある</li>
+      <li>まずは <strong>Free で試して</strong>、毎日使いたくなったら Pro に移行するのが正解</li>
+      <li>デザイナー・副業フリーランスには <strong>Pro が最適</strong>（Projects 機能が案件管理に便利）</li>
+      <li>Max はヘビーユーザー、API はツール開発・Claude Code 利用時に必要</li>
+      <li>月額料金は変動するため、最新の金額は <strong>公式サイトで確認</strong>すること</li>
+    </ul>
+  </div>
+
+  <!-- 理解度チェック -->
+  <details class="check-outer">
+    <summary>
+      <span class="check-outer__label">理解度チェック</span>
+      <span>3項目で自分の理解を確認しよう</span>
+    </summary>
+    <div class="check-inner">
+      <div class="check-item">
+        <details>
+          <summary>Free と Pro の最大の違いを説明できる</summary>
+          <div class="check-item__answer">
+            主な違いは2点です。①<strong>利用上限の差</strong>：Pro は Free の約5倍のメッセージを送れます。②<strong>Projects 機能</strong>：Pro では会話をまたいで文脈（ブランドガイドラインなど）を保存でき、複数案件の管理が楽になります。混雑時の優先アクセスも Pro の特典です。
+          </div>
+        </details>
+      </div>
+      <div class="check-item">
+        <details>
+          <summary>「Pro で十分か Max が必要か」の判断基準を言える</summary>
+          <div class="check-item__answer">
+            Pro の利用上限を日常的にオーバーするなら Max を検討します。具体的には、大量のドキュメント処理・長時間の自律タスク（Claude Code で何時間もエージェントに任せるなど）を頻繁に行う場合が目安です。一般的なデザイン業務・副業フリーランスなら Pro で十分なケースがほとんどです。
+          </div>
+        </details>
+      </div>
+      <div class="check-item">
+        <details>
+          <summary>API と claude.ai プランの違いを説明できる</summary>
+          <div class="check-item__answer">
+            <strong>claude.ai のプラン（Free / Pro / Max）</strong>：ブラウザやスマホアプリで使うチャット画面に対応する契約です。<br>
+            <strong>API</strong>：プログラムから Claude を直接呼び出す仕組みの契約で、従量課金制です。Claude Code（ターミナルツール）を使ったり、自作ツールに AI を組み込む際に必要になります。両者は別の契約で、多くの開発者は Pro + API を併用しています。
+          </div>
+        </details>
+      </div>
+    </div>
+  </details>
+
+<!-- 前の章に戻るボタン / 次の章に進むボタン がある場合 -->  
+<div style="display: flex; justify-content: space-between; align-items: center; padding: 24px 0; margin-top: 24px;">
+  <a href="https://learn.webcoach.jp/generative-ai/introduction-to-generative-ai/claude-chap1/WthR8" style="position: relative; display: inline-block; background: linear-gradient(135deg, #E85D4A, #F5A64A); color: #fff; font-weight: 700; padding: 12px clamp(24px, 7vw, 48px); border-radius: 8px; text-decoration: none;"><img src="../../_assets/47498cfebf.svg" style="position: absolute; top: 50%; transform: translateY(-50%); left: 12px; filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(125deg) brightness(103%) contrast(103%); transform: translateY(-50%) rotate(180deg);">前の章に戻る</a>
+  <a href="https://learn.webcoach.jp/generative-ai/introduction-to-generative-ai/claude-chap1/XE4Lb" style="position: relative; display: inline-block; background: linear-gradient(135deg, #E85D4A, #F5A64A); color: #fff; font-weight: 700; padding: 12px clamp(24px, 7vw, 48px); border-radius: 8px; text-decoration: none;">次の章に進む<img src="../../_assets/47498cfebf.svg" style="position: absolute; top: 50%; transform: translateY(-50%); right: 12px; filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(125deg) brightness(103%) contrast(103%);"></a>
+</div>    
+  
+</div>
+
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="ck-icon-arrow-down" viewBox="0 0 1792 1792"><path d="M1675 832q0 53-37 90l-651 652q-39 37-91 37-53 0-90-37l-651-652q-38-36-38-90 0-53 38-91l74-75q39-37 91-37 53 0 90 37l294 294v-704q0-52 38-90t90-38h128q52 0 90 38t38 90v704l294-294q37-37 90-37 52 0 91 37l75 75q37 39 37 91z"></path></symbol><symbol id="ck-icon-arrow-up" viewBox="0 0 1792 1792"><path d="M1675 971q0 51-37 90l-75 75q-38 38-91 38-54 0-90-38l-294-293v704q0 52-37.5 84.5t-90.5 32.5h-128q-53 0-90.5-32.5t-37.5-84.5v-704l-294 293q-36 38-90 38t-90-38l-75-75q-38-38-38-90 0-53 38-91l651-651q35-37 90-37 54 0 91 37l651 651q37 39 37 91z"></path></symbol><symbol id="ck-icon-calendar" viewBox="0 0 1792 1792"><path d="M192 1664h288v-288h-288v288zm352 0h320v-288h-320v288zm-352-352h288v-320h-288v320zm352 0h320v-320h-320v320zm-352-384h288v-288h-288v288zm736 736h320v-288h-320v288zm-384-736h320v-288h-320v288zm768 736h288v-288h-288v288zm-384-352h320v-320h-320v320zm-352-864v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm736 864h288v-320h-288v320zm-384-384h320v-288h-320v288zm384 0h288v-288h-288v288zm32-480v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm384-64v1280q0 52-38 90t-90 38h-1408q-52 0-90-38t-38-90v-1280q0-52 38-90t90-38h128v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h384v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h128q52 0 90 38t38 90z"></path></symbol><symbol id="ck-icon-chevron-left" viewBox="0 0 1792 1792"><path d="M1427 301l-531 531 531 531q19 19 19 45t-19 45l-166 166q-19 19-45 19t-45-19l-742-742q-19-19-19-45t19-45l742-742q19-19 45-19t45 19l166 166q19 19 19 45t-19 45z"></path></symbol><symbol id="ck-icon-chevron-right" viewBox="0 0 1792 1792"><path d="M1363 877l-742 742q-19 19-45 19t-45-19l-166-166q-19-19-19-45t19-45l531-531-531-531q-19-19-19-45t19-45l166-166q19-19 45-19t45 19l742 742q19 19 19 45t-19 45z"></path></symbol><symbol id="ck-icon-clock-o" viewBox="0 0 1792 1792"><path d="M1024 544v448q0 14-9 23t-23 9h-320q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h224v-352q0-14 9-23t23-9h64q14 0 23 9t9 23zm416 352q0-148-73-273t-198-198-273-73-273 73-198 198-73 273 73 273 198 198 273 73 273-73 198-198 73-273zm224 0q0 209-103 385.5t-279.5 279.5-385.5 103-385.5-103-279.5-279.5-103-385.5 103-385.5 279.5-279.5 385.5-103 385.5 103 279.5 279.5 103 385.5z"></path></symbol><symbol id="ck-icon-trash" viewBox="0 0 1792 1792"><path d="M704 1376v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm-544-992h448l-48-117q-7-9-17-11h-317q-10 2-17 11zm928 32v64q0 14-9 23t-23 9h-96v948q0 83-47 143.5t-113 60.5h-832q-66 0-113-58.5t-47-141.5v-952h-96q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h309l70-167q15-37 54-63t79-26h320q40 0 79 26t54 63l70 167h309q14 0 23 9t9 23z"></path></symbol><symbol id="ck-icon-undo" viewBox="0 0 1792 1792"><path d="M1664 896q0 156-61 298t-164 245-245 164-298 61q-172 0-327-72.5t-264-204.5q-7-10-6.5-22.5t8.5-20.5l137-138q10-9 25-9 16 2 23 12 73 95 179 147t225 52q104 0 198.5-40.5t163.5-109.5 109.5-163.5 40.5-198.5-40.5-198.5-109.5-163.5-163.5-109.5-198.5-40.5q-98 0-188 35.5t-160 101.5l137 138q31 30 14 69-17 40-59 40h-448q-26 0-45-19t-19-45v-448q0-42 40-59 39-17 69 14l130 129q107-101 244.5-156.5t284.5-55.5q156 0 298 61t245 164 164 245 61 298z"></path></symbol></svg>
+
+<!--Clipkit(R) v15.9.0-20260915 Copyright (C) 2026 VECTOR Inc.-->
+
+
+
+</div></div>
+        
+      
+    </div>
+  
+  </div>
+
+<!-- <script src="https://cdn.clipkit.co/clipkit/javascripts/item-shopify-1.0.js?v=v15.9.0-20260915" async></script> -->
+</body></html>

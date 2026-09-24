@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<!-- clipkit-source-url: https://learn.webcoach.jp/generative-ai/introduction-to-generative-ai/claude-chap3/Jmv5r -->
+<!-- clipkit-fetched-at: 2026-09-17T11:14:00.275Z -->
+<html lang="ja"><head><style data-clipkit-snapshot="force-visible">[data-aos],.reveal,.wow,.fade-in,.animate__animated,.js-reveal{opacity:1!important;transform:none!important;visibility:visible!important;animation:none!important;transition:none!important}</style></head><body><div>
+  
+    <div>
+      
+      
+        
+          <div class="article-item item_html " id="item48864" data-item-id="48864" data-item-type="ItemHtml"><div class="item-body">
+
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Artifactsを活用した業務フロー | Claude活用講座</title>
+<link rel="preconnect" href="https://fonts.googleapis.com/">
+<link rel="preconnect" href="https://fonts.gstatic.com/">
+<link href="../../_assets/edbf4ebbd2.css" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Noto Sans JP', sans-serif; color: #3D3D3D; font-size: 16px; line-height: 1.9; background: #F7F8FA; -webkit-font-smoothing: antialiased; }
+.lesson-wrapper { max-width: 70%; margin: 0 auto; padding: 40px 0 80px; }
+@media (max-width: 600px) { .lesson-wrapper { max-width: 92%; } }
+h2 { font-size: 22px; font-weight: 900; color: #2D2D2D; margin: 56px 0 20px; padding: 0 0 12px; position: relative; letter-spacing: -0.02em; line-height: 1.4; }
+h2::after { content: ''; position: absolute; bottom: 0; left: 0; width: 44px; height: 4px; border-radius: 2px; background: linear-gradient(90deg, #E85D4A, #F5A64A); }
+p { font-size: 15px; line-height: 2.0; color: #555; margin: 0 0 14px; }
+.accent { color: #E85D4A; font-weight: 700; }
+.goal-box { background: #fff; padding: 24px 28px; border-radius: 16px; margin-bottom: 32px; box-shadow: 0 2px 16px rgba(0,0,0,0.06); position: relative; overflow: hidden; }
+.goal-box::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px; background: linear-gradient(90deg, #E85D4A, #F5A64A); }
+.goal-box__header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; }
+.goal-box__label { font-size: 11px; font-weight: 700; color: #E85D4A; letter-spacing: 0.15em; }
+.goal-box__time { font-size: 11px; font-weight: 500; color: #E85D4A; }
+.goal-box__text { font-size: 15px; font-weight: 700; color: #3D3D3D; line-height: 1.7; margin: 0; }
+.toc-box { background: #fff; border-radius: 14px; padding: 22px 26px; margin-bottom: 36px; box-shadow: 0 2px 16px rgba(0,0,0,0.06); }
+.toc-box .label { font-size: 11px; font-weight: 700; color: #F5A64A; letter-spacing: 0.15em; margin-bottom: 10px; }
+.toc-box ol { margin: 0; padding-left: 20px; font-size: 14px; color: #555; line-height: 2.2; }
+.toc-link { color: #555; text-decoration: none; }
+.toc-link:hover { color: #E85D4A; }
+.point-box { background: #fff; border-left: 4px solid #E85D4A; padding: 20px 24px; border-radius: 0 12px 12px 0; margin: 24px 0; box-shadow: 0 2px 12px rgba(0,0,0,0.05); }
+.point-box__label { font-size: 11px; font-weight: 700; color: #E85D4A; letter-spacing: 0.15em; margin-bottom: 6px; }
+.point-box p { margin: 0; font-size: 14px; line-height: 1.8; color: #555; }
+.flow-card { background: #fff; border-radius: 16px; padding: 24px; margin: 24px 0; box-shadow: 0 2px 12px rgba(0,0,0,0.06); }
+.flow-card__label { font-size: 11px; font-weight: 700; color: #F5A64A; letter-spacing: 0.12em; margin-bottom: 16px; }
+.flow-step { display: flex; gap: 14px; align-items: center; margin-bottom: 12px; }
+.flow-step__num { background: linear-gradient(135deg, #E85D4A, #F5A64A); color: #fff; border-radius: 50%; width: 28px; height: 28px; font-size: 12px; font-weight: 900; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.flow-step__body { flex: 1; }
+.flow-step__title { font-size: 14px; font-weight: 700; color: #2D2D2D; margin-bottom: 3px; }
+.flow-step__desc { font-size: 13px; color: #777; line-height: 1.6; }
+.flow-arrow { color: #F5A64A; font-size: 20px; text-align: center; margin: 4px 0; }
+.combo-box { background: linear-gradient(135deg, #FFF0EC, #FFF8F0); border-radius: 14px; padding: 22px 24px; margin: 24px 0; }
+.combo-box__label { font-size: 11px; font-weight: 700; color: #E85D4A; letter-spacing: 0.12em; margin-bottom: 12px; }
+.combo-row { display: flex; gap: 12px; align-items: center; font-size: 14px; color: #3D3D3D; margin-bottom: 10px; }
+.combo-row__tag { background: #E85D4A; color: #fff; font-size: 11px; font-weight: 700; padding: 3px 8px; border-radius: 20px; white-space: nowrap; }
+.combo-row__plus { color: #F5A64A; font-size: 18px; font-weight: 900; flex-shrink: 0; }
+.combo-row__result { font-size: 13px; color: #555; }
+.summary-box { background: #fff; border-radius: 16px; padding: 28px; margin: 48px 0 32px; box-shadow: 0 2px 16px rgba(0,0,0,0.06); }
+.summary-box__label { font-size: 11px; font-weight: 700; color: #E85D4A; letter-spacing: 0.15em; margin-bottom: 16px; }
+.summary-box ul { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 10px; }
+.summary-box li { font-size: 14px; color: #3D3D3D; display: flex; gap: 10px; align-items: flex-start; line-height: 1.7; }
+.summary-box li::before { content: '✅'; flex-shrink: 0; }
+.check-outer { background: #fff; border-radius: 16px; box-shadow: 0 2px 16px rgba(0,0,0,0.06); overflow: hidden; margin: 24px 0; }
+.check-outer > summary { cursor: pointer; padding: 20px 24px; font-size: 15px; font-weight: 700; color: #2D2D2D; list-style: none; display: flex; justify-content: space-between; align-items: center; }
+.check-outer > summary::-webkit-details-marker { display: none; }
+.check-outer > summary::after { content: '▼'; font-size: 12px; color: #AAA; transition: transform 0.2s; }
+.check-outer[open] > summary::after { transform: rotate(180deg); }
+.check-outer__label { font-size: 11px; font-weight: 700; color: #E85D4A; letter-spacing: 0.15em; }
+.check-inner { border-top: 1px solid #F0F0F0; padding: 20px 24px; }
+.check-item { margin-bottom: 12px; }
+.check-item details summary { cursor: pointer; font-size: 14px; color: #3D3D3D; list-style: none; padding: 8px 0; display: flex; gap: 10px; align-items: flex-start; line-height: 1.6; }
+.check-item details summary::-webkit-details-marker { display: none; }
+.check-item details summary::before { content: '☐'; color: #E85D4A; flex-shrink: 0; font-size: 16px; }
+.check-item details[open] summary::before { content: '☑'; color: #4CAF7C; }
+.check-item__answer { background: #F7F8FA; border-radius: 8px; padding: 12px 14px; margin-top: 6px; font-size: 13px; color: #555; line-height: 1.7; }
+.hero { background: linear-gradient(135deg, #E85D4A 0%, #F5A64A 100%); border-radius: 16px; padding: 48px 40px; margin-bottom: 40px; color: #fff; }
+.hero__label { font-size: 13px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; opacity: 0.85; margin-bottom: 12px; }
+.hero__title { font-size: 28px; font-weight: 800; line-height: 1.3; margin-bottom: 16px; }
+.hero__meta { display: flex; gap: 20px; font-size: 14px; opacity: 0.9; flex-wrap: wrap; }
+.hero__meta span { background: rgba(255,255,255,0.2); padding: 4px 12px; border-radius: 20px; }
+</style>
+<meta name="csrf-param" content="authenticity_token">
+<meta name="csrf-token" content="AAMbCg1Yjt43VkAWtZqwSSepadjktILPUU8-wmiKVeRvaDZnnkI90QByFVhEIkfpaEPRouj4WsdAAXCR6Fzb8Q"><meta content="" name="routing-root-path"><meta content="media" name="site-name"><meta content="ja" name="i18n-default-locale"><meta content="ja" name="i18n-locale">
+
+<div class="lesson-wrapper">
+
+  <!-- ヘッダー -->
+  <div class="hero">
+    <div class="hero__label">Chapter 3 — Lesson 4</div>
+    <div class="hero__title">Artifactsを活用した業務フロー</div>
+    <div class="hero__meta">
+      <span>🕐 約8分</span>
+      <span>💼 応用型</span>
+      <span>🔖 業務活用</span>
+    </div>
+  </div>
+  
+<!-- 前の章に戻るボタンの場合 -->  
+<div style="display: flex; justify-content: flex-start; align-items: center; padding: 24px 0; margin-top: 24px;">
+  <a href="https://learn.webcoach.jp/generative-ai/introduction-to-generative-ai/claude-chap3/1SFXV" style="position: relative; display: inline-block; background: linear-gradient(135deg, #E85D4A, #F5A64A); color: #fff; font-weight: 700; padding: 12px clamp(24px, 7vw, 48px); border-radius: 8px; text-decoration: none;"><img src="../../_assets/47498cfebf.svg" style="position: absolute; top: 50%; transform: translateY(-50%); left: 12px; filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(125deg) brightness(103%) contrast(103%); transform: translateY(-50%) rotate(180deg);">前の章に戻る</a>
+</div>
+
+  <div class="goal-box">
+    <div class="goal-box__header">
+      <span class="goal-box__label">このレッスンのゴール</span>
+      <span class="goal-box__time">目安 8分</span>
+    </div>
+    <p class="goal-box__text">Artifacts を「たたき台」として使う考え方を理解し、<span class="accent">クライアント提案フローに組み込めるようになる</span>。</p>
+  </div>
+
+  <div class="toc-box">
+    <div class="label">このレッスンの内容</div>
+    <ol>
+      <li><a href="#sec1" class="toc-link">「たたき台」として使う考え方</a></li>
+      <li><a href="#sec2" class="toc-link">具体的な提案フロー</a></li>
+      <li><a href="#sec3" class="toc-link">Artifacts + Projectsの組み合わせ</a></li>
+    </ol>
+  </div>
+
+  <h2 id="sec1">「たたき台」として使う考え方</h2>
+  <p>Artifacts で生成された HTML や提案書ドラフトは、いくらクオリティが高くても「完成品」として扱ってはいけません。</p>
+  <p>重要なのは「Artifacts = <span class="accent">クライアントとの方向性確認ツール</span>」という位置づけです。</p>
+
+  <div class="point-box">
+    <div class="point-box__label">なぜ「たたき台」と位置づけるのか</div>
+    <p>本格的なデザイン・コーディングに入る前に「こんな方向性で考えています」をすり合わせることで、大きな修正が後半に発生するリスクを減らせます。Artifactsを使えばそのすり合わせが高速・低コストでできます。</p>
+  </div>
+
+  <h2 id="sec2">具体的な提案フロー</h2>
+
+  <div class="flow-card">
+    <div class="flow-card__label">Artifacts を使った LP 提案フロー</div>
+    <div class="flow-step">
+      <div class="flow-step__num">1</div>
+      <div class="flow-step__body">
+        <div class="flow-step__title">ヒアリング</div>
+        <div class="flow-step__desc">クライアントから業種・ターゲット・目的・好みのスタイルを聞く</div>
+      </div>
+    </div>
+    <div class="flow-arrow">↓</div>
+    <div class="flow-step">
+      <div class="flow-step__num">2</div>
+      <div class="flow-step__body">
+        <div class="flow-step__title">Artifactsでたたき台を生成（数分）</div>
+        <div class="flow-step__desc">ヒアリング内容をプロンプトに含めて HTML 構成案を生成する</div>
+      </div>
+    </div>
+    <div class="flow-arrow">↓</div>
+    <div class="flow-step">
+      <div class="flow-step__num">3</div>
+      <div class="flow-step__body">
+        <div class="flow-step__title">クライアントに見せて方向性確認</div>
+        <div class="flow-step__desc">「ざっくりこんな方向性です」と URL や画面共有で提示。正式見積もり前の段階OK</div>
+      </div>
+    </div>
+    <div class="flow-arrow">↓</div>
+    <div class="flow-step">
+      <div class="flow-step__num">4</div>
+      <div class="flow-step__body">
+        <div class="flow-step__title">フィードバックを受けて Claude 上で修正</div>
+        <div class="flow-step__desc">「ここを変えて」という指摘をそのままプロンプトに流して更新。追加コストほぼゼロ</div>
+      </div>
+    </div>
+    <div class="flow-arrow">↓</div>
+    <div class="flow-step">
+      <div class="flow-step__num">5</div>
+      <div class="flow-step__body">
+        <div class="flow-step__title">方向性 OK → 本格制作スタート</div>
+        <div class="flow-step__desc">デザインツール（Figma・STUDIO など）で本格実装へ移行</div>
+      </div>
+    </div>
+  </div>
+
+  <h2 id="sec3">Artifacts + Projects の組み合わせ</h2>
+  <p>Artifacts と Projects を組み合わせると、さらに強力なワークフローが生まれます。</p>
+
+  <div class="combo-box">
+    <div class="combo-box__label">組み合わせの効果</div>
+    <div class="combo-row">
+      <span class="combo-row__tag">Projects</span>
+      <span class="combo-row__plus">+</span>
+      <span class="combo-row__tag">Artifacts</span>
+      <span style="font-size: 14px; color: #555;">＝ クライアント情報を踏まえた的確なたたき台が瞬時に生成される</span>
+    </div>
+    <p style="font-size: 13px; color: #777; margin: 10px 0 0; line-height: 1.7;">Project にクライアントのトンマナ・NG 事項・ターゲットを登録しておけば、Artifacts のプロンプトで改めて説明する必要がなくなります。「LP の構成案を HTML で作って」だけで、クライアントの情報を踏まえた内容が生成されます。</p>
+  </div>
+
+  <div class="summary-box">
+    <div class="summary-box__label">Chapter 3 まとめ</div>
+    <ul>
+      <li>Artifacts は「<strong>たたき台・方向性確認ツール</strong>」として活用する</li>
+      <li>ヒアリング → Artifacts でたたき台 → 確認 → 修正 → 本格制作という<strong>提案フロー</strong>に組み込む</li>
+      <li>修正コストがほぼゼロなので、提案ラリーを恐れなくなる</li>
+      <li>Projects と組み合わせると、クライアント情報を毎回入力せず的確な生成物が得られる</li>
+    </ul>
+  </div>
+
+  <details class="check-outer">
+    <summary>
+      <span class="check-outer__label">理解度チェック</span>
+      <span>2項目で自分の理解を確認しよう</span>
+    </summary>
+    <div class="check-inner">
+      <div class="check-item">
+        <details>
+          <summary>Artifacts を使った LP 提案フローを5ステップで説明できる</summary>
+          <div class="check-item__answer">①ヒアリングで業種・ターゲット・スタイルを確認 → ②Artifacts で HTML たたき台を生成（数分）→ ③クライアントへ提示して方向性確認 → ④フィードバックをプロンプトに流して Claude 上で修正 → ⑤方向性 OK 後に Figma・STUDIO 等で本格制作スタート。</div>
+        </details>
+      </div>
+      <div class="check-item">
+        <details>
+          <summary>Artifacts + Projects の組み合わせ効果を説明できる</summary>
+          <div class="check-item__answer">Projects にクライアントのトンマナ・ターゲット・NG 等を登録しておくと、Artifacts のプロンプトでそれらを再度入力しなくて済む。「LP の構成案を HTML で作って」だけで、そのクライアントの情報を踏まえた的確な内容が生成される。</div>
+        </details>
+      </div>
+    </div>
+  </details>
+  
+<!-- 前の章に戻るボタンの場合 -->  
+<div style="display: flex; justify-content: flex-start; align-items: center; padding: 24px 0; margin-top: 24px;">
+  <a href="https://learn.webcoach.jp/generative-ai/introduction-to-generative-ai/claude-chap3/1SFXV" style="position: relative; display: inline-block; background: linear-gradient(135deg, #E85D4A, #F5A64A); color: #fff; font-weight: 700; padding: 12px clamp(24px, 7vw, 48px); border-radius: 8px; text-decoration: none;"><img src="../../_assets/47498cfebf.svg" style="position: absolute; top: 50%; transform: translateY(-50%); left: 12px; filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(125deg) brightness(103%) contrast(103%); transform: translateY(-50%) rotate(180deg);">前の章に戻る</a>
+</div>
+  
+
+</div>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="ck-icon-arrow-down" viewBox="0 0 1792 1792"><path d="M1675 832q0 53-37 90l-651 652q-39 37-91 37-53 0-90-37l-651-652q-38-36-38-90 0-53 38-91l74-75q39-37 91-37 53 0 90 37l294 294v-704q0-52 38-90t90-38h128q52 0 90 38t38 90v704l294-294q37-37 90-37 52 0 91 37l75 75q37 39 37 91z"></path></symbol><symbol id="ck-icon-arrow-up" viewBox="0 0 1792 1792"><path d="M1675 971q0 51-37 90l-75 75q-38 38-91 38-54 0-90-38l-294-293v704q0 52-37.5 84.5t-90.5 32.5h-128q-53 0-90.5-32.5t-37.5-84.5v-704l-294 293q-36 38-90 38t-90-38l-75-75q-38-38-38-90 0-53 38-91l651-651q35-37 90-37 54 0 91 37l651 651q37 39 37 91z"></path></symbol><symbol id="ck-icon-calendar" viewBox="0 0 1792 1792"><path d="M192 1664h288v-288h-288v288zm352 0h320v-288h-320v288zm-352-352h288v-320h-288v320zm352 0h320v-320h-320v320zm-352-384h288v-288h-288v288zm736 736h320v-288h-320v288zm-384-736h320v-288h-320v288zm768 736h288v-288h-288v288zm-384-352h320v-320h-320v320zm-352-864v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm736 864h288v-320h-288v320zm-384-384h320v-288h-320v288zm384 0h288v-288h-288v288zm32-480v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm384-64v1280q0 52-38 90t-90 38h-1408q-52 0-90-38t-38-90v-1280q0-52 38-90t90-38h128v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h384v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h128q52 0 90 38t38 90z"></path></symbol><symbol id="ck-icon-chevron-left" viewBox="0 0 1792 1792"><path d="M1427 301l-531 531 531 531q19 19 19 45t-19 45l-166 166q-19 19-45 19t-45-19l-742-742q-19-19-19-45t19-45l742-742q19-19 45-19t45 19l166 166q19 19 19 45t-19 45z"></path></symbol><symbol id="ck-icon-chevron-right" viewBox="0 0 1792 1792"><path d="M1363 877l-742 742q-19 19-45 19t-45-19l-166-166q-19-19-19-45t19-45l531-531-531-531q-19-19-19-45t19-45l166-166q19-19 45-19t45 19l742 742q19 19 19 45t-19 45z"></path></symbol><symbol id="ck-icon-clock-o" viewBox="0 0 1792 1792"><path d="M1024 544v448q0 14-9 23t-23 9h-320q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h224v-352q0-14 9-23t23-9h64q14 0 23 9t9 23zm416 352q0-148-73-273t-198-198-273-73-273 73-198 198-73 273 73 273 198 198 273 73 273-73 198-198 73-273zm224 0q0 209-103 385.5t-279.5 279.5-385.5 103-385.5-103-279.5-279.5-103-385.5 103-385.5 279.5-279.5 385.5-103 385.5 103 279.5 279.5 103 385.5z"></path></symbol><symbol id="ck-icon-trash" viewBox="0 0 1792 1792"><path d="M704 1376v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm-544-992h448l-48-117q-7-9-17-11h-317q-10 2-17 11zm928 32v64q0 14-9 23t-23 9h-96v948q0 83-47 143.5t-113 60.5h-832q-66 0-113-58.5t-47-141.5v-952h-96q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h309l70-167q15-37 54-63t79-26h320q40 0 79 26t54 63l70 167h309q14 0 23 9t9 23z"></path></symbol><symbol id="ck-icon-undo" viewBox="0 0 1792 1792"><path d="M1664 896q0 156-61 298t-164 245-245 164-298 61q-172 0-327-72.5t-264-204.5q-7-10-6.5-22.5t8.5-20.5l137-138q10-9 25-9 16 2 23 12 73 95 179 147t225 52q104 0 198.5-40.5t163.5-109.5 109.5-163.5 40.5-198.5-40.5-198.5-109.5-163.5-163.5-109.5-198.5-40.5q-98 0-188 35.5t-160 101.5l137 138q31 30 14 69-17 40-59 40h-448q-26 0-45-19t-19-45v-448q0-42 40-59 39-17 69 14l130 129q107-101 244.5-156.5t284.5-55.5q156 0 298 61t245 164 164 245 61 298z"></path></symbol></svg>
+
+<!--Clipkit(R) v15.9.0-20260915 Copyright (C) 2026 VECTOR Inc.-->
+
+
+
+</div></div>
+        
+      
+    </div>
+  
+  </div>
+
+<!-- <script src="https://cdn.clipkit.co/clipkit/javascripts/item-shopify-1.0.js?v=v15.9.0-20260915" async></script> -->
+</body></html>

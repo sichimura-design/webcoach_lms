@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+<!-- clipkit-source-url: https://learn.webcoach.jp/generative-ai/introduction-to-generative-ai/%E7%94%BB%E5%83%8F%E7%94%9F%E6%88%90AI%E3%81%A7%E6%8F%8F%E3%81%84%E3%81%A6%E3%81%BF%E3%82%88%E3%81%86/iGUCm -->
+<!-- clipkit-fetched-at: 2026-09-17T11:14:00.275Z -->
+<html lang="ja"><head><style data-clipkit-snapshot="force-visible">[data-aos],.reveal,.wow,.fade-in,.animate__animated,.js-reveal{opacity:1!important;transform:none!important;visibility:visible!important;animation:none!important;transition:none!important}</style></head><body><div>
+  
+    <div>
+      
+      
+        
+          <div class="article-item item_html " id="item48537" data-item-id="48537" data-item-type="ItemHtml"><div class="item-body">
+
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Canva AIで画像を生成してみよう | WEBCOACH</title>
+<link rel="preconnect" href="https://fonts.googleapis.com/">
+<link rel="preconnect" href="https://fonts.gstatic.com/">
+<link href="../../_assets/318e5d4d49.css" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; }
+  body {
+    font-family: 'Noto Sans JP', -apple-system, BlinkMacSystemFont, 'Hiragino Sans', sans-serif;
+    color: #3D3D3D; font-size: 16px; line-height: 1.9;
+    -webkit-font-smoothing: antialiased;
+  }
+  img { max-width: 100%; height: auto; display: block; }
+  .toc-link { color: #555; text-decoration: none; transition: color 0.2s; }
+  .toc-link:hover { color: #E85D4A; }
+  h2.section-heading {
+    font-size: 24px; font-weight: 700; color: #3D3D3D;
+    margin: 48px 0 20px; padding-bottom: 10px;
+    border-bottom: 3px solid #FAE8E0; line-height: 1.4;
+  }
+  h3.sub-heading {
+    font-size: 19px; font-weight: 700; color: #3D3D3D;
+    margin: 32px 0 14px; line-height: 1.5;
+  }
+  .text-body { font-size: 16px; line-height: 1.9; color: #444; margin: 0 0 16px; }
+  .accent { color: #E85D4A; font-weight: 700; }
+  .point-box {
+    background: #FFFBF0; border-left: 4px solid #F5A64A;
+    padding: 18px 22px; border-radius: 0 12px 12px 0; margin: 24px 0;
+  }
+  .point-box .label { font-size: 12px; font-weight: 700; color: #F5A64A; letter-spacing: 0.15em; margin-bottom: 6px; }
+  .point-box p { margin: 0; font-size: 15px; line-height: 1.8; color: #555; }
+  .note-box {
+    background: #FFF3F0; border-left: 4px solid #E85D4A;
+    padding: 18px 22px; border-radius: 0 12px 12px 0; margin: 24px 0;
+  }
+  .note-box .label { font-size: 12px; font-weight: 700; color: #E85D4A; letter-spacing: 0.15em; margin-bottom: 6px; }
+  .note-box p { margin: 0; font-size: 15px; line-height: 1.8; color: #555; }
+  .imagine-box {
+    background: #fff; border: 2px solid #E85D4A;
+    border-radius: 16px; padding: 24px; margin: 24px 0;
+  }
+  .imagine-box .label { font-size: 12px; font-weight: 700; color: #E85D4A; letter-spacing: 0.1em; margin-bottom: 8px; }
+  .imagine-box p { font-size: 16px; line-height: 1.8; color: #3D3D3D; margin: 0; }
+  .stumbling-box {
+    background: linear-gradient(135deg, #FFF8F0, #FFFBF0); border: 2px solid #F5A64A;
+    border-radius: 16px; padding: 24px; margin: 24px 0;
+  }
+  .stumbling-box .label { font-size: 12px; font-weight: 700; color: #F5A64A; letter-spacing: 0.1em; margin-bottom: 8px; }
+  .stumbling-box ul { margin: 0; padding-left: 18px; font-size: 15px; line-height: 2; color: #555; }
+  .usecase-box {
+    background: #F0F7FF; border: 1px solid #C2DFF5;
+    border-radius: 12px; padding: 18px 22px; margin: 24px 0;
+  }
+  .usecase-box .label { font-size: 12px; font-weight: 700; color: #2E86DE; letter-spacing: 0.1em; margin-bottom: 6px; }
+  .usecase-box p { margin: 0; font-size: 15px; line-height: 1.8; color: #444; }
+  .card-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 24px 0; }
+  .card {
+    background: #fff; border: 2px solid #FAE8E0;
+    border-radius: 16px; padding: 22px;
+  }
+  .card h3 { font-size: 17px; font-weight: 700; color: #E85D4A; margin: 0 0 8px; }
+  .card p, .card ul { font-size: 14px; line-height: 1.7; color: #555; margin: 0; }
+  .card ul { padding-left: 16px; }
+  .inline-quiz {
+    background: #FFF8F0; border: 2px solid #FAE8E0;
+    border-radius: 16px; padding: 24px; margin: 36px 0;
+  }
+  .inline-quiz .quiz-label { font-size: 12px; font-weight: 700; color: #F5A64A; letter-spacing: 0.1em; margin-bottom: 12px; }
+  .inline-quiz .quiz-question { font-size: 16px; font-weight: 700; color: #3D3D3D; margin: 0 0 16px; line-height: 1.6; }
+  .quiz-options { display: flex; flex-direction: column; gap: 8px; }
+  .quiz-opt {
+    display: block; width: 100%; text-align: left;
+    background: #fff; border: 2px solid #E8E8E8; border-radius: 10px;
+    padding: 12px 16px; font-size: 15px;
+    font-family: 'Noto Sans JP', sans-serif; color: #3D3D3D;
+    cursor: pointer; transition: border-color 0.2s, background 0.2s; line-height: 1.6;
+  }
+  .quiz-opt:hover:not(.answered) { border-color: #F5A64A; background: #FFFBF0; }
+  .quiz-feedback {
+    display: none; margin-top: 16px; padding: 14px 18px;
+    border-radius: 8px; font-size: 14px; line-height: 1.7; color: #444;
+  }
+  .summary-box {
+    background: linear-gradient(135deg, #FDF0ED, #FFFBF0);
+    border: 2px solid #FAE8E0; border-radius: 16px;
+    padding: 28px; margin: 48px 0 28px;
+  }
+  .summary-box .label { font-size: 13px; font-weight: 700; color: #E85D4A; letter-spacing: 0.15em; margin-bottom: 18px; }
+  .summary-box ul { margin: 0; padding-left: 18px; font-size: 14px; line-height: 2; color: #444; }
+  .img-caption {
+    font-size: 13px; color: #999; text-align: center; margin: -8px 0 20px;
+  }
+  .step-block {
+    display: flex; align-items: flex-start; gap: 14px; margin-bottom: 20px;
+  }
+  .step-num {
+    flex-shrink: 0; width: 36px; height: 36px; border-radius: 50%;
+    background: linear-gradient(135deg, #F5A64A, #E85D4A);
+    color: #fff; font-weight: 700; font-size: 15px;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .step-block .step-title { font-size: 16px; font-weight: 700; color: #3D3D3D; margin-bottom: 4px; }
+  .step-block .step-desc { font-size: 14px; line-height: 1.7; color: #555; margin: 0; }
+  .lesson-wrapper { max-width: 70%; margin: 0 auto; }
+  @media (max-width: 600px) {
+    .lesson-wrapper { max-width: 92%; }
+    .card-grid { grid-template-columns: 1fr; }
+    h2.section-heading { font-size: 20px; }
+  }
+</style>
+<meta name="csrf-param" content="authenticity_token">
+<meta name="csrf-token" content="o_W4ocQ9hbR9TQb8_EIdiUAh1K_HXQM93qQ4qbrRH2V-0nbBoDrRvf8Om8wUReVR1QD3tf3sYj6KtImiHwuC7w"><meta content="" name="routing-root-path"><meta content="media" name="site-name"><meta content="ja" name="i18n-default-locale"><meta content="ja" name="i18n-locale">
+
+<div class="lesson-wrapper">
+
+
+<!-- ヘッダー -->
+<div style="background: linear-gradient(135deg, #E85D4A, #F5A64A); color: #fff; padding: 32px 32px 28px; border-radius: 16px 16px 0 0; margin-top: 32px;">
+  <div style="font-size: 12px; font-weight: 700; opacity: 0.85; letter-spacing: 0.15em;">LESSON 4-2</div>
+  <h1 style="margin: 8px 0 0; font-size: 28px; font-weight: 700; line-height: 1.4; color: #fff;">Canva AIで画像を生成してみよう</h1>
+  <p style="margin: 10px 0 0; font-size: 14px; opacity: 0.85; color: #fff;">Chapter 4: 画像AIハンズオン ／ 所要時間：約20分</p>
+</div>
+
+<!-- ゴールボックス -->
+<div style="background: #FAE8E0; padding: 18px 26px; border-radius: 0 0 16px 16px; margin-bottom: 36px;">
+  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
+    <div style="font-size: 12px; font-weight: 700; color: #E85D4A; letter-spacing: 0.15em;">このレッスンのゴール</div>
+    <div style="font-size: 12px; font-weight: 500; color: #E85D4A;">⏱ 約20分</div>
+  </div>
+  <p style="margin: 0; font-size: 16px; font-weight: 700; color: #3D3D3D; line-height: 1.6;">Canva AI（Magic Media）で簡単なキーワードから画像を生成し、「スタイル」機能で異なる雰囲気の画像を作れるようになる</p>
+</div>
+<!-- ロードマップに戻るボタンの場合 --> 
+<div style="display: flex; justify-content: center; align-items: center; padding: 24px 0; margin-top: 24px;">
+  <a href="https://learn.webcoach.jp/2Q/introduction-to-generative-ai" style="display: inline-block; background: #fff; color: #E85D4A; border: 2px solid #E85D4A; font-weight: 700; padding: 10px clamp(24px, 7vw, 48px); border-radius: 8px; text-decoration: none; white-space: nowrap;">ロードマップに戻る</a>
+</div>
+  <!-- 前の章に戻るボタン / 次の章に進むボタン がある場合 -->  
+<div style="display: flex; justify-content: space-between; align-items: center; padding: 24px 0; margin-top: 24px;">
+  <a href="https://learn.webcoach.jp/generative-ai/introduction-to-generative-ai/%E7%94%BB%E5%83%8F%E7%94%9F%E6%88%90AI%E3%81%A7%E6%8F%8F%E3%81%84%E3%81%A6%E3%81%BF%E3%82%88%E3%81%86/0rS6M" style="position: relative; display: inline-block; background: linear-gradient(135deg, #E85D4A, #F5A64A); color: #fff; font-weight: 700; padding: 12px clamp(24px, 7vw, 48px); border-radius: 8px; text-decoration: none;"><img src="../../_assets/47498cfebf.svg" style="position: absolute; top: 50%; transform: translateY(-50%); left: 12px; filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(125deg) brightness(103%) contrast(103%); transform: translateY(-50%) rotate(180deg);">前の章に戻る</a>
+  <a href="https://learn.webcoach.jp/generative-ai/introduction-to-generative-ai/%E7%94%BB%E5%83%8F%E7%94%9F%E6%88%90AI%E3%81%A7%E6%8F%8F%E3%81%84%E3%81%A6%E3%81%BF%E3%82%88%E3%81%86/OfEnC" style="position: relative; display: inline-block; background: linear-gradient(135deg, #E85D4A, #F5A64A); color: #fff; font-weight: 700; padding: 12px clamp(24px, 7vw, 48px); border-radius: 8px; text-decoration: none;">次の章に進む<img src="../../_assets/47498cfebf.svg" style="position: absolute; top: 50%; transform: translateY(-50%); right: 12px; filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(125deg) brightness(103%) contrast(103%);"></a>
+</div>
+
+<!-- 目次 -->
+<div style="background: #fff; border: 1px solid #E8E8E8; border-radius: 12px; padding: 22px 26px; margin-bottom: 40px;">
+  <div style="font-size: 13px; font-weight: 700; color: #F5A64A; letter-spacing: 0.1em; margin-bottom: 12px;">目次</div>
+  <ol style="margin: 0; padding-left: 22px; font-size: 15px; color: #555; line-height: 2.2;">
+    <li><a href="#sec1" class="toc-link">CanvaでAI画像生成をはじめよう</a></li>
+    <li><a href="#sec2" class="toc-link">最初のキーワードで画像を生成してみよう</a></li>
+    <li><a href="#sec3" class="toc-link">「スタイル」を変えて雰囲気を変えてみよう</a></li>
+    <li><a href="#sec4" class="toc-link">章末課題 - Canva AIで「夢の乗り物」をデザイン</a></li>
+  </ol>
+</div>
+
+
+<!-- イメージしてみよう -->
+<div class="imagine-box">
+  <div class="label">🎬 イメージしてみよう</div>
+  <p>
+    Canvaのデザイン画面を開いて、AIに「空飛ぶ猫」と入力するだけ——<br>
+    数秒後、マントをつけた猫が空を舞うイラストが目の前に現れます。<br><br>
+    さらに「水彩」スタイルに変えれば、ふんわり優しいタッチの猫に。<br>
+    「アニメ」にすれば、キャラクターのような猫に。<br><br>
+    <strong class="accent">同じ「空飛ぶ猫」なのに、全く違う世界観。</strong><br>
+    その驚きを、今から一緒に体験しましょう。
+  </p>
+</div>
+
+
+<!-- 躓きポイント -->
+<div class="stumbling-box">
+  <div class="label">⚡ このレッスンで躓きやすいポイント</div>
+  <ul>
+    <li>CanvaのUIアップデートで<strong class="accent">「Magic Media」の名称や場所が変わっている</strong>ことがある。「AI」「画像生成」「Text to Image」で検索しよう</li>
+    <li>無料プランの<strong class="accent">クレジットは有限</strong>。課題に取り組む前に残りクレジットを確認しよう</li>
+    <li>生成結果は毎回異なる。<strong class="accent">教材の画像と全く同じにならなくてもOK</strong></li>
+  </ul>
+</div>
+
+
+<!-- ============================================================
+  セクション 1: CanvaでAI画像生成をはじめよう
+============================================================ -->
+<h2 class="section-heading" id="sec1">1. CanvaでAI画像生成をはじめよう</h2>
+
+<h3 class="sub-heading">Canvaとは？AI画像生成機能へのアクセス</h3>
+
+<p class="text-body">
+  <strong class="accent">Canva（キャンバ）</strong>は、多くの人がデザイン作成や資料作りに活用している人気のオンラインデザインプラットフォームです。そのCanvaにも、AIによる画像生成機能が搭載されています。今回はその機能、<strong class="accent">「Magic Media」</strong>を中心に体験していきましょう。
+</p>
+
+<div style="margin: 24px 0; text-align: center;">
+  <a href="https://learn.webcoach.jp/theme/webcoach/img/introduction-to-generative-ai/image-ai-hands-on/img4.png" class="lightbox" style="display: inline-block;">
+    <img src="../../_assets/0fb97fc757.webp" alt="" class="lightbox-img" style="display: block; margin: 0 auto; max-width: 100%;">
+  </a>
+  <p style="font-size: 13px; color: #999; margin-top: 8px;">Canvaのホーム画面</p>
+</div>
+<h3 class="sub-heading">Canvaアカウントの作成またはログイン</h3>
+
+<p class="text-body">
+  Canvaを利用するにはアカウントが必要です。既にアカウントをお持ちの場合は<strong>Canva公式サイトからログイン</strong>してください。アカウントをお持ちでない場合は、メールアドレスやGoogleアカウントなどを使って<strong>無料で新規登録</strong>できます。
+</p>
+
+<div style="margin: 24px 0; text-align: center;">
+  <a href="https://learn.webcoach.jp/theme/webcoach/img/introduction-to-generative-ai/image-ai-hands-on/img5.png" class="lightbox" style="display: inline-block;">
+    <img src="../../_assets/93fbcaaf19.webp" alt="" class="lightbox-img" style="display: block; margin: 0 auto; max-width: 100%;">
+  </a>
+  <p style="font-size: 13px; color: #999; margin-top: 8px;">Canvaログイン画面</p>
+</div>
+<h3 class="sub-heading">Magic Mediaへのアクセス手順</h3>
+
+<p class="text-body">Canvaにログインしたら、以下の手順でAI画像生成機能にアクセスします。</p>
+
+<div style="margin: 24px 0;">
+  <div class="step-block">
+    <div class="step-num">1</div>
+    <div>
+      <div class="step-title">デザインを作成</div>
+      <p class="step-desc">Canvaのホーム画面で「デザインを作成」をクリックし、任意のサイズ（例：カスタムサイズで1080x1080pxなど）を選びます。</p>
+    </div>
+  </div>
+
+<div style="margin: 24px 0; text-align: center;">
+  <a href="https://learn.webcoach.jp/theme/webcoach/img/introduction-to-generative-ai/image-ai-hands-on/img6.png" class="lightbox" style="display: inline-block;">
+    <img src="../../_assets/0c31dfd6a4.webp" alt="" class="lightbox-img" style="display: block; margin: 0 auto; max-width: 100%;">
+  </a>
+  <p style="font-size: 13px; color: #999; margin-top: 8px;">デザイン作成ボタン</p>
+</div>
+<div style="margin: 24px 0; text-align: center;">
+  <a href="https://learn.webcoach.jp/theme/webcoach/img/introduction-to-generative-ai/image-ai-hands-on/img7.png" class="lightbox" style="display: inline-block;">
+    <img src="../../_assets/deb0642df7.webp" alt="" class="lightbox-img" style="display: block; margin: 0 auto; max-width: 100%;">
+  </a>
+  <p style="font-size: 13px; color: #999; margin-top: 8px;">サイズ選択画面</p>
+</div>
+  <div class="step-block">
+    <div class="step-num">2</div>
+    <div>
+      <div class="step-title">「アプリ」からMagic Mediaを検索</div>
+      <p class="step-desc">デザイン編集画面の左側にあるツールバーから「アプリ」をクリック。検索窓に「Magic Media」または「AI 画像生成」と入力して検索します。</p>
+    </div>
+  </div>
+
+  <div class="step-block">
+    <div class="step-num">3</div>
+    <div>
+      <div class="step-title">Magic Mediaを選択</div>
+      <p class="step-desc">検索結果に表示された「Magic Media」（または類似の名称の機能）を選択します。</p>
+    </div>
+  </div>
+</div>
+
+<div style="margin: 24px 0; text-align: center;">
+  <a href="https://learn.webcoach.jp/theme/webcoach/img/introduction-to-generative-ai/image-ai-hands-on/img8.png" class="lightbox" style="display: inline-block;">
+    <img src="../../_assets/68660d7cc6.webp" alt="" class="lightbox-img" style="display: block; margin: 0 auto; max-width: 100%;">
+  </a>
+  <p style="font-size: 13px; color: #999; margin-top: 8px;">アプリ検索画面</p>
+</div>
+<div style="margin: 24px 0; text-align: center;">
+  <a href="https://learn.webcoach.jp/theme/webcoach/img/introduction-to-generative-ai/image-ai-hands-on/img9.png" class="lightbox" style="display: inline-block;">
+    <img src="../../_assets/46f60918c6.webp" alt="" class="lightbox-img" style="display: block; margin: 0 auto; max-width: 100%;">
+  </a>
+  <p style="font-size: 13px; color: #999; margin-top: 8px;">Magic Media選択画面</p>
+</div>  
+
+<div class="note-box">
+  <div class="label">注意</div>
+  <p>CanvaのようなWebサービスは、機能改善のために名称やインターフェースの場所が変更されることがあります。もし「Magic Media」で見つからない場合は、<strong class="accent">「AI」「画像生成」「Text to Image」</strong>といったキーワードで検索してみてください。</p>
+</div>
+
+<!-- 確認クイズ #1 -->
+<div class="inline-quiz">
+  <div class="quiz-label">✏️ 確認クイズ</div>
+  <p class="quiz-question">Canva AIの画像生成機能「Magic Media」はどこからアクセスできる？</p>
+  <div class="quiz-options">
+    <button class="quiz-opt" data-correct="false">A. ホーム画面の「テンプレート」タブ</button>
+    <button class="quiz-opt" data-correct="true">B. デザイン編集画面の左側「アプリ」から検索</button>
+    <button class="quiz-opt" data-correct="false">C. 画面右上の設定メニュー</button>
+    <button class="quiz-opt" data-correct="false">D. ファイルメニューの「エクスポート」</button>
+  </div>
+  <div class="quiz-feedback">
+    <strong>正解！</strong> Canvaでデザイン編集画面を開いたら、左側のツールバーにある「アプリ」から「Magic Media」を検索してアクセスします。名前が変わっていた場合は「AI」「画像生成」などで検索してみましょう。
+  </div>
+</div>
+
+
+<!-- ============================================================
+  セクション 2: 最初のキーワードで画像を生成してみよう
+============================================================ -->
+<h2 class="section-heading" id="sec2">2. 最初のキーワードで画像を生成してみよう</h2>
+
+<h3 class="sub-heading">やってみよう：キーワード「空飛ぶ猫」</h3>
+
+<p class="text-body">
+  いよいよ最初の画像生成です。「Magic Media」の機能が開けたら、<strong class="accent">プロンプト（AIへの指示）</strong>を入力する欄があるはずです。
+</p>
+
+<div style="margin: 24px 0;">
+  <div class="step-block">
+    <div class="step-num">1</div>
+    <div>
+      <div class="step-title">キーワードを入力</div>
+      <p class="step-desc">プロンプト入力欄に「<strong>空飛ぶ猫</strong>」と入力します。</p>
+    </div>
+  </div>
+  <div class="step-block">
+    <div class="step-num">2</div>
+    <div>
+      <div class="step-title">画像を生成</div>
+      <p class="step-desc">「画像を生成」や「作成する」といったボタンをクリックします。</p>
+    </div>
+  </div>
+  <div class="step-block">
+    <div class="step-num">3</div>
+    <div>
+      <div class="step-title">結果を確認</div>
+      <p class="step-desc">AIが画像を生成します。少し待つと、通常は複数の画像案（例：4枚）が提示されます。</p>
+    </div>
+  </div>
+</div>
+
+<p class="text-body">どんな「空飛ぶ猫」が出てくるか、試してみましょう。</p>
+
+<div style="margin: 24px 0; text-align: center;">
+  <a href="https://learn.webcoach.jp/theme/webcoach/img/introduction-to-generative-ai/image-ai-hands-on/img10.png" class="lightbox" style="display: inline-block;">
+    <img src="../../_assets/2b286370c8.webp" alt="" class="lightbox-img" style="display: block; margin: 0 auto; max-width: 100%;">
+  </a>
+  <p style="font-size: 13px; color: #999; margin-top: 8px;">空飛ぶ猫の生成1</p>
+</div>
+<div style="margin: 24px 0; text-align: center;">
+  <a href="https://learn.webcoach.jp/theme/webcoach/img/introduction-to-generative-ai/image-ai-hands-on/img11.png" class="lightbox" style="display: inline-block;">
+    <img src="../../_assets/5fc064fb8d.webp" alt="" class="lightbox-img" style="display: block; margin: 0 auto; max-width: 100%;">
+  </a>
+  <p style="font-size: 13px; color: #999; margin-top: 8px;">空飛ぶ猫の生成2</p>
+</div>
+<div style="margin: 24px 0; text-align: center;">
+  <a href="https://learn.webcoach.jp/theme/webcoach/img/introduction-to-generative-ai/image-ai-hands-on/img12.png" class="lightbox" style="display: inline-block;">
+    <img src="../../_assets/3d7cd4e271.webp" alt="" class="lightbox-img" style="display: block; margin: 0 auto; max-width: 100%;">
+  </a>
+  <p style="font-size: 13px; color: #999; margin-top: 8px;">空飛ぶ猫の生成3</p>
+</div>
+
+<div class="point-box">
+  <div class="label">ポイント</div>
+  <p>入力した「空飛ぶ猫」というキーワードから、AIはどのような画像を生成しましたか？想像と同じでしたか、それとも全く違う面白い画像が出てきましたか？<strong class="accent">4枚も違うパターンが出てくるのが画像生成AIの面白さ</strong>です。</p>
+</div>
+
+<div class="usecase-box">
+  <div class="label">💡 こんな場面で使える！</div>
+  <p>SNSのアイキャッチ画像やブログのサムネイルなど、「ちょっとユニークな画像が欲しい」ときに、簡単なキーワードだけで素早くオリジナル画像を作れます。</p>
+</div>
+
+
+<!-- ============================================================
+  セクション 3: スタイルを変えて雰囲気を変えてみよう
+============================================================ -->
+<h2 class="section-heading" id="sec3">3. 「スタイル」を変えて雰囲気を変えてみよう</h2>
+
+<h3 class="sub-heading">Canva AIの「スタイル」機能で遊ぼう</h3>
+
+<p class="text-body">
+  Canva AI（Magic Media）には、生成する画像の雰囲気をガラッと変えることができる<strong class="accent">「スタイル」選択機能</strong>があります。同じキーワードでも、このスタイルを変えるだけで全く異なるテイストの画像が生まれるのを体験してみましょう。
+</p>
+
+<div style="margin: 24px 0;">
+  <div class="step-block">
+    <div class="step-num">1</div>
+    <div>
+      <div class="step-title">キーワードはそのまま</div>
+      <p class="step-desc">キーワードは「<strong>空飛ぶ猫</strong>」のままにします。</p>
+    </div>
+  </div>
+  <div class="step-block">
+    <div class="step-num">2</div>
+    <div>
+      <div class="step-title">「スタイル」を探してクリック</div>
+      <p class="step-desc">Magic Mediaのインターフェース内にある「スタイル」という項目を探し、クリックします。写真、水彩画、アニメ、3D、切り絵、ステンドグラスなど、様々なスタイル名が表示されます。</p>
+    </div>
+  </div>
+</div>
+
+<div style="margin: 24px 0; text-align: center;">
+  <a href="https://learn.webcoach.jp/theme/webcoach/img/introduction-to-generative-ai/image-ai-hands-on/img13.png" class="lightbox" style="display: inline-block;">
+    <img src="../../_assets/092bec4ddb.webp" alt="" class="lightbox-img" style="display: block; margin: 0 auto; max-width: 100%;">
+  </a>
+  <p style="font-size: 13px; color: #999; margin-top: 8px;">スタイル選択画面</p>
+</div>
+<div style="margin: 24px 0;">
+  <div class="step-block">
+    <div class="step-num">3</div>
+    <div>
+      <div class="step-title">スタイルを選択</div>
+      <p class="step-desc">気になるスタイルを1つ選びます（例：「水彩」）。</p>
+    </div>
+  </div>
+</div>
+
+<div style="margin: 24px 0; text-align: center;">
+  <a href="https://learn.webcoach.jp/theme/webcoach/img/introduction-to-generative-ai/image-ai-hands-on/img14.png" class="lightbox" style="display: inline-block;">
+    <img src="../../_assets/5f4eabc10b.webp" alt="" class="lightbox-img" style="display: block; margin: 0 auto; max-width: 100%;">
+  </a>
+  <p style="font-size: 13px; color: #999; margin-top: 8px;">水彩スタイルを選択</p>
+</div>
+<div style="margin: 24px 0;">
+  <div class="step-block">
+    <div class="step-num">4</div>
+    <div>
+      <div class="step-title">再度「画像を生成」</div>
+      <p class="step-desc">「画像を生成」ボタンをクリックします。</p>
+    </div>
+  </div>
+</div>
+
+<div style="margin: 24px 0; text-align: center;">
+  <a href="https://learn.webcoach.jp/theme/webcoach/img/introduction-to-generative-ai/image-ai-hands-on/img15.png" class="lightbox" style="display: inline-block;">
+    <img src="../../_assets/bb90f44df2.webp" alt="" class="lightbox-img" style="display: block; margin: 0 auto; max-width: 100%;">
+  </a>
+  <p style="font-size: 13px; color: #999; margin-top: 8px;">画像生成ボタン</p>
+</div>
+<div style="margin: 24px 0;">
+  <div class="step-block">
+    <div class="step-num">5</div>
+    <div>
+      <div class="step-title">結果を確認</div>
+      <p class="step-desc">生成された画像が、先ほどとは違う「水彩画」風の「空飛ぶ猫」になっていることを確認します。</p>
+    </div>
+  </div>
+</div>
+
+<div style="margin: 24px 0; text-align: center;">
+  <a href="https://learn.webcoach.jp/theme/webcoach/img/introduction-to-generative-ai/image-ai-hands-on/img16.png" class="lightbox" style="display: inline-block;">
+    <img src="../../_assets/4fa822fa1f.webp" alt="" class="lightbox-img" style="display: block; margin: 0 auto; max-width: 100%;">
+  </a>
+  <p style="font-size: 13px; color: #999; margin-top: 8px;">水彩スタイルで生成された空飛ぶ猫</p>
+</div>
+<p class="text-body">
+  同様に、他のスタイル（「アニメ」「写真風」「3D」など）もいくつか試して、画像の変化を楽しみましょう。
+</p>
+
+<div class="point-box">
+  <div class="label">ポイント</div>
+  <p>Magic Mediaで生成された画像は、クリックするだけでCanvaのデザイン編集画面（キャンバス）に追加できます。追加した画像は拡大・縮小や位置調整が可能で、完成したらファイルとしてダウンロードもできます。</p>
+</div>
+
+<!-- 確認クイズ #2 -->
+<div class="inline-quiz">
+  <div class="quiz-label">✏️ 確認クイズ</div>
+  <p class="quiz-question">Canva AIの「スタイル」機能について正しいのはどれ？</p>
+  <div class="quiz-options">
+    <button class="quiz-opt" data-correct="false">A. スタイルを変えるには、キーワードも変更する必要がある</button>
+    <button class="quiz-opt" data-correct="true">B. 同じキーワードでもスタイルを変えるだけで全く異なるテイストの画像が生まれる</button>
+    <button class="quiz-opt" data-correct="false">C. スタイル機能は有料プランでしか使えない</button>
+    <button class="quiz-opt" data-correct="false">D. スタイルは「リアル」の1種類しかない</button>
+  </div>
+  <div class="quiz-feedback">
+    <strong>正解！</strong> Canva AIのスタイル機能は、同じキーワードでも<strong>水彩、アニメ、写真風、3D</strong>などを選ぶだけで、全く異なる雰囲気の画像を生成できます。キーワードを変える必要はありません。
+  </div>
+</div>
+
+
+<!-- ============================================================
+  セクション 4: 章末課題
+============================================================ -->
+<h2 class="section-heading" id="sec4">4. 章末課題 - Canva AIで「夢の乗り物」をデザイン</h2>
+
+<p class="text-body">
+  頭の中にある<strong class="accent">「こんな乗り物があったらいいな」</strong>という「夢の乗り物」を、Canva AIを使ってデザインしてみましょう。
+</p>
+
+<div style="background: #fff; border: 2px solid #FAE8E0; border-radius: 16px; padding: 22px; margin: 24px 0;">
+  <div style="font-size: 14px; font-weight: 700; color: #E85D4A; margin-bottom: 12px;">課題の手順</div>
+  <ol style="margin: 0; padding-left: 22px; font-size: 15px; line-height: 2.2; color: #555;">
+    <li>Canvaにログインし、Magic Mediaを開く</li>
+    <li>「夢の乗り物」を表すキーワードを入力する</li>
+    <li>まずデフォルトのスタイルで画像を生成し、基本イメージを確認</li>
+    <li><strong class="accent">少なくとも3種類以上</strong>の異なるスタイルで画像を再生成</li>
+    <li>どのスタイルがイメージに一番近いか、一番面白いか、その理由を考える</li>
+  </ol>
+</div>
+
+<div class="point-box">
+  <div class="label">ポイント</div>
+  <p>この課題ではキーワードを複雑にする必要はありません。<strong class="accent">同じ簡単なキーワードでも「スタイル」を変えるだけでAIの表現力が大きく変わること</strong>を楽しんでください。</p>
+</div>
+
+<p class="text-body" style="font-weight:700; color:#3D3D3D;">キーワード例：「空飛ぶクジラバス、星空の下」</p>
+
+<div style="margin: 24px 0; text-align: center;">
+  <a href="https://learn.webcoach.jp/theme/webcoach/img/introduction-to-generative-ai/image-ai-hands-on/img17.png" class="lightbox" style="display: inline-block;">
+    <img src="../../_assets/21c68efc27.webp" alt="" class="lightbox-img" style="display: block; margin: 0 auto; max-width: 100%;">
+  </a>
+  <p style="font-size: 13px; color: #999; margin-top: 8px;">スタイルなし</p>
+</div>
+<div style="margin: 24px 0; text-align: center;">
+  <a href="https://learn.webcoach.jp/theme/webcoach/img/introduction-to-generative-ai/image-ai-hands-on/img18.png" class="lightbox" style="display: inline-block;">
+    <img src="../../_assets/5870090e11.webp" alt="" class="lightbox-img" style="display: block; margin: 0 auto; max-width: 100%;">
+  </a>
+  <p style="font-size: 13px; color: #999; margin-top: 8px;">スタイル「写真」</p>
+</div>
+
+<div style="margin: 24px 0; text-align: center;">
+  <a href="https://learn.webcoach.jp/theme/webcoach/img/introduction-to-generative-ai/image-ai-hands-on/img19.png" class="lightbox" style="display: inline-block;">
+    <img src="../../_assets/846cf1ca81.webp" alt="" class="lightbox-img" style="display: block; margin: 0 auto; max-width: 100%;">
+  </a>
+  <p style="font-size: 13px; color: #999; margin-top: 8px;">スタイル「水彩」</p>
+</div>
+
+<div style="margin: 24px 0; text-align: center;">
+  <a href="https://learn.webcoach.jp/theme/webcoach/img/introduction-to-generative-ai/image-ai-hands-on/img20.png" class="lightbox" style="display: inline-block;">
+    <img src="../../_assets/f10bd91cd1.webp" alt="" class="lightbox-img" style="display: block; margin: 0 auto; max-width: 100%;">
+  </a>
+  <p style="font-size: 13px; color: #999; margin-top: 8px;">スタイル「アニメ」</p>
+</div>
+
+<div class="usecase-box">
+  <div class="label">💡 こんな場面で使える！</div>
+  <p>プレゼン資料やSNS投稿で「ユニークなビジュアル」が必要なとき、同じテーマを複数のスタイルで生成して比較することで、目的に最適なテイストが見つかります。</p>
+</div>
+
+
+<!-- まとめ -->
+<div class="summary-box">
+  <div class="label">まとめ</div>
+  <ul>
+    <li><strong style="color: #3D3D3D;">Magic Mediaへのアクセス</strong> — Canvaのデザイン編集画面 → 左側「アプリ」→「Magic Media」を検索</li>
+    <li><strong style="color: #3D3D3D;">画像生成の基本</strong> — キーワードを入力して「画像を生成」ボタンを押すだけ。通常4枚の画像案が提示される</li>
+    <li><strong style="color: #3D3D3D;">スタイル機能</strong> — 水彩、アニメ、写真風、3Dなど様々なスタイルを選ぶだけで全く異なる雰囲気の画像に</li>
+    <li><strong style="color: #3D3D3D;">生成画像の活用</strong> — クリックでキャンバスに追加、拡大縮小・位置調整が可能、ダウンロードもできる</li>
+  </ul>
+</div>
+
+
+<!-- 理解度チェック -->
+<details style="background: #F0FAF0; border: 1px solid #C8E6C9; border-radius: 12px; padding: 0; margin: 36px 0;">
+  <summary style="padding: 18px 24px; font-size: 14px; font-weight: 700; color: #4CAF50; cursor: pointer; letter-spacing: 0.1em;">理解度チェック（クリックして開く）</summary>
+  <div style="padding: 0 24px 18px;">
+
+    <details style="background: #fff; border: 1px solid #BBF7D0; border-radius: 10px; padding: 0; margin: 8px 0; overflow: hidden;">
+      <summary style="padding: 14px 18px; font-size: 15px; font-weight: 600; color: #166534; cursor: pointer;">Canva AIのMagic Mediaにアクセスできた</summary>
+      <div style="padding: 0 18px 14px; font-size: 14px; color: #555; line-height: 1.7;">デザイン編集画面の左側「アプリ」から「Magic Media」を検索してアクセスします。見つからない場合は「AI」「画像生成」「Text to Image」で検索してみましょう。</div>
+    </details>
+
+    <details style="background: #fff; border: 1px solid #BBF7D0; border-radius: 10px; padding: 0; margin: 8px 0; overflow: hidden;">
+      <summary style="padding: 14px 18px; font-size: 15px; font-weight: 600; color: #166534; cursor: pointer;">簡単なキーワードで画像を生成できた</summary>
+      <div style="padding: 0 18px 14px; font-size: 14px; color: #555; line-height: 1.7;">「空飛ぶ猫」のような簡単なキーワードを入力し、「画像を生成」ボタンをクリックするだけで画像が生成されます。通常4枚の画像案が提示されます。</div>
+    </details>
+
+    <details style="background: #fff; border: 1px solid #BBF7D0; border-radius: 10px; padding: 0; margin: 8px 0; overflow: hidden;">
+      <summary style="padding: 14px 18px; font-size: 15px; font-weight: 600; color: #166534; cursor: pointer;">スタイル機能で異なる雰囲気の画像を生成できた</summary>
+      <div style="padding: 0 18px 14px; font-size: 14px; color: #555; line-height: 1.7;">同じキーワードでも「水彩」「アニメ」「写真風」「3D」などのスタイルを選ぶことで、全く異なるテイストの画像を生成できます。スタイルを変えるだけでAIの表現力の幅広さを体験できましたか？</div>
+    </details>
+
+    <details style="background: #fff; border: 1px solid #BBF7D0; border-radius: 10px; padding: 0; margin: 8px 0; overflow: hidden;">
+      <summary style="padding: 14px 18px; font-size: 15px; font-weight: 600; color: #166534; cursor: pointer;">章末課題（夢の乗り物を3種類以上のスタイルで生成）に取り組めた</summary>
+      <div style="padding: 0 18px 14px; font-size: 14px; color: #555; line-height: 1.7;">自分だけの「夢の乗り物」を考え、3種類以上のスタイルで生成して比較できればOKです。どのスタイルがイメージに近かったか、面白かったかを考えることが重要です。</div>
+    </details>
+
+  </div>
+</details>
+    <!-- 前の章に戻るボタン / 次の章に進むボタン がある場合 -->  
+<div style="display: flex; justify-content: space-between; align-items: center; padding: 24px 0; margin-top: 24px;">
+  <a href="https://learn.webcoach.jp/generative-ai/introduction-to-generative-ai/%E7%94%BB%E5%83%8F%E7%94%9F%E6%88%90AI%E3%81%A7%E6%8F%8F%E3%81%84%E3%81%A6%E3%81%BF%E3%82%88%E3%81%86/0rS6M" style="position: relative; display: inline-block; background: linear-gradient(135deg, #E85D4A, #F5A64A); color: #fff; font-weight: 700; padding: 12px clamp(24px, 7vw, 48px); border-radius: 8px; text-decoration: none;"><img src="../../_assets/47498cfebf.svg" style="position: absolute; top: 50%; transform: translateY(-50%); left: 12px; filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(125deg) brightness(103%) contrast(103%); transform: translateY(-50%) rotate(180deg);">前の章に戻る</a>
+  <a href="https://learn.webcoach.jp/generative-ai/introduction-to-generative-ai/%E7%94%BB%E5%83%8F%E7%94%9F%E6%88%90AI%E3%81%A7%E6%8F%8F%E3%81%84%E3%81%A6%E3%81%BF%E3%82%88%E3%81%86/OfEnC" style="position: relative; display: inline-block; background: linear-gradient(135deg, #E85D4A, #F5A64A); color: #fff; font-weight: 700; padding: 12px clamp(24px, 7vw, 48px); border-radius: 8px; text-decoration: none;">次の章に進む<img src="../../_assets/47498cfebf.svg" style="position: absolute; top: 50%; transform: translateY(-50%); right: 12px; filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(125deg) brightness(103%) contrast(103%);"></a>
+</div>
+<!-- ロードマップに戻るボタンの場合 --> 
+<div style="display: flex; justify-content: center; align-items: center; padding: 24px 0; margin-top: 24px;">
+  <a href="https://learn.webcoach.jp/2Q/introduction-to-generative-ai" style="display: inline-block; background: #fff; color: #E85D4A; border: 2px solid #E85D4A; font-weight: 700; padding: 10px clamp(24px, 7vw, 48px); border-radius: 8px; text-decoration: none; white-space: nowrap;">ロードマップに戻る</a>
+</div>
+
+</div><!-- /.lesson-wrapper -->
+
+<!-- JavaScript -->
+
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="ck-icon-arrow-down" viewBox="0 0 1792 1792"><path d="M1675 832q0 53-37 90l-651 652q-39 37-91 37-53 0-90-37l-651-652q-38-36-38-90 0-53 38-91l74-75q39-37 91-37 53 0 90 37l294 294v-704q0-52 38-90t90-38h128q52 0 90 38t38 90v704l294-294q37-37 90-37 52 0 91 37l75 75q37 39 37 91z"></path></symbol><symbol id="ck-icon-arrow-up" viewBox="0 0 1792 1792"><path d="M1675 971q0 51-37 90l-75 75q-38 38-91 38-54 0-90-38l-294-293v704q0 52-37.5 84.5t-90.5 32.5h-128q-53 0-90.5-32.5t-37.5-84.5v-704l-294 293q-36 38-90 38t-90-38l-75-75q-38-38-38-90 0-53 38-91l651-651q35-37 90-37 54 0 91 37l651 651q37 39 37 91z"></path></symbol><symbol id="ck-icon-calendar" viewBox="0 0 1792 1792"><path d="M192 1664h288v-288h-288v288zm352 0h320v-288h-320v288zm-352-352h288v-320h-288v320zm352 0h320v-320h-320v320zm-352-384h288v-288h-288v288zm736 736h320v-288h-320v288zm-384-736h320v-288h-320v288zm768 736h288v-288h-288v288zm-384-352h320v-320h-320v320zm-352-864v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm736 864h288v-320h-288v320zm-384-384h320v-288h-320v288zm384 0h288v-288h-288v288zm32-480v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm384-64v1280q0 52-38 90t-90 38h-1408q-52 0-90-38t-38-90v-1280q0-52 38-90t90-38h128v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h384v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h128q52 0 90 38t38 90z"></path></symbol><symbol id="ck-icon-chevron-left" viewBox="0 0 1792 1792"><path d="M1427 301l-531 531 531 531q19 19 19 45t-19 45l-166 166q-19 19-45 19t-45-19l-742-742q-19-19-19-45t19-45l742-742q19-19 45-19t45 19l166 166q19 19 19 45t-19 45z"></path></symbol><symbol id="ck-icon-chevron-right" viewBox="0 0 1792 1792"><path d="M1363 877l-742 742q-19 19-45 19t-45-19l-166-166q-19-19-19-45t19-45l531-531-531-531q-19-19-19-45t19-45l166-166q19-19 45-19t45 19l742 742q19 19 19 45t-19 45z"></path></symbol><symbol id="ck-icon-clock-o" viewBox="0 0 1792 1792"><path d="M1024 544v448q0 14-9 23t-23 9h-320q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h224v-352q0-14 9-23t23-9h64q14 0 23 9t9 23zm416 352q0-148-73-273t-198-198-273-73-273 73-198 198-73 273 73 273 198 198 273 73 273-73 198-198 73-273zm224 0q0 209-103 385.5t-279.5 279.5-385.5 103-385.5-103-279.5-279.5-103-385.5 103-385.5 279.5-279.5 385.5-103 385.5 103 279.5 279.5 103 385.5z"></path></symbol><symbol id="ck-icon-trash" viewBox="0 0 1792 1792"><path d="M704 1376v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm-544-992h448l-48-117q-7-9-17-11h-317q-10 2-17 11zm928 32v64q0 14-9 23t-23 9h-96v948q0 83-47 143.5t-113 60.5h-832q-66 0-113-58.5t-47-141.5v-952h-96q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h309l70-167q15-37 54-63t79-26h320q40 0 79 26t54 63l70 167h309q14 0 23 9t9 23z"></path></symbol><symbol id="ck-icon-undo" viewBox="0 0 1792 1792"><path d="M1664 896q0 156-61 298t-164 245-245 164-298 61q-172 0-327-72.5t-264-204.5q-7-10-6.5-22.5t8.5-20.5l137-138q10-9 25-9 16 2 23 12 73 95 179 147t225 52q104 0 198.5-40.5t163.5-109.5 109.5-163.5 40.5-198.5-40.5-198.5-109.5-163.5-163.5-109.5-198.5-40.5q-98 0-188 35.5t-160 101.5l137 138q31 30 14 69-17 40-59 40h-448q-26 0-45-19t-19-45v-448q0-42 40-59 39-17 69 14l130 129q107-101 244.5-156.5t284.5-55.5q156 0 298 61t245 164 164 245 61 298z"></path></symbol></svg>
+
+<!--Clipkit(R) v15.9.0-20260915 Copyright (C) 2026 VECTOR Inc.-->
+
+
+</div></div>
+        
+      
+    </div>
+  
+  </div>
+
+<!-- <script src="https://cdn.clipkit.co/clipkit/javascripts/item-shopify-1.0.js?v=v15.9.0-20260915" async></script> -->
+</body></html>

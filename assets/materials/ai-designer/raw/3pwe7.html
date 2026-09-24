@@ -1,0 +1,677 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+  <html lang="ja">
+
+<head><script async="async" data-label="saas" nonce="JJHuMuvm0KSI1CAwpqgSOA==" src="//b.clipkit.co/"></script><script src="//cdn.clipkit.co/clipkit_assets/beacon-787bbf3225ec43d93f198af35f7d56fdef40fb50440a2909500bdf5b99225aab.js" async="async" id="clipkit-beacon" data-page-type="article" data-page-id="2532" data-domain="learn.webcoach.jp" data-url="/ai-designer/chapter-05/3pwE7" data-href="https://learn.webcoach.jp/media/beacon"></script>
+    <!-- headタグ内の上部に挿入されます -->
+
+    <meta charset="UTF-8">
+    <title>Lesson3 単価の考え方と見積書テンプレートを設計する - WEBCOACH</title>
+
+    <!-- resetcssのCDNでのCSS読み込み -->
+    <link rel="stylesheet" href="https://unpkg.com/modern-css-reset/dist/reset.min.css" />
+
+    <!-- fontawesomeのCDNでのCSS読み込み -->
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/fontawesome/4.7.0/css/font-awesome.min.css">
+
+    <!-- BootstrapのCDNでのCSS読み込み -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous" />
+
+    <!-- highlight.jsの読み込み -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.1/styles/dracula.min.css">
+
+    <!-- カスタムCSS -->
+    <link rel="stylesheet" href="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/168/original/style.css?1788081716">
+
+    <!-- clipkitデフォルトのCSS -->
+    <!--<link rel="stylesheet" media="screen" href="https://cdn.clipkit.co/clipkit/stylesheets/application-1.0.css?v=v15.9.0-20260915">-->
+
+    <!-- jQuery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <!-- カスタムJS -->
+    <script src="https://cdn.clipkit.co/tenants/589/resources/assets/000/002/350/original/script.js?1779642402"></script>
+    <script src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/535/original/script.js?1743681771"></script>
+
+    <!-- clipkitデフォルトのJS -->
+    <script src="https://cdn.clipkit.co/clipkit/javascripts/default-1.0.js?v=v15.9.0-20260915"></script>
+
+    <!-- フォント -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;700&display=swap" rel="stylesheet">
+
+    <link href="https://cdn.clipkit.co/clipkit/favicons/square/missing.png" rel="shortcut icon" type="image/vnd.microsoft.icon">
+    <link rel="apple-touch-icon" href="https://cdn.clipkit.co/clipkit/touch_icons/square/missing.png">
+    <link rel="alternate" type="application/rss+xml"
+        href="https://learn.webcoach.jp/media.rss" title="WEBCOACH">
+    
+  <link rel="canonical" href="https://learn.webcoach.jp/ai-designer/chapter-05/3pwE7">
+  
+  <meta name="description" content="">
+  <meta name="keywords" content="">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:domain" content="learn.webcoach.jp">
+  <meta name="twitter:title" content="Lesson3 単価の考え方と見積書テンプレートを設計する - WEBCOACH">
+  <meta name="twitter:image" content="https://cdn.clipkit.co/clipkit/images/medium/missing.png">
+  <meta name="twitter:description" content="">
+  <meta property="og:site_name" content="WEBCOACH">
+  <meta property="og:title" content="Lesson3 単価の考え方と見積書テンプレートを設計する">
+  <meta property="og:description" content="">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://learn.webcoach.jp/ai-designer/chapter-05/3pwE7">
+  <meta property="og:image" content="https://cdn.clipkit.co/clipkit/images/large/missing.png">
+  <script type="application/ld+json">
+  {
+    "@context": "http://schema.org",
+    "@type": "NewsArticle",
+    "mainEntityOfPage":{
+      "@type":"WebPage",
+      "@id": "https://learn.webcoach.jp/ai-designer/chapter-05/3pwE7"
+    },
+    "headline": "Lesson3 単価の考え方と見積書テンプレートを設計する",
+    "image": {
+      "@type": "ImageObject",
+      "url": "https://cdn.clipkit.co/clipkit/images/medium/missing.png",
+      "width": 800,
+      "height": 600
+    },
+    "datePublished": "2026-05-21T15:51:00+09:00",
+    "dateModified": "2026-05-21T16:53:36+09:00",
+    "author": {
+      "@type": "Person",
+      "name": "r_yoshitake"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "WEBCOACH",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://cdn.clipkit.co/tenants/589/sites/logos/000/000/001/logo_sm/a8defd4b-1cc7-433b-a61c-08e7db0e3e4f.png?1714459367"
+      }
+    },
+    "description": ""
+  }
+  </script>
+
+    <!-- headタグ内の下部に挿入されます -->
+
+
+<meta name="csrf-param" content="authenticity_token" />
+<meta name="csrf-token" content="AQ_YnirXQ1MKFHLIU0zQE_JDdZEZY9eqMRauxM-zXnu2Zg4nnfkaScqGtib5H2yIwEXHGCZdUxt7XzNPWmRUCg" /><meta content="" name="routing-root-path" /><meta content="media" name="site-name" /><meta content="ja" name="i18n-default-locale" /><meta content="ja" name="i18n-locale" /></head>
+
+<body class="device-desktop">
+    <!-- bodyタグ内の上部に挿入されます -->
+
+
+    <!-- サイドバーとコンテンツのコンテナ -->
+    <div class="d-flex flex-row w-100 mb-5" style="min-height: calc(100vh - 400px);">
+
+        <!-- コンテンツ -->
+        <!--<main class="ms-auto" style="width: calc(100vw - 250px);">-->
+        <main class="ms-auto" style="width: calc(100vw);">
+            <div id="sb-site">
+                
+
+
+<div>
+  
+    <div>
+      
+      
+        
+          <div class="article-item item_html " id="item48942" data-item-id="48942" data-item-type="ItemHtml"><div class="item-body"><style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Noto Sans JP', sans-serif; color: #3D3D3D; font-size: 16px; line-height: 1.9; background: #fff; }
+.lesson-wrapper { max-width: 70%; margin: 0 auto; padding: 40px 0 80px; }
+@media (max-width: 600px) { .lesson-wrapper { max-width: 92%; } }
+
+h2 { font-size: 24px; font-weight: 700; color: #2D2D2D; margin: 64px 0 24px; padding: 0 0 14px; position: relative; letter-spacing: -0.02em; line-height: 1.4; }
+h2::after { content: ''; position: absolute; bottom: 0; left: 0; width: 48px; height: 4px; border-radius: 2px; background: linear-gradient(90deg, #E85D4A, #F5A64A); }
+h3 { font-size: 18px; font-weight: 700; color: #2D2D2D; margin: 48px 0 16px; border-left: 3px solid #2D2D2D; padding-left: 14px; }
+p { font-size: 16px; line-height: 2.0; color: #555; margin: 0 0 16px; }
+ul, ol { padding-left: 1.5em; margin: 0 0 16px; }
+li { font-size: 16px; line-height: 2.0; color: #555; margin-bottom: 6px; }
+strong { color: #2D2D2D; font-weight: 700; }
+
+.lesson-hero { background: linear-gradient(135deg, #F84744 0%, #FB9A3F 100%); border-radius: 16px; padding: 22px 28px; margin: 0 0 40px; color: #fff; }
+.lesson-hero__badge { display: inline-block; background: #fff; color: #E85D4A; padding: 5px 14px; border-radius: 8px; font-size: 11px; font-weight: 800; letter-spacing: 0.18em; margin-bottom: 14px; font-family: 'Inter', sans-serif; }
+.lesson-hero__title { font-size: 22px; font-weight: 800; line-height: 1.4; margin-bottom: 16px; letter-spacing: -0.01em; }
+.lesson-hero__meta { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+.lesson-hero__chip { display: inline-flex; align-items: center; background: #fff; color: #333; padding: 5px 11px; border-radius: 6px; font-size: 11.5px; font-weight: 700; font-family: 'Inter', sans-serif; letter-spacing: 0.04em; }
+.lesson-hero__topic { font-size: 13px; font-weight: 600; opacity: 0.95; }
+.lesson-hero__time { display: inline-flex; align-items: center; gap: 5px; font-size: 13px; font-weight: 600; opacity: 0.95; }
+
+.goal-box { background: #fff; border-radius: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); padding: 20px 24px; margin: 0 0 40px; }
+.goal-box__head { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; }
+.goal-box__pill { display: inline-block; background: linear-gradient(135deg, #F84744 0%, #FB9A3F 100%); color: #fff; padding: 6px 16px; border-radius: 50px; font-size: 11px; font-weight: 700; letter-spacing: 0.18em; }
+.goal-box__sub { font-size: 14px; font-weight: 700; color: #333; letter-spacing: 0.02em; }
+.goal-box ul { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 6px; }
+.goal-box li { display: flex; gap: 12px; padding: 10px 14px; background: linear-gradient(135deg, #FFF5F0 0%, #FFFAEC 100%); border-radius: 10px; align-items: flex-start; transition: transform 0.2s; }
+.goal-box__check { flex-shrink: 0; width: 22px; height: 22px; border-radius: 50%; background: linear-gradient(135deg, #F84744 0%, #FB9A3F 100%); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 800; margin-top: 1px; }
+.goal-box__text { flex: 1; font-size: 14px; color: #333; line-height: 1.7; font-weight: 500; }
+
+.toc { background: #fff; border-radius: 14px; padding: 22px 26px; box-shadow: 0 2px 12px rgba(0,0,0,0.05); margin: 0 0 48px; }
+.toc-head { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; }
+.toc-icon { width: 26px; height: 26px; border-radius: 7px; background: linear-gradient(135deg, #E85D4A, #F5A64A); display: flex; align-items: center; justify-content: center; color: #fff; font-size: 11px; font-weight: 700; }
+.toc-title { font-size: 15px; font-weight: 700; color: #2D2D2D; }
+.toc ul { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 3px; }
+.toc li a { display: flex; align-items: center; gap: 12px; padding: 8px 14px; background: #FAF9F8; border-radius: 8px; text-decoration: none; transition: background 0.2s; }
+.toc li a:hover { background: #F5EFEC; }
+.toc-num { font-size: 12px; font-weight: 700; color: #2D2D2D; letter-spacing: 0.05em; min-width: 22px; }
+.toc-text { flex: 1; font-size: 14px; color: #2D2D2D; font-weight: 500; }
+.toc-chev { color: #B8B8B8; font-size: 12px; }
+
+.img-placeholder { background: #FAF5F3; border: 2px dashed #E8D5CC; border-radius: 12px; padding: 36px 20px; text-align: center; margin: 28px 0; }
+.img-placeholder-label { font-size: 10px; font-weight: 700; letter-spacing: 0.15em; color: #C4A59A; margin-bottom: 6px; }
+.img-placeholder-name { font-size: 12px; color: #B08880; font-family: monospace; }
+.img-placeholder-desc { font-size: 13px; color: #8A6A60; margin-top: 6px; }
+
+.prompt-box { background: #2A2220; border-radius: 12px; padding: 16px 20px; margin: 0 0 28px; position: relative; }
+.prompt-box-label { font-size: 10px; font-weight: 700; letter-spacing: 0.15em; color: #F5A64A; margin-bottom: 10px; padding-right: 100px; }
+.prompt-text { color: #E8DDD8; font-size: 12px; line-height: 1.7; font-family: 'Courier New', monospace; white-space: pre-wrap; word-break: break-word; margin: 0; }
+.prompt-copy-btn { position: absolute; top: 12px; right: 14px; background: #F5A64A; color: #fff; border: none; padding: 6px 14px; border-radius: 6px; font-size: 10px; font-weight: 800; cursor: pointer; letter-spacing: 0.12em; font-family: 'Inter', sans-serif; transition: all 0.2s; z-index: 1; }
+.prompt-copy-btn:hover { background: #E8902A; transform: translateY(-1px); }
+.prompt-copy-btn.copied { background: #4A8024; }
+.prompt-copy-btn.copied:hover { background: #4A8024; transform: none; }
+
+.point-box { background: #FFFBE6; border: 1.5px solid #F5C58F; border-radius: 10px; padding: 18px 22px 20px; margin: 0 0 28px; }
+.point-box__head { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+.point-box__tab { display: inline-flex; align-items: center; justify-content: center; gap: 5px; background: #F5A64A; color: #fff; font-size: 11px; font-weight: 700; padding: 5px 17px 5px 11px; min-width: 88px; letter-spacing: 0.05em; clip-path: polygon(0 0, 100% 0, calc(100% - 10px) 50%, 100% 100%, 0 100%); flex-shrink: 0; }
+.point-box__sub { font-size: 13.5px; font-weight: 700; color: #2D2D2D; }
+.point-box p { font-size: 15px; line-height: 1.9; color: #444; margin: 0 0 10px; }
+.point-box p:last-child { margin-bottom: 0; }
+.point-box ol, .point-box ul { font-size: 15px; line-height: 1.9; color: #444; margin: 0; padding-left: 1.4em; }
+.point-box ol li, .point-box ul li { font-size: 15px; line-height: 1.9; color: #444; margin-bottom: 4px; }
+
+.notice-box { background: #FFF5F4; border: 1.5px solid #F5A8A0; border-radius: 10px; padding: 18px 22px 20px; margin: 0 0 28px; }
+.notice-box__head { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+.notice-box__tab { display: inline-flex; align-items: center; justify-content: center; gap: 5px; background: #D9433A; color: #fff; font-size: 11px; font-weight: 700; padding: 5px 17px 5px 11px; min-width: 88px; letter-spacing: 0.05em; clip-path: polygon(0 0, 100% 0, calc(100% - 10px) 50%, 100% 100%, 0 100%); flex-shrink: 0; }
+.notice-box__icon { display: inline-flex; width: 14px; height: 14px; border-radius: 50%; background: #fff; color: #D9433A; font-size: 10px; font-weight: 700; align-items: center; justify-content: center; }
+.notice-box__sub { font-size: 13.5px; font-weight: 700; color: #2D2D2D; }
+.notice-box p { font-size: 14.5px; line-height: 1.85; color: #444; margin: 0 0 8px; }
+.notice-box p:last-child { margin-bottom: 0; }
+
+
+/* 見積書7項目テーブル */
+.estimate-table { width: 100%; border-collapse: collapse; border-radius: 12px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.04); margin: 0 0 28px; }
+.estimate-table thead { background: linear-gradient(135deg, #E85D4A, #F5A64A); color: #fff; }
+.estimate-table th { padding: 12px 16px; font-size: 13px; font-weight: 700; text-align: left; letter-spacing: 0.04em; }
+.estimate-table td { padding: 14px 16px; font-size: 14px; color: #444; border-bottom: 1px solid #F0E5DC; vertical-align: top; line-height: 1.7; background: #fff; }
+.estimate-table tr:nth-child(even) td { background: #FBF8F5; }
+.estimate-table tr:last-child td { border-bottom: none; }
+.estimate-table .tbl-num { font-family: 'Inter', sans-serif; font-weight: 800; color: #E85D4A; font-size: 13px; }
+.estimate-table .tbl-name { font-weight: 700; color: #2D2D2D; }
+
+.sample-box { background: #FBF8F5; border-left: 4px solid #F5A64A; border-radius: 0 10px 10px 0; padding: 18px 22px; margin: 0 0 28px; }
+.sample-box__label { font-size: 11px; font-weight: 800; letter-spacing: 0.15em; color: #B07344; margin-bottom: 8px; font-family: 'Inter', sans-serif; }
+.sample-box__body { font-size: 14.5px; line-height: 1.95; color: #2D2D2D; white-space: pre-wrap; font-family: 'Noto Serif JP', serif; font-weight: 400; }
+
+.quiz-box { background: linear-gradient(135deg, #FFF1F2 0%, #FCE7F3 100%); border-radius: 20px; padding: 20px 22px; margin: 28px 0; }
+.quiz-top { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+.quiz-icon { width: 30px; height: 30px; border-radius: 10px; background: #fff; color: #EC4899; display: flex; align-items: center; justify-content: center; font-size: 16px; box-shadow: 0 2px 8px rgba(236,72,153,0.15); font-weight: 700; }
+.quiz-title { font-size: 15px; font-weight: 700; color: #831843; }
+.quiz-q { font-size: 15px; font-weight: 700; color: #831843; margin-bottom: 12px; line-height: 1.6; background: #fff; padding: 12px 16px; border-radius: 12px; box-shadow: 0 2px 8px rgba(236,72,153,0.06); }
+.quiz-options { display: flex; flex-direction: column; gap: 7px; }
+.quiz-opt { display: flex; align-items: center; gap: 12px; padding: 10px 16px; background: #fff; border: 2px solid transparent; border-radius: 12px; cursor: pointer; transition: all 0.2s; font-family: inherit; text-align: left; width: 100%; box-shadow: 0 2px 6px rgba(236,72,153,0.05); }
+.quiz-opt:hover:not(:disabled) { border-color: #F9A8D4; transform: translateY(-1px); box-shadow: 0 4px 10px rgba(236,72,153,0.1); }
+.quiz-opt:disabled { cursor: default; }
+.quiz-letter { flex-shrink: 0; width: 28px; height: 28px; border-radius: 50%; background: #FCE7F3; color: #831843; font-size: 13px; font-weight: 700; display: flex; align-items: center; justify-content: center; }
+.quiz-opt-text { font-size: 14px; color: #1F1F1F; flex: 1; font-weight: 500; line-height: 1.55; }
+.quiz-opt.correct { background: #ECFCCB; border-color: #84CC16; }
+.quiz-opt.correct .quiz-letter { background: #84CC16; color: #fff; }
+.quiz-opt.correct .quiz-opt-text { color: #365314; font-weight: 700; }
+.quiz-opt.wrong { background: #FFE4E6; border-color: #FB7185; }
+.quiz-opt.wrong .quiz-letter { background: #FB7185; color: #fff; }
+.quiz-opt.wrong .quiz-opt-text { color: #881337; font-weight: 700; }
+.quiz-opt.dim { opacity: 0.4; }
+.quiz-feedback { display: none; gap: 12px; padding: 12px 16px; background: #fff; border-radius: 12px; margin-top: 10px; box-shadow: 0 2px 8px rgba(132,204,22,0.1); align-items: flex-start; }
+.quiz-feedback.show { display: flex; }
+.quiz-feedback.ng { box-shadow: 0 2px 8px rgba(251,113,133,0.1); }
+.quiz-feedback-icon { flex-shrink: 0; width: 28px; height: 28px; border-radius: 50%; background: #84CC16; color: #fff; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 700; }
+.quiz-feedback.ng .quiz-feedback-icon { background: #FB7185; }
+.quiz-feedback-body { flex: 1; }
+.quiz-feedback-title { font-size: 13px; font-weight: 800; color: #365314; margin-bottom: 4px; }
+.quiz-feedback.ng .quiz-feedback-title { color: #881337; }
+.quiz-feedback-text { font-size: 13px; color: #4D5552; line-height: 1.75; }
+.quiz-feedback.ng .quiz-feedback-text { color: #6B5258; }
+
+.summary-box { background: #E8F5E0; border-radius: 14px; padding: 20px 24px; margin: 48px 0 40px; }
+.summary-box__head { margin-bottom: 14px; }
+.summary-box__badge { display: inline-block; background: linear-gradient(135deg, #4A8024 0%, #6BAA45 100%); color: #fff; padding: 6px 14px; border-radius: 8px; font-size: 12px; font-weight: 700; letter-spacing: 0.18em; }
+.summary-box ol { list-style: none; padding: 0; margin: 0; counter-reset: sbc; }
+.summary-box li { counter-increment: sbc; position: relative; padding: 7px 0 7px 30px; font-size: 14.5px; line-height: 1.8; color: #2D2D2D; font-weight: 500; }
+.summary-box li::before { content: counter(sbc, decimal-leading-zero); position: absolute; left: 0; top: 7px; color: #4A8024; font-weight: 800; font-size: 13px; font-family: 'Inter', sans-serif; letter-spacing: -0.02em; }
+
+.check-box { background: #fff; border-radius: 14px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); padding: 20px 24px; margin: 0 0 40px; }
+.check-box__head { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; padding-bottom: 12px; border-bottom: 2px solid; border-image: linear-gradient(90deg, #F84744 0%, #FB9A3F 100%) 1; }
+.check-box__pill { display: inline-block; background: linear-gradient(135deg, #F84744 0%, #FB9A3F 100%); color: #fff; padding: 5px 14px; border-radius: 50px; font-size: 11px; font-weight: 800; letter-spacing: 0.18em; }
+.check-box__sub { font-size: 14px; font-weight: 700; color: #333; }
+.check-box details { margin-bottom: 7px; }
+.check-box summary { padding: 11px 18px; cursor: pointer; display: flex; align-items: center; gap: 12px; font-size: 14px; color: #2D2D2D; background: linear-gradient(135deg, #FFF5F0 0%, #FFFAEC 100%); border-radius: 22px; transition: all 0.2s; border: 1.5px solid transparent; font-weight: 500; list-style: none; }
+.check-box summary:hover { border-color: #F5A64A; }
+.check-box summary::-webkit-details-marker { display: none; }
+.check-box summary::before { content: '＋'; color: #fff; background: linear-gradient(135deg, #F84744 0%, #FB9A3F 100%); width: 22px; height: 22px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 800; flex-shrink: 0; }
+.check-box details[open] summary { border-color: #F5A64A; }
+.check-box details[open] summary::before { content: '−'; }
+.check-box__detail { padding: 12px 20px 4px 48px; font-size: 13.5px; color: #555; line-height: 1.85; }
+
+.reveal { opacity: 0; transform: translateY(20px); transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1); }
+.reveal.visible { opacity: 1; transform: translateY(0); }
+</style>
+<div class="lesson-wrapper">
+
+  <div class="lesson-hero">
+    <span class="lesson-hero__badge">CHAPTER 5</span>
+    <div class="lesson-hero__title">単価の考え方と見積書テンプレートを設計する — 実績を積みながら単価を上げる</div>
+    <div class="lesson-hero__meta">
+      <span class="lesson-hero__chip">LESSON 5-3</span>
+      <span class="lesson-hero__topic">実績ゼロのときの単価感と見積書テンプレ設計</span>
+      <span class="lesson-hero__time">⏱ 所要時間：約40分</span>
+    </div>
+  </div>
+<div class="back-to-roadmap" style="display: flex; justify-content: center; align-items: center; padding: 24px 0; margin-top: 24px;"></div>
+<!-- 前の章に戻るボタン / 次の章に進むボタン がある場合 -->  
+<div style="display: flex; justify-content: space-between; align-items: center; padding: 24px 0; margin-top: 24px; max-width: 1775px; margin-left: auto; margin-right: auto; width: 100%;">
+  <a href="rULKk" style="position: relative; display: inline-block; background: linear-gradient(135deg, #E85D4A, #F5A64A); color: #fff; font-weight: 700; padding: 12px clamp(24px, 7vw, 48px); border-radius: 8px; text-decoration: none;">
+    <img src="/theme/webcoach/img/icons/arrow-right.svg" style="position: absolute; top: 50%; transform: translateY(-50%); left: 12px; filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(125deg) brightness(103%) contrast(103%); transform: translateY(-50%) rotate(180deg);">
+    前の章に戻る
+  </a>
+  
+  <a href="nf4sP" style="position: relative; display: inline-block; background: linear-gradient(135deg, #E85D4A, #F5A64A); color: #fff; font-weight: 700; padding: 12px clamp(24px, 7vw, 48px); border-radius: 8px; text-decoration: none;">
+    次の章に進む
+    <img src="/theme/webcoach/img/icons/arrow-right.svg" style="position: absolute; top: 50%; transform: translateY(-50%); right: 12px; filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(125deg) brightness(103%) contrast(103%);">
+  </a>
+</div>  
+  <div class="goal-box">
+    <div class="goal-box__head">
+      <div class="goal-box__pill">GOAL</div>
+      <div class="goal-box__sub">このレッスンのゴール</div>
+    </div>
+    <ul>
+      <li><div class="goal-box__check">✓</div><div class="goal-box__text">単価は実力ではなく実績と信頼の蓄積で上がっていくプロセスを理解している</div></li>
+      <li><div class="goal-box__check">✓</div><div class="goal-box__text">実績ゼロのときの単価感（バナー1点1,000〜5,000円）と、必要以上に低い単価を断ってよいことを理解している</div></li>
+      <li><div class="goal-box__check">✓</div><div class="goal-box__text">見積書に必ず明記する7項目を理解し、見積書テンプレートを保存している</div></li>
+      <li><div class="goal-box__check">✓</div><div class="goal-box__text">AI使用開示の書き方と、応募前のAI禁止チェックを習慣化できる</div></li>
+    </ul>
+  </div>
+
+  <nav class="toc">
+    <div class="toc-head">
+      <div class="toc-icon">≡</div>
+      <div class="toc-title">目次</div>
+    </div>
+    <ul>
+      <li><a href="#s1"><span class="toc-num">01</span><span class="toc-text">単価は実績と信頼で上がる — 最初の数件は投資期間</span><span class="toc-chev">›</span></a></li>
+      <li><a href="#s2"><span class="toc-num">02</span><span class="toc-text">実績ゼロのときの単価感</span><span class="toc-chev">›</span></a></li>
+      <li><a href="#s3"><span class="toc-num">03</span><span class="toc-text">見積書に必ず明記する7項目</span><span class="toc-chev">›</span></a></li>
+      <li><a href="#s4"><span class="toc-num">04</span><span class="toc-text">見積書テンプレートを作成して保存する</span><span class="toc-chev">›</span></a></li>
+      <li><a href="#s5"><span class="toc-num">05</span><span class="toc-text">AI使用開示の書き方と応募前チェック</span><span class="toc-chev">›</span></a></li>
+    </ul>
+  </nav>
+
+  <!-- ===== セクション 01 ===== -->
+  <h2 id="s1">01. 単価は実績と信頼で上がる — 最初の数件は投資期間</h2>
+
+  <p>単価は実力で決まるのではなく、<strong>実績と信頼の蓄積</strong>で上がっていきます。最初の数件は実績ゼロからのスタートなので、相場より低めの設定で受注し、ポートフォリオと評価を積み上げる期間と捉えます。最初から高単価を狙って受注できないより、まず完成させて納品実績を1件ずつ増やすほうが結果的に近道です。</p>
+
+  <div class="point-box reveal">
+    <div class="point-box__head">
+      <div class="point-box__tab">✓ Point !</div>
+      <div class="point-box__sub">最初の数件は投資期間と割り切る</div>
+    </div>
+    <p>最初の数件で低めの単価を受けるのは、自分の力をポートフォリオと評価に変えるための投資です。実績が貯まれば自然と単価は上がっていきます。逆に最初から相場と同じ単価を求めて何件も落選すると、ポートフォリオも評価も貯まりません。</p>
+  </div>
+
+  <div class="notice-box reveal">
+    <div class="notice-box__head">
+      <div class="notice-box__tab"><span class="notice-box__icon">!</span> 注意</div>
+      <div class="notice-box__sub">なんとなく安くしすぎるのは別問題</div>
+    </div>
+    <p>戦略的に低めの単価で受けるのと、修正回数や納期を決めずに安請け合いするのは別の話です。安く受けても修正回数と納期を明記しないと、無限修正で時給が破綻します。次のセクション以降で見積書テンプレートを設計し、安く受けるときでも自分を守れる状態にします。</p>
+  </div>
+
+  <!-- ===== セクション 02 ===== -->
+  <h2 id="s2">02. 実績ゼロのときの単価感</h2>
+
+  <p>1ヶ月目で受注する案件は、バナー1点あたり<strong>1,000〜5,000円</strong>程度が現実的なゾーンです。実績ゼロのうちは経験者との競合で勝つために単価で勝負することが多くなります。なかには「テスト案件」として相場よりかなり低い単価で初回だけ依頼してくるクライアントもいます。</p>
+
+  <div class="point-box reveal">
+    <div class="point-box__head">
+      <div class="point-box__tab">✓ Point !</div>
+      <div class="point-box__sub">単価より完成→納品→評価の回転数</div>
+    </div>
+    <p>1ヶ月目で重視するのは単価ではなく、<strong>完成して納品して評価をもらう</strong>回転数です。回転数が増えれば単価は自動的に上がる構造なので、最初は単価で粘らず受注できる単価で受けて、サイクルを回します。</p>
+  </div>
+
+  <div class="notice-box reveal">
+    <div class="notice-box__head">
+      <div class="notice-box__tab"><span class="notice-box__icon">!</span> 注意</div>
+      <div class="notice-box__sub">必要以上に低い単価の発注は断ってよい</div>
+    </div>
+    <p>テスト案件でもないのにバナー1点で数百円〜1,000円を切るような明らかに低すぎる発注は、断ってかまいません。実績作りのためだとしても、時給換算で割に合わない案件を続けると消耗します。クラウドワークスには悪徳なクライアントも一定数いるため、判断に迷うときはコーチに相談してください。</p>
+  </div>
+
+  <!-- ===== セクション 03 ===== -->
+  <h2 id="s3">03. 見積書に必ず明記する7項目</h2>
+
+  <p>見積書は値段表ではなく、自分を無限修正や仕様変更から守るためのルールブックです。次の7項目を必ず明記します。どれか1つでも欠けると、納品後に予想外の負担が発生する可能性があります。</p>
+
+  <table class="estimate-table reveal">
+    <thead>
+      <tr><th style="width:50px;">#</th><th style="width:24%;">項目</th><th>記載内容のポイント</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="tbl-num">01</td>
+        <td class="tbl-name">修正回数</td>
+        <td>無料修正の上限回数を明記（2〜3回が目安）。超過分は別途見積りと書く。記載がないと無限修正のリスクが残ります。</td>
+      </tr>
+      <tr>
+        <td class="tbl-num">02</td>
+        <td class="tbl-name">著作権の扱い</td>
+        <td>納品物の著作権が納品後にどう扱われるか（譲渡／使用許諾の範囲／クレジット表記の有無）を書きます。AI生成素材を使う場合は次のAI使用明記とセットで扱います。</td>
+      </tr>
+      <tr>
+        <td class="tbl-num">03</td>
+        <td class="tbl-name">支払い条件</td>
+        <td>クラウドワークスの仮払い方式に一本化し、その旨を明記します。仮払い前に外部契約や直接振込に切り替えるよう誘導してくるクライアントは未払いリスクが高いため、応じないようにします。</td>
+      </tr>
+      <tr>
+        <td class="tbl-num">04</td>
+        <td class="tbl-name">キャンセル料</td>
+        <td>制作着手後にクライアント都合でキャンセルになった場合の請求割合（着手後30％／中間提出後50％／完成後100％など）を明記します。</td>
+      </tr>
+      <tr>
+        <td class="tbl-num">05</td>
+        <td class="tbl-name">AI生成素材使用の明記</td>
+        <td>「本作品は商用利用が可能なAI（ChatGPT Images 2.0）を使用しています」と一文添えます。クラウドワークスの公式ポリシーでも、AI利用は隠さず透明性の高いコミュニケーションを心がけることが推奨されています。</td>
+      </tr>
+      <tr>
+        <td class="tbl-num">06</td>
+        <td class="tbl-name">納期</td>
+        <td>依頼確定からの目安日数を明記（7〜10日が目安）。素材支給の遅延があった場合の納期延長条件も書いておきます。</td>
+      </tr>
+      <tr>
+        <td class="tbl-num">07</td>
+        <td class="tbl-name">二次利用可否</td>
+        <td>納品物をクライアントが別媒体・別期間で再利用できるかどうかを明記します。「同社のSNS投稿に限り無償／その他媒体は別途協議」のように範囲を区切るのが安全です。</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="notice-box reveal">
+    <div class="notice-box__head">
+      <div class="notice-box__tab"><span class="notice-box__icon">!</span> 注意</div>
+      <div class="notice-box__sub">記載漏れは納品後に取り戻せない</div>
+    </div>
+    <p>見積書に書かなかった項目は、後から請求できないと考えてください。納品後にキャンセル料を請求しようとしても「最初から契約に書いていない」と言われたら通りません。最初の見積書テンプレートを作るときにすべて盛り込みます。</p>
+  </div>
+
+  <!-- ===== セクション 04 ===== -->
+  <h2 id="s4">04. 見積書テンプレートを作成して保存する</h2>
+
+  <p>7項目を盛り込んだ見積書テンプレートをChatGPTで生成します。生成された土台を1度カスタマイズして、案件ごとに金額と納期だけ差し替えれば使い回せる状態にします。</p>
+
+  <div class="prompt-box reveal">
+    <div class="prompt-box-label">CHATGPT PROMPT — 見積書テンプレートの作成</div>
+    <button class="prompt-copy-btn" type="button" data-target="prompt-estimate">コピー</button>
+<pre class="prompt-text" id="prompt-estimate"># 命令
+クラウドソーシングで活動する個人デザイナーが使う見積書テンプレートを作成してください。
+案件ごとに金額と納期だけ差し替えれば、すぐに発注者へ送れる状態にしてください。
+
+# 見積書に必ず含める7項目
+1. 修正回数（無料修正の上限、超過分は別途見積り）
+2. 著作権の扱い（譲渡／使用許諾の範囲／クレジット表記）
+3. 支払い条件（クラウドワークスの仮払い方式に一本化する旨を明記）
+4. キャンセル料（着手後／中間提出後／完成後の段階別）
+5. AI生成素材使用の明記：本作品は商用利用が可能なAI（ChatGPT Images 2.0）を使用しています
+6. 納期（依頼確定からの日数／素材支給遅延時の延長条件）
+7. 二次利用可否（再利用範囲の明記）
+
+# テンプレートの構成
+- 冒頭：見積書タイトル（御見積書）／日付欄／宛先欄／差出人欄
+- 案件情報：制作物名・サイズ・バリエーション数・支給素材の有無
+- 金額明細：制作費（差し替え欄）・修正対応費（差し替え欄）・小計・税
+- 7項目の明記欄
+- 結びの一文（質問は遠慮なくご連絡くださいの旨）
+
+# トーンのルール
+- ビジネス文書として丁寧で、読みやすい
+- 専門用語は使わず、発注者が初見でも理解できる平易な日本語
+- 数字や金額の差し替え箇所は【ここに記入】のように明示する
+
+# 出力形式
+プレーンテキストで出力してください。後で.docxや.pdfに整形しやすい形式にしてください。</pre>
+  </div>
+
+  <div class="sample-box reveal">
+    <div class="sample-box__label">SAMPLE — 見積書の冒頭部分</div>
+    <div class="sample-box__body">御見積書
+
+発行日：2026年MM月DD日
+宛先：【クライアント名】様
+差出人：【自分の名前】
+
+このたびはお見積りのご依頼をいただき、ありがとうございます。
+下記の通りお見積りいたしますので、ご確認のほどよろしくお願いいたします。
+
+―――――――――――――
+【案件情報】
+制作物：【バナー1点 1080×1080px】×【2バリエーション】
+支給素材：あり／なし
+納期：依頼確定から【10】日以内
+
+【金額明細】
+制作費：【¥3,000】
+修正対応費（3回目以降）：1回あたり【¥500】
+小計：【¥3,000】
+（消費税の取り扱いは現状ステータスに応じて記載）
+―――――――――――――</div>
+  </div>
+
+  <div class="point-box reveal">
+    <div class="point-box__head">
+      <div class="point-box__tab">✓ Point !</div>
+      <div class="point-box__sub">テンプレートの保存先</div>
+    </div>
+    <p>カスタマイズ後のテンプレートは、5-2で作った応募関連フォルダに<strong>estimate_template.txt</strong>として保存します。案件ごとに金額・納期・宛先だけを差し替えて使い回します。</p>
+  </div>
+
+  <!-- ===== セクション 05 ===== -->
+  <h2 id="s5">05. AI使用開示の書き方と応募前チェック</h2>
+
+  <p>AI生成素材の使用開示は法的義務ではありませんが、信頼構築と事後トラブル回避のため推奨します。見積書に1文添えるほか、応募する前に案件側でAI使用が禁止されていないかも必ず確認します。</p>
+
+  <div class="sample-box reveal">
+    <div class="sample-box__label">SAMPLE — 見積書・納品メールに添える1文</div>
+    <div class="sample-box__body">なお本作品は商用利用が可能なAI（ChatGPT Images 2.0）を使用しています。
+素材の権利関係はこちらで確認済みですので、安心してご利用いただけます。</div>
+  </div>
+
+  <div class="notice-box reveal">
+    <div class="notice-box__head">
+      <div class="notice-box__tab"><span class="notice-box__icon">!</span> 注意</div>
+      <div class="notice-box__sub">応募前に必ず案件概要のAI禁止条件を確認</div>
+    </div>
+    <p>クライアントによってはAI利用について条件を提示している場合があります。案件詳細にAI利用可否の記載があれば、その内容に従って応募します。明示がない場合は、応募文や納品時にAIを利用している旨を一文添えて、透明性の高いコミュニケーションを心がけます。</p>
+  </div>
+
+  <div class="point-box reveal">
+    <div class="point-box__head">
+      <div class="point-box__tab">✓ Point !</div>
+      <div class="point-box__sub">開示はプロフィール・応募文・見積書の3層で</div>
+    </div>
+    <p>AI使用の開示は1か所だけで済ませず、<strong>プロフィール（5-1）／応募文（5-2）／見積書・納品メール（5-3）</strong>の3層で重ねます。後から「聞いていない」と言われるリスクを段階的にゼロにできます。</p>
+  </div>
+
+  <!-- ▼ Quiz ▼ -->
+  <div class="quiz-box reveal">
+    <div class="quiz-top">
+      <div class="quiz-icon">Q</div>
+      <div class="quiz-title">確認クイズ</div>
+    </div>
+    <div class="quiz-q">最初の数件で低めの単価で受けることが、なぜ結果的に近道になるのでしょうか。</div>
+    <div class="quiz-options">
+      <button class="quiz-opt" data-q="q1" data-correct="false"><div class="quiz-letter">A</div><div class="quiz-opt-text">クラウドワークスが新規ワーカーに低単価を強制しているため</div></button>
+      <button class="quiz-opt" data-q="q1" data-correct="false"><div class="quiz-letter">B</div><div class="quiz-opt-text">最初の3か月は低単価でないと税制上不利になるため</div></button>
+      <button class="quiz-opt" data-q="q1" data-correct="true"><div class="quiz-letter">C</div><div class="quiz-opt-text">単価は実力ではなく実績と信頼で上がるため、まず納品実績を1件ずつ積み上げて回転数を増やすほうが、結果的に単価アップへの近道になるため</div></button>
+      <button class="quiz-opt" data-q="q1" data-correct="false"><div class="quiz-letter">D</div><div class="quiz-opt-text">最初に低単価で受けると評価ポイントが2倍になる仕様があるため</div></button>
+    </div>
+    <div class="quiz-feedback ok" id="q1-ok">
+      <div class="quiz-feedback-icon">✓</div>
+      <div class="quiz-feedback-body">
+        <div class="quiz-feedback-title">正解です</div>
+        <div class="quiz-feedback-text">単価は実力ではなく実績と信頼の蓄積で上がっていく構造です。最初は完成→納品→評価の回転数を優先し、ポートフォリオと評価を積み上げると、自然と単価は上がっていきます。</div>
+      </div>
+    </div>
+    <div class="quiz-feedback ng" id="q1-ng">
+      <div class="quiz-feedback-icon">✕</div>
+      <div class="quiz-feedback-body">
+        <div class="quiz-feedback-title">惜しい</div>
+        <div class="quiz-feedback-text">クラウドワークスや税制で強制されているわけではありません。単価は実績と信頼の蓄積で上がっていく構造なので、最初は完成して納品する回転数を優先するのが結果的に最速ルートです。</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ▼ Summary ▼ -->
+  <div class="summary-box">
+    <div class="summary-box__head"><div class="summary-box__badge">SUMMARY</div></div>
+    <ol>
+      <li>単価は実力ではなく実績と信頼の蓄積で上がる。最初の数件は投資期間と捉え、回転数を優先する</li>
+      <li>実績ゼロのときはバナー1点1,000〜5,000円程度のゾーン。テスト案件もある。必要以上に低い単価は断ってOK、判断に迷えばコーチに相談する</li>
+      <li>見積書に必ず明記する7項目：修正回数・著作権・支払い条件・キャンセル料・AI使用明記・納期・二次利用可否</li>
+      <li>ChatGPTで見積書テンプレートを生成し、案件ごとに金額と納期だけ差し替えて使い回す</li>
+      <li>AI使用開示はプロフィール・応募文・見積書の3層で重ね、応募前に案件のAI禁止条件を必ず確認する</li>
+    </ol>
+  </div>
+
+  <!-- ▼ Check ▼ -->
+  <div class="check-box">
+    <div class="check-box__head">
+      <div class="check-box__pill">CHECK</div>
+      <div class="check-box__sub">理解度チェック</div>
+    </div>
+    <details>
+      <summary>見積書にキャンセル料の項目を書かないと、どんな問題が起きますか？</summary>
+      <div class="check-box__detail">制作着手後にクライアント都合でキャンセルになっても、料金を請求できなくなります。見積書に書かれていない項目は事後に請求できないのが原則です。最初のテンプレートに段階別（着手後30％／中間提出後50％／完成後100％）で盛り込んでおくと安全です。</div>
+    </details>
+    <details>
+      <summary>AI使用の開示はなぜプロフィール・応募文・見積書の3層で重ねるのですか？</summary>
+      <div class="check-box__detail">1か所だけだと、後から「聞いていない／見落とした」と言われるリスクが残るためです。プロフィール（常設）・応募文（案件ごと）・見積書（契約直前）の3つの段階で重ねて伝えることで、認識違いのリスクを段階的にゼロにします。</div>
+    </details>
+    <details>
+      <summary>応募前に案件側のAI禁止条件をチェックする理由は？</summary>
+      <div class="check-box__detail">クラウドワークスの公式ポリシーでは、AI利用の可否は受発注者間の取り決めに委ねられています。案件詳細にAI利用可否の記載があれば従い、明示がない場合は応募メッセージや納品時にAI使用を一文添えて透明性を保ちます。利用を意図的に隠さないことが基本姿勢です。</div>
+    </details>
+  </div>
+<!-- 前の章に戻るボタン / 次の章に進むボタン がある場合 -->  
+<div style="display: flex; justify-content: space-between; align-items: center; padding: 24px 0; margin-top: 24px; max-width: 1775px; margin-left: auto; margin-right: auto; width: 100%;">
+  <a href="rULKk" style="position: relative; display: inline-block; background: linear-gradient(135deg, #E85D4A, #F5A64A); color: #fff; font-weight: 700; padding: 12px clamp(24px, 7vw, 48px); border-radius: 8px; text-decoration: none;">
+    <img src="/theme/webcoach/img/icons/arrow-right.svg" style="position: absolute; top: 50%; transform: translateY(-50%); left: 12px; filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(125deg) brightness(103%) contrast(103%); transform: translateY(-50%) rotate(180deg);">
+    前の章に戻る
+  </a>
+  
+  <a href="nf4sP" style="position: relative; display: inline-block; background: linear-gradient(135deg, #E85D4A, #F5A64A); color: #fff; font-weight: 700; padding: 12px clamp(24px, 7vw, 48px); border-radius: 8px; text-decoration: none;">
+    次の章に進む
+    <img src="/theme/webcoach/img/icons/arrow-right.svg" style="position: absolute; top: 50%; transform: translateY(-50%); right: 12px; filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(125deg) brightness(103%) contrast(103%);">
+  </a>
+</div>  
+<div class="back-to-roadmap" style="display: flex; justify-content: center; align-items: center; padding: 24px 0; margin-top: 24px;"></div>
+</div><!-- /.lesson-wrapper -->
+
+<script>
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) entry.target.classList.add('visible');
+  });
+}, { threshold: 0.1 });
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+document.querySelectorAll('.quiz-opt').forEach(btn => {
+  btn.addEventListener('click', function() {
+    const q = this.dataset.q;
+    const correct = this.dataset.correct === 'true';
+    const opts = document.querySelectorAll(`[data-q="${q}"]`);
+    opts.forEach(o => o.disabled = true);
+    this.classList.add(correct ? 'correct' : 'wrong');
+    opts.forEach(o => {
+      if (o === this) return;
+      if (o.dataset.correct === 'true') o.classList.add('correct');
+      else o.classList.add('dim');
+    });
+    document.getElementById(`${q}-${correct ? 'ok' : 'ng'}`).classList.add('show');
+  });
+});
+
+document.querySelectorAll('.prompt-copy-btn').forEach(btn => {
+  btn.addEventListener('click', async function() {
+    const target = document.getElementById(this.dataset.target);
+    if (!target) return;
+    const text = target.textContent;
+    const original = this.textContent;
+    const showCopied = () => {
+      this.textContent = 'コピーしました';
+      this.classList.add('copied');
+      setTimeout(() => {
+        this.textContent = original;
+        this.classList.remove('copied');
+      }, 2000);
+    };
+    try {
+      await navigator.clipboard.writeText(text);
+      showCopied();
+    } catch (e) {
+      const textarea = document.createElement('textarea');
+      textarea.value = text;
+      textarea.style.position = 'fixed';
+      textarea.style.opacity = '0';
+      document.body.appendChild(textarea);
+      textarea.select();
+      try {
+        document.execCommand('copy');
+        showCopied();
+      } catch (err) {
+        this.textContent = 'コピー失敗';
+        setTimeout(() => { this.textContent = original; }, 2000);
+      }
+      document.body.removeChild(textarea);
+    }
+  });
+});
+</script></div></div>
+        
+      
+    </div>
+  
+  </div>
+</div>
+<!-- <script src="https://cdn.clipkit.co/clipkit/javascripts/item-shopify-1.0.js?v=v15.9.0-20260915" async></script> -->
+
+            </div>
+        </main>
+
+    </div>
+
+    <script src="https://cdn.clipkit.co/clipkit/javascripts/application-1.0.js?v=v15.9.0-20260915" async></script>
+
+    <!-- bodyタグ内の下部に挿入されます -->
+
+
+    <!-- BootstrapのCDNでのjs読み込み -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+        crossorigin="anonymous"></script>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="ck-icon-arrow-down" viewBox="0 0 1792 1792"><path d="M1675 832q0 53-37 90l-651 652q-39 37-91 37-53 0-90-37l-651-652q-38-36-38-90 0-53 38-91l74-75q39-37 91-37 53 0 90 37l294 294v-704q0-52 38-90t90-38h128q52 0 90 38t38 90v704l294-294q37-37 90-37 52 0 91 37l75 75q37 39 37 91z" /></symbol><symbol id="ck-icon-arrow-up" viewBox="0 0 1792 1792"><path d="M1675 971q0 51-37 90l-75 75q-38 38-91 38-54 0-90-38l-294-293v704q0 52-37.5 84.5t-90.5 32.5h-128q-53 0-90.5-32.5t-37.5-84.5v-704l-294 293q-36 38-90 38t-90-38l-75-75q-38-38-38-90 0-53 38-91l651-651q35-37 90-37 54 0 91 37l651 651q37 39 37 91z" /></symbol><symbol id="ck-icon-calendar" viewBox="0 0 1792 1792"><path d="M192 1664h288v-288h-288v288zm352 0h320v-288h-320v288zm-352-352h288v-320h-288v320zm352 0h320v-320h-320v320zm-352-384h288v-288h-288v288zm736 736h320v-288h-320v288zm-384-736h320v-288h-320v288zm768 736h288v-288h-288v288zm-384-352h320v-320h-320v320zm-352-864v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm736 864h288v-320h-288v320zm-384-384h320v-288h-320v288zm384 0h288v-288h-288v288zm32-480v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm384-64v1280q0 52-38 90t-90 38h-1408q-52 0-90-38t-38-90v-1280q0-52 38-90t90-38h128v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h384v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h128q52 0 90 38t38 90z" /></symbol><symbol id="ck-icon-chevron-left" viewBox="0 0 1792 1792"><path d="M1427 301l-531 531 531 531q19 19 19 45t-19 45l-166 166q-19 19-45 19t-45-19l-742-742q-19-19-19-45t19-45l742-742q19-19 45-19t45 19l166 166q19 19 19 45t-19 45z" /></symbol><symbol id="ck-icon-chevron-right" viewBox="0 0 1792 1792"><path d="M1363 877l-742 742q-19 19-45 19t-45-19l-166-166q-19-19-19-45t19-45l531-531-531-531q-19-19-19-45t19-45l166-166q19-19 45-19t45 19l742 742q19 19 19 45t-19 45z" /></symbol><symbol id="ck-icon-clock-o" viewBox="0 0 1792 1792"><path d="M1024 544v448q0 14-9 23t-23 9h-320q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h224v-352q0-14 9-23t23-9h64q14 0 23 9t9 23zm416 352q0-148-73-273t-198-198-273-73-273 73-198 198-73 273 73 273 198 198 273 73 273-73 198-198 73-273zm224 0q0 209-103 385.5t-279.5 279.5-385.5 103-385.5-103-279.5-279.5-103-385.5 103-385.5 279.5-279.5 385.5-103 385.5 103 279.5 279.5 103 385.5z" /></symbol><symbol id="ck-icon-trash" viewBox="0 0 1792 1792"><path d="M704 1376v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm-544-992h448l-48-117q-7-9-17-11h-317q-10 2-17 11zm928 32v64q0 14-9 23t-23 9h-96v948q0 83-47 143.5t-113 60.5h-832q-66 0-113-58.5t-47-141.5v-952h-96q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h309l70-167q15-37 54-63t79-26h320q40 0 79 26t54 63l70 167h309q14 0 23 9t9 23z" /></symbol><symbol id="ck-icon-undo" viewBox="0 0 1792 1792"><path d="M1664 896q0 156-61 298t-164 245-245 164-298 61q-172 0-327-72.5t-264-204.5q-7-10-6.5-22.5t8.5-20.5l137-138q10-9 25-9 16 2 23 12 73 95 179 147t225 52q104 0 198.5-40.5t163.5-109.5 109.5-163.5 40.5-198.5-40.5-198.5-109.5-163.5-163.5-109.5-198.5-40.5q-98 0-188 35.5t-160 101.5l137 138q31 30 14 69-17 40-59 40h-448q-26 0-45-19t-19-45v-448q0-42 40-59 39-17 69 14l130 129q107-101 244.5-156.5t284.5-55.5q156 0 298 61t245 164 164 245 61 298z" /></symbol></svg><script async="async" defer="defer" nonce="JJHuMuvm0KSI1CAwpqgSOA==" src="//www.instagram.com/embed.js"></script>
+
+<!--Clipkit(R) v15.9.0-20260915 Copyright (C) 2026 VECTOR Inc.-->
+
+</body>
+
+</html>

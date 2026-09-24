@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<!-- clipkit-source-url: https://learn.webcoach.jp/generative-ai/introduction-to-generative-ai/claude-chap5/cUghl -->
+<!-- clipkit-fetched-at: 2026-09-17T11:14:00.275Z -->
+<html lang="ja"><head><style data-clipkit-snapshot="force-visible">[data-aos],.reveal,.wow,.fade-in,.animate__animated,.js-reveal{opacity:1!important;transform:none!important;visibility:visible!important;animation:none!important;transition:none!important}</style></head><body><div>
+  
+    <div>
+      
+      
+        
+          <div class="article-item item_html " id="item48870" data-item-id="48870" data-item-type="ItemHtml"><div class="item-body">
+
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>登録すると便利な内容 | Claude活用講座</title>
+<link rel="preconnect" href="https://fonts.googleapis.com/">
+<link rel="preconnect" href="https://fonts.gstatic.com/">
+<link href="../../_assets/edbf4ebbd2.css" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Noto Sans JP', sans-serif; color: #3D3D3D; font-size: 16px; line-height: 1.9; background: #F7F8FA; -webkit-font-smoothing: antialiased; }
+.lesson-wrapper { max-width: 70%; margin: 0 auto; padding: 40px 0 80px; }
+@media (max-width: 600px) { .lesson-wrapper { max-width: 92%; } }
+h2 { font-size: 22px; font-weight: 900; color: #2D2D2D; margin: 56px 0 20px; padding: 0 0 12px; position: relative; letter-spacing: -0.02em; line-height: 1.4; }
+h2::after { content: ''; position: absolute; bottom: 0; left: 0; width: 44px; height: 4px; border-radius: 2px; background: linear-gradient(90deg, #E85D4A, #F5A64A); }
+p { font-size: 15px; line-height: 2.0; color: #555; margin: 0 0 14px; }
+.accent { color: #E85D4A; font-weight: 700; }
+.goal-box { background: #fff; padding: 24px 28px; border-radius: 16px; margin-bottom: 32px; box-shadow: 0 2px 16px rgba(0,0,0,0.06); position: relative; overflow: hidden; }
+.goal-box::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px; background: linear-gradient(90deg, #E85D4A, #F5A64A); }
+.goal-box__header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; }
+.goal-box__label { font-size: 11px; font-weight: 700; color: #E85D4A; letter-spacing: 0.15em; }
+.goal-box__time { font-size: 11px; font-weight: 500; color: #E85D4A; }
+.goal-box__text { font-size: 15px; font-weight: 700; color: #3D3D3D; line-height: 1.7; margin: 0; }
+.toc-box { background: #fff; border-radius: 14px; padding: 22px 26px; margin-bottom: 36px; box-shadow: 0 2px 16px rgba(0,0,0,0.06); }
+.toc-box .label { font-size: 11px; font-weight: 700; color: #F5A64A; letter-spacing: 0.15em; margin-bottom: 10px; }
+.toc-box ol { margin: 0; padding-left: 20px; font-size: 14px; color: #555; line-height: 2.2; }
+.toc-link { color: #555; text-decoration: none; }
+.toc-link:hover { color: #E85D4A; }
+.cat-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; margin: 24px 0; }
+@media (max-width: 600px) { .cat-grid { grid-template-columns: 1fr; } }
+.cat-card { background: #fff; border-radius: 14px; padding: 20px; box-shadow: 0 2px 10px rgba(0,0,0,0.06); }
+.cat-card__num { font-size: 11px; font-weight: 700; color: #E85D4A; letter-spacing: 0.1em; margin-bottom: 6px; }
+.cat-card__title { font-size: 16px; font-weight: 900; color: #2D2D2D; margin-bottom: 10px; }
+.cat-card ul { list-style: none; padding: 0; margin: 0; }
+.cat-card li { font-size: 13px; color: #555; padding: 3px 0; display: flex; gap: 6px; line-height: 1.5; }
+.cat-card li::before { content: '▪'; color: #F5A64A; flex-shrink: 0; }
+.example-box { background: #1A1A2E; border-radius: 14px; padding: 20px 22px; margin: 24px 0; }
+.example-box__label { font-size: 11px; font-weight: 700; color: #F5A64A; letter-spacing: 0.15em; margin-bottom: 14px; }
+.example-box__text { font-size: 13px; color: #E8E8F0; line-height: 2.0; white-space: pre-line; }
+.example-box__text strong { color: #F5A64A; }
+.stumble-box { background: #FFF3F0; border-left: 4px solid #E85D4A; border-radius: 0 14px 14px 0; padding: 20px 24px; margin: 24px 0; }
+.stumble-box__label { font-size: 11px; font-weight: 700; color: #E85D4A; letter-spacing: 0.12em; margin-bottom: 10px; }
+.stumble-box p { font-size: 14px; color: #6A4A40; line-height: 1.85; margin: 0; }
+.quiz-block { background: #fff; border-radius: 16px; padding: 24px; margin: 32px 0; box-shadow: 0 2px 16px rgba(0,0,0,0.06); }
+.quiz-block__label { font-size: 11px; font-weight: 700; color: #F5A64A; letter-spacing: 0.15em; margin-bottom: 12px; }
+.quiz-block__q { font-size: 15px; font-weight: 700; color: #2D2D2D; margin-bottom: 16px; line-height: 1.6; }
+.quiz-choices { display: flex; flex-direction: column; gap: 8px; }
+.quiz-btn { background: #F7F8FA; border: 2px solid #E8E8E8; border-radius: 10px; padding: 12px 16px; font-size: 13px; font-family: inherit; color: #3D3D3D; cursor: pointer; text-align: left; transition: all 0.2s; line-height: 1.5; }
+.quiz-btn:hover:not(:disabled) { border-color: #E85D4A; background: #FFF0ED; }
+.quiz-btn.correct { background: #E8F5E9; border-color: #4CAF7C; color: #2E7D52; }
+.quiz-btn.wrong { background: #FFEBEE; border-color: #EF5350; color: #C62828; }
+.correct-fb, .wrong-fb { display: none; margin-top: 14px; padding: 14px 16px; border-radius: 10px; font-size: 13px; line-height: 1.7; }
+.correct-fb { background: #E8F5E9; color: #2E7D52; }
+.wrong-fb { background: #FFEBEE; color: #C62828; }
+.summary-box { background: #fff; border-radius: 16px; padding: 28px; margin: 48px 0 32px; box-shadow: 0 2px 16px rgba(0,0,0,0.06); }
+.summary-box__label { font-size: 11px; font-weight: 700; color: #E85D4A; letter-spacing: 0.15em; margin-bottom: 16px; }
+.summary-box ul { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 10px; }
+.summary-box li { font-size: 14px; color: #3D3D3D; display: flex; gap: 10px; align-items: flex-start; line-height: 1.7; }
+.summary-box li::before { content: '✅'; flex-shrink: 0; }
+.hero { background: linear-gradient(135deg, #E85D4A 0%, #F5A64A 100%); border-radius: 16px; padding: 48px 40px; margin-bottom: 40px; color: #fff; }
+.hero__label { font-size: 13px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; opacity: 0.85; margin-bottom: 12px; }
+.hero__title { font-size: 28px; font-weight: 800; line-height: 1.3; margin-bottom: 16px; }
+.hero__meta { display: flex; gap: 20px; font-size: 14px; opacity: 0.9; flex-wrap: wrap; }
+.hero__meta span { background: rgba(255,255,255,0.2); padding: 4px 12px; border-radius: 20px; }
+</style>
+<meta name="csrf-param" content="authenticity_token">
+<meta name="csrf-token" content="AsrNvNYFCPfukMeNUKyGTJw4DlwulsS1ilIswSKueccN8sUyCam3dI0506rrL0i4XyqR1VhJav_LCD9Aeaq6og"><meta content="" name="routing-root-path"><meta content="media" name="site-name"><meta content="ja" name="i18n-default-locale"><meta content="ja" name="i18n-locale">
+
+<div class="lesson-wrapper">
+
+  <!-- ヘッダー -->
+  <div class="hero">
+    <div class="hero__label">Chapter 5 — Lesson 2</div>
+    <div class="hero__title">登録すると便利な内容</div>
+    <div class="hero__meta">
+      <span>🕐 約8分</span>
+      <span>📚 知識型</span>
+      <span>🔖 設定内容</span>
+    </div>
+  </div>
+  
+<!-- 前の章に戻るボタン / 次の章に進むボタン がある場合 -->  
+<div style="display: flex; justify-content: space-between; align-items: center; padding: 24px 0; margin-top: 24px;">
+  <a href="https://learn.webcoach.jp/generative-ai/introduction-to-generative-ai/claude-chap5/hwLHG" style="position: relative; display: inline-block; background: linear-gradient(135deg, #E85D4A, #F5A64A); color: #fff; font-weight: 700; padding: 12px clamp(24px, 7vw, 48px); border-radius: 8px; text-decoration: none;"><img src="../../_assets/47498cfebf.svg" style="position: absolute; top: 50%; transform: translateY(-50%); left: 12px; filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(125deg) brightness(103%) contrast(103%); transform: translateY(-50%) rotate(180deg);">前の章に戻る</a>
+  <a href="https://learn.webcoach.jp/generative-ai/introduction-to-generative-ai/claude-chap5/kUiNV" style="position: relative; display: inline-block; background: linear-gradient(135deg, #E85D4A, #F5A64A); color: #fff; font-weight: 700; padding: 12px clamp(24px, 7vw, 48px); border-radius: 8px; text-decoration: none;">次の章に進む<img src="../../_assets/47498cfebf.svg" style="position: absolute; top: 50%; transform: translateY(-50%); right: 12px; filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(125deg) brightness(103%) contrast(103%);"></a>
+</div>
+
+  <div class="goal-box">
+    <div class="goal-box__header">
+      <span class="goal-box__label">このレッスンのゴール</span>
+      <span class="goal-box__time">目安 8分</span>
+    </div>
+    <p class="goal-box__text">カスタム指示に登録すると効果的な4カテゴリを理解し、<span class="accent">自分用の登録文を書けるようになる</span>。</p>
+  </div>
+
+  <div class="toc-box">
+    <div class="label">このレッスンの内容</div>
+    <ol>
+      <li><a href="#sec1" class="toc-link">4カテゴリの登録情報</a></li>
+      <li><a href="#sec2" class="toc-link">実際の登録文例</a></li>
+      <li><a href="#sec3" class="toc-link">やりがちな失敗と対策</a></li>
+    </ol>
+  </div>
+
+  <h2 id="sec1">4カテゴリの登録情報</h2>
+  <p>カスタム指示に登録する情報は、次の4カテゴリに整理できます。</p>
+
+  <div class="cat-grid">
+    <div class="cat-card">
+      <div class="cat-card__num">カテゴリ 1</div>
+      <div class="cat-card__title">職種・得意分野</div>
+      <ul>
+        <li>自分の職種（Webデザイナー、フリーランサーなど）</li>
+        <li>得意な分野・スタイル</li>
+        <li>経験年数・主な制作物の種類</li>
+      </ul>
+    </div>
+    <div class="cat-card">
+      <div class="cat-card__num">カテゴリ 2</div>
+      <div class="cat-card__title">出力フォーマット</div>
+      <ul>
+        <li>箇条書き・番号リスト・見出し構成など</li>
+        <li>回答の長さの好み（簡潔 or 詳しく）</li>
+        <li>コードブロックの有無</li>
+      </ul>
+    </div>
+    <div class="cat-card">
+      <div class="cat-card__num">カテゴリ 3</div>
+      <div class="cat-card__title">言語・文体設定</div>
+      <ul>
+        <li>常に日本語で返す</li>
+        <li>敬語あり/なしの指定</li>
+        <li>難易度（専門用語の使い方）</li>
+      </ul>
+    </div>
+    <div class="cat-card">
+      <div class="cat-card__num">カテゴリ 4</div>
+      <div class="cat-card__title">NG事項・スタイル</div>
+      <ul>
+        <li>使ってほしくない表現・言葉</li>
+        <li>推測・補足の量の好み</li>
+        <li>確認質問の頻度</li>
+      </ul>
+    </div>
+  </div>
+
+  <h2 id="sec2">実際の登録文例</h2>
+  <p>以下はフリーランスのWebデザイナーを想定した登録文の例です。コピーして自分用に改変してください。</p>
+
+  <div class="example-box">
+    <div class="example-box__label">登録文例（フリーランス Webデザイナー向け）</div>
+    <div class="example-box__text"><strong>【自分の情報】</strong>
+私はフリーランスのWebデザイナーです。
+主な制作物はLP・コーポレートサイト・バナーです。
+ノーコードツール（STUDIO・Canva・Figma）を中心に使っています。
+デザインの依頼主は中小企業の経営者や個人事業主です。
+
+<strong>【回答スタイル】</strong>
+・回答は箇条書きを基本にしてください
+・文体は敬語なし、フランクな表現で
+・専門用語は使わず、わかりやすい日本語で
+・回答は適度にコンパクトに（長すぎる説明は不要）
+・返答は必ず日本語で
+
+<strong>【NG事項】</strong>
+・「〜べきです」「〜すべきです」という表現は使わない
+・コーディングを前提とした説明は不要
+・「なお、」「加えて、」という書き出しを多用しない</div>
+  </div>
+
+  <h2 id="sec3">やりがちな失敗と対策</h2>
+
+  <div class="stumble-box">
+    <div class="stumble-box__label">よくある失敗</div>
+    <p>「できるだけ役に立つアドバイスをしてください」など曖昧な登録をしても効果がありません。カスタム指示は「具体的に・観察可能に」書くことが大切です。</p>
+  </div>
+
+  <ul style="list-style: none; padding: 0; margin: 16px 0; display: flex; flex-direction: column; gap: 14px;">
+    <li style="background: #fff; border-radius: 12px; padding: 16px 18px; box-shadow: 0 2px 8px rgba(0,0,0,0.05);">
+      <div style="font-size: 13px; color: #EF5350; font-weight: 700; margin-bottom: 6px;">❌ 曖昧な例</div>
+      <div style="font-size: 13px; color: #888; margin-bottom: 8px;">「わかりやすく説明してください」</div>
+      <div style="font-size: 13px; color: #4CAF7C; font-weight: 700; margin-bottom: 4px;">✓ 具体的に直すと</div>
+      <div style="font-size: 13px; color: #555;">「専門用語を使わず、中学生にも伝わる言葉で説明してください」</div>
+    </li>
+    <li style="background: #fff; border-radius: 12px; padding: 16px 18px; box-shadow: 0 2px 8px rgba(0,0,0,0.05);">
+      <div style="font-size: 13px; color: #EF5350; font-weight: 700; margin-bottom: 6px;">❌ 詰め込みすぎの例</div>
+      <div style="font-size: 13px; color: #888; margin-bottom: 8px;">何十行にも渡る細かい指示</div>
+      <div style="font-size: 13px; color: #4CAF7C; font-weight: 700; margin-bottom: 4px;">✓ 改善策</div>
+      <div style="font-size: 13px; color: #555;">最初は10〜15行程度のシンプルな登録から始める。使ってみて気になった点を少しずつ追記する。</div>
+    </li>
+  </ul>
+
+  <div class="quiz-block" id="q1">
+    <div class="quiz-block__label">確認クイズ</div>
+    <p class="quiz-block__q">カスタム指示の登録文として最も効果的なものはどれですか？</p>
+    <div class="quiz-choices">
+      <button class="quiz-btn" onclick="answer(this,'q1',false)">① 「いつも良い回答をしてください」</button>
+      <button class="quiz-btn" onclick="answer(this,'q1',true)">② 「回答は箇条書き・敬語なし・専門用語は避けてください。私はWebデザイナーです」</button>
+      <button class="quiz-btn" onclick="answer(this,'q1',false)">③ 「Webデザインについて詳しく教えてください」</button>
+      <button class="quiz-btn" onclick="answer(this,'q1',false)">④ できるだけ長く、詳細に書く</button>
+    </div>
+    <div class="correct-fb">正解！ 「回答形式」「文体」「専門用語の扱い」「自分の職種」という具体的で観察可能な情報が含まれています。これにより Claude が毎回の回答で適切なスタイルを維持できます。</div>
+    <div class="wrong-fb">「良い回答をして」「詳しく教えて」は曖昧すぎて効果がありません。具体的な形式・文体・NG事項を明示することが重要です。</div>
+  </div>
+
+  <div class="summary-box">
+    <div class="summary-box__label">このレッスンのまとめ</div>
+    <ul>
+      <li>登録情報は「<strong>職種・得意分野</strong>」「<strong>出力形式</strong>」「<strong>言語・文体</strong>」「<strong>NG事項</strong>」の4カテゴリ</li>
+      <li>「具体的で観察可能」に書く — 曖昧な指示は効果が出にくい</li>
+      <li>最初は10〜15行程度から始めて、使いながら追記していく</li>
+      <li>登録文はいつでも編集できるので、完璧でなくてもまずスタートする</li>
+    </ul>
+  </div>
+  
+  <!-- 前の章に戻るボタン / 次の章に進むボタン がある場合 -->  
+<div style="display: flex; justify-content: space-between; align-items: center; padding: 24px 0; margin-top: 24px;">
+  <a href="https://learn.webcoach.jp/generative-ai/introduction-to-generative-ai/claude-chap5/hwLHG" style="position: relative; display: inline-block; background: linear-gradient(135deg, #E85D4A, #F5A64A); color: #fff; font-weight: 700; padding: 12px clamp(24px, 7vw, 48px); border-radius: 8px; text-decoration: none;"><img src="../../_assets/47498cfebf.svg" style="position: absolute; top: 50%; transform: translateY(-50%); left: 12px; filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(125deg) brightness(103%) contrast(103%); transform: translateY(-50%) rotate(180deg);">前の章に戻る</a>
+  <a href="https://learn.webcoach.jp/generative-ai/introduction-to-generative-ai/claude-chap5/kUiNV" style="position: relative; display: inline-block; background: linear-gradient(135deg, #E85D4A, #F5A64A); color: #fff; font-weight: 700; padding: 12px clamp(24px, 7vw, 48px); border-radius: 8px; text-decoration: none;">次の章に進む<img src="../../_assets/47498cfebf.svg" style="position: absolute; top: 50%; transform: translateY(-50%); right: 12px; filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(125deg) brightness(103%) contrast(103%);"></a>
+</div>
+
+</div>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="ck-icon-arrow-down" viewBox="0 0 1792 1792"><path d="M1675 832q0 53-37 90l-651 652q-39 37-91 37-53 0-90-37l-651-652q-38-36-38-90 0-53 38-91l74-75q39-37 91-37 53 0 90 37l294 294v-704q0-52 38-90t90-38h128q52 0 90 38t38 90v704l294-294q37-37 90-37 52 0 91 37l75 75q37 39 37 91z"></path></symbol><symbol id="ck-icon-arrow-up" viewBox="0 0 1792 1792"><path d="M1675 971q0 51-37 90l-75 75q-38 38-91 38-54 0-90-38l-294-293v704q0 52-37.5 84.5t-90.5 32.5h-128q-53 0-90.5-32.5t-37.5-84.5v-704l-294 293q-36 38-90 38t-90-38l-75-75q-38-38-38-90 0-53 38-91l651-651q35-37 90-37 54 0 91 37l651 651q37 39 37 91z"></path></symbol><symbol id="ck-icon-calendar" viewBox="0 0 1792 1792"><path d="M192 1664h288v-288h-288v288zm352 0h320v-288h-320v288zm-352-352h288v-320h-288v320zm352 0h320v-320h-320v320zm-352-384h288v-288h-288v288zm736 736h320v-288h-320v288zm-384-736h320v-288h-320v288zm768 736h288v-288h-288v288zm-384-352h320v-320h-320v320zm-352-864v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm736 864h288v-320h-288v320zm-384-384h320v-288h-320v288zm384 0h288v-288h-288v288zm32-480v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm384-64v1280q0 52-38 90t-90 38h-1408q-52 0-90-38t-38-90v-1280q0-52 38-90t90-38h128v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h384v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h128q52 0 90 38t38 90z"></path></symbol><symbol id="ck-icon-chevron-left" viewBox="0 0 1792 1792"><path d="M1427 301l-531 531 531 531q19 19 19 45t-19 45l-166 166q-19 19-45 19t-45-19l-742-742q-19-19-19-45t19-45l742-742q19-19 45-19t45 19l166 166q19 19 19 45t-19 45z"></path></symbol><symbol id="ck-icon-chevron-right" viewBox="0 0 1792 1792"><path d="M1363 877l-742 742q-19 19-45 19t-45-19l-166-166q-19-19-19-45t19-45l531-531-531-531q-19-19-19-45t19-45l166-166q19-19 45-19t45 19l742 742q19 19 19 45t-19 45z"></path></symbol><symbol id="ck-icon-clock-o" viewBox="0 0 1792 1792"><path d="M1024 544v448q0 14-9 23t-23 9h-320q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h224v-352q0-14 9-23t23-9h64q14 0 23 9t9 23zm416 352q0-148-73-273t-198-198-273-73-273 73-198 198-73 273 73 273 198 198 273 73 273-73 198-198 73-273zm224 0q0 209-103 385.5t-279.5 279.5-385.5 103-385.5-103-279.5-279.5-103-385.5 103-385.5 279.5-279.5 385.5-103 385.5 103 279.5 279.5 103 385.5z"></path></symbol><symbol id="ck-icon-trash" viewBox="0 0 1792 1792"><path d="M704 1376v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm-544-992h448l-48-117q-7-9-17-11h-317q-10 2-17 11zm928 32v64q0 14-9 23t-23 9h-96v948q0 83-47 143.5t-113 60.5h-832q-66 0-113-58.5t-47-141.5v-952h-96q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h309l70-167q15-37 54-63t79-26h320q40 0 79 26t54 63l70 167h309q14 0 23 9t9 23z"></path></symbol><symbol id="ck-icon-undo" viewBox="0 0 1792 1792"><path d="M1664 896q0 156-61 298t-164 245-245 164-298 61q-172 0-327-72.5t-264-204.5q-7-10-6.5-22.5t8.5-20.5l137-138q10-9 25-9 16 2 23 12 73 95 179 147t225 52q104 0 198.5-40.5t163.5-109.5 109.5-163.5 40.5-198.5-40.5-198.5-109.5-163.5-163.5-109.5-198.5-40.5q-98 0-188 35.5t-160 101.5l137 138q31 30 14 69-17 40-59 40h-448q-26 0-45-19t-19-45v-448q0-42 40-59 39-17 69 14l130 129q107-101 244.5-156.5t284.5-55.5q156 0 298 61t245 164 164 245 61 298z"></path></symbol></svg>
+
+<!--Clipkit(R) v15.9.0-20260915 Copyright (C) 2026 VECTOR Inc.-->
+
+
+
+</div></div>
+        
+      
+    </div>
+  
+  </div>
+
+<!-- <script src="https://cdn.clipkit.co/clipkit/javascripts/item-shopify-1.0.js?v=v15.9.0-20260915" async></script> -->
+</body></html>

@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+  <html lang="ja">
+
+<head><script async="async" data-label="saas" nonce="Zqbtp06qP7PVFPovHjrHoA==" src="//b.clipkit.co/"></script><script src="//cdn.clipkit.co/clipkit_assets/beacon-787bbf3225ec43d93f198af35f7d56fdef40fb50440a2909500bdf5b99225aab.js" async="async" id="clipkit-beacon" data-page-type="article" data-page-id="1437" data-domain="learn.webcoach.jp" data-url="/generative-ai/AI_design/%E6%95%99%E6%9D%903-EX%E2%91%A0%20%E7%89%B9%E5%AE%9AAI%E3%83%84%E3%83%BC%E3%83%AB%E6%B7%B1%E6%8E%98%E3%82%8A%E8%AC%9B%E5%BA%A7_Figma%E7%B7%A8/jgva0" data-href="https://learn.webcoach.jp/media/beacon"></script>
+    <!-- headタグ内の上部に挿入されます -->
+
+    <meta charset="UTF-8">
+    <title>2章：AIによるアイデア出しと情報設計の自動化 - WEBCOACH</title>
+
+    <!-- resetcssのCDNでのCSS読み込み -->
+    <link rel="stylesheet" href="https://unpkg.com/modern-css-reset/dist/reset.min.css" />
+
+    <!-- fontawesomeのCDNでのCSS読み込み -->
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/fontawesome/4.7.0/css/font-awesome.min.css">
+
+    <!-- BootstrapのCDNでのCSS読み込み -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous" />
+
+    <!-- highlight.jsの読み込み -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.1/styles/dracula.min.css">
+
+    <!-- カスタムCSS -->
+    <link rel="stylesheet" href="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/168/original/style.css?1788081716">
+
+    <!-- clipkitデフォルトのCSS -->
+    <!--<link rel="stylesheet" media="screen" href="https://cdn.clipkit.co/clipkit/stylesheets/application-1.0.css?v=v15.9.0-20260915">-->
+
+    <!-- jQuery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <!-- カスタムJS -->
+    <script src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/202/original/script.js?1788946194"></script>
+    <script src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/535/original/script.js?1743681771"></script>
+
+    <!-- clipkitデフォルトのJS -->
+    <script src="https://cdn.clipkit.co/clipkit/javascripts/default-1.0.js?v=v15.9.0-20260915"></script>
+
+    <!-- フォント -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;700&display=swap" rel="stylesheet">
+
+    <link href="https://cdn.clipkit.co/clipkit/favicons/square/missing.png" rel="shortcut icon" type="image/vnd.microsoft.icon">
+    <link rel="apple-touch-icon" href="https://cdn.clipkit.co/clipkit/touch_icons/square/missing.png">
+    <link rel="alternate" type="application/rss+xml"
+        href="https://learn.webcoach.jp/media.rss" title="WEBCOACH">
+    
+<link rel="canonical" href="https://learn.webcoach.jp/generative-ai/AI_design/%E6%95%99%E6%9D%903-EX%E2%91%A0%20%E7%89%B9%E5%AE%9AAI%E3%83%84%E3%83%BC%E3%83%AB%E6%B7%B1%E6%8E%98%E3%82%8A%E8%AC%9B%E5%BA%A7_Figma%E7%B7%A8/jgva0">
+
+<meta name="description" content="">
+<meta name="keywords" content="">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:domain" content="learn.webcoach.jp">
+<meta name="twitter:title" content="2章：AIによるアイデア出しと情報設計の自動化 - WEBCOACH">
+<meta name="twitter:image" content="https://cdn.clipkit.co/tenants/589/item_images/images/000/026/826/medium/115d97de-6677-4465-ac12-8e25b9df36f8.png?1750916149">
+<meta name="twitter:description" content="">
+<meta property="og:site_name" content="WEBCOACH">
+<meta property="og:title" content="2章：AIによるアイデア出しと情報設計の自動化">
+<meta property="og:description" content="">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://learn.webcoach.jp/generative-ai/AI_design/%E6%95%99%E6%9D%903-EX%E2%91%A0%20%E7%89%B9%E5%AE%9AAI%E3%83%84%E3%83%BC%E3%83%AB%E6%B7%B1%E6%8E%98%E3%82%8A%E8%AC%9B%E5%BA%A7_Figma%E7%B7%A8/jgva0">
+<meta property="og:image" content="https://cdn.clipkit.co/tenants/589/item_images/images/000/026/826/large/115d97de-6677-4465-ac12-8e25b9df36f8.png?1750916149">
+<script type="application/ld+json">
+  {
+    "@context": "http://schema.org",
+    "@type": "NewsArticle",
+    "mainEntityOfPage":{
+      "@type":"WebPage",
+      "@id": "https://learn.webcoach.jp/generative-ai/AI_design/%E6%95%99%E6%9D%903-EX%E2%91%A0%20%E7%89%B9%E5%AE%9AAI%E3%83%84%E3%83%BC%E3%83%AB%E6%B7%B1%E6%8E%98%E3%82%8A%E8%AC%9B%E5%BA%A7_Figma%E7%B7%A8/jgva0"
+    },
+    "headline": "2章：AIによるアイデア出しと情報設計の自動化",
+    "image": {
+      "@type": "ImageObject",
+      "url": "https://cdn.clipkit.co/tenants/589/item_images/images/000/026/826/medium/115d97de-6677-4465-ac12-8e25b9df36f8.png?1750916149",
+      "width": 800,
+      "height": 600
+    },
+    "datePublished": "2025-06-26T14:53:53+09:00",
+    "dateModified": "2025-08-12T08:55:03+09:00",
+    "author": {
+      "@type": "Person",
+      "name": "m_takenaga"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "WEBCOACH",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://cdn.clipkit.co/tenants/589/sites/logos/000/000/001/logo_sm/a8defd4b-1cc7-433b-a61c-08e7db0e3e4f.png?1714459367"
+      }
+    },
+    "description": ""
+  }
+  </script>
+
+    <!-- headタグ内の下部に挿入されます -->
+
+
+<meta name="csrf-param" content="authenticity_token" />
+<meta name="csrf-token" content="HXrAORieE9VfEP6gRhjevMIzLLEDqbbLnVuA_2u1iDhelep0tTXcjFJ3usJ4B7j2zfqhRVffyP6hm_41pH-z4Q" /><meta content="" name="routing-root-path" /><meta content="media" name="site-name" /><meta content="ja" name="i18n-default-locale" /><meta content="ja" name="i18n-locale" /></head>
+
+<body class="device-desktop">
+    <!-- bodyタグ内の上部に挿入されます -->
+
+
+    <!-- サイドバーとコンテンツのコンテナ -->
+    <div class="d-flex flex-row w-100 mb-5" style="min-height: calc(100vh - 400px);">
+
+        <!-- サイドバー -->
+        <!--<nav id="side-bar" class="d-flex flex-column fixed-top" style="width: 250px;">-->
+        <!--    <h1 class="d-block w-100 text-center">-->
+        <!--        <a class="d-block" href="/">-->
+        <!--            <img class="mw-100 p-3" src="https://cdn.clipkit.co/tenants/589/sites/logos/000/000/001/logo_sm/a8defd4b-1cc7-433b-a61c-08e7db0e3e4f.png?1714459367" alt="WEBCOACH">-->
+        <!--        </a>-->
+        <!--    </h1>-->
+        <!--    <ul class="nav flex-column m-0 p-3 fw-bold">-->
+        <!--        <li id="sidebar-top" class="nav-item mb-2" style="display: none;"><a href="/"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;" src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/233/original/home.png?1715353458">-->
+        <!--                <div>ホーム</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-knowledges" class="nav-item mb-2" style="display: none;"><a href="/knowledges"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;" src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/232/original/book.png?1715353458">-->
+        <!--                <div>学習の心得</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-web-designs" class="nav-item mb-2" style="display: none;"><a href="/web-designs"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/231/original/design.png?1715353457">-->
+        <!--                <div>WEBデザイン</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-web-marketing" class="nav-item mb-2" style="display: none;"><a href="/web-marketings"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/230/original/marketing.png?1715353457">-->
+        <!--                <div>WEBマーケティング</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-codings" class="nav-item mb-2" style="display: none;"><a href="/codings"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/229/original/website.png?1715353457">-->
+        <!--                <div>WEBサイト構築</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-business-skills" class="nav-item mb-2" style="display: none;"><a href="/business-skills"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/228/original/business.png?1715353456">-->
+        <!--                <div>ビジネススキル</div>-->
+        <!--            </a></li>-->
+        <!--    </ul>-->
+        <!--</nav>-->
+
+        <!-- コンテンツ -->
+        <!--<main class="ms-auto" style="width: calc(100vw - 250px);">-->
+        <main class="ms-auto" style="width: calc(100vw);">
+            <div id="sb-site">
+                
+
+
+<div class="container">
+  <div class="row">
+    <div class="article">
+      <div class="mb-3 text-light" style="
+        height: 180px;
+        background-image: url(https://cdn.clipkit.co/tenants/589/resources/assets/000/000/270/original/article-header.png?1717761933);
+        background-repeat: no-repeat;
+        background-size: cover;
+        display: flex;
+        align-items: flex-end;
+      ">
+        <div style="
+          margin: 0 0 30px 30px;
+        ">
+          <div>教材3-EX① 特定AIツール深掘り講座_Figma編</div>
+
+          <div class="fw-bold h2">2章：AIによるアイデア出しと情報設計の自動化</div>
+        </div>
+      </div>
+      <div class="article-content">
+        <!-- 目次 -->
+        <div class="index mb-3" style="background-color: #FDF5E8;">
+          <div>
+            <div class="fw-light">INDEX</div>
+            <div class="h3">目次</div>
+          </div>
+          <div class="toc"></div>
+        </div>
+        
+        <div class="back-to-roadmap mb-4 text-center"></div>
+
+        <!-- コンテンツ -->
+        
+        
+        <div class="article-item item_html " id="item27245" data-item-id="27245" data-item-type="ItemHtml"><div class="item-body"><div class="pagenation-buttons">
+  <a href="mQfyY" class="pagenation-buttons_prev"><img src="/theme/webcoach/img/icons/arrow-right.svg" class="pagenation-buttons_icon">前の章に戻る</a>
+  <a href="dsR4X" class="pagenation-buttons_next">次の章に進む<img src="/theme/webcoach/img/icons/arrow-right.svg" class="pagenation-buttons_icon"></a>
+</div></div></div>
+        
+        <div class="article-item item_heading " id="item26817" data-item-id="26817" data-item-type="ItemHeading"><h2 class="item-body">2章：AIによるアイデア出しと情報設計の自動化</h2></div>
+        
+        <div class="article-item item_markdown " id="item26818" data-item-id="26818" data-item-type="ItemMarkdown"><h4 id="section">この章の目安学習時間：50分</h4>
+</div>
+        
+        <div class="article-item item_markdown " id="item26819" data-item-id="26819" data-item-type="ItemMarkdown"><h4 id="section">この章で到達できるゴール：</h4>
+</div>
+        
+        <div class="article-item item_html " id="item26820" data-item-id="26820" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li>ChatGPTを活用して、デザインの要件やアイデアを構造化し、具体的な設計情報に落とし込めるようになる</li>
+  <li><span class="decoration-02">Autoflow</span>を活用し、情報設計を効率的にフローチャートとして可視化できるようになる</li>
+</ul>
+</div></div>
+        
+        <div class="article-item item_heading " id="item26821" data-item-id="26821" data-item-type="ItemHeading"><h2 class="item-body">【2-1】AIによるペルソナとユーザーストーリー作成</h2></div>
+        
+        <div class="article-item item_markdown " id="item26822" data-item-id="26822" data-item-type="ItemMarkdown"><h4 id="section">目安の学習時間：20分</h4>
+</div>
+        
+        <div class="article-item item_heading " id="item26823" data-item-id="26823" data-item-type="ItemHeading"><h3 class="item-body">AIで具体的なペルソナを作成する</h3></div>
+        
+        <div class="article-item item_rich_text " id="item26824" data-item-id="26824" data-item-type="ItemRichText"><div class="item-body-hbr">質の高いデザインは、具体的なユーザー像、つまり<span class="decoration-02">ペルソナ</span>を定義することから始まります。<br>
+<span class="decoration-02">ChatGPT</span>に詳細な条件と出力形式を指定することで、思考の出発点となる精緻なペルソナを効率的に作成できます。<br>
+<br>
+今回は「新作オーガニックスキンケアのLP」を制作するという想定で、そのターゲット顧客のペルソナを作成してみましょう。<br>
+以下は、その際に使用するプロンプトの例です。</div></div>
+        
+        <div class="article-item item_html " id="item26825" data-item-id="26825" data-item-type="ItemHtml"><div class="item-body"><div class="card-with-icon note">
+    <span class="bold"><strong>プロンプト例：LPのターゲットペルソナ作成</strong><br></span>
+    <div class="content-area">
+        <p># 指示</p>
+        <p>あなたはプロのマーケターです。以下の条件で、「新作オーガニックスキンケアのLP」のターゲットとなる顧客のペルソナを1名設定してください。</p>
+        <p># 条件</p>
+        <ul>
+            <li>出力形式: Markdownのテーブル形式</li>
+            <li>含める項目: ペルソナ名, 年齢, 職業, ライフスタイル, 美容への関心度, 現在の肌の悩み, 情報収集の方法</li>
+            <li>ペルソナの背景: 最近、肌質の変化を感じ始めた30代の会社員女性。オーガニック製品に関心がある。</li>
+        </ul>
+    </div>
+</div></div></div>
+        
+        <div class="article-item item_image " id="item26826" data-item-id="26826" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/026/826/medium/115d97de-6677-4465-ac12-8e25b9df36f8.png?1750916149" title=""><img class="img-responsive item-image" alt=" (26826)" data-reference="" src="https://cdn.clipkit.co/tenants/589/item_images/images/000/026/826/medium/115d97de-6677-4465-ac12-8e25b9df36f8.png?1750916149" width="640" height="360" /></a><h4></h4></div></div>
+        
+        <div class="article-item item_image " id="item26827" data-item-id="26827" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/026/827/medium/ffe1ecbf-250a-4570-abd2-f82a5268920b.png?1750916165" title=""><img class="img-responsive item-image" alt=" (26827)" data-reference="" src="https://cdn.clipkit.co/tenants/589/item_images/images/000/026/827/medium/ffe1ecbf-250a-4570-abd2-f82a5268920b.png?1750916165" width="640" height="360" /></a><h4></h4></div></div>
+        
+        <div class="article-item item_heading " id="item26828" data-item-id="26828" data-item-type="ItemHeading"><h3 class="item-body"> 練習問題：ペルソナを深掘りしてみよう</h3></div>
+        
+        <div class="article-item item_rich_text " id="item26829" data-item-id="26829" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">問題</span><br>
+上記のプロンプト例で作成したペルソナについて、さらに解像度を上げるために、<span class="decoration-01"><span class="decoration-02">ChatGPT</span></span>に以下の2つの点を追加で質問してください。</div></div>
+        
+        <div class="article-item item_html " id="item26830" data-item-id="26830" data-item-type="ItemHtml"><div class="item-body"><ol>
+  <li>
+    このペルソナが、スキンケア商品を購入する際に「決め手」とするポイントは何か？（3つ挙げさせる）
+  </li>
+  <li>
+    このペルソナが、Instagramでどのようなキーワードでスキンケア情報を検索するか？（5つ挙げさせる）
+  </li>
+</ol>
+</div></div>
+        
+        <div class="article-item item_image " id="item26831" data-item-id="26831" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/026/831/medium/90670244-f5cd-4192-98e8-da1758b33354.png?1750916323" title=""><img class="img-responsive item-image" alt=" (26831)" data-reference="" src="https://cdn.clipkit.co/tenants/589/item_images/images/000/026/831/medium/90670244-f5cd-4192-98e8-da1758b33354.png?1750916323" width="640" height="407" /></a><h4></h4></div></div>
+        
+        <div class="article-item item_image " id="item26832" data-item-id="26832" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/026/832/medium/ac34953e-4ec8-447a-ad28-07f261dc1118.png?1750916337" title=""><img class="img-responsive item-image" alt=" (26832)" data-reference="" src="https://cdn.clipkit.co/tenants/589/item_images/images/000/026/832/medium/ac34953e-4ec8-447a-ad28-07f261dc1118.png?1750916337" width="640" height="407" /></a><h4></h4></div></div>
+        
+        <div class="article-item item_rich_text " id="item26833" data-item-id="26833" data-item-type="ItemRichText"><div class="item-body-hbr">このように深掘りすることで、LPに掲載すべきコンテンツや、使用すべきキーワードのヒントが得られます。</div></div>
+        
+        <div class="article-item item_heading " id="item26834" data-item-id="26834" data-item-type="ItemHeading"><h3 class="item-body">AIでユーザーストーリーを構築する</h3></div>
+        
+        <div class="article-item item_rich_text " id="item26835" data-item-id="26835" data-item-type="ItemRichText"><div class="item-body-hbr">ペルソナが定義できたら、次はそのペルソナがLPを訪れてから購入に至るまでのユーザーストーリーを作成します。<br>
+これにより、LPがどのような情報構成であるべきか、その骨格が見えてきます。<br>
+<br>
+前のパートで作成したペルソナの情報を基に、具体的なユーザーストーリーを構築させましょう。</div></div>
+        
+        <div class="article-item item_html " id="item26836" data-item-id="26836" data-item-type="ItemHtml"><div class="item-body"><div class="card-with-icon note">
+    <span class="bold"><strong>プロンプト例：ユーザーストーリー作成</strong><br></span>
+    <div class="content-area">
+        <p># 前提</p>
+        <p>（ここに先ほど作成したペルソナのテーブルを貼り付ける）</p>
+        <p># 指示</p>
+        <p>上記のペルソナが、Instagram広告でこの商品を知り、LPを訪れて購入を決意するまでのユーザーストーリーを3つのステップで作成してください。</p>
+        <p># 条件</p>
+        <ul>
+            <li>形式: 「〇〇なユーザーとして、△△したい。なぜなら□□だからだ。」というユーザーストーリーの形式で記述する。</li>
+            <li>内容: 認知、検討、決定という購買プロセスをカバーすること。</li>
+        </ul>
+    </div>
+</div></div></div>
+        
+        <div class="article-item item_heading " id="item26837" data-item-id="26837" data-item-type="ItemHeading"><h2 class="item-body">【2-2】フロー図の効率的な作成 </h2></div>
+        
+        <div class="article-item item_markdown " id="item26838" data-item-id="26838" data-item-type="ItemMarkdown"><h4 id="section">目安の学習時間：10分</h4>
+</div>
+        
+        <div class="article-item item_heading " id="item26839" data-item-id="26839" data-item-type="ItemHeading"><h3 class="item-body">Autoflowで情報構成をフロー化する</h3></div>
+        
+        <div class="article-item item_rich_text " id="item26840" data-item-id="26840" data-item-type="ItemRichText"><div class="item-body-hbr">作成したユーザーストーリーは、LPの情報構成、つまりセクションの順番を考える上で非常に役立ちます。<br>
+<span class="decoration-02">Autoflow</span>プラグインを使い、ユーザーがLPを上から下に読み進める際の視線の流れや、サイト内の行動フローをチャートとして可視化してみましょう。<br>
+<br>
+<span class="decoration-02">Autoflow</span>はAIではありませんが、オブジェクト間の接続を**自動化**することで、フロー図作成の手間を劇的に削減します。</div></div>
+        
+        <div class="article-item item_link " id="item26841" data-item-id="26841" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=jgva0&amp;item_id=26841" rel="nofollow noopener noreferrer" target="_blank">EX① 特定AIツール深掘り講座_Figma編 2-1</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="EX① 特定AIツール深掘り講座_Figma編 2-1" data-reference="https://www.dropbox.com/scl/fi/9qhvc9o6cr01f4wqndhym/EX1-AItool-Figma_2.1.1.0_.mp4?rlkey=bpf4tu856sf5e93b3uc8lacbk&amp;st=uvpj1vua&amp;dl=0" src="https://cdn.clipkit.co/tenants/589/item_links/images/000/026/841/thumb/75db1df7-f49f-4263-88b7-93c8e5cc32a8.png?1754956500" width="75" height="75" /></div><div class="media-body"><div class="item-body"></div></div></div></div></div>
+        
+        <div class="article-item item_heading " id="item26842" data-item-id="26842" data-item-type="ItemHeading"><h3 class="item-body">練習問題：LPのフローを作成してみよう</h3></div>
+        
+        <div class="article-item item_rich_text " id="item26843" data-item-id="26843" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">問題</span><br>
+Figmaのキャンバス上に、以下の7つのセクション名を書いた長方形を自由に配置し、それらを<span class="decoration-02">Autoflow</span>使って上から下の順番で接続し、フローチャートを作成してください。</div></div>
+        
+        <div class="article-item item_html " id="item26844" data-item-id="26844" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li>ファーストビュー(商品の魅力とベネフィット)</li>
+  <li>悩みの提示(こんな悩みありませんか？)</li>
+  <li>解決策の提示(この商品なら解決できます)</li>
+  <li>商品の権威付け(専門家推薦・受賞歴)</li>
+  <li>お客様の声</li>
+  <li>FAQ(よくある質問)</li>
+  <li>購入フォームへの導線</li>
+</ul>
+</div></div>
+        
+        <div class="article-item item_rich_text " id="item26867" data-item-id="26867" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">解答</span></div></div>
+        
+        <div class="article-item item_image " id="item26845" data-item-id="26845" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/026/845/medium/75b3483c-a00a-477a-81e1-6e04e20e8ca7.png?1750916773" title=""><img class="img-responsive item-image" alt=" (26845)" data-reference="" src="https://cdn.clipkit.co/tenants/589/item_images/images/000/026/845/medium/75b3483c-a00a-477a-81e1-6e04e20e8ca7.png?1750916773" width="640" height="324" /></a><h4></h4></div></div>
+        
+        <div class="article-item item_heading " id="item26846" data-item-id="26846" data-item-type="ItemHeading"><h2 class="item-body">【2-3】2章 -章末課題- LPの情報設計を完成させる</h2></div>
+        
+        <div class="article-item item_markdown " id="item26847" data-item-id="26847" data-item-type="ItemMarkdown"><h4 id="section">目安の学習時間：20分</h4>
+</div>
+        
+        <div class="article-item item_heading " id="item26848" data-item-id="26848" data-item-type="ItemHeading"><h3 class="item-body">問題</h3></div>
+        
+        <div class="article-item item_html " id="item26849" data-item-id="26849" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li>
+    <span class="decoration-01">課題：</span> この章で学んだテクニックを使い、「新作オーガニックスキンケアのLP」の
+    <span class="decoration-01">情報設計</span>を完成させる。
+  </li>
+  <li>
+    <span class="decoration-01">手順1：</span> <span class="decoration-02">ChatGPT</span>を使い、このLPのターゲットとなる
+    <span class="decoration-01">ペルソナ</span>を1名設定する。（テーブル形式で出力）
+  </li>
+  <li>
+    <span class="decoration-01">手順2：</span> 手順1で設定したペルソナが「商品を購入する」までの
+    <span class="decoration-01">ユーザーストーリー</span>を作成する。
+  </li>
+  <li>
+    <span class="decoration-01">手順3：</span> 手順2のユーザーストーリーを基に、ユーザーの行動フローを<span class="decoration-02">Autoflow</span>プラグインを使ってFigma上にフローチャートとして作成する。
+  </li>
+</ul>
+</div></div>
+        
+        <div class="article-item item_heading " id="item26850" data-item-id="26850" data-item-type="ItemHeading"><h3 class="item-body">解答手順</h3></div>
+        
+        <div class="article-item item_rich_text " id="item26851" data-item-id="26851" data-item-type="ItemRichText"><div class="item-body-hbr">この課題には決まった正解はありません。<br>
+ペルソナの気持ちになって、どのような順番で情報を提供されれば心が動くかを考えることが重要です。<br>
+以下は、解答の一例です。</div></div>
+        
+        <div class="article-item item_rich_text " id="item26852" data-item-id="26852" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">手順1</span></div></div>
+        
+        <div class="article-item item_image " id="item26853" data-item-id="26853" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/026/853/medium/d764b0b4-0f44-4000-8e12-a1bd592767a8.png?1750917026" title=""><img class="img-responsive item-image" alt=" (26853)" data-reference="" src="https://cdn.clipkit.co/tenants/589/item_images/images/000/026/853/medium/d764b0b4-0f44-4000-8e12-a1bd592767a8.png?1750917026" width="640" height="360" /></a><h4></h4></div></div>
+        
+        <div class="article-item item_html " id="item26862" data-item-id="26862" data-item-type="ItemHtml"><div class="item-body"><div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_rich_text " id="item26854" data-item-id="26854" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">手順2</span></div></div>
+        
+        <div class="article-item item_rich_text " id="item26855" data-item-id="26855" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-02">ステップ1：認知（Awareness）</span><br>
+「敏感肌なユーザーとして、肌にやさしい新作スキンケアを知りたい。なぜなら季節の変わり目に肌荒れが起きやすく、新しい製品をSNSで常にチェックしているからだ。」<br>
+<br>
+Instagramを見ていた佐藤さんは、ナチュラル処方の敏感肌向けスキンケアブランドの広告に目を止める。オーガニック成分や低刺激処方といったキーワード、ミニマルで清潔感のあるビジュアル、さらに美容インフルエンサーが実際に使ってレビューしている様子が目に入り、興味を惹かれる。</div></div>
+        
+        <div class="article-item item_rich_text " id="item26856" data-item-id="26856" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01"><span class="decoration-02">ステップ2：検討（Consideration）</span></span><br>
+「情報に敏感なユーザーとして、商品の詳しい成分やレビューを確認したい。なぜなら肌が敏感なので、自分に合うかどうかを慎重に判断したいからだ。」<br>
+<br>
+広告のリンクをタップしてLP（ランディングページ）へ移動。そこでは製品の成分や使用方法、アレルギーテスト済みであること、敏感肌のユーザーからのリアルなレビューや、使用前後の写真などが掲載されていた。特に「＠cosmeで★4.8」や「30代女性のリピート率◎」といった実績が、彼女の安心感につながった。</div></div>
+        
+        <div class="article-item item_rich_text " id="item26857" data-item-id="26857" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01"><span class="decoration-02">ステップ3：決定（Decision）</span></span><br>
+「仕事で忙しいユーザーとして、信頼できる商品を今すぐ手軽に購入したい。なぜなら最近の乾燥と肌荒れがつらく、早くケアを始めたいからだ。」<br>
+<br>
+ページ内で送料無料キャンペーンが開催中で、今なら初回限定のトライアルセットが特別価格で手に入ると知り、即決。Instagram広告のインパクトと、信頼できる情報が揃ったLPによって、安心して購入に至った。</div></div>
+        
+        <div class="article-item item_html " id="item26863" data-item-id="26863" data-item-type="ItemHtml"><div class="item-body"><div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_rich_text " id="item26858" data-item-id="26858" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">手順3（ユーザーストーリー→サイト内のユーザーフローの作成）</span></div></div>
+        
+        <div class="article-item item_rich_text " id="item26859" data-item-id="26859" data-item-type="ItemRichText"><div class="item-body-hbr">以下は、先ほどのユーザーストーリーをもとに構成した、オーガニックスキンケアLP（ランディングページ）における視線の流れとサイト内行動フローの詳細です。<br>
+ペルソナである佐藤美香さん（34歳、敏感肌・美容関心高・SNSで情報収集）の行動心理を踏まえています。</div></div>
+        
+        <div class="article-item item_rich_text " id="item26860" data-item-id="26860" data-item-type="ItemRichText"><div class="item-body-hbr">視線の流れ（LPスクロールに沿った視線誘導）</div></div>
+        
+        <div class="article-item item_html " id="item26861" data-item-id="26861" data-item-type="ItemHtml"><div class="item-body"><ol>
+  <li>
+    <span class="decoration-01">ファーストビュー（注目の入口）</span>
+    <ul>
+      <li>視線ポイント: メインビジュアル + キャッチコピー</li>
+      <li>内容例:
+        <ul>
+          <li>「敏感肌でも安心。オーガニック処方の新しいスキンケア」</li>
+          <li>インフルエンサーの顔写真や使用動画サムネ</li>
+          <li>「今だけトライアルセット30%オフ」のバナー</li>
+        </ul>
+      </li>
+      <li>ユーザー心理: 「肌にやさしそう」「試す価値ありかも」と関心をもつ</li>
+    </ul>
+  </li>
+  <li>
+    <span class="decoration-01">商品の特長セクション（信頼感の強化）</span>
+    <ul>
+      <li>視線ポイント: イラストや写真 → テキストの流れ</li>
+      <li>内容例:
+        <ul>
+          <li>低刺激・無添加・植物由来成分の紹介</li>
+          <li>「敏感肌でも使用可能」「季節の変わり目に最適」といった文言</li>
+        </ul>
+      </li>
+      <li>ユーザー心理: 「自分の肌にも合いそう」「成分も良さそう」と好感度が上がる</li>
+    </ul>
+  </li>
+  <li>
+    <span class="decoration-01">レビュー・SNS評価セクション（共感の獲得）</span>
+    <ul>
+      <li>視線ポイント: ★評価 → 顔写真付きレビュー → SNS投稿例</li>
+      <li>内容例:
+        <ul>
+          <li>「@cosme評価★4.8」や「Instagramで話題！」</li>
+          <li>30代女性のレビュー：使用前後の写真とともに感想記載</li>
+        </ul>
+      </li>
+      <li>ユーザー心理: 「この人も自分と同じ悩みだったんだ」と共感し、購入意欲が強まる</li>
+    </ul>
+  </li>
+  <li>
+    <span class="decoration-01">安心材料セクション（リスク排除）</span>
+    <ul>
+      <li>視線ポイント: 箇条書きやラベル形式の表記</li>
+      <li>内容例:
+        <ul>
+          <li>「アレルギーテスト済」「合成香料・着色料不使用」</li>
+          <li>「医師監修」「返金保証あり」</li>
+        </ul>
+      </li>
+      <li>ユーザー心理: 「もし合わなくても安心」「試してみようかな」と不安を和らげる</li>
+    </ul>
+  </li>
+  <li>
+    <span class="decoration-01">限定オファーとCTA（決断の後押し）</span>
+    <ul>
+      <li>視線ポイント: 特典バナー → CTAボタン（固定表示含む）</li>
+      <li>内容例:
+        <ul>
+          <li>「初回限定トライアルセット1,480円（送料無料）」</li>
+          <li>「今すぐ申し込む」ボタン（目立つカラー）</li>
+        </ul>
+      </li>
+      <li>ユーザー心理: 「お得だし早めに申し込もう」と決断に至る</li>
+    </ul>
+  </li>
+</ol>
+
+<span class="decoration-01">サイト内行動フロー（UXシナリオ）</span>
+<ol>
+  <li>Instagram広告をタップしてLPにアクセス → キャッチコピーと写真で関心を持つ</li>
+  <li>商品の特長や成分を確認 → 自分に合っていそうか吟味</li>
+  <li>SNSやレビューで他者の体験をチェック → 自分と似た悩みの人が効果を実感していることを確認</li>
+  <li>安全性・保証内容に目を通す → 敏感肌でも使えそう、返品可能で安心</li>
+  <li>特典・価格に納得して「購入」クリック → CTAボタンでトライアルセット申し込み完了</li>
+</ol>
+
+<span class="decoration-01">補足：視線の導線を高める工夫</span>
+<ul>
+  <li>視覚要素の活用：成分やメリットはアイコンで簡潔に見せる</li>
+  <li>ストーリーテリング：ユーザーと似た人物が登場するストーリーで感情移入</li>
+  <li>スクロール誘導：「詳しく見る」などのアニメーションや下矢印</li>
+</ul>
+</div></div>
+        
+        <div class="article-item item_image " id="item26864" data-item-id="26864" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/026/864/medium/9691f188-fb11-4c02-8cde-b58faba0a5c0.png?1750917660" title=""><img class="img-responsive item-image" alt=" (26864)" data-reference="" src="https://cdn.clipkit.co/tenants/589/item_images/images/000/026/864/medium/9691f188-fb11-4c02-8cde-b58faba0a5c0.png?1750917660" width="640" height="324" /></a><h4></h4></div></div>
+        
+        <div class="article-item item_html " id="item26865" data-item-id="26865" data-item-type="ItemHtml"><div class="item-body"><div class="callout white">
+    <div class="title-area">
+        <div class="icon bulb"></div>
+        <div class="title"><strong>コーチに相談しよう</strong></div>
+    </div>
+    <div class="content-area">
+        <ul>
+            <li>この章末課題で作成した一連の成果物（ペルソナ、ユーザーストーリー、フローチャート）は、デザインの土台となる非常に重要なものです。</li>
+            <li>ぜひコーチに共有し、<span class="decoration-02">「なぜこのペルソナなのか」「このフローでユーザーの課題は本当に解決されるか」</span>といった点についてディスカッションしてみましょう。</li>
+            <li>客観的な視点からのフィードバックは、思考を深める絶好の機会です。</li>
+        </ul>
+    </div>
+</div></div></div>
+        
+        <div class="article-item item_rich_text " id="item26866" data-item-id="26866" data-item-type="ItemRichText"><div class="item-body-hbr">これで「AIによるアイデア出しと情報設計の自動化」の解説を終わります。<br>
+次の章に進みましょう。</div></div>
+        
+        <div class="article-item item_html " id="item27244" data-item-id="27244" data-item-type="ItemHtml"><div class="item-body"><div class="pagenation-buttons">
+  <a href="mQfyY" class="pagenation-buttons_prev"><img src="/theme/webcoach/img/icons/arrow-right.svg" class="pagenation-buttons_icon">前の章に戻る</a>
+  <a href="dsR4X" class="pagenation-buttons_next">次の章に進む<img src="/theme/webcoach/img/icons/arrow-right.svg" class="pagenation-buttons_icon"></a>
+</div></div></div>
+        
+        
+        
+        <div class="back-to-roadmap mb-4 text-center"></div>
+      </div>
+    </div>
+    
+    <div class="lightbox-modal" id="lightboxModal">
+      <img src="" alt="">
+    </div>
+    
+    <div id="modal" class="fixed-menu-modal">
+      <div class="fixed-menu-modal-content">
+        <div class="index mb-3" style="background-color: #FDF5E8;">
+          <div>
+            <div class="fw-light">INDEX</div>
+            <div class="h3">目次</div>
+          </div>
+          <div class="toc"></div>
+        </div>
+        
+        <!-- ボタン類 -->
+        <div id="fixed-menu_buttons" class="fixed-menu_buttons"></div>
+        
+        <div class="back-to-roadmap text-center"></div>
+      </div>
+    </div>
+    
+    <button id="toggleBtn" class="floating-btn">
+      <img id="iconOpen" 
+           src="/theme/webcoach/img/icons/fixed-menu_modal-open.svg" 
+           alt="メニューを開く">
+      <img id="iconClose" 
+           src="/theme/webcoach/img/icons/fixed-menu_modal-close.svg" 
+           alt="メニューを閉じる" style="display:none;">
+    </button>
+  </div>
+</div>
+</div>
+<!-- <script src="https://cdn.clipkit.co/clipkit/javascripts/item-shopify-1.0.js?v=v15.9.0-20260915" async></script> -->
+            </div>
+        </main>
+
+    </div>
+
+    <div class="p-5" style="background-color: #B73E3D; color: white; height: 300px;">
+        <div class="">
+            <div class="h4 ps-3" style="border-left: 5px solid white;">WEBCOACH | キャリアチェンジまでの全てを学ぶマンツーマンWEBスクール</div>
+            <ul class="nav flex-column m-0 p-3 fw-light">
+                <li class="nav-item mb-2"><a href="https://www.webcoach.jp/" target="_blank">WEBCOACH | 公式HP</a></li>
+                <li class="nav-item mb-2"><a href="https://www.instagram.com/webcoach_officials/" target="_blank">WEBCOACH | 公式Instagram</a></li>
+                <li class="nav-item mb-2"><a href="https://vectorinc.co.jp/groupservice/webcoach-career/" target="_blank">WEBCOACH 公式メディア | WEBCOACH career</a></li>
+            </ul>
+        </div>
+        <div class="text-center">
+            <small>&copy; 2020 by WEBCOACH</small>
+        </div>
+    </div>
+
+    <script src="https://cdn.clipkit.co/clipkit/javascripts/application-1.0.js?v=v15.9.0-20260915" async></script>
+
+    <!-- bodyタグ内の下部に挿入されます -->
+
+
+    <!-- BootstrapのCDNでのjs読み込み -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+        crossorigin="anonymous"></script>
+
+    <!-- シンタックスハイライトの生成 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.1/highlight.min.js"></script>
+    <script>
+        // ハイライトを実行
+        hljs.initHighlightingOnLoad();
+    </script>
+
+    <!-- 目次の生成 -->
+    <script type="text/javascript">toc();</script>
+
+    <!-- ブックマークの生成 -->
+    <script type="text/javascript">displayLinks();</script>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="ck-icon-arrow-down" viewBox="0 0 1792 1792"><path d="M1675 832q0 53-37 90l-651 652q-39 37-91 37-53 0-90-37l-651-652q-38-36-38-90 0-53 38-91l74-75q39-37 91-37 53 0 90 37l294 294v-704q0-52 38-90t90-38h128q52 0 90 38t38 90v704l294-294q37-37 90-37 52 0 91 37l75 75q37 39 37 91z" /></symbol><symbol id="ck-icon-arrow-up" viewBox="0 0 1792 1792"><path d="M1675 971q0 51-37 90l-75 75q-38 38-91 38-54 0-90-38l-294-293v704q0 52-37.5 84.5t-90.5 32.5h-128q-53 0-90.5-32.5t-37.5-84.5v-704l-294 293q-36 38-90 38t-90-38l-75-75q-38-38-38-90 0-53 38-91l651-651q35-37 90-37 54 0 91 37l651 651q37 39 37 91z" /></symbol><symbol id="ck-icon-calendar" viewBox="0 0 1792 1792"><path d="M192 1664h288v-288h-288v288zm352 0h320v-288h-320v288zm-352-352h288v-320h-288v320zm352 0h320v-320h-320v320zm-352-384h288v-288h-288v288zm736 736h320v-288h-320v288zm-384-736h320v-288h-320v288zm768 736h288v-288h-288v288zm-384-352h320v-320h-320v320zm-352-864v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm736 864h288v-320h-288v320zm-384-384h320v-288h-320v288zm384 0h288v-288h-288v288zm32-480v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm384-64v1280q0 52-38 90t-90 38h-1408q-52 0-90-38t-38-90v-1280q0-52 38-90t90-38h128v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h384v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h128q52 0 90 38t38 90z" /></symbol><symbol id="ck-icon-chevron-left" viewBox="0 0 1792 1792"><path d="M1427 301l-531 531 531 531q19 19 19 45t-19 45l-166 166q-19 19-45 19t-45-19l-742-742q-19-19-19-45t19-45l742-742q19-19 45-19t45 19l166 166q19 19 19 45t-19 45z" /></symbol><symbol id="ck-icon-chevron-right" viewBox="0 0 1792 1792"><path d="M1363 877l-742 742q-19 19-45 19t-45-19l-166-166q-19-19-19-45t19-45l531-531-531-531q-19-19-19-45t19-45l166-166q19-19 45-19t45 19l742 742q19 19 19 45t-19 45z" /></symbol><symbol id="ck-icon-clock-o" viewBox="0 0 1792 1792"><path d="M1024 544v448q0 14-9 23t-23 9h-320q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h224v-352q0-14 9-23t23-9h64q14 0 23 9t9 23zm416 352q0-148-73-273t-198-198-273-73-273 73-198 198-73 273 73 273 198 198 273 73 273-73 198-198 73-273zm224 0q0 209-103 385.5t-279.5 279.5-385.5 103-385.5-103-279.5-279.5-103-385.5 103-385.5 279.5-279.5 385.5-103 385.5 103 279.5 279.5 103 385.5z" /></symbol><symbol id="ck-icon-trash" viewBox="0 0 1792 1792"><path d="M704 1376v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm-544-992h448l-48-117q-7-9-17-11h-317q-10 2-17 11zm928 32v64q0 14-9 23t-23 9h-96v948q0 83-47 143.5t-113 60.5h-832q-66 0-113-58.5t-47-141.5v-952h-96q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h309l70-167q15-37 54-63t79-26h320q40 0 79 26t54 63l70 167h309q14 0 23 9t9 23z" /></symbol><symbol id="ck-icon-undo" viewBox="0 0 1792 1792"><path d="M1664 896q0 156-61 298t-164 245-245 164-298 61q-172 0-327-72.5t-264-204.5q-7-10-6.5-22.5t8.5-20.5l137-138q10-9 25-9 16 2 23 12 73 95 179 147t225 52q104 0 198.5-40.5t163.5-109.5 109.5-163.5 40.5-198.5-40.5-198.5-109.5-163.5-163.5-109.5-198.5-40.5q-98 0-188 35.5t-160 101.5l137 138q31 30 14 69-17 40-59 40h-448q-26 0-45-19t-19-45v-448q0-42 40-59 39-17 69 14l130 129q107-101 244.5-156.5t284.5-55.5q156 0 298 61t245 164 164 245 61 298z" /></symbol></svg><script async="async" defer="defer" nonce="Zqbtp06qP7PVFPovHjrHoA==" src="//www.instagram.com/embed.js"></script>
+
+<!--Clipkit(R) v15.9.0-20260915 Copyright (C) 2026 VECTOR Inc.-->
+
+</body>
+
+</html>
+

@@ -1,0 +1,1406 @@
+<!DOCTYPE html>
+<!-- clipkit-source-url: https://learn.webcoach.jp/web-design/p31QS -->
+<!-- clipkit-fetched-at: 2026-09-17T11:14:00.275Z -->
+<html lang="ja"><head>
+    <!-- headタグ内の上部に挿入されます -->
+
+    <meta charset="UTF-8">
+    <title>Figma｜第4章 便利な機能を覚えよう - WEBCOACH</title>
+
+    <!-- resetcssのCDNでのCSS読み込み -->
+    <link rel="stylesheet" href="../../_assets/17f8e278dc.css">
+
+    <!-- fontawesomeのCDNでのCSS読み込み -->
+    <link rel="stylesheet" href="../../_assets/799aeb25cc.css">
+
+    <!-- BootstrapのCDNでのCSS読み込み -->
+    <link href="../../_assets/7633b7c0c9.css" rel="stylesheet">
+
+    <!-- highlight.jsの読み込み -->
+    <link rel="stylesheet" href="../../_assets/e31ce2dd8c.css">
+
+    <!-- カスタムCSS -->
+    <link rel="stylesheet" href="../../_assets/c533dd7750.css">
+
+    <!-- clipkitデフォルトのCSS -->
+    <!--<link rel="stylesheet" media="screen" href="https://cdn.clipkit.co/clipkit/stylesheets/application-1.0.css?v=v15.9.0-20260915">-->
+
+    <!-- jQuery -->
+    
+
+    <!-- カスタムJS -->
+    
+    
+
+    <!-- clipkitデフォルトのJS -->
+    
+
+    <!-- フォント -->
+    <link rel="preconnect" href="https://fonts.googleapis.com/">
+    <link rel="preconnect" href="https://fonts.gstatic.com/">
+    <link href="../../_assets/8b5713f1fc.css" rel="stylesheet">
+
+    <link href="../../_assets/b83ae8ba65.webp" rel="shortcut icon" type="image/vnd.microsoft.icon">
+    <link rel="apple-touch-icon" href="../../_assets/ea0aba163d.webp">
+    <link rel="alternate" type="application/rss+xml" href="https://learn.webcoach.jp/media.rss" title="WEBCOACH">
+    
+<link rel="canonical" href="https://learn.webcoach.jp/web-design/p31QS">
+
+<meta name="description" content="">
+<meta name="keywords" content="">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:domain" content="learn.webcoach.jp">
+<meta name="twitter:title" content="Figma｜第4章 便利な機能を覚えよう - WEBCOACH">
+<meta name="twitter:image" content="https://cdn.clipkit.co/tenants/589/item_images/images/000/006/479/medium/1bf8d09c-3f2f-4acc-baca-cdd54e12dd2c.png?1732193691">
+<meta name="twitter:description" content="">
+<meta property="og:site_name" content="WEBCOACH">
+<meta property="og:title" content="Figma｜第4章 便利な機能を覚えよう">
+<meta property="og:description" content="">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://learn.webcoach.jp/web-design/p31QS">
+<meta property="og:image" content="https://cdn.clipkit.co/tenants/589/item_images/images/000/006/479/large/1bf8d09c-3f2f-4acc-baca-cdd54e12dd2c.png?1732193691">
+
+
+    <!-- headタグ内の下部に挿入されます -->
+
+
+<meta name="csrf-param" content="authenticity_token">
+<meta name="csrf-token" content="YkrjaRXBi9uAiQzBIxb_ySofd7BdGf7L1E6HE1ZoxR7wYf1qCp4bcpmK5Usyn-A9AOEnI6mBaAPXV3T6Otg3wA"><meta content="" name="routing-root-path"><meta content="media" name="site-name"><meta content="ja" name="i18n-default-locale"><meta content="ja" name="i18n-locale"><style data-clipkit-snapshot="force-visible">[data-aos],.reveal,.wow,.fade-in,.animate__animated,.js-reveal{opacity:1!important;transform:none!important;visibility:visible!important;animation:none!important;transition:none!important}</style></head>
+
+<body class="device-desktop" style="visibility: visible;">
+    <!-- bodyタグ内の上部に挿入されます -->
+
+
+    <!-- サイドバーとコンテンツのコンテナ -->
+    <div class="d-flex flex-row w-100 mb-5" style="min-height: calc(100vh - 400px);">
+
+        <!-- サイドバー -->
+        <!--<nav id="side-bar" class="d-flex flex-column fixed-top" style="width: 250px;">-->
+        <!--    <h1 class="d-block w-100 text-center">-->
+        <!--        <a class="d-block" href="/">-->
+        <!--            <img class="mw-100 p-3" src="https://cdn.clipkit.co/tenants/589/sites/logos/000/000/001/logo_sm/a8defd4b-1cc7-433b-a61c-08e7db0e3e4f.png?1714459367" alt="WEBCOACH">-->
+        <!--        </a>-->
+        <!--    </h1>-->
+        <!--    <ul class="nav flex-column m-0 p-3 fw-bold">-->
+        <!--        <li id="sidebar-top" class="nav-item mb-2" style="display: none;"><a href="/"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;" src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/233/original/home.png?1715353458">-->
+        <!--                <div>ホーム</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-knowledges" class="nav-item mb-2" style="display: none;"><a href="/knowledges"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;" src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/232/original/book.png?1715353458">-->
+        <!--                <div>学習の心得</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-web-designs" class="nav-item mb-2" style="display: none;"><a href="/web-designs"-->
+        <!--                class="nav-link text-body d-flex align-items-center active">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/231/original/design.png?1715353457">-->
+        <!--                <div>WEBデザイン</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-web-marketing" class="nav-item mb-2" style="display: none;"><a href="/web-marketings"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/230/original/marketing.png?1715353457">-->
+        <!--                <div>WEBマーケティング</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-codings" class="nav-item mb-2" style="display: none;"><a href="/codings"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/229/original/website.png?1715353457">-->
+        <!--                <div>WEBサイト構築</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-business-skills" class="nav-item mb-2" style="display: none;"><a href="/business-skills"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/228/original/business.png?1715353456">-->
+        <!--                <div>ビジネススキル</div>-->
+        <!--            </a></li>-->
+        <!--    </ul>-->
+        <!--</nav>-->
+
+        <!-- コンテンツ -->
+        <!--<main class="ms-auto" style="width: calc(100vw - 250px);">-->
+        <main class="ms-auto" style="width: calc(100vw);">
+            <div id="sb-site">
+                
+
+
+<div class="container">
+  <div class="row">
+    <div class="article">
+      <div class="mb-3 text-light" style="
+        height: 180px;
+        background-image: url(&quot;../../_assets/e1d58e2b8a.webp&quot;);
+        background-repeat: no-repeat;
+        background-size: cover;
+        display: flex;
+        align-items: flex-end;
+      ">
+        <div style="
+          margin: 0 0 30px 30px;
+        ">
+          <div>WEBデザイン</div>
+
+          <div class="fw-bold h2">Figma｜第4章 便利な機能を覚えよう</div>
+        </div>
+      </div>
+      <div class="article-content">
+        <!-- 目次 -->
+        <div class="index mb-3" style="background-color: #FDF5E8;">
+          <div>
+            <div class="fw-light">INDEX</div>
+            <div class="h3">目次</div>
+          </div>
+          <div class="toc"><ul><li><a href="#heading0" class="tocLink">4章 便利な機能を覚えよう</a><ul><li><a href="#heading1" class="tocLink">この教材の学習時間:280分</a></li></ul></li><li><a href="#heading2" class="tocLink">【4-1】ショートカット</a><ul><li><a href="#heading3" class="tocLink">目安の学習時間:20分</a></li></ul><ul><li><a href="#heading4" class="tocLink">■ Figmaでよく使うショートカット</a></li><li><a href="#heading5" class="tocLink">■ Figma上でもショートカットの確認ができる</a><ul><li><a href="#heading6" class="tocLink"></a></li><li><a href="#heading7" class="tocLink"></a></li></ul></li></ul></li><li><a href="#heading8" class="tocLink">【4-2】ガイド（定規・グリッド）</a><ul><li><a href="#heading9" class="tocLink">目安の学習時間:20分</a></li><li><a href="#heading10" class="tocLink"></a></li></ul><ul><li><a href="#heading11" class="tocLink">■ 定規の使い方</a><ul><li><a href="#heading12" class="tocLink"></a></li></ul></li><li><a href="#heading13" class="tocLink">■ グリッドの使い方</a><ul><li><a href="#heading14" class="tocLink"></a></li></ul></li></ul></li><li><a href="#heading15" class="tocLink">【4-3】コンポーネントとは</a><ul><li><a href="#heading16" class="tocLink">目安の学習時間:20分</a></li></ul><ul><li><a href="#heading17" class="tocLink">コンポーネントとは</a><ul><li><a href="#heading18" class="tocLink"></a></li></ul></li><li><a href="#heading19" class="tocLink">■ 作成手順</a><ul><li><a href="#heading20" class="tocLink"></a></li><li><a href="#heading21" class="tocLink"></a></li><li><a href="#heading22" class="tocLink"></a></li><li><a href="#heading23" class="tocLink"></a></li><li><a href="#heading24" class="tocLink"></a></li></ul></li><li><a href="#heading25" class="tocLink">■ コンポーネントのもう１つのメリット - アセットパネル格納</a><ul><li><a href="#heading26" class="tocLink"></a></li></ul></li></ul></li><li><a href="#heading27" class="tocLink">【4-4】バリアント</a><ul><li><a href="#heading28" class="tocLink">目安の学習時間:30分</a></li></ul><ul><li><a href="#heading29" class="tocLink">■ バリアントとは</a><ul><li><a href="#heading30" class="tocLink"></a></li></ul></li><li><a href="#heading31" class="tocLink">■ 作成手順</a><ul><li><a href="#heading32" class="tocLink"></a></li><li><a href="#heading33" class="tocLink"></a></li><li><a href="#heading34" class="tocLink"></a></li></ul></li><li><a href="#heading35" class="tocLink">■ バリアント使用方法</a><ul><li><a href="#heading36" class="tocLink"></a></li></ul></li></ul></li><li><a href="#heading37" class="tocLink">【4-5】スタイル</a><ul><li><a href="#heading38" class="tocLink">目安の学習時間:20分</a></li></ul><ul><li><a href="#heading39" class="tocLink">■ スタイルとは</a></li><li><a href="#heading40" class="tocLink">■ 作成手順</a><ul><li><a href="#heading41" class="tocLink"></a></li><li><a href="#heading42" class="tocLink"></a></li><li><a href="#heading43" class="tocLink"></a></li></ul></li></ul></li><li><a href="#heading44" class="tocLink">【4-6】オートレイアウト</a><ul><li><a href="#heading45" class="tocLink">目安の学習時間:80分</a></li></ul><ul><li><a href="#heading46" class="tocLink">■ オートレイアウトとは</a><ul><li><a href="#heading47" class="tocLink"></a></li></ul></li><li><a href="#heading48" class="tocLink">■ 作成手順</a><ul><li><a href="#heading49" class="tocLink"></a></li><li><a href="#heading50" class="tocLink"></a></li><li><a href="#heading51" class="tocLink"></a></li></ul></li><li><a href="#heading52" class="tocLink">■ 縦横並べ/折り返し</a><ul><li><a href="#heading53" class="tocLink"></a></li><li><a href="#heading54" class="tocLink"></a></li><li><a href="#heading55" class="tocLink"></a></li></ul></li><li><a href="#heading56" class="tocLink">■ 間隔の調整</a><ul><li><a href="#heading57" class="tocLink"></a></li></ul></li><li><a href="#heading58" class="tocLink">■ 揃えの調整</a><ul><li><a href="#heading59" class="tocLink"></a></li></ul></li><li><a href="#heading60" class="tocLink">■ 余白の調整</a><ul><li><a href="#heading61" class="tocLink"></a></li><li><a href="#heading62" class="tocLink"></a></li></ul></li><li><a href="#heading63" class="tocLink">■ フレームの調整（固定 / コンテンツの内包 / コンテナに合わせて拡大）</a><ul><li><a href="#heading64" class="tocLink"></a></li></ul></li><li><a href="#heading65" class="tocLink">■ フレームの最小幅（及び高さ）・最大幅（及び高さ）設定</a><ul><li><a href="#heading66" class="tocLink"></a></li></ul></li></ul></li><li><a href="#heading67" class="tocLink">【4-7】マスク</a><ul><li><a href="#heading68" class="tocLink">目安の学習時間:20分</a></li></ul><ul><li><a href="#heading69" class="tocLink">■ マスクとは</a><ul><li><a href="#heading70" class="tocLink"></a></li><li><a href="#heading71" class="tocLink"></a></li></ul></li><li><a href="#heading72" class="tocLink">■ 作成手順</a><ul><li><a href="#heading73" class="tocLink"></a></li><li><a href="#heading74" class="tocLink"></a></li><li><a href="#heading75" class="tocLink"></a></li></ul></li><li><a href="#heading76" class="tocLink">■ マスクパネル</a></li></ul></li><li><a href="#heading77" class="tocLink">【4-8】エフェクト</a><ul><li><a href="#heading78" class="tocLink">目安の学習時間:15分</a></li></ul><ul><li><a href="#heading79" class="tocLink">■ エフェクトとは</a><ul><li><a href="#heading80" class="tocLink"></a></li></ul></li><li><a href="#heading81" class="tocLink">■ エフェクトの設定方法</a></li><li><a href="#heading82" class="tocLink">■ エフェクトの種類</a><ul><li><a href="#heading83" class="tocLink"></a></li><li><a href="#heading84" class="tocLink"></a></li><li><a href="#heading85" class="tocLink"></a></li><li><a href="#heading86" class="tocLink"></a></li><li><a href="#heading87" class="tocLink"></a></li></ul></li></ul></li><li><a href="#heading88" class="tocLink">【4-9】プラグイン</a><ul><li><a href="#heading89" class="tocLink">目安の学習時間:30分</a></li></ul><ul><li><a href="#heading90" class="tocLink">■ プラグインとは</a></li><li><a href="#heading91" class="tocLink">■ プラグインの起動方法</a><ul><li><a href="#heading92" class="tocLink"></a></li><li><a href="#heading93" class="tocLink"></a></li></ul></li><li><a href="#heading94" class="tocLink">■ 便利なプラグインを紹介</a><ul><li><a href="#heading95" class="tocLink"></a></li><li><a href="#heading96" class="tocLink"></a></li><li><a href="#heading97" class="tocLink"></a></li><li><a href="#heading98" class="tocLink"></a></li><li><a href="#heading99" class="tocLink"></a></li><li><a href="#heading100" class="tocLink"></a></li></ul></li></ul></li><li><a href="#heading101" class="tocLink">【4-10】第4章 章末問題</a><ul><li><a href="#heading102" class="tocLink">目安学習時間:40分</a></li></ul><ul><li><a href="#heading103" class="tocLink">ステップ0：完成イメージを確認する</a><ul><li><a href="#heading104" class="tocLink"></a></li></ul></li><li><a href="#heading105" class="tocLink">ステップ1：素材とスタイルの準備</a><ul><li><a href="#heading106" class="tocLink">⓪事前準備：使用素材のダウンロード</a></li><li><a href="#heading107" class="tocLink">① スタイルの登録</a></li><li><a href="#heading108" class="tocLink">② アイコンの取得</a></li><li><a href="#heading109" class="tocLink"></a></li></ul></li><li><a href="#heading110" class="tocLink">ステップ2：いいねボタンの作成（コンポーネント化）</a><ul><li><a href="#heading111" class="tocLink">①アイコンといいね数を用意</a></li><li><a href="#heading112" class="tocLink">②オートレイアウト化</a></li><li><a href="#heading113" class="tocLink">③コンポーネント＆バリアント化</a></li><li><a href="#heading114" class="tocLink">④エフェクトの追加</a></li></ul></li><li><a href="#heading115" class="tocLink">ステップ3：その他のパーツの作成</a><ul><li><a href="#heading116" class="tocLink">① プロフィールアイコン（マスク機能）</a></li><li><a href="#heading117" class="tocLink"></a></li><li><a href="#heading118" class="tocLink">② メイン画像とテキストの準備</a></li></ul></li><li><a href="#heading119" class="tocLink">ステップ4：全体の統合</a><ul><li><a href="#heading120" class="tocLink">①縦のオートレイアウト</a></li><li><a href="#heading121" class="tocLink">②リサイズ設定</a></li><li><a href="#heading122" class="tocLink">③仕上げ</a></li><li><a href="#heading123" class="tocLink">④最終チェックポイント</a></li></ul></li></ul></li></ul></div>
+        </div>
+        
+        <div class="back-to-roadmap mb-4 text-center"></div>
+
+        <!-- コンテンツ -->
+        
+        
+        <div class="article-item item_html " id="item48808" data-item-id="48808" data-item-type="ItemHtml"><div class="item-body"><div class="pagenation-buttons" style="justify-content: space-between;">
+  <a href="https://learn.webcoach.jp/web-design/Boqh1" class="pagenation-buttons_prev"><img src="../../_assets/47498cfebf.svg" class="pagenation-buttons_icon">前の章に戻る</a>
+  <a href="https://learn.webcoach.jp/web-design/YQOOK" class="pagenation-buttons_next">次の章に進む<img src="../../_assets/47498cfebf.svg" class="pagenation-buttons_icon"></a>
+</div>
+</div></div>
+        
+        <div class="article-item item_heading " id="item40187" data-item-id="40187" data-item-type="ItemHeading"><h2 class="item-body" id="heading0">4章 便利な機能を覚えよう</h2></div>
+        
+        <div class="article-item item_markdown " id="item39321" data-item-id="39321" data-item-type="ItemMarkdown"><h4 id="heading1">この教材の学習時間:280分</h4>
+</div>
+        
+        <div class="article-item item_rich_text " id="item51033" data-item-id="51033" data-item-type="ItemRichText"><div class="item-body-hbr">この章では、基本操作の一歩先にあるFigmaの便利機能を使いこなし、効率よく、統一感のあるプロっぽいデザインを作れるようになります。具体的には、ショートカット、ガイド（定規・グリッド）、コンポーネント、バリアント、スタイル、オートレイアウト、マスク、エフェクト、プラグインを扱い、最後は章末問題でSNSポストカードを作りながら、それらを実践的に組み合わせて使えるようになります。<br>
+ここで学ぶ機能は、実際のサイトやパーツを速く・きれいに・崩れないように作っていくために使う武器です。<br>
+たとえば<br>
+・<span class="decoration-01">ショートカットキー</span> → 日々の作業スピードを上げたいとき<br>
+・<span class="decoration-01">ガイド（定規・グリッド）</span> → 余白や位置を揃え、規則性のある整ったレイアウトを組むとき<br>
+・<span class="decoration-01">コンポーネント・バリアント </span>→ ボタンやアイコンなど繰り返し使うパーツを一括管理し、通常／ホバーなどの状態を素早く切り替えるとき<br>
+・<span class="decoration-01">スタイル</span> → 色・フォントを登録して、サイト全体のトーンを統一するとき<br>
+・<span class="decoration-01">オートレイアウト</span> → 文字量が増えても間隔が崩れず、伸縮に対応できる崩れないレイアウトを作るとき<br>
+・<span class="decoration-01">マスク</span> → 写真を丸や星形などに切り抜いて見せたいとき<br>
+・<span class="decoration-01">エフェクト</span> → 影やぼかしで、さりげなく立体感や質感を加えるとき<br>
+・<span class="decoration-01">プラグイン</span> → 写真・アイコン・モックアップなどの素材を手早く用意するとき<br>
+<br>
+実務で通用する効率と品質でデザインを組めるようになるための章です。章末問題まで手を動かして、機能を使える知識に変えていきましょう。</div></div>
+        
+        <div class="article-item item_heading " id="item6464" data-item-id="6464" data-item-type="ItemHeading"><h2 class="item-body" id="heading2">【4-1】ショートカット</h2></div>
+        
+        <div class="article-item item_markdown " id="item39322" data-item-id="39322" data-item-type="ItemMarkdown"><h4 id="heading3">目安の学習時間:20分</h4>
+</div>
+        
+        <div class="article-item item_html " id="item6466" data-item-id="6466" data-item-type="ItemHtml"><div class="item-body"><div>今までの解説にも表記しましたが、Figmaには多くのショートカットが用意されています。</div>
+<div>このショートカットを使いこなす事が出来れば、<u>効率的に作業出来るようになります。</u></div>
+<br>
+<div>※Figmaの操作を覚えると同時に、<u>ショートカットも覚えれば一石二鳥</u>になると思います。</div></div></div>
+        
+        <div class="article-item item_heading " id="item6467" data-item-id="6467" data-item-type="ItemHeading"><h3 class="item-body" id="heading4">■ Figmaでよく使うショートカット</h3></div>
+        
+        <div class="article-item item_rich_text " id="item6468" data-item-id="6468" data-item-type="ItemRichText"><div class="item-body-hbr">※Macの場合、<span class="decoration-01">Ctrlキー</span> &gt; <span class="decoration-01">Cmdキー</span>、 <span class="decoration-01">Altキー</span> &gt; &nbsp;<span class="decoration-01">Optionキー </span>​として置き換えてください。</div></div>
+        
+        <div class="article-item item_rich_text " id="item6469" data-item-id="6469" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">基本操作のショートカット</span></div></div>
+        
+        <div class="article-item item_html " id="item6470" data-item-id="6470" data-item-type="ItemHtml"><div class="item-body"><table class="simple">
+    <thead>
+        <tr>
+            <th scope="col">
+                <div>
+                    <div>キー</div>
+                </div>
+            </th>
+            <th scope="col">
+                <div>
+                    <div>効果</div>
+                </div>
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <th scope="row">
+                <div>V</div>
+            </th>
+            <td>
+                <div>選択ツール</div>
+            </td>
+        </tr>
+        <tr>
+            <th scope="row">
+                <div>T</div>
+            </th>
+            <td>
+                <div>テキストツール</div>
+            </td>
+        </tr>
+        <tr>
+            <th scope="row">
+                <div>R</div>
+            </th>
+            <td>
+                <div>レクタングル（四角形）ツール</div>
+            </td>
+        </tr>
+        <tr>
+            <th scope="row">
+                <div>F</div>
+            </th>
+            <td>
+                <div>フレームツール</div>
+            </td>
+        </tr>
+        <tr>
+            <th scope="row">
+                <div>I</div>
+            </th>
+            <td>
+                <div>色選択</div>
+            </td>
+        </tr>
+        <tr>
+            <th scope="row">
+                <div>H or Spaceキー</div>
+            </th>
+            <td>
+                <div>手のひらツール</div>
+            </td>
+        </tr>
+        <tr>
+            <th scope="row">
+                <div>Ctrl + マウスホイール もしくは</div>
+                <div>Ctrl + プラス/マイナスキー</div>
+            </th>
+            <td>
+                <div>画面の拡大縮小</div>
+            </td>
+        </tr>
+        <tr>
+            <th scope="row">
+                <div>Ctrl + A</div>
+            </th>
+            <td>
+                <div>全選択</div>
+            </td>
+        </tr>
+        <tr>
+            <th scope="row">
+                <div>Esc</div>
+            </th>
+            <td>
+                <div>選択解除</div>
+            </td>
+        </tr>
+        <tr>
+            <th scope="row">
+                <div>Ctrl + C</div>
+            </th>
+            <td>
+                <div>コピー</div>
+            </td>
+        </tr>
+        <tr>
+            <th scope="row">
+                <div>Ctrl + V</div>
+            </th>
+            <td>
+                <div>ペースト</div>
+            </td>
+        </tr>
+        <tr>
+            <th scope="row">
+                <div>Ctrl + D もしくは</div>
+                <div>Alt + マウスドラッグ</div>
+            </th>
+            <td>
+                <div>複製</div>
+            </td>
+        </tr>
+        <tr>
+            <th scope="row">
+                <div>Ctrl + Z</div>
+            </th>
+            <td>
+                <div>元に戻す</div>
+            </td>
+        </tr>
+        <tr>
+            <th scope="row">
+                <div>Ctrl + Shift + Z</div>
+            </th>
+            <td>
+                <div>やり直す</div>
+            </td>
+        </tr>
+        <tr>
+            <th scope="row">
+                <div>Ctrl + 0</div>
+            </th>
+            <td>
+                <div>100%ズーム</div>
+            </td>
+        </tr>
+        <tr>
+            <th scope="row">
+                <div>Ctrl + Alt + Enter</div>
+            </th>
+            <td>
+                <div>プレビュー</div>
+            </td>
+        </tr>
+    </tbody>
+</table></div></div>
+        
+        <div class="article-item item_rich_text " id="item6471" data-item-id="6471" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">便利なショートカット</span></div></div>
+        
+        <div class="article-item item_html " id="item6472" data-item-id="6472" data-item-type="ItemHtml"><div class="item-body"><table class="simple">
+    <thead>
+        <tr>
+            <th scope="col">
+                <div>
+                    <div>キー</div>
+                </div>
+            </th>
+            <th scope="col">
+                <div>
+                    <div>効果</div>
+                </div>
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <th scope="row">
+                <div>Ctrl + G</div>
+            </th>
+            <td>
+                <div>グループ化</div>
+            </td>
+        </tr>
+        <tr>
+            <th scope="row">
+                <div>Ctrl + Shift + G</div>
+            </th>
+            <td>
+                <div>グループ化を解除</div>
+            </td>
+        </tr>
+        <tr>
+            <th scope="row">
+                <div>Ctrl + [</div>
+            </th>
+            <td>
+                <div>レイヤーを後方に移動</div>
+            </td>
+        </tr>
+        <tr>
+            <th scope="row">
+                <div>Ctrl + ]</div>
+            </th>
+            <td>
+                <div>レイヤーを前方に移動</div>
+            </td>
+        </tr>
+        <tr>
+            <th scope="row">
+                <div>Shift + R</div>
+            </th>
+            <td>
+                <div>定規を表示</div>
+            </td>
+        </tr>
+        <tr>
+            <th scope="row">
+                <div>Shift + G</div>
+            </th>
+            <td>
+                <div>グリッドを表示</div>
+            </td>
+        </tr>
+        <tr>
+            <th scope="row">
+                <div>Ctrl + Shift + K</div>
+            </th>
+            <td>
+                <div>画像を取り込む</div>
+            </td>
+        </tr>
+    </tbody>
+</table></div></div>
+        
+        <div class="article-item item_rich_text " id="item6473" data-item-id="6473" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">テキスト系のショートカット</span></div></div>
+        
+        <div class="article-item item_html " id="item6474" data-item-id="6474" data-item-type="ItemHtml"><div class="item-body"><table class="simple">
+    <thead>
+        <tr>
+            <th scope="col">
+                <div>
+                    <div>キー</div>
+                </div>
+            </th>
+            <th scope="col">
+                <div>
+                    <div>効果</div>
+                </div>
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <th scope="row">
+                <div>Ctrl + B</div>
+            </th>
+            <td>
+                <div>太字</div>
+            </td>
+        </tr>
+        <tr>
+            <th scope="row">
+                <div>Ctrl + Shift + &lt; もしくは</div>
+                <div>Ctrl + Shift + &gt;</div>
+            </th>
+            <td>
+                <div>フォントサイズ変更</div>
+            </td>
+        </tr>
+        <tr>
+            <th scope="row">
+                <div>Alt + &lt; もしくは</div>
+                <div>Alt + &gt;</div>
+            </th>
+            <td>
+                <div>文字詰め</div>
+            </td>
+        </tr>
+        <tr>
+            <th scope="row">
+                <div>Shift + Alt + &lt; もしくは</div>
+                <div>Shift + Alt + &gt;</div>
+            </th>
+            <td>
+                <div>行の調整</div>
+            </td>
+        </tr>
+    </tbody>
+</table></div></div>
+        
+        <div class="article-item item_rich_text " id="item6475" data-item-id="6475" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">整列系のショートカット</span><span class="decoration-01"></span>　※複数オブジェクトを選択時</div></div>
+        
+        <div class="article-item item_html " id="item6476" data-item-id="6476" data-item-type="ItemHtml"><div class="item-body"><table class="simple">
+    <thead>
+        <tr>
+            <th scope="col">
+                <div>
+                    <div>キー</div>
+                </div>
+            </th>
+            <th scope="col">
+                <div>
+                    <div>効果</div>
+                </div>
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <th scope="row">
+                <div>Alt + H</div>
+            </th>
+            <td>
+                <div>水平方向に合わせる</div>
+            </td>
+        </tr>
+        <tr>
+            <th scope="row">
+                <div>Alt + V</div>
+            </th>
+            <td>
+                <div>垂直方向に合わせる</div>
+            </td>
+        </tr>
+        <tr>
+            <th scope="row">
+                <div>Alt + Shift + H</div>
+            </th>
+            <td>
+                <div>水平方向のオブジェクトを均等配置</div>
+                <div>（オブジェクトを3つ以上選択時）</div>
+            </td>
+        </tr>
+        <tr>
+            <th scope="row">
+                <div>Alt + Shift + V</div>
+            </th>
+            <td>
+                <div>垂直方向のオブジェクトを均等配置</div>
+                <div>（オブジェクトを3つ以上選択時）</div>
+            </td>
+        </tr>
+        <tr>
+            <th scope="row">
+                <div>Ctrl + Alt + K</div>
+            </th>
+            <td>
+                <div>コンポーネント</div>
+            </td>
+        </tr>
+        <tr>
+            <th scope="row">
+                <div>Ctrl + Alt + B</div>
+            </th>
+            <td>
+                <div>インスタンスの切り離し（コンポーネント・親からの切り離し）</div>
+            </td>
+        </tr>
+        <tr>
+            <th scope="row">
+                <div>Shift + A</div>
+            </th>
+            <td>
+                <div>オートレイアウト</div>
+            </td>
+        </tr>
+        <tr>
+            <th scope="row">
+                <div>Shift + Alt + A</div>
+            </th>
+            <td>
+                <div>オートレイアウトを解除</div>
+            </td>
+        </tr>
+    </tbody>
+</table></div></div>
+        
+        <div class="article-item item_heading " id="item6477" data-item-id="6477" data-item-type="ItemHeading"><h3 class="item-body" id="heading5">■ Figma上でもショートカットの確認ができる</h3></div>
+        
+        <div class="article-item item_rich_text " id="item6478" data-item-id="6478" data-item-type="ItemRichText"><div class="item-body-hbr">Figmaを操作していると<span class="decoration-02">右脇にキーボードのヒント</span>が確認出来ます。<br>
+※例えば、「長方形 : R」「矢印 : Shift + L」など。<br>
+これがショートカットのヒントになっています。<br>
+</div></div>
+        
+        <div class="article-item item_image " id="item6479" data-item-id="6479" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/006/479/medium/1bf8d09c-3f2f-4acc-baca-cdd54e12dd2c.png?1732193691" title=""><img class="img-responsive item-image" alt=" (6479)" data-reference="" src="../../_assets/29ec6eb764.webp" width="465" height="266"></a><h4 id="heading6"></h4></div></div>
+        
+        <div class="article-item item_rich_text " id="item6480" data-item-id="6480" data-item-type="ItemRichText"><div class="item-body-hbr">Figma使用時でも、<span class="decoration-01">ショートカット一覧</span>を確認する事も出来ます。<br>
+下記のショートカットを入力すると、画面下に一覧が表示されます。</div></div>
+        
+        <div class="article-item item_markdown " id="item6481" data-item-id="6481" data-item-type="ItemMarkdown"><ul>
+  <li><strong><code>Control + Shift + ?</code></strong></li>
+</ul>
+</div>
+        
+        <div class="article-item item_image " id="item6482" data-item-id="6482" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/006/482/medium/91674225-bb16-46fc-ada8-0337492a82b7.png?1732193796" title=""><img class="img-responsive item-image" alt=" (6482)" data-reference="" src="../../_assets/500b068859.webp" width="640" height="392"></a><h4 id="heading7"></h4></div></div>
+        
+        <div class="article-item item_heading " id="item6483" data-item-id="6483" data-item-type="ItemHeading"><h2 class="item-body" id="heading8">【4-2】ガイド（定規・グリッド）</h2></div>
+        
+        <div class="article-item item_markdown " id="item39323" data-item-id="39323" data-item-type="ItemMarkdown"><h4 id="heading9">目安の学習時間:20分</h4>
+</div>
+        
+        <div class="article-item item_html " id="item49447" data-item-id="49447" data-item-type="ItemHtml"><div class="item-body"><!-- Figma_4-2 -->
+<video src="../media/med-71844dd245.mp4" controls="" playsinline="" preload="metadata" style="width: 100%; border-radius: 12px; display: block;"></video></div></div>
+        
+        <div class="article-item item_rich_text " id="item6485" data-item-id="6485" data-item-type="ItemRichText"><div class="item-body-hbr">レイアウトを組む際、ガイドを使用すれば規則性のあるレイアウトを構築する事が簡単にできます。<br>
+<br>
+Figmaには<span class="decoration-01">「定規」「グリッド」</span><span class="decoration-01">の２種類のガイド</span>を使う事ができます。<br>
+使いやすい方を使用しましょう。</div></div>
+        
+        <div class="article-item item_rich_text " id="item6487" data-item-id="6487" data-item-type="ItemRichText"><div class="item-body-hbr">☑️ <span class="decoration-02">サンプルデータはこちら</span></div></div>
+        
+        <div class="article-item item_file " id="item6488" data-item-id="6488" data-item-type="ItemFile"><div class="media"><div class="pull-left"><img class="item-image" src="../../_assets/1f37ad7044.webp"></div><div class="media-body"><h4 class="media-heading item-body" id="heading10"></h4><div style="margin-top:10px"><a class="btn btn-default btn-download" href="https://learn.webcoach.jp/media/works/items/6488/download"><svg class="ck-icon ck-icon--download" viewBox="0 0 1792 1792" aria-hidden="true" focusable="false"><path d="M1344 1344q0-26-19-45t-45-19-45 19-19 45 19 45 45 19 45-19 19-45zm256 0q0-26-19-45t-45-19-45 19-19 45 19 45 45 19 45-19 19-45zm128-224v320q0 40-28 68t-68 28h-1472q-40 0-68-28t-28-68v-320q0-40 28-68t68-28h465l135 136q58 56 136 56t136-56l136-136h464q40 0 68 28t28 68zm-325-569q17 41-14 70l-448 448q-18 19-45 19t-45-19l-448-448q-31-29-14-70 17-39 59-39h256v-448q0-26 19-45t45-19h256q26 0 45 19t19 45v448h256q42 0 59 39z"></path></svg> ダウンロード</a></div><div class="small text-muted">ガイド.fig (66.3 KB)</div></div></div></div>
+        
+        <div class="article-item item_rich_text " id="item6486" data-item-id="6486" data-item-type="ItemRichText"><div class="item-body-hbr">※サンプルデータを開くには、ホーム画面の「インポート」より、入手した.figデータを選択。</div></div>
+        
+        <div class="article-item item_heading " id="item6484" data-item-id="6484" data-item-type="ItemHeading"><h3 class="item-body" id="heading11">■ 定規の使い方</h3></div>
+        
+        <div class="article-item item_rich_text " id="item6489" data-item-id="6489" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">定規は ”線” を配置するガイド</span>です。レイアウトの縦軸・横軸を合わせるのに便利です。</div></div>
+        
+        <div class="article-item item_image " id="item6491" data-item-id="6491" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/006/491/medium/c0094813-2fe1-4ec5-84aa-91756c7824e4.png?1732194249" title=""><img class="img-responsive item-image" alt=" (6491)" data-reference="" src="../../_assets/0b322b8d9d.webp" width="640" height="358"></a><h4 id="heading12"></h4></div></div>
+        
+        <div class="article-item item_markdown " id="item6492" data-item-id="6492" data-item-type="ItemMarkdown"><p>定規は以下の2種類の出し方があります。</p>
+
+<ul>
+  <li>右上の倍率をクリックし、メニュー内にある「定規」を選択（消す時も同じ項目を選択）</li>
+  <li>ショートカット <strong><code>Shift + R</code></strong>（消す時も同じショートカット）</li>
+</ul>
+</div>
+        
+        <div class="article-item item_markdown " id="item6493" data-item-id="6493" data-item-type="ItemMarkdown"><p>定規を出すと、キャンバスの左側・上側に定規が表示されます。ここからドラッグ＆ドロップする事で、定規のラインを引く事ができます。</p>
+</div>
+        
+        <div class="article-item item_html " id="item6496" data-item-id="6496" data-item-type="ItemHtml"><div class="item-body"><p><strong>使用例</strong></p>
+<p>直感で定規を置くよりも、<u>規則性に沿った定規の配置</u>をする事をおすすめします。</p>
+<p>※例えば...</p>
+<div>①目安となる図形を作成し、横脇に配置します。</div>
+<div>② その図形を複製し、反対側の横脇に置きます。</div>
+<div>③ 後はその図形に沿った定規を引けば、両脇に同じ幅の定規を引く事ができます。</div></div></div>
+        
+        <div class="article-item item_rich_text " id="item6499" data-item-id="6499" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">Alt(Option)ボタンを押しながら、オブジェクトを選択</span></div></div>
+        
+        <div class="article-item item_rich_text " id="item6500" data-item-id="6500" data-item-type="ItemRichText"><div class="item-body-hbr">上記の方法で、選択しているオブジェクトの位置を知る事ができます。<br>
+この方法を上手く使う事で定規を適切に配置したレイアウトを整える方法もあります。</div></div>
+        
+        <div class="article-item item_heading " id="item6501" data-item-id="6501" data-item-type="ItemHeading"><h3 class="item-body" id="heading13">■ グリッドの使い方</h3></div>
+        
+        <div class="article-item item_rich_text " id="item6502" data-item-id="6502" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">グリッドはフレームを等倍してガイドを配置</span>する方法です。</div></div>
+        
+        <div class="article-item item_image " id="item6503" data-item-id="6503" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/006/503/medium/e0aeb2b3-9aa9-4460-a26b-e889d6822397.png?1732195010" title=""><img class="img-responsive item-image" alt=" (6503)" data-reference="" src="../../_assets/988f4ca443.webp" width="640" height="360"></a><h4 id="heading14"></h4></div></div>
+        
+        <div class="article-item item_rich_text " id="item6504" data-item-id="6504" data-item-type="ItemRichText"><div class="item-body-hbr">グリッドは以下の方法で使用出来ます。<br>
+"フレーム"を選択した状態で、画面右側の「レイアウトガイド」の　"+" アイコンをクリックすると、グリッド線を敷く事が出来ます。</div></div>
+        
+        <div class="article-item item_rich_text " id="item6507" data-item-id="6507" data-item-type="ItemRichText"><div class="item-body-hbr">ただ、この状態（グリッド8px）の状態だと解りづらいので、”グリッド8pxの左のアイコン" をクリックし、「列」を選択。適切な数値を選択する事で解りやすくなると思います。</div></div>
+        
+        <div class="article-item item_markdown " id="item6508" data-item-id="6508" data-item-type="ItemMarkdown"><p>ショートカット <strong><code>Shift + G</code></strong> でグリッドの表示・非表示が出来ます。</p>
+</div>
+        
+        <div class="article-item item_rich_text " id="item6509" data-item-id="6509" data-item-type="ItemRichText"><div class="item-body-hbr">✅ UIデザインにおいてレイアウト作成をする際、<span class="decoration-01">余白をバランスよく配置</span>する事がUIデザインの重要な基礎の１つでもあります。<br>
+　 ガイドを上手く利用し、バランスの取れた余白を作る事を意識してみましょう。<br>
+　 ※詳しくは第５章以降で説明します。</div></div>
+        
+        <div class="article-item item_html " id="item48764" data-item-id="48764" data-item-type="ItemHtml"><div class="item-body"><a id="component"></a></div></div>
+        
+        <div class="article-item item_heading " id="item6510" data-item-id="6510" data-item-type="ItemHeading"><h2 class="item-body" id="heading15">【4-3】コンポーネントとは</h2></div>
+        
+        <div class="article-item item_markdown " id="item39324" data-item-id="39324" data-item-type="ItemMarkdown"><h4 id="heading16">目安の学習時間:20分</h4>
+</div>
+        
+        <div class="article-item item_html " id="item49448" data-item-id="49448" data-item-type="ItemHtml"><div class="item-body"><!-- Figma_4-3 -->
+<video src="../media/med-f80c890d3d.mp4" controls="" playsinline="" preload="metadata" style="width: 100%; border-radius: 12px; display: block;"></video></div></div>
+        
+        <div class="article-item item_heading " id="item6511" data-item-id="6511" data-item-type="ItemHeading"><h3 class="item-body" id="heading17">コンポーネントとは</h3></div>
+        
+        <div class="article-item item_html " id="item6512" data-item-id="6512" data-item-type="ItemHtml"><div class="item-body"><div>FigmaはUIを作成する為の多くの機能を搭載していますが、<u>最も習得しやすく、且つ使用頻度も高い</u>と思われるのがこのコンポーネントになります。</div>
+
+<div>同じようなパーツを使いまわしたい場合、コンポーネントを使うと便利です。</div>
+</div></div>
+        
+        <div class="article-item item_rich_text " id="item6513" data-item-id="6513" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-02">☑️ サンプルデータはこちら</span></div></div>
+        
+        <div class="article-item item_file " id="item6514" data-item-id="6514" data-item-type="ItemFile"><div class="media"><div class="pull-left"><img class="item-image" src="../../_assets/1f37ad7044.webp"></div><div class="media-body"><h4 class="media-heading item-body" id="heading18"></h4><div style="margin-top:10px"><a class="btn btn-default btn-download" href="https://learn.webcoach.jp/media/works/items/6514/download"><svg class="ck-icon ck-icon--download" viewBox="0 0 1792 1792" aria-hidden="true" focusable="false"><path d="M1344 1344q0-26-19-45t-45-19-45 19-19 45 19 45 45 19 45-19 19-45zm256 0q0-26-19-45t-45-19-45 19-19 45 19 45 45 19 45-19 19-45zm128-224v320q0 40-28 68t-68 28h-1472q-40 0-68-28t-28-68v-320q0-40 28-68t68-28h465l135 136q58 56 136 56t136-56l136-136h464q40 0 68 28t28 68zm-325-569q17 41-14 70l-448 448q-18 19-45 19t-45-19l-448-448q-31-29-14-70 17-39 59-39h256v-448q0-26 19-45t45-19h256q26 0 45 19t19 45v448h256q42 0 59 39z"></path></svg> ダウンロード</a></div><div class="small text-muted">コンポーネント.fig (59.4 KB)</div></div></div></div>
+        
+        <div class="article-item item_rich_text " id="item6515" data-item-id="6515" data-item-type="ItemRichText"><div class="item-body-hbr">※サンプルデータを開くには、ホーム画面の「インポート」より、入手した.figデータを選択。</div></div>
+        
+        <div class="article-item item_heading " id="item6518" data-item-id="6518" data-item-type="ItemHeading"><h3 class="item-body" id="heading19">■ 作成手順</h3></div>
+        
+        <div class="article-item item_rich_text " id="item6519" data-item-id="6519" data-item-type="ItemRichText"><div class="item-body-hbr">✔ <span class="decoration-02">コンポーネント作成手順</span></div></div>
+        
+        <div class="article-item item_rich_text " id="item6520" data-item-id="6520" data-item-type="ItemRichText"><div class="item-body-hbr">1 . まず複製させたいオブジェクトを用意し、選択します。</div></div>
+        
+        <div class="article-item item_image " id="item6521" data-item-id="6521" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/006/521/medium/6dba83a4-ddc9-4ba1-b5a1-64927a09c7e6.png?1732195471" title=""><img class="img-responsive item-image" alt=" (6521)" data-reference="" src="../../_assets/b86924fd4e.webp" width="512" height="216"></a><h4 id="heading20"></h4></div></div>
+        
+        <div class="article-item item_markdown " id="item6522" data-item-id="6522" data-item-type="ItemMarkdown"><p>2 . 次に右クリックから「コンポーネントを作成」を選択<br>
+※ショートカット <strong><code>Ctrl + Alt + K</code></strong>　でもOK。</p>
+</div>
+        
+        <div class="article-item item_image " id="item6523" data-item-id="6523" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/006/523/medium/ffc8902d-e240-462e-873e-3b68af9cb108.png?1732195543" title=""><img class="img-responsive item-image" alt=" (6523)" data-reference="" src="../../_assets/61d9879269.webp" width="640" height="232"></a><h4 id="heading21"></h4></div></div>
+        
+        <div class="article-item item_markdown " id="item6524" data-item-id="6524" data-item-type="ItemMarkdown"><p>3 . レイヤーが紫色になり、アイコンも菱形（4つ）になっているのが確認出来ます。<br>
+    これで「親」レイヤー完成です。</p>
+</div>
+        
+        <div class="article-item item_image " id="item6525" data-item-id="6525" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/006/525/medium/b8eb54c7-84f9-4c51-875c-5430701a8a89.png?1732195599" title=""><img class="img-responsive item-image" alt=" (6525)" data-reference="" src="../../_assets/a091d748b9.webp" width="509" height="232"></a><h4 id="heading22"></h4></div></div>
+        
+        <div class="article-item item_markdown " id="item6526" data-item-id="6526" data-item-type="ItemMarkdown"><p>4 . この親レイヤーを”複製”してみましょう。すると、同じく紫色のレイヤーになっていますが、アイコンは菱形（１つ）になっています。これで「子」レイヤーの完成です。<br>
+    ※子レイヤーはいくらでも作成できます。</p>
+</div>
+        
+        <div class="article-item item_image " id="item6527" data-item-id="6527" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/006/527/medium/9bdfba09-6186-4b7f-9a45-608b5e39be67.png?1732195647" title=""><img class="img-responsive item-image" alt=" (6527)" data-reference="" src="../../_assets/833cf4c266.webp" width="640" height="295"></a><h4 id="heading23"></h4></div></div>
+        
+        <div class="article-item item_markdown " id="item6528" data-item-id="6528" data-item-type="ItemMarkdown"><p>5 . 親レイヤーの中のオブジェクトを動かしてみましょう。<br>
+すると、子レイヤーのオブジェクトも同じ動きをします。</p>
+</div>
+        
+        <div class="article-item item_image " id="item6529" data-item-id="6529" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/006/529/medium/877edd23-14da-4084-b068-189909600f8c.png?1732195849" title=""><img class="img-responsive item-image" alt=" (6529)" data-reference="" src="../../_assets/2ccb2d7142.webp" width="640" height="288"></a><h4 id="heading24"></h4></div></div>
+        
+        <div class="article-item item_markdown " id="item6530" data-item-id="6530" data-item-type="ItemMarkdown"><p>6 . 色やサイズ、テキスト、レイヤー追加など色々対応出来ます。<br>
+コンポーネントを上手く利用すれば、コンテンツ作りも容易に進める事が出来ます。</p>
+</div>
+        
+        <div class="article-item item_rich_text " id="item6531" data-item-id="6531" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-02">[複製について] </span></div></div>
+        
+        <div class="article-item item_html " id="item6532" data-item-id="6532" data-item-type="ItemHtml"><div class="item-body"><div>前章でも記載しましたが、<u>Figmaで "複製"する方法</u>を改めて記載します。(いずれかの方法でOK)</div></div></div>
+        
+        <div class="article-item item_rich_text " id="item6533" data-item-id="6533" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">⭕️ Windowsの場合</span></div></div>
+        
+        <div class="article-item item_markdown " id="item6534" data-item-id="6534" data-item-type="ItemMarkdown"><ul>
+  <li>複製したいオブジェクトを選択、<strong><code>Ctrl + C</code></strong> でコピー  &gt; <strong><code>Ctrl + V</code></strong> でペースト</li>
+  <li>複製したいオブジェクトを選択、<strong><code>Ctrl + D</code></strong>。</li>
+  <li><strong><code>Altキー</code></strong>を押しながら、複製したいオブジェクトを動かす。</li>
+</ul>
+</div>
+        
+        <div class="article-item item_rich_text " id="item6535" data-item-id="6535" data-item-type="ItemRichText"><div class="item-body-hbr">⭕️ <span class="decoration-01">Macの場合</span></div></div>
+        
+        <div class="article-item item_markdown " id="item6536" data-item-id="6536" data-item-type="ItemMarkdown"><ul>
+  <li>複製したいオブジェクトを選択、<strong><code>Cmd + C</code></strong> でコピー &gt; <strong><code>Cmd + V</code></strong> でペースト。</li>
+  <li>複製したいオブジェクトを選択、<strong><code>Cmd + D</code></strong>。</li>
+  <li><strong><code>Optionキー</code></strong>を押しながら、複製したいオブジェクトを動かす。</li>
+</ul>
+</div>
+        
+        <div class="article-item item_heading " id="item6537" data-item-id="6537" data-item-type="ItemHeading"><h3 class="item-body" id="heading25">■ コンポーネントのもう１つのメリット - アセットパネル格納</h3></div>
+        
+        <div class="article-item item_rich_text " id="item6538" data-item-id="6538" data-item-type="ItemRichText"><div class="item-body-hbr">コンポーネント化したレイヤーは、レイヤー隣のアセット<span class="decoration-02">（アセットパネル）</span>に格納されます。<br>
+<span class="decoration-02">ドラッグ&amp;ドロップ</span>で、アセットパネルから直ぐにキャンバスに配置する事も出来ます。</div></div>
+        
+        <div class="article-item item_image " id="item6539" data-item-id="6539" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/006/539/medium/0b6e7878-8e5d-45dc-95a5-015209c52519.png?1732196126" title=""><img class="img-responsive item-image" alt=" (6539)" data-reference="" src="../../_assets/2f62c6e0f9.webp" width="570" height="396"></a><h4 id="heading26"></h4></div></div>
+        
+        <div class="article-item item_rich_text " id="item6540" data-item-id="6540" data-item-type="ItemRichText"><div class="item-body-hbr">※他のフレームやページなど、広範囲に使い回せる為、規模のあるサイト制作時には重宝します。</div></div>
+        
+        <div class="article-item item_heading " id="item6541" data-item-id="6541" data-item-type="ItemHeading"><h2 class="item-body" id="heading27">【4-4】バリアント</h2></div>
+        
+        <div class="article-item item_markdown " id="item39325" data-item-id="39325" data-item-type="ItemMarkdown"><h4 id="heading28">目安の学習時間:30分</h4>
+</div>
+        
+        <div class="article-item item_html " id="item49449" data-item-id="49449" data-item-type="ItemHtml"><div class="item-body"><!-- Figma_4-4 -->
+<video src="../media/med-409ff7d6c3.mp4" controls="" playsinline="" preload="metadata" style="width: 100%; border-radius: 12px; display: block;"></video></div></div>
+        
+        <div class="article-item item_heading " id="item6542" data-item-id="6542" data-item-type="ItemHeading"><h3 class="item-body" id="heading29">■ バリアントとは</h3></div>
+        
+        <div class="article-item item_rich_text " id="item6543" data-item-id="6543" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01"></span><span class="decoration-02">バリアントとは、複数のコンポーネントをひとまとめにして管理する機能</span><span class="decoration-01"></span>です。<br>
+Figmaでは、ボタンや入力フォーム、アイコンなど、繰り返し使用する要素を「コンポーネント」として作成します。しかし、同じボタンでも「通常の状態」「ホバー時」「クリック時」「無効な状態（disabled）」など、複数の状態が存在します。<br>
+これらをすべて個別のコンポーネントとして作成すると、デザインファイルがコンポーネントだらけになり、管理が非常に大変になります。<br>
+<br>
+そこで登場するのが「バリアント」です。<br>
+バリアントを使うと、これらの異なる状態を一つの「コンポーネントセット」としてグループ化し、管理することができます。<br>
+<br>
+WEBに設置するボタンやアイコン等、同じパーツでも若干異なる状態を手軽に切り替えたい場合などに良く使われます。</div></div>
+        
+        <div class="article-item item_rich_text " id="item6544" data-item-id="6544" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-02">☑️ サンプルデータはこちら</span></div></div>
+        
+        <div class="article-item item_file " id="item6545" data-item-id="6545" data-item-type="ItemFile"><div class="media"><div class="pull-left"><img class="item-image" src="../../_assets/1f37ad7044.webp"></div><div class="media-body"><h4 class="media-heading item-body" id="heading30"></h4><div style="margin-top:10px"><a class="btn btn-default btn-download" href="https://learn.webcoach.jp/media/works/items/6545/download"><svg class="ck-icon ck-icon--download" viewBox="0 0 1792 1792" aria-hidden="true" focusable="false"><path d="M1344 1344q0-26-19-45t-45-19-45 19-19 45 19 45 45 19 45-19 19-45zm256 0q0-26-19-45t-45-19-45 19-19 45 19 45 45 19 45-19 19-45zm128-224v320q0 40-28 68t-68 28h-1472q-40 0-68-28t-28-68v-320q0-40 28-68t68-28h465l135 136q58 56 136 56t136-56l136-136h464q40 0 68 28t28 68zm-325-569q17 41-14 70l-448 448q-18 19-45 19t-45-19l-448-448q-31-29-14-70 17-39 59-39h256v-448q0-26 19-45t45-19h256q26 0 45 19t19 45v448h256q42 0 59 39z"></path></svg> ダウンロード</a></div><div class="small text-muted">バリアント.fig (79.1 KB)</div></div></div></div>
+        
+        <div class="article-item item_rich_text " id="item6546" data-item-id="6546" data-item-type="ItemRichText"><div class="item-body-hbr">※サンプルデータを開くには、ホーム画面の「インポート」より、入手した.figデータを選択。</div></div>
+        
+        <div class="article-item item_heading " id="item6549" data-item-id="6549" data-item-type="ItemHeading"><h3 class="item-body" id="heading31">■ 作成手順</h3></div>
+        
+        <div class="article-item item_html " id="item6550" data-item-id="6550" data-item-type="ItemHtml"><div class="item-body"><div>今回はバリアントを利用したボタンを作成してみましょう。</div>
+<div>まずボタンの「お問い合わせ」のコンポーネントを作ります。</div></div></div>
+        
+        <div class="article-item item_rich_text " id="item6551" data-item-id="6551" data-item-type="ItemRichText"><div class="item-body-hbr">✔ <span class="decoration-02">バリアント作成手順</span></div></div>
+        
+        <div class="article-item item_rich_text " id="item6552" data-item-id="6552" data-item-type="ItemRichText"><div class="item-body-hbr">1 . コンポーネントを作成します。<br>
+2 . 右側パネル「プロパティを追加」より、バリアントを選択。</div></div>
+        
+        <div class="article-item item_image " id="item6553" data-item-id="6553" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/006/553/medium/4776c880-8360-44c4-96c9-7a190e0dee87.png?1732196486" title=""><img class="img-responsive item-image" alt=" (6553)" data-reference="" src="../../_assets/18be2abd10.webp" width="520" height="209"></a><h4 id="heading32"></h4></div></div>
+        
+        <div class="article-item item_rich_text " id="item6554" data-item-id="6554" data-item-type="ItemRichText"><div class="item-body-hbr">3 . プロパティ名の決めましょう。今回は「ボタン」とします。</div></div>
+        
+        <div class="article-item item_image " id="item6555" data-item-id="6555" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/006/555/medium/35228d56-ea70-4f46-bf0e-19d47ef86ced.png?1732196508" title=""><img class="img-responsive item-image" alt=" (6555)" data-reference="" src="../../_assets/051f0dc7e6.webp" width="525" height="177"></a><h4 id="heading33"></h4></div></div>
+        
+        <div class="article-item item_rich_text " id="item6556" data-item-id="6556" data-item-type="ItemRichText"><div class="item-body-hbr">4 . コンポーネント下の + ボタンで複製します。<br>
+5 . 各々別のボタンを作成します。今回は「資料請求 」「入力内容を確認」 のボタンを作成します。<br>
+ &nbsp; &nbsp; これで準備完了です。</div></div>
+        
+        <div class="article-item item_image " id="item6557" data-item-id="6557" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/006/557/medium/cd71aa23-8390-4cfa-8095-215b150fc60c.png?1732196559" title=""><img class="img-responsive item-image" alt=" (6557)" data-reference="" src="../../_assets/0f7d881149.webp" width="640" height="307"></a><h4 id="heading34"></h4></div></div>
+        
+        <div class="article-item item_heading " id="item6558" data-item-id="6558" data-item-type="ItemHeading"><h3 class="item-body" id="heading35">■ バリアント使用方法</h3></div>
+        
+        <div class="article-item item_html " id="item6559" data-item-id="6559" data-item-type="ItemHtml"><div class="item-body">バリアントで設定したパーツを設置した際、<u>右側パネルで設定した「ボタン」の項目で、素早くパーツを切り替え</u>出来ます。</div></div>
+        
+        <div class="article-item item_image " id="item6560" data-item-id="6560" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/006/560/medium/646b566d-abfb-429e-a7e2-e666715a2942.png?1732196605" title=""><img class="img-responsive item-image" alt=" (6560)" data-reference="" src="../../_assets/58895570fe.webp" width="640" height="310"></a><h4 id="heading36"></h4></div></div>
+        
+        <div class="article-item item_html " id="item48765" data-item-id="48765" data-item-type="ItemHtml"><div class="item-body"><a id="style"></a></div></div>
+        
+        <div class="article-item item_heading " id="item6561" data-item-id="6561" data-item-type="ItemHeading"><h2 class="item-body" id="heading37">【4-5】スタイル</h2></div>
+        
+        <div class="article-item item_markdown " id="item39326" data-item-id="39326" data-item-type="ItemMarkdown"><h4 id="heading38">目安の学習時間:20分</h4>
+</div>
+        
+        <div class="article-item item_html " id="item49450" data-item-id="49450" data-item-type="ItemHtml"><div class="item-body"><!-- Figma_4-5 -->
+<video src="../media/med-b07393e241.mp4" controls="" playsinline="" preload="metadata" style="width: 100%; border-radius: 12px; display: block;"></video></div></div>
+        
+        <div class="article-item item_heading " id="item6562" data-item-id="6562" data-item-type="ItemHeading"><h3 class="item-body" id="heading39">■ スタイルとは</h3></div>
+        
+        <div class="article-item item_rich_text " id="item6563" data-item-id="6563" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">フォントの色やサイズ、書体をそれぞれ登録</span>することのできる機能です。<br>
+この機能を利用する事で、統一したスタイルの構成がしやすくなります。</div></div>
+        
+        <div class="article-item item_heading " id="item6564" data-item-id="6564" data-item-type="ItemHeading"><h3 class="item-body" id="heading40">■ 作成手順</h3></div>
+        
+        <div class="article-item item_rich_text " id="item6565" data-item-id="6565" data-item-type="ItemRichText"><div class="item-body-hbr">✔️<span class="decoration-02"> スタイル作成手順</span></div></div>
+        
+        <div class="article-item item_rich_text " id="item6566" data-item-id="6566" data-item-type="ItemRichText"><div class="item-body-hbr">1 . 色やサイズ、書体を登録したいテキストを選択し、右側パネル「タイポグラフィー」内の右上のアイコンを選択します。</div></div>
+        
+        <div class="article-item item_image " id="item6567" data-item-id="6567" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/006/567/medium/7d579507-89cf-4df9-b4d6-f9c9d1b01c5d.png?1732196714" title=""><img class="img-responsive item-image" alt=" (6567)" data-reference="" src="../../_assets/2a14ac7ede.webp" width="640" height="259"></a><h4 id="heading41"></h4></div></div>
+        
+        <div class="article-item item_rich_text " id="item6568" data-item-id="6568" data-item-type="ItemRichText"><div class="item-body-hbr">2 . “+”のアイコンを選択し、スタイルを確認・編集します。<br>
+ &nbsp; &nbsp; 「スタイルの作成」ボタンで登録します。※ここでは ” 背景水色用のテキスト ”とします。</div></div>
+        
+        <div class="article-item item_image " id="item6569" data-item-id="6569" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/006/569/medium/81de28b0-9f29-4b4c-9785-8fd54dc2cb71.png?1732196742" title=""><img class="img-responsive item-image" alt=" (6569)" data-reference="" src="../../_assets/774f7272a3.webp" width="640" height="346"></a><h4 id="heading42"></h4></div></div>
+        
+        <div class="article-item item_rich_text " id="item6570" data-item-id="6570" data-item-type="ItemRichText"><div class="item-body-hbr">3 . 「テキストスタイル」に追加されました。<br>
+ &nbsp; &nbsp; 次に利用する際は、スタイルを適用したいテキストを選択し、この欄より選択するだけでサイズや書体が反映されます。</div></div>
+        
+        <div class="article-item item_image " id="item6571" data-item-id="6571" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/006/571/medium/3d48d3ca-865b-4565-bdbd-9ed8d8d854ac.png?1732196801" title=""><img class="img-responsive item-image" alt=" (6571)" data-reference="" src="../../_assets/ce98b88c9e.webp" width="640" height="264"></a><h4 id="heading43"></h4></div></div>
+        
+        <div class="article-item item_html " id="item48766" data-item-id="48766" data-item-type="ItemHtml"><div class="item-body"><a id="autolayout"></a></div></div>
+        
+        <div class="article-item item_heading " id="item6572" data-item-id="6572" data-item-type="ItemHeading"><h2 class="item-body" id="heading44">【4-6】オートレイアウト</h2></div>
+        
+        <div class="article-item item_markdown " id="item39327" data-item-id="39327" data-item-type="ItemMarkdown"><h4 id="heading45">目安の学習時間:80分</h4>
+</div>
+        
+        <div class="article-item item_html " id="item49451" data-item-id="49451" data-item-type="ItemHtml"><div class="item-body"><!-- Figma_4-6 -->
+<video src="../media/med-124d8a754b.mp4" controls="" playsinline="" preload="metadata" style="width: 100%; border-radius: 12px; display: block;"></video></div></div>
+        
+        <div class="article-item item_heading " id="item6573" data-item-id="6573" data-item-type="ItemHeading"><h3 class="item-body" id="heading46">■ オートレイアウトとは</h3></div>
+        
+        <div class="article-item item_html " id="item6574" data-item-id="6574" data-item-type="ItemHtml"><div class="item-body"><div>オートレイアウトとは、指定した複数のオブジェクトを、様々な設定により素早く<strong>規則的な整列ができる機能</strong>です。</div>
+<div>※初めての方が使いこなすには少々難しい所もありますが、使いこなせるようになると便利です。</div></div></div>
+        
+        <div class="article-item item_rich_text " id="item6575" data-item-id="6575" data-item-type="ItemRichText"><div class="item-body-hbr">☑️ <span class="decoration-02">サンプルデータはこちら</span></div></div>
+        
+        <div class="article-item item_file " id="item6576" data-item-id="6576" data-item-type="ItemFile"><div class="media"><div class="pull-left"><img class="item-image" src="../../_assets/1f37ad7044.webp"></div><div class="media-body"><h4 class="media-heading item-body" id="heading47"></h4><div style="margin-top:10px"><a class="btn btn-default btn-download" href="https://learn.webcoach.jp/media/works/items/6576/download"><svg class="ck-icon ck-icon--download" viewBox="0 0 1792 1792" aria-hidden="true" focusable="false"><path d="M1344 1344q0-26-19-45t-45-19-45 19-19 45 19 45 45 19 45-19 19-45zm256 0q0-26-19-45t-45-19-45 19-19 45 19 45 45 19 45-19 19-45zm128-224v320q0 40-28 68t-68 28h-1472q-40 0-68-28t-28-68v-320q0-40 28-68t68-28h465l135 136q58 56 136 56t136-56l136-136h464q40 0 68 28t28 68zm-325-569q17 41-14 70l-448 448q-18 19-45 19t-45-19l-448-448q-31-29-14-70 17-39 59-39h256v-448q0-26 19-45t45-19h256q26 0 45 19t19 45v448h256q42 0 59 39z"></path></svg> ダウンロード</a></div><div class="small text-muted">オートレイアウト.fig (388 KB)</div></div></div></div>
+        
+        <div class="article-item item_rich_text " id="item6577" data-item-id="6577" data-item-type="ItemRichText"><div class="item-body-hbr">※サンプルデータを開くには、ホーム画面の「インポート」より、入手した.figデータを選択。</div></div>
+        
+        <div class="article-item item_heading " id="item6580" data-item-id="6580" data-item-type="ItemHeading"><h3 class="item-body" id="heading48">■ 作成手順</h3></div>
+        
+        <div class="article-item item_rich_text " id="item6581" data-item-id="6581" data-item-type="ItemRichText"><div class="item-body-hbr">✔️ <span class="decoration-02">オートレイアウト作成方法</span></div></div>
+        
+        <div class="article-item item_markdown " id="item6582" data-item-id="6582" data-item-type="ItemMarkdown"><p>1 . オートレイアウトにしたい複数のオブジェクトや、グループやフレームを同時に選択。 (レイヤーの複数選択は、Shift キーを押しながら選択を行いましょう！)
+2 . <strong>右クリック</strong>で「オートレイアウトを追加」を選択。<br>
+※もしくは<strong>ショートカット</strong> <strong><code>Shift + A</code></strong></p>
+</div>
+        
+        <div class="article-item item_image " id="item6583" data-item-id="6583" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/006/583/medium/b70e2b3d-6af8-4806-8809-92b5ecb7f4b9.png?1732198121" title=""><img class="img-responsive item-image" alt=" (6583)" data-reference="" src="../../_assets/b9e34f966c.webp" width="640" height="418"></a><h4 id="heading49"></h4></div></div>
+        
+        <div class="article-item item_rich_text " id="item6584" data-item-id="6584" data-item-type="ItemRichText"><div class="item-body-hbr">3 . オートレイアウト化したレイヤーが確認できます。（アイコンが変わります）</div></div>
+        
+        <div class="article-item item_image " id="item6585" data-item-id="6585" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/006/585/medium/e2666bc5-4e39-46ca-80d0-4f2639dbb9ec.png?1759566023" title=""><img class="img-responsive item-image" alt=" (6585)" data-reference="" src="../../_assets/d51ec284ce.webp" width="640" height="360"></a><h4 id="heading50"></h4></div></div>
+        
+        <div class="article-item item_rich_text " id="item6586" data-item-id="6586" data-item-type="ItemRichText"><div class="item-body-hbr">4 . オートレイアウト化したレイヤーを選択すると、右パネルに「オートレイアウト」の欄が確認出来ます。ここでオートレイアウトをコントロールします。</div></div>
+        
+        <div class="article-item item_image " id="item6587" data-item-id="6587" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/006/587/medium/eac7bd48-f86e-459e-83fe-1824fa3b3f56.png?1759565283" title=""><img class="img-responsive item-image" alt=" (6587)" data-reference="" src="../../_assets/60ce0712c1.webp" width="485" height="640"></a><h4 id="heading51"></h4></div></div>
+        
+        <div class="article-item item_rich_text " id="item6588" data-item-id="6588" data-item-type="ItemRichText"><div class="item-body-hbr">以下、オートレイアウトのテクニックをいくつか説明します。</div></div>
+        
+        <div class="article-item item_heading " id="item6589" data-item-id="6589" data-item-type="ItemHeading"><h3 class="item-body" id="heading52">■ 縦横並べ/折り返し</h3></div>
+        
+        <div class="article-item item_rich_text " id="item6590" data-item-id="6590" data-item-type="ItemRichText"><div class="item-body-hbr">画像に記載の、右パネル「オートレイアウト」方向アイコンで選択できます。</div></div>
+        
+        <div class="article-item item_rich_text " id="item6591" data-item-id="6591" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">横並べ</span></div></div>
+        
+        <div class="article-item item_image " id="item6592" data-item-id="6592" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/006/592/medium/aa4195be-7df3-4125-8f10-7ef5b5c05e75.png?1759565300" title=""><img class="img-responsive item-image" alt=" (6592)" data-reference="" src="../../_assets/205b2b29c9.webp" width="640" height="323"></a><h4 id="heading53"></h4></div></div>
+        
+        <div class="article-item item_rich_text " id="item6593" data-item-id="6593" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">縦並べ</span></div></div>
+        
+        <div class="article-item item_image " id="item6594" data-item-id="6594" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/006/594/medium/4a59f91f-ec85-41e1-a668-40a5bb204893.png?1759565360" title=""><img class="img-responsive item-image" alt=" (6594)" data-reference="" src="../../_assets/f34875b67c.webp" width="640" height="361"></a><h4 id="heading54"></h4></div></div>
+        
+        <div class="article-item item_rich_text " id="item6595" data-item-id="6595" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">折り返し</span></div></div>
+        
+        <div class="article-item item_image " id="item6596" data-item-id="6596" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/006/596/medium/bdb4ab20-73a0-4bbc-b868-678799499e2c.png?1759565479" title=""><img class="img-responsive item-image" alt=" (6596)" data-reference="" src="../../_assets/5d4ccee071.webp" width="640" height="360"></a><h4 id="heading55"></h4></div></div>
+        
+        <div class="article-item item_heading " id="item6597" data-item-id="6597" data-item-type="ItemHeading"><h3 class="item-body" id="heading56">■ 間隔の調整</h3></div>
+        
+        <div class="article-item item_rich_text " id="item6598" data-item-id="6598" data-item-type="ItemRichText"><div class="item-body-hbr">画像に記載の、右パネル「オートレイアウト」間隔アイコン（縦横）で選択できます。</div></div>
+        
+        <div class="article-item item_image " id="item6599" data-item-id="6599" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/006/599/medium/a7600219-4368-4bcf-a6c3-b6f6ab44ac57.png?1759565501" title=""><img class="img-responsive item-image" alt=" (6599)" data-reference="" src="../../_assets/1b1728615d.webp" width="640" height="360"></a><h4 id="heading57"></h4></div></div>
+        
+        <div class="article-item item_heading " id="item6600" data-item-id="6600" data-item-type="ItemHeading"><h3 class="item-body" id="heading58">■ 揃えの調整</h3></div>
+        
+        <div class="article-item item_rich_text " id="item6601" data-item-id="6601" data-item-type="ItemRichText"><div class="item-body-hbr">画像に記載の、右パネル「オートレイアウト」揃えアイコン（9方向）で選択できます。</div></div>
+        
+        <div class="article-item item_image " id="item6602" data-item-id="6602" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/006/602/medium/6b9781aa-c185-46da-a6b1-f6ff5fbf4de2.png?1759565706" title=""><img class="img-responsive item-image" alt=" (6602)" data-reference="" src="../../_assets/08b2acd803.webp" width="640" height="360"></a><h4 id="heading59"></h4></div></div>
+        
+        <div class="article-item item_heading " id="item6603" data-item-id="6603" data-item-type="ItemHeading"><h3 class="item-body" id="heading60">■ 余白の調整</h3></div>
+        
+        <div class="article-item item_rich_text " id="item6604" data-item-id="6604" data-item-type="ItemRichText"><div class="item-body-hbr">画像に記載の、右パネル「オートレイアウト」パディング（縦横、及び４方向）で選択できます。</div></div>
+        
+        <div class="article-item item_image " id="item6605" data-item-id="6605" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/006/605/medium/ca213b0f-7b71-4922-9328-278436d16349.png?1759565720" title=""><img class="img-responsive item-image" alt=" (6605)" data-reference="" src="../../_assets/8966d3196c.webp" width="640" height="360"></a><h4 id="heading61"></h4></div></div>
+        
+        <div class="article-item item_image " id="item40189" data-item-id="40189" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/040/189/medium/013bfd15-ad4f-46c2-8bba-6ebf2d439372.png?1759565736"><img class="img-responsive item-image" alt=" (40189)" src="../../_assets/04aef2d7dc.webp" width="640" height="360"></a><h4 id="heading62"></h4></div></div>
+        
+        <div class="article-item item_heading " id="item6606" data-item-id="6606" data-item-type="ItemHeading"><h3 class="item-body" id="heading63">■ フレームの調整（固定 / コンテンツの内包 / コンテナに合わせて拡大）</h3></div>
+        
+        <div class="article-item item_rich_text " id="item6607" data-item-id="6607" data-item-type="ItemRichText"><div class="item-body-hbr">右パネル「オートレイアウト」の <span class="decoration-02">幅(W) </span>及び <span class="decoration-02">高さ(H) </span>を選択すると、</div></div>
+        
+        <div class="article-item item_markdown " id="item6608" data-item-id="6608" data-item-type="ItemMarkdown"><ul>
+  <li><strong>幅を固定</strong><br>
+各固定サイズを設定できます。</li>
+  <li><strong>コンテンツを内包</strong><br>
+「オートレイアウト状態のレイヤー」を選択した場合に発動できる。
+→ 「オートレイアウト内のオブジェクト」のサイズに応じて、「オートレイアウト状態のレイヤー」の大きさを可変することができる。</li>
+  <li><strong>コンテナに合わせて拡大</strong><br>
+「オートレイアウと状態のレイヤー」を選択した場合に発動できる。<br>
+→ 「オートレイアウト状態のオブジェクト」のサイズに応じて、100%のサイズとなる。</li>
+</ul>
+</div>
+        
+        <div class="article-item item_image " id="item6609" data-item-id="6609" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/006/609/medium/69a81809-7af7-4a6c-9821-35737c21881e.png?1732198834" title=""><img class="img-responsive item-image" alt=" (6609)" data-reference="" src="../../_assets/99a35987b3.webp" width="640" height="296"></a><h4 id="heading64"></h4></div></div>
+        
+        <div class="article-item item_heading " id="item6610" data-item-id="6610" data-item-type="ItemHeading"><h3 class="item-body" id="heading65">■ フレームの最小幅（及び高さ）・最大幅（及び高さ）設定</h3></div>
+        
+        <div class="article-item item_rich_text " id="item6611" data-item-id="6611" data-item-type="ItemRichText"><div class="item-body-hbr">オブジェクトの大きさに制限を決める事が出来ます。<br>
+上記と同じく、右パネル「オートレイアウト」の <span class="decoration-02">幅(W)</span> 及び <span class="decoration-02">高さ(H)</span> より選択できます。</div></div>
+        
+        <div class="article-item item_markdown " id="item6612" data-item-id="6612" data-item-type="ItemMarkdown"><ul>
+  <li>最小幅（および高さ）を追加：<br>
+これ以上小さくしたくないサイズがある場合、設定できます。</li>
+  <li>最大幅（および高さ）を追加：<br>
+これ以上大きくしたくないサイズがある場合、設定できます。</li>
+</ul>
+</div>
+        
+        <div class="article-item item_image " id="item6613" data-item-id="6613" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/006/613/medium/08b5344a-90b0-4c57-b7e4-abac311fc045.png?1732198979" title=""><img class="img-responsive item-image" alt=" (6613)" data-reference="" src="../../_assets/9a22202976.webp" width="640" height="296"></a><h4 id="heading66"></h4></div></div>
+        
+        <div class="article-item item_html " id="item48767" data-item-id="48767" data-item-type="ItemHtml"><div class="item-body"><a id="mask"></a></div></div>
+        
+        <div class="article-item item_heading " id="item6614" data-item-id="6614" data-item-type="ItemHeading"><h2 class="item-body" id="heading67">【4-7】マスク</h2></div>
+        
+        <div class="article-item item_markdown " id="item39328" data-item-id="39328" data-item-type="ItemMarkdown"><h4 id="heading68">目安の学習時間:20分</h4>
+</div>
+        
+        <div class="article-item item_html " id="item49452" data-item-id="49452" data-item-type="ItemHtml"><div class="item-body"><!-- Figma_4-7 -->
+<video src="../media/med-264398b7c7.mp4" controls="" playsinline="" preload="metadata" style="width: 100%; border-radius: 12px; display: block;"></video></div></div>
+        
+        <div class="article-item item_heading " id="item6615" data-item-id="6615" data-item-type="ItemHeading"><h3 class="item-body" id="heading69">■ マスクとは</h3></div>
+        
+        <div class="article-item item_rich_text " id="item6616" data-item-id="6616" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">オブジェクトの表示領域を限定させる</span>方法です。画像や図形の一部だけを表示させたい場合に良く使われます。</div></div>
+        
+        <div class="article-item item_image " id="item6617" data-item-id="6617" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/006/617/medium/a8e56f97-3551-41df-8729-9471a67b0f4e.png?1732199037" title=""><img class="img-responsive item-image" alt=" (6617)" data-reference="" src="../../_assets/734c06c9c2.webp" width="594" height="316"></a><h4 id="heading70"></h4></div></div>
+        
+        <div class="article-item item_rich_text " id="item6618" data-item-id="6618" data-item-type="ItemRichText"><div class="item-body-hbr">☑️ <span class="decoration-02">サンプルデータはこちら</span></div></div>
+        
+        <div class="article-item item_file " id="item6619" data-item-id="6619" data-item-type="ItemFile"><div class="media"><div class="pull-left"><img class="item-image" src="../../_assets/1f37ad7044.webp"></div><div class="media-body"><h4 class="media-heading item-body" id="heading71"></h4><div style="margin-top:10px"><a class="btn btn-default btn-download" href="https://learn.webcoach.jp/media/works/items/6619/download"><svg class="ck-icon ck-icon--download" viewBox="0 0 1792 1792" aria-hidden="true" focusable="false"><path d="M1344 1344q0-26-19-45t-45-19-45 19-19 45 19 45 45 19 45-19 19-45zm256 0q0-26-19-45t-45-19-45 19-19 45 19 45 45 19 45-19 19-45zm128-224v320q0 40-28 68t-68 28h-1472q-40 0-68-28t-28-68v-320q0-40 28-68t68-28h465l135 136q58 56 136 56t136-56l136-136h464q40 0 68 28t28 68zm-325-569q17 41-14 70l-448 448q-18 19-45 19t-45-19l-448-448q-31-29-14-70 17-39 59-39h256v-448q0-26 19-45t45-19h256q26 0 45 19t19 45v448h256q42 0 59 39z"></path></svg> ダウンロード</a></div><div class="small text-muted">マスク.fig (1.33 MB)</div></div></div></div>
+        
+        <div class="article-item item_rich_text " id="item6620" data-item-id="6620" data-item-type="ItemRichText"><div class="item-body-hbr">※サンプルデータを開くには、ホーム画面右上の「インポート」より、入手した.figデータを選択。</div></div>
+        
+        <div class="article-item item_heading " id="item6621" data-item-id="6621" data-item-type="ItemHeading"><h3 class="item-body" id="heading72">■ 作成手順</h3></div>
+        
+        <div class="article-item item_rich_text " id="item6623" data-item-id="6623" data-item-type="ItemRichText"><div class="item-body-hbr">１.サンプルデータをFigmaで開いてから、レイヤーの「4-7　マスク」→「parts」を選択して、 「表示するオブジェクト」と「表示するオブジェクトの表示範囲のオブジェクト」を用意します。 &nbsp;<br>
+※今回は前者が写真、後者が星形レイヤーを指しており、写真を星形に切り抜くことを目標とします。<br>
+<br>
+2 . 添付写真のように「表示するオブジェクトの表示範囲のオブジェクト（星形レイヤー）」を「表示するオブジェクト（写真レイヤー）」のレイヤーの下に配置します。（デフォルトでこのように配置されている）</div></div>
+        
+        <div class="article-item item_image " id="item6624" data-item-id="6624" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/006/624/medium/94dda955-c145-420d-88c2-7c7bc103ec09.png?1732199276" title=""><img class="img-responsive item-image" alt=" (6624)" data-reference="" src="../../_assets/4d4c9df4f6.webp" width="640" height="303"></a><h4 id="heading73"></h4></div></div>
+        
+        <div class="article-item item_markdown " id="item6625" data-item-id="6625" data-item-type="ItemMarkdown"><p>3 . 両レイヤーを選択し、右クリックして「マスクとして使用」を選択する。（レイヤーの複数選択はshiftを押しながらクリック）
+※ショートカットは<strong><code>Ctrl + Alt + M</code></strong>。Macは<strong><code>Cmd + Control + M</code></strong></p>
+</div>
+        
+        <div class="article-item item_image " id="item6626" data-item-id="6626" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/006/626/medium/70011afe-3b81-415d-98b4-7bb2b0dd0e11.png?1732199371" title=""><img class="img-responsive item-image" alt=" (6626)" data-reference="" src="../../_assets/d2f514f2b1.webp" width="640" height="344"></a><h4 id="heading74"></h4></div></div>
+        
+        <div class="article-item item_rich_text " id="item6627" data-item-id="6627" data-item-type="ItemRichText"><div class="item-body-hbr">4 . 星形レイヤーを写真レイヤーの上にドラッグ＆ドロップさせることで、写真レイヤーが、星形の表示領域のみに選択されました。（レイヤーの表示もマスク用に変化）<br>
+このマスクを応用すれば、色々な表現が出来ます。</div></div>
+        
+        <div class="article-item item_image " id="item6628" data-item-id="6628" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/006/628/medium/6520e970-f085-41d4-8807-9025938ce064.png?1732199412" title=""><img class="img-responsive item-image" alt=" (6628)" data-reference="" src="../../_assets/6a9a1babbe.webp" width="640" height="305"></a><h4 id="heading75"></h4></div></div>
+        
+        <div class="article-item item_heading " id="item6629" data-item-id="6629" data-item-type="ItemHeading"><h3 class="item-body" id="heading76">■ マスクパネル</h3></div>
+        
+        <div class="article-item item_rich_text " id="item6630" data-item-id="6630" data-item-type="ItemRichText"><div class="item-body-hbr">マスクの種類（アルファ/ルミナンス）を変更するには、マスクグループを選択した状態で、ツールバーにあるマスクアイコンをクリックします。</div></div>
+        
+        <div class="article-item item_markdown " id="item6631" data-item-id="6631" data-item-type="ItemMarkdown"><ul>
+  <li>アルファ：透明度を使用してマスクの明確度を設定できます。</li>
+  <li>ルミナンス：明るさを使用してマスクの明確度を設定できます。</li>
+</ul>
+</div>
+        
+        <div class="article-item item_html " id="item48768" data-item-id="48768" data-item-type="ItemHtml"><div class="item-body"><a id="effect"></a></div></div>
+        
+        <div class="article-item item_heading " id="item6632" data-item-id="6632" data-item-type="ItemHeading"><h2 class="item-body" id="heading77">【4-8】エフェクト</h2></div>
+        
+        <div class="article-item item_markdown " id="item39329" data-item-id="39329" data-item-type="ItemMarkdown"><h4 id="heading78">目安の学習時間:15分</h4>
+</div>
+        
+        <div class="article-item item_html " id="item49453" data-item-id="49453" data-item-type="ItemHtml"><div class="item-body"><!-- Figma_4-8 -->
+<video src="../media/med-50ba891daa.mp4" controls="" playsinline="" preload="metadata" style="width: 100%; border-radius: 12px; display: block;"></video></div></div>
+        
+        <div class="article-item item_heading " id="item6633" data-item-id="6633" data-item-type="ItemHeading"><h3 class="item-body" id="heading79">■ エフェクトとは</h3></div>
+        
+        <div class="article-item item_rich_text " id="item6634" data-item-id="6634" data-item-type="ItemRichText"><div class="item-body-hbr">オブジェクトに影を作ったり、ぼかしたり等の効果を付ける事ができます。<br>
+手軽に付けられる便利な機能ですが、このエフェクトを多用、強調するとデザインによっては素人感が出てしまう事も多々あるので、さりげなく使う程度が良いと思います。</div></div>
+        
+        <div class="article-item item_rich_text " id="item6635" data-item-id="6635" data-item-type="ItemRichText"><div class="item-body-hbr">☑️ <span class="decoration-02">サンプルデータはこちら</span></div></div>
+        
+        <div class="article-item item_file " id="item6636" data-item-id="6636" data-item-type="ItemFile"><div class="media"><div class="pull-left"><img class="item-image" src="../../_assets/1f37ad7044.webp"></div><div class="media-body"><h4 class="media-heading item-body" id="heading80"></h4><div style="margin-top:10px"><a class="btn btn-default btn-download" href="https://learn.webcoach.jp/media/works/items/6636/download"><svg class="ck-icon ck-icon--download" viewBox="0 0 1792 1792" aria-hidden="true" focusable="false"><path d="M1344 1344q0-26-19-45t-45-19-45 19-19 45 19 45 45 19 45-19 19-45zm256 0q0-26-19-45t-45-19-45 19-19 45 19 45 45 19 45-19 19-45zm128-224v320q0 40-28 68t-68 28h-1472q-40 0-68-28t-28-68v-320q0-40 28-68t68-28h465l135 136q58 56 136 56t136-56l136-136h464q40 0 68 28t28 68zm-325-569q17 41-14 70l-448 448q-18 19-45 19t-45-19l-448-448q-31-29-14-70 17-39 59-39h256v-448q0-26 19-45t45-19h256q26 0 45 19t19 45v448h256q42 0 59 39z"></path></svg> ダウンロード</a></div><div class="small text-muted">エフェクト.fig (1.81 MB)</div></div></div></div>
+        
+        <div class="article-item item_rich_text " id="item6637" data-item-id="6637" data-item-type="ItemRichText"><div class="item-body-hbr">※サンプルデータを開くには、ホーム画面の「インポート」より、入手した.figデータを選択。</div></div>
+        
+        <div class="article-item item_heading " id="item6638" data-item-id="6638" data-item-type="ItemHeading"><h3 class="item-body" id="heading81">■ エフェクトの設定方法</h3></div>
+        
+        <div class="article-item item_rich_text " id="item6639" data-item-id="6639" data-item-type="ItemRichText"><div class="item-body-hbr">右パネル下の「エフェクト」より、選択できます。（デフォルト時はドロップシャドウ）</div></div>
+        
+        <div class="article-item item_heading " id="item6640" data-item-id="6640" data-item-type="ItemHeading"><h3 class="item-body" id="heading82">■ エフェクトの種類</h3></div>
+        
+        <div class="article-item item_rich_text " id="item6641" data-item-id="6641" data-item-type="ItemRichText"><div class="item-body-hbr">それぞれ ”位置” や ”ぼかし範囲” 等で、細かい設定が出来ます。</div></div>
+        
+        <div class="article-item item_rich_text " id="item6642" data-item-id="6642" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">ドロップシャドウ</span>：オブジェクトの外側に影を付けます。</div></div>
+        
+        <div class="article-item item_image " id="item6643" data-item-id="6643" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/006/643/medium/c69fbc98-9563-4576-a993-e2b70e262e6b.png?1732199627" title=""><img class="img-responsive item-image" alt=" (6643)" data-reference="" src="../../_assets/074ac53d6c.webp" width="640" height="244"></a><h4 id="heading83"></h4></div></div>
+        
+        <div class="article-item item_rich_text " id="item6644" data-item-id="6644" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">インナーシャドウ</span>：オブジェクトの内側に影を付けます。</div></div>
+        
+        <div class="article-item item_image " id="item6645" data-item-id="6645" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/006/645/medium/18745807-0387-48ef-86fa-1a0d69aa9f25.png?1732199657" title=""><img class="img-responsive item-image" alt=" (6645)" data-reference="" src="../../_assets/3b7f2461af.webp" width="640" height="244"></a><h4 id="heading84"></h4></div></div>
+        
+        <div class="article-item item_rich_text " id="item6646" data-item-id="6646" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">レイヤーブラー</span>：オブジェクトをぼかします。</div></div>
+        
+        <div class="article-item item_image " id="item6647" data-item-id="6647" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/006/647/medium/b94f77e1-0776-4609-bb2a-22f1cd1cd0cb.png?1732199683" title=""><img class="img-responsive item-image" alt=" (6647)" data-reference="" src="../../_assets/5fe0332abd.webp" width="640" height="244"></a><h4 id="heading85"></h4></div></div>
+        
+        <div class="article-item item_rich_text " id="item6648" data-item-id="6648" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01"> 背景のぼかし</span>：画像の一部分をぼかします。<br>
+※このエフェクトは、多少の手順を要します。</div></div>
+        
+        <div class="article-item item_image " id="item6649" data-item-id="6649" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/006/649/medium/a0c4db97-7caf-4665-83c4-46785879baa7.png?1732199717" title=""><img class="img-responsive item-image" alt=" (6649)" data-reference="" src="../../_assets/bc2d37c65d.webp" width="640" height="323"></a><h4 id="heading86"></h4></div></div>
+        
+        <div class="article-item item_rich_text " id="item6650" data-item-id="6650" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">[ 手順 ]</span><br>
+1 . オブジェクトを2つ用意します。<br>
+ &nbsp; 下のレイヤーに「ぼかす対象となる画像」を配置、その上のレイヤーに「画像をぼかす範囲のオブジェクト」を設置。<br>
+ &nbsp; ※ぼかす範囲のオブジェクトは、簡単な図形でOKです。<br>
+2 . 「画像をぼかす範囲のオブジェクト」の透明度を変更。<br>
+ &nbsp; &nbsp;→（”塗り”項目内）透明度を1%～99%のいずれかに設定。</div></div>
+        
+        <div class="article-item item_image " id="item6651" data-item-id="6651" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/006/651/medium/7953a9c8-b8d2-4065-8b36-625c2d800fe1.png?1732199844" title=""><img class="img-responsive item-image" alt=" (6651)" data-reference="" src="../../_assets/cda30aa32a.webp" width="640" height="291"></a><h4 id="heading87"></h4></div></div>
+        
+        <div class="article-item item_rich_text " id="item6652" data-item-id="6652" data-item-type="ItemRichText"><div class="item-body-hbr">3 . 「画像をぼかす範囲のオブジェクト」を選択し、エフェクト「背景のぼかし」を選択。<br>
+4 . 後は、”ぼかし範囲”を設定すればOKです。</div></div>
+        
+        <div class="article-item item_html " id="item48769" data-item-id="48769" data-item-type="ItemHtml"><div class="item-body"><a id="plugin"></a></div></div>
+        
+        <div class="article-item item_heading " id="item6653" data-item-id="6653" data-item-type="ItemHeading"><h2 class="item-body" id="heading88">【4-9】プラグイン</h2></div>
+        
+        <div class="article-item item_markdown " id="item39330" data-item-id="39330" data-item-type="ItemMarkdown"><h4 id="heading89">目安の学習時間:30分</h4>
+</div>
+        
+        <div class="article-item item_heading " id="item6654" data-item-id="6654" data-item-type="ItemHeading"><h3 class="item-body" id="heading90">■ プラグインとは</h3></div>
+        
+        <div class="article-item item_rich_text " id="item6655" data-item-id="6655" data-item-type="ItemRichText"><div class="item-body-hbr">Figmaの拡張機能です。フリー画像やSNSアイコンの設置やモックアップ（デザイン見本）を手早く作成したりなど、多くの便利な機能を使う事ができます。</div></div>
+        
+        <div class="article-item item_heading " id="item6656" data-item-id="6656" data-item-type="ItemHeading"><h3 class="item-body" id="heading91">■ プラグインの起動方法</h3></div>
+        
+        <div class="article-item item_rich_text " id="item6657" data-item-id="6657" data-item-type="ItemRichText"><div class="item-body-hbr">以下3つの、いずれかの方法で起動できます。</div></div>
+        
+        <div class="article-item item_markdown " id="item6658" data-item-id="6658" data-item-type="ItemMarkdown"><p>クイックアクション（Ctrl/command + /）を開いて、「プラグインとウィジェット」タブでプラグイン名を直接入力します。</p>
+</div>
+        
+        <div class="article-item item_image " id="item6659" data-item-id="6659" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/006/659/medium/73c89497-3a63-4f29-ba2d-28a6df864800.png?1732199994" title=""><img class="img-responsive item-image" alt=" (6659)" data-reference="" src="../../_assets/8af7c3c36f.webp" width="510" height="452"></a><h4 id="heading92"></h4></div></div>
+        
+        <div class="article-item item_rich_text " id="item6660" data-item-id="6660" data-item-type="ItemRichText"><div class="item-body-hbr"> キャンバス上で、<span class="decoration-01">右クリック &nbsp;→ プラグイン → プラグイン</span><span class="decoration-01">を管理</span>を選択。<br>
+選択後は、フォーム内にプラグイン名を入力。</div></div>
+        
+        <div class="article-item item_image " id="item6661" data-item-id="6661" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/006/661/medium/b1e2a562-a4b5-407e-a17d-5d2189ec7ac4.png?1732200026" title=""><img class="img-responsive item-image" alt=" (6661)" data-reference="" src="../../_assets/c7eeb230d8.webp" width="507" height="417"></a><h4 id="heading93"></h4></div></div>
+        
+        <div class="article-item item_markdown " id="item6662" data-item-id="6662" data-item-type="ItemMarkdown"><p>ショートカット <strong><code>Ctrl + p</code></strong> でフォームを起動 → プラグイン名を入力。</p>
+</div>
+        
+        <div class="article-item item_heading " id="item6663" data-item-id="6663" data-item-type="ItemHeading"><h3 class="item-body" id="heading94">■ 便利なプラグインを紹介</h3></div>
+        
+        <div class="article-item item_rich_text " id="item6664" data-item-id="6664" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-02">Unsplash</span><br>
+<span class="decoration-01">高品質な写真を手軽に入手できます。</span><br>
+フォームにテーマを入力すればテーマに近いイメージが表示され、使う事が出来ます。</div></div>
+        
+        <div class="article-item item_image " id="item6665" data-item-id="6665" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/006/665/medium/c4bb8dcc-a7b9-4c5e-9e5a-f4d3e420d675.png?1732200109" title=""><img class="img-responsive item-image" alt=" (6665)" data-reference="" src="../../_assets/85ab81367c.webp" width="640" height="333"></a><h4 id="heading95"></h4></div></div>
+        
+        <div class="article-item item_rich_text " id="item6666" data-item-id="6666" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-02">Iconify</span><br>
+<span class="decoration-01">アイコン（SNSロゴなど）を入手できます。</span><br>
+フォームにテーマを入力すれば、テーマに近いイメージが表示され、使う事が出来ます。<br>
+※サンプルでは、Instagramを入力しています。</div></div>
+        
+        <div class="article-item item_image " id="item6668" data-item-id="6668" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/006/668/medium/1c36bd9d-9261-4ca0-add9-25f200551f9a.png?1732200171" title=""><img class="img-responsive item-image" alt=" (6668)" data-reference="" src="../../_assets/447774a45b.webp" width="640" height="318"></a><h4 id="heading96"></h4></div></div>
+        
+        <div class="article-item item_rich_text " id="item6669" data-item-id="6669" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-02">Brush</span><br>
+<span class="decoration-01">イラストを入手できます。</span><br>
+このプラグインもフォームにテーマを入力すれば、テーマに近いイメージが表示され使う事が出来ます。<br>
+※一部有料の素材もあります。</div></div>
+        
+        <div class="article-item item_image " id="item6667" data-item-id="6667" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/006/667/medium/49eeeea2-7b49-4b63-8062-85f65b8bab28.png?1732200146" title=""><img class="img-responsive item-image" alt=" (6667)" data-reference="" src="../../_assets/be47c7d006.webp" width="640" height="520"></a><h4 id="heading97"></h4></div></div>
+        
+        <div class="article-item item_rich_text " id="item6670" data-item-id="6670" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-02">Mockup Plugin</span><br>
+<span class="decoration-01">PCやスマートフォン等のモックアップ（見本）を簡単に作成できます。</span></div></div>
+        
+        <div class="article-item item_image " id="item6671" data-item-id="6671" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/006/671/medium/6ddf8343-2e9c-4c47-befa-9ac2662c607a.png?1732200242" title=""><img class="img-responsive item-image" alt=" (6671)" data-reference="" src="../../_assets/de7e8a4578.webp" width="640" height="417"></a><h4 id="heading98"></h4></div></div>
+        
+        <div class="article-item item_rich_text " id="item6672" data-item-id="6672" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-02">Japanese Font Picker</span><br>
+<span class="decoration-01">日本語フォントプレビューが出来ます。フォント選びに便利です。</span></div></div>
+        
+        <div class="article-item item_image " id="item6673" data-item-id="6673" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/006/673/medium/5ee0ea99-1624-493d-b1fe-1b384665e836.png?1732200278" title=""><img class="img-responsive item-image" alt=" (6673)" data-reference="" src="../../_assets/3426db5862.webp" width="640" height="370"></a><h4 id="heading99"></h4></div></div>
+        
+        <div class="article-item item_rich_text " id="item6674" data-item-id="6674" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-02">UIGradient</span><br>
+<span class="decoration-01">グラデーションを見本から付ける事が出来ます。</span></div></div>
+        
+        <div class="article-item item_image " id="item6675" data-item-id="6675" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/006/675/medium/8ee9de1d-255f-4f83-8a22-d22f6e5ec23f.png?1732200309" title=""><img class="img-responsive item-image" alt=" (6675)" data-reference="" src="../../_assets/b2789c70be.webp" width="640" height="336"></a><h4 id="heading100"></h4></div></div>
+        
+        <div class="article-item item_heading " id="item45970" data-item-id="45970" data-item-type="ItemHeading"><h2 class="item-body" id="heading101">【4-10】第4章 章末問題</h2></div>
+        
+        <div class="article-item item_markdown " id="item45971" data-item-id="45971" data-item-type="ItemMarkdown"><h4 id="heading102">目安学習時間:40分</h4>
+</div>
+        
+        <div class="article-item item_rich_text " id="item48773" data-item-id="48773" data-item-type="ItemRichText"><div class="item-body-hbr">この章で学んだ「<span class="decoration-01"><span class="decoration-02">オートレイアウト</span></span>」「<span class="decoration-01"><span class="decoration-02">コンポーネント</span></span>」「<span class="decoration-01"><span class="decoration-02">バリアント</span></span>」をフル活用して、実務に近いSNSのポストカードを作成します。<br>
+制作のポイントは崩れないレイアウトです。<br>
+文字が増えても、カードの大きさを変えても、見た目が綺麗に保たれるプロの組み方をマスターしましょう！</div></div>
+        
+        <div class="article-item item_heading " id="item48775" data-item-id="48775" data-item-type="ItemHeading"><h3 class="item-body" id="heading103">ステップ0：完成イメージを確認する</h3></div>
+        
+        <div class="article-item item_rich_text " id="item48776" data-item-id="48776" data-item-type="ItemRichText"><div class="item-body-hbr">まずは、どのような動きをするカードを作るのか、動画で全体像を把握しましょう。</div></div>
+        
+        <div class="article-item item_html " id="item49454" data-item-id="49454" data-item-type="ItemHtml"><div class="item-body"><!-- Figma_4-9 -->
+<video src="../media/med-701d9078d0.mp4" controls="" playsinline="" preload="metadata" style="width: 100%; border-radius: 12px; display: block;"></video></div></div>
+        
+        <div class="article-item item_rich_text " id="item48777" data-item-id="48777" data-item-type="ItemRichText"><div class="item-body-hbr">✅ 実装する機能チェックリスト<br>
+・<span class="decoration-01"><span class="decoration-02">バリアント機能</span></span>：ボタン1つで「いいね前・後」を切り替えられる<br>
+<span class="decoration-01"><span class="decoration-02"><span>・</span>オートレイアウト</span></span>：いいね数が増えてもアイコンとの間隔が崩れない<br>
+<span class="decoration-01"><span class="decoration-02"><span>・</span>レスポンシブ設定</span></span>：外枠を伸ばすと、中の画像や文字も一緒に横に広がる</div></div>
+        
+        <div class="article-item item_image " id="item45975" data-item-id="45975" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/045/975/medium/de66c121-4239-4623-a1a6-8f7e13be37e6.png?1769910802" title=""><img class="img-responsive item-image" alt=" (45975)" data-reference="" src="../../_assets/d6fc9db7e9.webp" width="640" height="455"></a><h4 id="heading104"></h4></div></div>
+        
+        <div class="article-item item_heading " id="item48778" data-item-id="48778" data-item-type="ItemHeading"><h3 class="item-body" id="heading105">ステップ1：素材とスタイルの準備</h3></div>
+        
+        <div class="article-item item_rich_text " id="item48779" data-item-id="48779" data-item-type="ItemRichText"><div class="item-body-hbr">作業を効率化するために、最初に色と素材を揃えます。</div></div>
+        
+        <div class="article-item item_html " id="item49455" data-item-id="49455" data-item-type="ItemHtml"><div class="item-body"><!-- Figma_4-10 -->
+<video src="../media/med-e535ce68ed.mp4" controls="" playsinline="" preload="metadata" style="width: 100%; border-radius: 12px; display: block;"></video></div></div>
+        
+        <div class="article-item item_markdown " id="item48780" data-item-id="48780" data-item-type="ItemMarkdown"><h4 id="heading106">⓪事前準備：使用素材のダウンロード</h4>
+</div>
+        
+        <div class="article-item item_rich_text " id="item48781" data-item-id="48781" data-item-type="ItemRichText"><div class="item-body-hbr">制作に使用する画像素材をダウンロードしましょう。</div></div>
+        
+        <div class="article-item item_link " id="item45977" data-item-id="45977" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=p31QS&amp;item_id=45977" rel="nofollow noopener noreferrer" target="_blank">第四章章末問題_使用素材</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="第四章章末問題_使用素材" data-reference="https://www.dropbox.com/scl/fi/bt98xbatl3mi0j6zc10fu/Figma.4..zip?rlkey=3rodjfa3jl9qsapf9qugouio6&amp;dl=0" src="../../_assets/1135d1b95c.webp" width="75" height="75"></div><div class="media-body"><div class="item-body"></div></div></div></div></div>
+        
+        <div class="article-item item_html " id="item48782" data-item-id="48782" data-item-type="ItemHtml"><div class="item-body"><div class="toggle">
+    <div class="open-btn">zipファイルの解凍方法</div>
+    <div class="toggle-content">
+  ダウンロードしたファイルは「解凍」しないとFigmaで読み込めません。
+      <ol>
+  <li>ダウンロードしたzipファイルを右クリック。<br>
+        <img src="../../_assets/bd616be8c4.webp" alt="キャプチャ1"></li>
+  <li>「すべて展開」 または 「この場所で解凍」 をクリック。<br>
+        <img src="../../_assets/7c2a406dad.webp" alt="キャプチャ2"></li>
+  <li>新しく現れたフォルダの中にある画像を使用してください。</li>
+</ol>
+  </div>
+</div></div></div>
+        
+        <div class="article-item item_markdown " id="item48783" data-item-id="48783" data-item-type="ItemMarkdown"><h4 id="heading107">① スタイルの登録</h4>
+</div>
+        
+        <div class="article-item item_rich_text " id="item48784" data-item-id="48784" data-item-type="ItemRichText"><div class="item-body-hbr">後で色を一括変更できるように、以下の2色をスタイルに登録しましょう。</div></div>
+        
+        <div class="article-item item_rich_text " id="item48785" data-item-id="48785" data-item-type="ItemRichText"><div class="item-body-hbr">・<span class="decoration-02"><span class="decoration-01">グレー</span></span>：「#666666」（通常時の文字やアイコン用）<br>
+・<span class="decoration-01"><span class="decoration-02">赤色</span></span>：「#ED4956」（いいね後のアクセントカラー）</div></div>
+        
+        <div class="article-item item_html " id="item48786" data-item-id="48786" data-item-type="ItemHtml"><div class="item-body">★復習はこちら：<a href="#style">【4-5】スタイル</a></div></div>
+        
+        <div class="article-item item_markdown " id="item48787" data-item-id="48787" data-item-type="ItemMarkdown"><h4 id="heading108">② アイコンの取得</h4>
+</div>
+        
+        <div class="article-item item_rich_text " id="item48788" data-item-id="48788" data-item-type="ItemRichText"><div class="item-body-hbr">プラグイン「Iconify」を使い、ハートのアイコンを用意します。</div></div>
+        
+        <div class="article-item item_image " id="item48651" data-item-id="48651" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/048/651/medium/89b61e21-5b37-4894-9d25-0f61c4bac42d.png?1775636595" title=""><img class="img-responsive item-image" alt=" (48651)" data-reference="" src="../../_assets/8475e84eb9.webp" width="486" height="640"></a><h4 id="heading109"></h4></div></div>
+        
+        <div class="article-item item_rich_text " id="item48789" data-item-id="48789" data-item-type="ItemRichText"><div class="item-body-hbr">・検索ワード ： heart</div></div>
+        
+        <div class="article-item item_html " id="item48790" data-item-id="48790" data-item-type="ItemHtml"><div class="item-body">★復習はこちら：<a href="#plugin">【4-9】プラグイン</a></div></div>
+        
+        <div class="article-item item_heading " id="item48791" data-item-id="48791" data-item-type="ItemHeading"><h3 class="item-body" id="heading110">ステップ2：いいねボタンの作成（コンポーネント化）</h3></div>
+        
+        <div class="article-item item_rich_text " id="item48792" data-item-id="48792" data-item-type="ItemRichText"><div class="item-body-hbr">一瞬で状態を切り替えられる「魔法のボタン」を作ります。</div></div>
+        
+        <div class="article-item item_html " id="item49456" data-item-id="49456" data-item-type="ItemHtml"><div class="item-body"><!-- Figma_4-11 -->
+<video src="../media/med-29da469297.mp4" controls="" playsinline="" preload="metadata" style="width: 100%; border-radius: 12px; display: block;"></video></div></div>
+        
+        <div class="article-item item_markdown " id="item48795" data-item-id="48795" data-item-type="ItemMarkdown"><h4 id="heading111">①アイコンといいね数を用意</h4>
+</div>
+        
+        <div class="article-item item_rich_text " id="item48809" data-item-id="48809" data-item-type="ItemRichText"><div class="item-body-hbr">いいね数が増えてもテキストBOXが自動で広がるように「幅の自動調整」を選択します。<br>
+<br>
+▼デザイン仕様(目安)<br>
+・テキストサイズ：サイズ 30 / Regular</div></div>
+        
+        <div class="article-item item_html " id="item48797" data-item-id="48797" data-item-type="ItemHtml"><div class="item-body">★復習はこちら：<a href="https://learn.webcoach.jp/web-design/Boqh1#text">【3-4】テキストを編集してみよう</a></div></div>
+        
+        <div class="article-item item_markdown " id="item48798" data-item-id="48798" data-item-type="ItemMarkdown"><h4 id="heading112">②オートレイアウト化</h4>
+</div>
+        
+        <div class="article-item item_rich_text " id="item48799" data-item-id="48799" data-item-type="ItemRichText"><div class="item-body-hbr">アイコンと数値（例：120）を選択し、「<span class="decoration-01"><span class="decoration-02">Shift + A</span></span>」で<span class="decoration-02"><span class="decoration-01">オートレイアウト</span></span>を適用します。<br>
+<br>
+▼デザイン仕様(目安)<br>
+・いいねアイコンと文字の間隔：20</div></div>
+        
+        <div class="article-item item_html " id="item48800" data-item-id="48800" data-item-type="ItemHtml"><div class="item-body">★復習はこちら：<a href="#autolayout">【4-6】オートレイアウト</a></div></div>
+        
+        <div class="article-item item_markdown " id="item48801" data-item-id="48801" data-item-type="ItemMarkdown"><h4 id="heading113">③コンポーネント＆バリアント化</h4>
+</div>
+        
+        <div class="article-item item_rich_text " id="item48802" data-item-id="48802" data-item-type="ItemRichText"><div class="item-body-hbr">作成したボタンを<span class="decoration-01"><span class="decoration-02">コンポーネント</span></span>化し、<span class="decoration-01"><span class="decoration-02">バリアント</span></span>で「通常」と「いいね後」の2パターンを作成します。</div></div>
+        
+        <div class="article-item item_html " id="item48803" data-item-id="48803" data-item-type="ItemHtml"><div class="item-body">★復習はこちら：<a href="#component">【4-3】コンポーネントとは</a></div></div>
+        
+        <div class="article-item item_markdown " id="item48804" data-item-id="48804" data-item-type="ItemMarkdown"><h4 id="heading114">④エフェクトの追加</h4>
+</div>
+        
+        <div class="article-item item_rich_text " id="item48805" data-item-id="48805" data-item-type="ItemRichText"><div class="item-body-hbr">赤色のボタンには「<span class="decoration-01"><span class="decoration-02">ドロップシャドウ</span></span>」を設定し、発光しているような演出を加えます。<br>
+<br>
+▼デザイン仕様(目安)<br>
+・ドロップシャドウ：X:0 / Y:0 / ぼかし:30 / 色: #ED4956</div></div>
+        
+        <div class="article-item item_html " id="item48806" data-item-id="48806" data-item-type="ItemHtml"><div class="item-body">★復習はこちら：<a href="#effect">【4-8】エフェクト</a></div></div>
+        
+        <div class="article-item item_heading " id="item48810" data-item-id="48810" data-item-type="ItemHeading"><h3 class="item-body" id="heading115">ステップ3：その他のパーツの作成</h3></div>
+        
+        <div class="article-item item_rich_text " id="item48811" data-item-id="48811" data-item-type="ItemRichText"><div class="item-body-hbr">「ヘッダー」や「メイン画像」など、残りの部品を準備します。</div></div>
+        
+        <div class="article-item item_html " id="item49457" data-item-id="49457" data-item-type="ItemHtml"><div class="item-body"><!-- Figma_4-12 -->
+<video src="../media/med-5ff071660c.mp4" controls="" playsinline="" preload="metadata" style="width: 100%; border-radius: 12px; display: block;"></video></div></div>
+        
+        <div class="article-item item_markdown " id="item48812" data-item-id="48812" data-item-type="ItemMarkdown"><h4 id="heading116">① プロフィールアイコン（マスク機能）</h4>
+</div>
+        
+        <div class="article-item item_rich_text " id="item48813" data-item-id="48813" data-item-type="ItemRichText"><div class="item-body-hbr">円の図形と人物写真を使って、丸く切り抜きます。<br>
+<br>
+▼デザイン仕様（目安）<br>
+・円のサイズ：150×150<br>
+・ユーザー名：サイズ 40 / 太さ Bold</div></div>
+        
+        <div class="article-item item_rich_text " id="item48814" data-item-id="48814" data-item-type="ItemRichText"><div class="item-body-hbr">💡ポイント<br>
+以下の図のようにレイヤーパネルで円を写真より下に配置してからマスクをかけましょう。</div></div>
+        
+        <div class="article-item item_image " id="item45990" data-item-id="45990" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/045/990/medium/1e9e403c-5f65-4c4f-80af-bddc56113ae5.png?1769911136" title=""><img class="img-responsive item-image" alt=" (45990)" data-reference="" src="../../_assets/57d8836554.webp" width="370" height="140"></a><h4 id="heading117"></h4></div></div>
+        
+        <div class="article-item item_html " id="item48815" data-item-id="48815" data-item-type="ItemHtml"><div class="item-body">★復習はこちら：<a href="#mask">【4-7】マスク</a></div></div>
+        
+        <div class="article-item item_markdown " id="item48816" data-item-id="48816" data-item-type="ItemMarkdown"><h4 id="heading118">② メイン画像とテキストの準備</h4>
+</div>
+        
+        <div class="article-item item_markdown " id="item48817" data-item-id="48817" data-item-type="ItemMarkdown"><ul>
+  <li><strong>メイン画像枠</strong>：1080×1080px の正方形を作成します。</li>
+  <li><strong>本文テキスト</strong>：テキストツールで作成します。</li>
+</ul>
+</div>
+        
+        <div class="article-item item_rich_text " id="item48819" data-item-id="48819" data-item-type="ItemRichText"><div class="item-body-hbr"><br>
+▼デザイン仕様(目安)<br>
+・画像枠：1080×1080px<br>
+・本文テキスト：サイズ 32 / 太さ Regular</div></div>
+        
+        <div class="article-item item_html " id="item48818" data-item-id="48818" data-item-type="ItemHtml"><div class="item-body">★復習はこちら：<a href="https://learn.webcoach.jp/web-design/Boqh1#text">【3-4】テキスト編集</a>/<a href="https://learn.webcoach.jp/web-design/Boqh1#picture">【3-9】画像配置</a></div></div>
+        
+        <div class="article-item item_heading " id="item48820" data-item-id="48820" data-item-type="ItemHeading"><h3 class="item-body" id="heading119">ステップ4：全体の統合</h3></div>
+        
+        <div class="article-item item_rich_text " id="item48821" data-item-id="48821" data-item-type="ItemRichText"><div class="item-body-hbr">最後にすべてのパーツを合体させ、レスポンシブ対応（伸縮自在）にします。<br>
+ここが最も重要な工程です。</div></div>
+        
+        <div class="article-item item_html " id="item51064" data-item-id="51064" data-item-type="ItemHtml"><div class="item-body"><!-- Figma_4-13 -->
+<video src="../media/med-3fdcbf3794.mp4" controls="" playsinline="" preload="metadata" style="width: 100%; border-radius: 12px; display: block;"></video></div></div>
+        
+        <div class="article-item item_markdown " id="item48822" data-item-id="48822" data-item-type="ItemMarkdown"><h4 id="heading120">①縦のオートレイアウト</h4>
+</div>
+        
+        <div class="article-item item_rich_text " id="item48823" data-item-id="48823" data-item-type="ItemRichText"><div class="item-body-hbr">ヘッダー、画像、ボタン、本文をすべて選択し、「<span class="decoration-01"><span class="decoration-02">Shift + A</span></span> 」で合体させます。</div></div>
+        
+        <div class="article-item item_html " id="item48824" data-item-id="48824" data-item-type="ItemHtml"><div class="item-body">★復習はこちら：<a href="#autolayout">【4-6】オートレイアウト</a></div></div>
+        
+        <div class="article-item item_markdown " id="item48825" data-item-id="48825" data-item-type="ItemMarkdown"><h4 id="heading121">②リサイズ設定</h4>
+</div>
+        
+        <div class="article-item item_rich_text " id="item48826" data-item-id="48826" data-item-type="ItemRichText"><div class="item-body-hbr">・Post_Card（外枠）：「<span class="decoration-01"><span class="decoration-02">幅を固定（1080px）</span></span>」に設定<br>
+・メイン画像：「<span class="decoration-01"><span class="decoration-02">幅をコンテナに合わせて拡大（Fill）</span></span>」に設定<br>
+・本文テキスト：「<span class="decoration-01"><span class="decoration-02">幅をコンテナに合わせて拡大（Fill）</span></span>」に設定</div></div>
+        
+        <div class="article-item item_markdown " id="item48827" data-item-id="48827" data-item-type="ItemMarkdown"><h4 id="heading122">③仕上げ</h4>
+</div>
+        
+        <div class="article-item item_rich_text " id="item48828" data-item-id="48828" data-item-type="ItemRichText"><div class="item-body-hbr">カード全体の角を丸くし、背景に薄い影をつけて立体感を出しましょう。<br>
+<br>
+▼デザイン仕様(目安)<br>
+・全体の余白（パディング）：50px <br>
+・全体の余白(間隔)：30px<br>
+・カードの角丸：40px<br>
+・外枠のドロップシャドウ：X:0 / Y:0 / ぼかし:10 / 不透明度:25%</div></div>
+        
+        <div class="article-item item_markdown " id="item48830" data-item-id="48830" data-item-type="ItemMarkdown"><h4 id="heading123">④最終チェックポイント</h4>
+
+<p>カード（外枠）の端をマウスで左右にぐーっと広げたとき、中の画像やテキストも一緒に横に伸びれば完璧です！</p>
+</div>
+        
+        <div class="article-item item_html " id="item48829" data-item-id="48829" data-item-type="ItemHtml"><div class="item-body"><div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_rich_text " id="item48831" data-item-id="48831" data-item-type="ItemRichText"><div class="item-body-hbr">お疲れ様でした！<br>
+これでSNSポストカードの完成です。</div></div>
+        
+        <div class="article-item item_html " id="item25542" data-item-id="25542" data-item-type="ItemHtml"><div class="item-body"><div class="pagenation-buttons" style="justify-content: space-between;">
+  <a href="https://learn.webcoach.jp/web-design/Boqh1" class="pagenation-buttons_prev"><img src="../../_assets/47498cfebf.svg" class="pagenation-buttons_icon">前の章に戻る</a>
+  <a href="https://learn.webcoach.jp/web-design/YQOOK" class="pagenation-buttons_next">次の章に進む<img src="../../_assets/47498cfebf.svg" class="pagenation-buttons_icon"></a>
+</div>
+</div></div>
+        
+        
+        
+        <div class="back-to-roadmap mb-4 text-center"></div>
+      </div>
+    </div>
+    
+    <div class="lightbox-modal" id="lightboxModal">
+      <img src="" alt="">
+    </div>
+    
+    <div id="modal" class="fixed-menu-modal">
+      <div class="fixed-menu-modal-content">
+        <div class="index mb-3" style="background-color: #FDF5E8;">
+          <div>
+            <div class="fw-light">INDEX</div>
+            <div class="h3">目次</div>
+          </div>
+          <div class="toc"><ul><li><a href="#heading0" class="tocLink">4章 便利な機能を覚えよう</a><ul><li><a href="#heading1" class="tocLink">この教材の学習時間:280分</a></li></ul></li><li><a href="#heading2" class="tocLink">【4-1】ショートカット</a><ul><li><a href="#heading3" class="tocLink">目安の学習時間:20分</a></li></ul><ul><li><a href="#heading4" class="tocLink">■ Figmaでよく使うショートカット</a></li><li><a href="#heading5" class="tocLink">■ Figma上でもショートカットの確認ができる</a><ul><li><a href="#heading6" class="tocLink"></a></li><li><a href="#heading7" class="tocLink"></a></li></ul></li></ul></li><li><a href="#heading8" class="tocLink">【4-2】ガイド（定規・グリッド）</a><ul><li><a href="#heading9" class="tocLink">目安の学習時間:20分</a></li><li><a href="#heading10" class="tocLink"></a></li></ul><ul><li><a href="#heading11" class="tocLink">■ 定規の使い方</a><ul><li><a href="#heading12" class="tocLink"></a></li></ul></li><li><a href="#heading13" class="tocLink">■ グリッドの使い方</a><ul><li><a href="#heading14" class="tocLink"></a></li></ul></li></ul></li><li><a href="#heading15" class="tocLink">【4-3】コンポーネントとは</a><ul><li><a href="#heading16" class="tocLink">目安の学習時間:20分</a></li></ul><ul><li><a href="#heading17" class="tocLink">コンポーネントとは</a><ul><li><a href="#heading18" class="tocLink"></a></li></ul></li><li><a href="#heading19" class="tocLink">■ 作成手順</a><ul><li><a href="#heading20" class="tocLink"></a></li><li><a href="#heading21" class="tocLink"></a></li><li><a href="#heading22" class="tocLink"></a></li><li><a href="#heading23" class="tocLink"></a></li><li><a href="#heading24" class="tocLink"></a></li></ul></li><li><a href="#heading25" class="tocLink">■ コンポーネントのもう１つのメリット - アセットパネル格納</a><ul><li><a href="#heading26" class="tocLink"></a></li></ul></li></ul></li><li><a href="#heading27" class="tocLink">【4-4】バリアント</a><ul><li><a href="#heading28" class="tocLink">目安の学習時間:30分</a></li></ul><ul><li><a href="#heading29" class="tocLink">■ バリアントとは</a><ul><li><a href="#heading30" class="tocLink"></a></li></ul></li><li><a href="#heading31" class="tocLink">■ 作成手順</a><ul><li><a href="#heading32" class="tocLink"></a></li><li><a href="#heading33" class="tocLink"></a></li><li><a href="#heading34" class="tocLink"></a></li></ul></li><li><a href="#heading35" class="tocLink">■ バリアント使用方法</a><ul><li><a href="#heading36" class="tocLink"></a></li></ul></li></ul></li><li><a href="#heading37" class="tocLink">【4-5】スタイル</a><ul><li><a href="#heading38" class="tocLink">目安の学習時間:20分</a></li></ul><ul><li><a href="#heading39" class="tocLink">■ スタイルとは</a></li><li><a href="#heading40" class="tocLink">■ 作成手順</a><ul><li><a href="#heading41" class="tocLink"></a></li><li><a href="#heading42" class="tocLink"></a></li><li><a href="#heading43" class="tocLink"></a></li></ul></li></ul></li><li><a href="#heading44" class="tocLink">【4-6】オートレイアウト</a><ul><li><a href="#heading45" class="tocLink">目安の学習時間:80分</a></li></ul><ul><li><a href="#heading46" class="tocLink">■ オートレイアウトとは</a><ul><li><a href="#heading47" class="tocLink"></a></li></ul></li><li><a href="#heading48" class="tocLink">■ 作成手順</a><ul><li><a href="#heading49" class="tocLink"></a></li><li><a href="#heading50" class="tocLink"></a></li><li><a href="#heading51" class="tocLink"></a></li></ul></li><li><a href="#heading52" class="tocLink">■ 縦横並べ/折り返し</a><ul><li><a href="#heading53" class="tocLink"></a></li><li><a href="#heading54" class="tocLink"></a></li><li><a href="#heading55" class="tocLink"></a></li></ul></li><li><a href="#heading56" class="tocLink">■ 間隔の調整</a><ul><li><a href="#heading57" class="tocLink"></a></li></ul></li><li><a href="#heading58" class="tocLink">■ 揃えの調整</a><ul><li><a href="#heading59" class="tocLink"></a></li></ul></li><li><a href="#heading60" class="tocLink">■ 余白の調整</a><ul><li><a href="#heading61" class="tocLink"></a></li><li><a href="#heading62" class="tocLink"></a></li></ul></li><li><a href="#heading63" class="tocLink">■ フレームの調整（固定 / コンテンツの内包 / コンテナに合わせて拡大）</a><ul><li><a href="#heading64" class="tocLink"></a></li></ul></li><li><a href="#heading65" class="tocLink">■ フレームの最小幅（及び高さ）・最大幅（及び高さ）設定</a><ul><li><a href="#heading66" class="tocLink"></a></li></ul></li></ul></li><li><a href="#heading67" class="tocLink">【4-7】マスク</a><ul><li><a href="#heading68" class="tocLink">目安の学習時間:20分</a></li></ul><ul><li><a href="#heading69" class="tocLink">■ マスクとは</a><ul><li><a href="#heading70" class="tocLink"></a></li><li><a href="#heading71" class="tocLink"></a></li></ul></li><li><a href="#heading72" class="tocLink">■ 作成手順</a><ul><li><a href="#heading73" class="tocLink"></a></li><li><a href="#heading74" class="tocLink"></a></li><li><a href="#heading75" class="tocLink"></a></li></ul></li><li><a href="#heading76" class="tocLink">■ マスクパネル</a></li></ul></li><li><a href="#heading77" class="tocLink">【4-8】エフェクト</a><ul><li><a href="#heading78" class="tocLink">目安の学習時間:15分</a></li></ul><ul><li><a href="#heading79" class="tocLink">■ エフェクトとは</a><ul><li><a href="#heading80" class="tocLink"></a></li></ul></li><li><a href="#heading81" class="tocLink">■ エフェクトの設定方法</a></li><li><a href="#heading82" class="tocLink">■ エフェクトの種類</a><ul><li><a href="#heading83" class="tocLink"></a></li><li><a href="#heading84" class="tocLink"></a></li><li><a href="#heading85" class="tocLink"></a></li><li><a href="#heading86" class="tocLink"></a></li><li><a href="#heading87" class="tocLink"></a></li></ul></li></ul></li><li><a href="#heading88" class="tocLink">【4-9】プラグイン</a><ul><li><a href="#heading89" class="tocLink">目安の学習時間:30分</a></li></ul><ul><li><a href="#heading90" class="tocLink">■ プラグインとは</a></li><li><a href="#heading91" class="tocLink">■ プラグインの起動方法</a><ul><li><a href="#heading92" class="tocLink"></a></li><li><a href="#heading93" class="tocLink"></a></li></ul></li><li><a href="#heading94" class="tocLink">■ 便利なプラグインを紹介</a><ul><li><a href="#heading95" class="tocLink"></a></li><li><a href="#heading96" class="tocLink"></a></li><li><a href="#heading97" class="tocLink"></a></li><li><a href="#heading98" class="tocLink"></a></li><li><a href="#heading99" class="tocLink"></a></li><li><a href="#heading100" class="tocLink"></a></li></ul></li></ul></li><li><a href="#heading101" class="tocLink">【4-10】第4章 章末問題</a><ul><li><a href="#heading102" class="tocLink">目安学習時間:40分</a></li></ul><ul><li><a href="#heading103" class="tocLink">ステップ0：完成イメージを確認する</a><ul><li><a href="#heading104" class="tocLink"></a></li></ul></li><li><a href="#heading105" class="tocLink">ステップ1：素材とスタイルの準備</a><ul><li><a href="#heading106" class="tocLink">⓪事前準備：使用素材のダウンロード</a></li><li><a href="#heading107" class="tocLink">① スタイルの登録</a></li><li><a href="#heading108" class="tocLink">② アイコンの取得</a></li><li><a href="#heading109" class="tocLink"></a></li></ul></li><li><a href="#heading110" class="tocLink">ステップ2：いいねボタンの作成（コンポーネント化）</a><ul><li><a href="#heading111" class="tocLink">①アイコンといいね数を用意</a></li><li><a href="#heading112" class="tocLink">②オートレイアウト化</a></li><li><a href="#heading113" class="tocLink">③コンポーネント＆バリアント化</a></li><li><a href="#heading114" class="tocLink">④エフェクトの追加</a></li></ul></li><li><a href="#heading115" class="tocLink">ステップ3：その他のパーツの作成</a><ul><li><a href="#heading116" class="tocLink">① プロフィールアイコン（マスク機能）</a></li><li><a href="#heading117" class="tocLink"></a></li><li><a href="#heading118" class="tocLink">② メイン画像とテキストの準備</a></li></ul></li><li><a href="#heading119" class="tocLink">ステップ4：全体の統合</a><ul><li><a href="#heading120" class="tocLink">①縦のオートレイアウト</a></li><li><a href="#heading121" class="tocLink">②リサイズ設定</a></li><li><a href="#heading122" class="tocLink">③仕上げ</a></li><li><a href="#heading123" class="tocLink">④最終チェックポイント</a></li></ul></li></ul></li></ul></div>
+        </div>
+        
+        <!-- ボタン類 -->
+        <div id="fixed-menu_buttons" class="fixed-menu_buttons">
+  <a href="https://learn.webcoach.jp/web-design/Boqh1" class="pagenation-buttons_prev"><img src="../../_assets/47498cfebf.svg" class="pagenation-buttons_icon">前の章に戻る</a>
+  <a href="https://learn.webcoach.jp/web-design/YQOOK" class="pagenation-buttons_next">次の章に進む<img src="../../_assets/47498cfebf.svg" class="pagenation-buttons_icon"></a>
+</div>
+        
+        <div class="back-to-roadmap text-center"></div>
+      </div>
+    </div>
+    
+    <button id="toggleBtn" class="floating-btn">
+      <img id="iconOpen" src="../../_assets/5feefcfc55.svg" alt="メニューを開く">
+      <img id="iconClose" src="../../_assets/ae4a1129c9.svg" alt="メニューを閉じる" style="display:none;">
+    </button>
+  </div>
+</div>
+</div>
+<!-- <script src="https://cdn.clipkit.co/clipkit/javascripts/item-shopify-1.0.js?v=v15.9.0-20260915" async></script> -->
+            </main></div>
+        
+
+    
+
+    <div class="p-5" style="background-color: #B73E3D; color: white; height: 300px;">
+        <div class="">
+            <div class="h4 ps-3" style="border-left: 5px solid white;">WEBCOACH | キャリアチェンジまでの全てを学ぶマンツーマンWEBスクール</div>
+            <ul class="nav flex-column m-0 p-3 fw-light">
+                <li class="nav-item mb-2"><a href="https://www.webcoach.jp/" target="_blank">WEBCOACH | 公式HP</a></li>
+                <li class="nav-item mb-2"><a href="https://www.instagram.com/webcoach_officials/" target="_blank">WEBCOACH | 公式Instagram</a></li>
+                <li class="nav-item mb-2"><a href="https://vectorinc.co.jp/groupservice/webcoach-career/" target="_blank">WEBCOACH 公式メディア | WEBCOACH career</a></li>
+            </ul>
+        </div>
+        <div class="text-center">
+            <small>© 2020 by WEBCOACH</small>
+        </div>
+    </div>
+
+    
+
+    <!-- bodyタグ内の下部に挿入されます -->
+
+
+    <!-- BootstrapのCDNでのjs読み込み -->
+    
+
+    <!-- シンタックスハイライトの生成 -->
+    
+    
+
+    <!-- 目次の生成 -->
+    
+
+    <!-- ブックマークの生成 -->
+    
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="ck-icon-arrow-down" viewBox="0 0 1792 1792"><path d="M1675 832q0 53-37 90l-651 652q-39 37-91 37-53 0-90-37l-651-652q-38-36-38-90 0-53 38-91l74-75q39-37 91-37 53 0 90 37l294 294v-704q0-52 38-90t90-38h128q52 0 90 38t38 90v704l294-294q37-37 90-37 52 0 91 37l75 75q37 39 37 91z"></path></symbol><symbol id="ck-icon-arrow-up" viewBox="0 0 1792 1792"><path d="M1675 971q0 51-37 90l-75 75q-38 38-91 38-54 0-90-38l-294-293v704q0 52-37.5 84.5t-90.5 32.5h-128q-53 0-90.5-32.5t-37.5-84.5v-704l-294 293q-36 38-90 38t-90-38l-75-75q-38-38-38-90 0-53 38-91l651-651q35-37 90-37 54 0 91 37l651 651q37 39 37 91z"></path></symbol><symbol id="ck-icon-calendar" viewBox="0 0 1792 1792"><path d="M192 1664h288v-288h-288v288zm352 0h320v-288h-320v288zm-352-352h288v-320h-288v320zm352 0h320v-320h-320v320zm-352-384h288v-288h-288v288zm736 736h320v-288h-320v288zm-384-736h320v-288h-320v288zm768 736h288v-288h-288v288zm-384-352h320v-320h-320v320zm-352-864v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm736 864h288v-320h-288v320zm-384-384h320v-288h-320v288zm384 0h288v-288h-288v288zm32-480v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm384-64v1280q0 52-38 90t-90 38h-1408q-52 0-90-38t-38-90v-1280q0-52 38-90t90-38h128v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h384v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h128q52 0 90 38t38 90z"></path></symbol><symbol id="ck-icon-chevron-left" viewBox="0 0 1792 1792"><path d="M1427 301l-531 531 531 531q19 19 19 45t-19 45l-166 166q-19 19-45 19t-45-19l-742-742q-19-19-19-45t19-45l742-742q19-19 45-19t45 19l166 166q19 19 19 45t-19 45z"></path></symbol><symbol id="ck-icon-chevron-right" viewBox="0 0 1792 1792"><path d="M1363 877l-742 742q-19 19-45 19t-45-19l-166-166q-19-19-19-45t19-45l531-531-531-531q-19-19-19-45t19-45l166-166q19-19 45-19t45 19l742 742q19 19 19 45t-19 45z"></path></symbol><symbol id="ck-icon-clock-o" viewBox="0 0 1792 1792"><path d="M1024 544v448q0 14-9 23t-23 9h-320q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h224v-352q0-14 9-23t23-9h64q14 0 23 9t9 23zm416 352q0-148-73-273t-198-198-273-73-273 73-198 198-73 273 73 273 198 198 273 73 273-73 198-198 73-273zm224 0q0 209-103 385.5t-279.5 279.5-385.5 103-385.5-103-279.5-279.5-103-385.5 103-385.5 279.5-279.5 385.5-103 385.5 103 279.5 279.5 103 385.5z"></path></symbol><symbol id="ck-icon-trash" viewBox="0 0 1792 1792"><path d="M704 1376v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm-544-992h448l-48-117q-7-9-17-11h-317q-10 2-17 11zm928 32v64q0 14-9 23t-23 9h-96v948q0 83-47 143.5t-113 60.5h-832q-66 0-113-58.5t-47-141.5v-952h-96q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h309l70-167q15-37 54-63t79-26h320q40 0 79 26t54 63l70 167h309q14 0 23 9t9 23z"></path></symbol><symbol id="ck-icon-undo" viewBox="0 0 1792 1792"><path d="M1664 896q0 156-61 298t-164 245-245 164-298 61q-172 0-327-72.5t-264-204.5q-7-10-6.5-22.5t8.5-20.5l137-138q10-9 25-9 16 2 23 12 73 95 179 147t225 52q104 0 198.5-40.5t163.5-109.5 109.5-163.5 40.5-198.5-40.5-198.5-109.5-163.5-163.5-109.5-198.5-40.5q-98 0-188 35.5t-160 101.5l137 138q31 30 14 69-17 40-59 40h-448q-26 0-45-19t-19-45v-448q0-42 40-59 39-17 69 14l130 129q107-101 244.5-156.5t284.5-55.5q156 0 298 61t245 164 164 245 61 298z"></path></symbol></svg>
+
+<!--Clipkit(R) v15.9.0-20260915 Copyright (C) 2026 VECTOR Inc.-->
+
+
+
+
+
+<div class="dynmsg alert alert-info" style="display:none;"><button class="close"><span class="fa fa-times"></span></button><div class="message"></div></div><div class="dynmsg alert alert-danger" style="display:none;"><button class="close"><span class="fa fa-times"></span></button><div class="message"></div></div></body></html>

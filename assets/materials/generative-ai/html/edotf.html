@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<!-- clipkit-source-url: https://learn.webcoach.jp/generative-ai/AI_design/%E6%95%99%E6%9D%903-EX%E2%91%A2%20%E7%89%B9%E5%AE%9AAI%E3%83%84%E3%83%BC%E3%83%AB%E6%B7%B1%E6%8E%98%E3%82%8A%E8%AC%9B%E5%BA%A7_image-FX/EdOTf -->
+<!-- clipkit-fetched-at: 2026-09-17T11:14:00.275Z -->
+<html lang="ja"><head>
+    <!-- headタグ内の上部に挿入されます -->
+
+    <meta charset="UTF-8">
+    <title>3章：実践的デザインアセットへの統合と総合演習 - WEBCOACH</title>
+
+    <!-- resetcssのCDNでのCSS読み込み -->
+    <link rel="stylesheet" href="../../_assets/17f8e278dc.css">
+
+    <!-- fontawesomeのCDNでのCSS読み込み -->
+    <link rel="stylesheet" href="../../_assets/799aeb25cc.css">
+
+    <!-- BootstrapのCDNでのCSS読み込み -->
+    <link href="../../_assets/7633b7c0c9.css" rel="stylesheet">
+
+    <!-- highlight.jsの読み込み -->
+    <link rel="stylesheet" href="../../_assets/e31ce2dd8c.css">
+
+    <!-- カスタムCSS -->
+    <link rel="stylesheet" href="../../_assets/c533dd7750.css">
+
+    <!-- clipkitデフォルトのCSS -->
+    <!--<link rel="stylesheet" media="screen" href="https://cdn.clipkit.co/clipkit/stylesheets/application-1.0.css?v=v15.9.0-20260915">-->
+
+    <!-- jQuery -->
+    
+
+    <!-- カスタムJS -->
+    
+    
+
+    <!-- clipkitデフォルトのJS -->
+    
+
+    <!-- フォント -->
+    <link rel="preconnect" href="https://fonts.googleapis.com/">
+    <link rel="preconnect" href="https://fonts.gstatic.com/">
+    <link href="../../_assets/8b5713f1fc.css" rel="stylesheet">
+
+    <link href="../../_assets/b83ae8ba65.webp" rel="shortcut icon" type="image/vnd.microsoft.icon">
+    <link rel="apple-touch-icon" href="../../_assets/ea0aba163d.webp">
+    <link rel="alternate" type="application/rss+xml" href="https://learn.webcoach.jp/media.rss" title="WEBCOACH">
+    
+<link rel="canonical" href="https://learn.webcoach.jp/generative-ai/AI_design/%E6%95%99%E6%9D%903-EX%E2%91%A2%20%E7%89%B9%E5%AE%9AAI%E3%83%84%E3%83%BC%E3%83%AB%E6%B7%B1%E6%8E%98%E3%82%8A%E8%AC%9B%E5%BA%A7_image-FX/EdOTf">
+
+<meta name="description" content="">
+<meta name="keywords" content="">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:domain" content="learn.webcoach.jp">
+<meta name="twitter:title" content="3章：実践的デザインアセットへの統合と総合演習 - WEBCOACH">
+<meta name="twitter:image" content="https://cdn.clipkit.co/tenants/589/item_images/images/000/035/024/medium/7eba9f61-c76f-4c62-b6ff-3f9fc79cab7e.png?1753139604">
+<meta name="twitter:description" content="">
+<meta property="og:site_name" content="WEBCOACH">
+<meta property="og:title" content="3章：実践的デザインアセットへの統合と総合演習">
+<meta property="og:description" content="">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://learn.webcoach.jp/generative-ai/AI_design/%E6%95%99%E6%9D%903-EX%E2%91%A2%20%E7%89%B9%E5%AE%9AAI%E3%83%84%E3%83%BC%E3%83%AB%E6%B7%B1%E6%8E%98%E3%82%8A%E8%AC%9B%E5%BA%A7_image-FX/EdOTf">
+<meta property="og:image" content="https://cdn.clipkit.co/tenants/589/item_images/images/000/035/024/large/7eba9f61-c76f-4c62-b6ff-3f9fc79cab7e.png?1753139604">
+
+
+    <!-- headタグ内の下部に挿入されます -->
+
+
+<meta name="csrf-param" content="authenticity_token">
+<meta name="csrf-token" content="7hCqPxrvqe3WBo39txoHq6pxo52KmvzzoExyqI5em2wZkl7cChAAHsI5gX6G-OkjCasBhanpLK7_nT3AGvzDIQ"><meta content="" name="routing-root-path"><meta content="media" name="site-name"><meta content="ja" name="i18n-default-locale"><meta content="ja" name="i18n-locale"><style data-clipkit-snapshot="force-visible">[data-aos],.reveal,.wow,.fade-in,.animate__animated,.js-reveal{opacity:1!important;transform:none!important;visibility:visible!important;animation:none!important;transition:none!important}</style></head>
+
+<body class="device-desktop" style="visibility: visible;">
+    <!-- bodyタグ内の上部に挿入されます -->
+
+
+    <!-- サイドバーとコンテンツのコンテナ -->
+    <div class="d-flex flex-row w-100 mb-5" style="min-height: calc(100vh - 400px);">
+
+        <!-- サイドバー -->
+        <!--<nav id="side-bar" class="d-flex flex-column fixed-top" style="width: 250px;">-->
+        <!--    <h1 class="d-block w-100 text-center">-->
+        <!--        <a class="d-block" href="/">-->
+        <!--            <img class="mw-100 p-3" src="https://cdn.clipkit.co/tenants/589/sites/logos/000/000/001/logo_sm/a8defd4b-1cc7-433b-a61c-08e7db0e3e4f.png?1714459367" alt="WEBCOACH">-->
+        <!--        </a>-->
+        <!--    </h1>-->
+        <!--    <ul class="nav flex-column m-0 p-3 fw-bold">-->
+        <!--        <li id="sidebar-top" class="nav-item mb-2" style="display: none;"><a href="/"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;" src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/233/original/home.png?1715353458">-->
+        <!--                <div>ホーム</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-knowledges" class="nav-item mb-2" style="display: none;"><a href="/knowledges"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;" src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/232/original/book.png?1715353458">-->
+        <!--                <div>学習の心得</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-web-designs" class="nav-item mb-2" style="display: none;"><a href="/web-designs"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/231/original/design.png?1715353457">-->
+        <!--                <div>WEBデザイン</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-web-marketing" class="nav-item mb-2" style="display: none;"><a href="/web-marketings"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/230/original/marketing.png?1715353457">-->
+        <!--                <div>WEBマーケティング</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-codings" class="nav-item mb-2" style="display: none;"><a href="/codings"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/229/original/website.png?1715353457">-->
+        <!--                <div>WEBサイト構築</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-business-skills" class="nav-item mb-2" style="display: none;"><a href="/business-skills"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/228/original/business.png?1715353456">-->
+        <!--                <div>ビジネススキル</div>-->
+        <!--            </a></li>-->
+        <!--    </ul>-->
+        <!--</nav>-->
+
+        <!-- コンテンツ -->
+        <!--<main class="ms-auto" style="width: calc(100vw - 250px);">-->
+        <main class="ms-auto" style="width: calc(100vw);">
+            <div id="sb-site">
+                
+
+
+<div class="container">
+  <div class="row">
+    <div class="article">
+      <div class="mb-3 text-light" style="
+        height: 180px;
+        background-image: url(&quot;../../_assets/e1d58e2b8a.webp&quot;);
+        background-repeat: no-repeat;
+        background-size: cover;
+        display: flex;
+        align-items: flex-end;
+      ">
+        <div style="
+          margin: 0 0 30px 30px;
+        ">
+          <div>教材3-EX③ 特定AIツール深掘り講座_image-FX</div>
+
+          <div class="fw-bold h2">3章：実践的デザインアセットへの統合と総合演習</div>
+        </div>
+      </div>
+      <div class="article-content">
+        <!-- 目次 -->
+        <div class="index mb-3" style="background-color: #FDF5E8;">
+          <div>
+            <div class="fw-light">INDEX</div>
+            <div class="h3">目次</div>
+          </div>
+          <div class="toc"><ul><li><a href="#heading0" class="tocLink">3章：実践的デザインアセットへの統合と総合演習</a><ul><li><a href="#heading1" class="tocLink">この章の目安学習時間: 1時間30分</a></li><li><a href="#heading2" class="tocLink">この章で到達できるゴール</a></li></ul></li><li><a href="#heading3" class="tocLink">【3-1】ケーススタディ：Web広告バナー制作</a><ul><li><a href="#heading4" class="tocLink">目安学習時間：30分</a></li></ul><ul><li><a href="#heading5" class="tocLink">制作フローの全体像</a><ul><li><a href="#heading6" class="tocLink"></a></li></ul></li><li><a href="#heading7" class="tocLink">Figmaでのレイアウト実践</a></li></ul></li><li><a href="#heading8" class="tocLink">【3-2】著作権と商用利用について</a><ul><li><a href="#heading9" class="tocLink">目安学習時間: 10分</a></li></ul><ul><li><a href="#heading10" class="tocLink">Googleのポリシーを理解する</a></li></ul></li><li><a href="#heading11" class="tocLink">【3-3】総合演習：デザインアセット一式の制作</a><ul><li><a href="#heading12" class="tocLink">目安学習時間: 50分</a></li></ul><ul><li><a href="#heading13" class="tocLink">問題</a></li><li><a href="#heading14" class="tocLink">解答手順</a></li></ul></li></ul></div>
+        </div>
+        
+        <div class="back-to-roadmap mb-4 text-center"></div>
+
+        <!-- コンテンツ -->
+        
+        
+        <div class="article-item item_html " id="item35054" data-item-id="35054" data-item-type="ItemHtml"><div class="item-body"><div class="pagenation-buttons" style="justify-content: flex-start;">
+  <a href="https://learn.webcoach.jp/generative-ai/AI_design/%E6%95%99%E6%9D%903-EX%E2%91%A2%20%E7%89%B9%E5%AE%9AAI%E3%83%84%E3%83%BC%E3%83%AB%E6%B7%B1%E6%8E%98%E3%82%8A%E8%AC%9B%E5%BA%A7_image-FX/qBh3D" class="pagenation-buttons_prev"><img src="../../_assets/47498cfebf.svg" class="pagenation-buttons_icon">前の章に戻る</a>
+</div></div></div>
+        
+        <div class="article-item item_heading " id="item35014" data-item-id="35014" data-item-type="ItemHeading"><h2 class="item-body" id="heading0">3章：実践的デザインアセットへの統合と総合演習</h2></div>
+        
+        <div class="article-item item_markdown " id="item35015" data-item-id="35015" data-item-type="ItemMarkdown"><h4 id="heading1">この章の目安学習時間: 1時間30分</h4>
+</div>
+        
+        <div class="article-item item_markdown " id="item35016" data-item-id="35016" data-item-type="ItemMarkdown"><h4 id="heading2">この章で到達できるゴール</h4>
+</div>
+        
+        <div class="article-item item_html " id="item35017" data-item-id="35017" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li>ImageFXで生成し、Photoshopで加工した画像を、Figma上でWeb広告バナーとして完成させられる</li>
+  <li>複数のツールを連携させた、実践的なデザイン制作フローを完遂できる</li>
+  <li>生成AI画像の著作権と商用利用に関する基本的な考え方を理解し、安全に活用できる</li>
+</ul>
+</div></div>
+        
+        <div class="article-item item_heading " id="item35018" data-item-id="35018" data-item-type="ItemHeading"><h2 class="item-body" id="heading3">【3-1】ケーススタディ：Web広告バナー制作</h2></div>
+        
+        <div class="article-item item_markdown " id="item35019" data-item-id="35019" data-item-type="ItemMarkdown"><h4 id="heading4">目安学習時間：30分</h4>
+</div>
+        
+        <div class="article-item item_rich_text " id="item35020" data-item-id="35020" data-item-type="ItemRichText"><div class="item-body-hbr">これまでの章で、ImageFXでの画像生成、Photoshopでの加工スキルを学びました。<br>
+この章では、それらの素材をFigmaに統合し、一つの完成されたデザインアセットとして仕上げる方法を学びます。</div></div>
+        
+        <div class="article-item item_heading " id="item35021" data-item-id="35021" data-item-type="ItemHeading"><h3 class="item-body" id="heading5">制作フローの全体像</h3></div>
+        
+        <div class="article-item item_rich_text " id="item35022" data-item-id="35022" data-item-type="ItemRichText"><div class="item-body-hbr">Webデザインの現場では、複数のツールをその得意なことに合わせて連携させるのが一般的です。<br>
+<br>
+今回のワークフローは以下のようになります。</div></div>
+        
+        <div class="article-item item_html " id="item35023" data-item-id="35023" data-item-type="ItemHtml"><div class="item-body"><ol>
+  <li><span class="decoration-01">ImageFX</span>：バナーのメインとなる画像を生成します。</li>
+  <li><span class="decoration-01">Photoshop</span>：画像のレタッチ、必要なサイズへの調整、Web用に背景を透過させたい場合はその処理を行います。</li>
+  <li><span class="decoration-01">Figma</span>：加工した画像を配置し、テキストやボタンなどのUI要素を追加して最終的なレイアウトを組みます。</li>
+</ol>
+</div></div>
+        
+        <div class="article-item item_image " id="item35024" data-item-id="35024" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/035/024/medium/7eba9f61-c76f-4c62-b6ff-3f9fc79cab7e.png?1753139604" title=""><img class="img-responsive item-image" alt=" (35024)" data-reference="" src="../../_assets/428524db2d.webp" width="640" height="427"></a><h4 id="heading6"></h4></div></div>
+        
+        <div class="article-item item_heading " id="item35025" data-item-id="35025" data-item-type="ItemHeading"><h3 class="item-body" id="heading7">Figmaでのレイアウト実践</h3></div>
+        
+        <div class="article-item item_rich_text " id="item35026" data-item-id="35026" data-item-type="ItemRichText"><div class="item-body-hbr">Photoshopで加工・書き出した画像を、今度はFigmaでデザインに落とし込んでいきます。</div></div>
+        
+        <div class="article-item item_html " id="item35027" data-item-id="35027" data-item-type="ItemHtml"><div class="item-body"><ol>
+  <li>指定されたサイズのフレーム（アートボード）を作成します。</li>
+  <li>加工済みの画像をFigmaのカンバスにドラッグ＆ドロップで配置します。</li>
+  <li>テキストツールでキャッチコピーや説明文を入力し、フォントやサイズ、色を調整します。</li>
+  <li>シェイプツールでCTA（Call to Action）ボタンの土台を作り、テキストを載せます。</li>
+  <li>画像とテキストが互いに引き立て合うよう、配置、サイズ、配色を微調整して完成です。</li>
+</ol>
+</div></div>
+        
+        <div class="article-item item_heading " id="item35028" data-item-id="35028" data-item-type="ItemHeading"><h2 class="item-body" id="heading8">【3-2】著作権と商用利用について</h2></div>
+        
+        <div class="article-item item_markdown " id="item35029" data-item-id="35029" data-item-type="ItemMarkdown"><h4 id="heading9">目安学習時間: 10分</h4>
+</div>
+        
+        <div class="article-item item_heading " id="item35030" data-item-id="35030" data-item-type="ItemHeading"><h3 class="item-body" id="heading10">Googleのポリシーを理解する</h3></div>
+        
+        <div class="article-item item_rich_text " id="item35031" data-item-id="35031" data-item-type="ItemRichText"><div class="item-body-hbr">生成AIを実務で使う上で、著作権は避けて通れない非常に重要な問題です。<br>
+ツールの利用規約を正しく理解し、安全に活用しましょう。</div></div>
+        
+        <div class="article-item item_html " id="item35032" data-item-id="35032" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li><span class="decoration-01">Googleの基本方針</span>:
+    <ul>
+      <li>Googleの生成AIサービスの利用規約では、<span class="decoration-02">ユーザーが生成したコンテンツに関する著作権は、原則としてそのユーザーに帰属する</span> とGoogleの生成AIサービスの利用規約ではしています。（この文章を執筆している2025年6月時点）</li>
+      <li>つまり、ImageFXで作成した画像は、基本的には商用利用が可能と考えられます。</li>
+    </ul>
+  </li>
+</ul>
+</div></div>
+        
+        <div class="article-item item_rich_text " id="item35033" data-item-id="35033" data-item-type="ItemRichText"><div class="item-body-hbr">しかし、法的な論点はまだ多く残っており、状況は常に変化する可能性があるため、以下の点に十分注意してください。</div></div>
+        
+        <div class="article-item item_html " id="item35034" data-item-id="35034" data-item-type="ItemHtml"><div class="item-body"><div class="card-with-icon attention">
+    <span class="bold"><strong>商用利用時の重要注意事項</strong><br></span>
+    <div class="content-area">
+        <ul>
+            <li><strong>規約の確認は自己責任</strong>: 本教材の情報は執筆時点のものです。実際に商用利用する際は、<span class="decoration-02">必ずご自身の責任で、Googleの最新の利用規約を直接確認してください。</span></li>
+            <li><strong>著名人やキャラクター、既存の作品に酷似していないか</strong>: 意図せずとも、著作権や肖像権を侵害する可能性のある画像が生成された場合は、絶対に使用しないでください。</li>
+            <li><strong>法整備は発展途上</strong>: 生成AIと著作権に関する法的な議論はまだ始まったばかりです。今後の法改正や判例によって、解釈が変わる可能性があることを常に念頭に置いておきましょう。</li>
+        </ul>
+    </div>
+</div></div></div>
+        
+        <div class="article-item item_heading " id="item35035" data-item-id="35035" data-item-type="ItemHeading"><h2 class="item-body" id="heading11">【3-3】総合演習：デザインアセット一式の制作</h2></div>
+        
+        <div class="article-item item_markdown " id="item35036" data-item-id="35036" data-item-type="ItemMarkdown"><h4 id="heading12">目安学習時間: 50分</h4>
+</div>
+        
+        <div class="article-item item_heading " id="item35037" data-item-id="35037" data-item-type="ItemHeading"><h3 class="item-body" id="heading13">問題</h3></div>
+        
+        <div class="article-item item_rich_text " id="item35038" data-item-id="35038" data-item-type="ItemRichText"><div class="item-body-hbr">お疲れ様でした！いよいよ本講座の総仕上げです。<br>
+これまでに学んだ全てのスキルを総動員して、実践的なデザイン制作に挑戦しましょう。<br>
+あなたは、架空のオーガニックコスメブランド「<span class="decoration-02">Verde</span>」のWebデザイナーです。<br>
+新商品の「ボタニカル・セラム」の発売にあたり、以下のデザインアセット一式を制作してください。</div></div>
+        
+        <div class="article-item item_rich_text " id="item35039" data-item-id="35039" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">▼制作物</span><span class="decoration-01"></span></div></div>
+        
+        <div class="article-item item_html " id="item35046" data-item-id="35046" data-item-type="ItemHtml"><div class="item-body"><ol>
+  <li><strong>LPキービジュアル（PC版 1920x1080px）</strong></li>
+  <li><strong>Instagram広告用バナー（正方形 1080x1080px）</strong></li>
+  <li><strong>Webメディア掲載用バナー（レクタングル 300x250px）</strong></li>
+</ol></div></div>
+        
+        <div class="article-item item_rich_text " id="item35045" data-item-id="35045" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">▼要件</span></div></div>
+        
+        <div class="article-item item_html " id="item35040" data-item-id="35040" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li>ブランドイメージ：「ナチュラル」「透明感」「上質」</li>
+  <li>キービジュアルとバナーには、ImageFXで生成し、Photoshopで加工した画像をメインに使用すること。</li>
+  <li>LPキービジュアルには、以下のテキスト要素を含めること。
+    <ul>
+      <li>キャッチコピー：「<span class="decoration-02">森の恵みを、一滴に込めて。</span>」</li>
+      <li>商品名：「<span class="decoration-02">Verde Botanical Serum</span>」</li>
+    </ul>
+  </li>
+  <li>バナーには、上記テキスト要素に加え、「<span class="decoration-02">新発売</span>」「<span class="decoration-02">詳しくはこちら</span>」というCTAボタンを含めること。</li>
+  <li>全てのアセットで、デザインのトーン＆マナーを統一すること。</li>
+</ul>
+</div></div>
+        
+        <div class="article-item item_heading " id="item35041" data-item-id="35041" data-item-type="ItemHeading"><h3 class="item-body" id="heading14">解答手順</h3></div>
+        
+        <div class="article-item item_html " id="item35042" data-item-id="35042" data-item-type="ItemHtml"><div class="item-body"><ol>
+  <li><strong>コンセプト定義</strong>: ブランドイメージから、生成すべき画像の具体的なビジュアル（例：朝露に濡れた植物、光が差し込む森、清潔感のあるガラス瓶など）を言語化します。</li>
+  <li><strong>画像生成 [ImageFX]</strong>: 定義したコンセプトに基づき、複数のプロンプトとスタイルチップを試行錯誤し、キービジュアルとバナーの素材となる画像を生成します。</li>
+  <li><strong>レタッチ・加工 [Photoshop]</strong>: 生成した画像をPhotoshopで開き、色調補正、不要物除去、必要に応じて生成拡張を行い、各用途に合わせたサイズに調整・書き出します。</li>
+  <li><strong>デザイン統合 [Figma]</strong>: Figmaで各サイズのフレームを用意し、加工済みの画像を配置します。テキスト、ロゴ（仮）、CTAボタンなどを配置し、全体のレイアウトを完成させます。</li>
+  <li>完成したデザインアセット一式を、専属コーチに提出してフィードバックをもらいましょう。</li>
+</ol>
+</div></div>
+        
+        <div class="article-item item_rich_text " id="item35043" data-item-id="35043" data-item-type="ItemRichText"><div class="item-body-hbr">この総合演習は、本講座で学んだことの集大成です。<br>
+ぜひ楽しみながら、ご自身の最高の作品を作り上げてください。<br>
+完成した作品は、ポートフォリオの素晴らしい実績の一つになります。</div></div>
+        
+        <div class="article-item item_rich_text " id="item35044" data-item-id="35044" data-item-type="ItemRichText"><div class="item-body-hbr">これで「3章：実践的デザインアセットへの統合と総合演習」の解説を終わります。<br>
+本講座の学習、大変お疲れ様でした！</div></div>
+        
+        <div class="article-item item_html " id="item35053" data-item-id="35053" data-item-type="ItemHtml"><div class="item-body"><div class="pagenation-buttons" style="justify-content: flex-start;">
+  <a href="https://learn.webcoach.jp/generative-ai/AI_design/%E6%95%99%E6%9D%903-EX%E2%91%A2%20%E7%89%B9%E5%AE%9AAI%E3%83%84%E3%83%BC%E3%83%AB%E6%B7%B1%E6%8E%98%E3%82%8A%E8%AC%9B%E5%BA%A7_image-FX/qBh3D" class="pagenation-buttons_prev"><img src="../../_assets/47498cfebf.svg" class="pagenation-buttons_icon">前の章に戻る</a>
+</div></div></div>
+        
+        
+        
+        <div class="back-to-roadmap mb-4 text-center"></div>
+      </div>
+    </div>
+    
+    <div class="lightbox-modal" id="lightboxModal">
+      <img src="" alt="">
+    </div>
+    
+    <div id="modal" class="fixed-menu-modal">
+      <div class="fixed-menu-modal-content">
+        <div class="index mb-3" style="background-color: #FDF5E8;">
+          <div>
+            <div class="fw-light">INDEX</div>
+            <div class="h3">目次</div>
+          </div>
+          <div class="toc"><ul><li><a href="#heading0" class="tocLink">3章：実践的デザインアセットへの統合と総合演習</a><ul><li><a href="#heading1" class="tocLink">この章の目安学習時間: 1時間30分</a></li><li><a href="#heading2" class="tocLink">この章で到達できるゴール</a></li></ul></li><li><a href="#heading3" class="tocLink">【3-1】ケーススタディ：Web広告バナー制作</a><ul><li><a href="#heading4" class="tocLink">目安学習時間：30分</a></li></ul><ul><li><a href="#heading5" class="tocLink">制作フローの全体像</a><ul><li><a href="#heading6" class="tocLink"></a></li></ul></li><li><a href="#heading7" class="tocLink">Figmaでのレイアウト実践</a></li></ul></li><li><a href="#heading8" class="tocLink">【3-2】著作権と商用利用について</a><ul><li><a href="#heading9" class="tocLink">目安学習時間: 10分</a></li></ul><ul><li><a href="#heading10" class="tocLink">Googleのポリシーを理解する</a></li></ul></li><li><a href="#heading11" class="tocLink">【3-3】総合演習：デザインアセット一式の制作</a><ul><li><a href="#heading12" class="tocLink">目安学習時間: 50分</a></li></ul><ul><li><a href="#heading13" class="tocLink">問題</a></li><li><a href="#heading14" class="tocLink">解答手順</a></li></ul></li></ul></div>
+        </div>
+        
+        <!-- ボタン類 -->
+        <div id="fixed-menu_buttons" class="fixed-menu_buttons">
+  <a href="https://learn.webcoach.jp/generative-ai/AI_design/%E6%95%99%E6%9D%903-EX%E2%91%A2%20%E7%89%B9%E5%AE%9AAI%E3%83%84%E3%83%BC%E3%83%AB%E6%B7%B1%E6%8E%98%E3%82%8A%E8%AC%9B%E5%BA%A7_image-FX/qBh3D" class="pagenation-buttons_prev"><img src="../../_assets/47498cfebf.svg" class="pagenation-buttons_icon">前の章に戻る</a>
+</div>
+        
+        <div class="back-to-roadmap text-center"></div>
+      </div>
+    </div>
+    
+    <button id="toggleBtn" class="floating-btn">
+      <img id="iconOpen" src="../../_assets/5feefcfc55.svg" alt="メニューを開く">
+      <img id="iconClose" src="../../_assets/ae4a1129c9.svg" alt="メニューを閉じる" style="display:none;">
+    </button>
+  </div>
+</div>
+</div>
+<!-- <script src="https://cdn.clipkit.co/clipkit/javascripts/item-shopify-1.0.js?v=v15.9.0-20260915" async></script> -->
+            </main></div>
+        
+
+    
+
+    <div class="p-5" style="background-color: #B73E3D; color: white; height: 300px;">
+        <div class="">
+            <div class="h4 ps-3" style="border-left: 5px solid white;">WEBCOACH | キャリアチェンジまでの全てを学ぶマンツーマンWEBスクール</div>
+            <ul class="nav flex-column m-0 p-3 fw-light">
+                <li class="nav-item mb-2"><a href="https://www.webcoach.jp/" target="_blank">WEBCOACH | 公式HP</a></li>
+                <li class="nav-item mb-2"><a href="https://www.instagram.com/webcoach_officials/" target="_blank">WEBCOACH | 公式Instagram</a></li>
+                <li class="nav-item mb-2"><a href="https://vectorinc.co.jp/groupservice/webcoach-career/" target="_blank">WEBCOACH 公式メディア | WEBCOACH career</a></li>
+            </ul>
+        </div>
+        <div class="text-center">
+            <small>© 2020 by WEBCOACH</small>
+        </div>
+    </div>
+
+    
+
+    <!-- bodyタグ内の下部に挿入されます -->
+
+
+    <!-- BootstrapのCDNでのjs読み込み -->
+    
+
+    <!-- シンタックスハイライトの生成 -->
+    
+    
+
+    <!-- 目次の生成 -->
+    
+
+    <!-- ブックマークの生成 -->
+    
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="ck-icon-arrow-down" viewBox="0 0 1792 1792"><path d="M1675 832q0 53-37 90l-651 652q-39 37-91 37-53 0-90-37l-651-652q-38-36-38-90 0-53 38-91l74-75q39-37 91-37 53 0 90 37l294 294v-704q0-52 38-90t90-38h128q52 0 90 38t38 90v704l294-294q37-37 90-37 52 0 91 37l75 75q37 39 37 91z"></path></symbol><symbol id="ck-icon-arrow-up" viewBox="0 0 1792 1792"><path d="M1675 971q0 51-37 90l-75 75q-38 38-91 38-54 0-90-38l-294-293v704q0 52-37.5 84.5t-90.5 32.5h-128q-53 0-90.5-32.5t-37.5-84.5v-704l-294 293q-36 38-90 38t-90-38l-75-75q-38-38-38-90 0-53 38-91l651-651q35-37 90-37 54 0 91 37l651 651q37 39 37 91z"></path></symbol><symbol id="ck-icon-calendar" viewBox="0 0 1792 1792"><path d="M192 1664h288v-288h-288v288zm352 0h320v-288h-320v288zm-352-352h288v-320h-288v320zm352 0h320v-320h-320v320zm-352-384h288v-288h-288v288zm736 736h320v-288h-320v288zm-384-736h320v-288h-320v288zm768 736h288v-288h-288v288zm-384-352h320v-320h-320v320zm-352-864v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm736 864h288v-320h-288v320zm-384-384h320v-288h-320v288zm384 0h288v-288h-288v288zm32-480v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm384-64v1280q0 52-38 90t-90 38h-1408q-52 0-90-38t-38-90v-1280q0-52 38-90t90-38h128v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h384v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h128q52 0 90 38t38 90z"></path></symbol><symbol id="ck-icon-chevron-left" viewBox="0 0 1792 1792"><path d="M1427 301l-531 531 531 531q19 19 19 45t-19 45l-166 166q-19 19-45 19t-45-19l-742-742q-19-19-19-45t19-45l742-742q19-19 45-19t45 19l166 166q19 19 19 45t-19 45z"></path></symbol><symbol id="ck-icon-chevron-right" viewBox="0 0 1792 1792"><path d="M1363 877l-742 742q-19 19-45 19t-45-19l-166-166q-19-19-19-45t19-45l531-531-531-531q-19-19-19-45t19-45l166-166q19-19 45-19t45 19l742 742q19 19 19 45t-19 45z"></path></symbol><symbol id="ck-icon-clock-o" viewBox="0 0 1792 1792"><path d="M1024 544v448q0 14-9 23t-23 9h-320q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h224v-352q0-14 9-23t23-9h64q14 0 23 9t9 23zm416 352q0-148-73-273t-198-198-273-73-273 73-198 198-73 273 73 273 198 198 273 73 273-73 198-198 73-273zm224 0q0 209-103 385.5t-279.5 279.5-385.5 103-385.5-103-279.5-279.5-103-385.5 103-385.5 279.5-279.5 385.5-103 385.5 103 279.5 279.5 103 385.5z"></path></symbol><symbol id="ck-icon-trash" viewBox="0 0 1792 1792"><path d="M704 1376v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm-544-992h448l-48-117q-7-9-17-11h-317q-10 2-17 11zm928 32v64q0 14-9 23t-23 9h-96v948q0 83-47 143.5t-113 60.5h-832q-66 0-113-58.5t-47-141.5v-952h-96q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h309l70-167q15-37 54-63t79-26h320q40 0 79 26t54 63l70 167h309q14 0 23 9t9 23z"></path></symbol><symbol id="ck-icon-undo" viewBox="0 0 1792 1792"><path d="M1664 896q0 156-61 298t-164 245-245 164-298 61q-172 0-327-72.5t-264-204.5q-7-10-6.5-22.5t8.5-20.5l137-138q10-9 25-9 16 2 23 12 73 95 179 147t225 52q104 0 198.5-40.5t163.5-109.5 109.5-163.5 40.5-198.5-40.5-198.5-109.5-163.5-163.5-109.5-198.5-40.5q-98 0-188 35.5t-160 101.5l137 138q31 30 14 69-17 40-59 40h-448q-26 0-45-19t-19-45v-448q0-42 40-59 39-17 69 14l130 129q107-101 244.5-156.5t284.5-55.5q156 0 298 61t245 164 164 245 61 298z"></path></symbol></svg>
+
+<!--Clipkit(R) v15.9.0-20260915 Copyright (C) 2026 VECTOR Inc.-->
+
+
+
+
+
+<div class="dynmsg alert alert-info" style="display:none;"><button class="close"><span class="fa fa-times"></span></button><div class="message"></div></div><div class="dynmsg alert alert-danger" style="display:none;"><button class="close"><span class="fa fa-times"></span></button><div class="message"></div></div></body></html>

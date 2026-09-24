@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<!-- clipkit-source-url: https://learn.webcoach.jp/generative-ai/introduction-to-generative-ai/claude-chap3/1SFXV -->
+<!-- clipkit-fetched-at: 2026-09-17T11:14:00.275Z -->
+<html lang="ja"><head><style data-clipkit-snapshot="force-visible">[data-aos],.reveal,.wow,.fade-in,.animate__animated,.js-reveal{opacity:1!important;transform:none!important;visibility:visible!important;animation:none!important;transition:none!important}</style></head><body><div>
+  
+    <div>
+      
+      
+        
+          <div class="article-item item_html " id="item48863" data-item-id="48863" data-item-type="ItemHtml"><div class="item-body">
+
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>実用例ハンズオン | Claude活用講座</title>
+<link rel="preconnect" href="https://fonts.googleapis.com/">
+<link rel="preconnect" href="https://fonts.gstatic.com/">
+<link href="../../_assets/edbf4ebbd2.css" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Noto Sans JP', sans-serif; color: #3D3D3D; font-size: 16px; line-height: 1.9; background: #F7F8FA; -webkit-font-smoothing: antialiased; }
+.lesson-wrapper { max-width: 70%; margin: 0 auto; padding: 40px 0 80px; }
+@media (max-width: 600px) { .lesson-wrapper { max-width: 92%; } }
+h2 { font-size: 22px; font-weight: 900; color: #2D2D2D; margin: 56px 0 20px; padding: 0 0 12px; position: relative; letter-spacing: -0.02em; line-height: 1.4; }
+h2::after { content: ''; position: absolute; bottom: 0; left: 0; width: 44px; height: 4px; border-radius: 2px; background: linear-gradient(90deg, #E85D4A, #F5A64A); }
+p { font-size: 15px; line-height: 2.0; color: #555; margin: 0 0 14px; }
+.accent { color: #E85D4A; font-weight: 700; }
+.goal-box { background: #fff; padding: 24px 28px; border-radius: 16px; margin-bottom: 32px; box-shadow: 0 2px 16px rgba(0,0,0,0.06); position: relative; overflow: hidden; }
+.goal-box::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px; background: linear-gradient(90deg, #E85D4A, #F5A64A); }
+.goal-box__header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; }
+.goal-box__label { font-size: 11px; font-weight: 700; color: #E85D4A; letter-spacing: 0.15em; }
+.goal-box__time { font-size: 11px; font-weight: 500; color: #E85D4A; }
+.goal-box__text { font-size: 15px; font-weight: 700; color: #3D3D3D; line-height: 1.7; margin: 0; }
+.toc-box { background: #fff; border-radius: 14px; padding: 22px 26px; margin-bottom: 36px; box-shadow: 0 2px 16px rgba(0,0,0,0.06); }
+.toc-box .label { font-size: 11px; font-weight: 700; color: #F5A64A; letter-spacing: 0.15em; margin-bottom: 10px; }
+.toc-box ol { margin: 0; padding-left: 20px; font-size: 14px; color: #555; line-height: 2.2; }
+.toc-link { color: #555; text-decoration: none; }
+.toc-link:hover { color: #E85D4A; }
+.video-placeholder { background: #1A1A2E; border-radius: 14px; margin: 28px 0; overflow: hidden; }
+.step-list { list-style: none; padding: 0; margin: 24px 0; display: flex; flex-direction: column; gap: 16px; }
+.step-item { display: flex; gap: 16px; background: #fff; border-radius: 14px; padding: 20px 22px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
+.step-item__num { width: 32px; height: 32px; border-radius: 50%; background: linear-gradient(135deg, #E85D4A, #F5A64A); color: #fff; font-size: 14px; font-weight: 900; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 2px; }
+.step-item__body { flex: 1; }
+.step-item__action { font-size: 15px; font-weight: 700; color: #2D2D2D; margin-bottom: 6px; line-height: 1.5; }
+.step-item__desc { font-size: 13px; color: #777; line-height: 1.7; margin: 0; }
+.point-box { background: #fff; border-left: 4px solid #E85D4A; padding: 20px 24px; border-radius: 0 12px 12px 0; margin: 24px 0; box-shadow: 0 2px 12px rgba(0,0,0,0.05); }
+.point-box__label { font-size: 11px; font-weight: 700; color: #E85D4A; letter-spacing: 0.15em; margin-bottom: 6px; }
+.point-box p { margin: 0; font-size: 14px; line-height: 1.8; color: #555; }
+.trouble-list { list-style: none; padding: 0; margin: 20px 0; display: flex; flex-direction: column; gap: 12px; }
+.trouble-item { background: #fff; border-radius: 12px; padding: 16px 18px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
+.trouble-item__q { font-size: 14px; font-weight: 700; color: #E85D4A; margin-bottom: 6px; display: flex; gap: 8px; }
+.trouble-item__q::before { content: 'Q'; background: #E85D4A; color: #fff; border-radius: 50%; width: 20px; height: 20px; font-size: 12px; font-weight: 900; display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.trouble-item__a { font-size: 13px; color: #555; line-height: 1.7; padding-left: 28px; }
+.summary-box { background: #fff; border-radius: 16px; padding: 28px; margin: 48px 0 32px; box-shadow: 0 2px 16px rgba(0,0,0,0.06); }
+.summary-box__label { font-size: 11px; font-weight: 700; color: #E85D4A; letter-spacing: 0.15em; margin-bottom: 16px; }
+.summary-box ul { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 10px; }
+.summary-box li { font-size: 14px; color: #3D3D3D; display: flex; gap: 10px; align-items: flex-start; line-height: 1.7; }
+.summary-box li::before { content: '✅'; flex-shrink: 0; }
+.hero { background: linear-gradient(135deg, #E85D4A 0%, #F5A64A 100%); border-radius: 16px; padding: 48px 40px; margin-bottom: 40px; color: #fff; }
+.hero__label { font-size: 13px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; opacity: 0.85; margin-bottom: 12px; }
+.hero__title { font-size: 28px; font-weight: 800; line-height: 1.3; margin-bottom: 16px; }
+.hero__meta { display: flex; gap: 20px; font-size: 14px; opacity: 0.9; flex-wrap: wrap; }
+.hero__meta span { background: rgba(255,255,255,0.2); padding: 4px 12px; border-radius: 20px; }
+</style>
+<meta name="csrf-param" content="authenticity_token">
+<meta name="csrf-token" content="O82fwv3oPlWMQnJBoCIktLU6JDifwJ5fIGoPn3PlyrJrbLYdpItyIR7TD0o0WO8u3LSATCoHgQp188YaggEWRQ"><meta content="" name="routing-root-path"><meta content="media" name="site-name"><meta content="ja" name="i18n-default-locale"><meta content="ja" name="i18n-locale">
+
+<div class="lesson-wrapper">
+
+  <!-- ヘッダー -->
+  <div class="hero">
+    <div class="hero__label">Chapter 3 — Lesson 3</div>
+    <div class="hero__title">実用例ハンズオン</div>
+    <div class="hero__meta">
+      <span>🕐 約12分</span>
+      <span>✏️ 実践型</span>
+      <span>🔖 ハンズオン</span>
+    </div>
+  </div>
+
+  
+<!-- 前の章に戻るボタン / 次の章に進むボタン がある場合 -->  
+<div style="display: flex; justify-content: space-between; align-items: center; padding: 24px 0; margin-top: 24px;">
+  <a href="https://learn.webcoach.jp/generative-ai/introduction-to-generative-ai/claude-chap3/yierw" style="position: relative; display: inline-block; background: linear-gradient(135deg, #E85D4A, #F5A64A); color: #fff; font-weight: 700; padding: 12px clamp(24px, 7vw, 48px); border-radius: 8px; text-decoration: none;"><img src="../../_assets/47498cfebf.svg" style="position: absolute; top: 50%; transform: translateY(-50%); left: 12px; filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(125deg) brightness(103%) contrast(103%); transform: translateY(-50%) rotate(180deg);">前の章に戻る</a>
+  <a href="https://learn.webcoach.jp/generative-ai/introduction-to-generative-ai/claude-chap3/Jmv5r" style="position: relative; display: inline-block; background: linear-gradient(135deg, #E85D4A, #F5A64A); color: #fff; font-weight: 700; padding: 12px clamp(24px, 7vw, 48px); border-radius: 8px; text-decoration: none;">次の章に進む<img src="../../_assets/47498cfebf.svg" style="position: absolute; top: 50%; transform: translateY(-50%); right: 12px; filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(125deg) brightness(103%) contrast(103%);"></a>
+</div>
+  
+ 
+  <div class="goal-box">
+    <div class="goal-box__header">
+      <span class="goal-box__label">このレッスンのゴール</span>
+      <span class="goal-box__time">目安 12分</span>
+    </div>
+    <p class="goal-box__text">Artifacts を使ってLP構成案と提案書ドラフトを実際に生成し、<span class="accent">修正指示を出してリアルタイム更新を体験できる</span>ようになる。</p>
+  </div>
+
+  <div class="toc-box">
+    <div class="label">このレッスンの内容</div>
+    <ol>
+      <li><a href="#sec1" class="toc-link">LP構成案をHTMLで生成する</a></li>
+      <li><a href="#sec2" class="toc-link">提案書ドラフトをMarkdownで生成する</a></li>
+      <li><a href="#sec3" class="toc-link">よくあるつまずきと対処法</a></li>
+    </ol>
+  </div>
+
+  <h2 id="sec1">LP構成案をHTMLで生成する</h2>
+  <p>最初の実践として、LP の構成案をArtifactsで生成してみましょう。</p>
+
+  <!-- キャプチャ動画：capture-03-03 -->
+  <!-- Dropbox URL: 共有リンクの末尾 ?dl=0 を ?raw=1 に変えてsrcに設定 -->
+  <div class="video-placeholder">
+    <video src="../media/med-c08ed563a1.mp4" controls="" preload="metadata" style="width:100%;display:block;"></video>
+  </div>
+
+  <ul class="step-list">
+    <li class="step-item">
+      <div class="step-item__num">1</div>
+      <div class="step-item__body">
+        <div class="step-item__action">新規チャットを開いて次のプロンプトを入力</div>
+        <p class="step-item__desc">「フリーランスのWebデザイナー向けポートフォリオサイトのLP構成案をHTMLで作ってください。ヒーロー・サービス紹介・実績・CTAの4セクション構成で。」</p>
+      </div>
+    </li>
+    <li class="step-item">
+      <div class="step-item__num">2</div>
+      <div class="step-item__body">
+        <div class="step-item__action">右上のサイドバーボタンをクリックしてArtifactsを開く</div>
+        <p class="step-item__desc">一覧にHTMLが表示されるのでクリックするとプレビューが表示されます。表示されない場合はプロンプトに「HTMLで」というキーワードが含まれているか確認してください。</p>
+      </div>
+    </li>
+    <li class="step-item">
+      <div class="step-item__num">3</div>
+      <div class="step-item__body">
+        <div class="step-item__action">修正指示を出してみる</div>
+        <p class="step-item__desc">例：「ヒーローセクションのコピーをもっとキャッチーに変えて」「全体のカラーをブルー系に」など言葉で指示するだけでプレビューが更新されます。</p>
+      </div>
+    </li>
+  </ul>
+
+  <div class="point-box">
+    <div class="point-box__label">ポイント</div>
+    <p>生成されたHTMLのクオリティに驚いても「完成品」ではありません。あくまで方向性確認用のたたき台です。「こんな方向性でいきたい」をクライアントに見せるためのツールとして位置づけましょう。</p>
+  </div>
+
+  <h2 id="sec2">提案書ドラフトをMarkdownで生成する</h2>
+
+  <ul class="step-list">
+    <li class="step-item">
+      <div class="step-item__num">1</div>
+      <div class="step-item__body">
+        <div class="step-item__action">新規チャットで提案書のプロンプトを入力</div>
+        <p class="step-item__desc">「美容室向けInstagramリール制作の提案書ドラフトをMarkdown形式で作ってください。背景・課題・提案内容・費用感・スケジュールの構成で。」</p>
+      </div>
+    </li>
+    <li class="step-item">
+      <div class="step-item__num">2</div>
+      <div class="step-item__body">
+        <div class="step-item__action">Markdownドキュメントが右側に表示されることを確認</div>
+        <p class="step-item__desc">見出し・箇条書きで整形された提案書ドラフトが表示されます。</p>
+      </div>
+    </li>
+    <li class="step-item">
+      <div class="step-item__num">3</div>
+      <div class="step-item__body">
+        <div class="step-item__action">内容を微調整する</div>
+        <p class="step-item__desc">「費用感を削除して」「スケジュールを1ヶ月に短縮して」など追記・修正してみましょう。</p>
+      </div>
+    </li>
+  </ul>
+
+  <h2 id="sec3">よくあるつまずきと対処法</h2>
+
+  <ul class="trouble-list">
+    <li class="trouble-item">
+      <div class="trouble-item__q">ArtifactsパネルがHTMLで出てこない</div>
+      <div class="trouble-item__a">プロンプトに「HTMLで」「HTML形式で」という言葉が含まれているか確認してください。明示しないとテキストとして返ってくることがあります。</div>
+    </li>
+    <li class="trouble-item">
+      <div class="trouble-item__q">修正するたびに全部作り直しになってしまう</div>
+      <div class="trouble-item__a">「〇〇のセクションだけ修正して、他はそのままで」と指示に「他はそのまま」を加えると、変更箇所を絞れます。</div>
+    </li>
+    <li class="trouble-item">
+      <div class="trouble-item__q">生成されたHTMLの品質がいまいち</div>
+      <div class="trouble-item__a">プロンプトに参考にしたいデザインの雰囲気（例：「シンプルなミニマル系、余白多め」）を追加するか、「〇〇のようなスタイルで」と方向性を具体的に伝えましょう。</div>
+    </li>
+  </ul>
+
+  <div class="summary-box">
+    <div class="summary-box__label">このレッスンのまとめ</div>
+    <ul>
+      <li>プロンプトに「HTMLで」「Markdown形式で」と<strong>形式を明示</strong>するとArtifactsが起動する</li>
+      <li>修正はチャットで言葉を入力するだけ — プレビューがリアルタイムで更新される</li>
+      <li>生成物は「<strong>たたき台・方向性確認用</strong>」として活用する</li>
+      <li>うまくいかないときは「他はそのまま」「〜だけ修正」と指示を絞るのが有効</li>
+    </ul>
+    
+  
+    
+    
+  </div>
+  
+  
+  
+<!-- 前の章に戻るボタン / 次の章に進むボタン がある場合 -->  
+<div style="display: flex; justify-content: space-between; align-items: center; padding: 24px 0; margin-top: 24px;">
+  <a href="https://learn.webcoach.jp/generative-ai/introduction-to-generative-ai/claude-chap3/yierw" style="position: relative; display: inline-block; background: linear-gradient(135deg, #E85D4A, #F5A64A); color: #fff; font-weight: 700; padding: 12px clamp(24px, 7vw, 48px); border-radius: 8px; text-decoration: none;"><img src="../../_assets/47498cfebf.svg" style="position: absolute; top: 50%; transform: translateY(-50%); left: 12px; filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(125deg) brightness(103%) contrast(103%); transform: translateY(-50%) rotate(180deg);">前の章に戻る</a>
+  <a href="https://learn.webcoach.jp/generative-ai/introduction-to-generative-ai/claude-chap3/Jmv5r" style="position: relative; display: inline-block; background: linear-gradient(135deg, #E85D4A, #F5A64A); color: #fff; font-weight: 700; padding: 12px clamp(24px, 7vw, 48px); border-radius: 8px; text-decoration: none;">次の章に進む<img src="../../_assets/47498cfebf.svg" style="position: absolute; top: 50%; transform: translateY(-50%); right: 12px; filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(125deg) brightness(103%) contrast(103%);"></a>
+</div>
+
+</div>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="ck-icon-arrow-down" viewBox="0 0 1792 1792"><path d="M1675 832q0 53-37 90l-651 652q-39 37-91 37-53 0-90-37l-651-652q-38-36-38-90 0-53 38-91l74-75q39-37 91-37 53 0 90 37l294 294v-704q0-52 38-90t90-38h128q52 0 90 38t38 90v704l294-294q37-37 90-37 52 0 91 37l75 75q37 39 37 91z"></path></symbol><symbol id="ck-icon-arrow-up" viewBox="0 0 1792 1792"><path d="M1675 971q0 51-37 90l-75 75q-38 38-91 38-54 0-90-38l-294-293v704q0 52-37.5 84.5t-90.5 32.5h-128q-53 0-90.5-32.5t-37.5-84.5v-704l-294 293q-36 38-90 38t-90-38l-75-75q-38-38-38-90 0-53 38-91l651-651q35-37 90-37 54 0 91 37l651 651q37 39 37 91z"></path></symbol><symbol id="ck-icon-calendar" viewBox="0 0 1792 1792"><path d="M192 1664h288v-288h-288v288zm352 0h320v-288h-320v288zm-352-352h288v-320h-288v320zm352 0h320v-320h-320v320zm-352-384h288v-288h-288v288zm736 736h320v-288h-320v288zm-384-736h320v-288h-320v288zm768 736h288v-288h-288v288zm-384-352h320v-320h-320v320zm-352-864v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm736 864h288v-320h-288v320zm-384-384h320v-288h-320v288zm384 0h288v-288h-288v288zm32-480v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm384-64v1280q0 52-38 90t-90 38h-1408q-52 0-90-38t-38-90v-1280q0-52 38-90t90-38h128v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h384v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h128q52 0 90 38t38 90z"></path></symbol><symbol id="ck-icon-chevron-left" viewBox="0 0 1792 1792"><path d="M1427 301l-531 531 531 531q19 19 19 45t-19 45l-166 166q-19 19-45 19t-45-19l-742-742q-19-19-19-45t19-45l742-742q19-19 45-19t45 19l166 166q19 19 19 45t-19 45z"></path></symbol><symbol id="ck-icon-chevron-right" viewBox="0 0 1792 1792"><path d="M1363 877l-742 742q-19 19-45 19t-45-19l-166-166q-19-19-19-45t19-45l531-531-531-531q-19-19-19-45t19-45l166-166q19-19 45-19t45 19l742 742q19 19 19 45t-19 45z"></path></symbol><symbol id="ck-icon-clock-o" viewBox="0 0 1792 1792"><path d="M1024 544v448q0 14-9 23t-23 9h-320q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h224v-352q0-14 9-23t23-9h64q14 0 23 9t9 23zm416 352q0-148-73-273t-198-198-273-73-273 73-198 198-73 273 73 273 198 198 273 73 273-73 198-198 73-273zm224 0q0 209-103 385.5t-279.5 279.5-385.5 103-385.5-103-279.5-279.5-103-385.5 103-385.5 279.5-279.5 385.5-103 385.5 103 279.5 279.5 103 385.5z"></path></symbol><symbol id="ck-icon-trash" viewBox="0 0 1792 1792"><path d="M704 1376v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm-544-992h448l-48-117q-7-9-17-11h-317q-10 2-17 11zm928 32v64q0 14-9 23t-23 9h-96v948q0 83-47 143.5t-113 60.5h-832q-66 0-113-58.5t-47-141.5v-952h-96q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h309l70-167q15-37 54-63t79-26h320q40 0 79 26t54 63l70 167h309q14 0 23 9t9 23z"></path></symbol><symbol id="ck-icon-undo" viewBox="0 0 1792 1792"><path d="M1664 896q0 156-61 298t-164 245-245 164-298 61q-172 0-327-72.5t-264-204.5q-7-10-6.5-22.5t8.5-20.5l137-138q10-9 25-9 16 2 23 12 73 95 179 147t225 52q104 0 198.5-40.5t163.5-109.5 109.5-163.5 40.5-198.5-40.5-198.5-109.5-163.5-163.5-109.5-198.5-40.5q-98 0-188 35.5t-160 101.5l137 138q31 30 14 69-17 40-59 40h-448q-26 0-45-19t-19-45v-448q0-42 40-59 39-17 69 14l130 129q107-101 244.5-156.5t284.5-55.5q156 0 298 61t245 164 164 245 61 298z"></path></symbol></svg>
+
+<!--Clipkit(R) v15.9.0-20260915 Copyright (C) 2026 VECTOR Inc.-->
+
+
+
+</div></div>
+        
+      
+    </div>
+  
+  </div>
+
+<!-- <script src="https://cdn.clipkit.co/clipkit/javascripts/item-shopify-1.0.js?v=v15.9.0-20260915" async></script> -->
+</body></html>

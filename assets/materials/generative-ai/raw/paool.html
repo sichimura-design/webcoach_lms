@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+  <html lang="ja">
+
+<head><script async="async" data-label="saas" nonce="VuKcWvTqzZAhBhp8AZo9HQ==" src="//b.clipkit.co/"></script><script src="//cdn.clipkit.co/clipkit_assets/beacon-787bbf3225ec43d93f198af35f7d56fdef40fb50440a2909500bdf5b99225aab.js" async="async" id="clipkit-beacon" data-page-type="article" data-page-id="1460" data-domain="learn.webcoach.jp" data-url="/generative-ai/AI_design/%E6%95%99%E6%9D%903-EX%E2%91%A2%20%E7%89%B9%E5%AE%9AAI%E3%83%84%E3%83%BC%E3%83%AB%E6%B7%B1%E6%8E%98%E3%82%8A%E8%AC%9B%E5%BA%A7_image-FX/pAoOL" data-href="https://learn.webcoach.jp/media/beacon"></script>
+    <!-- headタグ内の上部に挿入されます -->
+
+    <meta charset="UTF-8">
+    <title>1章：ImageFX完全攻略：高品質な画像を生成する基礎技術 - WEBCOACH</title>
+
+    <!-- resetcssのCDNでのCSS読み込み -->
+    <link rel="stylesheet" href="https://unpkg.com/modern-css-reset/dist/reset.min.css" />
+
+    <!-- fontawesomeのCDNでのCSS読み込み -->
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/fontawesome/4.7.0/css/font-awesome.min.css">
+
+    <!-- BootstrapのCDNでのCSS読み込み -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous" />
+
+    <!-- highlight.jsの読み込み -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.1/styles/dracula.min.css">
+
+    <!-- カスタムCSS -->
+    <link rel="stylesheet" href="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/168/original/style.css?1788081716">
+
+    <!-- clipkitデフォルトのCSS -->
+    <!--<link rel="stylesheet" media="screen" href="https://cdn.clipkit.co/clipkit/stylesheets/application-1.0.css?v=v15.9.0-20260915">-->
+
+    <!-- jQuery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <!-- カスタムJS -->
+    <script src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/202/original/script.js?1788946194"></script>
+    <script src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/535/original/script.js?1743681771"></script>
+
+    <!-- clipkitデフォルトのJS -->
+    <script src="https://cdn.clipkit.co/clipkit/javascripts/default-1.0.js?v=v15.9.0-20260915"></script>
+
+    <!-- フォント -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;700&display=swap" rel="stylesheet">
+
+    <link href="https://cdn.clipkit.co/clipkit/favicons/square/missing.png" rel="shortcut icon" type="image/vnd.microsoft.icon">
+    <link rel="apple-touch-icon" href="https://cdn.clipkit.co/clipkit/touch_icons/square/missing.png">
+    <link rel="alternate" type="application/rss+xml"
+        href="https://learn.webcoach.jp/media.rss" title="WEBCOACH">
+    
+<link rel="canonical" href="https://learn.webcoach.jp/generative-ai/AI_design/%E6%95%99%E6%9D%903-EX%E2%91%A2%20%E7%89%B9%E5%AE%9AAI%E3%83%84%E3%83%BC%E3%83%AB%E6%B7%B1%E6%8E%98%E3%82%8A%E8%AC%9B%E5%BA%A7_image-FX/pAoOL">
+
+<meta name="description" content="">
+<meta name="keywords" content="">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:domain" content="learn.webcoach.jp">
+<meta name="twitter:title" content="1章：ImageFX完全攻略：高品質な画像を生成する基礎技術 - WEBCOACH">
+<meta name="twitter:image" content="https://cdn.clipkit.co/tenants/589/item_images/images/000/027/442/medium/6da35c4c-4869-418b-aeb8-3b53770a0891.png?1751249156">
+<meta name="twitter:description" content="">
+<meta property="og:site_name" content="WEBCOACH">
+<meta property="og:title" content="1章：ImageFX完全攻略：高品質な画像を生成する基礎技術">
+<meta property="og:description" content="">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://learn.webcoach.jp/generative-ai/AI_design/%E6%95%99%E6%9D%903-EX%E2%91%A2%20%E7%89%B9%E5%AE%9AAI%E3%83%84%E3%83%BC%E3%83%AB%E6%B7%B1%E6%8E%98%E3%82%8A%E8%AC%9B%E5%BA%A7_image-FX/pAoOL">
+<meta property="og:image" content="https://cdn.clipkit.co/tenants/589/item_images/images/000/027/442/large/6da35c4c-4869-418b-aeb8-3b53770a0891.png?1751249156">
+<script type="application/ld+json">
+  {
+    "@context": "http://schema.org",
+    "@type": "NewsArticle",
+    "mainEntityOfPage":{
+      "@type":"WebPage",
+      "@id": "https://learn.webcoach.jp/generative-ai/AI_design/%E6%95%99%E6%9D%903-EX%E2%91%A2%20%E7%89%B9%E5%AE%9AAI%E3%83%84%E3%83%BC%E3%83%AB%E6%B7%B1%E6%8E%98%E3%82%8A%E8%AC%9B%E5%BA%A7_image-FX/pAoOL"
+    },
+    "headline": "1章：ImageFX完全攻略：高品質な画像を生成する基礎技術",
+    "image": {
+      "@type": "ImageObject",
+      "url": "https://cdn.clipkit.co/tenants/589/item_images/images/000/027/442/medium/6da35c4c-4869-418b-aeb8-3b53770a0891.png?1751249156",
+      "width": 800,
+      "height": 600
+    },
+    "datePublished": "2025-06-30T11:29:12+09:00",
+    "dateModified": "2025-08-12T09:09:13+09:00",
+    "author": {
+      "@type": "Person",
+      "name": "m_takenaga"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "WEBCOACH",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://cdn.clipkit.co/tenants/589/sites/logos/000/000/001/logo_sm/a8defd4b-1cc7-433b-a61c-08e7db0e3e4f.png?1714459367"
+      }
+    },
+    "description": ""
+  }
+  </script>
+
+    <!-- headタグ内の下部に挿入されます -->
+
+
+<meta name="csrf-param" content="authenticity_token" />
+<meta name="csrf-token" content="5E_k48DLWuCDBM8I2iv4JTztHNyfXQa1OQV0W0jZk2zCyNbELljJ6od9J1TsHe_1_uPFa11w05QIBq0kPOFYCg" /><meta content="" name="routing-root-path" /><meta content="media" name="site-name" /><meta content="ja" name="i18n-default-locale" /><meta content="ja" name="i18n-locale" /></head>
+
+<body class="device-desktop">
+    <!-- bodyタグ内の上部に挿入されます -->
+
+
+    <!-- サイドバーとコンテンツのコンテナ -->
+    <div class="d-flex flex-row w-100 mb-5" style="min-height: calc(100vh - 400px);">
+
+        <!-- サイドバー -->
+        <!--<nav id="side-bar" class="d-flex flex-column fixed-top" style="width: 250px;">-->
+        <!--    <h1 class="d-block w-100 text-center">-->
+        <!--        <a class="d-block" href="/">-->
+        <!--            <img class="mw-100 p-3" src="https://cdn.clipkit.co/tenants/589/sites/logos/000/000/001/logo_sm/a8defd4b-1cc7-433b-a61c-08e7db0e3e4f.png?1714459367" alt="WEBCOACH">-->
+        <!--        </a>-->
+        <!--    </h1>-->
+        <!--    <ul class="nav flex-column m-0 p-3 fw-bold">-->
+        <!--        <li id="sidebar-top" class="nav-item mb-2" style="display: none;"><a href="/"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;" src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/233/original/home.png?1715353458">-->
+        <!--                <div>ホーム</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-knowledges" class="nav-item mb-2" style="display: none;"><a href="/knowledges"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;" src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/232/original/book.png?1715353458">-->
+        <!--                <div>学習の心得</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-web-designs" class="nav-item mb-2" style="display: none;"><a href="/web-designs"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/231/original/design.png?1715353457">-->
+        <!--                <div>WEBデザイン</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-web-marketing" class="nav-item mb-2" style="display: none;"><a href="/web-marketings"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/230/original/marketing.png?1715353457">-->
+        <!--                <div>WEBマーケティング</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-codings" class="nav-item mb-2" style="display: none;"><a href="/codings"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/229/original/website.png?1715353457">-->
+        <!--                <div>WEBサイト構築</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-business-skills" class="nav-item mb-2" style="display: none;"><a href="/business-skills"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/228/original/business.png?1715353456">-->
+        <!--                <div>ビジネススキル</div>-->
+        <!--            </a></li>-->
+        <!--    </ul>-->
+        <!--</nav>-->
+
+        <!-- コンテンツ -->
+        <!--<main class="ms-auto" style="width: calc(100vw - 250px);">-->
+        <main class="ms-auto" style="width: calc(100vw);">
+            <div id="sb-site">
+                
+
+
+<div class="container">
+  <div class="row">
+    <div class="article">
+      <div class="mb-3 text-light" style="
+        height: 180px;
+        background-image: url(https://cdn.clipkit.co/tenants/589/resources/assets/000/000/270/original/article-header.png?1717761933);
+        background-repeat: no-repeat;
+        background-size: cover;
+        display: flex;
+        align-items: flex-end;
+      ">
+        <div style="
+          margin: 0 0 30px 30px;
+        ">
+          <div>教材3-EX③ 特定AIツール深掘り講座_image-FX</div>
+
+          <div class="fw-bold h2">1章：ImageFX完全攻略：高品質な画像を生成する基礎技術</div>
+        </div>
+      </div>
+      <div class="article-content">
+        <!-- 目次 -->
+        <div class="index mb-3" style="background-color: #FDF5E8;">
+          <div>
+            <div class="fw-light">INDEX</div>
+            <div class="h3">目次</div>
+          </div>
+          <div class="toc"></div>
+        </div>
+        
+        <div class="back-to-roadmap mb-4 text-center"></div>
+
+        <!-- コンテンツ -->
+        
+        
+        <div class="article-item item_html " id="item35050" data-item-id="35050" data-item-type="ItemHtml"><div class="item-body"><div class="pagenation-buttons">
+  <a href="SZQfl" class="pagenation-buttons_prev"><img src="/theme/webcoach/img/icons/arrow-right.svg" class="pagenation-buttons_icon">前の章に戻る</a>
+  <a href="qBh3D" class="pagenation-buttons_next">次の章に進む<img src="/theme/webcoach/img/icons/arrow-right.svg" class="pagenation-buttons_icon"></a>
+</div></div></div>
+        
+        <div class="article-item item_heading " id="item27481" data-item-id="27481" data-item-type="ItemHeading"><h2 class="item-body">1章：ImageFX完全攻略：高品質な画像を生成する基礎技術</h2></div>
+        
+        <div class="article-item item_markdown " id="item27435" data-item-id="27435" data-item-type="ItemMarkdown"><h4 id="section">この章の目安学習時間: 1時間30分</h4>
+</div>
+        
+        <div class="article-item item_markdown " id="item27436" data-item-id="27436" data-item-type="ItemMarkdown"><h4 id="section">この章で到達できるゴール</h4>
+</div>
+        
+        <div class="article-item item_html " id="item27437" data-item-id="27437" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li>ImageFXのUIと基本操作を完全に理解する</li>
+  <li>「エクスプレッシブチップス」を複数組み合わせて、意図した画風を的確に表現できる</li>
+  <li>「Seed値」の役割を理解し、画像の再現やバリエーション展開ができる</li>
+</ul>
+</div></div>
+        
+        <div class="article-item item_heading " id="item27438" data-item-id="27438" data-item-type="ItemHeading"><h2 class="item-body">【1-1】UI詳解と基本の画像生成フロー</h2></div>
+        
+        <div class="article-item item_markdown " id="item27439" data-item-id="27439" data-item-type="ItemMarkdown"><h4 id="section">目安学習時間: 20分</h4>
+</div>
+        
+        <div class="article-item item_heading " id="item27440" data-item-id="27440" data-item-type="ItemHeading"><h3 class="item-body"> ImageFXの画面構成</h3></div>
+        
+        <div class="article-item item_rich_text " id="item27441" data-item-id="27441" data-item-type="ItemRichText"><div class="item-body-hbr">まずはじめに、ImageFXの操作画面を見ていきましょう。<br>
+画面は主に4つのエリアに分かれています。<br>
+それぞれの名称と役割を理解することで、これからの操作がスムーズになります。</div></div>
+        
+        <div class="article-item item_image " id="item27442" data-item-id="27442" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/027/442/medium/6da35c4c-4869-418b-aeb8-3b53770a0891.png?1751249156" title=""><img class="img-responsive item-image" alt=" (27442)" data-reference="" src="https://cdn.clipkit.co/tenants/589/item_images/images/000/027/442/medium/6da35c4c-4869-418b-aeb8-3b53770a0891.png?1751249156" width="640" height="317" /></a><h4></h4></div></div>
+        
+        <div class="article-item item_heading " id="item27443" data-item-id="27443" data-item-type="ItemHeading"><h3 class="item-body">基本的な画像生成の手順</h3></div>
+        
+        <div class="article-item item_rich_text " id="item27444" data-item-id="27444" data-item-type="ItemRichText"><div class="item-body-hbr">ImageFXでの画像生成は、とてもシンプルです。<br>
+基本的には以下の4つのステップで完了します。</div></div>
+        
+        <div class="article-item item_html " id="item27445" data-item-id="27445" data-item-type="ItemHtml"><div class="item-body"><div class="card-with-icon check">
+    <span class="bold"><strong>基本的な画像生成の4ステップ</strong><br></span>
+    <div class="content-area">
+        <ol>
+            <li><strong>プロンプト入力</strong>: 生成したい画像の内容をテキストで入力します。</li>
+            <li><strong>スタイルチップ選択</strong>: プロンプトを補強する画風やテイストのチップを選択します。</li>
+            <li><strong>「生成」ボタンクリック</strong>: プロンプトとチップの準備ができたら、「生成」ボタンを押します。</li>
+            <li><strong>生成結果の確認とダウンロード</strong>: 表示された画像を確認し、気に入ったものをダウンロードします。</li>
+        </ol>
+    </div>
+</div></div></div>
+        
+        <div class="article-item item_rich_text " id="item27446" data-item-id="27446" data-item-type="ItemRichText"><div class="item-body-hbr">この後のパートで、それぞれのステップをさらに深掘りしていきます。</div></div>
+        
+        <div class="article-item item_heading " id="item27447" data-item-id="27447" data-item-type="ItemHeading"><h2 class="item-body">【1-2】最重要機能：「エクスプレッシブチップス」の仕組みと実践</h2></div>
+        
+        <div class="article-item item_markdown " id="item27448" data-item-id="27448" data-item-type="ItemMarkdown"><h4 id="section">目安学習時間: 30分</h4>
+</div>
+        
+        <div class="article-item item_heading " id="item27449" data-item-id="27449" data-item-type="ItemHeading"><h3 class="item-body">エクスプレッシブチップスとは？</h3></div>
+        
+        <div class="article-item item_rich_text " id="item27450" data-item-id="27450" data-item-type="ItemRichText"><div class="item-body-hbr">ImageFXの最も特徴的で強力な機能が「エクスプレッシブチップス」です。</div></div>
+        
+        <div class="article-item item_html " id="item27451" data-item-id="27451" data-item-type="ItemHtml"><div class="item-body"><div class="card-with-icon note">
+    <span class="bold"><strong>エクスプレッシブチップス</strong><br></span>
+    <div class="content-area">
+        <ul>
+            <li>プロンプトに特定の画風、テクニック、構図などを簡単に追加できるプリセットです。</li>
+            <li>例えば、「Cinematic」チップを選ぶだけで、映画のワンシーンのような劇的な雰囲気の画像を生成しやすくなります。</li>
+            <li><span class="decoration-02">複雑で長いプロンプトを書かなくても、チップを選択するだけで高品質な画像が生成されやすくなる</span>のが最大のメリットです。</li>
+        </ul>
+    </div>
+</div></div></div>
+        
+        <div class="article-item item_heading " id="item27452" data-item-id="27452" data-item-type="ItemHeading"><h3 class="item-body">効果的な組み合わせのコツ</h3></div>
+        
+        <div class="article-item item_rich_text " id="item27453" data-item-id="27453" data-item-type="ItemRichText"><div class="item-body-hbr">スタイルチップは複数組み合わせることで、より独創的で質の高い画像を生成できます。<br>
+効果的な組み合わせの基本は、<span class="decoration-02">異なるカテゴリのチップを掛け合わせる</span>ことです。</div></div>
+        
+        <div class="article-item item_html " id="item27454" data-item-id="27454" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li>
+    <span class="decoration-01">例：</span>「媒体」×「表現技法」×「構図」のように、役割の違うチップを組み合わせる。
+    <ul>
+      <li>
+        <span class="decoration-02">35mm film</span>（媒体） + 
+        <span class="decoration-02">Cinematic</span>（表現技法） + 
+        <span class="decoration-02">Golden hour</span>（光） + 
+        <span class="decoration-02">Close-up</span>（構図）
+      </li>
+    </ul>
+  </li>
+  <li>
+    <span class="decoration-01">注意点：</span>
+    <ul>
+      <li>闇雲に組み合わせすぎると、AIへの指示が競合してしまい、かえって意図しない結果になることがあります。</li>
+      <li>まずは <span class="decoration-02">3〜5個程度</span> から試してみるのがおすすめです。</li>
+    </ul>
+  </li>
+</ul>
+</div></div>
+        
+        <div class="article-item item_heading " id="item27455" data-item-id="27455" data-item-type="ItemHeading"><h3 class="item-body"> 練習問題</h3></div>
+        
+        <div class="article-item item_rich_text " id="item27456" data-item-id="27456" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">問題</span><br>
+プロンプト「<span class="decoration-02">a knight in forest</span>（森の中の騎士）」をベースに、以下の2つの異なる雰囲気の画像を、エクスプレッシブチップスの組み合わせのみを変えることによって生成してください。</div></div>
+        
+        <div class="article-item item_html " id="item27457" data-item-id="27457" data-item-type="ItemHtml"><div class="item-body"><ol>
+  <li>神秘的でファンタジックな雰囲気</li>
+  <li>リアルでドキュメンタリー調の雰囲気</li>
+</ol>
+</div></div>
+        
+        <div class="article-item item_rich_text " id="item27458" data-item-id="27458" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">解答</span></div></div>
+        
+        <div class="article-item item_rich_text " id="item27459" data-item-id="27459" data-item-type="ItemRichText"><div class="item-body-hbr">1.神秘的でファンタジックな雰囲気</div></div>
+        
+        <div class="article-item item_image " id="item27460" data-item-id="27460" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/027/460/medium/22a2c4e7-a551-40cc-bda8-3ce211dc0660.png?1751249503" title=""><img class="img-responsive item-image" alt=" (27460)" data-reference="" src="https://cdn.clipkit.co/tenants/589/item_images/images/000/027/460/medium/22a2c4e7-a551-40cc-bda8-3ce211dc0660.png?1751249503" width="640" height="317" /></a><h4></h4></div></div>
+        
+        <div class="article-item item_rich_text " id="item27461" data-item-id="27461" data-item-type="ItemRichText"><div class="item-body-hbr">2.リアルでドキュメンタリー調の雰囲気</div></div>
+        
+        <div class="article-item item_image " id="item27462" data-item-id="27462" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/027/462/medium/955b2f63-d82e-4151-a317-9036efe96c58.png?1751249532" title=""><img class="img-responsive item-image" alt=" (27462)" data-reference="" src="https://cdn.clipkit.co/tenants/589/item_images/images/000/027/462/medium/955b2f63-d82e-4151-a317-9036efe96c58.png?1751249532" width="640" height="317" /></a><h4></h4></div></div>
+        
+        <div class="article-item item_rich_text " id="item27463" data-item-id="27463" data-item-type="ItemRichText"><div class="item-body-hbr">上記はあくまで一例です。<br>
+チップの組み合わせ次第で無数の表現が可能ですので、色々なパターンを試してみてください。</div></div>
+        
+        <div class="article-item item_heading " id="item27464" data-item-id="27464" data-item-type="ItemHeading"><h2 class="item-body">【1-3】一貫性と多様性：「Seed値」の活用</h2></div>
+        
+        <div class="article-item item_markdown " id="item27465" data-item-id="27465" data-item-type="ItemMarkdown"><h4 id="section">目安学習時間: 20分</h4>
+</div>
+        
+        <div class="article-item item_heading " id="item27466" data-item-id="27466" data-item-type="ItemHeading"><h3 class="item-body">Seed値とは？</h3></div>
+        
+        <div class="article-item item_rich_text " id="item27467" data-item-id="27467" data-item-type="ItemRichText"><div class="item-body-hbr">Seed値（シード値）は、一見ランダムに見える画像生成に、再現性や一貫性をもたらすための重要な要素です。<br>
+設定エリアを開くと自分のシード値を確認できます。</div></div>
+        
+        <div class="article-item item_html " id="item27468" data-item-id="27468" data-item-type="ItemHtml"><div class="item-body"><div class="card-with-icon note">
+    <span class="bold"><strong>Seed値</strong><br></span>
+    <div class="content-area">
+        <ul>
+            <li>生成される画像を決定するための「設計図」にあたる初期値（乱数シード）です。</li>
+            <li>同じプロンプトと設定でも、Seed値が異なると全く違う画像が生成されます。</li>
+            <li>逆に、<span class="decoration-02">Seed値を固定すると、プロンプトを少し変更しても構図やキャラクターの特徴といった全体の一貫性を保ちやすく</span>なります。</li>
+        </ul>
+    </div>
+</div></div></div>
+        
+        <div class="article-item item_heading " id="item27469" data-item-id="27469" data-item-type="ItemHeading"><h3 class="item-body"> 具体的な活用法</h3></div>
+        
+        <div class="article-item item_html " id="item27470" data-item-id="27470" data-item-type="ItemHtml"><div class="item-body"><span>Seed値を固定するテクニックは、特に以下のような場面で役立ちます。</span>
+<ul>
+  <li>
+    <span class="decoration-01">キャラクターの一貫性：</span>
+    Seedを固定したまま、プロンプトの
+    <span class="decoration-02">a man smiling</span> を 
+    <span class="decoration-02">a man crying</span> に変更すると、
+    同じ人物が泣いている画像を生成しやすくなります。
+  </li>
+  <li>
+    <span class="decoration-01">デザインのA/Bテスト：</span>
+    Seedを固定したまま、プロンプトの
+    <span class="decoration-02">a red car</span> を 
+    <span class="decoration-02">a blue car</span> に変更し、
+    色違いの広告クリエイティブ案などを効率的に比較検討できます。
+  </li>
+</ul>
+</div></div>
+        
+        <div class="article-item item_link " id="item27471" data-item-id="27471" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=pAoOL&amp;item_id=27471" rel="nofollow noopener noreferrer" target="_blank">EX④ 特定AIツール深掘り講座_image-FX 1-1</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="EX④ 特定AIツール深掘り講座_image-FX 1-1" data-reference="https://www.dropbox.com/scl/fi/wwdontop2kdjdarw6558v/EX4-AItool-ImageFX_1.1.1.0_.mp4?rlkey=f1vaz0i1c7wxl237xbzdjc2kp&amp;st=2d54fcg4&amp;dl=0" src="https://cdn.clipkit.co/tenants/589/item_links/images/000/027/471/thumb/89f93a29-7a9d-4e3b-85dd-6f67a9d91401.png?1754957339" width="75" height="75" /></div><div class="media-body"><div class="item-body"></div></div></div></div></div>
+        
+        <div class="article-item item_heading " id="item27472" data-item-id="27472" data-item-type="ItemHeading"><h2 class="item-body">【1-4】章末課題 - 複合テクニックでのお題生成</h2></div>
+        
+        <div class="article-item item_markdown " id="item27473" data-item-id="27473" data-item-type="ItemMarkdown"><h4 id="section">目安学習時間: 20分</h4>
+</div>
+        
+        <div class="article-item item_heading " id="item27474" data-item-id="27474" data-item-type="ItemHeading"><h3 class="item-body">問題</h3></div>
+        
+        <div class="article-item item_html " id="item27475" data-item-id="27475" data-item-type="ItemHtml"><div class="item-body"><span>この章で学んだテクニックを総動員して、以下の全ての要件を満たす画像を1枚生成してください。</span>
+<ul>
+  <li><span class="decoration-01">プロンプト：</span>「オフィスでノートPCを操作するビジネスパーソン」</li>
+  <li><span class="decoration-01">エクスプレッシブチップス：</span>3つ以上使用し、「写真」ではなく「イラスト」風にすること</li>
+  <li><span class="decoration-01">その他：</span>生成した画像のSeed値をコピーして、解答として提出すること</li>
+</ul></div></div>
+        
+        <div class="article-item item_heading " id="item27476" data-item-id="27476" data-item-type="ItemHeading"><h3 class="item-body"> 解答手順</h3></div>
+        
+        <div class="article-item item_html " id="item27477" data-item-id="27477" data-item-type="ItemHtml"><div class="item-body"><div class="card-with-icon check">
+    <span class="bold"><strong>制作手順</strong><br></span>
+    <div class="content-area">
+        <ol>
+            <li>プロンプトに「<code>a business person working on a laptop in an office</code>」と入力します。</li>
+            <li>エクスプレッシブチップスで「Illustration」「Vector」「Flat design」など、イラスト風のチップを3つ以上選択します。（例：「Minimalist」「2D」なども有効です）</li>
+            <li>「生成」ボタンを押し、要件を満たす画像が生成されたか確認します。</li>
+            <li>設定からシード値をコピーして提出しましょう。</li>
+        </ol>
+    </div>
+</div></div></div>
+        
+        <div class="article-item item_link " id="item27478" data-item-id="27478" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=pAoOL&amp;item_id=27478" rel="nofollow noopener noreferrer" target="_blank">EX④ 特定AIツール深掘り講座_image-FX 1-2</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="EX④ 特定AIツール深掘り講座_image-FX 1-2" data-reference="https://www.dropbox.com/scl/fi/7qu4vwt9bfsd831rbg6w0/EX4-AItool-ImageFX_1.2.1.0_.mp4?rlkey=bed16mgdfdsf29712wkaxs3w7&amp;st=i4vb2bni&amp;dl=0" src="https://cdn.clipkit.co/tenants/589/item_links/images/000/027/478/thumb/b3878973-901d-47a0-a4f7-12f6d7496b59.png?1754957351" width="75" height="75" /></div><div class="media-body"><div class="item-body"></div></div></div></div></div>
+        
+        <div class="article-item item_html " id="item27479" data-item-id="27479" data-item-type="ItemHtml"><div class="item-body"><div class="card-with-icon point">
+    <span class="bold"><strong>コーチに提出しよう！</strong></span>
+    <div class="content-area">
+    <ul><li>完成した課題は、コーチに提出してフィードバックをもらいましょう！</li><li>思いもよらない新しいアイデアや、別の切り口のヒントがもらえることもあります。</li></ul>
+    <a><strong>【ポイント】</strong></a>
+        <ul>
+            <li>生成した画像のプロンプト、追加したエクスプレッシブチップス、そしてSeed値を忘れずに説明しましょう。</li>
+            <li>あなたが意図した画像が生成できたか、もしそうでなければどこが課題だったかを具体的に説明しましょう。</li>
+            <li>コーチに、生成された画像の改善点や、より理想の画像を生成するためのプロンプトの調整方法について質問してみましょう。</li>
+        </ul>
+    </div>
+</div></div></div>
+        
+        <div class="article-item item_rich_text " id="item27480" data-item-id="27480" data-item-type="ItemRichText"><div class="item-body-hbr">これで「1章：ImageFX完全攻略：高品質な画像を生成する基礎技術」の解説を終わります。<br>
+次の章では、ここで生成した画像をプロのツールで加工していく方法を学びます。</div></div>
+        
+        <div class="article-item item_html " id="item35049" data-item-id="35049" data-item-type="ItemHtml"><div class="item-body"><div class="pagenation-buttons">
+  <a href="SZQfl" class="pagenation-buttons_prev"><img src="/theme/webcoach/img/icons/arrow-right.svg" class="pagenation-buttons_icon">前の章に戻る</a>
+  <a href="qBh3D" class="pagenation-buttons_next">次の章に進む<img src="/theme/webcoach/img/icons/arrow-right.svg" class="pagenation-buttons_icon"></a>
+</div></div></div>
+        
+        
+        
+        <div class="back-to-roadmap mb-4 text-center"></div>
+      </div>
+    </div>
+    
+    <div class="lightbox-modal" id="lightboxModal">
+      <img src="" alt="">
+    </div>
+    
+    <div id="modal" class="fixed-menu-modal">
+      <div class="fixed-menu-modal-content">
+        <div class="index mb-3" style="background-color: #FDF5E8;">
+          <div>
+            <div class="fw-light">INDEX</div>
+            <div class="h3">目次</div>
+          </div>
+          <div class="toc"></div>
+        </div>
+        
+        <!-- ボタン類 -->
+        <div id="fixed-menu_buttons" class="fixed-menu_buttons"></div>
+        
+        <div class="back-to-roadmap text-center"></div>
+      </div>
+    </div>
+    
+    <button id="toggleBtn" class="floating-btn">
+      <img id="iconOpen" 
+           src="/theme/webcoach/img/icons/fixed-menu_modal-open.svg" 
+           alt="メニューを開く">
+      <img id="iconClose" 
+           src="/theme/webcoach/img/icons/fixed-menu_modal-close.svg" 
+           alt="メニューを閉じる" style="display:none;">
+    </button>
+  </div>
+</div>
+</div>
+<!-- <script src="https://cdn.clipkit.co/clipkit/javascripts/item-shopify-1.0.js?v=v15.9.0-20260915" async></script> -->
+            </div>
+        </main>
+
+    </div>
+
+    <div class="p-5" style="background-color: #B73E3D; color: white; height: 300px;">
+        <div class="">
+            <div class="h4 ps-3" style="border-left: 5px solid white;">WEBCOACH | キャリアチェンジまでの全てを学ぶマンツーマンWEBスクール</div>
+            <ul class="nav flex-column m-0 p-3 fw-light">
+                <li class="nav-item mb-2"><a href="https://www.webcoach.jp/" target="_blank">WEBCOACH | 公式HP</a></li>
+                <li class="nav-item mb-2"><a href="https://www.instagram.com/webcoach_officials/" target="_blank">WEBCOACH | 公式Instagram</a></li>
+                <li class="nav-item mb-2"><a href="https://vectorinc.co.jp/groupservice/webcoach-career/" target="_blank">WEBCOACH 公式メディア | WEBCOACH career</a></li>
+            </ul>
+        </div>
+        <div class="text-center">
+            <small>&copy; 2020 by WEBCOACH</small>
+        </div>
+    </div>
+
+    <script src="https://cdn.clipkit.co/clipkit/javascripts/application-1.0.js?v=v15.9.0-20260915" async></script>
+
+    <!-- bodyタグ内の下部に挿入されます -->
+
+
+    <!-- BootstrapのCDNでのjs読み込み -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+        crossorigin="anonymous"></script>
+
+    <!-- シンタックスハイライトの生成 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.1/highlight.min.js"></script>
+    <script>
+        // ハイライトを実行
+        hljs.initHighlightingOnLoad();
+    </script>
+
+    <!-- 目次の生成 -->
+    <script type="text/javascript">toc();</script>
+
+    <!-- ブックマークの生成 -->
+    <script type="text/javascript">displayLinks();</script>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="ck-icon-arrow-down" viewBox="0 0 1792 1792"><path d="M1675 832q0 53-37 90l-651 652q-39 37-91 37-53 0-90-37l-651-652q-38-36-38-90 0-53 38-91l74-75q39-37 91-37 53 0 90 37l294 294v-704q0-52 38-90t90-38h128q52 0 90 38t38 90v704l294-294q37-37 90-37 52 0 91 37l75 75q37 39 37 91z" /></symbol><symbol id="ck-icon-arrow-up" viewBox="0 0 1792 1792"><path d="M1675 971q0 51-37 90l-75 75q-38 38-91 38-54 0-90-38l-294-293v704q0 52-37.5 84.5t-90.5 32.5h-128q-53 0-90.5-32.5t-37.5-84.5v-704l-294 293q-36 38-90 38t-90-38l-75-75q-38-38-38-90 0-53 38-91l651-651q35-37 90-37 54 0 91 37l651 651q37 39 37 91z" /></symbol><symbol id="ck-icon-calendar" viewBox="0 0 1792 1792"><path d="M192 1664h288v-288h-288v288zm352 0h320v-288h-320v288zm-352-352h288v-320h-288v320zm352 0h320v-320h-320v320zm-352-384h288v-288h-288v288zm736 736h320v-288h-320v288zm-384-736h320v-288h-320v288zm768 736h288v-288h-288v288zm-384-352h320v-320h-320v320zm-352-864v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm736 864h288v-320h-288v320zm-384-384h320v-288h-320v288zm384 0h288v-288h-288v288zm32-480v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm384-64v1280q0 52-38 90t-90 38h-1408q-52 0-90-38t-38-90v-1280q0-52 38-90t90-38h128v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h384v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h128q52 0 90 38t38 90z" /></symbol><symbol id="ck-icon-chevron-left" viewBox="0 0 1792 1792"><path d="M1427 301l-531 531 531 531q19 19 19 45t-19 45l-166 166q-19 19-45 19t-45-19l-742-742q-19-19-19-45t19-45l742-742q19-19 45-19t45 19l166 166q19 19 19 45t-19 45z" /></symbol><symbol id="ck-icon-chevron-right" viewBox="0 0 1792 1792"><path d="M1363 877l-742 742q-19 19-45 19t-45-19l-166-166q-19-19-19-45t19-45l531-531-531-531q-19-19-19-45t19-45l166-166q19-19 45-19t45 19l742 742q19 19 19 45t-19 45z" /></symbol><symbol id="ck-icon-clock-o" viewBox="0 0 1792 1792"><path d="M1024 544v448q0 14-9 23t-23 9h-320q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h224v-352q0-14 9-23t23-9h64q14 0 23 9t9 23zm416 352q0-148-73-273t-198-198-273-73-273 73-198 198-73 273 73 273 198 198 273 73 273-73 198-198 73-273zm224 0q0 209-103 385.5t-279.5 279.5-385.5 103-385.5-103-279.5-279.5-103-385.5 103-385.5 279.5-279.5 385.5-103 385.5 103 279.5 279.5 103 385.5z" /></symbol><symbol id="ck-icon-trash" viewBox="0 0 1792 1792"><path d="M704 1376v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm-544-992h448l-48-117q-7-9-17-11h-317q-10 2-17 11zm928 32v64q0 14-9 23t-23 9h-96v948q0 83-47 143.5t-113 60.5h-832q-66 0-113-58.5t-47-141.5v-952h-96q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h309l70-167q15-37 54-63t79-26h320q40 0 79 26t54 63l70 167h309q14 0 23 9t9 23z" /></symbol><symbol id="ck-icon-undo" viewBox="0 0 1792 1792"><path d="M1664 896q0 156-61 298t-164 245-245 164-298 61q-172 0-327-72.5t-264-204.5q-7-10-6.5-22.5t8.5-20.5l137-138q10-9 25-9 16 2 23 12 73 95 179 147t225 52q104 0 198.5-40.5t163.5-109.5 109.5-163.5 40.5-198.5-40.5-198.5-109.5-163.5-163.5-109.5-198.5-40.5q-98 0-188 35.5t-160 101.5l137 138q31 30 14 69-17 40-59 40h-448q-26 0-45-19t-19-45v-448q0-42 40-59 39-17 69 14l130 129q107-101 244.5-156.5t284.5-55.5q156 0 298 61t245 164 164 245 61 298z" /></symbol></svg><script async="async" defer="defer" nonce="VuKcWvTqzZAhBhp8AZo9HQ==" src="//www.instagram.com/embed.js"></script>
+
+<!--Clipkit(R) v15.9.0-20260915 Copyright (C) 2026 VECTOR Inc.-->
+
+</body>
+
+</html>
+

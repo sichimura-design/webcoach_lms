@@ -1,0 +1,739 @@
+<!DOCTYPE html>
+<!-- clipkit-source-url: https://learn.webcoach.jp/generative-ai/AI_design/%E6%95%99%E6%9D%900%20AI%E6%99%82%E4%BB%A3%E3%81%AEWeb%E3%83%87%E3%82%B6%E3%82%A4%E3%83%8A%E3%83%BC%E3%81%AE%E6%A6%82%E8%A6%81%E7%90%86%E8%A7%A3/OFyD4 -->
+<!-- clipkit-fetched-at: 2026-09-17T11:14:00.275Z -->
+<html lang="ja"><head>
+    <!-- headタグ内の上部に挿入されます -->
+
+    <meta charset="UTF-8">
+    <title>2章 AI活用のヒント - WEBCOACH</title>
+
+    <!-- resetcssのCDNでのCSS読み込み -->
+    <link rel="stylesheet" href="../../_assets/17f8e278dc.css">
+
+    <!-- fontawesomeのCDNでのCSS読み込み -->
+    <link rel="stylesheet" href="../../_assets/799aeb25cc.css">
+
+    <!-- BootstrapのCDNでのCSS読み込み -->
+    <link href="../../_assets/7633b7c0c9.css" rel="stylesheet">
+
+    <!-- highlight.jsの読み込み -->
+    <link rel="stylesheet" href="../../_assets/e31ce2dd8c.css">
+
+    <!-- カスタムCSS -->
+    <link rel="stylesheet" href="../../_assets/c533dd7750.css">
+
+    <!-- clipkitデフォルトのCSS -->
+    <!--<link rel="stylesheet" media="screen" href="https://cdn.clipkit.co/clipkit/stylesheets/application-1.0.css?v=v15.9.0-20260915">-->
+
+    <!-- jQuery -->
+    
+
+    <!-- カスタムJS -->
+    
+    
+
+    <!-- clipkitデフォルトのJS -->
+    
+
+    <!-- フォント -->
+    <link rel="preconnect" href="https://fonts.googleapis.com/">
+    <link rel="preconnect" href="https://fonts.gstatic.com/">
+    <link href="../../_assets/8b5713f1fc.css" rel="stylesheet">
+
+    <link href="../../_assets/b83ae8ba65.webp" rel="shortcut icon" type="image/vnd.microsoft.icon">
+    <link rel="apple-touch-icon" href="../../_assets/ea0aba163d.webp">
+    <link rel="alternate" type="application/rss+xml" href="https://learn.webcoach.jp/media.rss" title="WEBCOACH">
+    
+<link rel="canonical" href="https://learn.webcoach.jp/generative-ai/AI_design/%E6%95%99%E6%9D%900%20AI%E6%99%82%E4%BB%A3%E3%81%AEWeb%E3%83%87%E3%82%B6%E3%82%A4%E3%83%8A%E3%83%BC%E3%81%AE%E6%A6%82%E8%A6%81%E7%90%86%E8%A7%A3/OFyD4">
+
+<meta name="description" content="">
+<meta name="keywords" content="">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:domain" content="learn.webcoach.jp">
+<meta name="twitter:title" content="2章 AI活用のヒント - WEBCOACH">
+<meta name="twitter:image" content="https://cdn.clipkit.co/tenants/589/item_images/images/000/026/100/medium/0b38feeb-a3b6-473b-bb4c-82258e2c7183.jpg?1750817976">
+<meta name="twitter:description" content="">
+<meta property="og:site_name" content="WEBCOACH">
+<meta property="og:title" content="2章 AI活用のヒント">
+<meta property="og:description" content="">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://learn.webcoach.jp/generative-ai/AI_design/%E6%95%99%E6%9D%900%20AI%E6%99%82%E4%BB%A3%E3%81%AEWeb%E3%83%87%E3%82%B6%E3%82%A4%E3%83%8A%E3%83%BC%E3%81%AE%E6%A6%82%E8%A6%81%E7%90%86%E8%A7%A3/OFyD4">
+<meta property="og:image" content="https://cdn.clipkit.co/tenants/589/item_images/images/000/026/100/large/0b38feeb-a3b6-473b-bb4c-82258e2c7183.jpg?1750817976">
+
+
+    <!-- headタグ内の下部に挿入されます -->
+
+
+<meta name="csrf-param" content="authenticity_token">
+<meta name="csrf-token" content="Axcb_f3-z4jGbwpdwBjWM3eDl7Xe4o_5eNXZL2G0wM64bX7RS_eD9_HN6ffNeVOTRa1gr3HHPFylOk36c9kCKw"><meta content="" name="routing-root-path"><meta content="media" name="site-name"><meta content="ja" name="i18n-default-locale"><meta content="ja" name="i18n-locale"><style data-clipkit-snapshot="force-visible">[data-aos],.reveal,.wow,.fade-in,.animate__animated,.js-reveal{opacity:1!important;transform:none!important;visibility:visible!important;animation:none!important;transition:none!important}</style></head>
+
+<body class="device-desktop" style="visibility: visible;">
+    <!-- bodyタグ内の上部に挿入されます -->
+
+
+    <!-- サイドバーとコンテンツのコンテナ -->
+    <div class="d-flex flex-row w-100 mb-5" style="min-height: calc(100vh - 400px);">
+
+        <!-- サイドバー -->
+        <!--<nav id="side-bar" class="d-flex flex-column fixed-top" style="width: 250px;">-->
+        <!--    <h1 class="d-block w-100 text-center">-->
+        <!--        <a class="d-block" href="/">-->
+        <!--            <img class="mw-100 p-3" src="https://cdn.clipkit.co/tenants/589/sites/logos/000/000/001/logo_sm/a8defd4b-1cc7-433b-a61c-08e7db0e3e4f.png?1714459367" alt="WEBCOACH">-->
+        <!--        </a>-->
+        <!--    </h1>-->
+        <!--    <ul class="nav flex-column m-0 p-3 fw-bold">-->
+        <!--        <li id="sidebar-top" class="nav-item mb-2" style="display: none;"><a href="/"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;" src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/233/original/home.png?1715353458">-->
+        <!--                <div>ホーム</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-knowledges" class="nav-item mb-2" style="display: none;"><a href="/knowledges"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;" src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/232/original/book.png?1715353458">-->
+        <!--                <div>学習の心得</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-web-designs" class="nav-item mb-2" style="display: none;"><a href="/web-designs"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/231/original/design.png?1715353457">-->
+        <!--                <div>WEBデザイン</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-web-marketing" class="nav-item mb-2" style="display: none;"><a href="/web-marketings"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/230/original/marketing.png?1715353457">-->
+        <!--                <div>WEBマーケティング</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-codings" class="nav-item mb-2" style="display: none;"><a href="/codings"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/229/original/website.png?1715353457">-->
+        <!--                <div>WEBサイト構築</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-business-skills" class="nav-item mb-2" style="display: none;"><a href="/business-skills"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/228/original/business.png?1715353456">-->
+        <!--                <div>ビジネススキル</div>-->
+        <!--            </a></li>-->
+        <!--    </ul>-->
+        <!--</nav>-->
+
+        <!-- コンテンツ -->
+        <!--<main class="ms-auto" style="width: calc(100vw - 250px);">-->
+        <main class="ms-auto" style="width: calc(100vw);">
+            <div id="sb-site">
+                
+
+
+<div class="container">
+  <div class="row">
+    <div class="article">
+      <div class="mb-3 text-light" style="
+        height: 180px;
+        background-image: url(&quot;../../_assets/e1d58e2b8a.webp&quot;);
+        background-repeat: no-repeat;
+        background-size: cover;
+        display: flex;
+        align-items: flex-end;
+      ">
+        <div style="
+          margin: 0 0 30px 30px;
+        ">
+          <div>教材0 AI時代のWebデザイナーの概要理解</div>
+
+          <div class="fw-bold h2">2章 AI活用のヒント</div>
+        </div>
+      </div>
+      <div class="article-content">
+        <!-- 目次 -->
+        <div class="index mb-3" style="background-color: #FDF5E8;">
+          <div>
+            <div class="fw-light">INDEX</div>
+            <div class="h3">目次</div>
+          </div>
+          <div class="toc"><ul><li><a href="#heading0" class="tocLink">2章 AI活用のヒント</a><ul><li><a href="#heading1" class="tocLink">この章の目安学習時間：1時間</a></li><li><a href="#heading2" class="tocLink">この章で到達できるゴール</a></li></ul></li><li><a href="#heading3" class="tocLink">【2-1】AIとの協業マインドセット</a><ul><li><a href="#heading4" class="tocLink">目安の学習時間：10分</a></li></ul><ul><li><a href="#heading5" class="tocLink">AIとの関係性：的確な指示の重要性</a></li></ul></li><li><a href="#heading6" class="tocLink">【2-2】デザインプロセスにおけるAI活用事例</a><ul><li><a href="#heading7" class="tocLink">目安の学習時間：30分</a></li></ul><ul><li><a href="#heading8" class="tocLink">AIによるリサーチ・情報収集の効率化</a></li><li><a href="#heading9" class="tocLink">AIによるアイデア発想・ブレインストーミング支援</a></li><li><a href="#heading10" class="tocLink">AIによるビジュアル・テキスト作成の補助</a><ul><li><a href="#heading11" class="tocLink"></a></li></ul></li></ul></li><li><a href="#heading12" class="tocLink">【2-3】章末課題：AI活用ケーススタディ</a><ul><li><a href="#heading13" class="tocLink">目安の学習時間：20分</a></li></ul><ul><li><a href="#heading14" class="tocLink">問題</a></li><li><a href="#heading15" class="tocLink">解答解説</a></li></ul></li></ul></div>
+        </div>
+        
+        <div class="back-to-roadmap mb-4 text-center"></div>
+
+        <!-- コンテンツ -->
+        
+        
+        <div class="article-item item_html " id="item26167" data-item-id="26167" data-item-type="ItemHtml"><div class="item-body"><div class="pagenation-buttons" style="justify-content: space-between;">
+  <a href="https://learn.webcoach.jp/generative-ai/AI_design/%E6%95%99%E6%9D%900%20AI%E6%99%82%E4%BB%A3%E3%81%AEWeb%E3%83%87%E3%82%B6%E3%82%A4%E3%83%8A%E3%83%BC%E3%81%AE%E6%A6%82%E8%A6%81%E7%90%86%E8%A7%A3/tLVXq" class="pagenation-buttons_prev"><img src="../../_assets/47498cfebf.svg" class="pagenation-buttons_icon">前の章に戻る</a>
+  <a href="https://learn.webcoach.jp/generative-ai/AI_design/%E6%95%99%E6%9D%900%20AI%E6%99%82%E4%BB%A3%E3%81%AEWeb%E3%83%87%E3%82%B6%E3%82%A4%E3%83%8A%E3%83%BC%E3%81%AE%E6%A6%82%E8%A6%81%E7%90%86%E8%A7%A3/2KrC6" class="pagenation-buttons_next">次の章に進む<img src="../../_assets/47498cfebf.svg" class="pagenation-buttons_icon"></a>
+</div>
+</div></div>
+        
+        <div class="article-item item_heading " id="item26073" data-item-id="26073" data-item-type="ItemHeading"><h2 class="item-body" id="heading0">2章 AI活用のヒント</h2></div>
+        
+        <div class="article-item item_markdown " id="item26072" data-item-id="26072" data-item-type="ItemMarkdown"><h4 id="heading1">この章の目安学習時間：1時間</h4>
+</div>
+        
+        <div class="article-item item_markdown " id="item26116" data-item-id="26116" data-item-type="ItemMarkdown"><h4 id="heading2">この章で到達できるゴール</h4>
+</div>
+        
+        <div class="article-item item_html " id="item26074" data-item-id="26074" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li>AIをデザイン作業における「アシスタント」や「壁打ち相手」として捉える思考法を理解できる。</li>
+  <li>デザインの各工程で、AIを具体的にどのように活用できるかのアイデアや事例を知ることができる。</li>
+  <li>実際のデザイン課題を想定し、AIを使ってどのようにアプローチできるかの思考実験ができるようになる。</li>
+</ul>
+</div></div>
+        
+        <div class="article-item item_heading " id="item26075" data-item-id="26075" data-item-type="ItemHeading"><h2 class="item-body" id="heading3">【2-1】AIとの協業マインドセット</h2></div>
+        
+        <div class="article-item item_markdown " id="item26076" data-item-id="26076" data-item-type="ItemMarkdown"><h4 id="heading4">目安の学習時間：10分</h4>
+</div>
+        
+        <div class="article-item item_heading " id="item26077" data-item-id="26077" data-item-type="ItemHeading"><h3 class="item-body" id="heading5">AIとの関係性：的確な指示の重要性</h3></div>
+        
+        <div class="article-item item_rich_text " id="item26078" data-item-id="26078" data-item-type="ItemRichText"><div class="item-body-hbr">生成AIは、テキストや画像を自動で生成する強力な技術ですが、その能力を最大限に引き出すためには、AIとの関係性を正しく理解することが不可欠です。<br>
+AIを単に「これを作って」と指示するだけの魔法の箱として捉えていると、期待する成果を得ることは難しいでしょう。<br>
+AIの能力を最大限に引き出すためには、<span class="decoration-02">明確な指示と対話を通じたブラッシュアップ</span>が不可欠です。</div></div>
+        
+        <div class="article-item item_html " id="item26079" data-item-id="26079" data-item-type="ItemHtml"><div class="item-body"><div class="card-with-icon point">
+    <span class="bold"><strong>AIとの上手な付き合い方</strong><br></span>
+    <div class="content-area">
+        <ul>
+            <li>AIを「具体的な指示がないと動けない、非常に知識豊富な新人アシスタント」のように考えてみましょう。</li>
+            <li>良い仕事をしてもらうためには、仕事の背景や目的、アウトプットの具体的な要件を丁寧に伝える必要があります。</li>
+            <li>この「伝え方」こそが、後続の教材で学ぶ「プロンプトエンジニアリング」の基礎となります。</li>
+        </ul>
+    </div>
+</div></div></div>
+        
+        <div class="article-item item_rich_text " id="item26080" data-item-id="26080" data-item-type="ItemRichText"><div class="item-body-hbr">この章では、AIを「思考の壁打ち相手」や「発想の泉」として活用するマインドセットを学び、一方的に指示するのではなく、協力してデザインを創り上げていく「創造的パートナー」としての関係性を築くための第一歩を踏み出します。</div></div>
+        
+        <div class="article-item item_heading " id="item26081" data-item-id="26081" data-item-type="ItemHeading"><h2 class="item-body" id="heading6">【2-2】デザインプロセスにおけるAI活用事例</h2></div>
+        
+        <div class="article-item item_markdown " id="item26082" data-item-id="26082" data-item-type="ItemMarkdown"><h4 id="heading7">目安の学習時間：30分</h4>
+</div>
+        
+        <div class="article-item item_heading " id="item26083" data-item-id="26083" data-item-type="ItemHeading"><h3 class="item-body" id="heading8">AIによるリサーチ・情報収集の効率化</h3></div>
+        
+        <div class="article-item item_rich_text " id="item26084" data-item-id="26084" data-item-type="ItemRichText"><div class="item-body-hbr">Webデザインのプロセスは、丁寧なリサーチから始まります。<br>
+AIは、この時間のかかる工程を劇的に効率化する強力なアシスタントになります。<br>
+<br>
+<span class="decoration-01">具体例：「新しいパーソナルジム」のLP制作に向けたリサーチ</span><br>
+<br>
+従来であれば数時間、あるいは数日かかっていたリサーチが、AIへの的確な質問によって数分で完了する可能性があります。</div></div>
+        
+        <div class="article-item item_html " id="item37993" data-item-id="37993" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li><span class="decoration-01">競合LP調査の具体例</span>
+    <ul>
+      <li>
+        <span class="decoration-01">AIへの指示（プロンプト）：</span><br>
+      </li>
+    </ul>
+  </li>
+</ul></div></div>
+        
+        <div class="article-item item_code " id="item37994" data-item-id="37994" data-item-type="ItemCode"><div class="item-body"><div class="CodeRay">
+  <div class="code"><pre>東京都内で展開している女性向けパーソナルジムのLPを3つ挙げてください。
+それぞれのLPのデザインコンセプト、ターゲットへの訴求ポイント（キャッチコピーや強み）、
+料金プランの提示方法について比較・分析して、表形式でまとめてください。</pre></div>
+</div>
+<div class="cite"><cite class="item-source">プロンプト</cite></div></div></div>
+        
+        <div class="article-item item_html " id="item37995" data-item-id="37995" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <ul>
+          <li>
+        <span class="decoration-01">AIからの回答例：</span><br>
+
+        <table class="simple">
+        <tbody>
+            </tbody><thead>
+                <tr>
+                    <th scope="col">
+                        <div>
+                            <div>ジム名</div>
+                        </div>
+                    </th>
+                    <th scope="col">
+                        <div>
+                            <div>デザインコンセプト</div>
+                        </div>
+                    </th>
+                    <th scope="col">
+                        <div>
+                            <div>訴求ポイント（強み・キャッチコピー）</div>
+                        </div>
+                    </th>
+                    <th scope="col">
+                        <div>
+                            <div>料金プランの提示方法</div>
+                        </div>
+                    </th>
+                </tr>
+            </thead>
+
+            <tbody><tr>
+                <th scope="row">
+                    <div>
+                        <div>VenusFit</div>
+                    </div>
+                </th>
+                <td>
+                    <div>
+                        <div>白とゴールドを基調とした高級感・ラグジュアリーな雰囲気。モデルのような女性の写真が中心。</div>
+                    </div>
+                </td>
+                <td>
+                    <div>
+                        <div>「選ばれたあなただけに、最高の輝きを。」完全個室、美容エステ連携、パウダールーム完備などを強調。</div>
+                    </div>
+                </td>
+                <td>
+                    <div>
+                        <div>2ヶ月コースXX万円〜。より詳細なプランはカウンセリングで提示する形式で、高級感を維持。</div>
+                    </div>
+                </td>
+            </tr>
+
+            <tr>
+                <th scope="row">
+                    <div>
+                        <div>ActiveOne</div>
+                    </div>
+                </th>
+                <td>
+                    <div>
+                        <div>オレンジとグレーを使った、アクティブでスポーティーな雰囲気。トレーニング中の躍動感ある写真が多い。</div>
+                    </div>
+                </td>
+                <td>
+                    <div>
+                        <div>「動けば変わる、未来が変わる。」科学的根拠に基づくトレーニングメソッド、食事指導の徹底を強調。</div>
+                    </div>
+                </td>
+                <td>
+                    <div>
+                        <div>目的別（ダイエット、ボディメイク等）に複数のコースを用意。料金は全て明確に記載し、透明性をアピール。</div>
+                    </div>
+                </td>
+            </tr>
+
+            <tr>
+                <th scope="row">
+                    <div>
+                        <div>My-Pace</div>
+                    </div>
+                </th>
+                <td>
+                    <div>
+                        <div>木目と緑を基調とした、ナチュラルで親しみやすい雰囲気。一般の女性が笑顔で運動する写真を使用。</div>
+                    </div>
+                </td>
+                <td>
+                    <div>
+                        <div>「がんばらない、私のためのジム時間。」運動が苦手な人でも安心、都度払いOK、厳しい食事制限なし、などを強調。</div>
+                    </div>
+                </td>
+                <td>
+                    <div>
+                        <div>月額プランと都度払いプランを併記。初回体験料金を安く設定し、来店のハードルを下げている。</div>
+                    </div>
+                </td>
+            </tr>
+
+
+          </tbody>
+        </table>
+      </li>
+  </ul>
+</ul></div></div>
+        
+        <div class="article-item item_html " id="item37996" data-item-id="37996" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li><span class="decoration-01">ターゲットインサイトの深掘りとペルソナ作成の具体例</span></li>
+  <ul>
+    <li><span class="decoration-01">AIへの指示（プロンプト）：</span></li>
+  </ul>
+</ul></div></div>
+        
+        <div class="article-item item_code " id="item37997" data-item-id="37997" data-item-type="ItemCode"><div class="item-body"><div class="CodeRay">
+  <div class="code"><pre>パーソナルジムの利用を検討している20代の女性会社員が、ジム選びで重視するポイントと、逆に不安に感じることは何ですか？
+LPにどのような情報があれば、彼女たちは安心し、体験してみたいと感じるでしょうか？ 
+上記の情報を基に、このジムの典型的なユーザーペルソナを『ミキ、28歳、都内在住の会社員』として、
+彼女のライフスタイルや悩みを具体的に記述してください。</pre></div>
+</div>
+<div class="cite"><cite class="item-source">プロンプト</cite></div></div></div>
+        
+        <div class="article-item item_html " id="item37998" data-item-id="37998" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <ul>
+    <li><span class="decoration-01">AIからの回答例：【ターゲットインサイト分析】</span></li>
+  </ul>
+</ul></div></div>
+        
+        <div class="article-item item_code " id="item37999" data-item-id="37999" data-item-type="ItemCode"><div class="item-body"><div class="CodeRay">
+  <div class="code"><pre>- **重視するポイント：**
+    - アクセスの良さ（会社の近く、駅近）
+    - トレーナーの実績と人柄
+    - 料金の明確さとコストパフォーマンス
+    - リアルな利用者の口コミやビフォーアフター
+    - 清潔感のある施設や備品（ウェアレンタルの有無など）
+- **不安に感じること：**
+    - 高額な料金を払って効果が出なかったらどうしよう
+    - 厳しい食事制限やトレーニングについていけるか
+    - トレーナーと相性が合わなかったら気まずい
+    - 他の利用者の目が気になる
+- **LPに求める安心情報：**
+    - 返金保証制度の有無
+    - 体験トレーニングの内容と料金
+    - 複数のトレーナーのプロフィール紹介
+    - 個室または少人数制であることの明記
+
+---
+
+**【ペルソナ：『ミキ』の詳細】**
+ミキは28歳、丸の内のIT企業で働く会社員。
+日々のデスクワークで運動不足を感じており、最近では肩こりやむくみが酷くなってきた。
+20代前半の頃に比べて体重も落ちにくくなり、自己流の食事制限や宅トレでは限界を感じている。
+
+Instagramで見るような健康的な身体に憧れはあるものの、運動経験は少なく、
+フィットネスクラブに入会しても結局行かなくなってしまった経験がある。
+高額なパーソナルジムには興味があるが、「自分なんかが行っていいのだろうか」
+「もし効果がなかったら…」と一歩を踏み出せずにいる。
+彼女は、ただ痩せるだけでなく、正しい知識を身につけ、自分に自信を持ちたいと心の底では願っている。</pre></div>
+</div>
+<div class="cite"><cite class="item-source">解答例</cite></div></div></div>
+        
+        <div class="article-item item_heading " id="item26091" data-item-id="26091" data-item-type="ItemHeading"><h3 class="item-body" id="heading9">AIによるアイデア発想・ブレインストーミング支援</h3></div>
+        
+        <div class="article-item item_rich_text " id="item26092" data-item-id="26092" data-item-type="ItemRichText"><div class="item-body-hbr">リサーチで得た情報をもとに、LPの構成（ワイヤーフレーム）や具体的な訴求メッセージを考えます。<br>
+AIを「壁打ち相手」にすることで、自分一人では思いつかないような多角的なアイデアを得ることができます。</div></div>
+        
+        <div class="article-item item_rich_text " id="item26093" data-item-id="26093" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">具体例：「パーソナルジムLP」のコンテンツとキャッチコピーを考えるケース</span><span class="decoration-01"></span></div></div>
+        
+        <div class="article-item item_html " id="item26094" data-item-id="26094" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li>
+    <span class="decoration-01">LPコンテンツのアイデア出し</span>
+    <ul>
+      <li>
+        <span class="decoration-01">AIへの指示（プロンプト）：</span><br>
+
+      </li>
+
+    </ul>
+  </li>
+</ul></div></div>
+        
+        <div class="article-item item_code " id="item38000" data-item-id="38000" data-item-type="ItemCode"><div class="item-body"><div class="CodeRay">
+  <div class="code"><pre>ペルソナ『ミキ』さんが『ここなら私に合っているかも！』と納得し、
+体験申し込みをしたくなるような、LPに必要なコンテンツのアイデアを10個提案してください。
+『お客様の声』や『トレーナー紹介』のような定番だけでなく、ユニークな切り口のアイデアもお願いします。</pre></div>
+</div>
+<div class="cite"><cite class="item-source">プロンプト</cite></div></div></div>
+        
+        <div class="article-item item_html " id="item38001" data-item-id="38001" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <ul>
+    <li><span class="decoration-01">AIからの回答例：</span></li>
+  </ul>
+</ul></div></div>
+        
+        <div class="article-item item_code " id="item38002" data-item-id="38002" data-item-type="ItemCode"><div class="item-body"><div class="CodeRay">
+  <div class="code"><pre>1. **お客様の声（動画インタビュー）：** 2〜3分程度のリアルな声で、成果だけでなく通う中での心の変化も語ってもらう。
+2. **トレーナーとの相性診断チャート：** 簡単な質問に答えるだけで、おすすめのトレーナーが分かるお楽しみコンテンツ。
+3. **1日のトレーニングの流れ（動画付き）：** 来店から退店までをシミュレーションで見せ、不安を解消する。
+4. **食事指導の具体例紹介：** 「こんなものも食べてOK！」という意外性のあるメニュー例を見せ、
+厳しい制限がないことをアピール。
+5. **よくある質問トップ5とその回答：** 最も多い疑問に先に答えておくことで、信頼感を醸成する。
+6. **他のジムとの違いが一目でわかる比較表：** 「価格」「サポート体制」「専門性」などで自社の強みを視覚的に示す。
+7. **卒業生へのインタビュー：** リバウンドせず体型を維持している様子を伝え、長期的な価値を示す。
+8. **体験トレーニングの予約空き状況カレンダー：** その場で予約できる手軽さを提供する。
+9. **ジムのこだわり空間紹介：** パウダールームのアメニティや、ウェア・タオルの質など、女性が喜ぶ細部をアピール。
+10. **代表メッセージ（トレーナーになった理由）：** なぜこのジムを始めたのか、その想いを伝えることで共感を呼ぶ。</pre></div>
+</div>
+<div class="cite"><cite class="item-source">解答例</cite></div></div></div>
+        
+        <div class="article-item item_html " id="item38003" data-item-id="38003" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li>
+    <span class="decoration-01">キャッチコピーの生成</span>
+    <ul>
+      <li>
+        <span class="decoration-01">AIへの指示（プロンプト）：</span>
+      </li>
+    </ul>
+  </li>
+</ul>
+</div></div>
+        
+        <div class="article-item item_code " id="item38004" data-item-id="38004" data-item-type="ItemCode"><div class="item-body"><div class="CodeRay">
+  <div class="code"><pre>『仕事帰りに手ぶらで通える』『運動初心者でも安心』という強みを打ち出し、
+ペルソナ『ミキ』さんの心に響くLPのメインキャッチコピーを10パターン考えてください。
+共感を呼ぶエモーショナルな切り口と、メリットを分かりやすく伝える機能的な切り口の両方から提案してください。</pre></div>
+</div>
+<div class="cite"><cite class="item-source">プロンプト</cite></div></div></div>
+        
+        <div class="article-item item_html " id="item38005" data-item-id="38005" data-item-type="ItemHtml"><div class="item-body"><ul>
+    <ul>
+      <li>
+        <span class="decoration-01">AIからの回答例：【エモーショナルな切り口】</span>
+      </li>
+    </ul>
+</ul>
+</div></div>
+        
+        <div class="article-item item_code " id="item38006" data-item-id="38006" data-item-type="ItemCode"><div class="item-body"><div class="CodeRay">
+  <div class="code"><pre>1. もう、続かない自分にサヨナラ。
+2. 今日の私が、未来の私を好きになる。
+3. 自信って、カラダから作れるんだ。
+4. 週1回、自分を甘やかさない時間。
+5. 「変わったね」って、最高の褒め言葉。
+
+**【機能的な切り口】**
+6.  ウェアもシューズも無料。だから、思い立った日に始められる。
+7.  運動経験ゼロのあなたへ。プロが選んだ、最短ルート。
+8.  厳しいだけが、正解じゃない。科学が教える、私らしいカラダ作り。
+9.  駅徒歩3分。忙しい毎日に、賢い選択を。
+10. 高い？いいえ、一生モノの価値です。【全額返金保証付き】</pre></div>
+</div>
+<div class="cite"><cite class="item-source">回答例</cite></div></div></div>
+        
+        <div class="article-item item_heading " id="item26096" data-item-id="26096" data-item-type="ItemHeading"><h3 class="item-body" id="heading10">AIによるビジュアル・テキスト作成の補助</h3></div>
+        
+        <div class="article-item item_rich_text " id="item26097" data-item-id="26097" data-item-type="ItemRichText"><div class="item-body-hbr">アイデアが固まったら、次はそのイメージを具体化する工程です。<br>
+AIは、デザインの「たたき台」となるビジュアルや、LPで実際に使用する文章（ライティング）を素早く提供してくれます。</div></div>
+        
+        <div class="article-item item_rich_text " id="item26098" data-item-id="26098" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">具体例：「パーソナルジムLP」のデザインとライティング</span></div></div>
+        
+        <div class="article-item item_html " id="item38007" data-item-id="38007" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li>
+    <span class="decoration-01">キービジュアル用画像の生成</span>
+    <ul>
+      <li>
+        <span class="decoration-01">AIへの指示（プロンプト）：</span>
+      </li>
+    </ul>
+  </li>
+</ul>
+</div></div>
+        
+        <div class="article-item item_code " id="item38008" data-item-id="38008" data-item-type="ItemCode"><div class="item-body"><div class="CodeRay">
+  <div class="code"><pre>LPのキービジュアルを作成します。健康的でスタイリッシュな雰囲気で。
+スタイリッシュなトレーニングウェアを着た20代の日本人女性が、自然光が差し込む清潔感のある
+ジムで笑顔でストレッチしている。背景は少しぼかし、都会的で洗練された雰囲気を出す。
+キーカラーはミントグリーンと白。写真のようにリアルなスタイルで。</pre></div>
+</div>
+<div class="cite"><cite class="item-source">プロンプト</cite></div></div></div>
+        
+        <div class="article-item item_html " id="item38009" data-item-id="38009" data-item-type="ItemHtml"><div class="item-body"><ul>
+    <ul>
+      <li>
+        <span class="decoration-01">AIからの回答例：</span>
+      </li>
+    </ul>
+</ul>
+</div></div>
+        
+        <div class="article-item item_image " id="item26100" data-item-id="26100" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/026/100/medium/0b38feeb-a3b6-473b-bb4c-82258e2c7183.jpg?1750817976" title=""><img class="img-responsive item-image" alt=" (26100)" data-reference="" src="../../_assets/2f724250ae.webp" width="640" height="640"></a><h4 id="heading11"></h4></div></div>
+        
+        <div class="article-item item_html " id="item38010" data-item-id="38010" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li>
+    <span class="decoration-01">LP内文章（ボディコピー）のたたき台作成</span>
+    <ul>
+      <li>
+        <span class="decoration-01">AIへの指示（プロンプト）：</span>
+      </li>
+    </ul>
+  </li>
+</ul>
+</div></div>
+        
+        <div class="article-item item_code " id="item38011" data-item-id="38011" data-item-type="ItemCode"><div class="item-body"><div class="CodeRay">
+  <div class="code"><pre>このパーソナルジムの3つの特長
+（1. 完全手ぶらでOK, 2. 女性専門の安心空間, 3. 経験豊富なプロトレーナー）について、
+ペルソナ『ミキ』さんが読みやすく、メリットが直感的に伝わるような紹介文をそれぞれ150字程度で作成してください。」</pre></div>
+</div>
+<div class="cite"><cite class="item-source">プロンプト</cite></div></div></div>
+        
+        <div class="article-item item_html " id="item38012" data-item-id="38012" data-item-type="ItemHtml"><div class="item-body"><ul>
+    <ul>
+      <li>
+        <span class="decoration-01">AIからの回答例：</span>
+      </li>
+    </ul>
+</ul>
+</div></div>
+        
+        <div class="article-item item_code " id="item38013" data-item-id="38013" data-item-type="ItemCode"><div class="item-body"><div class="CodeRay">
+  <div class="code"><pre>**1. 荷物は不要！完全手ぶらで、最高のトレーニングを。**
+仕事帰りに重い荷物を持ってジムへ…。そんな面倒とはもうサヨナラ！
+当ジムでは、スタイリッシュなウェアからシューズ、タオル、お水まで、トレーニングに必要なものは全て無料でご用意しています。
+あなたはただ「行きたい」と思った時に、身軽に来るだけ。思い立ったその日から、理想の自分に向けた一歩を踏み出せます。
+    
+**2. 周りの目が気にならない。あなただけの女性専門空間。**
+「汗だくの顔を見られたくない」「男性の視線が気になる…」そんな心配はもういりません。
+当ジムは、会員もトレーナーも全員女性。あなたの気持ちを本当に理解できる仲間しかいません。
+清潔感あふれる空間で、心からリラックスして、自分の身体と向き合うことに集中できる環境をお約束します。
+    
+**3. 運動ギライでも大丈夫。プロがあなたをゴールへ導く。**
+「これまで何度も挫折してきた…」そんなあなたにこそ、私たちのプロトレーナーが必要です。
+ただ厳しいだけでなく、あなたの骨格やライフスタイルに合わせて「楽しく続けられる」メニューをオーダーメイドで作成します。
+ささいな疑問や不安も気軽に相談できる。二人三脚のパートナーとして、目標達成まで徹底的に伴走します。</pre></div>
+</div>
+<div class="cite"><cite class="item-source">解答例</cite></div></div></div>
+        
+        <div class="article-item item_link " id="item26248" data-item-id="26248" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=OFyD4&amp;item_id=26248" rel="nofollow noopener noreferrer" target="_blank">0.AI時代のWebデザイナーの概要理解 2-1</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="0.AI時代のWebデザイナーの概要理解 2-1" data-reference="https://www.dropbox.com/scl/fi/71b0bp2z4o7u7ef1xesnk/AIjidaiWebdesigner_2.1_1.0_.mp4?rlkey=062xubir6o6njhedegtxq5cu6&amp;st=ljmpn35i&amp;dl=0" src="../../_assets/8068ac7adc.webp" width="75" height="75"></div><div class="media-body"><div class="item-body"></div></div></div></div></div>
+        
+        <div class="article-item item_html " id="item26103" data-item-id="26103" data-item-type="ItemHtml"><div class="item-body"><div class="card-with-icon attention">
+    <span class="bold"><strong>注意</strong><br></span>
+    <div class="content-area">
+        <ul>
+            <li>このセクションで紹介した活用法は、あくまで「こんなことができる」という可能性の提示です。</li>
+            <li>具体的なAIツールの詳細な使い方や、高品質なアウトプットを引き出すためのプロンプト技術は、<span class="decoration-02">後続の専門講座でじっくりと学びます。</span></li>
+            <li>ここではまず、「AIはデザインの様々な工程で頼れるパートナーになりそうだ」という感覚を掴むことを重視してください。</li>
+        </ul>
+    </div>
+</div></div></div>
+        
+        <div class="article-item item_heading " id="item26104" data-item-id="26104" data-item-type="ItemHeading"><h2 class="item-body" id="heading12">【2-3】章末課題：AI活用ケーススタディ</h2></div>
+        
+        <div class="article-item item_markdown " id="item26105" data-item-id="26105" data-item-type="ItemMarkdown"><h4 id="heading13">目安の学習時間：20分</h4>
+</div>
+        
+        <div class="article-item item_heading " id="item26106" data-item-id="26106" data-item-type="ItemHeading"><h3 class="item-body" id="heading14">問題</h3></div>
+        
+        <div class="article-item item_rich_text " id="item26107" data-item-id="26107" data-item-type="ItemRichText"><div class="item-body-hbr">WEBCOACHの演習課題で、ある地域の観光促進を目的としたLPを制作したとします。<br>
+しかし、クライアントから「メインのキービジュアルが少しありきたりで、もっと地域の隠れた魅力を伝えられるようなインパクトが欲しい」というフィードバックを受けました。<br>
+<br>
+この章で学んだことを参考に、AIを活用してこの課題を解決するためのアプローチを3ステップで考えて、それぞれAIをどのように活用できるか記述してください。<br>
+また余裕がある人は、AIの活用場面でどのようなプロンプトを入力するかについても考えて記述しましょう。</div></div>
+        
+        <div class="article-item item_html " id="item26108" data-item-id="26108" data-item-type="ItemHtml"><div class="item-body"><div class="card-with-icon point">
+    <span class="bold"><strong>自己評価のポイント</strong></span>
+    <div class="content-area">
+    <ul><li>完成した課題は以下のポイントに従って自己評価しましょう！</li></ul>
+    <a><strong>【ポイント】</strong></a>
+        <ul>
+            <li>今回の課題では、具体的なAIツールの名前を挙げ、どのように活用するかを明確に記述しましょう。</li>
+            <li>「隠れた魅力」を伝えるために、AIがどのような視点やアイデアを出せるか、具体的なプロンプト例を交えて説明すると良いでしょう。</li>
+            <li>WEBCOACH先生に、あなたの解決策に対するさらに発展的なアイデアや、他のAI活用方法について質問してみても良いでしょう。</li>
+        </ul>
+    </div>
+</div></div></div>
+        
+        <div class="article-item item_heading " id="item26109" data-item-id="26109" data-item-type="ItemHeading"><h3 class="item-body" id="heading15">解答解説</h3></div>
+        
+        <div class="article-item item_rich_text " id="item26110" data-item-id="26110" data-item-type="ItemRichText"><div class="item-body-hbr">この課題では、AIを段階的に活用し、リサーチからビジュアル提案までをスムーズに行う思考プロセスが重要です。<br>
+<br>
+以下に解答の一例を示します。</div></div>
+        
+        <div class="article-item item_html " id="item26111" data-item-id="26111" data-item-type="ItemHtml"><div class="item-body">    <ul>
+      <li><span class="decoration-01">ステップ1：コンセプトの深掘り (テキスト生成AIの活用)</span>
+        <ul>
+          <li>まず、課題の根本である「地域の隠れた魅力」を発見するために、ChatGPTのようなテキスト生成AIを活用します。</li>
+          <li><strong>プロンプト例：</strong>「〇〇（地域名）の知られざる魅力や歴史、文化について教えて。特に若者や外国人観光客に響きそうなユニークな切り口で、ストーリーが感じられるように」</li>
+          <li>これにより、単なる観光名所ではない、例えば「星空が美しい伝統的な祭り」や「地元職人の工房」といった、より深く、物語性のあるコンセプトの種を発見します。</li>
+        </ul>
+      </li>
+      <li><span class="decoration-01">ステップ2：ビジュアルアイデアの生成 (画像生成AIの活用)</span>
+        <ul>
+          <li>次に、ステップ1で得たコンセプトを基に、画像生成AIでビジュアルの方向性を探ります。</li>
+          <li><strong>プロンプト例：</strong>「日本の伝統的な祭りの夜、満点の星空の下で提灯が優しく灯り、人々が楽しそうに踊っている。幻想的で美しい、少しレトロなアニメ風のイラスト」</li>
+          <li>このように具体的なシーンを描写することで、ありきたりな風景写真とは一線を画す、独創的で魅力的なキービジュアルのアイデアを複数得ることができます。</li>
+        </ul>
+      </li>
+      <li><span class="decoration-01">ステップ3：デザインへの統合と提案</span>
+        <ul>
+          <li>生成された画像の中から最もコンセプトに合うものを選び、必要に応じてPhotoshopで色調補正などの調整を加えます。</li>
+          <li>仕上げに、再度テキスト生成AIに「星空の祭りをテーマにした、旅心をくすぐるキャッチコピーを5つ考えて」と依頼し、ビジュアルに合うコピーを配置して、新しいキービジュアル案としてクライアントに提案します。</li>
+        </ul>
+      </li>
+    </ul>
+</div></div>
+        
+        <div class="article-item item_rich_text " id="item26112" data-item-id="26112" data-item-type="ItemRichText"><div class="item-body-hbr">このプロセスにより、短時間でリサーチに基づいた独創的なビジュアル案を複数作成し、クライアントの期待を超える提案が可能になります。</div></div>
+        
+        <div class="article-item item_rich_text " id="item26113" data-item-id="26113" data-item-type="ItemRichText"><div class="item-body-hbr">これで「2章 AI活用のヒント」の解説を終わります。<br>
+次の章に進みましょう。</div></div>
+        
+        <div class="article-item item_html " id="item26168" data-item-id="26168" data-item-type="ItemHtml"><div class="item-body"><div class="pagenation-buttons" style="justify-content: space-between;">
+  <a href="https://learn.webcoach.jp/generative-ai/AI_design/%E6%95%99%E6%9D%900%20AI%E6%99%82%E4%BB%A3%E3%81%AEWeb%E3%83%87%E3%82%B6%E3%82%A4%E3%83%8A%E3%83%BC%E3%81%AE%E6%A6%82%E8%A6%81%E7%90%86%E8%A7%A3/tLVXq" class="pagenation-buttons_prev"><img src="../../_assets/47498cfebf.svg" class="pagenation-buttons_icon">前の章に戻る</a>
+  <a href="https://learn.webcoach.jp/generative-ai/AI_design/%E6%95%99%E6%9D%900%20AI%E6%99%82%E4%BB%A3%E3%81%AEWeb%E3%83%87%E3%82%B6%E3%82%A4%E3%83%8A%E3%83%BC%E3%81%AE%E6%A6%82%E8%A6%81%E7%90%86%E8%A7%A3/2KrC6" class="pagenation-buttons_next">次の章に進む<img src="../../_assets/47498cfebf.svg" class="pagenation-buttons_icon"></a>
+</div>
+</div></div>
+        
+        
+        
+        <div class="back-to-roadmap mb-4 text-center"></div>
+      </div>
+    </div>
+    
+    <div class="lightbox-modal" id="lightboxModal">
+      <img src="" alt="">
+    </div>
+    
+    <div id="modal" class="fixed-menu-modal">
+      <div class="fixed-menu-modal-content">
+        <div class="index mb-3" style="background-color: #FDF5E8;">
+          <div>
+            <div class="fw-light">INDEX</div>
+            <div class="h3">目次</div>
+          </div>
+          <div class="toc"><ul><li><a href="#heading0" class="tocLink">2章 AI活用のヒント</a><ul><li><a href="#heading1" class="tocLink">この章の目安学習時間：1時間</a></li><li><a href="#heading2" class="tocLink">この章で到達できるゴール</a></li></ul></li><li><a href="#heading3" class="tocLink">【2-1】AIとの協業マインドセット</a><ul><li><a href="#heading4" class="tocLink">目安の学習時間：10分</a></li></ul><ul><li><a href="#heading5" class="tocLink">AIとの関係性：的確な指示の重要性</a></li></ul></li><li><a href="#heading6" class="tocLink">【2-2】デザインプロセスにおけるAI活用事例</a><ul><li><a href="#heading7" class="tocLink">目安の学習時間：30分</a></li></ul><ul><li><a href="#heading8" class="tocLink">AIによるリサーチ・情報収集の効率化</a></li><li><a href="#heading9" class="tocLink">AIによるアイデア発想・ブレインストーミング支援</a></li><li><a href="#heading10" class="tocLink">AIによるビジュアル・テキスト作成の補助</a><ul><li><a href="#heading11" class="tocLink"></a></li></ul></li></ul></li><li><a href="#heading12" class="tocLink">【2-3】章末課題：AI活用ケーススタディ</a><ul><li><a href="#heading13" class="tocLink">目安の学習時間：20分</a></li></ul><ul><li><a href="#heading14" class="tocLink">問題</a></li><li><a href="#heading15" class="tocLink">解答解説</a></li></ul></li></ul></div>
+        </div>
+        
+        <!-- ボタン類 -->
+        <div id="fixed-menu_buttons" class="fixed-menu_buttons">
+  <a href="https://learn.webcoach.jp/generative-ai/AI_design/%E6%95%99%E6%9D%900%20AI%E6%99%82%E4%BB%A3%E3%81%AEWeb%E3%83%87%E3%82%B6%E3%82%A4%E3%83%8A%E3%83%BC%E3%81%AE%E6%A6%82%E8%A6%81%E7%90%86%E8%A7%A3/tLVXq" class="pagenation-buttons_prev"><img src="../../_assets/47498cfebf.svg" class="pagenation-buttons_icon">前の章に戻る</a>
+  <a href="https://learn.webcoach.jp/generative-ai/AI_design/%E6%95%99%E6%9D%900%20AI%E6%99%82%E4%BB%A3%E3%81%AEWeb%E3%83%87%E3%82%B6%E3%82%A4%E3%83%8A%E3%83%BC%E3%81%AE%E6%A6%82%E8%A6%81%E7%90%86%E8%A7%A3/2KrC6" class="pagenation-buttons_next">次の章に進む<img src="../../_assets/47498cfebf.svg" class="pagenation-buttons_icon"></a>
+</div>
+        
+        <div class="back-to-roadmap text-center"></div>
+      </div>
+    </div>
+    
+    <button id="toggleBtn" class="floating-btn">
+      <img id="iconOpen" src="../../_assets/5feefcfc55.svg" alt="メニューを開く">
+      <img id="iconClose" src="../../_assets/ae4a1129c9.svg" alt="メニューを閉じる" style="display:none;">
+    </button>
+  </div>
+</div>
+</div>
+<!-- <script src="https://cdn.clipkit.co/clipkit/javascripts/item-shopify-1.0.js?v=v15.9.0-20260915" async></script> -->
+            </main></div>
+        
+
+    
+
+    <div class="p-5" style="background-color: #B73E3D; color: white; height: 300px;">
+        <div class="">
+            <div class="h4 ps-3" style="border-left: 5px solid white;">WEBCOACH | キャリアチェンジまでの全てを学ぶマンツーマンWEBスクール</div>
+            <ul class="nav flex-column m-0 p-3 fw-light">
+                <li class="nav-item mb-2"><a href="https://www.webcoach.jp/" target="_blank">WEBCOACH | 公式HP</a></li>
+                <li class="nav-item mb-2"><a href="https://www.instagram.com/webcoach_officials/" target="_blank">WEBCOACH | 公式Instagram</a></li>
+                <li class="nav-item mb-2"><a href="https://vectorinc.co.jp/groupservice/webcoach-career/" target="_blank">WEBCOACH 公式メディア | WEBCOACH career</a></li>
+            </ul>
+        </div>
+        <div class="text-center">
+            <small>© 2020 by WEBCOACH</small>
+        </div>
+    </div>
+
+    
+
+    <!-- bodyタグ内の下部に挿入されます -->
+
+
+    <!-- BootstrapのCDNでのjs読み込み -->
+    
+
+    <!-- シンタックスハイライトの生成 -->
+    
+    
+
+    <!-- 目次の生成 -->
+    
+
+    <!-- ブックマークの生成 -->
+    
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="ck-icon-arrow-down" viewBox="0 0 1792 1792"><path d="M1675 832q0 53-37 90l-651 652q-39 37-91 37-53 0-90-37l-651-652q-38-36-38-90 0-53 38-91l74-75q39-37 91-37 53 0 90 37l294 294v-704q0-52 38-90t90-38h128q52 0 90 38t38 90v704l294-294q37-37 90-37 52 0 91 37l75 75q37 39 37 91z"></path></symbol><symbol id="ck-icon-arrow-up" viewBox="0 0 1792 1792"><path d="M1675 971q0 51-37 90l-75 75q-38 38-91 38-54 0-90-38l-294-293v704q0 52-37.5 84.5t-90.5 32.5h-128q-53 0-90.5-32.5t-37.5-84.5v-704l-294 293q-36 38-90 38t-90-38l-75-75q-38-38-38-90 0-53 38-91l651-651q35-37 90-37 54 0 91 37l651 651q37 39 37 91z"></path></symbol><symbol id="ck-icon-calendar" viewBox="0 0 1792 1792"><path d="M192 1664h288v-288h-288v288zm352 0h320v-288h-320v288zm-352-352h288v-320h-288v320zm352 0h320v-320h-320v320zm-352-384h288v-288h-288v288zm736 736h320v-288h-320v288zm-384-736h320v-288h-320v288zm768 736h288v-288h-288v288zm-384-352h320v-320h-320v320zm-352-864v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm736 864h288v-320h-288v320zm-384-384h320v-288h-320v288zm384 0h288v-288h-288v288zm32-480v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm384-64v1280q0 52-38 90t-90 38h-1408q-52 0-90-38t-38-90v-1280q0-52 38-90t90-38h128v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h384v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h128q52 0 90 38t38 90z"></path></symbol><symbol id="ck-icon-chevron-left" viewBox="0 0 1792 1792"><path d="M1427 301l-531 531 531 531q19 19 19 45t-19 45l-166 166q-19 19-45 19t-45-19l-742-742q-19-19-19-45t19-45l742-742q19-19 45-19t45 19l166 166q19 19 19 45t-19 45z"></path></symbol><symbol id="ck-icon-chevron-right" viewBox="0 0 1792 1792"><path d="M1363 877l-742 742q-19 19-45 19t-45-19l-166-166q-19-19-19-45t19-45l531-531-531-531q-19-19-19-45t19-45l166-166q19-19 45-19t45 19l742 742q19 19 19 45t-19 45z"></path></symbol><symbol id="ck-icon-clock-o" viewBox="0 0 1792 1792"><path d="M1024 544v448q0 14-9 23t-23 9h-320q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h224v-352q0-14 9-23t23-9h64q14 0 23 9t9 23zm416 352q0-148-73-273t-198-198-273-73-273 73-198 198-73 273 73 273 198 198 273 73 273-73 198-198 73-273zm224 0q0 209-103 385.5t-279.5 279.5-385.5 103-385.5-103-279.5-279.5-103-385.5 103-385.5 279.5-279.5 385.5-103 385.5 103 279.5 279.5 103 385.5z"></path></symbol><symbol id="ck-icon-trash" viewBox="0 0 1792 1792"><path d="M704 1376v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm-544-992h448l-48-117q-7-9-17-11h-317q-10 2-17 11zm928 32v64q0 14-9 23t-23 9h-96v948q0 83-47 143.5t-113 60.5h-832q-66 0-113-58.5t-47-141.5v-952h-96q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h309l70-167q15-37 54-63t79-26h320q40 0 79 26t54 63l70 167h309q14 0 23 9t9 23z"></path></symbol><symbol id="ck-icon-undo" viewBox="0 0 1792 1792"><path d="M1664 896q0 156-61 298t-164 245-245 164-298 61q-172 0-327-72.5t-264-204.5q-7-10-6.5-22.5t8.5-20.5l137-138q10-9 25-9 16 2 23 12 73 95 179 147t225 52q104 0 198.5-40.5t163.5-109.5 109.5-163.5 40.5-198.5-40.5-198.5-109.5-163.5-163.5-109.5-198.5-40.5q-98 0-188 35.5t-160 101.5l137 138q31 30 14 69-17 40-59 40h-448q-26 0-45-19t-19-45v-448q0-42 40-59 39-17 69 14l130 129q107-101 244.5-156.5t284.5-55.5q156 0 298 61t245 164 164 245 61 298z"></path></symbol></svg>
+
+<!--Clipkit(R) v15.9.0-20260915 Copyright (C) 2026 VECTOR Inc.-->
+
+
+
+
+
+<div class="dynmsg alert alert-info" style="display:none;"><button class="close"><span class="fa fa-times"></span></button><div class="message"></div></div><div class="dynmsg alert alert-danger" style="display:none;"><button class="close"><span class="fa fa-times"></span></button><div class="message"></div></div></body></html>

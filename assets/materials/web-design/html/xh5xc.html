@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<!-- clipkit-source-url: https://learn.webcoach.jp/web-design/WordPress/xH5XC -->
+<!-- clipkit-fetched-at: 2026-09-17T11:14:00.275Z -->
+<html lang="ja"><head>
+    <!-- headタグ内の上部に挿入されます -->
+
+    <meta charset="UTF-8">
+    <title>WordPress｜2章：環境構築 - WEBCOACH</title>
+
+    <!-- resetcssのCDNでのCSS読み込み -->
+    <link rel="stylesheet" href="../../_assets/17f8e278dc.css">
+
+    <!-- fontawesomeのCDNでのCSS読み込み -->
+    <link rel="stylesheet" href="../../_assets/799aeb25cc.css">
+
+    <!-- BootstrapのCDNでのCSS読み込み -->
+    <link href="../../_assets/7633b7c0c9.css" rel="stylesheet">
+
+    <!-- highlight.jsの読み込み -->
+    <link rel="stylesheet" href="../../_assets/e31ce2dd8c.css">
+
+    <!-- カスタムCSS -->
+    <link rel="stylesheet" href="../../_assets/c533dd7750.css">
+
+    <!-- clipkitデフォルトのCSS -->
+    <!--<link rel="stylesheet" media="screen" href="https://cdn.clipkit.co/clipkit/stylesheets/application-1.0.css?v=v15.9.0-20260915">-->
+
+    <!-- jQuery -->
+    
+
+    <!-- カスタムJS -->
+    
+    
+
+    <!-- clipkitデフォルトのJS -->
+    
+
+    <!-- フォント -->
+    <link rel="preconnect" href="https://fonts.googleapis.com/">
+    <link rel="preconnect" href="https://fonts.gstatic.com/">
+    <link href="../../_assets/8b5713f1fc.css" rel="stylesheet">
+
+    <link href="../../_assets/b83ae8ba65.webp" rel="shortcut icon" type="image/vnd.microsoft.icon">
+    <link rel="apple-touch-icon" href="../../_assets/ea0aba163d.webp">
+    <link rel="alternate" type="application/rss+xml" href="https://learn.webcoach.jp/media.rss" title="WEBCOACH">
+    
+<link rel="canonical" href="https://learn.webcoach.jp/web-design/WordPress/xH5XC">
+
+<meta name="description" content="">
+<meta name="keywords" content="">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:domain" content="learn.webcoach.jp">
+<meta name="twitter:title" content="WordPress｜2章：環境構築 - WEBCOACH">
+<meta name="twitter:image" content="https://cdn.clipkit.co/tenants/589/item_images/images/000/014/170/medium/0ecc3c22-5858-452e-93d4-7320f7776626.jpg?1746808883">
+<meta name="twitter:description" content="">
+<meta property="og:site_name" content="WEBCOACH">
+<meta property="og:title" content="WordPress｜2章：環境構築">
+<meta property="og:description" content="">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://learn.webcoach.jp/web-design/WordPress/xH5XC">
+<meta property="og:image" content="https://cdn.clipkit.co/tenants/589/item_images/images/000/014/170/large/0ecc3c22-5858-452e-93d4-7320f7776626.jpg?1746808883">
+
+
+    <!-- headタグ内の下部に挿入されます -->
+
+
+<meta name="csrf-param" content="authenticity_token">
+<meta name="csrf-token" content="iwdcqB3dmtanuqib38oiqJjwzPid2E7Z7yDZgbYMhz70BfJijvFRF-5d22pzuOV9jWPnZOm8sE5wrp_E0I2O-g"><meta content="" name="routing-root-path"><meta content="media" name="site-name"><meta content="ja" name="i18n-default-locale"><meta content="ja" name="i18n-locale"><style data-clipkit-snapshot="force-visible">[data-aos],.reveal,.wow,.fade-in,.animate__animated,.js-reveal{opacity:1!important;transform:none!important;visibility:visible!important;animation:none!important;transition:none!important}</style></head>
+
+<body class="device-desktop" style="visibility: visible;">
+    <!-- bodyタグ内の上部に挿入されます -->
+
+
+    <!-- サイドバーとコンテンツのコンテナ -->
+    <div class="d-flex flex-row w-100 mb-5" style="min-height: calc(100vh - 400px);">
+
+        <!-- サイドバー -->
+        <!--<nav id="side-bar" class="d-flex flex-column fixed-top" style="width: 250px;">-->
+        <!--    <h1 class="d-block w-100 text-center">-->
+        <!--        <a class="d-block" href="/">-->
+        <!--            <img class="mw-100 p-3" src="https://cdn.clipkit.co/tenants/589/sites/logos/000/000/001/logo_sm/a8defd4b-1cc7-433b-a61c-08e7db0e3e4f.png?1714459367" alt="WEBCOACH">-->
+        <!--        </a>-->
+        <!--    </h1>-->
+        <!--    <ul class="nav flex-column m-0 p-3 fw-bold">-->
+        <!--        <li id="sidebar-top" class="nav-item mb-2" style="display: none;"><a href="/"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;" src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/233/original/home.png?1715353458">-->
+        <!--                <div>ホーム</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-knowledges" class="nav-item mb-2" style="display: none;"><a href="/knowledges"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;" src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/232/original/book.png?1715353458">-->
+        <!--                <div>学習の心得</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-web-designs" class="nav-item mb-2" style="display: none;"><a href="/web-designs"-->
+        <!--                class="nav-link text-body d-flex align-items-center active">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/231/original/design.png?1715353457">-->
+        <!--                <div>WEBデザイン</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-web-marketing" class="nav-item mb-2" style="display: none;"><a href="/web-marketings"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/230/original/marketing.png?1715353457">-->
+        <!--                <div>WEBマーケティング</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-codings" class="nav-item mb-2" style="display: none;"><a href="/codings"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/229/original/website.png?1715353457">-->
+        <!--                <div>WEBサイト構築</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-business-skills" class="nav-item mb-2" style="display: none;"><a href="/business-skills"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/228/original/business.png?1715353456">-->
+        <!--                <div>ビジネススキル</div>-->
+        <!--            </a></li>-->
+        <!--    </ul>-->
+        <!--</nav>-->
+
+        <!-- コンテンツ -->
+        <!--<main class="ms-auto" style="width: calc(100vw - 250px);">-->
+        <main class="ms-auto" style="width: calc(100vw);">
+            <div id="sb-site">
+                
+
+
+<div class="container">
+  <div class="row">
+    <div class="article">
+      <div class="mb-3 text-light" style="
+        height: 180px;
+        background-image: url(&quot;../../_assets/e1d58e2b8a.webp&quot;);
+        background-repeat: no-repeat;
+        background-size: cover;
+        display: flex;
+        align-items: flex-end;
+      ">
+        <div style="
+          margin: 0 0 30px 30px;
+        ">
+          <div>WordPress</div>
+
+          <div class="fw-bold h2">WordPress｜2章：環境構築</div>
+        </div>
+      </div>
+      <div class="article-content">
+        <!-- 目次 -->
+        <div class="index mb-3" style="background-color: #FDF5E8;">
+          <div>
+            <div class="fw-light">INDEX</div>
+            <div class="h3">目次</div>
+          </div>
+          <div class="toc"><ul><li><a href="#heading0" class="tocLink">2章：環境構築</a><ul><li><a href="#heading1" class="tocLink">この章で到達できるゴール</a></li></ul><ul><li><a href="#heading2" class="tocLink">【2-1】サーバー&amp;ドメインとは？</a><ul><li><a href="#heading3" class="tocLink">サーバーとは</a></li><li><a href="#heading4" class="tocLink"></a></li><li><a href="#heading5" class="tocLink">ドメインとは</a></li><li><a href="#heading6" class="tocLink"></a></li><li><a href="#heading7" class="tocLink">DNSとは</a></li><li><a href="#heading8" class="tocLink"></a></li></ul></li><li><a href="#heading9" class="tocLink">【2-2】レンタルサーバーの契約</a><ul><li><a href="#heading10" class="tocLink">ロリポップに申し込む</a></li><li><a href="#heading11" class="tocLink"></a></li><li><a href="#heading12" class="tocLink"></a></li><li><a href="#heading13" class="tocLink"></a></li><li><a href="#heading14" class="tocLink"></a></li><li><a href="#heading15" class="tocLink"></a></li><li><a href="#heading16" class="tocLink"></a></li></ul></li><li><a href="#heading17" class="tocLink">【2-3】ドメインの契約</a><ul><li><a href="#heading18" class="tocLink">お名前.comに申し込む</a></li><li><a href="#heading19" class="tocLink"></a></li><li><a href="#heading20" class="tocLink"></a></li><li><a href="#heading21" class="tocLink"></a></li><li><a href="#heading22" class="tocLink"></a></li><li><a href="#heading23" class="tocLink"></a></li><li><a href="#heading24" class="tocLink"></a></li></ul></li><li><a href="#heading25" class="tocLink">【2-4】DNS設定</a><ul><li><a href="#heading26" class="tocLink">ロリポップ側の設定</a></li><li><a href="#heading27" class="tocLink"></a></li><li><a href="#heading28" class="tocLink"></a></li><li><a href="#heading29" class="tocLink">お名前.com側の設定</a></li><li><a href="#heading30" class="tocLink"></a></li><li><a href="#heading31" class="tocLink"></a></li><li><a href="#heading32" class="tocLink"></a></li><li><a href="#heading33" class="tocLink"></a></li></ul></li><li><a href="#heading34" class="tocLink">【2-5】WordPressのインストール</a><ul><li><a href="#heading35" class="tocLink"></a></li><li><a href="#heading36" class="tocLink"></a></li><li><a href="#heading37" class="tocLink"></a></li></ul></li></ul></li></ul></div>
+        </div>
+        
+        <div class="back-to-roadmap mb-4 text-center"></div>
+
+        <!-- コンテンツ -->
+        
+        
+        <div class="article-item item_html " id="item25490" data-item-id="25490" data-item-type="ItemHtml"><div class="item-body"><div class="pagenation-buttons" style="justify-content: space-between;">
+  <a href="https://learn.webcoach.jp/web-design/WordPress/hmEqe" class="pagenation-buttons_prev"><img src="../../_assets/47498cfebf.svg" class="pagenation-buttons_icon">前の章に戻る</a>
+  <a href="https://learn.webcoach.jp/web-design/WordPress/hWIgw" class="pagenation-buttons_next">次の章に進む<img src="../../_assets/47498cfebf.svg" class="pagenation-buttons_icon"></a>
+</div>
+</div></div>
+        
+        <div class="article-item item_heading " id="item14165" data-item-id="14165" data-item-type="ItemHeading"><h2 class="item-body" id="heading0">2章：環境構築</h2></div>
+        
+        <div class="article-item item_markdown " id="item45165" data-item-id="45165" data-item-type="ItemMarkdown"><h4 id="heading1">この章で到達できるゴール</h4>
+</div>
+        
+        <div class="article-item item_text " id="item45166" data-item-id="45166" data-item-type="ItemText"><div class="item-body-hbr">本章は、Webサイトをインターネット上に公開するための基盤を整え、WordPressを導入する実践パートです。<br>以下の状態になれば、この章はクリアとなります。</div></div>
+        
+        <div class="article-item item_markdown " id="item45167" data-item-id="45167" data-item-type="ItemMarkdown"><ul>
+  <li>サーバーとドメインの役割（土地と住所の関係）やDNSの仕組みを理解し、それぞれの必要性を説明できる</li>
+  <li>レンタルサーバーと独自ドメインの契約・紐付け設定を自力で行い、WordPressのインストール作業を完了している</li>
+</ul>
+</div>
+        
+        <div class="article-item item_rich_text " id="item14166" data-item-id="14166" data-item-type="ItemRichText"><div class="item-body-hbr">WordPressの概要が理解できたところで早速WordPressを構築して使用方法を学んでいきましょう！<br>
+<br>
+WordPressの構築方法は２つあり<span class="decoration-02">自分のパソコン内にローカルサーバーと言われるサーバーを構築</span>して作成していく方法と<span class="decoration-02">サーバーを契約しサーバー内に構築</span>していく方法があります。<br>
+<br>
+<span class="decoration-02">ローカルサーバーの使用は少し複雑なため、この教材ではサーバーを契約し、構築していく方法</span>で作成していきます。</div></div>
+        
+        <div class="article-item item_heading " id="item14167" data-item-id="14167" data-item-type="ItemHeading"><h3 class="item-body" id="heading2">【2-1】サーバー&amp;ドメインとは？</h3></div>
+        
+        <div class="article-item item_rich_text " id="item14168" data-item-id="14168" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-02">Webサイトを作成していく上で必要</span>なのがサーバーとドメインです。<br>
+<br>
+Wixの無料プランでは、<span class="decoration-02">サーバー料金とWixが用意したドメイン（例: username.wixsite.comなど）をWixが管理・提供している</span>ため、利用者がサーバーやドメインを個別に契約し料金を支払うことなく使用できています。<br>
+<br>
+その為無料プランではWixの広告表示や独自ドメインと呼ばれる自分の指定したURLを使用できない仕様にしており、<span class="decoration-02">独自ドメインを使用し広告を非表示にする場合は月額が発生する</span>仕組みになっています。<br>
+<br>
+一方WordPressでは、利用者が独自ドメインを取得し、サーバーを契約することで利用することができます。<br>
+独自ドメイン名を取得することで、<span class="decoration-02">ご自身の好きな文字列にURL</span>を設定することができます。<br>
+また、サーバーの契約をご自身で行い、管理するメリットとして、<span class="decoration-02">広告の表示・非表示も自由に行うことができます</span>。<br>
+<br>
+Webサイトを作成するためにはサーバーとドメインが必要ですが、では<span class="decoration-02">実際サーバーとドメインはどんな役割をするのでしょうか？</span><br>
+<br>
+WordPressで作成するホームページを家に例えて説明していきます！</div></div>
+        
+        <div class="article-item item_markdown " id="item14169" data-item-id="14169" data-item-type="ItemMarkdown"><h4 id="heading3">サーバーとは</h4>
+</div>
+        
+        <div class="article-item item_image " id="item14170" data-item-id="14170" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/014/170/medium/0ecc3c22-5858-452e-93d4-7320f7776626.jpg?1746808883" title=""><img class="img-responsive item-image" alt=" (14170)" data-reference="" src="../../_assets/72565eaa16.webp" width="640" height="360"></a><h4 id="heading4"></h4></div></div>
+        
+        <div class="article-item item_rich_text " id="item14171" data-item-id="14171" data-item-type="ItemRichText"><div class="item-body-hbr">サーバーはインターネット上の「土地」、つまり<span class="decoration-02">Webサイトなどのデータを保管するための場所</span>です。<br>
+パソコン内に画像を保管した際保管場所が必要なようにWebサイトにも保管場所が必要です。</div></div>
+        
+        <div class="article-item item_markdown " id="item14172" data-item-id="14172" data-item-type="ItemMarkdown"><h4 id="heading5">ドメインとは</h4>
+</div>
+        
+        <div class="article-item item_image " id="item14173" data-item-id="14173" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/014/173/medium/38707dd5-7512-4749-9dd3-b3ce0e89294d.jpg?1746808925" title=""><img class="img-responsive item-image" alt=" (14173)" data-reference="" src="../../_assets/2dba57ec26.webp" width="640" height="360"></a><h4 id="heading6"></h4></div></div>
+        
+        <div class="article-item item_rich_text " id="item14174" data-item-id="14174" data-item-type="ItemRichText"><div class="item-body-hbr">ドメインはインターネット上の「住所」のようなものです。<br>
+<span class="decoration-02">具体的には私たちが普段目にするURL</span>です。<br>
+自身が所有し好きな名前で作成するドメインを<span class="decoration-02">独自ドメイン</span>と言います。<br>
+今回は独自ドメインを使用してWordPressのサイトを制作していきます。</div></div>
+        
+        <div class="article-item item_markdown " id="item14175" data-item-id="14175" data-item-type="ItemMarkdown"><h4 id="heading7">DNSとは</h4>
+</div>
+        
+        <div class="article-item item_image " id="item14176" data-item-id="14176" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/014/176/medium/42fc97c7-cf05-4b65-b5af-21a251270897.jpg?1746808972" title=""><img class="img-responsive item-image" alt=" (14176)" data-reference="" src="../../_assets/8ecc964799.webp" width="640" height="360"></a><h4 id="heading8"></h4></div></div>
+        
+        <div class="article-item item_rich_text " id="item14177" data-item-id="14177" data-item-type="ItemRichText"><div class="item-body-hbr">サーバーとドメインは<span class="decoration-02">取得しただけでは使用することができず</span>、これら２つを<span class="decoration-02">紐づける作業が必要</span>です！<br>
+この際使用するのがDNS（Domain Name System）というシステムで、この作業を<span class="decoration-02">DNS設定</span>と呼びます。</div></div>
+        
+        <div class="article-item item_heading " id="item14178" data-item-id="14178" data-item-type="ItemHeading"><h3 class="item-body" id="heading9">【2-2】レンタルサーバーの契約</h3></div>
+        
+        <div class="article-item item_rich_text " id="item14179" data-item-id="14179" data-item-type="ItemRichText"><div class="item-body-hbr">サーバーとドメインの役割が理解できたところで、ここからは実際に手を動かしてサーバーの契約を行っていきましょう！<br>
+レンタルサーバーは沢山ありますが、今回は<span class="decoration-02">WordPressを簡単に構築することができる「ロリポップ」</span>を使用していきます！</div></div>
+        
+        <div class="article-item item_markdown " id="item14180" data-item-id="14180" data-item-type="ItemMarkdown"><h4 id="heading10">ロリポップに申し込む</h4>
+</div>
+        
+        <div class="article-item item_html " id="item14182" data-item-id="14182" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_markdown " id="item14181" data-item-id="14181" data-item-type="ItemMarkdown"><p><a href="https://lolipop.jp/">ロリポップ</a>からユーザー登録の申し込みを行います。<br>
+ヘッダーにある【お申込みボタン】を押してください。</p>
+</div>
+        
+        <div class="article-item item_image " id="item14183" data-item-id="14183" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/014/183/medium/af7e1f1b-7022-41d7-9a54-ad9e795e7131.png?1746809089" title=""><img class="img-responsive item-image" alt=" (14183)" data-reference="" src="../../_assets/603b3bf368.webp" width="640" height="290"></a><h4 id="heading11"></h4></div></div>
+        
+        <div class="article-item item_html " id="item14184" data-item-id="14184" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_rich_text " id="item14185" data-item-id="14185" data-item-type="ItemRichText"><div class="item-body-hbr">ボタンを押すとプランの選択に移ります。<br>
+今回はライトプランを選択し【10日間無料でお試し】を押してください。</div></div>
+        
+        <div class="article-item item_image " id="item14186" data-item-id="14186" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/014/186/medium/d9f2aea5-6317-4f56-a567-aeefdb38bfa4.png?1746809198" title=""><img class="img-responsive item-image" alt=" (14186)" data-reference="" src="../../_assets/fe2d8b52b3.webp" width="640" height="517"></a><h4 id="heading12"></h4></div></div>
+        
+        <div class="article-item item_html " id="item38430" data-item-id="38430" data-item-type="ItemHtml"><div class="item-body"><div class="card-with-icon attention">
+  <span class="bold">注意<br></span>
+	  <ul>
+      <li>１０日間の無料期間が終わった後は、<span class="decoration-02">サーバー代はご自身で負担していただく形になります。</span></li>
+      <li>プランはそのままライトプランを選択していただければ問題ありません。</li>
+      <li>WordPress学習後に継続してWordPressを使う予定がない方は、<span class="decoration-02">必ず解約の申し込みをしましょう！</span></li>
+    </ul>
+</div></div></div>
+        
+        <div class="article-item item_html " id="item14187" data-item-id="14187" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_text " id="item15014" data-item-id="15014" data-item-type="ItemText"><div class="item-body-hbr">ボタンを押すとドメインの設定画面に移ります。<br>ここで設定する「初期ドメイン」は、ロリポップのアカウント名になります。<br>覚えやすく、自分に関連した名前をつけておくと便利です！</div></div>
+        
+        <div class="article-item item_image " id="item15015" data-item-id="15015" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/015/015/medium/f6998272-1bfa-401c-8072-d8b10b26ce3c.png?1747031909" title=""><img class="img-responsive item-image" alt=" (15015)" data-reference="" src="../../_assets/9883954b22.webp" width="640" height="517"></a><h4 id="heading13"></h4></div></div>
+        
+        <div class="article-item item_html " id="item15016" data-item-id="15016" data-item-type="ItemHtml"><div class="item-body"><div class="card-with-icon point">
+  <span class="bold">ポイント<br></span>
+  <ol>
+    <li>初期ドメイン名は、WebページのURL（独自ドメイン）とは別物です。</li>
+    <li>この初期ドメイン名は、ロリポップの管理画面へのログインIDとしても使われます。</li>
+    <li>ログインに必要なので、忘れずにメモしておきましょう！</li>
+  </ol>
+</div></div></div>
+        
+        <div class="article-item item_html " id="item15017" data-item-id="15017" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_text " id="item15020" data-item-id="15020" data-item-type="ItemText"><div class="item-body-hbr">ボタンを押すと本人認証に移ります。<br>認証コードを受信できる電話番号を入力してください。</div></div>
+        
+        <div class="article-item item_image " id="item15021" data-item-id="15021" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/015/021/medium/13017cce-80f9-4550-b02d-d23d6dab99bd.png?1747032067"><img class="img-responsive item-image" alt=" (15021)" src="../../_assets/ac452a703a.webp" width="640" height="407"></a><h4 id="heading14"></h4></div></div>
+        
+        <div class="article-item item_html " id="item15018" data-item-id="15018" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_text " id="item15022" data-item-id="15022" data-item-type="ItemText"><div class="item-body-hbr">受信した認証コードを入力して「認証する」ボタンを押してください。</div></div>
+        
+        <div class="article-item item_image " id="item15023" data-item-id="15023" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/015/023/medium/0fdb732f-3619-4c74-812e-fc6b6872ef6e.png?1747032108" title=""><img class="img-responsive item-image" alt=" (15023)" data-reference="" src="../../_assets/9bf44199e8.webp" width="640" height="355"></a><h4 id="heading15"></h4></div></div>
+        
+        <div class="article-item item_html " id="item15019" data-item-id="15019" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_text " id="item15024" data-item-id="15024" data-item-type="ItemText"><div class="item-body-hbr">ボタンを押すと詳細入力画面に移ります。<br>画面に沿って詳細入力を行ってください。</div></div>
+        
+        <div class="article-item item_image " id="item15025" data-item-id="15025" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/015/025/medium/8fc5370b-f0f5-49cd-80b8-8498edb1d642.png?1747032145" title=""><img class="img-responsive item-image" alt=" (15025)" data-reference="" src="../../_assets/dbee56924d.webp" width="640" height="474"></a><h4 id="heading16"></h4></div></div>
+        
+        <div class="article-item item_html " id="item15026" data-item-id="15026" data-item-type="ItemHtml"><div class="item-body"><div class="card-with-icon point">
+  <span class="bold">ポイント<br></span>
+        <ul>
+          	<li>WordPressの自動インストールのチェックは入れないようにしてください！</li>
+ 	    </ul>
+</div></div></div>
+        
+        <div class="article-item item_html " id="item15031" data-item-id="15031" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_text " id="item15027" data-item-id="15027" data-item-type="ItemText"><div class="item-body-hbr">お疲れ様でした。これでロリポップ（レンタルサーバー）の登録作業は完了しました！<br><br>次はドメイン取得を行っていきましょう！</div></div>
+        
+        <div class="article-item item_heading " id="item15028" data-item-id="15028" data-item-type="ItemHeading"><h3 class="item-body" id="heading17">【2-3】ドメインの契約</h3></div>
+        
+        <div class="article-item item_markdown " id="item15029" data-item-id="15029" data-item-type="ItemMarkdown"><h4 id="heading18">お名前.comに申し込む</h4>
+</div>
+        
+        <div class="article-item item_html " id="item15032" data-item-id="15032" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_rich_text " id="item15030" data-item-id="15030" data-item-type="ItemRichText"><div class="item-body-hbr"><a href="https://www.onamae.com/" class="default-link" rel="nofollow">お名前.com</a>の検索窓にURLにつけたい名前を入力して検索ボタンを押してください。</div></div>
+        
+        <div class="article-item item_image " id="item15033" data-item-id="15033" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/015/033/medium/6d6346ab-9312-4485-9f4d-1d5715903d13.png?1747032399" title=""><img class="img-responsive item-image" alt=" (15033)" data-reference="" src="../../_assets/cd5b53a0d4.webp" width="640" height="300"></a><h4 id="heading19"></h4></div></div>
+        
+        <div class="article-item item_html " id="item15083" data-item-id="15083" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_text " id="item15034" data-item-id="15034" data-item-type="ItemText"><div class="item-body-hbr">アイコンが〇になっている0円のものを選択して、「次へ進む」ボタンをクリックしましょう。</div></div>
+        
+        <div class="article-item item_image " id="item15035" data-item-id="15035" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/015/035/medium/e1e2e4ab-9d77-405b-a847-f2ac4732ec2a.png?1747032438" title=""><img class="img-responsive item-image" alt=" (15035)" data-reference="" src="../../_assets/e01a00ae07.webp" width="640" height="300"></a><h4 id="heading20"></h4></div></div>
+        
+        <div class="article-item item_html " id="item15085" data-item-id="15085" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_text " id="item15036" data-item-id="15036" data-item-type="ItemText"><div class="item-body-hbr">「その他・決めていない」のボタンをクリックしてください。</div></div>
+        
+        <div class="article-item item_image " id="item15037" data-item-id="15037" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/015/037/medium/e400e06a-1570-4f95-9e87-f5e6025019af.png?1747032469" title=""><img class="img-responsive item-image" alt=" (15037)" data-reference="" src="../../_assets/626902a8bf.webp" width="640" height="300"></a><h4 id="heading21"></h4></div></div>
+        
+        <div class="article-item item_html " id="item15086" data-item-id="15086" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_text " id="item15038" data-item-id="15038" data-item-type="ItemText"><div class="item-body-hbr">メールアドレスとパスワードを入力して、「次へ」を押してください。</div></div>
+        
+        <div class="article-item item_image " id="item15039" data-item-id="15039" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/015/039/medium/cca5ed78-16e7-4750-ab32-07b621945c6e.png?1747032517" title=""><img class="img-responsive item-image" alt=" (15039)" data-reference="" src="../../_assets/f4edc31c47.webp" width="640" height="300"></a><h4 id="heading22"></h4></div></div>
+        
+        <div class="article-item item_html " id="item15520" data-item-id="15520" data-item-type="ItemHtml"><div class="item-body"><div class="card-with-icon point">
+  <span class="bold">ポイント<br></span>
+        <ul>
+          	<li>必ず受信できるアドレスに設定してください。</li>
+          	<li>初年度無料でも更新では料金が発生しますので、使用しない場合解約を必ず行って下さい。</li>
+          	<li>2年目以降の料金を確認するには、「ドメイン登録（初年度）」の横にある「？」アイコンにカーソルを合わせてください。</li>
+          	<li>パスワードは必ずメモしておいてください。</li>
+ 	    </ul>
+</div></div></div>
+        
+        <div class="article-item item_html " id="item15084" data-item-id="15084" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_text " id="item15041" data-item-id="15041" data-item-type="ItemText"><div class="item-body-hbr">必要情報を記載して「次へ進む」を押してください</div></div>
+        
+        <div class="article-item item_image " id="item15042" data-item-id="15042" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/015/042/medium/4b3aaa11-e68e-48aa-b3cf-ad6f6c2b0a34.png?1747032609" title=""><img class="img-responsive item-image" alt=" (15042)" data-reference="" src="../../_assets/1789e07899.webp" width="640" height="423"></a><h4 id="heading23"></h4></div></div>
+        
+        <div class="article-item item_html " id="item15043" data-item-id="15043" data-item-type="ItemHtml"><div class="item-body"><div class="card-with-icon point">
+  <span class="bold">ポイント<br></span>
+        <ul>
+          	<li>記載ミスがあるとドメインが停止になる可能性があるので、確認をしっかりしましょう！</li>
+ 	    </ul>
+</div></div></div>
+        
+        <div class="article-item item_html " id="item15087" data-item-id="15087" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_text " id="item15044" data-item-id="15044" data-item-type="ItemText"><div class="item-body-hbr">クレジットカード情報を入力して申し込みを完了させてください。</div></div>
+        
+        <div class="article-item item_text " id="item15045" data-item-id="15045" data-item-type="ItemText"><div class="item-body-hbr">登録が完了しましたら使用したアドレスに【件名：お名前.com 連絡先情報 認証コード発行のお知らせ】というメールが届くのでメールに沿って必ず承認手続きを行って下さい。</div></div>
+        
+        <div class="article-item item_image " id="item15046" data-item-id="15046" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/015/046/medium/e460ec50-3526-44b9-94e3-4a4d5ed29c15.png?1747032705" title=""><img class="img-responsive item-image" alt=" (15046)" data-reference="" src="../../_assets/47ced90743.webp" width="640" height="423"></a><h4 id="heading24"></h4></div></div>
+        
+        <div class="article-item item_html " id="item15047" data-item-id="15047" data-item-type="ItemHtml"><div class="item-body"><div class="card-with-icon point">
+  <span class="bold">ポイント<br></span>
+        <ul>
+			<li>サーバーおよびドメインは、<span class="decoration-02">解約手続きを行わない限り自動的に更新され、料金が発生します！</span></li>
+          	<li><span class="decoration-02">更新日（契約の更新タイミング）を事前に確認しておく</span>ことも非常に重要です。</li>
+          	<li>更新日直前の解約では料金が発生してしまう可能性がありますので、早めの確認・対応をおすすめします。</li>
+ 	    </ul>
+</div></div></div>
+        
+        <div class="article-item item_rich_text " id="item15050" data-item-id="15050" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">サーバーの解約方法</span></div></div>
+        
+        <div class="article-item item_link " id="item15048" data-item-id="15048" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=xH5XC&amp;item_id=15048" rel="nofollow noopener noreferrer" target="_blank">契約更新方法 - ロリポップ！レンタルサーバー</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="契約更新方法 - ロリポップ！レンタルサーバー" data-reference="https://lolipop.jp/manual/pay/next/" src="../../_assets/304c7f5c34.webp" width="75" height="75"></div><div class="media-body"><div class="item-body">ロリポップ！レンタルサーバーのご利用マニュアル ロリポップ！レンタルサーバーの契約更新方法ついて説明したマニュアルページです。</div></div></div></div></div>
+        
+        <div class="article-item item_rich_text " id="item15051" data-item-id="15051" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">ドメインの解約方法</span></div></div>
+        
+        <div class="article-item item_link " id="item15049" data-item-id="15049" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=xH5XC&amp;item_id=15049" rel="nofollow noopener noreferrer" target="_blank">【サーバーサービス】解約方法を教えてください｜ヘルプ | ドメイン取るならお名前.com</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="【サーバーサービス】解約方法を教えてください｜ヘルプ | ドメイン取るならお名前.com" data-reference="https://help.onamae.com/answer/8948" src="../../_assets/821d568793.webp" width="75" height="75"></div><div class="media-body"><div class="item-body">国内最大級のドメイン登録サービス「お名前.com」のヘルプページでは、ドメインやサーバーのご利用方法について、よくあるご質問・ご利用ガイドをご案内しております。</div></div></div></div></div>
+        
+        <div class="article-item item_html " id="item15088" data-item-id="15088" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_heading " id="item15052" data-item-id="15052" data-item-type="ItemHeading"><h3 class="item-body" id="heading25">【2-4】DNS設定</h3></div>
+        
+        <div class="article-item item_markdown " id="item15053" data-item-id="15053" data-item-type="ItemMarkdown"><h4 id="heading26">ロリポップ側の設定</h4>
+</div>
+        
+        <div class="article-item item_html " id="item15089" data-item-id="15089" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_rich_text " id="item15054" data-item-id="15054" data-item-type="ItemRichText"><div class="item-body-hbr"><a href="https://user.lolipop.jp/" class="default-link" rel="nofollow">ロリポップ</a>にログインをしていきます。<br>
+<br>
+【2-2】で決めた初期ドメインとパスワードを入力してログインボタンを押してください。</div></div>
+        
+        <div class="article-item item_image " id="item15055" data-item-id="15055" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/015/055/medium/ad7ce656-5ee4-4fee-ac24-073272abe24a.png?1747034740" title=""><img class="img-responsive item-image" alt=" (15055)" data-reference="" src="../../_assets/7e6b497899.webp" width="640" height="423"></a><h4 id="heading27"></h4></div></div>
+        
+        <div class="article-item item_html " id="item15100" data-item-id="15100" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_text " id="item15056" data-item-id="15056" data-item-type="ItemText"><div class="item-body-hbr">【サーバーの管理設定】→【独自ドメイン設定】を選択します。<br>設定する独自ドメインに【2-3】で取得した独自ドメインを入力してください。<br>公開アップロードフォルダに名前を付けてください。（英数字のみで作成）<br>入力出来たら「独自ドメインをチェックする」ボタンをクリックしてください。</div></div>
+        
+        <div class="article-item item_image " id="item15057" data-item-id="15057" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/015/057/medium/92e206b3-d50b-4c45-838d-aa37a17ebda5.png?1747034841" title=""><img class="img-responsive item-image" alt=" (15057)" data-reference="" src="../../_assets/c703c31a99.webp" width="640" height="447"></a><h4 id="heading28"></h4></div></div>
+        
+        <div class="article-item item_html " id="item15090" data-item-id="15090" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_text " id="item15058" data-item-id="15058" data-item-type="ItemText"><div class="item-body-hbr">これでロリポップ側の設定は完了です！<br><br>次にお名前.comの設定をしていきます！</div></div>
+        
+        <div class="article-item item_markdown " id="item15059" data-item-id="15059" data-item-type="ItemMarkdown"><h4 id="heading29">お名前.com側の設定</h4>
+</div>
+        
+        <div class="article-item item_html " id="item15091" data-item-id="15091" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_rich_text " id="item15060" data-item-id="15060" data-item-type="ItemRichText"><div class="item-body-hbr">お客様IDは登録時のメールに記載されている<span class="decoration-02">8桁の番号</span>です。<br>
+<a href="https://www.onamae.com/navi/login/?btn_id=navi_login_onamaetop_header_newdesign2024" class="default-link" rel="nofollow">お名前.comの管理画面</a>にログインしましょう！</div></div>
+        
+        <div class="article-item item_image " id="item15061" data-item-id="15061" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/015/061/medium/ae3f95aa-5d44-48dc-9956-ec2c3b44a649.png?1747035000" title=""><img class="img-responsive item-image" alt=" (15061)" data-reference="" src="../../_assets/e2fe9e8218.webp" width="640" height="290"></a><h4 id="heading30"></h4></div></div>
+        
+        <div class="article-item item_html " id="item15092" data-item-id="15092" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_text " id="item15062" data-item-id="15062" data-item-type="ItemText"><div class="item-body-hbr">左側メニューの「ネームサーバーの設定」を押すと詳細メニューが表示されます。<br>詳細メニューの「ネームサーバーの設定」を押してください。</div></div>
+        
+        <div class="article-item item_image " id="item15063" data-item-id="15063" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/015/063/medium/ec920206-3b06-49e9-83bd-960b02d2cb60.png?1747035090" title=""><img class="img-responsive item-image" alt=" (15063)" data-reference="" src="../../_assets/5a675326d6.webp" width="640" height="290"></a><h4 id="heading31"></h4></div></div>
+        
+        <div class="article-item item_html " id="item15093" data-item-id="15093" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_text " id="item15064" data-item-id="15064" data-item-type="ItemText"><div class="item-body-hbr">「ネームサーバーの設定」を選択するとこちらの画面がでてきます。<br>「その他のサービス」のタブを選択してください。</div></div>
+        
+        <div class="article-item item_image " id="item15065" data-item-id="15065" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/015/065/medium/979ba9b3-6e46-4dbe-95c2-f1a9b88aa009.png?1747035125" title=""><img class="img-responsive item-image" alt=" (15065)" data-reference="" src="../../_assets/7d25864cea.webp" width="640" height="290"></a><h4 id="heading32"></h4></div></div>
+        
+        <div class="article-item item_html " id="item15094" data-item-id="15094" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_text " id="item15066" data-item-id="15066" data-item-type="ItemText"><div class="item-body-hbr">ネームサーバー情報の入力欄にロリポップの情報を入力してください。</div></div>
+        
+        <div class="article-item item_rich_text " id="item15067" data-item-id="15067" data-item-type="ItemRichText"><div class="item-body-hbr">ネームサーバー1　uns01.lolipop.jp<br>
+ネームサーバー2　uns02.lolipop.jp<br>
+引用：<a href="https://lolipop.jp/manual/domain/settings/" class="default-link" rel="nofollow">https://lolipop.jp/manual/domain/settings/</a></div></div>
+        
+        <div class="article-item item_text " id="item15068" data-item-id="15068" data-item-type="ItemText"><div class="item-body-hbr">入力ができたら完了を押してください。</div></div>
+        
+        <div class="article-item item_image " id="item15069" data-item-id="15069" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/015/069/medium/ccd3add3-b6cb-43f3-ae72-5a4f4803ec9d.png?1747035276" title=""><img class="img-responsive item-image" alt=" (15069)" data-reference="" src="../../_assets/ec5de1190b.webp" width="640" height="248"></a><h4 id="heading33"></h4></div></div>
+        
+        <div class="article-item item_html " id="item15095" data-item-id="15095" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_rich_text " id="item15070" data-item-id="15070" data-item-type="ItemRichText"><div class="item-body-hbr">こちらでDNSの設定は完了しました。<br>
+<span class="decoration-02">反映までに数時間〜最大72時間ほどかかる場合があるため、少し時間をあけて次の作業に進んでください！</span></div></div>
+        
+        <div class="article-item item_heading " id="item15071" data-item-id="15071" data-item-type="ItemHeading"><h3 class="item-body" id="heading34">【2-5】WordPressのインストール</h3></div>
+        
+        <div class="article-item item_rich_text " id="item15072" data-item-id="15072" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01"><span class="decoration-02">【2-4】の作業から3日ほど時間が経ったら、ロリポップの管理画面からWordPressのインストールを進めていきましょう！</span></span></div></div>
+        
+        <div class="article-item item_html " id="item15096" data-item-id="15096" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_text " id="item15073" data-item-id="15073" data-item-type="ItemText"><div class="item-body-hbr">【サイト作成ツール】を選択し、WordPressの項目の「利用するボタン」をクリックしてください。</div></div>
+        
+        <div class="article-item item_image " id="item15074" data-item-id="15074" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/015/074/medium/1b2c9810-79ff-4233-9d11-c296f592e554.png?1747035757" title=""><img class="img-responsive item-image" alt=" (15074)" data-reference="" src="../../_assets/4e7be5823e.webp" width="640" height="309"></a><h4 id="heading35"></h4></div></div>
+        
+        <div class="article-item item_html " id="item15097" data-item-id="15097" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_text " id="item15076" data-item-id="15076" data-item-type="ItemText"><div class="item-body-hbr">下記の情報を入力してください。<br></div></div>
+        
+        <div class="article-item item_text " id="item15075" data-item-id="15075" data-item-type="ItemText"><div class="item-body-hbr">・サイトのURL：【2-3】で設定した独自ドメインを選択してください。<br>・サイトのタイトル：ホームページのタイトルになるので自由に決めてください<br>・ユーザー名：ログインの際に使用するため、わかりやすい名前を付けてください。<br>・パスワード：任意のパスワードを設定してください。<br>・メールアドレス：必ず受信できるメールアドレスを設定してください</div></div>
+        
+        <div class="article-item item_text " id="item15077" data-item-id="15077" data-item-type="ItemText"><div class="item-body-hbr">入力出来たら「入力内容確認」のボタンを押してください。</div></div>
+        
+        <div class="article-item item_image " id="item15078" data-item-id="15078" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/015/078/medium/b6b05221-5796-4e1d-bbb8-cfecbaa9038f.png?1747035874" title=""><img class="img-responsive item-image" alt=" (15078)" data-reference="" src="../../_assets/e0c54f1d27.webp" width="640" height="479"></a><h4 id="heading36"></h4></div></div>
+        
+        <div class="article-item item_html " id="item15079" data-item-id="15079" data-item-type="ItemHtml"><div class="item-body"><div class="card-with-icon point">
+  <span class="bold">ポイント<br></span>
+  <ul>
+    <li>ユーザー名とパスワードは必ずメモしておきましょう！</li>
+  </ul>
+</div></div></div>
+        
+        <div class="article-item item_html " id="item15098" data-item-id="15098" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_text " id="item15080" data-item-id="15080" data-item-type="ItemText"><div class="item-body-hbr">確認画面に間違いが無ければ【インストール】を押してください。</div></div>
+        
+        <div class="article-item item_image " id="item15081" data-item-id="15081" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/015/081/medium/8e148639-5c3f-496e-be15-663398648351.png?1747035956" title=""><img class="img-responsive item-image" alt=" (15081)" data-reference="" src="../../_assets/a523a1390f.webp" width="640" height="442"></a><h4 id="heading37"></h4></div></div>
+        
+        <div class="article-item item_html " id="item15099" data-item-id="15099" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_text " id="item15082" data-item-id="15082" data-item-type="ItemText"><div class="item-body-hbr">これで【2章：環境構築】の解説を終わります。<br><br>次の章に進みましょう！</div></div>
+        
+        <div class="article-item item_html " id="item25491" data-item-id="25491" data-item-type="ItemHtml"><div class="item-body"><div class="pagenation-buttons" style="justify-content: space-between;">
+  <a href="https://learn.webcoach.jp/web-design/WordPress/hmEqe" class="pagenation-buttons_prev"><img src="../../_assets/47498cfebf.svg" class="pagenation-buttons_icon">前の章に戻る</a>
+  <a href="https://learn.webcoach.jp/web-design/WordPress/hWIgw" class="pagenation-buttons_next">次の章に進む<img src="../../_assets/47498cfebf.svg" class="pagenation-buttons_icon"></a>
+</div>
+</div></div>
+        
+        
+        
+        <div class="back-to-roadmap mb-4 text-center"></div>
+      </div>
+    </div>
+    
+    <div class="lightbox-modal" id="lightboxModal">
+      <img src="" alt="">
+    </div>
+    
+    <div id="modal" class="fixed-menu-modal">
+      <div class="fixed-menu-modal-content">
+        <div class="index mb-3" style="background-color: #FDF5E8;">
+          <div>
+            <div class="fw-light">INDEX</div>
+            <div class="h3">目次</div>
+          </div>
+          <div class="toc"><ul><li><a href="#heading0" class="tocLink">2章：環境構築</a><ul><li><a href="#heading1" class="tocLink">この章で到達できるゴール</a></li></ul><ul><li><a href="#heading2" class="tocLink">【2-1】サーバー&amp;ドメインとは？</a><ul><li><a href="#heading3" class="tocLink">サーバーとは</a></li><li><a href="#heading4" class="tocLink"></a></li><li><a href="#heading5" class="tocLink">ドメインとは</a></li><li><a href="#heading6" class="tocLink"></a></li><li><a href="#heading7" class="tocLink">DNSとは</a></li><li><a href="#heading8" class="tocLink"></a></li></ul></li><li><a href="#heading9" class="tocLink">【2-2】レンタルサーバーの契約</a><ul><li><a href="#heading10" class="tocLink">ロリポップに申し込む</a></li><li><a href="#heading11" class="tocLink"></a></li><li><a href="#heading12" class="tocLink"></a></li><li><a href="#heading13" class="tocLink"></a></li><li><a href="#heading14" class="tocLink"></a></li><li><a href="#heading15" class="tocLink"></a></li><li><a href="#heading16" class="tocLink"></a></li></ul></li><li><a href="#heading17" class="tocLink">【2-3】ドメインの契約</a><ul><li><a href="#heading18" class="tocLink">お名前.comに申し込む</a></li><li><a href="#heading19" class="tocLink"></a></li><li><a href="#heading20" class="tocLink"></a></li><li><a href="#heading21" class="tocLink"></a></li><li><a href="#heading22" class="tocLink"></a></li><li><a href="#heading23" class="tocLink"></a></li><li><a href="#heading24" class="tocLink"></a></li></ul></li><li><a href="#heading25" class="tocLink">【2-4】DNS設定</a><ul><li><a href="#heading26" class="tocLink">ロリポップ側の設定</a></li><li><a href="#heading27" class="tocLink"></a></li><li><a href="#heading28" class="tocLink"></a></li><li><a href="#heading29" class="tocLink">お名前.com側の設定</a></li><li><a href="#heading30" class="tocLink"></a></li><li><a href="#heading31" class="tocLink"></a></li><li><a href="#heading32" class="tocLink"></a></li><li><a href="#heading33" class="tocLink"></a></li></ul></li><li><a href="#heading34" class="tocLink">【2-5】WordPressのインストール</a><ul><li><a href="#heading35" class="tocLink"></a></li><li><a href="#heading36" class="tocLink"></a></li><li><a href="#heading37" class="tocLink"></a></li></ul></li></ul></li></ul></div>
+        </div>
+        
+        <!-- ボタン類 -->
+        <div id="fixed-menu_buttons" class="fixed-menu_buttons">
+  <a href="https://learn.webcoach.jp/web-design/WordPress/hmEqe" class="pagenation-buttons_prev"><img src="../../_assets/47498cfebf.svg" class="pagenation-buttons_icon">前の章に戻る</a>
+  <a href="https://learn.webcoach.jp/web-design/WordPress/hWIgw" class="pagenation-buttons_next">次の章に進む<img src="../../_assets/47498cfebf.svg" class="pagenation-buttons_icon"></a>
+</div>
+        
+        <div class="back-to-roadmap text-center"></div>
+      </div>
+    </div>
+    
+    <button id="toggleBtn" class="floating-btn">
+      <img id="iconOpen" src="../../_assets/5feefcfc55.svg" alt="メニューを開く">
+      <img id="iconClose" src="../../_assets/ae4a1129c9.svg" alt="メニューを閉じる" style="display:none;">
+    </button>
+  </div>
+</div>
+</div>
+<!-- <script src="https://cdn.clipkit.co/clipkit/javascripts/item-shopify-1.0.js?v=v15.9.0-20260915" async></script> -->
+            </main></div>
+        
+
+    
+
+    <div class="p-5" style="background-color: #B73E3D; color: white; height: 300px;">
+        <div class="">
+            <div class="h4 ps-3" style="border-left: 5px solid white;">WEBCOACH | キャリアチェンジまでの全てを学ぶマンツーマンWEBスクール</div>
+            <ul class="nav flex-column m-0 p-3 fw-light">
+                <li class="nav-item mb-2"><a href="https://www.webcoach.jp/" target="_blank">WEBCOACH | 公式HP</a></li>
+                <li class="nav-item mb-2"><a href="https://www.instagram.com/webcoach_officials/" target="_blank">WEBCOACH | 公式Instagram</a></li>
+                <li class="nav-item mb-2"><a href="https://vectorinc.co.jp/groupservice/webcoach-career/" target="_blank">WEBCOACH 公式メディア | WEBCOACH career</a></li>
+            </ul>
+        </div>
+        <div class="text-center">
+            <small>© 2020 by WEBCOACH</small>
+        </div>
+    </div>
+
+    
+
+    <!-- bodyタグ内の下部に挿入されます -->
+
+
+    <!-- BootstrapのCDNでのjs読み込み -->
+    
+
+    <!-- シンタックスハイライトの生成 -->
+    
+    
+
+    <!-- 目次の生成 -->
+    
+
+    <!-- ブックマークの生成 -->
+    
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="ck-icon-arrow-down" viewBox="0 0 1792 1792"><path d="M1675 832q0 53-37 90l-651 652q-39 37-91 37-53 0-90-37l-651-652q-38-36-38-90 0-53 38-91l74-75q39-37 91-37 53 0 90 37l294 294v-704q0-52 38-90t90-38h128q52 0 90 38t38 90v704l294-294q37-37 90-37 52 0 91 37l75 75q37 39 37 91z"></path></symbol><symbol id="ck-icon-arrow-up" viewBox="0 0 1792 1792"><path d="M1675 971q0 51-37 90l-75 75q-38 38-91 38-54 0-90-38l-294-293v704q0 52-37.5 84.5t-90.5 32.5h-128q-53 0-90.5-32.5t-37.5-84.5v-704l-294 293q-36 38-90 38t-90-38l-75-75q-38-38-38-90 0-53 38-91l651-651q35-37 90-37 54 0 91 37l651 651q37 39 37 91z"></path></symbol><symbol id="ck-icon-calendar" viewBox="0 0 1792 1792"><path d="M192 1664h288v-288h-288v288zm352 0h320v-288h-320v288zm-352-352h288v-320h-288v320zm352 0h320v-320h-320v320zm-352-384h288v-288h-288v288zm736 736h320v-288h-320v288zm-384-736h320v-288h-320v288zm768 736h288v-288h-288v288zm-384-352h320v-320h-320v320zm-352-864v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm736 864h288v-320h-288v320zm-384-384h320v-288h-320v288zm384 0h288v-288h-288v288zm32-480v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm384-64v1280q0 52-38 90t-90 38h-1408q-52 0-90-38t-38-90v-1280q0-52 38-90t90-38h128v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h384v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h128q52 0 90 38t38 90z"></path></symbol><symbol id="ck-icon-chevron-left" viewBox="0 0 1792 1792"><path d="M1427 301l-531 531 531 531q19 19 19 45t-19 45l-166 166q-19 19-45 19t-45-19l-742-742q-19-19-19-45t19-45l742-742q19-19 45-19t45 19l166 166q19 19 19 45t-19 45z"></path></symbol><symbol id="ck-icon-chevron-right" viewBox="0 0 1792 1792"><path d="M1363 877l-742 742q-19 19-45 19t-45-19l-166-166q-19-19-19-45t19-45l531-531-531-531q-19-19-19-45t19-45l166-166q19-19 45-19t45 19l742 742q19 19 19 45t-19 45z"></path></symbol><symbol id="ck-icon-clock-o" viewBox="0 0 1792 1792"><path d="M1024 544v448q0 14-9 23t-23 9h-320q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h224v-352q0-14 9-23t23-9h64q14 0 23 9t9 23zm416 352q0-148-73-273t-198-198-273-73-273 73-198 198-73 273 73 273 198 198 273 73 273-73 198-198 73-273zm224 0q0 209-103 385.5t-279.5 279.5-385.5 103-385.5-103-279.5-279.5-103-385.5 103-385.5 279.5-279.5 385.5-103 385.5 103 279.5 279.5 103 385.5z"></path></symbol><symbol id="ck-icon-trash" viewBox="0 0 1792 1792"><path d="M704 1376v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm-544-992h448l-48-117q-7-9-17-11h-317q-10 2-17 11zm928 32v64q0 14-9 23t-23 9h-96v948q0 83-47 143.5t-113 60.5h-832q-66 0-113-58.5t-47-141.5v-952h-96q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h309l70-167q15-37 54-63t79-26h320q40 0 79 26t54 63l70 167h309q14 0 23 9t9 23z"></path></symbol><symbol id="ck-icon-undo" viewBox="0 0 1792 1792"><path d="M1664 896q0 156-61 298t-164 245-245 164-298 61q-172 0-327-72.5t-264-204.5q-7-10-6.5-22.5t8.5-20.5l137-138q10-9 25-9 16 2 23 12 73 95 179 147t225 52q104 0 198.5-40.5t163.5-109.5 109.5-163.5 40.5-198.5-40.5-198.5-109.5-163.5-163.5-109.5-198.5-40.5q-98 0-188 35.5t-160 101.5l137 138q31 30 14 69-17 40-59 40h-448q-26 0-45-19t-19-45v-448q0-42 40-59 39-17 69 14l130 129q107-101 244.5-156.5t284.5-55.5q156 0 298 61t245 164 164 245 61 298z"></path></symbol></svg>
+
+<!--Clipkit(R) v15.9.0-20260915 Copyright (C) 2026 VECTOR Inc.-->
+
+
+
+
+
+<div class="dynmsg alert alert-info" style="display:none;"><button class="close"><span class="fa fa-times"></span></button><div class="message"></div></div><div class="dynmsg alert alert-danger" style="display:none;"><button class="close"><span class="fa fa-times"></span></button><div class="message"></div></div></body></html>

@@ -1,0 +1,365 @@
+
+
+
+<div>
+  
+    <div>
+      
+      
+        
+          <div class="article-item item_html " id="item48603" data-item-id="48603" data-item-type="ItemHtml"><div class="item-body"><!DOCTYPE html>
+<html lang="ja">
+<head><script async="async" data-label="saas" nonce="6wXlWx43ZfPv4+HaaonqpQ==" src="//b.clipkit.co/"></script><script src="//cdn.clipkit.co/clipkit_assets/beacon-787bbf3225ec43d93f198af35f7d56fdef40fb50440a2909500bdf5b99225aab.js" async="async" id="clipkit-beacon" data-page-type="article" data-page-id="2293" data-domain="learn.webcoach.jp" data-url="/generative-ai/ai_web_marketing/A-5/qJUh2" data-href="https://learn.webcoach.jp/media/beacon"></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>マーケティングブリーフ作成ワークショップ</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Hiragino Sans', 'Hiragino Kaku Gothic ProN', 'Noto Sans JP', sans-serif; background: #F7F8FA; color: #3D3D3D; line-height: 1.7; }
+
+  .hero {
+    background: linear-gradient(135deg, #E85D4A 0%, #F5A64A 100%);
+    padding: 48px 24px 40px;
+    color: white;
+    text-align: center;
+  }
+  .hero__label { font-size: 12px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; opacity: 0.85; margin-bottom: 12px; }
+  .hero__title { font-size: 26px; font-weight: 800; line-height: 1.35; margin-bottom: 16px; }
+  .hero__meta { font-size: 13px; opacity: 0.85; display: flex; align-items: center; justify-content: center; gap: 16px; flex-wrap: wrap; }
+
+  .container { max-width: 860px; margin: 0 auto; padding: 32px 16px 64px; }
+
+  .card {
+    background: white;
+    border-radius: 12px;
+    padding: 28px;
+    margin-bottom: 24px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.07);
+    position: relative;
+    overflow: hidden;
+  }
+  .card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, #E85D4A, #F5A64A);
+  }
+  .card__title { font-size: 17px; font-weight: 700; color: #3D3D3D; margin-bottom: 16px; display: flex; align-items: center; gap: 8px; }
+  .card__title::before { content: ''; display: inline-block; width: 4px; height: 18px; background: linear-gradient(180deg, #E85D4A, #F5A64A); border-radius: 2px; }
+
+  .intro-box {
+    background: linear-gradient(135deg, #FAE8E0 0%, #FEF3EA 100%);
+    border-radius: 10px;
+    padding: 24px;
+    margin-bottom: 24px;
+    border-left: 4px solid #E85D4A;
+  }
+  .intro-box__text { font-size: 15px; color: #3D3D3D; line-height: 1.8; }
+  .intro-box__text strong { color: #E85D4A; }
+
+  /* ブリーフ完成サンプル */
+  .brief-template {
+    border: 2px solid #E85D4A;
+    border-radius: 12px;
+    overflow: hidden;
+    margin: 20px 0;
+  }
+  .brief-template__header {
+    background: linear-gradient(135deg, #E85D4A, #F5A64A);
+    padding: 16px 24px;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .brief-template__header-title { font-size: 16px; font-weight: 800; }
+  .brief-template__header-date { font-size: 12px; opacity: 0.8; }
+  .brief-row { display: flex; border-bottom: 1px solid #F0F0F0; }
+  .brief-row:last-child { border-bottom: none; }
+  .brief-row__label {
+    width: 140px; flex-shrink: 0;
+    background: #FAE8E0;
+    padding: 14px 16px;
+    font-size: 12px;
+    font-weight: 700;
+    color: #E85D4A;
+    display: flex;
+    align-items: flex-start;
+    border-right: 2px solid #F5D0C5;
+  }
+  .brief-row__content { padding: 14px 16px; font-size: 13px; line-height: 1.75; color: #3D3D3D; flex: 1; }
+  .brief-row__content strong { color: #E85D4A; }
+
+  /* AIプロンプトボックス */
+  .ai-box {
+    background: linear-gradient(135deg, #2D1B69 0%, #4A3080 100%);
+    border-radius: 12px;
+    padding: 24px;
+    margin: 24px 0;
+    color: white;
+  }
+  .ai-box__header { display: flex; align-items: center; gap: 10px; margin-bottom: 16px; }
+  .ai-box__icon { font-size: 20px; }
+  .ai-box__title { font-size: 15px; font-weight: 700; }
+  .ai-box__badge { font-size: 11px; background: rgba(255,255,255,0.15); padding: 2px 8px; border-radius: 20px; }
+  .ai-prompt {
+    background: rgba(0,0,0,0.3);
+    border-radius: 8px;
+    padding: 16px;
+    font-size: 13px;
+    line-height: 1.8;
+    font-family: 'Courier New', Courier, monospace;
+    white-space: pre-wrap;
+    color: #E8E8E8;
+    margin-bottom: 14px;
+  }
+  .prompt-var { color: #F5A64A; font-weight: 700; }
+  .ai-box__note { font-size: 12px; opacity: 0.75; line-height: 1.7; }
+
+  /* 演習カード */
+  .exercise-card {
+    background: linear-gradient(135deg, #4CAF7C 0%, #2E9B6E 100%);
+    border-radius: 12px;
+    padding: 28px;
+    color: white;
+    margin: 24px 0;
+  }
+  .exercise-card__label { font-size: 12px; font-weight: 700; letter-spacing: 0.1em; opacity: 0.8; margin-bottom: 10px; }
+  .exercise-card__title { font-size: 18px; font-weight: 800; margin-bottom: 16px; }
+  .exercise-steps { list-style: none; }
+  .exercise-steps li { font-size: 14px; padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,0.2); display: flex; gap: 10px; align-items: flex-start; }
+  .exercise-steps li:last-child { border-bottom: none; }
+  .exercise-steps li::before { content: '→'; font-weight: 700; flex-shrink: 0; }
+
+  /* Course A 総まとめ */
+  .course-a-summary {
+    background: linear-gradient(135deg, #3D3D3D 0%, #555 100%);
+    border-radius: 12px;
+    padding: 28px;
+    color: white;
+    margin: 24px 0;
+  }
+  .course-a-summary__title { font-size: 15px; font-weight: 700; margin-bottom: 16px; opacity: 0.9; }
+  .course-summary-list { list-style: none; }
+  .course-summary-list li { display: flex; gap: 12px; align-items: flex-start; padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,0.1); font-size: 14px; line-height: 1.65; }
+  .course-summary-list li:last-child { border-bottom: none; }
+  .course-summary-list li::before { content: '✓'; color: #F5A64A; font-weight: 700; flex-shrink: 0; margin-top: 2px; }
+  .output-badge {
+    display: inline-block; background: #F5A64A; color: white; font-size: 11px; font-weight: 700;
+    padding: 2px 8px; border-radius: 4px; margin-right: 6px;
+  }
+
+  /* まとめカード */
+  .summary-card {
+    background: linear-gradient(135deg, #E85D4A 0%, #F5A64A 100%);
+    border-radius: 12px;
+    padding: 28px;
+    color: white;
+    text-align: center;
+  }
+  .summary-card__title { font-size: 14px; font-weight: 700; opacity: 0.85; margin-bottom: 10px; }
+  .summary-card__main { font-size: 20px; font-weight: 800; line-height: 1.45; margin-bottom: 16px; }
+  .summary-card__sub { font-size: 13px; opacity: 0.9; line-height: 1.7; }
+
+  p { font-size: 14px; line-height: 1.8; color: #4A4A4A; margin-bottom: 12px; }
+
+  .reveal { opacity: 0; transform: translateY(20px); transition: opacity 0.5s ease, transform 0.5s ease; }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+
+  @media (max-width: 600px) {
+    .brief-row { flex-direction: column; }
+    .brief-row__label { width: 100%; border-right: none; border-bottom: 1px solid #F5D0C5; }
+    .hero__title { font-size: 22px; }
+  }
+</style>
+<meta name="csrf-param" content="authenticity_token" />
+<meta name="csrf-token" content="YuT5rbxrKbj9b--fTsiK8bM-uxyB_S-pnSNo3KPbY_4WCw_u3S7optE7H9KSfiyH0wLM-XUMCZICPdV2HagwTg" /><meta content="" name="routing-root-path" /><meta content="media" name="site-name" /><meta content="ja" name="i18n-default-locale" /><meta content="ja" name="i18n-locale" /></head>
+<body>
+
+<div class="hero">
+  <div class="hero__label">Course A — Chapter 5 / Lesson 2</div>
+  <div class="hero__title">マーケティングブリーフ作成<br>ワークショップ</div>
+  <div class="hero__meta">
+    <span>⏱ 45分</span>
+    <span>✍️ 実践課題</span>
+    <span>✨ AI活用あり</span>
+  </div>
+</div>
+<!-- ロードマップに戻るボタンの場合 --> 
+<div style="display: flex; justify-content: center; align-items: center; padding: 24px 0; margin-top: 24px;">
+  <a href="https://learn.webcoach.jp/2Q/ai_web_marketing" style="display: inline-block; background: #fff; color: #E85D4A; border: 2px solid #E85D4A; font-weight: 700; padding: 10px clamp(24px, 7vw, 48px); border-radius: 8px; text-decoration: none; white-space: nowrap;">ロードマップに戻る</a>  
+</div>
+<!-- 前の章に戻るボタンの場合 -->  
+<div style="display: flex; justify-content: flex-start; align-items: center; padding: 24px 0; margin-top: 24px;">
+  <a href="vtRww" style="position: relative; display: inline-block; background: linear-gradient(135deg, #E85D4A, #F5A64A); color: #fff; font-weight: 700; padding: 12px clamp(24px, 7vw, 48px); border-radius: 8px; text-decoration: none;"><img src="/theme/webcoach/img/icons/arrow-right.svg" style="position: absolute; top: 50%; transform: translateY(-50%); left: 12px; filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(125deg) brightness(103%) contrast(103%); transform: translateY(-50%) rotate(180deg);">前の章に戻る</a>
+</div>
+<div class="container">
+
+  <div class="intro-box reveal">
+    <div class="intro-box__text">
+      このレッスンはCourse Aの総まとめです。これまで学んだ<strong>ペルソナ・USP・行動モデル・カスタマージャーニー</strong>がすべてブリーフの7項目に統合されます。<br>
+      まず完成サンプルを見て、次にClaudeを使って叩き台を作り、最後に自分の案件でブリーフを完成させましょう。
+    </div>
+  </div>
+
+  <!-- 完成ブリーフのサンプル -->
+  <div class="card reveal">
+    <div class="card__title">完成ブリーフのサンプル</div>
+    <p style="font-size: 13px; color: #888; margin-bottom: 12px;">ケース: ヨガスタジオ・Instagramリール+体験LPのマーケティングブリーフ</p>
+
+    <div class="brief-template">
+      <div class="brief-template__header">
+        <div class="brief-template__header-title">マーケティングブリーフ — YogaStudio CALM</div>
+        <div class="brief-template__header-date">2026.04.01 / 担当: 田中（SNS）+ 佐藤（LP設計）</div>
+      </div>
+      <div class="brief-row">
+        <div class="brief-row__label">①<br>背景・現状</div>
+        <div class="brief-row__content">
+          月次体験申し込みは平均4〜5件。競合（渋谷エリア同規模スタジオ）は月15〜20件の体験流入がある模様。HP直帰率が高く（72%）、スタジオのInstagramフォロワーは現在820人で伸び悩んでいる。
+        </div>
+      </div>
+      <div class="brief-row">
+        <div class="brief-row__label">②<br>目的・ゴール</div>
+        <div class="brief-row__content">
+          体験レッスン申し込み数を月10件に増やす（2ヶ月以内）。Instagramのプロフィール遷移率を現状2.1%→4%以上に改善。
+        </div>
+      </div>
+      <div class="brief-row">
+        <div class="brief-row__label">③<br>ターゲット/<br>ペルソナ</div>
+        <div class="brief-row__content">
+          <strong>田中さつき（27歳）</strong> — 都内IT企業勤務、残業が多く慢性疲弊。体を動かしたいが時間が取れないと感じている。自己投資には積極的。インスタ日常利用。<br>
+          インサイト:「忙しくても自分の時間を作れている自分でいたい。ヨガはご褒美として通いたいが、続けられるか不安。」
+        </div>
+      </div>
+      <div class="brief-row">
+        <div class="brief-row__label">④<br>コアメッセージ</div>
+        <div class="brief-row__content">
+          「残業帰りでも来られる21時クラスがある。仕事を頑張る自分へのご褒美ヨガ。まず1回、体験してみてください。」
+        </div>
+      </div>
+      <div class="brief-row">
+        <div class="brief-row__label">⑤<br>トーン&マナー</div>
+        <div class="brief-row__content">
+          ナチュラル・落ち着いた・大人の女性感。夜の空気感・間接照明・静けさ。ギラギラ・ポップ・にぎやかさは避ける。テキストは体言止めより文章型。
+        </div>
+      </div>
+      <div class="brief-row">
+        <div class="brief-row__label">⑥<br>KPI</div>
+        <div class="brief-row__content">
+          体験申し込みCTR: 現状1.2% → 目標2.5%以上<br>
+          インスタプロフィール遷移率: 2.1% → 4%以上<br>
+          リールの保存率: 3%以上（業界平均2%）
+        </div>
+      </div>
+      <div class="brief-row">
+        <div class="brief-row__label">⑦<br>制約条件</div>
+        <div class="brief-row__content">
+          ブランドカラー: ダークグリーン（#2E5E40）+クリームホワイト（#FAF7F0）のみ使用可。競合スタジオ名・他社比較表現は禁止。体験費用1,500円の明記が必須。初稿提出: 4月14日（月）。
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- AIプロンプト -->
+  <div class="ai-box reveal">
+    <div class="ai-box__header">
+      <div class="ai-box__icon">🤖</div>
+      <div class="ai-box__title">Claudeでブリーフの叩き台を生成する——プロンプト</div>
+      <div class="ai-box__badge">AI活用</div>
+    </div>
+    <p style="font-size: 13px; color: rgba(255,255,255,0.8); margin-bottom: 14px;">以下のプロンプトにクライアントから聞いた情報を入力するだけで、ブリーフの叩き台が5分で生成できます。その後、クライアントと確認・修正して完成版にしましょう。</p>
+    <div class="ai-prompt">あなたはマーケティングプランナーです。クリエイターがクライアントと制作の方向性を合わせるための「マーケティングブリーフ」の叩き台を作成してください。
+
+【クライアント情報】
+<span class="prompt-var">（例: ヨガスタジオ、渋谷、10年目、月10件の体験申し込みが目標）</span>
+
+【依頼内容】
+<span class="prompt-var">（例: Instagramリール3本+体験LPのリニューアル）</span>
+
+【クライアントが話してくれた情報（そのまま貼り付けてOK）】
+<span class="prompt-var">（例: 「おしゃれな30代女性向けに、体験してみたいと思わせたい。夜でも来やすい雰囲気を出したい」）</span>
+
+以下の7項目でブリーフを作成してください：
+① 背景・現状（課題の整理）
+② 目的・ゴール（具体的な数値目標）
+③ ターゲット/ペルソナ（デモグラ+インサイト）
+④ コアメッセージ（1文）
+⑤ トーン&マナー（3〜5キーワード）
+⑥ KPI（2〜3指標）
+⑦ 制約条件（確認すべき点のリストアップ）
+
+※ 不明な箇所は「要確認」として、クライアントに確認すべき質問を添えてください。</div>
+    <div class="ai-box__note">
+      Claudeが生成したブリーフはあくまで叩き台です。クライアントと一緒に確認し「これで合ってますか？」を繰り返すことで、最終的なブリーフが完成します。<br>
+      ※ 「要確認」と出た箇所は必ずクライアントにヒアリングしてください。
+    </div>
+  </div>
+
+  <!-- 演習 -->
+  <div class="exercise-card reveal">
+    <div class="exercise-card__label">EXERCISE — Course A 総まとめ演習</div>
+    <div class="exercise-card__title">自分の案件のブリーフを完成させよう</div>
+    <ul class="exercise-steps">
+      <li>手持ちのクライアント案件・自分のSNS・想定案件のどれかを1つ選ぶ</li>
+      <li>ClaudeにプロンプトとクライアントのRAW情報を入力して叩き台を生成する</li>
+      <li>生成されたブリーフを読んで「要確認」の部分をリストアップ</li>
+      <li>（実際の案件の場合）クライアントに確認して全項目を埋める</li>
+      <li>完成したブリーフを印刷またはGoogleドキュメントに保存。今後の全制作の起点にする</li>
+    </ul>
+  </div>
+
+  <!-- Course A 総まとめ -->
+  <div class="course-a-summary reveal">
+    <div class="course-a-summary__title">Course A 修了——学んだこと・作った成果物</div>
+    <ul class="course-summary-list">
+      <li><span class="output-badge">理解</span><strong>マーケティングの本質</strong>: 「売れる仕組みを作ること」。クリエイターはP3・P4の中心的実行者。</li>
+      <li><span class="output-badge">成果物</span><strong>ペルソナシート</strong>: デモグラ+サイコグラ+インサイト+本人の一言。制作判断の軸になる。</li>
+      <li><span class="output-badge">成果物</span><strong>USP一文</strong>: 「誰のための・何を・どう解決する」を1文に凝縮した選ばれる理由。</li>
+      <li><span class="output-badge">理解</span><strong>コピーの3技術</strong>: 数字・シーン描写・対比で「相手の言葉」に変換する。</li>
+      <li><span class="output-badge">理解</span><strong>行動モデル</strong>: AIDMA・AISAS・DUAL AISAS。制作物がどのフェーズに作用するかを把握。</li>
+      <li><span class="output-badge">成果物</span><strong>カスタマージャーニーマップ</strong>: 5フェーズ×行動・感情・タッチポイント・課題・コンテンツ機会。</li>
+      <li><span class="output-badge">成果物</span><strong>マーケティングブリーフ</strong>: 7項目を埋めた制作の設計書。クライアントとの認識を統一。</li>
+    </ul>
+  </div>
+
+  <!-- まとめカード -->
+  <div class="summary-card reveal">
+    <div class="summary-card__title">Course A 修了おめでとうございます</div>
+    <div class="summary-card__main">マーケティング思考の基礎が整った。<br>次は自分の職種に落とし込む時間。</div>
+    <div class="summary-card__sub">
+      Course Bでは「SNS運用者」「Webデザイナー」「動画編集者」に分かれて、ここで学んだ思考を実際の業務に適用します。<br>
+      まず Course B / Chapter 1「成果を測る——数字リテラシー基礎」から始めましょう。
+    </div>
+  </div>
+
+</div>
+<!-- 前の章に戻るボタンの場合 -->  
+<div style="display: flex; justify-content: flex-start; align-items: center; padding: 24px 0; margin-top: 24px;">
+  <a href="vtRww" style="position: relative; display: inline-block; background: linear-gradient(135deg, #E85D4A, #F5A64A); color: #fff; font-weight: 700; padding: 12px clamp(24px, 7vw, 48px); border-radius: 8px; text-decoration: none;"><img src="/theme/webcoach/img/icons/arrow-right.svg" style="position: absolute; top: 50%; transform: translateY(-50%); left: 12px; filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(125deg) brightness(103%) contrast(103%); transform: translateY(-50%) rotate(180deg);">前の章に戻る</a>
+</div>
+<!-- ロードマップに戻るボタンの場合 --> 
+<div style="display: flex; justify-content: center; align-items: center; padding: 24px 0; margin-top: 24px;">
+  <a href="https://learn.webcoach.jp/2Q/ai_web_marketing" style="display: inline-block; background: #fff; color: #E85D4A; border: 2px solid #E85D4A; font-weight: 700; padding: 10px clamp(24px, 7vw, 48px); border-radius: 8px; text-decoration: none; white-space: nowrap;">ロードマップに戻る</a>  
+</div>
+
+<script>
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); } });
+  }, { threshold: 0.15 });
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+</script>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="ck-icon-arrow-down" viewBox="0 0 1792 1792"><path d="M1675 832q0 53-37 90l-651 652q-39 37-91 37-53 0-90-37l-651-652q-38-36-38-90 0-53 38-91l74-75q39-37 91-37 53 0 90 37l294 294v-704q0-52 38-90t90-38h128q52 0 90 38t38 90v704l294-294q37-37 90-37 52 0 91 37l75 75q37 39 37 91z" /></symbol><symbol id="ck-icon-arrow-up" viewBox="0 0 1792 1792"><path d="M1675 971q0 51-37 90l-75 75q-38 38-91 38-54 0-90-38l-294-293v704q0 52-37.5 84.5t-90.5 32.5h-128q-53 0-90.5-32.5t-37.5-84.5v-704l-294 293q-36 38-90 38t-90-38l-75-75q-38-38-38-90 0-53 38-91l651-651q35-37 90-37 54 0 91 37l651 651q37 39 37 91z" /></symbol><symbol id="ck-icon-calendar" viewBox="0 0 1792 1792"><path d="M192 1664h288v-288h-288v288zm352 0h320v-288h-320v288zm-352-352h288v-320h-288v320zm352 0h320v-320h-320v320zm-352-384h288v-288h-288v288zm736 736h320v-288h-320v288zm-384-736h320v-288h-320v288zm768 736h288v-288h-288v288zm-384-352h320v-320h-320v320zm-352-864v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm736 864h288v-320h-288v320zm-384-384h320v-288h-320v288zm384 0h288v-288h-288v288zm32-480v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm384-64v1280q0 52-38 90t-90 38h-1408q-52 0-90-38t-38-90v-1280q0-52 38-90t90-38h128v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h384v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h128q52 0 90 38t38 90z" /></symbol><symbol id="ck-icon-chevron-left" viewBox="0 0 1792 1792"><path d="M1427 301l-531 531 531 531q19 19 19 45t-19 45l-166 166q-19 19-45 19t-45-19l-742-742q-19-19-19-45t19-45l742-742q19-19 45-19t45 19l166 166q19 19 19 45t-19 45z" /></symbol><symbol id="ck-icon-chevron-right" viewBox="0 0 1792 1792"><path d="M1363 877l-742 742q-19 19-45 19t-45-19l-166-166q-19-19-19-45t19-45l531-531-531-531q-19-19-19-45t19-45l166-166q19-19 45-19t45 19l742 742q19 19 19 45t-19 45z" /></symbol><symbol id="ck-icon-clock-o" viewBox="0 0 1792 1792"><path d="M1024 544v448q0 14-9 23t-23 9h-320q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h224v-352q0-14 9-23t23-9h64q14 0 23 9t9 23zm416 352q0-148-73-273t-198-198-273-73-273 73-198 198-73 273 73 273 198 198 273 73 273-73 198-198 73-273zm224 0q0 209-103 385.5t-279.5 279.5-385.5 103-385.5-103-279.5-279.5-103-385.5 103-385.5 279.5-279.5 385.5-103 385.5 103 279.5 279.5 103 385.5z" /></symbol><symbol id="ck-icon-trash" viewBox="0 0 1792 1792"><path d="M704 1376v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm-544-992h448l-48-117q-7-9-17-11h-317q-10 2-17 11zm928 32v64q0 14-9 23t-23 9h-96v948q0 83-47 143.5t-113 60.5h-832q-66 0-113-58.5t-47-141.5v-952h-96q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h309l70-167q15-37 54-63t79-26h320q40 0 79 26t54 63l70 167h309q14 0 23 9t9 23z" /></symbol><symbol id="ck-icon-undo" viewBox="0 0 1792 1792"><path d="M1664 896q0 156-61 298t-164 245-245 164-298 61q-172 0-327-72.5t-264-204.5q-7-10-6.5-22.5t8.5-20.5l137-138q10-9 25-9 16 2 23 12 73 95 179 147t225 52q104 0 198.5-40.5t163.5-109.5 109.5-163.5 40.5-198.5-40.5-198.5-109.5-163.5-163.5-109.5-198.5-40.5q-98 0-188 35.5t-160 101.5l137 138q31 30 14 69-17 40-59 40h-448q-26 0-45-19t-19-45v-448q0-42 40-59 39-17 69 14l130 129q107-101 244.5-156.5t284.5-55.5q156 0 298 61t245 164 164 245 61 298z" /></symbol></svg><script async="async" defer="defer" nonce="6wXlWx43ZfPv4+HaaonqpQ==" src="//www.instagram.com/embed.js"></script>
+
+<!--Clipkit(R) v15.9.0-20260915 Copyright (C) 2026 VECTOR Inc.-->
+
+</body>
+</html>
+</div></div>
+        
+      
+    </div>
+  
+  </div>
+</div>
+<!-- <script src="https://cdn.clipkit.co/clipkit/javascripts/item-shopify-1.0.js?v=v15.9.0-20260915" async></script> -->

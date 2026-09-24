@@ -1,0 +1,690 @@
+<!DOCTYPE html>
+<!-- clipkit-source-url: https://learn.webcoach.jp/web-design/jvzYj -->
+<!-- clipkit-fetched-at: 2026-09-17T11:14:00.275Z -->
+<html lang="ja"><head>
+    <!-- headタグ内の上部に挿入されます -->
+
+    <meta charset="UTF-8">
+    <title>Adobe Photoshop｜18章 色調補正の方法を学ぼう - WEBCOACH</title>
+
+    <!-- resetcssのCDNでのCSS読み込み -->
+    <link rel="stylesheet" href="../../_assets/17f8e278dc.css">
+
+    <!-- fontawesomeのCDNでのCSS読み込み -->
+    <link rel="stylesheet" href="../../_assets/799aeb25cc.css">
+
+    <!-- BootstrapのCDNでのCSS読み込み -->
+    <link href="../../_assets/7633b7c0c9.css" rel="stylesheet">
+
+    <!-- highlight.jsの読み込み -->
+    <link rel="stylesheet" href="../../_assets/e31ce2dd8c.css">
+
+    <!-- カスタムCSS -->
+    <link rel="stylesheet" href="../../_assets/c533dd7750.css">
+
+    <!-- clipkitデフォルトのCSS -->
+    <!--<link rel="stylesheet" media="screen" href="https://cdn.clipkit.co/clipkit/stylesheets/application-1.0.css?v=v15.9.0-20260915">-->
+
+    <!-- jQuery -->
+    
+
+    <!-- カスタムJS -->
+    
+    
+
+    <!-- clipkitデフォルトのJS -->
+    
+
+    <!-- フォント -->
+    <link rel="preconnect" href="https://fonts.googleapis.com/">
+    <link rel="preconnect" href="https://fonts.gstatic.com/">
+    <link href="../../_assets/8b5713f1fc.css" rel="stylesheet">
+
+    <link href="../../_assets/b83ae8ba65.webp" rel="shortcut icon" type="image/vnd.microsoft.icon">
+    <link rel="apple-touch-icon" href="../../_assets/ea0aba163d.webp">
+    <link rel="alternate" type="application/rss+xml" href="https://learn.webcoach.jp/media.rss" title="WEBCOACH">
+    
+<link rel="canonical" href="https://learn.webcoach.jp/web-design/jvzYj">
+
+<meta name="description" content="">
+<meta name="keywords" content="">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:domain" content="learn.webcoach.jp">
+<meta name="twitter:title" content="Adobe Photoshop｜18章 色調補正の方法を学ぼう - WEBCOACH">
+<meta name="twitter:image" content="https://cdn.clipkit.co/tenants/589/articles/images/000/000/710/medium/651c4bf4-5e20-4be2-a39b-0cd4afdf683e.png?1740018408">
+<meta name="twitter:description" content="">
+<meta property="og:site_name" content="WEBCOACH">
+<meta property="og:title" content="Adobe Photoshop｜18章 色調補正の方法を学ぼう">
+<meta property="og:description" content="">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://learn.webcoach.jp/web-design/jvzYj">
+<meta property="og:image" content="https://cdn.clipkit.co/tenants/589/articles/images/000/000/710/large/651c4bf4-5e20-4be2-a39b-0cd4afdf683e.png?1740018408">
+
+
+    <!-- headタグ内の下部に挿入されます -->
+
+
+<meta name="csrf-param" content="authenticity_token">
+<meta name="csrf-token" content="iINebjMrMHLNQqkExpn3R1gL8L7Ga_0S84HV88ZXE5W-27-tp5TGewrrdbfq1smY31FCAwvzZexHGqrh9x82_A"><meta content="" name="routing-root-path"><meta content="media" name="site-name"><meta content="ja" name="i18n-default-locale"><meta content="ja" name="i18n-locale"><style data-clipkit-snapshot="force-visible">[data-aos],.reveal,.wow,.fade-in,.animate__animated,.js-reveal{opacity:1!important;transform:none!important;visibility:visible!important;animation:none!important;transition:none!important}</style></head>
+
+<body class="device-desktop" style="visibility: visible;">
+    <!-- bodyタグ内の上部に挿入されます -->
+
+
+    <!-- サイドバーとコンテンツのコンテナ -->
+    <div class="d-flex flex-row w-100 mb-5" style="min-height: calc(100vh - 400px);">
+
+        <!-- サイドバー -->
+        <!--<nav id="side-bar" class="d-flex flex-column fixed-top" style="width: 250px;">-->
+        <!--    <h1 class="d-block w-100 text-center">-->
+        <!--        <a class="d-block" href="/">-->
+        <!--            <img class="mw-100 p-3" src="https://cdn.clipkit.co/tenants/589/sites/logos/000/000/001/logo_sm/a8defd4b-1cc7-433b-a61c-08e7db0e3e4f.png?1714459367" alt="WEBCOACH">-->
+        <!--        </a>-->
+        <!--    </h1>-->
+        <!--    <ul class="nav flex-column m-0 p-3 fw-bold">-->
+        <!--        <li id="sidebar-top" class="nav-item mb-2" style="display: none;"><a href="/"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;" src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/233/original/home.png?1715353458">-->
+        <!--                <div>ホーム</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-knowledges" class="nav-item mb-2" style="display: none;"><a href="/knowledges"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;" src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/232/original/book.png?1715353458">-->
+        <!--                <div>学習の心得</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-web-designs" class="nav-item mb-2" style="display: none;"><a href="/web-designs"-->
+        <!--                class="nav-link text-body d-flex align-items-center active">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/231/original/design.png?1715353457">-->
+        <!--                <div>WEBデザイン</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-web-marketing" class="nav-item mb-2" style="display: none;"><a href="/web-marketings"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/230/original/marketing.png?1715353457">-->
+        <!--                <div>WEBマーケティング</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-codings" class="nav-item mb-2" style="display: none;"><a href="/codings"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/229/original/website.png?1715353457">-->
+        <!--                <div>WEBサイト構築</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-business-skills" class="nav-item mb-2" style="display: none;"><a href="/business-skills"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/228/original/business.png?1715353456">-->
+        <!--                <div>ビジネススキル</div>-->
+        <!--            </a></li>-->
+        <!--    </ul>-->
+        <!--</nav>-->
+
+        <!-- コンテンツ -->
+        <!--<main class="ms-auto" style="width: calc(100vw - 250px);">-->
+        <main class="ms-auto" style="width: calc(100vw);">
+            <div id="sb-site">
+                
+
+
+<div class="container">
+  <div class="row">
+    <div class="article">
+      <div class="mb-3 text-light" style="
+        height: 180px;
+        background-image: url(&quot;../../_assets/e1d58e2b8a.webp&quot;);
+        background-repeat: no-repeat;
+        background-size: cover;
+        display: flex;
+        align-items: flex-end;
+      ">
+        <div style="
+          margin: 0 0 30px 30px;
+        ">
+          <div>WEBデザイン</div>
+
+          <div class="fw-bold h2">Adobe Photoshop｜18章 色調補正の方法を学ぼう</div>
+        </div>
+      </div>
+      <div class="article-content">
+        <!-- 目次 -->
+        <div class="index mb-3" style="background-color: #FDF5E8;">
+          <div>
+            <div class="fw-light">INDEX</div>
+            <div class="h3">目次</div>
+          </div>
+          <div class="toc"><ul><li><a href="#heading0" class="tocLink">18章 色調補正の方法を学ぼう</a><ul><li><a href="#heading1" class="tocLink">この教材の学習時間:240分</a></li></ul></li><li><a href="#heading2" class="tocLink">【18-1】色調補正とは</a><ul><li><a href="#heading3" class="tocLink"></a></li></ul></li><li><a href="#heading4" class="tocLink">【18-2】色調補正の基本操作</a><ul><li><a href="#heading5" class="tocLink"></a></li></ul><ul><li><a href="#heading6" class="tocLink">色調補正を利用する方法</a></li></ul></li><li><a href="#heading7" class="tocLink">【18-3】色調補正の活用例</a><ul><li><a href="#heading8" class="tocLink">写真の色を補正できる機能</a><ul><li><a href="#heading9" class="tocLink">1. 色相</a></li><li><a href="#heading10" class="tocLink">2. 彩度</a></li><li><a href="#heading11" class="tocLink">3. 明度</a></li><li><a href="#heading12" class="tocLink"></a></li><li><a href="#heading13" class="tocLink">4. 特定の色域</a></li><li><a href="#heading14" class="tocLink">5. マスター</a></li><li><a href="#heading15" class="tocLink"></a></li></ul></li></ul></li><li><a href="#heading16" class="tocLink">【18-4】演習：写真の色を変更してみよう</a><ul><li><a href="#heading17" class="tocLink">演習課題</a></li><li><a href="#heading18" class="tocLink"></a></li><li><a href="#heading19" class="tocLink">作業手順</a></li><li><a href="#heading20" class="tocLink"></a></li></ul></li><li><a href="#heading21" class="tocLink">【18-5】写真の明るさを補正できる3つの機能</a><ul><li><a href="#heading22" class="tocLink">明るさ・コントラスト</a><ul><li><a href="#heading23" class="tocLink"></a></li></ul></li><li><a href="#heading24" class="tocLink">レベル補正</a><ul><li><a href="#heading25" class="tocLink"></a></li><li><a href="#heading26" class="tocLink"></a></li><li><a href="#heading27" class="tocLink">レベル補正を使用してみる</a></li></ul></li><li><a href="#heading28" class="tocLink">トーンカーブ</a><ul><li><a href="#heading29" class="tocLink"></a></li><li><a href="#heading30" class="tocLink">ヒストグラムの見方</a></li><li><a href="#heading31" class="tocLink"></a></li><li><a href="#heading32" class="tocLink"></a></li><li><a href="#heading33" class="tocLink">トーンカーブを使用してみる</a></li></ul></li></ul></li><li><a href="#heading34" class="tocLink">【18-6】演習：写真の色被りを補正できる機能</a><ul><li><a href="#heading35" class="tocLink">演習課題</a></li><li><a href="#heading36" class="tocLink"></a></li></ul><ul><li><a href="#heading37" class="tocLink">色被りとは</a></li><li><a href="#heading38" class="tocLink">カラーバランス</a></li></ul></li><li><a href="#heading39" class="tocLink">【18-7】演習：色調補正をやってみよう</a><ul><li><a href="#heading40" class="tocLink">演習課題</a></li><li><a href="#heading41" class="tocLink"></a></li></ul></li><li><a href="#heading42" class="tocLink">【18-8】演習：トーンカーブで空を朝日から夕日に調整</a><ul><li><a href="#heading43" class="tocLink">演習課題</a></li><li><a href="#heading44" class="tocLink"></a></li></ul></li><li><a href="#heading45" class="tocLink">【18-9】演習：色被りをカラーバランスで調整</a><ul><li><a href="#heading46" class="tocLink">演習課題</a></li><li><a href="#heading47" class="tocLink"></a></li></ul></li></ul></div>
+        </div>
+        
+        <div class="back-to-roadmap mb-4 text-center"></div>
+
+        <!-- コンテンツ -->
+        
+        
+        <div class="article-item item_html " id="item25609" data-item-id="25609" data-item-type="ItemHtml"><div class="item-body"><div class="pagenation-buttons" style="justify-content: space-between;">
+  <a href="https://learn.webcoach.jp/web-design/ybi9F" class="pagenation-buttons_prev"><img src="../../_assets/47498cfebf.svg" class="pagenation-buttons_icon">前の章に戻る</a>
+  <a href="https://learn.webcoach.jp/web-design/CeAkM" class="pagenation-buttons_next">次の章に進む<img src="../../_assets/47498cfebf.svg" class="pagenation-buttons_icon"></a>
+</div></div></div>
+        
+        <div class="article-item item_heading " id="item36917" data-item-id="36917" data-item-type="ItemHeading"><h2 class="item-body" id="heading0">18章 色調補正の方法を学ぼう</h2></div>
+        
+        <div class="article-item item_markdown " id="item39486" data-item-id="39486" data-item-type="ItemMarkdown"><h4 id="heading1">この教材の学習時間:240分</h4>
+</div>
+        
+        <div class="article-item item_rich_text " id="item8228" data-item-id="8228" data-item-type="ItemRichText"><div class="item-body-hbr">この章では、<span class="decoration-01"><span class="decoration-02">Adobe Photoshopを使用して色調補正の基本を学びます。</span></span><br>
+写真や画像編集において、色調補正は非常に重要な技術であり、適切な色調補正を行うことで、画像の印象を大きく変えたり、より魅力的に仕上げたりすることができます。<br>
+この章を通じて、写真や画像をより魅力的に、そして目的に合わせて効果的に編集する方法を身につけていきましょう。</div></div>
+        
+        <div class="article-item item_heading " id="item36918" data-item-id="36918" data-item-type="ItemHeading"><h2 class="item-body" id="heading2">【18-1】色調補正とは</h2></div>
+        
+        <div class="article-item item_rich_text " id="item8230" data-item-id="8230" data-item-type="ItemRichText"><div class="item-body-hbr"> 色調補正とは、<span class="decoration-01"><span class="decoration-02">画像の明るさ、コントラスト、色合いを調整して、視覚的な印象を向上させる処理です。</span></span><br>
+これにより、画像の雰囲気や焦点を変更したり、色のバランスを整えたりすることができます。</div></div>
+        
+        <div class="article-item item_image " id="item8231" data-item-id="8231" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/008/231/medium/a5fffe8e-0473-41ea-be4e-6ca0d2132413.jpg?1740018516" title=""><img class="img-responsive item-image" alt=" (8231)" data-reference="" src="../../_assets/df721b29e3.webp" width="640" height="246"></a><h4 id="heading3"></h4></div></div>
+        
+        <div class="article-item item_html " id="item8232" data-item-id="8232" data-item-type="ItemHtml"><div class="item-body"><div class="callout white">
+    <div class="title-area">
+        <div class="icon bulb"></div>
+        <div class="title"><span class="decoration-01">色調補正のできること</span></div>
+    </div>
+    <div class="content-area">
+      <ul>
+        <li>暗い画像を明るくする</li>
+        <li>赤みを強める</li>
+        <li>画像の一部を別の色に変更する</li>
+      </ul>
+    </div>
+</div></div></div>
+        
+        <div class="article-item item_html " id="item8233" data-item-id="8233" data-item-type="ItemHtml"><div class="item-body"><div class="card-with-icon attention">
+  <span class="bold">注意事項<br></span>
+  <ul>
+    <li>Photoshopには様々な色調補正用の機能が準備されています。</li>
+    <li><span class="decoration-02">使用目的に合わせた補正を行うことが非常に重要</span>で、元の色に忠実に補正をするべきなのか、より美しさを重視する補正を行うのかなど考えていく必要があります。</li>
+    <ul>
+      <li>例えば、オンラインショップ（ECサイト）に掲載する写真を補正する場合には、元の商品の色を再現するような補正をする必要があります。</li>
+    </ul>
+  </ul>
+</div></div></div>
+        
+        <div class="article-item item_heading " id="item36919" data-item-id="36919" data-item-type="ItemHeading"><h2 class="item-body" id="heading4">【18-2】色調補正の基本操作</h2></div>
+        
+        <div class="article-item item_text " id="item8235" data-item-id="8235" data-item-type="ItemText"><div class="item-body-hbr">「メニューバー： イメージ ＞ 色調補正」 から使用する画像の目的に合わせて選択します。</div></div>
+        
+        <div class="article-item item_image " id="item8236" data-item-id="8236" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/008/236/medium/dfff7a2a-0831-4d56-89a7-f6093155803d.png?1740018584" title=""><img class="img-responsive item-image" alt=" (8236)" data-reference="" src="../../_assets/aad2e39620.webp" width="640" height="427"></a><h4 id="heading5"></h4></div></div>
+        
+        <div class="article-item item_heading " id="item36920" data-item-id="36920" data-item-type="ItemHeading"><h3 class="item-body" id="heading6">色調補正を利用する方法</h3></div>
+        
+        <div class="article-item item_html " id="item36934" data-item-id="36934" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li>
+    本章では、メニューバーの イメージ ＞ 色調補正 から行う方法の解説となります。
+    <ul>
+      <li>
+        この方法の大きな特徴は、
+        <span class="decoration-02">画像に直接補正を行う方法になるため、元の状態を保持しない方法となります。</span>
+      </li>
+    </ul>
+  </li>
+  <li>
+    もう一つの方法は、レイヤーを使用する方法になります。こちらの方法は次の章で学びます。
+    <ul>
+      <li>
+        レイヤーマスクと同じように、
+        <span class="decoration-02">元の画像を保持しながら補正をする方法になります。</span>
+      </li>
+    </ul>
+  </li>
+</ul>
+</div></div>
+        
+        <div class="article-item item_rich_text " id="item8326" data-item-id="8326" data-item-type="ItemRichText"><div class="item-body-hbr">本章では、各色調補正機能の役割に焦点を当てて解説します。まずはツールの基本的な使い方をしっかり押さえていきましょう！</div></div>
+        
+        <div class="article-item item_heading " id="item36921" data-item-id="36921" data-item-type="ItemHeading"><h2 class="item-body" id="heading7">【18-3】色調補正の活用例</h2></div>
+        
+        <div class="article-item item_heading " id="item36922" data-item-id="36922" data-item-type="ItemHeading"><h3 class="item-body" id="heading8">写真の色を補正できる機能</h3></div>
+        
+        <div class="article-item item_html " id="item36935" data-item-id="36935" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li>
+    <span class="decoration-01">色相・彩度</span>
+    <ul>
+      <li>
+        色相、彩度、および明度を個別に調整することで、特定の色を強調したり、全体の色味を変えたりすることができます。<br>
+        また、特定の色域のみを選択して調整することも可能です。
+      </li>
+      <li>
+        Photoshopで特定の色を変更したい時によく使う機能です。
+      </li>
+    </ul>
+  </li>
+</ul>
+</div></div>
+        
+        <div class="article-item item_markdown " id="item8328" data-item-id="8328" data-item-type="ItemMarkdown"><h4 id="heading9">1. 色相</h4>
+</div>
+        
+        <div class="article-item item_rich_text " id="item8337" data-item-id="8337" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">色の変更</span><br>
+色相のスライダーを動かすことで、画像全体または特定の色域の色を変えることができます。<br>
+例えば、青空を緑色にしたり、赤い花を青に変えたりすることが可能です。</div></div>
+        
+        <div class="article-item item_markdown " id="item8329" data-item-id="8329" data-item-type="ItemMarkdown"><h4 id="heading10">2. 彩度</h4>
+</div>
+        
+        <div class="article-item item_rich_text " id="item8338" data-item-id="8338" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">色の濃さの変更</span><br>
+彩度のスライダーを動かすことで、色の鮮やかさ（ビビッドさ）を調整します。<br>
+彩度を上げると色がより鮮やかになり、下げるとモノクロに近づきます。</div></div>
+        
+        <div class="article-item item_markdown " id="item8330" data-item-id="8330" data-item-type="ItemMarkdown"><h4 id="heading11">3. 明度</h4>
+</div>
+        
+        <div class="article-item item_rich_text " id="item8339" data-item-id="8339" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">明るさの変更</span><br>
+明度のスライダーを動かすことで、色の明るさを調整できます。<br>
+明度を上げると色が明るくなり、下げると色が暗くなります。</div></div>
+        
+        <div class="article-item item_image " id="item8333" data-item-id="8333" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/008/333/medium/5805f6ea-5c60-429c-be39-1839c8a38504.png?1740025841" title=""><img class="img-responsive item-image" alt=" (8333)" data-reference="" src="../../_assets/480adea2fa.webp" width="640" height="426"></a><h4 id="heading12"></h4></div></div>
+        
+        <div class="article-item item_markdown " id="item8331" data-item-id="8331" data-item-type="ItemMarkdown"><h4 id="heading13">4. 特定の色域</h4>
+</div>
+        
+        <div class="article-item item_rich_text " id="item8336" data-item-id="8336" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">選択的な色域の調整</span> <br>
+ドロップダウンメニューから特定の色域（レッド、イエロー、グリーン、シアン、ブルー、マゼンタなど）を選び、その色域だけを調整することができます。<br>
+これにより、特定の色だけを強調したり、変更したりすることができます。</div></div>
+        
+        <div class="article-item item_markdown " id="item8332" data-item-id="8332" data-item-type="ItemMarkdown"><h4 id="heading14">5. マスター</h4>
+</div>
+        
+        <div class="article-item item_rich_text " id="item8335" data-item-id="8335" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">全体の調整 </span><br>
+「マスター」を選択すると、画像全体の色相、彩度、明度を調整することができます。</div></div>
+        
+        <div class="article-item item_image " id="item8334" data-item-id="8334" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/008/334/medium/466066aa-aa71-41e4-8374-951f8ecab43b.png?1740025865" title=""><img class="img-responsive item-image" alt=" (8334)" data-reference="" src="../../_assets/ee6aeef49a.webp" width="640" height="430"></a><h4 id="heading15"></h4></div></div>
+        
+        <div class="article-item item_heading " id="item36923" data-item-id="36923" data-item-type="ItemHeading"><h2 class="item-body" id="heading16">【18-4】演習：写真の色を変更してみよう</h2></div>
+        
+        <div class="article-item item_markdown " id="item36936" data-item-id="36936" data-item-type="ItemMarkdown"><h4 id="heading17">演習課題</h4>
+</div>
+        
+        <div class="article-item item_image " id="item8340" data-item-id="8340" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/008/340/medium/b263683e-ebd4-4624-9a18-00722567cfff.jpg?1740026077" title=""><img class="img-responsive item-image" alt=" (8340)" data-reference="" src="../../_assets/bbd533cd8d.webp" width="640" height="198"></a><h4 id="heading18"></h4></div></div>
+        
+        <div class="article-item item_link " id="item36937" data-item-id="36937" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=jvzYj&amp;item_id=36937" rel="nofollow noopener noreferrer" target="_blank">Adobe Photoshop 18-1 【使用素材】</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="Adobe Photoshop 18-1 【使用素材】" data-reference="https://www.dropbox.com/scl/fi/08cj1xilgehz3urxkjixb/child-4157865_1280.jpg?rlkey=qmx3sszv5ockq9l3ggr8n74r7&amp;st=se3qmr84&amp;dl=0" src="../../_assets/8068ac7adc.webp" width="75" height="75"></div><div class="media-body"><div class="item-body"></div></div></div></div></div>
+        
+        <div class="article-item item_markdown " id="item8341" data-item-id="8341" data-item-type="ItemMarkdown"><h4 id="heading19">作業手順</h4>
+</div>
+        
+        <div class="article-item item_text " id="item8346" data-item-id="8346" data-item-type="ItemText"><div class="item-body-hbr">1. プリセットを選択すると、あらかじめ用意された設定を適用できます。<br> 初期設定にすると最初の状態に戻せます。</div></div>
+        
+        <div class="article-item item_link " id="item12483" data-item-id="12483" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=jvzYj&amp;item_id=12483" rel="nofollow noopener noreferrer" target="_blank">作業動画 Adobe Photoshop 18-1</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="作業動画 Adobe Photoshop 18-1" data-reference="https://www.dropbox.com/scl/fi/cxpfb6wmz98mvzh841hgq/Adobe-Photoshop18-1_1.0_.mov?rlkey=edyxbionzfbqdd3m7326bzb81&amp;e=1&amp;st=4bsymxt7&amp;dl=0" src="../../_assets/fb06745a74.webp" width="75" height="75"></div><div class="media-body"><div class="item-body">この動画はデモンストレーション動画になります。
+音声は入っておりません。</div></div></div></div></div>
+        
+        <div class="article-item item_text " id="item8345" data-item-id="8345" data-item-type="ItemText"><div class="item-body-hbr">2. マスターが選択されている状態で色相・彩度・明度のレンジを動かすと写真全体の色が変わります。</div></div>
+        
+        <div class="article-item item_link " id="item12484" data-item-id="12484" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=jvzYj&amp;item_id=12484" rel="nofollow noopener noreferrer" target="_blank">作業動画 Adobe Photoshop 18-2</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="作業動画 Adobe Photoshop 18-2" data-reference="https://www.dropbox.com/scl/fi/64h3nsgwd66s5ber3tqqq/Adobe-Photoshop18-2_1.0_.mov?rlkey=98pvdsq9mgzrwdk8ddgttw31b&amp;e=1&amp;st=x4aasil7&amp;dl=0" src="../../_assets/fb06745a74.webp" width="75" height="75"></div><div class="media-body"><div class="item-body">この動画はデモンストレーション動画になります。
+音声は入っておりません。</div></div></div></div></div>
+        
+        <div class="article-item item_text " id="item8344" data-item-id="8344" data-item-type="ItemText"><div class="item-body-hbr">3. 特定の色だけを変更したい場合は、指のマーク（画像上で色を調整）をクリックしてから、画像内の変更したい箇所をドラッグします。</div></div>
+        
+        <div class="article-item item_link " id="item12485" data-item-id="12485" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=jvzYj&amp;item_id=12485" rel="nofollow noopener noreferrer" target="_blank">作業動画 Adobe Photoshop 18-3</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="作業動画 Adobe Photoshop 18-3" data-reference="https://www.dropbox.com/scl/fi/0gu7m4sgc73i08dhz6qg7/Adobe-Photoshop18-3_1.0_.mov?rlkey=mpw39jbin3o8h93grrmafk7it&amp;e=1&amp;st=tndb9xj9&amp;dl=0" src="../../_assets/fb06745a74.webp" width="75" height="75"></div><div class="media-body"><div class="item-body">この動画はデモンストレーション動画になります。
+音声は入っておりません。</div></div></div></div></div>
+        
+        <div class="article-item item_text " id="item8343" data-item-id="8343" data-item-type="ItemText"><div class="item-body-hbr">4. 特定の部分の色を変更したときに調整を行いたい場合は、パネルの下部にあるレンジの範囲を動かすことで色変更の範囲を調整できます。</div></div>
+        
+        <div class="article-item item_image " id="item8347" data-item-id="8347" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/008/347/medium/0092cf10-56fa-485a-9874-5d1cf2dd70aa.jpg?1740026553" title=""><img class="img-responsive item-image" alt=" (8347)" data-reference="" src="../../_assets/2706424067.webp" width="640" height="533"></a><h4 id="heading20"></h4></div></div>
+        
+        <div class="article-item item_link " id="item12486" data-item-id="12486" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=jvzYj&amp;item_id=12486" rel="nofollow noopener noreferrer" target="_blank">作業動画 Adobe Photoshop 18-4</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="作業動画 Adobe Photoshop 18-4" data-reference="https://www.dropbox.com/scl/fi/lstjnkpzjzkb2lhfmqeq6/Adobe-Photoshop18-4_1.0_.mov?rlkey=bx59f02kxvsqy7u542quoi6v3&amp;e=1&amp;st=e6m31pae&amp;dl=0" src="../../_assets/fb06745a74.webp" width="75" height="75"></div><div class="media-body"><div class="item-body">この動画はデモンストレーション動画になります。
+音声は入っておりません。</div></div></div></div></div>
+        
+        <div class="article-item item_text " id="item8342" data-item-id="8342" data-item-type="ItemText"><div class="item-body-hbr">5. 色彩の統一へチェックを入れると画像全体の統一された色で表示されます。</div></div>
+        
+        <div class="article-item item_link " id="item12487" data-item-id="12487" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=jvzYj&amp;item_id=12487" rel="nofollow noopener noreferrer" target="_blank">作業動画 Adobe Photoshop 18-5</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="作業動画 Adobe Photoshop 18-5" data-reference="https://www.dropbox.com/scl/fi/wqzh28x6x3yt2mzy8hih2/Adobe-Photoshop18-5_1.0_.mov?rlkey=yzcllanzxw1r3d8sxd1hbxlfy&amp;e=1&amp;st=qrby4w89&amp;dl=0" src="../../_assets/fb06745a74.webp" width="75" height="75"></div><div class="media-body"><div class="item-body">この動画はデモンストレーション動画になります。
+音声は入っておりません。</div></div></div></div></div>
+        
+        <div class="article-item item_heading " id="item36924" data-item-id="36924" data-item-type="ItemHeading"><h2 class="item-body" id="heading21">【18-5】写真の明るさを補正できる3つの機能</h2></div>
+        
+        <div class="article-item item_heading " id="item36925" data-item-id="36925" data-item-type="ItemHeading"><h3 class="item-body" id="heading22">明るさ・コントラスト</h3></div>
+        
+        <div class="article-item item_html " id="item36938" data-item-id="36938" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li><span class="decoration-02">画像全体の明るさとコントラストを手軽に調整することができる基本的なツール</span>です。</li>
+  <li>暗い写真を明るく、明るすぎる写真の明るさを下げることができます。</li>
+  <li>コントラストの補正ができるので、色をより鮮やかにしたり、背景より被写体を目立たせるなど写真の全体的な印象を変えることができます。</li>
+</ul>
+</div></div>
+        
+        <div class="article-item item_image " id="item8382" data-item-id="8382" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/008/382/medium/d0d0ac7f-1680-430d-8194-4df01f65017e.jpg?1740028372" title=""><img class="img-responsive item-image" alt=" (8382)" data-reference="" src="../../_assets/badfc76d16.webp" width="640" height="377"></a><h4 id="heading23"></h4></div></div>
+        
+        <div class="article-item item_html " id="item36939" data-item-id="36939" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_html " id="item36940" data-item-id="36940" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li>明るさのレンジを右に伸ばすと明るくなり、左へ伸ばすと暗くなります。</li>
+  <li>コントラスト（メリハリ）を右へ伸ばすとコントラストが強くなり、左へ伸ばすとコントラストが弱くなります。</li>
+</ul>
+</div></div>
+        
+        <div class="article-item item_link " id="item12488" data-item-id="12488" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=jvzYj&amp;item_id=12488" rel="nofollow noopener noreferrer" target="_blank">作業動画 Adobe Photoshop 18-6</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="作業動画 Adobe Photoshop 18-6" data-reference="https://www.dropbox.com/scl/fi/wv8z7kv289qstymcy9b7z/Adobe-Photoshop18-6_1.0_.mov?rlkey=11g5r5jnegwvecqyaqq1fvtvr&amp;e=1&amp;st=w11ewqf7&amp;dl=0" src="../../_assets/fb06745a74.webp" width="75" height="75"></div><div class="media-body"><div class="item-body">この動画はデモンストレーション動画になります。
+音声は入っておりません。</div></div></div></div></div>
+        
+        <div class="article-item item_html " id="item36941" data-item-id="36941" data-item-type="ItemHtml"><div class="item-body"><div class="callout white">
+    <div class="title-area">
+        <div class="icon bulb"></div>
+        <div class="title"><span class="decoration-01">明るさ・コントラストの特徴</span></div>
+    </div>
+    <div class="content-area">
+    <ul>
+      <li><span class="decoration-02">シンプルな操作</span>:<br>スライダーを動かすだけで調整できるため、操作が非常に簡単です。</li>
+      <li><span class="decoration-02">全体的な影響</span>:<br>画像全体に均等に影響を与えるため、細かい部分の調整は不向き</li>
+    </ul>
+    </div>
+</div></div></div>
+        
+        <div class="article-item item_heading " id="item36926" data-item-id="36926" data-item-type="ItemHeading"><h3 class="item-body" id="heading24">レベル補正</h3></div>
+        
+        <div class="article-item item_html " id="item36942" data-item-id="36942" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li>レベル補正では、画像のシャドウ（暗いところ）・中間調（中間の明度）・ハイライト（明るいところ）を個別に調整できます。</li>
+  <li>補正を行う際に表示される「ヒストグラム」を使うことで、画像の明るさの傾向や補正すべき部分、補正の程度を把握できます。
+</li>
+</ul>
+</div></div>
+        
+        <div class="article-item item_image " id="item8378" data-item-id="8378" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/008/378/medium/a50995bd-1503-47a7-8007-02e7e8712354.jpg?1740027992" title=""><img class="img-responsive item-image" alt=" (8378)" data-reference="" src="../../_assets/3a0ae651d2.webp" width="640" height="219"></a><h4 id="heading25"></h4></div></div>
+        
+        <div class="article-item item_html " id="item8379" data-item-id="8379" data-item-type="ItemHtml"><div class="item-body"><div class="callout white">
+    <div class="title-area">
+        <div class="icon bulb"></div>
+        <div class="title">レベル補正の特徴</div>
+    </div>
+    <div class="content-area">
+<ul>
+  <li>
+    <span class="decoration-01">精密な調整</span>
+    <ul>
+      <li>シャドウ、中間調、ハイライトを個別に調整できます。</li>
+    </ul>
+  </li>
+  <li>
+    <span class="decoration-01">ヒストグラム表示</span>
+    <ul>
+      <li>
+        ヒストグラムを確認しながら調整できるため、画像の明るさの分布を視覚的に把握しやすくなります。
+        <ul>
+          <li>ヒストグラムは画像の明るさの分布を示すグラフです。</li>
+          <li>横軸は明るさのレベル（0が黒、255が白）、縦軸はそのレベルのピクセル数を表します。ヒストグラムを理解することで、画像の露出や<span class="decoration-02">色調のバランスを視覚的に把握できます。</span></li>
+          <li>縦軸のピクセル数は横軸の明るさの各段階に応じたピクセルの数を示しているので、両端にピクセル数が多い傾向にある画像はコントラストが強いなどの<span class="decoration-02">画像の傾向を知ることができます。</span></li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <span class="decoration-01">色チャンネルごとの調整</span>
+    <ul>
+      <li>RGB各チャンネルごとにレベルを調整でき、カラーバランスの微調整に適しています。</li>
+    </ul>
+  </li>
+</ul>
+
+    </div>
+</div></div></div>
+        
+        <div class="article-item item_image " id="item8380" data-item-id="8380" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/008/380/medium/6e5f53e1-937d-4c8b-881c-f285e6a22d0f.jpg?1740028316" title=""><img class="img-responsive item-image" alt=" (8380)" data-reference="" src="../../_assets/56d44daf71.webp" width="495" height="367"></a><h4 id="heading26"></h4></div></div>
+        
+        <div class="article-item item_markdown " id="item8376" data-item-id="8376" data-item-type="ItemMarkdown"><h4 id="heading27">レベル補正を使用してみる</h4>
+</div>
+        
+        <div class="article-item item_text " id="item8375" data-item-id="8375" data-item-type="ItemText"><div class="item-body-hbr">1. プリセットを選択すると、元から準備されている設定で補正できます。</div></div>
+        
+        <div class="article-item item_link " id="item12489" data-item-id="12489" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=jvzYj&amp;item_id=12489" rel="nofollow noopener noreferrer" target="_blank">作業動画 Adobe Photoshop 18-7</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="作業動画 Adobe Photoshop 18-7" data-reference="https://www.dropbox.com/scl/fi/io1681ic5r7ewd1lsrndo/Adobe-Photoshop18-7_1.0_.mov?rlkey=r7dyt3tk755wxb5p3fwjk3984&amp;e=1&amp;st=67fwultg&amp;dl=0" src="../../_assets/fb06745a74.webp" width="75" height="75"></div><div class="media-body"><div class="item-body">この動画はデモンストレーション動画になります。
+音声は入っておりません。</div></div></div></div></div>
+        
+        <div class="article-item item_text " id="item8374" data-item-id="8374" data-item-type="ItemText"><div class="item-body-hbr">2. 自動的な補正もできます。</div></div>
+        
+        <div class="article-item item_link " id="item12490" data-item-id="12490" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=jvzYj&amp;item_id=12490" rel="nofollow noopener noreferrer" target="_blank">作業動画 Adobe Photoshop 18-8</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="作業動画 Adobe Photoshop 18-8" data-reference="https://www.dropbox.com/scl/fi/nl1xo8qjo4smg8quwjb7h/Adobe-Photoshop18-8_1.0_.mov?rlkey=rkxs751jhvwwb0xwdcsygdlje&amp;e=1&amp;st=n92r4qev&amp;dl=0" src="../../_assets/fb06745a74.webp" width="75" height="75"></div><div class="media-body"><div class="item-body">この動画はデモンストレーション動画になります。
+音声は入っておりません。</div></div></div></div></div>
+        
+        <div class="article-item item_text " id="item8373" data-item-id="8373" data-item-type="ItemText"><div class="item-body-hbr">3. スライダーで調整を行う<br>シャドウスライダーを右に動かすと、画像の暗い部分がより暗くなる。<br>ハイライトスライダーを左に動かすと、画像の明るい部分がより明るくなる。<br>中間調はシャドウとハイライトの中間なので、右に動かすと暗い部分が増え、左に動かすと明るい部分が増えます。</div></div>
+        
+        <div class="article-item item_link " id="item12491" data-item-id="12491" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=jvzYj&amp;item_id=12491" rel="nofollow noopener noreferrer" target="_blank">作業動画 Adobe Photoshop 18-9</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="作業動画 Adobe Photoshop 18-9" data-reference="https://www.dropbox.com/scl/fi/n8fg6mi4muczbppiwvnup/Adobe-Photoshop18-9_1.0_.mov?rlkey=vquhdlucow69ghg0ge8b91jdy&amp;e=1&amp;st=s1o8u5g8&amp;dl=0" src="../../_assets/fb06745a74.webp" width="75" height="75"></div><div class="media-body"><div class="item-body">この動画はデモンストレーション動画になります。
+音声は入っておりません。</div></div></div></div></div>
+        
+        <div class="article-item item_text " id="item8372" data-item-id="8372" data-item-type="ItemText"><div class="item-body-hbr">4. 一番下部にあるレンジは、左が暗さの最大値で右が明るさの最大値を調整することができます。</div></div>
+        
+        <div class="article-item item_link " id="item12492" data-item-id="12492" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=jvzYj&amp;item_id=12492" rel="nofollow noopener noreferrer" target="_blank">作業動画 Adobe Photoshop 18-10</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="作業動画 Adobe Photoshop 18-10" data-reference="https://www.dropbox.com/scl/fi/ja3xombviodwk9hbvi327/Adobe-Photoshop18-10_1.0_.mov?rlkey=209ltdbl71xq563du5m355057&amp;e=1&amp;st=y21tldu5&amp;dl=0" src="../../_assets/fb06745a74.webp" width="75" height="75"></div><div class="media-body"><div class="item-body">この動画はデモンストレーション動画になります。
+音声は入っておりません。</div></div></div></div></div>
+        
+        <div class="article-item item_heading " id="item39497" data-item-id="39497" data-item-type="ItemHeading"><h3 class="item-body" id="heading28">トーンカーブ</h3></div>
+        
+        <div class="article-item item_rich_text " id="item8359" data-item-id="8359" data-item-type="ItemRichText"><div class="item-body-hbr">画像内で補正したい特定の箇所をピンポイントで調整できます。<br>
+レベル補正と同じようにヒストグラムを使用して調整をかけていきます。<br>
+レベル補正との主な違いは、シャドウ・中間調・ハイライトの3点だけでなく、<span class="decoration-02">カーブ上に任意の調整ポイントを自由に追加できる点</span>です。<span class="decoration-02"></span>また、色味の調整を行うことができます。</div></div>
+        
+        <div class="article-item item_image " id="item8360" data-item-id="8360" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/008/360/medium/5208f1fb-8368-43aa-bbd2-1c3b34132983.jpg?1740027113" title=""><img class="img-responsive item-image" alt=" (8360)" data-reference="" src="../../_assets/6a1c176c10.webp" width="640" height="221"></a><h4 id="heading29"></h4></div></div>
+        
+        <div class="article-item item_html " id="item8361" data-item-id="8361" data-item-type="ItemHtml"><div class="item-body"><div class="callout white">
+    <div class="title-area">
+        <div class="icon bulb"></div>
+        <div class="title"><span class="decoration-01">トーンカーブの特徴</span></div>
+    </div>
+    <div class="content-area">
+      <ul>
+        <li><span class="decoration-01">自由度の高い調整</span></li>
+        	<ul>
+        		<li>カーブを使って、任意のポイントで調整可能</li>
+            </ul>
+        <li><span class="decoration-01">細かい部分のコントロール</span></li>
+        	<ul>
+        		<li>シャドウ、中間調、ハイライトをより細かく調整できる</li>
+            </ul>
+        <li><span class="decoration-01">色チャンネルごとの調整</span></li>
+        	<ul>
+        		<li>RGB各チャンネルごとに色味の調整可能</li>
+            </ul>
+      </ul>
+    </div>
+</div></div></div>
+        
+        <div class="article-item item_markdown " id="item8362" data-item-id="8362" data-item-type="ItemMarkdown"><h4 id="heading30">ヒストグラムの見方</h4>
+</div>
+        
+        <div class="article-item item_rich_text " id="item8363" data-item-id="8363" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">1. RGBが選択されている時の見方（一般的な見方です）</span><br>
+チャンネルが、RGBに表示されている時は、横軸は画像のピクセルの持つ明るさで、縦軸は中央の斜めの線で変更した明るさを示します。</div></div>
+        
+        <div class="article-item item_image " id="item8365" data-item-id="8365" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/008/365/medium/55af4874-56c6-4177-a305-46b94dd60c7d.jpg?1740027590" title=""><img class="img-responsive item-image" alt=" (8365)" data-reference="" src="../../_assets/a382426671.webp" width="640" height="384"></a><h4 id="heading31"></h4></div></div>
+        
+        <div class="article-item item_html " id="item36943" data-item-id="36943" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_rich_text " id="item8364" data-item-id="8364" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">2. レッド、グリーン、ブルーそれぞれが選択されている場合の見方</span><br>
+トーンカーブの色チャンネルごとの調整では、それぞれの色味を加えることができます。<br>
+ここで、重要なのは、明るさの対比に<span class="decoration-02">暗い↔明るい</span>があるように、<span class="decoration-02">RGBのそれぞれの色味にも対比する色があります。</span><br>
+<br>
+<span class="decoration-01"><span class="decoration-02">レッド ↔ シアン</span></span><br>
+<span class="decoration-01"><span class="decoration-02">グリーン ↔ マゼンダ</span></span><br>
+<span class="decoration-01"><span class="decoration-02">ブルー ↔ イエロー</span><br>
+</span><br>
+チャンネルがいずれかの色になっているときは、チャンネルがRGBで設定されている時の縦軸の意味合いと違います。横軸は通常通りピクセルの明るさですが、<span class="decoration-02">縦軸はこれから変えたい色</span>になります。<br>
+変えたい色の対比が上記に記載した色となります。</div></div>
+        
+        <div class="article-item item_image " id="item8366" data-item-id="8366" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/008/366/medium/f11898bd-cbd8-44a9-8ab4-7d26a3ae73e4.jpg?1740027608" title=""><img class="img-responsive item-image" alt=" (8366)" data-reference="" src="../../_assets/164ab9bfa9.webp" width="640" height="392"></a><h4 id="heading32"></h4></div></div>
+        
+        <div class="article-item item_markdown " id="item39498" data-item-id="39498" data-item-type="ItemMarkdown"><h4 id="heading33">トーンカーブを使用してみる</h4>
+</div>
+        
+        <div class="article-item item_text " id="item8367" data-item-id="8367" data-item-type="ItemText"><div class="item-body-hbr">1. トーンカーブを動かす</div></div>
+        
+        <div class="article-item item_link " id="item12493" data-item-id="12493" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=jvzYj&amp;item_id=12493" rel="nofollow noopener noreferrer" target="_blank">作業動画 Adobe Photoshop 18-11</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="作業動画 Adobe Photoshop 18-11" data-reference="https://www.dropbox.com/scl/fi/sxt4jon4nosymz2ieo6ee/Adobe-Photoshop18-11_1.0_.mov?rlkey=cximcgoyhanjnwe0ct222bhyg&amp;e=1&amp;st=iy4h6u1v&amp;dl=0" src="../../_assets/fb06745a74.webp" width="75" height="75"></div><div class="media-body"><div class="item-body">この動画はデモンストレーション動画になります。
+音声は入っておりません。</div></div></div></div></div>
+        
+        <div class="article-item item_text " id="item8368" data-item-id="8368" data-item-type="ItemText"><div class="item-body-hbr">2. 指のマークを使用すると画像から調整をした場所を選んで操作できる</div></div>
+        
+        <div class="article-item item_link " id="item12494" data-item-id="12494" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=jvzYj&amp;item_id=12494" rel="nofollow noopener noreferrer" target="_blank">作業動画 Adobe Photoshop 18-12</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="作業動画 Adobe Photoshop 18-12" data-reference="https://www.dropbox.com/scl/fi/bomsp0gxya436rovjjwh9/Adobe-Photoshop18-12_1.0_.mov?rlkey=g56d9e80w6uunlgeqa2wit1jf&amp;e=1&amp;st=nd4gp3c6&amp;dl=0" src="../../_assets/fb06745a74.webp" width="75" height="75"></div><div class="media-body"><div class="item-body">この動画はデモンストレーション動画になります。
+音声は入っておりません。</div></div></div></div></div>
+        
+        <div class="article-item item_text " id="item8369" data-item-id="8369" data-item-type="ItemText"><div class="item-body-hbr">3. S字カーブでかけるとコントラストをはっきりさせることができる</div></div>
+        
+        <div class="article-item item_link " id="item12495" data-item-id="12495" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=jvzYj&amp;item_id=12495" rel="nofollow noopener noreferrer" target="_blank">作業動画 Adobe Photoshop 18-13</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="作業動画 Adobe Photoshop 18-13" data-reference="https://www.dropbox.com/scl/fi/39wazivrwitryl6do3wjy/Adobe-Photoshop18-13_1.0_.mov?rlkey=pdepw32xu746h3nop9kxulf0b&amp;e=1&amp;st=yr03s4xk&amp;dl=0" src="../../_assets/fb06745a74.webp" width="75" height="75"></div><div class="media-body"><div class="item-body">この動画はデモンストレーション動画になります。
+音声は入っておりません。</div></div></div></div></div>
+        
+        <div class="article-item item_text " id="item8370" data-item-id="8370" data-item-type="ItemText"><div class="item-body-hbr">4. レッドで色味を変える</div></div>
+        
+        <div class="article-item item_link " id="item12496" data-item-id="12496" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=jvzYj&amp;item_id=12496" rel="nofollow noopener noreferrer" target="_blank">作業動画 Adobe Photoshop 18-14</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="作業動画 Adobe Photoshop 18-14" data-reference="https://www.dropbox.com/scl/fi/mvkxfor3b6j2b77f7fnd9/Adobe-Photoshop18-14_1.0_.mov?rlkey=gugc7wrnmpdck41vkj3bg618r&amp;e=1&amp;st=3anb1qs6&amp;dl=0" src="../../_assets/fb06745a74.webp" width="75" height="75"></div><div class="media-body"><div class="item-body">この動画はデモンストレーション動画になります。
+音声は入っておりません。</div></div></div></div></div>
+        
+        <div class="article-item item_text " id="item8371" data-item-id="8371" data-item-type="ItemText"><div class="item-body-hbr">5. レッドとブルーを併せてオレンジの色味をたす</div></div>
+        
+        <div class="article-item item_link " id="item12497" data-item-id="12497" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=jvzYj&amp;item_id=12497" rel="nofollow noopener noreferrer" target="_blank">作業動画 Adobe Photoshop 18-15</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="作業動画 Adobe Photoshop 18-15" data-reference="https://www.dropbox.com/scl/fi/ah0nh5f8labyew9t0rxa3/Adobe-Photoshop18-15_1.0_.mov?rlkey=v96prrkbwbxb2ympc5ph5udbr&amp;e=1&amp;st=qmnehlln&amp;dl=0" src="../../_assets/fb06745a74.webp" width="75" height="75"></div><div class="media-body"><div class="item-body">この動画はデモンストレーション動画になります。
+音声は入っておりません。</div></div></div></div></div>
+        
+        <div class="article-item item_heading " id="item36928" data-item-id="36928" data-item-type="ItemHeading"><h2 class="item-body" id="heading34">【18-6】演習：写真の色被りを補正できる機能</h2></div>
+        
+        <div class="article-item item_markdown " id="item36945" data-item-id="36945" data-item-type="ItemMarkdown"><h4 id="heading35">演習課題</h4>
+</div>
+        
+        <div class="article-item item_image " id="item8357" data-item-id="8357" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/008/357/medium/a7de81e4-6fdf-4f3c-8dd4-199a2b513be8.jpg?1740026963" title=""><img class="img-responsive item-image" alt=" (8357)" data-reference="" src="../../_assets/b032fc0a6b.webp" width="640" height="196"></a><h4 id="heading36"></h4></div></div>
+        
+        <div class="article-item item_link " id="item36946" data-item-id="36946" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=jvzYj&amp;item_id=36946" rel="nofollow noopener noreferrer" target="_blank">Adobe Photoshop 18-2 【使用素材】</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="Adobe Photoshop 18-2 【使用素材】" data-reference="https://www.dropbox.com/scl/fi/5ztwv4cuuqpntvafsp0vr/cafe-3701349_1280.jpg?rlkey=o9wq2d73lgpz3x0yh9mr1dy5p&amp;st=5ssk7qc0&amp;dl=0" src="../../_assets/8068ac7adc.webp" width="75" height="75"></div><div class="media-body"><div class="item-body"></div></div></div></div></div>
+        
+        <div class="article-item item_heading " id="item36929" data-item-id="36929" data-item-type="ItemHeading"><h3 class="item-body" id="heading37">色被りとは</h3></div>
+        
+        <div class="article-item item_rich_text " id="item8356" data-item-id="8356" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01"><span class="decoration-02">色被りとは、写真全体が特定の色味を帯びてしまい、目で見たときの色と異なって見える状態のことです。</span></span><br>
+原因としては、太陽光や蛍光灯などの<span class="decoration-01"><span class="decoration-02">光やカメラの設定の仕方</span></span>によって起こります。<br>
+青みがかっている、黄色みがかっているような特定の色に偏っている様な印象を受ける時も色被りが起こっている状態です。このような状態になった時は、RGBの色のバランスを整えれば元の印象に戻すことができます。</div></div>
+        
+        <div class="article-item item_heading " id="item36930" data-item-id="36930" data-item-type="ItemHeading"><h3 class="item-body" id="heading38">カラーバランス</h3></div>
+        
+        <div class="article-item item_rich_text " id="item8355" data-item-id="8355" data-item-type="ItemRichText"><div class="item-body-hbr">カラーバランスは、<span class="decoration-01"><span class="decoration-02">画像の色のバランスを整えることができる機能</span></span>です。色被りで特定の色味が偏ってしまっている時にバランスを整えて印象を変えることができます。<br>
+トーンカーブを学んだ時に、RGBの対比になる色を学びましたが、カラーバランスでも活用できます。<br>
+<br>
+例えば、黄色が強い場合は、対比であるブルーを加えることで黄色みを抑えることができます。<br>
+RGBそれぞれの色味の対比<br>
+<br>
+<span class="decoration-01"><span class="decoration-02">レッド ↔ シアン</span></span><br>
+<span class="decoration-01"><span class="decoration-02">グリーン ↔ マゼンダ</span></span><br>
+<span class="decoration-01"><span class="decoration-02">ブルー ↔ イエロー</span></span></div></div>
+        
+        <div class="article-item item_link " id="item12499" data-item-id="12499" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=jvzYj&amp;item_id=12499" rel="nofollow noopener noreferrer" target="_blank">作業動画 Adobe Photoshop 18-16</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="作業動画 Adobe Photoshop 18-16" data-reference="https://www.dropbox.com/scl/fi/hlou1hre4i7cutmf3okul/Adobe-Photoshop18-16_1.0_.mov?rlkey=3r6ie2g6bxncp51h3868lt544&amp;e=1&amp;st=fka5vlpx&amp;dl=0" src="../../_assets/fb06745a74.webp" width="75" height="75"></div><div class="media-body"><div class="item-body">この動画はデモンストレーション動画になります。
+音声は入っておりません。</div></div></div></div></div>
+        
+        <div class="article-item item_heading " id="item36931" data-item-id="36931" data-item-type="ItemHeading"><h2 class="item-body" id="heading39">【18-7】演習：色調補正をやってみよう</h2></div>
+        
+        <div class="article-item item_text " id="item8348" data-item-id="8348" data-item-type="ItemText"><div class="item-body-hbr">実際に色調彩度で壁の色を調整してみましょう！</div></div>
+        
+        <div class="article-item item_markdown " id="item36947" data-item-id="36947" data-item-type="ItemMarkdown"><h4 id="heading40">演習課題</h4>
+</div>
+        
+        <div class="article-item item_image " id="item8349" data-item-id="8349" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/008/349/medium/668e0bd1-61c4-4515-9532-bc8f6cc4a5ea.jpg?1740026630" title=""><img class="img-responsive item-image" alt=" (8349)" data-reference="" src="../../_assets/cc363e436f.webp" width="640" height="185"></a><h4 id="heading41"></h4></div></div>
+        
+        <div class="article-item item_link " id="item36948" data-item-id="36948" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=jvzYj&amp;item_id=36948" rel="nofollow noopener noreferrer" target="_blank">Adobe Photoshop 18-3【使用素材】</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="Adobe Photoshop 18-3【使用素材】" data-reference="https://www.dropbox.com/scl/fi/yhho0us17i5ar3mp1w6ka/yellow-926728_1280.jpg?rlkey=d5rd87e2b2pam8vecfk6qggzl&amp;st=ol0f9wr1&amp;dl=0" src="../../_assets/8068ac7adc.webp" width="75" height="75"></div><div class="media-body"><div class="item-body"></div></div></div></div></div>
+        
+        <div class="article-item item_link " id="item12501" data-item-id="12501" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=jvzYj&amp;item_id=12501" rel="nofollow noopener noreferrer" target="_blank">作業動画 Adobe Photoshop 18-17</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="作業動画 Adobe Photoshop 18-17" data-reference="https://www.dropbox.com/scl/fi/5pkbsqer4zfud857ezqqj/Adobe-Photoshop18-17_1.0_.mov?rlkey=62n0mi55a8835in6meb08fnw8&amp;e=1&amp;st=knapfrj1&amp;dl=0" src="../../_assets/fb06745a74.webp" width="75" height="75"></div><div class="media-body"><div class="item-body">この動画はデモンストレーション動画になります。
+音声は入っておりません。</div></div></div></div></div>
+        
+        <div class="article-item item_heading " id="item36932" data-item-id="36932" data-item-type="ItemHeading"><h2 class="item-body" id="heading42">【18-8】演習：トーンカーブで空を朝日から夕日に調整</h2></div>
+        
+        <div class="article-item item_markdown " id="item36949" data-item-id="36949" data-item-type="ItemMarkdown"><h4 id="heading43">演習課題</h4>
+</div>
+        
+        <div class="article-item item_image " id="item8351" data-item-id="8351" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/008/351/medium/398d9887-3bf9-469c-a63a-7a6483cbffee.jpg?1740026670" title=""><img class="img-responsive item-image" alt=" (8351)" data-reference="" src="../../_assets/32575882f6.webp" width="640" height="155"></a><h4 id="heading44"></h4></div></div>
+        
+        <div class="article-item item_link " id="item36950" data-item-id="36950" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=jvzYj&amp;item_id=36950" rel="nofollow noopener noreferrer" target="_blank">Adobe Photoshop 18-4【使用素材】</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="Adobe Photoshop 18-4【使用素材】" data-reference="https://www.dropbox.com/scl/fi/1thtsez9ghg44ep454n9z/beach-1835213_1280.jpg?rlkey=3bnb8zezy2cwy11gjbz0f3huz&amp;st=kes9gqjz&amp;dl=0" src="../../_assets/8068ac7adc.webp" width="75" height="75"></div><div class="media-body"><div class="item-body"></div></div></div></div></div>
+        
+        <div class="article-item item_link " id="item12504" data-item-id="12504" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=jvzYj&amp;item_id=12504" rel="nofollow noopener noreferrer" target="_blank">作業動画 Adobe Photoshop18-18</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="作業動画 Adobe Photoshop18-18" data-reference="https://www.dropbox.com/scl/fi/ag3uahlkb0ki8llb6gnex/Adobe-Photoshop18-18_1.0_.mov?rlkey=h2s904hmgxmcf26z54a5dwt20&amp;e=1&amp;st=bofad4my&amp;dl=0" src="../../_assets/fb06745a74.webp" width="75" height="75"></div><div class="media-body"><div class="item-body">この動画はデモンストレーション動画になります。
+音声は入っておりません。</div></div></div></div></div>
+        
+        <div class="article-item item_heading " id="item36933" data-item-id="36933" data-item-type="ItemHeading"><h2 class="item-body" id="heading45">【18-9】演習：色被りをカラーバランスで調整</h2></div>
+        
+        <div class="article-item item_markdown " id="item36951" data-item-id="36951" data-item-type="ItemMarkdown"><h4 id="heading46">演習課題</h4>
+</div>
+        
+        <div class="article-item item_image " id="item8353" data-item-id="8353" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/008/353/medium/ce256d20-8f9e-4c0e-a1d4-343967b5a7a6.jpg?1740026715" title=""><img class="img-responsive item-image" alt=" (8353)" data-reference="" src="../../_assets/e299845702.webp" width="640" height="335"></a><h4 id="heading47"></h4></div></div>
+        
+        <div class="article-item item_link " id="item36952" data-item-id="36952" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=jvzYj&amp;item_id=36952" rel="nofollow noopener noreferrer" target="_blank">Adobe Photoshop 18-5 【使用素材】</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="Adobe Photoshop 18-5 【使用素材】" data-reference="https://www.dropbox.com/scl/fi/xsg5goz8az315zasi7evw/building-6559659_1280.jpg?rlkey=8k1nz358twawk1va8lqo3jx38&amp;st=hf981h5c&amp;dl=0" src="../../_assets/8068ac7adc.webp" width="75" height="75"></div><div class="media-body"><div class="item-body"></div></div></div></div></div>
+        
+        <div class="article-item item_link " id="item12506" data-item-id="12506" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=jvzYj&amp;item_id=12506" rel="nofollow noopener noreferrer" target="_blank">作業動画 Adobe Photoshop 18-19</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="作業動画 Adobe Photoshop 18-19" data-reference="https://www.dropbox.com/scl/fi/lxkmg9ka3t4zc15ojtu7f/Adobe-Photoshop18-19_1.0_.mov?rlkey=2vn7jcq02tqjgl7ibkp11cntf&amp;e=1&amp;st=fte4vt8m&amp;dl=0" src="../../_assets/fb06745a74.webp" width="75" height="75"></div><div class="media-body"><div class="item-body">この動画はデモンストレーション動画になります。
+音声は入っておりません。</div></div></div></div></div>
+        
+        <div class="article-item item_rich_text " id="item12507" data-item-id="12507" data-item-type="ItemRichText"><div class="item-body-hbr">これで18章「色調補正の方法を学ぼう」の解説を終わります。<br>
+次の章に進みましょう。</div></div>
+        
+        <div class="article-item item_html " id="item25610" data-item-id="25610" data-item-type="ItemHtml"><div class="item-body"><div class="pagenation-buttons" style="justify-content: space-between;">
+  <a href="https://learn.webcoach.jp/web-design/ybi9F" class="pagenation-buttons_prev"><img src="../../_assets/47498cfebf.svg" class="pagenation-buttons_icon">前の章に戻る</a>
+  <a href="https://learn.webcoach.jp/web-design/CeAkM" class="pagenation-buttons_next">次の章に進む<img src="../../_assets/47498cfebf.svg" class="pagenation-buttons_icon"></a>
+</div></div></div>
+        
+        
+        
+        <div class="back-to-roadmap mb-4 text-center"></div>
+      </div>
+    </div>
+    
+    <div class="lightbox-modal" id="lightboxModal">
+      <img src="" alt="">
+    </div>
+    
+    <div id="modal" class="fixed-menu-modal">
+      <div class="fixed-menu-modal-content">
+        <div class="index mb-3" style="background-color: #FDF5E8;">
+          <div>
+            <div class="fw-light">INDEX</div>
+            <div class="h3">目次</div>
+          </div>
+          <div class="toc"><ul><li><a href="#heading0" class="tocLink">18章 色調補正の方法を学ぼう</a><ul><li><a href="#heading1" class="tocLink">この教材の学習時間:240分</a></li></ul></li><li><a href="#heading2" class="tocLink">【18-1】色調補正とは</a><ul><li><a href="#heading3" class="tocLink"></a></li></ul></li><li><a href="#heading4" class="tocLink">【18-2】色調補正の基本操作</a><ul><li><a href="#heading5" class="tocLink"></a></li></ul><ul><li><a href="#heading6" class="tocLink">色調補正を利用する方法</a></li></ul></li><li><a href="#heading7" class="tocLink">【18-3】色調補正の活用例</a><ul><li><a href="#heading8" class="tocLink">写真の色を補正できる機能</a><ul><li><a href="#heading9" class="tocLink">1. 色相</a></li><li><a href="#heading10" class="tocLink">2. 彩度</a></li><li><a href="#heading11" class="tocLink">3. 明度</a></li><li><a href="#heading12" class="tocLink"></a></li><li><a href="#heading13" class="tocLink">4. 特定の色域</a></li><li><a href="#heading14" class="tocLink">5. マスター</a></li><li><a href="#heading15" class="tocLink"></a></li></ul></li></ul></li><li><a href="#heading16" class="tocLink">【18-4】演習：写真の色を変更してみよう</a><ul><li><a href="#heading17" class="tocLink">演習課題</a></li><li><a href="#heading18" class="tocLink"></a></li><li><a href="#heading19" class="tocLink">作業手順</a></li><li><a href="#heading20" class="tocLink"></a></li></ul></li><li><a href="#heading21" class="tocLink">【18-5】写真の明るさを補正できる3つの機能</a><ul><li><a href="#heading22" class="tocLink">明るさ・コントラスト</a><ul><li><a href="#heading23" class="tocLink"></a></li></ul></li><li><a href="#heading24" class="tocLink">レベル補正</a><ul><li><a href="#heading25" class="tocLink"></a></li><li><a href="#heading26" class="tocLink"></a></li><li><a href="#heading27" class="tocLink">レベル補正を使用してみる</a></li></ul></li><li><a href="#heading28" class="tocLink">トーンカーブ</a><ul><li><a href="#heading29" class="tocLink"></a></li><li><a href="#heading30" class="tocLink">ヒストグラムの見方</a></li><li><a href="#heading31" class="tocLink"></a></li><li><a href="#heading32" class="tocLink"></a></li><li><a href="#heading33" class="tocLink">トーンカーブを使用してみる</a></li></ul></li></ul></li><li><a href="#heading34" class="tocLink">【18-6】演習：写真の色被りを補正できる機能</a><ul><li><a href="#heading35" class="tocLink">演習課題</a></li><li><a href="#heading36" class="tocLink"></a></li></ul><ul><li><a href="#heading37" class="tocLink">色被りとは</a></li><li><a href="#heading38" class="tocLink">カラーバランス</a></li></ul></li><li><a href="#heading39" class="tocLink">【18-7】演習：色調補正をやってみよう</a><ul><li><a href="#heading40" class="tocLink">演習課題</a></li><li><a href="#heading41" class="tocLink"></a></li></ul></li><li><a href="#heading42" class="tocLink">【18-8】演習：トーンカーブで空を朝日から夕日に調整</a><ul><li><a href="#heading43" class="tocLink">演習課題</a></li><li><a href="#heading44" class="tocLink"></a></li></ul></li><li><a href="#heading45" class="tocLink">【18-9】演習：色被りをカラーバランスで調整</a><ul><li><a href="#heading46" class="tocLink">演習課題</a></li><li><a href="#heading47" class="tocLink"></a></li></ul></li></ul></div>
+        </div>
+        
+        <!-- ボタン類 -->
+        <div id="fixed-menu_buttons" class="fixed-menu_buttons">
+  <a href="https://learn.webcoach.jp/web-design/ybi9F" class="pagenation-buttons_prev"><img src="../../_assets/47498cfebf.svg" class="pagenation-buttons_icon">前の章に戻る</a>
+  <a href="https://learn.webcoach.jp/web-design/CeAkM" class="pagenation-buttons_next">次の章に進む<img src="../../_assets/47498cfebf.svg" class="pagenation-buttons_icon"></a>
+</div>
+        
+        <div class="back-to-roadmap text-center"></div>
+      </div>
+    </div>
+    
+    <button id="toggleBtn" class="floating-btn">
+      <img id="iconOpen" src="../../_assets/5feefcfc55.svg" alt="メニューを開く">
+      <img id="iconClose" src="../../_assets/ae4a1129c9.svg" alt="メニューを閉じる" style="display:none;">
+    </button>
+  </div>
+</div>
+</div>
+<!-- <script src="https://cdn.clipkit.co/clipkit/javascripts/item-shopify-1.0.js?v=v15.9.0-20260915" async></script> -->
+            </main></div>
+        
+
+    
+
+    <div class="p-5" style="background-color: #B73E3D; color: white; height: 300px;">
+        <div class="">
+            <div class="h4 ps-3" style="border-left: 5px solid white;">WEBCOACH | キャリアチェンジまでの全てを学ぶマンツーマンWEBスクール</div>
+            <ul class="nav flex-column m-0 p-3 fw-light">
+                <li class="nav-item mb-2"><a href="https://www.webcoach.jp/" target="_blank">WEBCOACH | 公式HP</a></li>
+                <li class="nav-item mb-2"><a href="https://www.instagram.com/webcoach_officials/" target="_blank">WEBCOACH | 公式Instagram</a></li>
+                <li class="nav-item mb-2"><a href="https://vectorinc.co.jp/groupservice/webcoach-career/" target="_blank">WEBCOACH 公式メディア | WEBCOACH career</a></li>
+            </ul>
+        </div>
+        <div class="text-center">
+            <small>© 2020 by WEBCOACH</small>
+        </div>
+    </div>
+
+    
+
+    <!-- bodyタグ内の下部に挿入されます -->
+
+
+    <!-- BootstrapのCDNでのjs読み込み -->
+    
+
+    <!-- シンタックスハイライトの生成 -->
+    
+    
+
+    <!-- 目次の生成 -->
+    
+
+    <!-- ブックマークの生成 -->
+    
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="ck-icon-arrow-down" viewBox="0 0 1792 1792"><path d="M1675 832q0 53-37 90l-651 652q-39 37-91 37-53 0-90-37l-651-652q-38-36-38-90 0-53 38-91l74-75q39-37 91-37 53 0 90 37l294 294v-704q0-52 38-90t90-38h128q52 0 90 38t38 90v704l294-294q37-37 90-37 52 0 91 37l75 75q37 39 37 91z"></path></symbol><symbol id="ck-icon-arrow-up" viewBox="0 0 1792 1792"><path d="M1675 971q0 51-37 90l-75 75q-38 38-91 38-54 0-90-38l-294-293v704q0 52-37.5 84.5t-90.5 32.5h-128q-53 0-90.5-32.5t-37.5-84.5v-704l-294 293q-36 38-90 38t-90-38l-75-75q-38-38-38-90 0-53 38-91l651-651q35-37 90-37 54 0 91 37l651 651q37 39 37 91z"></path></symbol><symbol id="ck-icon-calendar" viewBox="0 0 1792 1792"><path d="M192 1664h288v-288h-288v288zm352 0h320v-288h-320v288zm-352-352h288v-320h-288v320zm352 0h320v-320h-320v320zm-352-384h288v-288h-288v288zm736 736h320v-288h-320v288zm-384-736h320v-288h-320v288zm768 736h288v-288h-288v288zm-384-352h320v-320h-320v320zm-352-864v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm736 864h288v-320h-288v320zm-384-384h320v-288h-320v288zm384 0h288v-288h-288v288zm32-480v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm384-64v1280q0 52-38 90t-90 38h-1408q-52 0-90-38t-38-90v-1280q0-52 38-90t90-38h128v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h384v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h128q52 0 90 38t38 90z"></path></symbol><symbol id="ck-icon-chevron-left" viewBox="0 0 1792 1792"><path d="M1427 301l-531 531 531 531q19 19 19 45t-19 45l-166 166q-19 19-45 19t-45-19l-742-742q-19-19-19-45t19-45l742-742q19-19 45-19t45 19l166 166q19 19 19 45t-19 45z"></path></symbol><symbol id="ck-icon-chevron-right" viewBox="0 0 1792 1792"><path d="M1363 877l-742 742q-19 19-45 19t-45-19l-166-166q-19-19-19-45t19-45l531-531-531-531q-19-19-19-45t19-45l166-166q19-19 45-19t45 19l742 742q19 19 19 45t-19 45z"></path></symbol><symbol id="ck-icon-clock-o" viewBox="0 0 1792 1792"><path d="M1024 544v448q0 14-9 23t-23 9h-320q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h224v-352q0-14 9-23t23-9h64q14 0 23 9t9 23zm416 352q0-148-73-273t-198-198-273-73-273 73-198 198-73 273 73 273 198 198 273 73 273-73 198-198 73-273zm224 0q0 209-103 385.5t-279.5 279.5-385.5 103-385.5-103-279.5-279.5-103-385.5 103-385.5 279.5-279.5 385.5-103 385.5 103 279.5 279.5 103 385.5z"></path></symbol><symbol id="ck-icon-trash" viewBox="0 0 1792 1792"><path d="M704 1376v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm-544-992h448l-48-117q-7-9-17-11h-317q-10 2-17 11zm928 32v64q0 14-9 23t-23 9h-96v948q0 83-47 143.5t-113 60.5h-832q-66 0-113-58.5t-47-141.5v-952h-96q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h309l70-167q15-37 54-63t79-26h320q40 0 79 26t54 63l70 167h309q14 0 23 9t9 23z"></path></symbol><symbol id="ck-icon-undo" viewBox="0 0 1792 1792"><path d="M1664 896q0 156-61 298t-164 245-245 164-298 61q-172 0-327-72.5t-264-204.5q-7-10-6.5-22.5t8.5-20.5l137-138q10-9 25-9 16 2 23 12 73 95 179 147t225 52q104 0 198.5-40.5t163.5-109.5 109.5-163.5 40.5-198.5-40.5-198.5-109.5-163.5-163.5-109.5-198.5-40.5q-98 0-188 35.5t-160 101.5l137 138q31 30 14 69-17 40-59 40h-448q-26 0-45-19t-19-45v-448q0-42 40-59 39-17 69 14l130 129q107-101 244.5-156.5t284.5-55.5q156 0 298 61t245 164 164 245 61 298z"></path></symbol></svg>
+
+<!--Clipkit(R) v15.9.0-20260915 Copyright (C) 2026 VECTOR Inc.-->
+
+
+
+
+
+<div class="dynmsg alert alert-info" style="display:none;"><button class="close"><span class="fa fa-times"></span></button><div class="message"></div></div><div class="dynmsg alert alert-danger" style="display:none;"><button class="close"><span class="fa fa-times"></span></button><div class="message"></div></div></body></html>
