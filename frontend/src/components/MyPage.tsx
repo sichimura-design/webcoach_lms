@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ChevronRight, Flag } from 'lucide-react';
 import { Button } from './ui/button';
 import { useAuth } from '../contexts/AuthContext';
 import { AppFooter, AppHeader } from './shared';
@@ -214,45 +213,9 @@ function MyPage() {
         </div>
 
         {/*
-          dev/kanegae統合: キャリアロードマップへの導線。
-          8a改修で「学習ロードマップ帯」は意図的に外されているが（上のコメント参照）、
-          dev/kanegaeの実装(RoadmapPage, /api/roadmap/*)への導線自体は失いたくないため
-          小さなカードとして復元する。mypage/RoadmapStrip.tsx（useLearningPlanのモック連動）
-          には接続しない。
+          B-001: キャリアロードマップへの導線カードは、UIが完成版ではないため非表示にしている。
+          RoadmapPage(/roadmap)・/api/roadmap/* 自体は残してあるので、完成したらここにカードを戻す。
         */}
-        <button
-          onClick={() => navigate('/roadmap')}
-          className="dc-card"
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            width: '100%',
-            marginTop: 'var(--dc-sp-gap)',
-            padding: '16px 20px',
-            background: 'var(--dc-surface)',
-            border: '1px solid var(--dc-border)',
-            borderRadius: 'var(--dc-radius-lg)',
-            cursor: 'pointer',
-            textAlign: 'left',
-          }}
-        >
-          <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-            <div
-              style={{
-                width: 36, height: 36, borderRadius: '50%',
-                background: 'var(--dc-primary)', display: 'grid', placeItems: 'center', flexShrink: 0,
-              }}
-            >
-              <Flag className="w-4 h-4 text-white" />
-            </div>
-            <div>
-              <p style={{ fontSize: 14, fontWeight: 600, color: 'var(--dc-text)' }}>キャリアロードマップ</p>
-              <p style={{ fontSize: 12, color: 'var(--dc-text-muted)' }}>目標までの進み方を確認する</p>
-            </div>
-          </div>
-          <ChevronRight className="w-4 h-4" style={{ color: 'var(--dc-text-muted)', flexShrink: 0 }} />
-        </button>
 
         {studyStatsUnavailable ? (
           // 🔴 通信失敗時にstats=nullのままStudyDashboardCardへ渡すと、

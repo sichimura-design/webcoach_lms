@@ -150,8 +150,7 @@ export function MypageGoalDeclarationCard({
             lineHeight: 'var(--dc-lh-prose)',
           }}
         >
-          いま取り組んでいる目標がありません。「この2週間で何をやり切るか」を1文で決めておくと、
-          学習記録に振り返りとして積み上がります。
+          目標が設定されていません
         </p>
         <button
           type="button"
