@@ -28,16 +28,25 @@
 
 | 列 | 内容 |
 |---|---|
-| bucket | 教材の書き出し単位（`frontend/public/materials/<bucket>/`）。学習領域の大きさでコースslugではない |
+| bucket | 教材の書き出し単位（`../materials/<bucket>/`）。学習領域の大きさでコースslugではない |
 | order | バケツ内の並び順 |
 | section | 元サイト（learn.webcoach.jp）のURLパスの章・フォルダ名。登録先コースを決める手がかり |
 | title | ページタイトル。Moodleページの「名前」に使う |
 | htmlFile | リポジトリ内のHTMLファイル |
-| htmlUrl | dev プレビュー（CloudFront `/branches/dev-kanegae/materials/<bucket>/html/`）で開けるURL |
+| htmlUrl | dev プレビューのCloudFront（`/materials/<bucket>/html/`）で開けるURL |
 | sourceUrl | 元サイトのURL |
 
-教材HTMLは `frontend/public/materials/<bucket>/html/` に置いてあり、dev/kanegae へ push すると
-dev プレビューのデプロイで `htmlUrl` に配信される。
+`htmlUrl` の実体は dev プレビュー用S3バケット（本番アカウント840513866884の
+`dev-devspastack-spabucket48e1059f-yymyziswolti`）の `materials/` に手動で置いたもの。
+`branches/<ブランチ>/` はデプロイのたびに `--delete` 付きで同期されるので、その外に置いている。
+教材HTMLを差し替えたら、次のコマンドで上げ直す。
+
+```sh
+AWS_PROFILE=PowerUserAccess-840513866884 \
+  aws s3 sync assets/materials/<bucket>/html \
+  s3://dev-devspastack-spabucket48e1059f-yymyziswolti/materials/<bucket>/html \
+  --content-type "text/html; charset=utf-8"
+```
 
 ### 想定ユースケース
 
