@@ -8,14 +8,15 @@
  * 🔴 他の受講者は仮名＋アイコンのみ（frontend/docs/design-token-spec.md）。
  *    実名・メールアドレスは出さない。アイコンはプロフィール画面で選んだプリセット
  *    (avatarUrl、/admin/avatarsが登録した画像)があればそれを使い、無ければ
- *    絵文字(avatarEmoji)にフォールバックする。顔写真のアップロードは無い。
+ *    絵文字(avatarEmoji)を出す。どちらも無ければ(アバター未設定の他の受講者)
+ *    アイコンは出さず、名前の位置を揃えるため同じ幅の空きだけ確保する。
  */
 
 export interface RankingRowItem {
   rank: number;
   /** 仮名。自分の行だけ「あなた」 */
   nickname: string;
-  /** nick_name/avatar未設定ユーザー向けのフォールバック絵文字 */
+  /** 絵文字アイコン。空文字ならアイコンを出さない */
   avatarEmoji: string;
   /** プロフィールでプリセットアバターを選択済みならそのURL(未設定ならavatarEmojiを使う) */
   avatarUrl?: string;
@@ -98,6 +99,8 @@ export function RankingRow({ item, divided, showAvatar = true }: RankingRowProps
               boxSizing: 'border-box',
             }}
           />
+        ) : !item.avatarEmoji ? (
+          <span aria-hidden="true" style={{ width: 26, height: 26, flex: 'none' }} />
         ) : (
           <span
             aria-hidden="true"

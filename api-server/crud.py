@@ -1,7 +1,6 @@
 """
 CRUD operations for user course access and profile settings
 """
-import hashlib
 import time
 from datetime import datetime, timedelta, timezone, date
 from typing import Optional, List, Dict, Any
@@ -3378,25 +3377,11 @@ def get_study_ranking(db: Session, period: str = "week", limit: int = 20) -> Lis
 # 上位N件のuseridを返すだけでよいが、こちらは「自分が何位か」を常に見せる必要があり、
 # かつ frontend/docs/design-token-spec.md の規約(他の受講者は仮名＋絵文字。実名は不可)
 # により実名の代わりに仮名を割り当てて返す。仮名は webcoach_user_profile.nick_name
-# (ユーザー自身がプロフィール画面で設定した値)をそのまま使う。未設定のユーザーだけ、
-# useridから決定的に算出したフォールバック仮名(動物名+番号)で補う。
+# (ユーザー自身がプロフィール画面で設定した値)をそのまま使う。未設定のユーザーは
+# 固定文言「ゲスト」で表示し、アバター未設定ならアイコンは出さない(avatarEmojiは空文字)。
 # ------------------------------------------------------------------
 
-_PEER_ANIMALS = [
-    ("うさぎ", "🐰"), ("こあら", "🐨"), ("ぱんだ", "🐼"), ("ひつじ", "🐑"),
-    ("きつね", "🦊"), ("ねこ", "🐱"), ("りす", "🐿️"), ("ぺんぎん", "🐧"),
-    ("とら", "🐯"), ("ぞう", "🐘"), ("かば", "🦛"), ("さる", "🐵"),
-    ("ひよこ", "🐤"), ("くま", "🐻"), ("いぬ", "🐶"), ("かえる", "🐸"),
-]
-
-
-def _peer_pseudonym(mdl_user_id: int) -> Dict[str, str]:
-    """nick_name未設定ユーザー向けのフォールバック仮名+絵文字をuseridから決定的に算出する。
-    単純なuserid%Nだと第三者がuseridを逆算できてしまうため、ハッシュを経由する。"""
-    digest = hashlib.sha256(f"webcoach-peer-ranking-{mdl_user_id}".encode()).hexdigest()
-    name, emoji = _PEER_ANIMALS[int(digest[:8], 16) % len(_PEER_ANIMALS)]
-    number = int(digest[8:12], 16) % 100
-    return {"nickname": f"{name}{number}", "avatarEmoji": emoji}
+_PEER_FALLBACK_NICKNAME = "ゲスト"
 
 
 def _get_peer_profiles(db: Session, mdl_user_ids: List[int]) -> Dict[int, Dict[str, Optional[str]]]:
@@ -3426,13 +3411,12 @@ def _to_peer_entry(
     row: Dict[str, Any], mdl_user_id: int, value_key: str, profiles: Dict[int, Dict[str, Optional[str]]]
 ) -> Dict[str, Any]:
     is_me = row["userid"] == mdl_user_id
-    pseudo = _peer_pseudonym(row["userid"])
     profile = profiles.get(row["userid"], {})
-    nickname = profile.get("nickname") or pseudo["nickname"]
+    nickname = profile.get("nickname") or _PEER_FALLBACK_NICKNAME
     return {
         "rank": row["rank"],
         "nickname": "あなた" if is_me else nickname,
-        "avatarEmoji": pseudo["avatarEmoji"],
+        "avatarEmoji": "",
         "avatarUrl": profile.get("avatarUrl"),
         "isMe": is_me,
         value_key: row[value_key],
