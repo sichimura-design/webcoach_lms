@@ -1,5 +1,4 @@
 import { useRef, useState, type CSSProperties } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { ArrowUp, HelpCircle, History, ImagePlus, Sparkles, X } from 'lucide-react';
 import {
   AiSkillId,
@@ -24,8 +23,8 @@ import { useAutoGrowTextarea } from '../../hooks/useAutoGrowTextarea';
  *   ・機能を見て選びたい人         → 下のグリッドから直接選ぶ
  * どちらから入っても同じAIワークスペースの中で続くので、
  * カードを押しても別ページ・別タブへは飛ばさない（要件§「AIアプリを選択した後の画面」）。
- * 🔴 これは「起動の導線」の話。カード下の「詳しく見る」だけは説明を読むための
- *    別導線で、子ページ /ai-coach/apps/:appId へ飛ぶ（起動はしない）。
+ * カード下の「使ってみる」も本体ボタンと同じくその場で起動する（B-006: 説明ページではなく
+ * 機能を使うボタンであることを明確にする）。
  *
  * 1a に合わせて外したもの:
  *   ・「続きから」チップ … 履歴と役割が重なる。右上の「履歴」に寄せた
@@ -69,7 +68,6 @@ export function AiCoachHome({
   const [skillId, setSkillId] = useState<AiSkillId>('auto');
   const fileInputRef = useRef<HTMLInputElement>(null);
   const textareaRef = useAutoGrowTextarea(text);
-  const navigate = useNavigate();
 
   const attachImage = (file: File) => {
     if (!file.type.startsWith('image/')) return;
@@ -353,12 +351,11 @@ export function AiCoachHome({
   );
 
   /**
-   * アプリ1枚。サムネイル → 名前 → 短い説明 → 「詳しく見る」の縦組み。
+   * アプリ1枚。サムネイル → 名前 → 短い説明 → 「使ってみる」の縦組み。
    *
-   * 🔴 器は <div>。カード全体を <button> にすると、中に置く「詳しく見る」が
+   * 🔴 器は <div>。カード全体を <button> にすると、中に置く「使ってみる」が
    *    button の入れ子（不正なHTML／キーボード操作が壊れる）になる。
-   *    代わりに「本体ボタン（押すと始まる）」と「詳しく見る」の2つを並べ、
-   *    押した先が違うことをホバーの地色で見せる。
+   *    代わりに「本体ボタン」と「使ってみる」の2つを並べる（どちらも押すと始まる）。
    * 🔴 本体ボタンは1クリックでそのモードに入る。ここを2クリック（説明を読んでから始める）に
    *    しないこと。アプリを選ぶ人はカードの絵と名前だけで選んでいる。
    * 🔴 長い手順や対話例はここに載せない。カードに収まらないので子ページ
@@ -449,7 +446,7 @@ export function AiCoachHome({
 
         <button
           type="button"
-          onClick={() => navigate(`/ai-coach/apps/${id}`)}
+          onClick={() => onSelectSkill(id)}
           className="ai-home-app-doc text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#F6B9BD]"
           style={{
             border: 0,
@@ -463,7 +460,7 @@ export function AiCoachHome({
             cursor: 'pointer',
           }}
         >
-          詳しく見る →
+          使ってみる →
         </button>
       </div>
     );
