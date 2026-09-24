@@ -1,7 +1,7 @@
 import { useRef } from 'react';
 import { AlertTriangle, Copy, ImagePlus, Send, Star, StickyNote, X } from 'lucide-react';
 import { color, font } from '../../theme/webcoachTheme';
-import { LessonAiMessage, UseLessonAi } from '../../hooks/useLessonAi';
+import { AI_ERROR_CONCLUSION, LessonAiMessage, UseLessonAi } from '../../hooks/useLessonAi';
 import { LessonAiResponse } from '../../types/lesson';
 import { AiSkillId, AI_SKILL_META, isSpecialistSkill } from '../../types/aiSkill';
 import { useAutoGrowTextarea } from '../../hooks/useAutoGrowTextarea';
@@ -73,21 +73,62 @@ interface AiCoachPaneProps {
   onOpenWide?: (skillId: AiSkillId) => void;
 }
 
-/** 画像添付後に出す、質問のきっかけ（要件§7） */
-const IMAGE_PROMPTS = [
-  'エラーの原因を知りたい',
-  '教材基準で添削して',
-  '改善点を教えて',
-  '次に何を直すべき？',
+/*
+ * 入力欄の上に出すサジェスト（B-010）。
+ * 押すとその文言がそのまま送信されるので、文脈が無くても「何をしてくれるか」が分かり、
+ * 追加説明なしでAIが処理を始められる、動詞で終わる具体的な文言にする。
+ * 状況（教材閲覧中・学習後・制作中・エラー発生時・教材の外）で出し分ける。
+ */
+
+/** 標準の4つ（教材を開いていて、まだ会話していないとき） */
+const QUICK_PROMPTS = [
+  'この教材の要点をまとめて',
+  'わからない箇所を質問する',
+  '理解度をチェックする',
+  '次にやることを教えて',
 ];
 
-/** 通常時のクイックプロンプト */
-const QUICK_PROMPTS = [
-  '簡単に説明して',
-  '具体例を出して',
-  'なぜそうするの？',
-  '制作物に当てはめると？',
+/** 教材閲覧中：いま読んでいる見出しがあるとき */
+const READING_PROMPTS = [
+  'このページを3行でまとめて',
+  '重要な用語を教えて',
+  'わからない箇所を質問する',
+  '理解度をチェックする',
 ];
+
+/** 学習後：教材について一度やり取りしたあと */
+const AFTER_STUDY_PROMPTS = [
+  '理解度チェックを始める',
+  '練習問題を出して',
+  '次にやることを教えて',
+];
+
+/** 制作中：画像を添付したとき（要件§7） */
+const IMAGE_PROMPTS = [
+  '制作物をレビューして',
+  '改善点を3つ教えて',
+  'エラーの原因を調べる',
+  '直し方を順番に教えて',
+];
+
+/** エラー発生時：直前の回答がエラーだったとき */
+const ERROR_PROMPTS = ['エラーの原因を調べる', '直し方を順番に教えて'];
+
+/** 教材の外（ヘッダーのAIコーチ・AI専用ページ）：AIアプリ一覧から選ぶ前提 */
+const NO_LESSON_PROMPTS = [
+  '目的に合うAIアプリを探す',
+  'AIアプリの使い方を聞く',
+  '次にやることを教えて',
+];
+
+function pickQuickPrompts(ai: UseLessonAi): string[] {
+  if (ai.image) return IMAGE_PROMPTS;
+  const last = ai.messages[ai.messages.length - 1];
+  if (last?.role === 'assistant' && last.answer?.conclusion === AI_ERROR_CONCLUSION) return ERROR_PROMPTS;
+  if (!ai.context.lessonTitle) return NO_LESSON_PROMPTS;
+  if (ai.messages.length > 0) return AFTER_STUDY_PROMPTS;
+  return ai.context.heading ? READING_PROMPTS : QUICK_PROMPTS;
+}
 
 function answerToPlainText(answer: LessonAiResponse): string {
   const lines = [`結論：${answer.conclusion}`];
@@ -586,7 +627,7 @@ export function AiCoachPane({
               margin: wide ? '0 auto' : undefined,
             }}
           >
-            {(quickPrompts ?? (ai.image ? IMAGE_PROMPTS : QUICK_PROMPTS)).map((prompt) => (
+            {(quickPrompts ?? pickQuickPrompts(ai)).map((prompt) => (
               <button
                 key={prompt}
                 type="button"

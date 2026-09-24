@@ -132,7 +132,7 @@ export const AI_SKILL_META: Record<ConcreteAiSkillId, AiSkillMeta> = {
     inputHint: '質問したいこと・引用したい教材の文',
     useCase: '読んでいて分からない箇所が出てきたとき',
     modeLead: '教材の該当箇所を根拠に、質問へ回答します。',
-    quickActions: ['簡単に説明して', '具体例を出して', 'なぜそうするの？', '制作物に当てはめると？'],
+    quickActions: ['この教材の要点をまとめて', 'わからない箇所を質問する', '理解度をチェックする', '次にやることを教えて'],
     placeholder: '教材について質問する…',
     needsImage: false,
     preferWide: false,
