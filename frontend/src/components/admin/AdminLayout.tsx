@@ -9,9 +9,7 @@ const sidebarItems = [
   { to: '/admin/coach-mapping', label: 'コーチ割り当て', icon: Link2 },
   // 「録画連携」(AdminCoachIntegrationsPage)はバックエンド未実装のためいったん没
   { to: '/admin/create-course', label: 'コース作成', icon: PlusCircle },
-  // { to: '/admin/courses', label: 'コース管理', icon: BookOpen },
   { to: '/admin/categories', label: 'カテゴリ管理', icon: FolderOpen },
-  // { to: '/admin/enrollments', label: '受講登録', icon: UserPlus },
   { to: '/admin/image-upload', label: 'コンテンツUP', icon: ImageUp },
   { to: '/admin/ai-applications', label: 'AIアプリ登録', icon: Bot },
   { to: '/admin/avatars', label: 'アバター登録', icon: UserCircle2 },

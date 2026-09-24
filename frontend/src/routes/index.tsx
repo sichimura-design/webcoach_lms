@@ -523,9 +523,7 @@ function AppRoutes() {
         }
       >
         <Route index element={<Navigate to="/admin/create-course" replace />} />
-        <Route path="courses" element={<AdminCsvPage key="courses" dataType="courses" />} />
         <Route path="categories" element={<AdminCsvPage key="categories" dataType="categories" />} />
-        <Route path="enrollments" element={<AdminCsvPage key="enrollments" dataType="enrollments" />} />
         <Route path="image-upload" element={<AdminImageUploadPage />} />
         <Route path="cognito-users" element={<AdminCognitoUsersPage />} />
         <Route path="students" element={<AdminStudentsPage />} />

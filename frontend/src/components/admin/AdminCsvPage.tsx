@@ -17,22 +17,6 @@ const CSV_TEMPLATES: Record<DataType, { filename: string; content: string }> = {
       ',Introduction to Programming,PROG101,1,プログラミングの基礎を学ぶコースです,topics,1,2024-04-01,2025-03-31,Python,https://example.com/course.png,0,0',
     ].join('\n'),
   },
-  courses: {
-    filename: 'template_roadmaps.csv',
-    content: [
-      'roadmap_id,name,category,required_study_time,icon_url,updateFlag,deleteFlag',
-      ',Webデザイン基礎,デザイン,1200,https://example.com/icons/webdesign.png,0,0',
-    ].join('\n'),
-  },
-  enrollments: {
-    filename: 'template_roadmap_steps.csv',
-    content: [
-      'roadmap_id,step_number,mdl_course_id,updateFlag,deleteFlag',
-      '1,1,101,0,0',
-      '1,2,102,0,0',
-      '1,3,103,0,0',
-    ].join('\n'),
-  },
   categories: {
     filename: 'template_categories.csv',
     content: [
@@ -96,22 +80,6 @@ const CSV_FORMAT: Record<DataType, CsvColumn[]> = {
     { col: 'updateFlag',    required: false, desc: '1 の場合、既存コースを更新する' },
     { col: 'deleteFlag',    required: false, desc: '1 の場合、該当コースを削除する（id必須）' },
   ],
-  courses: [
-    { col: 'roadmap_id',          required: false, desc: 'ロードマップID（更新・削除時に指定、新規は空欄）' },
-    { col: 'name',                required: true,  desc: 'ロードマップ名' },
-    { col: 'category',            required: false, desc: 'カテゴリ名' },
-    { col: 'required_study_time', required: false, desc: '必要学習時間（分）' },
-    { col: 'icon_url',            required: false, desc: 'アイコン画像のURL' },
-    { col: 'updateFlag',          required: false, desc: '1 の場合、既存レコードを更新する' },
-    { col: 'deleteFlag',          required: false, desc: '1 の場合、該当レコードを削除する（roadmap_id必須）' },
-  ],
-  enrollments: [
-    { col: 'roadmap_id',    required: true,  desc: 'ロードマップID' },
-    { col: 'step_number',   required: true,  desc: 'ステップ番号（コース内の順番）' },
-    { col: 'mdl_course_id', required: true,  desc: 'MoodleコースID' },
-    { col: 'updateFlag',    required: false, desc: '1 の場合、既存レコードを更新する' },
-    { col: 'deleteFlag',    required: false, desc: '1 の場合、該当レコードを削除する' },
-  ],
   categories: [
     { col: 'name',              required: true,  desc: 'カテゴリ名' },
     { col: 'parent',            required: false, desc: '親カテゴリID（0 = ルート直下）' },
@@ -161,17 +129,9 @@ const dataTypeConfig: Record<DataType, { title: string; description: string }> =
     title: 'Moodleコース作成',
     description: 'CSVからMoodleにコースを一括作成します',
   },
-  courses: {
-    title: 'コース管理',
-    description: '学習ロードマップの一括登録・更新を行います',
-  },
   categories: {
     title: 'カテゴリ管理',
     description: 'カテゴリの一括登録・更新を行います',
-  },
-  enrollments: {
-    title: '受講登録',
-    description: 'ロードマップに紐づくコース情報の一括登録・更新を行います',
   },
   users: {
     title: 'ユーザー管理',
@@ -231,7 +191,7 @@ interface AdminCsvPageProps {
   dataType: DataType;
 }
 
-const DOWNLOADABLE_ALL_TYPES: DataType[] = ['moodle-courses', 'courses', 'categories', 'ai-applications', 'avatars'];
+const DOWNLOADABLE_ALL_TYPES: DataType[] = ['moodle-courses', 'categories', 'ai-applications', 'avatars'];
 
 export const AdminCsvPage: React.FC<AdminCsvPageProps> = ({ dataType }) => {
   const [isUploading, setIsUploading] = useState(false);
@@ -261,14 +221,6 @@ export const AdminCsvPage: React.FC<AdminCsvPageProps> = ({ dataType }) => {
           c.tag ?? '', c.imageUrl ?? '', 0, 0,
         ]));
         downloadCsvContent([header, ...rows].join('\n'), `all_moodle_courses_${today}.csv`);
-      } else if (dataType === 'courses') {
-        const roadmaps = await bffClient.getRoadmaps();
-        const header = 'roadmap_id,name,category,required_study_time,icon_url,updateFlag,deleteFlag';
-        const rows = roadmaps.map((r: any) => toCsvRow([
-          r.id ?? '', r.name ?? r.title ?? '', r.category ?? '',
-          r.required_study_time ?? '', r.icon_url ?? '', 0, 0,
-        ]));
-        downloadCsvContent([header, ...rows].join('\n'), `all_roadmaps_${today}.csv`);
       } else if (dataType === 'categories') {
         const categories = await bffClient.getCategories();
         const header = 'id,name,parent,idnumber,description,descriptionformat,imageUrl,updateFlag,deleteFlag';
