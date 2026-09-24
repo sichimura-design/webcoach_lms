@@ -55,7 +55,6 @@ components:
           --region ap-northeast-1
 
         # またはスクリプトを使用
-        ./get-token.sh your-email your-password
         node test-auth.js your-email your-password
         ```
 
