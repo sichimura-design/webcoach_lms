@@ -71,11 +71,21 @@ jobs:
           role-to-assume: ${{ secrets.AWS_DEV_PREVIEW_ROLE_ARN }}
           aws-region: us-east-1
 
+      # 🔴 Cache-Control を明示する。付けないとブラウザが index.html を独自判断でキャッシュし、
+      #    デプロイ後も古い index.html → 削除済みの古い main.*.css/js を読みに行って 403 になり、
+      #    修正前の画面が出続ける（CloudFront の無効化はブラウザのキャッシュには効かない）。
+      #    - static/ はファイル名にハッシュが入るので長期キャッシュ（中身が変われば名前が変わる）
+      #    - それ以外（index.html・manifest.json・mockServiceWorker.js 等）は毎回サーバーに確認させる
       - name: Deploy to S3
         run: |
-          aws s3 sync frontend/build \
-            s3://${{ secrets.S3_BUCKET_NAME_DEV }}/branches/${{ steps.slug.outputs.slug }}/ \
-            --delete
+          DEST=s3://${{ secrets.S3_BUCKET_NAME_DEV }}/branches/${{ steps.slug.outputs.slug }}
+          aws s3 sync frontend/build/static "$DEST/static/" \
+            --delete \
+            --cache-control "public, max-age=31536000, immutable"
+          aws s3 sync frontend/build "$DEST/" \
+            --delete \
+            --exclude "static/*" \
+            --cache-control "no-cache, no-store, must-revalidate"
 
       - name: Invalidate CloudFront
         run: |

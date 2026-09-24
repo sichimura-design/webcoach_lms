@@ -1,31 +1,41 @@
 import { useState } from 'react';
-import { Folder, Inbox, Star } from 'lucide-react';
+import { ChevronDown, Folder, Inbox, Star } from 'lucide-react';
 import { NOTE_ORIGIN_LABEL, NoteOrigin, NoteSummary } from '../../types/notes';
 import { formatNoteDateShort } from './noteDate';
-import { INBOX_LABEL, NOTE_DRAG_TYPE } from './folderRows';
+import { INBOX_LABEL } from './folderRows';
 
 /**
  * 一覧の1枚。デザイン『マイノート 改善案』のノートカード。
  *
- * 構成: 出どころバッジ ／ ★（重要のときだけ）／ タイトル ／ 抜粋（3行まで）／
- *       フッター＝入っているフォルダ ＋ 日付
+ * 構成: 出どころバッジ ／ ★（押して重要を切り替える）／
+ *       タイトル ＋ 抜粋（3行まで）／ フッター＝入っているフォルダ ＋ 日付
  *
- * 以前あった ⋮ メニュー（開く／重要／削除）は無くした。「開く」はカード自体、
- * 「重要」と「削除」はノート面の上部バーに1か所ずつある。カードに操作を残すと
- * 掴んでドラッグする面と押す面が重なって、どちらになるか分からなくなる。
+ * ⋮ メニュー（開く／重要／削除）は無くしたままにする。「開く」はカード自体、
+ * 「削除」はノート面の「その他」だけ。ただし★は右上に常時出す。重要は一覧を
+ * 見ながら付け外しするもので、1枚ずつ開いて戻る操作にすると溜まらない。
+ * ★だけは押せる面なので、クリックとキー操作をカード側に伝えない。
  *
- * カードは draggable。フォルダ列の行に落とすと移動する（NoteFolderColumn）。
+ * フォルダの移動はフッターのフォルダ名から。以前はカードを掴んで左のフォルダ列へ
+ * 落としていたが、列を上部のバーに畳んだ（＝落とし先が画面に無い）。掴む操作は
+ * タッチ端末では元々効かなかったので、押して選ぶ形に一本化した。
+ * メニュー本体は NoteGrid が1つだけ持つ（理由は NoteGrid の doc）。
  */
 interface NoteCardProps {
   note: NoteSummary;
   /** 入っているフォルダの名前。未整理なら null */
   folderName: string | null;
+  /** このカードの移動先メニューが開いているか（見た目と aria-expanded 用） */
+  menuOpen: boolean;
   onOpen: (id: string) => void;
+  /** ★。押した後の状態を渡す */
+  onToggleFavorite: (id: string, favorite: boolean) => void;
+  /** フッターのフォルダ名が押された。メニューを出すのは呼び出し側 */
+  onRequestMove: (id: string, folderId: string | null, anchor: HTMLElement) => void;
 }
 
 /**
  * 出どころごとの色。デザイン 1a の指定値を引き継ぐ。
- * 教材・コーチングはブランド赤系、AIコーチはAIのピンク、自分のメモは無彩色。
+ * 教材・コーチングはブランド赤系、AIコーチはAIのピンク、自分のノートは無彩色。
  */
 const ORIGIN_STYLE: Record<NoteOrigin, { background: string; color: string }> = {
   coaching: { background: 'var(--dc-soft-100)', color: '#B80A29' },
@@ -34,9 +44,16 @@ const ORIGIN_STYLE: Record<NoteOrigin, { background: string; color: string }> = 
   self: { background: '#F7F3ED', color: 'var(--dc-text-muted)' },
 };
 
-export function NoteCard({ note, folderName, onOpen }: NoteCardProps) {
+export function NoteCard({
+  note,
+  folderName,
+  menuOpen,
+  onOpen,
+  onToggleFavorite,
+  onRequestMove,
+}: NoteCardProps) {
   const [hover, setHover] = useState(false);
-  const [dragging, setDragging] = useState(false);
+  const [starHover, setStarHover] = useState(false);
 
   const origin = ORIGIN_STYLE[note.origin] ?? ORIGIN_STYLE.self;
   const open = () => onOpen(note.id);
@@ -46,14 +63,6 @@ export function NoteCard({ note, folderName, onOpen }: NoteCardProps) {
       role="button"
       tabIndex={0}
       aria-label={`${note.title}を開く`}
-      draggable
-      onDragStart={(e) => {
-        e.dataTransfer.setData(NOTE_DRAG_TYPE, note.id);
-        e.dataTransfer.effectAllowed = 'move';
-        setHover(false);
-        setDragging(true);
-      }}
-      onDragEnd={() => setDragging(false)}
       onClick={open}
       onKeyDown={(e) => {
         if (e.key === 'Enter' || e.key === ' ') {
@@ -63,7 +72,7 @@ export function NoteCard({ note, folderName, onOpen }: NoteCardProps) {
       }}
       onMouseEnter={() => setHover(true)}
       onMouseLeave={() => setHover(false)}
-      className={`notes-card focus-visible:ring-2 focus-visible:ring-[#F6B9BD] ${dragging ? 'is-dragging' : ''}`}
+      className="notes-card focus-visible:ring-2 focus-visible:ring-[#F6B9BD]"
       style={{
         display: 'flex',
         flexDirection: 'column',
@@ -94,9 +103,40 @@ export function NoteCard({ note, folderName, onOpen }: NoteCardProps) {
         >
           {NOTE_ORIGIN_LABEL[note.origin] ?? NOTE_ORIGIN_LABEL.self}
         </span>
-        {note.favorite && (
-          <Star size={14} fill="var(--dc-primary)" style={{ color: 'var(--dc-primary)' }} aria-label="重要" />
-        )}
+        {/* 🔴 stopPropagation を外すとカードの onClick まで届いてノートが開く */}
+        <button
+          type="button"
+          draggable={false}
+          aria-pressed={note.favorite}
+          aria-label={note.favorite ? `${note.title}の重要を外す` : `${note.title}を重要にする`}
+          title={note.favorite ? '重要を外す' : '重要にする'}
+          onClick={(e) => {
+            e.stopPropagation();
+            onToggleFavorite(note.id, !note.favorite);
+          }}
+          onKeyDown={(e) => e.stopPropagation()}
+          onDragStart={(e) => e.preventDefault()}
+          onMouseEnter={() => setStarHover(true)}
+          onMouseLeave={() => setStarHover(false)}
+          className="focus-visible:ring-2 focus-visible:ring-[#F6B9BD]"
+          style={{
+            display: 'inline-flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            width: 26,
+            height: 26,
+            marginRight: -4,
+            padding: 0,
+            border: 0,
+            borderRadius: 9999,
+            background: starHover ? 'var(--dc-soft-100)' : 'transparent',
+            color: note.favorite ? 'var(--dc-primary)' : 'var(--dc-text-subtle)',
+            cursor: 'pointer',
+            transition: 'background .15s var(--dc-ease), color .15s var(--dc-ease)',
+          }}
+        >
+          <Star size={15} fill={note.favorite ? 'var(--dc-primary)' : 'none'} />
+        </button>
       </div>
 
       <h3 style={{ margin: 0, fontSize: 15, fontWeight: 700, lineHeight: 1.5, color: 'var(--dc-text)' }}>
@@ -130,22 +170,32 @@ export function NoteCard({ note, folderName, onOpen }: NoteCardProps) {
           borderTop: '1px solid var(--dc-border)',
         }}
       >
-        {/* 未整理はブランド色で出す。「まだ置き場所を決めていない」が一覧で見えるように */}
-        <span
-          style={{
-            display: 'inline-flex',
-            alignItems: 'center',
-            gap: 4,
-            minWidth: 0,
-            fontSize: 11.5,
-            color: folderName === null ? 'var(--dc-primary)' : 'var(--dc-text-subtle)',
+        {/* 入っているフォルダ。押すと移動先を選べる。
+            未整理はブランド色で出す（「まだ置き場所を決めていない」が一覧で見えるように）。
+            🔴 ★と同じで、クリックとキー操作をカードへ伝えない（伝わるとノートが開く）。 */}
+        <button
+          type="button"
+          draggable={false}
+          aria-haspopup="menu"
+          aria-expanded={menuOpen}
+          aria-label={`${note.title}の保存先を変える`}
+          title="フォルダを変える"
+          onClick={(e) => {
+            e.stopPropagation();
+            onRequestMove(note.id, note.folderId, e.currentTarget);
           }}
+          onKeyDown={(e) => e.stopPropagation()}
+          className={`notes-card__folder focus-visible:ring-2 focus-visible:ring-[#F6B9BD] ${
+            menuOpen ? 'is-open' : ''
+          }`}
+          style={{ color: folderName === null ? 'var(--dc-primary)' : 'var(--dc-text-subtle)' }}
         >
           {folderName === null ? <Inbox size={12} style={{ flexShrink: 0 }} /> : <Folder size={12} style={{ flexShrink: 0 }} />}
           <span style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
             {folderName ?? INBOX_LABEL}
           </span>
-        </span>
+          <ChevronDown size={12} style={{ flexShrink: 0 }} />
+        </button>
         <span
           className="dc-num"
           style={{ marginLeft: 'auto', flexShrink: 0, fontSize: 11.5, color: 'var(--dc-text-subtle)' }}

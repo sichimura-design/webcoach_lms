@@ -40,7 +40,7 @@ export function useNoteList({ lessonId }: UseNoteListOptions = {}) {
       setError(null);
     } catch {
       if (seq !== reqRef.current) return;
-      setError('ノートを読み込めませんでした');
+      setError('マイノートを読み込めませんでした');
     } finally {
       if (seq === reqRef.current) setLoading(false);
     }
@@ -68,9 +68,9 @@ export function useNoteList({ lessonId }: UseNoteListOptions = {}) {
   );
 
   /**
-   * フォルダへ移す（カードのドラッグ＆ドロップ）。
+   * フォルダへ移す（カード下部のフォルダ名から選んだとき）。
    * 先に手元の一覧を書き換え、成功しても全体を取り直さない。移動では updatedAt が
-   * 動かないので並びは変わらず、取り直すとドロップ直後にグリッドがちらつくだけ。
+   * 動かないので並びは変わらず、取り直すと選んだ直後にグリッドがちらつくだけ。
    * 失敗したら取り直して巻き戻し、呼び出し側にトーストを出させる。
    */
   const moveToFolder = useCallback(
@@ -87,9 +87,27 @@ export function useNoteList({ lessonId }: UseNoteListOptions = {}) {
   );
 
   /**
+   * 一覧のカードの★。moveToFolder と同じで、先に手元を書き換えてから送る。
+   * 重要の切り替えでは updatedAt が動かない（mocks/noteHandlers.ts）ので並びは変わらず、
+   * 取り直すとグリッドがちらつくだけなので成功時は再取得しない。
+   */
+  const toggleFavorite = useCallback(
+    async (id: string, favorite: boolean) => {
+      setItems((prev) => prev.map((n) => (n.id === id ? { ...n, favorite } : n)));
+      try {
+        await bffClient.updateNote(id, { favorite });
+      } catch (e) {
+        await reload();
+        throw e;
+      }
+    },
+    [reload]
+  );
+
+  /**
    * ノート面（useNote）で変えたものを一覧にも映す。サーバには送らない。
-   * ノート面を開いている間もフォルダ列の件数は見えているので、重要やフォルダを
-   * 変えた瞬間に数字が動かないと「押せていない」ように見える。
+   * ノート面から一覧に戻った瞬間にバーの件数が合っていないと、重要やフォルダを
+   * 変えたことが「効いていない」ように見える。
    */
   const patchItem = useCallback((id: string, patch: Partial<Pick<NoteSummary, 'title' | 'favorite' | 'folderId'>>) => {
     setItems((prev) => prev.map((n) => (n.id === id ? { ...n, ...patch } : n)));
@@ -107,6 +125,7 @@ export function useNoteList({ lessonId }: UseNoteListOptions = {}) {
     create,
     remove,
     moveToFolder,
+    toggleFavorite,
     patchItem,
   };
 }

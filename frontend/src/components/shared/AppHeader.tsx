@@ -22,6 +22,8 @@ interface AppHeaderProps {
 
 /** ナビの開閉をタブ内で持ち回すキー（ページ遷移で AppHeader が再マウントされるため） */
 const SIDEBAR_KEY = 'wc-sidebar-expanded';
+/** アカウントのポップオーバーを、ホバーが外れてから閉じるまでの猶予。トリガー→ポップへ移る途中で消さないため */
+const ACCOUNT_CLOSE_DELAY_MS = 250;
 
 export function AppHeader({ userName, avatarUrl }: AppHeaderProps) {
   const navigate = useNavigate();
@@ -57,11 +59,13 @@ export function AppHeader({ userName, avatarUrl }: AppHeaderProps) {
 
   /*
    * アカウントのポップオーバー。
-   * 🔴 レールの丸アバターは、行き先が見えないまま画面が変わるのが唐突なので
-   *    クリックでもポップオーバーの開閉に留める（直行させない）。
-   * 🔴 一方、パネル（開いた224px）のアカウント行は名前と › が見えているので、
-   *    クリックで /account-settings へ直行する。行き先の一覧はホバー／フォーカスで
-   *    出るポップオーバーが引き続き担う。
+   * 🔴 レールの丸アバターもパネルのアカウント行も、クリック（Enter／タップ）で
+   *    /account-settings へ直行する（B-013）。以前レール側はクリックでも開閉だけに
+   *    していたが、ホバーのポップオーバーが選びにくく、1回で設定に行けないと指摘された。
+   *    行き先の一覧（アカウント設定／プロフィール）はホバー／フォーカスで出る
+   *    ポップオーバーが引き続き担う。
+   * 🔴 ポップオーバーは離れてすぐには閉じない（ACCOUNT_CLOSE_DELAY_MS）。トリガーと
+   *    ポップの間には隙間があり、斜めに移動する途中で一瞬外れただけで消えていた。
    * 🔴 ログアウトはここには置かない。アカウント設定画面が持っている
    *    （SCREEN-013 でそう決めた）。ホバーで開く面に破壊的操作を混ぜない。
    */
@@ -70,6 +74,20 @@ export function AppHeader({ userName, avatarUrl }: AppHeaderProps) {
   // アカウント行だけ消えるのを避けるため）なので、外側クリック判定は両方見る。
   const accountRailRef = useRef<HTMLDivElement>(null);
   const accountPanelRef = useRef<HTMLDivElement>(null);
+  const accountCloseTimer = useRef<number | null>(null);
+  const cancelAccountClose = () => {
+    if (accountCloseTimer.current !== null) {
+      window.clearTimeout(accountCloseTimer.current);
+      accountCloseTimer.current = null;
+    }
+  };
+  const openAccount = () => { cancelAccountClose(); setAccountOpen(true); };
+  const closeAccountSoon = () => {
+    cancelAccountClose();
+    accountCloseTimer.current = window.setTimeout(() => setAccountOpen(false), ACCOUNT_CLOSE_DELAY_MS);
+  };
+  const goAccountSettings = () => { cancelAccountClose(); setAccountOpen(false); navigate('/account-settings'); };
+  useEffect(() => cancelAccountClose, []);
 
   /*
    * SP下部バーの「その他」シート。
@@ -594,6 +612,8 @@ export function AppHeader({ userName, avatarUrl }: AppHeaderProps) {
    * どちらも画面左下が起点なので、右上に向かって開く（left-full / bottom-0）。
    * 🔴 常時マウントして opacity で出し入れする。条件レンダリングだと
    *    マウスがトリガーからポップへ移る一瞬で消えて選べないことがある。
+   * 🔴 トリガーとの 10px の隙間は margin ではなく外枠の透明な padding で取る。
+   *    margin だとその隙間がどちらの要素でもなく、通過中に mouseleave が起きる。
    */
   const accountItems = [
     { label: 'アカウント設定', icon: Settings, path: '/account-settings' },
@@ -602,17 +622,22 @@ export function AppHeader({ userName, avatarUrl }: AppHeaderProps) {
 
   const renderAccountPopover = () => (
     <div
+      aria-hidden={!accountOpen}
+      className="absolute left-full bottom-0 pl-2.5 z-50 transition-opacity duration-150 motion-reduce:transition-none"
+      style={{
+        opacity: accountOpen ? 1 : 0,
+        pointerEvents: accountOpen ? 'auto' : 'none',
+      }}
+    >
+    <div
       role="menu"
       aria-label="アカウント"
-      aria-hidden={!accountOpen}
-      className="absolute left-full bottom-0 ml-2.5 bg-white overflow-hidden z-50 transition-opacity duration-150 motion-reduce:transition-none"
+      className="bg-white overflow-hidden"
       style={{
         width: 232,
         borderRadius: 14,
         border: '1px solid #EBE7E5',
         boxShadow: '0 16px 38px rgba(96,70,65,.16)',
-        opacity: accountOpen ? 1 : 0,
-        pointerEvents: accountOpen ? 'auto' : 'none',
       }}
     >
       <div className="flex items-center gap-2.5 px-3.5 py-3" style={{ borderBottom: '1px solid #F3EFEE' }}>
@@ -632,7 +657,7 @@ export function AppHeader({ userName, avatarUrl }: AppHeaderProps) {
           key={path}
           role="menuitem"
           tabIndex={accountOpen ? undefined : -1}
-          onClick={() => { navigate(path); setAccountOpen(false); }}
+          onClick={() => { cancelAccountClose(); setAccountOpen(false); navigate(path); }}
           className={`flex items-center w-full appearance-none border-0 bg-transparent cursor-pointer text-left transition-colors hover:bg-[#FAF7F7] motion-reduce:transition-none ${focusRing}`}
           style={{ gap: 10, padding: '10px 14px', fontSize: 13, color: '#3D3D3D' }}
         >
@@ -640,6 +665,7 @@ export function AppHeader({ userName, avatarUrl }: AppHeaderProps) {
           <span className="truncate">{label}</span>
         </button>
       ))}
+    </div>
     </div>
   );
 
@@ -780,20 +806,20 @@ export function AppHeader({ userName, avatarUrl }: AppHeaderProps) {
                入口が要るようになったらここにベルを戻すのではなく、
                どの面に置くかを決めてから追加すること。 */}
 
-        {/* アカウント。ホバー（＋クリック／フォーカス）でポップオーバーを出す。
+        {/* アカウント。ホバー／フォーカスでポップオーバーを出し、クリックはアカウント設定へ直行する。
             🔴 円形の切り抜きは button ではなく内側の span に持たせる。button 側に
                overflow:hidden があるとポップオーバーやツールチップが切られる。 */}
         <div
           ref={accountRailRef}
           className="relative"
           style={{ marginTop: 10, flex: 'none' }}
-          onMouseEnter={() => setAccountOpen(true)}
-          onMouseLeave={() => setAccountOpen(false)}
+          onMouseEnter={openAccount}
+          onMouseLeave={closeAccountSoon}
         >
           <button
-            onClick={() => setAccountOpen(v => !v)}
-            onFocus={() => setAccountOpen(true)}
-            aria-label={`アカウント: ${resolvedUserName}`}
+            onClick={goAccountSettings}
+            onFocus={openAccount}
+            aria-label={`アカウント設定: ${resolvedUserName}`}
             aria-haspopup="menu"
             aria-expanded={accountOpen}
             tabIndex={expanded ? -1 : undefined}
@@ -892,22 +918,19 @@ export function AppHeader({ userName, avatarUrl }: AppHeaderProps) {
         </div>
 
         {/*
-          アカウント。ホバー／フォーカスではレール側と同じポップオーバーを出すが、
-          クリックはアカウント設定へ直行する（› は「まだ先がある」の意）。
-          🔴 レール（閉じた72px）の方はクリックでもポップオーバーの開閉のままにしている。
-             あちらは丸アイコンだけで名前も › も無いので、押した瞬間に画面が変わると
-             どこへ飛んだのか分からない。名前と › が見えているこのパネル側だけ直行させる。
+          アカウント。ホバー／フォーカスではレール側と同じポップオーバーを出し、
+          クリックはアカウント設定へ直行する（› は「まだ先がある」の意）。レール側も同じ。
         */}
         <div
           ref={accountPanelRef}
           className="relative"
           style={{ flex: 'none' }}
-          onMouseEnter={() => setAccountOpen(true)}
-          onMouseLeave={() => setAccountOpen(false)}
+          onMouseEnter={openAccount}
+          onMouseLeave={closeAccountSoon}
         >
           <button
-            onClick={() => { setAccountOpen(false); navigate('/account-settings'); }}
-            onFocus={() => setAccountOpen(true)}
+            onClick={goAccountSettings}
+            onFocus={openAccount}
             aria-label={`アカウント設定: ${resolvedUserName}`}
             aria-haspopup="menu"
             aria-expanded={accountOpen}

@@ -98,8 +98,11 @@ const skillRequestMessage = (skillId: ConcreteAiSkillId, question: string): stri
   return framed.length <= AI_MESSAGE_MAX_LENGTH ? framed : question;
 };
 
+/** エラー時の回答の結論文。AiCoachPane がこれで「エラー発生時」のサジェストに切り替える */
+export const AI_ERROR_CONCLUSION = '一時的なエラーで回答を取得できませんでした。';
+
 const errorAnswer = (): LessonAiResponse => ({
-  conclusion: '一時的なエラーで回答を取得できませんでした。',
+  conclusion: AI_ERROR_CONCLUSION,
   basis: '',
   apply: '',
   next: 'しばらく時間をおいてから、もう一度お試しください。',

@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ChevronRight, Flag } from 'lucide-react';
 import { Button } from './ui/button';
 import { useAuth } from '../contexts/AuthContext';
 import { AppFooter, AppHeader } from './shared';
@@ -10,7 +9,7 @@ import { useStudyStats } from '../hooks/useStudyStats';
 import { useWeeklyGoal } from '../hooks/useWeeklyGoal';
 import { useGoalDeclaration } from '../hooks/useGoalDeclaration';
 import { useProgressionStore } from '../store/progressionStore';
-import { useRecentCourseStore } from '../store/recentCourseStore';
+import { useResumeLesson } from '../hooks/useResumeLesson';
 import { EXP_RULES } from '../utils/progression';
 import MypageGreeting from './mypage/MypageGreeting';
 import ResumeStudyCard from './mypage/ResumeStudyCard';
@@ -74,8 +73,6 @@ function MyPage() {
   } = useMypageData(user?.userid);
 
   const noteStreakDays = useProgressionStore((s) => s.noteStreakDays);
-  /** 前回どのレッスンを開いたか。「続きから学習する」の飛び先に使う */
-  const recentEntries = useRecentCourseStore((s) => s.entries);
 
   // 「学習中のコース」= 続きから(resumableCourse) + 受講中一覧。id重複は除外
   const learningCourses: Course[] = resumableCourse
@@ -87,6 +84,20 @@ function MyPage() {
   const { stats: studyStats, loading: studyStatsLoading, unavailable: studyStatsUnavailable } = useStudyStats(user?.userid);
   const learningSummary = useLearningSummary(learningCourses, studyStats);
   const primaryCourse = learningCourses[0];
+  // 「続きから学習」のレッスン名・レッスン数は実 Moodle の目次から組み立てる（useResumeLesson の doc）
+  const resumeLesson = useResumeLesson(primaryCourse?.id);
+  const resumeCourse: Course | undefined =
+    primaryCourse && resumeLesson
+      ? {
+          ...primaryCourse,
+          // splitLesson が「レッスン3」と名前に分けて組む。名前が既に番号付きなら重ねない
+          currentLesson: /^\s*(?:Lesson|LESSON|レッスン)\s*\d+/.test(resumeLesson.lessonTitle)
+            ? resumeLesson.lessonTitle
+            : `レッスン${resumeLesson.lessonNo} ${resumeLesson.lessonTitle}`,
+          totalLessons: resumeLesson.totalLessons,
+          progress: resumeLesson.progress,
+        }
+      : primaryCourse;
 
   // あなたの目標（受講生が自分の言葉で書く、期間つきの意思表明）。ここは表示だけで、
   // 書くのも直すのも /study-log 側（同じデータの編集入口を2箇所に置かない）。
@@ -162,16 +173,15 @@ function MyPage() {
    * 「続きから学習する」は没入型レッスンへ直行、「レッスン全体を見る」はコース目次へ。
    * 🔴 ?module= を必ず付ける。付けないと useLessonDoc の既定＝目次の先頭レッスンが
    *    開くので、「続きから」と書いてあるのに毎回1本目に戻っていた。
-   *    前回開いたレッスンは recentCourseStore が覚えている（同じ履歴を
-   *    ResumeStudyHost の「前回の続き」カードも使うので、両方の行き先が一致する）。
-   *    履歴が無いときだけコース既定の入口に落とす。
+   *    行き先はカードに出しているレッスン（useResumeLesson）と同じにする。
+   *    前回開いたレッスン（recentCourseStore）→ 最初の未完了 → 先頭 の順。
+   *    目次が取れなかったときだけコース既定の入口に落とす。
    */
   const openLesson = () => {
     if (!primaryCourse) return;
-    const recent = recentEntries.find((e) => e.courseId === primaryCourse.id);
     navigate(
-      recent?.lessonId
-        ? `/course/${primaryCourse.id}?module=${recent.lessonId}`
+      resumeLesson
+        ? `/course/${primaryCourse.id}?module=${resumeLesson.lessonId}`
         : `/course/${primaryCourse.id}`
     );
   };
@@ -203,7 +213,7 @@ function MyPage() {
           </div>
 
           <ResumeStudyCard
-            course={primaryCourse}
+            course={resumeCourse}
             // サムネの絵柄用。resumecourse は領域名もコース画像も返さないので、
             // 同じコースの受講中一覧（/moodle/courses）側の姿を添える
             known={activeCourses.find((c) => c.id === primaryCourse?.id)}
@@ -214,45 +224,9 @@ function MyPage() {
         </div>
 
         {/*
-          dev/kanegae統合: キャリアロードマップへの導線。
-          8a改修で「学習ロードマップ帯」は意図的に外されているが（上のコメント参照）、
-          dev/kanegaeの実装(RoadmapPage, /api/roadmap/*)への導線自体は失いたくないため
-          小さなカードとして復元する。mypage/RoadmapStrip.tsx（useLearningPlanのモック連動）
-          には接続しない。
+          B-001: キャリアロードマップへの導線カードは、UIが完成版ではないため非表示にしている。
+          RoadmapPage(/roadmap)・/api/roadmap/* 自体は残してあるので、完成したらここにカードを戻す。
         */}
-        <button
-          onClick={() => navigate('/roadmap')}
-          className="dc-card"
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            width: '100%',
-            marginTop: 'var(--dc-sp-gap)',
-            padding: '16px 20px',
-            background: 'var(--dc-surface)',
-            border: '1px solid var(--dc-border)',
-            borderRadius: 'var(--dc-radius-lg)',
-            cursor: 'pointer',
-            textAlign: 'left',
-          }}
-        >
-          <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-            <div
-              style={{
-                width: 36, height: 36, borderRadius: '50%',
-                background: 'var(--dc-primary)', display: 'grid', placeItems: 'center', flexShrink: 0,
-              }}
-            >
-              <Flag className="w-4 h-4 text-white" />
-            </div>
-            <div>
-              <p style={{ fontSize: 14, fontWeight: 600, color: 'var(--dc-text)' }}>キャリアロードマップ</p>
-              <p style={{ fontSize: 12, color: 'var(--dc-text-muted)' }}>目標までの進み方を確認する</p>
-            </div>
-          </div>
-          <ChevronRight className="w-4 h-4" style={{ color: 'var(--dc-text-muted)', flexShrink: 0 }} />
-        </button>
 
         {studyStatsUnavailable ? (
           // 🔴 通信失敗時にstats=nullのままStudyDashboardCardへ渡すと、
