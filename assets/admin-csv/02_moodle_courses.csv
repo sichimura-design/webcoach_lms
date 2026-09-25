@@ -14,6 +14,7 @@ id,fullname,shortname,categoryid,summary,format,visible,startdate,enddate,tag,im
 ,実践課題：ECバナー・パッケージ,practice-ec-banner,,,topics,1,,,,https://dmn2v7nl0g3fq.cloudfront.net/branches/dev-kanegae/images/courses/practice-ec-banner.webp,0,0,Webデザイン
 ,実践課題：LP制作,practice-lp,,,topics,1,,,,https://dmn2v7nl0g3fq.cloudfront.net/branches/dev-kanegae/images/courses/practice-lp.webp,0,0,Webデザイン
 ,実践課題：ポートフォリオサイト制作,practice-portfolio-site,,,topics,1,,,,https://dmn2v7nl0g3fq.cloudfront.net/branches/dev-kanegae/images/courses/practice-portfolio-site.webp,0,0,Webデザイン
+,UI/UXデザイン,uiux,,,topics,1,,,,,0,0,Webデザイン
 ,Wix,wix,,,topics,1,,,,https://dmn2v7nl0g3fq.cloudfront.net/branches/dev-kanegae/images/courses/wix.webp,0,0,Web制作
 ,WordPress,wordpress,,,topics,1,,,,https://dmn2v7nl0g3fq.cloudfront.net/branches/dev-kanegae/images/courses/wordpress.webp,0,0,Web制作
 ,VSCode環境セットアップ,vscode-setup,,,topics,1,,,,https://dmn2v7nl0g3fq.cloudfront.net/branches/dev-kanegae/images/courses/vscode-setup.webp,0,0,Web制作
@@ -53,5 +54,7 @@ id,fullname,shortname,categoryid,summary,format,visible,startdate,enddate,tag,im
 ,AI×ライティング,ai-writing,,,topics,1,,,,https://dmn2v7nl0g3fq.cloudfront.net/branches/dev-kanegae/images/courses/ai-writing.webp,0,0,Web×AI
 ,AI×動画編集,ai-movie,,,topics,1,,,,https://dmn2v7nl0g3fq.cloudfront.net/branches/dev-kanegae/images/courses/ai-movie.webp,0,0,Web×AI
 ,AI×SNS,ai-sns,,,topics,1,,,,https://dmn2v7nl0g3fq.cloudfront.net/branches/dev-kanegae/images/courses/ai-sns.webp,0,0,Web×AI
+,1ヶ月AIデザイナー課程,ai-designer-program,,,topics,1,,,,,0,0,Web×AI
+,AI×Webマーケティング,ai-marketing,,,topics,1,,,,,0,0,Web×AI
 ,案件獲得攻略プログラム,client-work-program,,,topics,1,,,,https://dmn2v7nl0g3fq.cloudfront.net/branches/dev-kanegae/images/courses/client-work-program.webp,0,0,案件獲得・キャリア
 ,転職,job-change,,,topics,1,,,,https://dmn2v7nl0g3fq.cloudfront.net/branches/dev-kanegae/images/courses/job-change.webp,0,0,案件獲得・キャリア

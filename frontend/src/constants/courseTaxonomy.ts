@@ -83,6 +83,8 @@ export const AREA_COURSES: ReadonlyArray<AreaDef & { courses: readonly CourseDef
       { name: '実践課題：ECバナー・パッケージ', slug: 'practice-ec-banner' },
       { name: '実践課題：LP制作', slug: 'practice-lp' },
       { name: '実践課題：ポートフォリオサイト制作', slug: 'practice-portfolio-site' },
+      // 追加は末尾に（途中に挟むと後ろのコースIDがずれる）
+      { name: 'UI/UXデザイン', slug: 'uiux' },
     ],
   },
   {
@@ -170,6 +172,8 @@ export const AREA_COURSES: ReadonlyArray<AreaDef & { courses: readonly CourseDef
       { name: 'AI×ライティング', slug: 'ai-writing' },
       { name: 'AI×動画編集', slug: 'ai-movie' },
       { name: 'AI×SNS', slug: 'ai-sns' },
+      { name: '1ヶ月AIデザイナー課程', slug: 'ai-designer-program' },
+      { name: 'AI×Webマーケティング', slug: 'ai-marketing' },
     ],
   },
   /*

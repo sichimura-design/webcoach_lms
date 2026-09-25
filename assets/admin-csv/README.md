@@ -1,7 +1,7 @@
 # admin-csv
 
 管理画面（/admin）のCSV一括登録で、学習領域（Moodleカテゴリ）とコース一式を作るためのCSV。
-中身は `frontend/src/constants/courseTaxonomy.ts` から生成した（9領域・56コース）。
+中身は `frontend/src/constants/courseTaxonomy.ts` から生成した（9領域・59コース）。
 
 ## 登録手順
 
@@ -9,7 +9,7 @@
 2. 同じ画面の「全件ダウンロード」で `all_categories_*.csv` を取得し、
    `python3 fill_categoryid.py all_categories_*.csv` を実行
    → 領域名からカテゴリIDを引いて `03_moodle_courses_upload.csv` ができる
-3. **Moodleコース作成** で `03_moodle_courses_upload.csv` をアップロード（56コース）
+3. **Moodleコース作成** で `03_moodle_courses_upload.csv` をアップロード（59コース）
 
 ## 注意
 
