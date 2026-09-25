@@ -43,7 +43,9 @@ export function buildCatalog(
   resumableCourse: Course | null | undefined
 ): CatalogCourse[] {
   const list = Array.isArray(raw) ? raw : [];
-  return list.map((c) => {
+  // BFF は管理者トークンで Moodle を引くので、非表示（visible=0）のコースも返ってくる。
+  // 受講生の一覧には出さない（Moodle の「コースの可視性」を効かせる）。
+  return list.filter((c) => c?.visible !== 0 && c?.visible !== '0').map((c) => {
     const enrolled =
       activeCourses.find((ac) => ac.id === c.id) ??
       (resumableCourse?.id === c.id ? resumableCourse : undefined);
