@@ -35,6 +35,7 @@ import { getUserMessage } from '../utils/errorMessage';
 import { color, font, radius, shadow } from '../theme/webcoachTheme';
 import LessonTopBar from './learning/LessonTopBar';
 import LessonFloatingActions from './learning/LessonFloatingActions';
+import EmbeddedLessonFrame from './learning/EmbeddedLessonFrame';
 import SupportPanel, { SupportTab } from './learning/SupportPanel';
 import {
   getContentType as getModuleContentType,
@@ -776,14 +777,7 @@ function CourseContentPage({ courseId, initialModuleId, onBack }: CourseContentP
         if (!externalUrl) {
           return <EmptyPlaceholder />;
         }
-        return (
-          <iframe
-            src={externalUrl}
-            sandbox="allow-scripts allow-same-origin allow-forms"
-            title={selectedModule.name}
-            style={{ width: '100%', border: 'none', borderRadius: radius.md, height: '85vh', minHeight: '400px' }}
-          />
-        );
+        return <EmbeddedLessonFrame src={externalUrl} title={selectedModule.name} />;
       }
 
       // ── mod/resource（動画）─────────────────
