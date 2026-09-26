@@ -1,5 +1,6 @@
 import type { Course } from '../../types/mypage';
 import type { GalleryCourse } from './courseVisuals';
+import { usableCourseImage } from '../../utils/courseImage';
 
 /**
  * BFF の生コース（/moodle/courses）を一覧タイルの表現に直す。
@@ -30,7 +31,7 @@ export function toCatalogCourse(
     duration: raw.duration,
     purposes: Array.isArray(raw.purposes) ? raw.purposes : undefined,
     tags: Array.isArray(raw.tags) ? raw.tags : undefined,
-    thumbnailUrl: raw.courseimage,
+    thumbnailUrl: usableCourseImage(raw.courseimage),
     progress: enrolled?.progress ?? 0,
     isCurrent,
   };
