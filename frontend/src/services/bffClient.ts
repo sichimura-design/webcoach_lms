@@ -390,6 +390,18 @@ class BFFClient {
   }
 
   /**
+   * コース内の全アクティビティの完了状態（ログイン中の受講生本人のもの）
+   * GET /api/moodle/courses/{courseid}/activities/completion
+   * 返り値は Moodle の core_completion_get_activities_completion_status そのまま（statuses[].cmid/state/tracking）
+   */
+  async getCourseActivitiesCompletion(
+    courseid: number
+  ): Promise<{ statuses?: { cmid: number; state: number; tracking: number }[] }> {
+    const response = await this.api.get(`/moodle/courses/${courseid}/activities/completion`);
+    return response.data;
+  }
+
+  /**
    * アクティビティ完了マーク
    * POST /api/moodle/activities/{cmid}/completion
    */

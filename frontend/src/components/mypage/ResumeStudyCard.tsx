@@ -30,6 +30,12 @@ interface ResumeStudyCardProps {
    *    こちらを正典にする。渡さなくても図形／文字組みには落ちる。
    */
   known?: Course;
+  /**
+   * どのレッスンの続きか（目次）を取りに行っている間 true。
+   * この間はレッスン名と進捗を仮表示にする。取れる前の「コース名＋◯％完了」が
+   * 一瞬出てから「Lesson N …」に組み変わると、カードの中身が跳ねて見えるため。
+   */
+  lessonLoading?: boolean;
   /** 続きから学習する（没入型レッスンへ） */
   onOpenLesson: () => void;
   /** レッスンを選び直す（コース目次へ） */
@@ -47,7 +53,23 @@ const CARD_STYLE: CSSProperties = {
   flexDirection: 'column',
 };
 
-export function ResumeStudyCard({ course, known, onOpenLesson, onOpenCurriculum }: ResumeStudyCardProps) {
+/** 読み込み中の仮表示の1本。文字の行と同じ高さの淡い帯 */
+function Placeholder({ width, height }: { width: CSSProperties['width']; height: number }) {
+  return (
+    <span
+      aria-hidden
+      style={{
+        display: 'block',
+        width,
+        height,
+        borderRadius: 6,
+        background: 'var(--dc-soft-100)',
+      }}
+    />
+  );
+}
+
+export function ResumeStudyCard({ course, known, lessonLoading, onOpenLesson, onOpenCurriculum }: ResumeStudyCardProps) {
   const navigate = useNavigate();
   const { no, name } = splitLesson(course?.currentLesson);
   const lessons = lessonProgressFromPercent(course?.progress, course?.totalLessons);
@@ -57,10 +79,10 @@ export function ResumeStudyCard({ course, known, onOpenLesson, onOpenCurriculum 
   // 絵柄が文字組み（画像なし）のときはサムネ側がコース名を持つ。本文にも出すと
   // 同じ名前が2回並ぶので、画像があるときだけ本文のコース名行を出す。
   // 単元名が無いときは下の見出しが course.title に倒れるので、そのときも出さない
-  const showCourseTitle = !!art?.thumbnailUrl && !!name;
+  const showCourseTitle = !!art?.thumbnailUrl && (!!name || !!lessonLoading);
 
   return (
-    <section style={CARD_STYLE}>
+    <section style={CARD_STYLE} aria-busy={lessonLoading || undefined}>
       <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 18 }}>
         <span
           style={{
@@ -115,67 +137,83 @@ export function ResumeStudyCard({ course, known, onOpenLesson, onOpenCurriculum 
               )}
               {/* レッスン名がこのカードで一番大きい文字。カード見出しの「続きから学習」より
                   大きくするのは、ラベルより中身のコンテンツ名を先に読ませたいため。 */}
-              <div
-                style={{
-                  fontSize: 'var(--dc-fs-title)',
-                  fontWeight: 700,
-                  color: 'var(--dc-text)',
-                  lineHeight: 'var(--dc-lh-heading)',
-                }}
-              >
-                {no && (
-                  <>
-                    <span className="dc-num">{no}</span>
-                    <br />
-                  </>
-                )}
-                {name || course.title}
-              </div>
+              {lessonLoading ? (
+                <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+                  <Placeholder width={72} height={20} />
+                  <Placeholder width="80%" height={20} />
+                </div>
+              ) : (
+                <div
+                  style={{
+                    fontSize: 'var(--dc-fs-title)',
+                    fontWeight: 700,
+                    color: 'var(--dc-text)',
+                    lineHeight: 'var(--dc-lh-heading)',
+                  }}
+                >
+                  {no && (
+                    <>
+                      <span className="dc-num">{no}</span>
+                      <br />
+                    </>
+                  )}
+                  {name || course.title}
+                </div>
+              )}
             </div>
           </div>
 
-          <div
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'space-between',
-              gap: 10,
-              flexWrap: 'wrap',
-              fontSize: 'var(--dc-fs-caption)',
-              marginBottom: 8,
-            }}
-          >
-            <span className="dc-num" style={{ fontWeight: 700, color: 'var(--dc-text)' }}>
-              {lessons ? (
-                <>
-                  {lessons.done}
-                  <span style={{ fontWeight: 600, color: 'var(--dc-text-subtle)' }}>
-                    /{lessons.total} レッスン
+          {lessonLoading ? (
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 8, marginBottom: 20 }}>
+              <Placeholder width={96} height={14} />
+              <Placeholder width="100%" height={8} />
+            </div>
+          ) : (
+            <>
+              <div
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                  gap: 10,
+                  flexWrap: 'wrap',
+                  fontSize: 'var(--dc-fs-caption)',
+                  marginBottom: 8,
+                }}
+              >
+                <span className="dc-num" style={{ fontWeight: 700, color: 'var(--dc-text)' }}>
+                  {lessons ? (
+                    <>
+                      {lessons.done}
+                      <span style={{ fontWeight: 600, color: 'var(--dc-text-subtle)' }}>
+                        /{lessons.total} レッスン
+                      </span>
+                    </>
+                  ) : (
+                    <>
+                      {Math.round(pct)}
+                      <span style={{ fontWeight: 600, color: 'var(--dc-text-subtle)' }}>％ 完了</span>
+                    </>
+                  )}
+                </span>
+                {course.remainingMinutes != null && course.remainingMinutes > 0 && (
+                  <span style={{ color: 'var(--dc-text-subtle)' }}>
+                    残り 約{formatMinutesHM(course.remainingMinutes)}で完了できます
                   </span>
-                </>
-              ) : (
-                <>
-                  {Math.round(pct)}
-                  <span style={{ fontWeight: 600, color: 'var(--dc-text-subtle)' }}>％ 完了</span>
-                </>
-              )}
-            </span>
-            {course.remainingMinutes != null && course.remainingMinutes > 0 && (
-              <span style={{ color: 'var(--dc-text-subtle)' }}>
-                残り 約{formatMinutesHM(course.remainingMinutes)}で完了できます
-              </span>
-            )}
-          </div>
+                )}
+              </div>
 
-          {/* レッスン数で区切ったステップ型（shared/LessonProgressBar.tsx）。
-              空きマスの数がそのまま残り本数になるので、上の「5/11 レッスン」と読み合わせられる */}
-          <LessonProgressBar
-            done={lessons?.done}
-            total={lessons?.total}
-            percent={pct}
-            aria-valuetext={lessons ? lessons.full : `${Math.round(pct)}％完了`}
-            style={{ marginBottom: 20 }}
-          />
+              {/* レッスン数で区切ったステップ型（shared/LessonProgressBar.tsx）。
+                  空きマスの数がそのまま残り本数になるので、上の「5/11 レッスン」と読み合わせられる */}
+              <LessonProgressBar
+                done={lessons?.done}
+                total={lessons?.total}
+                percent={pct}
+                aria-valuetext={lessons ? lessons.full : `${Math.round(pct)}％完了`}
+                style={{ marginBottom: 20 }}
+              />
+            </>
+          )}
 
           <button
             type="button"

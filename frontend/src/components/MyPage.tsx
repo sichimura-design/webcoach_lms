@@ -85,17 +85,23 @@ function MyPage() {
   const learningSummary = useLearningSummary(learningCourses, studyStats);
   const primaryCourse = learningCourses[0];
   // 「続きから学習」のレッスン名・レッスン数は実 Moodle の目次から組み立てる（useResumeLesson の doc）
-  const resumeLesson = useResumeLesson(primaryCourse?.id);
+  const { lesson: resumeLesson, loading: resumeLessonLoading } = useResumeLesson(primaryCourse?.id);
   const resumeCourse: Course | undefined =
     primaryCourse && resumeLesson
       ? {
           ...primaryCourse,
-          // splitLesson が「レッスン3」と名前に分けて組む。名前が既に番号付きなら重ねない
-          currentLesson: /^\s*(?:Lesson|LESSON|レッスン)\s*\d+/.test(resumeLesson.lessonTitle)
-            ? resumeLesson.lessonTitle
-            : `レッスン${resumeLesson.lessonNo} ${resumeLesson.lessonTitle}`,
-          totalLessons: resumeLesson.totalLessons,
-          progress: resumeLesson.progress,
+          // dev/miyabe と同じ「Lesson 2 基本の考え方」の形で渡す（splitLesson が番号と名前に分けて2行に組む）。
+          // 名前が既に番号付きなら重ねない。レッスン外のモジュールなら番号は付けない
+          currentLesson:
+            resumeLesson.lessonNo == null || /^\s*(?:Lesson|LESSON|レッスン)\s*\d+/.test(resumeLesson.lessonTitle)
+              ? resumeLesson.lessonTitle
+              : `Lesson ${resumeLesson.lessonNo} ${resumeLesson.lessonTitle}`,
+          // レッスン数はコース目次と同じ数え方（完了トラッキング対象のみ）。
+          // 対象が1本も無いコースは分数にできないので、resumecourse の％のまま
+          ...(resumeLesson.totalLessons > 0 && {
+            totalLessons: resumeLesson.totalLessons,
+            progress: (resumeLesson.completedLessons / resumeLesson.totalLessons) * 100,
+          }),
         }
       : primaryCourse;
 
@@ -217,6 +223,7 @@ function MyPage() {
             // サムネの絵柄用。resumecourse は領域名もコース画像も返さないので、
             // 同じコースの受講中一覧（/moodle/courses）側の姿を添える
             known={activeCourses.find((c) => c.id === primaryCourse?.id)}
+            lessonLoading={resumeLessonLoading}
             onOpenLesson={openLesson}
             onOpenCurriculum={openCurriculum}
           />

@@ -8,9 +8,14 @@ import { useRecentCourseStore } from '../store/recentCourseStore';
  * 🔴 /webcoach/resumecourse はコース名と進捗％しか返さない。カードが出したい
  *    レッスン名・レッスン数は dev/miyabe のモックにしか無く、実バックエンドでは
  *    常にコース名＋「◯％完了」に落ちていた。ここで実 Moodle の目次
- *    （/moodle/courses/:id/contents。完了状態は BFF が付けてくれる）から組み立てる。
- *    教材ページ（CourseContentPage）と同じ目次・同じ数え方（全モジュール）なので、
- *    向こうで見る進み具合と食い違わない。
+ *    （/moodle/courses/:id/contents）から組み立てる。
+ *
+ * 🔴 数え方はコース目次（CourseTopPage）に揃える。
+ *    - レッスン＝完了トラッキング対象（completion >= 1）のモジュールだけ。
+ *      ラベル等の対象外モジュールまで数えると分母だけ膨らみ、目次の「◯/◯」と食い違う。
+ *    - 完了＝受講生本人の完了状態（/courses/:id/activities/completion）で state >= 1。
+ *      目次に付いてくる completiondata は BFF の接続ユーザー側の値が残ることがあるので正にしない
+ *      （取れなかったときだけそちらに落とす）。
  *
  * 続きのレッスン = この端末で最後に開いたレッスン（recentCourseStore）。
  * 履歴が無ければ最初の未完了レッスン、全部済んでいれば先頭。
@@ -18,57 +23,83 @@ import { useRecentCourseStore } from '../store/recentCourseStore';
 export interface ResumeLesson {
   lessonId: number;
   lessonTitle: string;
-  /** 目次の通し番号（1始まり） */
-  lessonNo: number;
+  /** レッスンの通し番号（1始まり）。前回開いたのがレッスン外のモジュールなら無し */
+  lessonNo?: number;
+  /** レッスン総数。トラッキング対象が1本も無いコースは 0 */
   totalLessons: number;
   completedLessons: number;
-  /** completedLessons / totalLessons（0–100）。カードのレッスン数表記と必ず一致させるため */
-  progress: number;
 }
 
-export function useResumeLesson(courseId: number | undefined): ResumeLesson | null {
+interface LessonModule {
+  id: number;
+  name: string;
+  trackable: boolean;
+  done: boolean;
+}
+
+export function useResumeLesson(courseId: number | undefined): {
+  lesson: ResumeLesson | null;
+  /** 目次を取りに行っている間 true。カードはこの間レッスン名・進捗を仮表示にする */
+  loading: boolean;
+} {
   const recent = useRecentCourseStore((s) => s.entries.find((e) => e.courseId === courseId));
   const recentLessonId = recent?.lessonId;
-  const [modules, setModules] = useState<{ id: number; name: string; done: boolean }[] | null>(null);
+  // 取得結果をどのコースのものか込みで持つ。courseId が変わった直後の1描画でも
+  // 「取得中」と判定でき、前のコースの目次が一瞬見えることもない
+  const [result, setResult] = useState<{ courseId: number; modules: LessonModule[] } | null>(null);
 
   useEffect(() => {
-    setModules(null);
     if (!courseId) return;
     let cancelled = false;
-    bffClient
-      .getCourseContent(courseId)
-      .then((sections) => {
+    Promise.all([
+      bffClient.getCourseContent(courseId),
+      bffClient.getCourseActivitiesCompletion(courseId).catch(() => null),
+    ])
+      .then(([sections, completion]) => {
         if (cancelled) return;
+        const stateByCmid = new Map(
+          (completion?.statuses ?? []).map((s) => [s.cmid, s.state] as const)
+        );
         const flat = (Array.isArray(sections) ? sections : []).flatMap((s: any) => s.modules ?? []);
-        setModules(
-          flat.map((m: any) => ({
+        setResult({
+          courseId,
+          modules: flat.map((m: any) => ({
             id: m.id,
             name: m.name ?? '',
-            done: m.completiondata?.state === 1 || m.completiondata?.state === 2,
-          }))
-        );
+            trackable: (m.completion ?? 0) >= 1,
+            done: (stateByCmid.get(m.id) ?? m.completiondata?.state ?? 0) >= 1,
+          })),
+        });
       })
       // 取れなければカードは従来どおりコース名＋％表示に落ちる
-      .catch(() => {});
+      .catch(() => {
+        if (!cancelled) setResult({ courseId, modules: [] });
+      });
     return () => {
       cancelled = true;
     };
   }, [courseId]);
 
-  if (!modules || modules.length === 0) return null;
+  const loading = !!courseId && result?.courseId !== courseId;
+  const modules = !loading && result ? result.modules : [];
+  if (modules.length === 0) return { lesson: null, loading };
 
+  const lessons = modules.filter((m) => m.trackable);
   const target =
     (recentLessonId != null && modules.find((m) => m.id === recentLessonId)) ||
-    modules.find((m) => !m.done) ||
+    lessons.find((m) => !m.done) ||
+    lessons[0] ||
     modules[0];
-  const completedLessons = modules.filter((m) => m.done).length;
+  const no = lessons.indexOf(target);
 
   return {
-    lessonId: target.id,
-    lessonTitle: target.name,
-    lessonNo: modules.indexOf(target) + 1,
-    totalLessons: modules.length,
-    completedLessons,
-    progress: (completedLessons / modules.length) * 100,
+    lesson: {
+      lessonId: target.id,
+      lessonTitle: target.name,
+      lessonNo: no >= 0 ? no + 1 : undefined,
+      totalLessons: lessons.length,
+      completedLessons: lessons.filter((m) => m.done).length,
+    },
+    loading,
   };
 }
