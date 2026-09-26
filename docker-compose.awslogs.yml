@@ -1,0 +1,21 @@
+# docker-compose.awslogs.yml
+# dev EC2(dev-moodle-docker)専用: api-serverのログをCloudWatch Logsへも送る
+# (AI利用ログのSlack通知 cdk/lib/ai-usage-notifier-stack.ts の入力になる)
+#
+# ローカル開発では読み込まない。EC2の /home/ec2-user/moodle-docker/.env に
+#   COMPOSE_FILE=docker-compose.yml:docker-compose.override.yml:docker-compose.awslogs.yml
+# を書いておくと、既存の `docker-compose up -d ...` のままこのファイルも適用される。
+# 送信権限はEC2ロールのCloudWatchAgentServerPolicyで足りている。
+# Docker 20.10+のデュアルロギングにより `docker logs` もこれまで通り使える。
+
+services:
+  api-server:
+    logging:
+      driver: awslogs
+      options:
+        awslogs-region: ap-northeast-1
+        awslogs-group: /dev/moodle/api-server
+        awslogs-stream: api-server
+        # CloudWatchへの送信が詰まってもapi-serverを止めない
+        mode: non-blocking
+        max-buffer-size: 4m
