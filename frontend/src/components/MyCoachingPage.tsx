@@ -105,17 +105,14 @@ export function MyCoachingPage() {
 
   /**
    * 実施済みの回（「これまでのコーチング」「前回」に出すもの）。
-   * 未来の予約と、当日でまだ実施記録（status）が付いていない回は未実施なので除く。
-   * リスケで流れた回も実施していないので出さない（/study-log と同じ扱い）。
+   * コーチが実施結果（終了・中断）を記録した回だけ。日付が過ぎていても実施記録の無い回は
+   * 未実施なので出さない。リスケで流れた回も実施していないので除く。
    * 並びはAPIの coaching_date 降順のまま。
    */
-  const pastSchedules = useMemo(() => {
-    const today = toLocalDateKey(new Date());
-    return schedules.filter(s =>
-      s.status !== 'rescheduled'
-      && (s.coaching_date < today || (s.coaching_date === today && s.status !== null))
-    );
-  }, [schedules]);
+  const pastSchedules = useMemo(
+    () => schedules.filter(s => s.status === 'completed' || s.status === 'interrupted'),
+    [schedules],
+  );
 
   /**
    * 「これまでのコーチング」の一覧。実施済みの回に、リスケで流れた回を「リスケ」表示付きで混ぜる。
