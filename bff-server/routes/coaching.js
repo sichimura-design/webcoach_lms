@@ -277,6 +277,19 @@ router.post('/schedule/:userid', requireAuth, async (req, res) => {
       });
     }
 
+    // 新しい回は既存の回より後ろの番号になるので、日付も既存の回より前にはできない
+    // (api-serverでも同じチェックをするが、Meet Space発行前に弾くためここでも見る。リスケで流れた回は対象外)
+    const existing = await coachingService.getCoachingSchedules(parseInt(userid));
+    const later = (existing || [])
+      .filter(s => s.coach_user_id == req.body.coach_user_id && s.status !== 'rescheduled' && s.coaching_date > coachingDate)
+      .sort((a, b) => a.coaching_no - b.coaching_no)[0];
+    if (later) {
+      return res.status(400).json({
+        error: 'Bad Request',
+        message: `第${later.coaching_no}回（${later.coaching_date}）より前の日付は指定できません`
+      });
+    }
+
     const schedule = await coachingService.createCoachingSchedule(parseInt(userid), req.body);
     res.status(201).json(schedule);
   } catch (error) {
@@ -309,6 +322,9 @@ router.put('/schedule/:userid/:id', requireAuth, async (req, res) => {
     res.json(schedule);
   } catch (error) {
     console.error('[Coaching] Update coaching schedule error:', error.message);
+    if (error.response?.status === 400) {
+      return res.status(400).json({ error: 'Bad Request', message: error.response.data?.detail || '入力内容に誤りがあります' });
+    }
     if (error.response) {
       return res.status(error.response.status).json(error.response.data);
     }

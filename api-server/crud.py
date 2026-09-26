@@ -5,7 +5,7 @@ import time
 from datetime import datetime, timedelta, timezone, date
 from typing import Optional, List, Dict, Any
 from sqlalchemy.orm import Session
-from sqlalchemy import desc, text, func, bindparam
+from sqlalchemy import desc, text, func, bindparam, or_
 from entities import (
     UserLastCourseAccess,
     UserProfileSettings,
@@ -2333,6 +2333,51 @@ def get_coaching_schedule_by_id(
     return db.query(WebCoachCoachingSchedule).filter(
         WebCoachCoachingSchedule.id == schedule_id
     ).first()
+
+
+def find_coaching_order_violation(
+    db: Session,
+    mdl_user_id: int,
+    coach_user_id: int,
+    coaching_date,
+    coaching_no: Optional[int] = None,
+    exclude_id: Optional[int] = None,
+) -> Optional[str]:
+    """
+    回数(coaching_no)の前後と実施日の前後が食い違わないかを確認します。
+
+    同じ受講生×コーチの組の中で、回数が小さい回は実施日が同日以前、大きい回は同日以降で
+    なければならない(同日は可)。リスケで流れた回は日付が前にずれることがあるので対象外。
+
+    Args:
+        db: Database session
+        mdl_user_id: 受講生のMoodleユーザーID
+        coach_user_id: コーチのMoodleユーザーID
+        coaching_date: 登録・変更しようとしている実施日
+        coaching_no: 対象の回数。Noneなら新規(既存の全回より後ろの回)として扱う
+        exclude_id: 比較から除く予約ID(更新時の自分自身)
+
+    Returns:
+        食い違う場合はエラーメッセージ、問題なければNone
+    """
+    query = db.query(WebCoachCoachingSchedule).filter(
+        WebCoachCoachingSchedule.mdl_user_id == mdl_user_id,
+        WebCoachCoachingSchedule.coach_user_id == coach_user_id,
+        or_(
+            WebCoachCoachingSchedule.status.is_(None),
+            WebCoachCoachingSchedule.status != 'rescheduled',
+        ),
+    )
+    if exclude_id is not None:
+        query = query.filter(WebCoachCoachingSchedule.id != exclude_id)
+
+    for other in query.order_by(WebCoachCoachingSchedule.coaching_no).all():
+        earlier = coaching_no is None or other.coaching_no < coaching_no
+        if earlier and other.coaching_date > coaching_date:
+            return f"第{other.coaching_no}回（{other.coaching_date.isoformat()}）より前の日付は指定できません"
+        if not earlier and other.coaching_no > coaching_no and other.coaching_date < coaching_date:
+            return f"第{other.coaching_no}回（{other.coaching_date.isoformat()}）より後の日付は指定できません"
+    return None
 
 
 def get_coaching_schedules(

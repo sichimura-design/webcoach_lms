@@ -26,6 +26,7 @@ from crud import (
     get_coaching_schedule_by_id,
     get_pending_coaching_reminders,
     mark_coaching_reminder_sent,
+    find_coaching_order_violation,
 )
 
 logger = logging.getLogger(__name__)
@@ -470,6 +471,13 @@ def create_coaching_schedule_endpoint(
             detail="実施日には今日以降の日付を指定してください"
         )
 
+    # 新しい回は既存の回より後ろの番号になるので、日付も既存の回より前にはできない
+    violation = find_coaching_order_violation(
+        db, mdl_user_id=userid, coach_user_id=data.coach_user_id, coaching_date=data.coaching_date,
+    )
+    if violation:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=violation)
+
     try:
         schedule = create_coaching_schedule(
             db=db,
@@ -515,8 +523,29 @@ def update_coaching_schedule_endpoint(
         更新後のコーチングスケジュール
 
     Raises:
-        HTTPException: 対象が見つからない場合（404）
+        HTTPException: 対象が見つからない場合（404）、回の前後と日付が食い違う場合（400）
     """
+    # 日付を動かすときだけ、前後の回と日付の順序が逆転しないか確認する
+    # (リスケで流れた回・リスケにする回は日付が前にずれることがあるので対象外)
+    current = get_coaching_schedule_by_id(db, schedule_id)
+    if (
+        current is not None
+        and current.mdl_user_id == userid
+        and data.coaching_date is not None
+        and data.coaching_date != current.coaching_date
+        and (data.status or current.status) != 'rescheduled'
+    ):
+        violation = find_coaching_order_violation(
+            db,
+            mdl_user_id=userid,
+            coach_user_id=current.coach_user_id,
+            coaching_date=data.coaching_date,
+            coaching_no=current.coaching_no,
+            exclude_id=current.id,
+        )
+        if violation:
+            raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=violation)
+
     try:
         schedule = update_coaching_schedule(
             db=db,

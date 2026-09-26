@@ -51,6 +51,37 @@ interface ScheduleFormState {
   meeting_provider: 'google_meet' | '';
 }
 
+/**
+ * 回数の前後と実施日の前後が逆転しないかを見る（同日は可）。api-serverの
+ * find_coaching_order_violation と同じ判定。同じコーチの回だけを比べ、リスケで流れた回は対象外。
+ * target.coaching_no が null なら新規（既存の全回より後ろの回）として扱う。
+ */
+function findOrderViolation(
+  schedules: CoachingSchedule[],
+  target: { id: number | null; coach_user_id: number; coaching_no: number | null; coaching_date: string },
+): string | null {
+  const others = schedules
+    .filter(s => s.id !== target.id && s.coach_user_id === target.coach_user_id && s.status !== 'rescheduled')
+    .sort((a, b) => a.coaching_no - b.coaching_no);
+  for (const other of others) {
+    const earlier = target.coaching_no === null || other.coaching_no < target.coaching_no;
+    if (earlier && other.coaching_date > target.coaching_date) {
+      return `第${other.coaching_no}回（${other.coaching_date}）より前の日付は指定できません`;
+    }
+    if (!earlier && target.coaching_no !== null && other.coaching_no > target.coaching_no
+      && other.coaching_date < target.coaching_date) {
+      return `第${other.coaching_no}回（${other.coaching_date}）より後の日付は指定できません`;
+    }
+  }
+  return null;
+}
+
+/** 400（入力の問題）はサーバーの理由をそのまま出し、それ以外は定型文にする */
+function errorMessageFor(err: unknown, fallback: string): string {
+  const isBadRequest = (err as { response?: { status?: number } })?.response?.status === 400;
+  return isBadRequest ? getUserMessage(err, fallback) : fallback;
+}
+
 /** 新規登録フォームの初期値。実施日は開いた日（ローカル日付）にする */
 const newEmptyForm = (): ScheduleFormState => ({
   coaching_date: toLocalDateKey(new Date()),
@@ -156,6 +187,13 @@ export function CoachingSchedulePage({ studentId }: CoachingSchedulePageProps) {
       setError('実施日には今日以降の日付を指定してください');
       return;
     }
+    const createViolation = findOrderViolation(schedules, {
+      id: null, coach_user_id: user.userid, coaching_no: null, coaching_date: addForm.coaching_date,
+    });
+    if (createViolation) {
+      setError(createViolation);
+      return;
+    }
     setError(null);
     setSaving(true);
     try {
@@ -169,11 +207,7 @@ export function CoachingSchedulePage({ studentId }: CoachingSchedulePageProps) {
       setShowAddForm(false);
       loadSchedules();
     } catch (err) {
-      // 400（過去日など入力の問題）はサーバーの理由をそのまま出す
-      const isBadRequest = (err as { response?: { status?: number } })?.response?.status === 400;
-      setError(isBadRequest
-        ? getUserMessage(err, 'コーチング記録の作成に失敗しました')
-        : 'コーチング記録の作成に失敗しました');
+      setError(errorMessageFor(err, 'コーチング記録の作成に失敗しました'));
     } finally {
       setSaving(false);
     }
@@ -191,6 +225,20 @@ export function CoachingSchedulePage({ studentId }: CoachingSchedulePageProps) {
 
   const handleUpdate = async (id: number) => {
     if (saving) return;
+    // 日付を動かすときだけ前後の回との順序を見る（リスケの回は日付が前にずれうるので対象外）
+    const current = schedules.find(s => s.id === id);
+    if (current && editForm.coaching_date !== current.coaching_date
+      && (editForm.status || current.status) !== 'rescheduled') {
+      const updateViolation = findOrderViolation(schedules, {
+        id, coach_user_id: current.coach_user_id, coaching_no: current.coaching_no,
+        coaching_date: editForm.coaching_date,
+      });
+      if (updateViolation) {
+        setError(updateViolation);
+        return;
+      }
+    }
+    setError(null);
     setSaving(true);
     try {
       await bffClient.updateCoachingSchedule(studentId, id, {
@@ -200,8 +248,8 @@ export function CoachingSchedulePage({ studentId }: CoachingSchedulePageProps) {
       });
       setEditingId(null);
       loadSchedules();
-    } catch {
-      setError('コーチング記録の更新に失敗しました');
+    } catch (err) {
+      setError(errorMessageFor(err, 'コーチング記録の更新に失敗しました'));
     } finally {
       setSaving(false);
     }
