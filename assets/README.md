@@ -17,6 +17,7 @@ assets/
 
 - `materials/<領域バケツ>/` … Clipkit(learn.webcoach.jp)からの取得結果（2026-09-17取得）。
   `manifest.json`（ページ一覧）・`html/`（スクリプト除去済み）・`raw/`（取得したままのHTML）。
+  `html/` はdevプレビューのCloudFrontでも配信している（URL一覧と手順は `admin-csv/lesson_html_urls.csv`・`admin-csv/README.md`）。
   バケツ名（web-design・coding・sns 等）はコースslugではなく**学習領域サイズ**なので、
   アプリへ載せるときはコース単位に割り直す（`frontend/src/mocks/migratedMaterials.ts` の注意参照）。
   `html/` が参照する `../../_assets/` は未取得。
