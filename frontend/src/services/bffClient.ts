@@ -154,6 +154,18 @@ const LOGIN_PATH = `${process.env.PUBLIC_URL || ''}/login`;
 // 実API（webcoach_my_note）の行と、UI側の型（Note / NoteSummary）の橋渡し。
 
 /**
+ * 実APIの日時（MySQL TIMESTAMP）はタイムゾーン無しの UTC で返ってくる（例: `2026-09-26T03:53:00`）。
+ * そのまま new Date() に渡すと端末のローカル時刻として読まれ、日本では9時間ずれる
+ * （12:53 に保存したノートが「保存しました 03:53」、日付も日付変わり前後でずれる）。
+ * タイムゾーンの無い値にだけ Z を付けて UTC として読ませる。
+ */
+export function utcIso(value: string): string {
+  if (!value) return value;
+  if (/(Z|[+-]\d{2}:?\d{2})$/.test(value)) return value;
+  return `${value.replace(' ', 'T')}Z`;
+}
+
+/**
  * 出どころのバッジ。実APIは from_ai / from_coaching の2フラグ＋cmid で持つので、
  * UIの排他的な4値へ畳む。
  * 🔴 両方立っている行があり得るため、優先順位を決めてある（coaching > ai > 教材 > 自分）。
@@ -1968,25 +1980,36 @@ class BFFClient {
   // 🔴 一覧は絞り込み・並び替え・全文検索をクライアント側で行う。実APIが本文ごと返すため
   //    追加のリクエストが要らず、MSWのときと同じ見え方になる。
 
-  /** 現在ユーザーのMoodle ID。ノート系APIのパスに要るので一度だけ解決して使い回す */
-  private moodleUserIdPromise: Promise<number> | null = null;
+  /**
+   * 現在ユーザーのMoodle ID。ノート系APIのパスに要るので解決して使い回す。
+   * 🔴 IDトークンごとに持つ。ページを読み直さずにアカウントが変わる
+   *    （ログアウト→別アカウントでログイン、別タブでの切り替え）と、前の人のIDで
+   *    `/my-note/notes/<前の人>/…` を叩き続けて 403 になっていた。
+   *    トークンの更新（約1時間ごと）で1回 /user/info を取り直すだけなので安い。
+   */
+  private moodleUserId: { token: string | null; promise: Promise<number> } | null = null;
 
   private async getMoodleUserId(): Promise<number> {
-    if (!this.moodleUserIdPromise) {
-      this.moodleUserIdPromise = this.getUserInfo()
-        .then((info) => info.moodle.id)
-        .catch((e) => {
-          // 失敗を握り続けると以降ずっとノートが開けなくなる。次回やり直せるようにする
-          this.moodleUserIdPromise = null;
-          throw e;
-        });
+    const token = await getIdToken();
+    if (!this.moodleUserId || this.moodleUserId.token !== token) {
+      const entry = {
+        token,
+        promise: this.getUserInfo()
+          .then((info) => info.moodle.id)
+          .catch((e) => {
+            // 失敗を握り続けると以降ずっとノートが開けなくなる。次回やり直せるようにする
+            if (this.moodleUserId === entry) this.moodleUserId = null;
+            throw e;
+          }),
+      };
+      this.moodleUserId = entry;
     }
-    return this.moodleUserIdPromise;
+    return this.moodleUserId.promise;
   }
 
   /** 実APIのノート → UIのNote（contents を本文と素材に分ける） */
   private toNote(row: MyNote): Note {
-    const { body, blocks } = parseNoteMarkdown(row.contents, row.updated_at);
+    const { body, blocks } = parseNoteMarkdown(row.contents, utcIso(row.updated_at));
     return {
       id: String(row.noteid),
       title: row.title,
@@ -1996,8 +2019,8 @@ class BFFClient {
       origin: originOf(row),
       folderId: row.folder_id === null ? null : String(row.folder_id),
       source: sourceOf(row),
-      createdAt: row.created_at,
-      updatedAt: row.updated_at,
+      createdAt: utcIso(row.created_at),
+      updatedAt: utcIso(row.updated_at),
     };
   }
 
@@ -2012,13 +2035,13 @@ class BFFClient {
       blockCount: blockCountOf(row.contents),
       excerpt: excerptFromMarkdown(row.contents),
       source: sourceOf(row),
-      createdAt: row.created_at,
-      updatedAt: row.updated_at,
+      createdAt: utcIso(row.created_at),
+      updatedAt: utcIso(row.updated_at),
     };
   }
 
   private toFolder(row: MyNoteFolder): NoteFolder {
-    return { id: String(row.folder_id), name: row.name, createdAt: row.created_at };
+    return { id: String(row.folder_id), name: row.name, createdAt: utcIso(row.created_at) };
   }
 
   /** ノート1件を生で取る（ブロック操作の read-modify-write に使う） */
@@ -2110,7 +2133,7 @@ class BFFClient {
    */
   async appendNoteBlock(noteId: string, input: NoteBlockInput): Promise<NoteBlock> {
     const row = await this.fetchNoteRow(noteId);
-    const { body, blocks } = parseNoteMarkdown(row.contents, row.updated_at);
+    const { body, blocks } = parseNoteMarkdown(row.contents, utcIso(row.updated_at));
     const block = buildBlockFromInput(input, blocks.length);
     await this.saveContents(noteId, body, [...blocks, block]);
     return block;
@@ -2119,7 +2142,7 @@ class BFFClient {
   /** 素材の書き換え */
   async updateNoteBlock(noteId: string, blockId: string, patch: NoteBlockPatch): Promise<NoteBlock> {
     const row = await this.fetchNoteRow(noteId);
-    const { body, blocks } = parseNoteMarkdown(row.contents, row.updated_at);
+    const { body, blocks } = parseNoteMarkdown(row.contents, utcIso(row.updated_at));
     const at = blocks.findIndex((b) => b.id === blockId);
     if (at < 0) throw new Error(`note block not found: ${blockId}`);
 
@@ -2132,7 +2155,7 @@ class BFFClient {
   /** 素材の削除 */
   async deleteNoteBlock(noteId: string, blockId: string): Promise<void> {
     const row = await this.fetchNoteRow(noteId);
-    const { body, blocks } = parseNoteMarkdown(row.contents, row.updated_at);
+    const { body, blocks } = parseNoteMarkdown(row.contents, utcIso(row.updated_at));
     await this.saveContents(
       noteId,
       body,
@@ -2153,7 +2176,7 @@ class BFFClient {
 
     const clips: NoteClipRef[] = [];
     for (const row of rows) {
-      for (const block of parseNoteMarkdown(row.contents, row.updated_at).blocks) {
+      for (const block of parseNoteMarkdown(row.contents, utcIso(row.updated_at)).blocks) {
         if (block.kind !== 'clip' || block.source.lessonId !== lessonId) continue;
         clips.push({
           noteId: String(row.noteid),

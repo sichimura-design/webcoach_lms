@@ -42,9 +42,9 @@ const idOf = (url: string) => Number(url.split('/').pop());
 
 const handlers: Record<string, Handler> = {
   get: (url, _b, config) => {
-    if (url === '/user/info') return { moodle: { id: 7 } };
+    if (url === '/user/info') return { moodle: { id: mockToken === 'token-B' ? 8 : 7 } };
     if (url === '/my-note/folders/7') return fake.folders;
-    if (url === '/my-note/notes/7') {
+    if (/^\/my-note\/notes\/\d+$/.test(url)) {
       const p = config?.params ?? {};
       return fake.rows.filter(
         (r) =>
@@ -99,14 +99,15 @@ jest.mock('axios', () => {
   instance.put = async (url: string, body?: any) => mockHandle('put', url, body);
   return { __esModule: true, default: { create: () => instance } };
 });
-jest.mock('./cognitoAuth', () => ({ getIdToken: async () => null }));
+let mockToken: string | null = 'token-A';
+jest.mock('./cognitoAuth', () => ({ getIdToken: async () => mockToken }));
 
 function mockHandle(method: string, url: string, body?: any, config?: any) {
   fake.calls.push({ method, url, body, config });
   return { data: JSON.parse(JSON.stringify(handlers[method](url, body, config) ?? null)) };
 }
 
-import bffClient from './bffClient'; // eslint-disable-line import/first
+import bffClient, { utcIso } from './bffClient'; // eslint-disable-line import/first
 
 const source: NoteSourceRef = {
   courseId: 12,
@@ -121,6 +122,7 @@ const source: NoteSourceRef = {
 const puts = () => fake.calls.filter((c) => c.method === 'put');
 
 beforeEach(() => {
+  mockToken = 'token-A';
   fake.rows = [];
   fake.folders = [];
   fake.calls = [];
@@ -266,6 +268,23 @@ describe('bffClient マイノート', () => {
     const n = await bffClient.createNote({});
     await bffClient.deleteNote(n.id);
     expect(fake.rows).toHaveLength(0);
+  });
+
+  it('アカウントが変わる（IDトークンが変わる）と、ユーザーIDを取り直す', async () => {
+    await bffClient.listNotes();
+    mockToken = 'token-B';
+    fake.calls = [];
+    await bffClient.listNotes();
+    expect(fake.calls.map((c) => c.url)).toEqual(['/user/info', '/my-note/notes/8']);
+  });
+
+  it('日時はタイムゾーン無しのUTCとして読む（9時間ずれない）', async () => {
+    fake.rows = [row(1, { created_at: '2026-09-26T03:53:00', updated_at: '2026-09-26 15:10:00' })];
+    const note = await bffClient.getNote('1');
+    expect(note.createdAt).toBe('2026-09-26T03:53:00Z');
+    expect(new Date(note.updatedAt).toISOString()).toBe('2026-09-26T15:10:00.000Z');
+    expect(utcIso('2026-09-26T03:53:00+09:00')).toBe('2026-09-26T03:53:00+09:00');
+    expect(utcIso('2026-09-26T03:53:00.123Z')).toBe('2026-09-26T03:53:00.123Z');
   });
 
   it('ユーザーIDは一度だけ取りに行く', async () => {

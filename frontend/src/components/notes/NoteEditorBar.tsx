@@ -157,19 +157,20 @@ function SaveStatus({ saveState, fallbackAt }: { saveState: NoteSaveState; fallb
       </span>
     );
   }
-  if (saveState.dirty) {
-    return (
-      <span style={base} role="status" aria-live="polite">
-        <AlertCircle size={14} style={{ color: 'var(--dc-text-subtle)' }} />
-        未保存の変更があります
-      </span>
-    );
-  }
+  // 🔴 失敗は未保存より先に出す。未保存を先にすると、保存に失敗しても「未保存」としか見えない
   if (saveState.error) {
     return (
       <span style={{ ...base, color: 'var(--dc-primary)' }} role="status" aria-live="polite">
         <AlertCircle size={14} />
         {saveState.error}
+      </span>
+    );
+  }
+  if (saveState.dirty) {
+    return (
+      <span style={base} role="status" aria-live="polite">
+        <AlertCircle size={14} style={{ color: 'var(--dc-text-subtle)' }} />
+        未保存の変更があります
       </span>
     );
   }

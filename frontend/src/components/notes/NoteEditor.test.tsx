@@ -348,3 +348,51 @@ describe('NoteEditor', () => {
     expect(container.querySelector('[data-testid="quote-modal"]')!.getAttribute('data-initial')).toBe('null');
   });
 });
+
+describe('NoteEditorBar の保存状態', () => {
+  // eslint-disable-next-line @typescript-eslint/no-var-requires
+  const NoteEditorBar = require('./NoteEditorBar').default ?? require('./NoteEditorBar').NoteEditorBar;
+  const at = '2026-09-26T03:53:00Z';
+  const note: Note = {
+    id: '1', title: 't', body: '', blocks: [], favorite: false, origin: 'self', folderId: null, source: null, createdAt: at, updatedAt: at,
+  };
+  const bar = (saveState: any) => {
+    const saves: number[] = [];
+    render(
+      createElement(NoteEditorBar, {
+        note, folders: [], saveState, onBack: () => undefined, backToSource: null,
+        onMoveToFolder: () => undefined, onToggleFavorite: () => undefined, onDelete: () => undefined,
+        onSave: () => saves.push(1),
+      })
+    );
+    const saveBtn = container.querySelector<HTMLButtonElement>('button[title="保存（Ctrl+S）"]')!;
+    return { saves, saveBtn, status: container.querySelector('[role=status]')!.textContent };
+  };
+
+  it('未保存が無ければ保存ボタンは押せず、保存した時刻（ローカル時刻）を出す', () => {
+    const v = bar({ saving: false, lastSavedAt: null, error: null, dirty: false });
+    expect(v.saveBtn.disabled).toBe(true);
+    const local = new Date(at);
+    const hhmm = `${String(local.getHours()).padStart(2, '0')}:${String(local.getMinutes()).padStart(2, '0')}`;
+    expect(v.status).toContain(`保存しました${hhmm}`);
+  });
+
+  it('未保存があれば押せて、押すと保存する', () => {
+    const v = bar({ saving: false, lastSavedAt: null, error: null, dirty: true });
+    expect(v.status).toContain('未保存の変更があります');
+    act(() => v.saveBtn.click());
+    expect(v.saves).toHaveLength(1);
+  });
+
+  it('保存に失敗したら、未保存よりも失敗を出す', () => {
+    const v = bar({ saving: false, lastSavedAt: null, error: '保存できませんでした', dirty: true });
+    expect(v.status).toContain('保存できませんでした');
+    expect(v.saveBtn.disabled).toBe(false);
+  });
+
+  it('保存中は押せない', () => {
+    const v = bar({ saving: true, lastSavedAt: null, error: null, dirty: true });
+    expect(v.status).toContain('保存中');
+    expect(v.saveBtn.disabled).toBe(true);
+  });
+});
