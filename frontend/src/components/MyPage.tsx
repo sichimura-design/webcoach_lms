@@ -10,6 +10,7 @@ import { useWeeklyGoal } from '../hooks/useWeeklyGoal';
 import { useGoalDeclaration } from '../hooks/useGoalDeclaration';
 import { useProgressionStore } from '../store/progressionStore';
 import { useResumeLesson } from '../hooks/useResumeLesson';
+import { useRecentCourseStore } from '../store/recentCourseStore';
 import { EXP_RULES } from '../utils/progression';
 import MypageGreeting from './mypage/MypageGreeting';
 import ResumeStudyCard from './mypage/ResumeStudyCard';
@@ -83,9 +84,28 @@ function MyPage() {
   // useMypageData の Promise.all には足さない（ブートをブロックしないため）。
   const { stats: studyStats, loading: studyStatsLoading, unavailable: studyStatsUnavailable } = useStudyStats(user?.userid);
   const learningSummary = useLearningSummary(learningCourses, studyStats);
-  const primaryCourse = learningCourses[0];
+  // 「続きから学習」に出すコースの候補（優先順）。レッスンを持つ最初の1つを useResumeLesson が選ぶ。
+  // resumecourse（レッスン完了時にしか書かれない）→ この端末で最近開いた順 → Moodle の最終アクセス順
+  // → 受講一覧の順。受講しただけの生徒で一覧の先頭の空コースに当たらないように（useResumeLesson の doc）
+  const recentEntries = useRecentCourseStore((s) => s.entries);
+  const enrolledIds = new Set(learningCourses.map((c) => c.id));
+  const accessedAt = (c: Course) => (c.lastAccessDate ? new Date(c.lastAccessDate).getTime() : 0);
+  const byLastAccess = [...learningCourses].sort((a, b) => accessedAt(b) - accessedAt(a));
+  const resumeCandidateIds = [
+    ...(resumableCourse ? [resumableCourse.id] : []),
+    ...[...recentEntries]
+      .sort((a, b) => b.openedAt - a.openedAt)
+      .map((e) => e.courseId)
+      .filter((id) => enrolledIds.has(id)),
+    ...byLastAccess.map((c) => c.id),
+  ].filter((id, i, all) => all.indexOf(id) === i);
   // 「続きから学習」のレッスン名・レッスン数は実 Moodle の目次から組み立てる（useResumeLesson の doc）
-  const { lesson: resumeLesson, loading: resumeLessonLoading } = useResumeLesson(primaryCourse?.id);
+  const {
+    courseId: resumeCourseId,
+    lesson: resumeLesson,
+    loading: resumeLessonLoading,
+  } = useResumeLesson(resumeCandidateIds);
+  const primaryCourse = learningCourses.find((c) => c.id === resumeCourseId) ?? learningCourses[0];
   const resumeCourse: Course | undefined =
     primaryCourse && resumeLesson
       ? {
