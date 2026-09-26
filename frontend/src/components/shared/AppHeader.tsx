@@ -30,7 +30,6 @@ export function AppHeader({ userName, avatarUrl }: AppHeaderProps) {
   const location = useLocation();
   const { user, avatarUrl: ctxAvatarUrl, nickName: ctxNickName, contentToken } = useAuth();
   const isStudentsPage = location.pathname.startsWith('/coach/students') || location.pathname.startsWith('/coach/schedule');
-  const isCoachSettings = location.pathname.startsWith('/coach/settings');
 
   const resolvedUserName = userName ?? ctxNickName ?? user?.username ?? 'User';
   // avatarUrl は呼び出し元が既にcf_token付与済みの前提。ctxAvatarUrlはcontextの生URLなのでここで付与する
@@ -344,16 +343,14 @@ export function AppHeader({ userName, avatarUrl }: AppHeaderProps) {
    * 🔴 admin と coach を排他にしない。以前は isAdmin を先に見て早期に返していたため、
    *    admin かつ coach の人（運営がコーチも持つ運用、モックの擬似ユーザーもこれ）には
    *    コーチ画面への導線が1本も出なかった。両方持っているなら両方出す。
-   * 🔴 dev/kanegae統合: 「連携設定」(Zoom連携, CoachSettingsPage.tsx)はbffClient側の
-   *    getMeetingIntegrationStatus/getMeetingIntegrationAuthorizeUrlが実装済み
-   *    (api-server/routers/integrations.py)のため、ナビへ復元してある。
+   * 🔴 コーチの「連携設定」(/coach/settings, CoachSettingsPage.tsx)はナビから外してある。
+   *    ルート自体は残しているので、URL直打ちでは開ける。
    */
   const manageItems = [
     ...(user?.isAdmin ? [{ label: '管理', icon: ShieldCheck, path: '/admin', active: isAdmin }] : []),
     ...(user?.isCoach
       ? [
           { label: '受講生一覧', icon: UserRound, path: '/coach/students', active: isStudentsPage },
-          { label: '連携設定', icon: Settings, path: '/coach/settings', active: isCoachSettings },
         ]
       : []),
   ];
