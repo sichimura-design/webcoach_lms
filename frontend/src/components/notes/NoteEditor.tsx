@@ -54,7 +54,7 @@ const LINE_PREFIX_RE = /^(##\s+|-\s+\[[ xX]\]\s+|-\s+)/;
  * ツールバーの記法を本文へ差し込む差分。[from, to) を insert で置き換え、選択を sel に置く。
  * 全文ではなく差分で返すのは、textarea に execCommand で流し込んで Ctrl+Z を効かせるため。
  */
-function applyInsert(
+export function applyInsert(
   kind: InsertKind,
   text: string,
   start: number,

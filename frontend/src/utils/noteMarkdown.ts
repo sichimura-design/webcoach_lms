@@ -31,6 +31,8 @@
  * ・本文がブロック単位だった頃のノートで、本文の途中に挟まっていた引用・Q&Aは
  *   素材に移さず本文の一部として読む（内容は消えない。移行はしない判断）。
  * ・ユーザーが本文の最後に自分で「引用＋出典リンク行」を書くと素材と判定される。
+ * ・旧データで AI回答の後ろに自分の文章があると、それは回答の続きとして読まれる
+ *   （回答は複数段落が普通なので、次の素材が来るまでを回答とみなすため）。内容は消えない。
  */
 import { NoteBlock, NoteClipBlock, NoteSourceRef } from '../types/notes';
 
@@ -115,53 +117,88 @@ function asClip(p: string, base: () => Stamp): NoteClipBlock | null {
   return { ...base(), kind: 'clip', text: unquote(lines.slice(0, -1).join('\n')), source };
 }
 
-/**
- * 末尾の段落から遡って素材を切り出す。
- * 返すのは素材が始まる段落の番号（= 本文の段落数）と、先頭から並べた素材。
- */
-function takeTrailingMaterials(paragraphs: string[], base: () => Stamp): { at: number; blocks: NoteBlock[] } {
-  const found: NoteBlock[] = [];
-  let i = paragraphs.length;
-  while (i > 0) {
-    const p = paragraphs[i - 1];
+/** 1行だけの出典行の段落（AI回答の末尾に付く）なら、その出典 */
+function asSourceParagraph(p: string): NoteSourceRef | null {
+  if (p.includes('\n') || !isQuoted(p)) return null;
+  return parseSourceLine(unquote(p));
+}
 
-    // clip は2行以上（引用＋出典行）。answer の出典行は1行なので取り違えない
+/** 素材の始まりになる段落か（ここで AI回答の続きの段落が終わる） */
+function startsMaterial(p: string): boolean {
+  return p.startsWith(QUESTION_PREFIX) || isClipShape(p) || asSourceParagraph(p) !== null;
+}
+
+function isClipShape(p: string): boolean {
+  const lines = p.split('\n');
+  return isQuoted(p) && lines.length >= 2 && parseSourceLine(unquote(lines[lines.length - 1])) !== null;
+}
+
+/**
+ * paragraphs[from..] を丸ごと素材として読む。読み切れなければ null。
+ *
+ *   素材   := クリップ | AI回答
+ *   AI回答 := **Q:** 段落 {続き} [ **A:** 段落 {続き} ] [出典行]
+ *
+ * 🔴 AIの回答は段落が複数あるのが普通（空行を含む）。**A:** の後ろは、次の素材の
+ *    始まり（**Q:** / クリップ / 出典行）が来るまでを同じ回答の続きとして読む。
+ *    これをしないと、2段落目以降が素材の形に見えず、回答ごと本文に落ちてしまう。
+ */
+function parseMaterialsFrom(paragraphs: string[], from: number, base: () => Stamp): NoteBlock[] | null {
+  const blocks: NoteBlock[] = [];
+  let i = from;
+  const takeRun = (): string[] => {
+    const run: string[] = [];
+    while (i < paragraphs.length && !startsMaterial(paragraphs[i]) && !paragraphs[i].startsWith(ANSWER_PREFIX)) {
+      run.push(paragraphs[i]);
+      i += 1;
+    }
+    return run;
+  };
+
+  while (i < paragraphs.length) {
+    const p = paragraphs[i];
+
     const clip = asClip(p, base);
     if (clip) {
-      found.unshift(clip);
-      i -= 1;
+      blocks.push(clip);
+      i += 1;
       continue;
     }
 
-    // answer: [**Q:**] [**A:**] [> 出典] の組を後ろから読む
-    let j = i;
+    if (!p.startsWith(QUESTION_PREFIX)) return null;
+    i += 1;
+    const question = [p.slice(QUESTION_PREFIX.length).trim(), ...takeRun()].join('\n\n').trim();
+
+    let answer = '';
+    if (i < paragraphs.length && paragraphs[i].startsWith(ANSWER_PREFIX)) {
+      const head = paragraphs[i].slice(ANSWER_PREFIX.length).trim();
+      i += 1;
+      answer = [head, ...takeRun()].join('\n\n').trim();
+    }
+
     let source: NoteSourceRef | null = null;
-    if (isQuoted(p) && !p.includes('\n')) {
-      source = parseSourceLine(unquote(p));
-      if (source) j -= 1;
+    if (i < paragraphs.length) {
+      source = asSourceParagraph(paragraphs[i]);
+      if (source) i += 1;
     }
-    let answer: string | null = null;
-    if (j > 0 && paragraphs[j - 1].startsWith(ANSWER_PREFIX)) {
-      answer = paragraphs[j - 1].slice(ANSWER_PREFIX.length).trim();
-      j -= 1;
-    }
-    if (j > 0 && paragraphs[j - 1].startsWith(QUESTION_PREFIX)) {
-      const question = paragraphs[j - 1].slice(QUESTION_PREFIX.length).trim();
-      found.unshift({
-        ...base(),
-        kind: 'answer',
-        question,
-        answer: answer ?? '',
-        selectedText: null,
-        image: null,
-        source,
-      });
-      i = j - 1;
-      continue;
-    }
-    break;
+
+    blocks.push({ ...base(), kind: 'answer', question, answer, selectedText: null, image: null, source });
   }
-  return { at: i, blocks: found };
+  return blocks;
+}
+
+/**
+ * 素材が始まる段落を探す。後ろまで丸ごと素材として読める最初の位置。
+ * 見つからなければ段落数（= 全部本文）。
+ */
+function findMaterials(paragraphs: string[], base: () => Stamp): { at: number; blocks: NoteBlock[] } {
+  for (let k = 0; k < paragraphs.length; k += 1) {
+    const p = paragraphs[k];
+    if (!p.startsWith(QUESTION_PREFIX) && !isClipShape(p)) continue;
+    const blocks = parseMaterialsFrom(paragraphs, k, base);
+    if (blocks) return { at: k, blocks };
+  }
+  return { at: paragraphs.length, blocks: [] };
 }
 
 /**
@@ -176,8 +213,8 @@ export function parseNoteMarkdown(markdown: string, at?: string): { body: string
   const base = (): Stamp => ({ id: `blk_${n++}`, createdAt: stamp, updatedAt: stamp });
 
   const paragraphs = toParagraphs(markdown);
-  const { at: bodyCount, blocks } = takeTrailingMaterials(paragraphs, base);
-  // 振り直し: 先頭から blk_0, blk_1 … にする（後ろから読んだので番号が逆になっている）
+  const { at: bodyCount, blocks } = findMaterials(paragraphs, base);
+  // 途中で読み捨てた試行ぶん番号が飛ぶので、先頭から blk_0, blk_1 … に振り直す
   blocks.forEach((b, i) => {
     b.id = `blk_${i}`;
   });
