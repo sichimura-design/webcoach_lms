@@ -35,10 +35,9 @@ const CSV_TEMPLATES: Record<DataType, { filename: string; content: string }> = {
   'ai-applications': {
     filename: 'template_ai_applications.csv',
     content: [
-      'id,name,category,description,url,icon_url,tags,secret_key,updateFlag,deleteFlag',
-      ',ChatGPT,生成AI,対話型AIチャットボット,https://chat.openai.com,https://example.com/chatgpt.png,"AI,チャット,自然言語処理",,0,0',
-      ',Midjourney,画像生成AI,テキストから画像を生成するAIツール,https://midjourney.com,,,,0,0',
-      ',デイリーデザインスプリントチャレンジャー,デザイン,今日のデザイン練習課題を提案しフィードバックするAI,https://udify.app/chat/9kWaflrs1psrwRvs,,"AI,デザイン",design-sprint-challenger,0,0',
+      'id,name,category,description,url,icon_url,tags,secret_key,display_name,display_description,updateFlag,deleteFlag',
+      ',ChatGPT,生成AI,対話型AIチャットボット,https://chat.openai.com,https://example.com/chatgpt.png,"AI,チャット,自然言語処理",,,,0,0',
+      ',デイリーデザインスプリントチャレンジャー,デザイン,その日に取り組むデザイン練習の課題を出題し、仕上げた作品の画像にフィードバックする。「今日の課題を出して」など練習のお題が欲しいときに使う。,https://udify.app/chat/9kWaflrs1psrwRvs,,"AI,デザイン",design-sprint-challenger,今日のデザイン課題に挑戦する,使える時間と挑戦したい分野を伝えると、その日のデザイン課題を出します。,0,0',
     ].join('\n'),
   },
   avatars: {
@@ -105,11 +104,13 @@ const CSV_FORMAT: Record<DataType, CsvColumn[]> = {
     { col: 'id',          required: false, desc: 'AIアプリID（更新・削除時に指定、新規は空欄）' },
     { col: 'name',        required: true,  desc: 'AIアプリ名' },
     { col: 'category',    required: false, desc: 'カテゴリ名（例: 生成AI / 画像生成AI）' },
-    { col: 'description', required: false, desc: 'アプリの説明文' },
+    { col: 'description', required: false, desc: 'AI向けの説明文。AIチャットがどのアプリを呼ぶか決める材料になる（何をするか・どんな依頼で使うか・似たアプリとの違いを書く。256文字まで）' },
     { col: 'url',         required: false, desc: 'アクセスURL' },
     { col: 'icon_url',    required: false, desc: 'アイコン画像のURL' },
     { col: 'tags',        required: false, desc: 'タグ（カンマ区切り、複数の場合はダブルクォートで囲む）' },
-    { col: 'secret_key',  required: false, desc: 'AIチャットから呼び出す場合のみ指定。Secrets Managerに登録した認証情報JSON内のキー名（APIキー自体は含めない）' },
+    { col: 'secret_key',  required: false, desc: 'AIチャットから呼び出す場合のみ指定。Secrets Managerに登録した認証情報JSON内のキー名（APIキー自体は含めない）。「AIコーチでできること」一覧とはこの値で結び付く' },
+    { col: 'display_name',        required: false, desc: '「AIコーチでできること」一覧に出す名前（例: 面接練習をする）。空欄なら画面側の既定の名前。列ごと省くと既存の値を変えない' },
+    { col: 'display_description', required: false, desc: '「AIコーチでできること」一覧に出す説明文（512文字まで）。空欄なら画面側の既定の説明。列ごと省くと既存の値を変えない' },
     { col: 'updateFlag',  required: false, desc: '1 の場合、既存レコードを更新する' },
     { col: 'deleteFlag',  required: false, desc: '1 の場合、該当レコードを削除する（id必須）' },
   ],
@@ -166,6 +167,41 @@ function escapeCsvValue(val: unknown): string {
     return `"${str.replace(/"/g, '""')}"`;
   }
   return str;
+}
+
+/**
+ * CSVの1行を列に分ける。ダブルクォートで囲んだ値の中のカンマ・「""」（＝"）を扱う。
+ * 🔴 単純な split(',') に戻さないこと。tags（"AI,デザイン"）や説明文のカンマで列がずれ、
+ *    実際にDBの tags が「"AI」だけになった行がある。ダウンロードCSVも escapeCsvValue で
+ *    クォートして出すので、読み込み側もクォートを解釈しないと往復で壊れる。
+ * 値の中の改行には対応しない（行単位で読んでいるため）。
+ */
+function parseCsvLine(line: string): string[] {
+  const values: string[] = [];
+  let current = '';
+  let inQuotes = false;
+  for (let i = 0; i < line.length; i++) {
+    const ch = line[i];
+    if (inQuotes) {
+      if (ch === '"' && line[i + 1] === '"') {
+        current += '"';
+        i++;
+      } else if (ch === '"') {
+        inQuotes = false;
+      } else {
+        current += ch;
+      }
+    } else if (ch === '"') {
+      inQuotes = true;
+    } else if (ch === ',') {
+      values.push(current);
+      current = '';
+    } else {
+      current += ch;
+    }
+  }
+  values.push(current);
+  return values;
 }
 
 function toCsvRow(values: unknown[]): string {
@@ -232,10 +268,13 @@ export const AdminCsvPage: React.FC<AdminCsvPageProps> = ({ dataType }) => {
         downloadCsvContent([header, ...rows].join('\n'), `all_categories_${today}.csv`);
       } else if (dataType === 'ai-applications') {
         const apps = await bffClient.getAIApplications();
-        const header = 'id,name,category,description,url,icon_url,tags,updateFlag,deleteFlag';
-        const rows = apps.map((a: any) => toCsvRow([
+        // 🔴 secret_key を必ず含める。以前は出力に無く、このCSVをそのまま再アップロードすると
+        //    secret_key が空で上書きされ、AIチャットからDifyアプリを呼べなくなっていた
+        const header = 'id,name,category,description,url,icon_url,tags,secret_key,display_name,display_description,updateFlag,deleteFlag';
+        const rows = apps.map((a) => toCsvRow([
           a.id ?? '', a.name ?? '', a.category ?? '', a.description ?? '',
-          a.url ?? '', a.icon_url ?? '', a.tags ?? '', 0, 0,
+          a.url ?? '', a.icon_url ?? '', (a.tags ?? []).join(','), a.app_key ?? '',
+          a.display_name ?? '', a.display_description ?? '', 0, 0,
         ]));
         downloadCsvContent([header, ...rows].join('\n'), `all_ai_applications_${today}.csv`);
       } else if (dataType === 'avatars') {
@@ -254,16 +293,18 @@ export const AdminCsvPage: React.FC<AdminCsvPageProps> = ({ dataType }) => {
     setUploadResult(null);
 
     try {
-      const text = await file.text();
+      // 「全件ダウンロード」のCSVは Excel 向けに BOM 付きなので、先頭の BOM を落とす
+      // （残すと1列目の見出しが「\uFEFFid」になり、id 列が読めない）
+      const text = (await file.text()).replace(/^\uFEFF/, '');
       const lines = text.split('\n').filter(line => line.trim());
 
       if (lines.length === 0) throw new Error('CSVファイルが空です');
 
-      const headers = lines[0].split(',').map(h => h.trim());
+      const headers = parseCsvLine(lines[0]).map(h => h.trim());
       const records = [];
 
       for (let i = 1; i < lines.length; i++) {
-        const values = lines[i].split(',').map(v => v.trim());
+        const values = parseCsvLine(lines[i]).map(v => v.trim());
         const record: Record<string, string> = {};
         headers.forEach((header, index) => { record[header] = values[index] || ''; });
         records.push(record);

@@ -1304,6 +1304,24 @@ def get_user_issued_badges(
     return badges
 
 
+def _to_ai_application_response(app) -> AIApplicationResponse:
+    """WebCoachAIApplication を AIApplicationResponse に変換"""
+    return AIApplicationResponse(
+        id=app.id,
+        name=app.name,
+        category=app.category,
+        description=app.description,
+        url=app.url,
+        icon_url=app.icon_url,
+        tags=app.tags.split(',') if app.tags else [],
+        display_name=app.display_name,
+        display_description=app.display_description,
+        app_key=app.secret_key,
+        created_at=app.created_at,
+        updated_at=app.updated_at
+    )
+
+
 def get_ai_applications(
     db: Session,
     category: Optional[str] = None,
@@ -1336,22 +1354,7 @@ def get_ai_applications(
 
     applications = query.all()
 
-    # Pydanticモデルに変換
-    result = []
-    for app in applications:
-        result.append(AIApplicationResponse(
-            id=app.id,
-            name=app.name,
-            category=app.category,
-            description=app.description,
-            url=app.url,
-            icon_url=app.icon_url,
-            tags=app.tags.split(',') if app.tags else [],
-            created_at=app.created_at,
-            updated_at=app.updated_at
-        ))
-
-    return result
+    return [_to_ai_application_response(app) for app in applications]
 
 
 def get_ai_application_by_id(
@@ -1377,17 +1380,7 @@ def get_ai_application_by_id(
     if not app:
         return None
 
-    return AIApplicationResponse(
-        id=app.id,
-        name=app.name,
-        category=app.category,
-        description=app.description,
-        url=app.url,
-        icon_url=app.icon_url,
-        tags=app.tags.split(',') if app.tags else [],
-        created_at=app.created_at,
-        updated_at=app.updated_at
-    )
+    return _to_ai_application_response(app)
 
 
 # ==========================================

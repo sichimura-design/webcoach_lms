@@ -2,6 +2,7 @@ import type { ComponentType } from 'react';
 import {
   BookOpen,
   BookMarked,
+  Briefcase,
   FileText,
   Image as ImageIcon,
   Lightbulb,
@@ -40,6 +41,7 @@ export const AI_SKILL_ICON: Record<AiSkillIconKey, ComponentType<LucideProps>> =
   mic: Mic,
   sparkles: Sparkles,
   wrench: Wrench,
+  briefcase: Briefcase,
 };
 
 export default AI_SKILL_ICON;

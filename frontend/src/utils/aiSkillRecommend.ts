@@ -106,6 +106,22 @@ const GENERIC: Record<ConcreteAiSkillId, { title: string; reason: string }> = {
     title: '何から始めるかを整理する',
     reason: '決めることを分けると、今日動ける大きさになります。',
   },
+  'design-sprint': {
+    title: '今日のデザイン課題に挑戦する',
+    reason: '使える時間に合わせたお題があると、迷わず手を動かし始められます。',
+  },
+  'job-search-crowdworks': {
+    title: 'クラウドワークスで案件を探す',
+    reason: '得意な作業と条件を決めると、受けられる案件だけに絞れます。',
+  },
+  'job-search-lancers': {
+    title: 'ランサーズで案件を探す',
+    reason: '得意な作業と条件を決めると、受けられる案件だけに絞れます。',
+  },
+  'job-search-coconala': {
+    title: 'ココナラで案件を探す',
+    reason: '得意な作業と条件を決めると、受けられる案件だけに絞れます。',
+  },
   tooling: {
     title: 'ツールのエラーを切り分ける',
     reason: '再現条件から順に見ると、原因の見当がつきます。',

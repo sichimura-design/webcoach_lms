@@ -17,6 +17,7 @@ import {
   isSpecialistSkill,
   SkillSuggestion,
 } from '../types/aiSkill';
+import { findAiApplication, getLoadedAiApplications } from './useAiApplications';
 import { detectSkill } from '../utils/aiSkillRouting';
 import { toHistory } from '../utils/aiCoachText';
 import { useAiCoachStore } from '../store/aiCoachStore';
@@ -97,7 +98,17 @@ const AI_MESSAGE_MAX_LENGTH = 1000;
  */
 const skillModeInstruction = (skillId: ConcreteAiSkillId): string => {
   const meta = AI_SKILL_META[skillId];
-  return `【${meta.modeLabel}】${meta.modeLead}観点ごとに整理して答え、最後に次にやることを示してください。`;
+  const base = `【${meta.modeLabel}】${meta.modeLead}観点ごとに整理して答え、最後に次にやることを示してください。`;
+  // 裏にAIアプリがあるモードは、そのアプリのツールをAPI側のツール名で名指しする。
+  // 名指ししないとLLMがモード名の雰囲気からツールを選ぶことになり、似た説明のアプリ
+  // （媒体違いの案件さがし等）や、ツールを呼ばずに自分で答える方へずれることがあった。
+  const app = findAiApplication(getLoadedAiApplications(), skillId);
+  if (!app) return base;
+  return (
+    `${base}このモードはAIアプリ「${app.name}」（ツール名 ask_ai_application_${app.id}）で行います。` +
+    `ユーザーの依頼や回答はこのツールに渡してください。` +
+    `ただし、明らかに別のAIアプリやコースの質問に当たる依頼なら、そちらを優先してください。`
+  );
 };
 
 /** エラー時の回答の結論文。AiCoachPane がこれで「エラー発生時」のサジェストに切り替える */

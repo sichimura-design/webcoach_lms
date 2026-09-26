@@ -5,6 +5,7 @@ import { AI_ERROR_CONCLUSION, LessonAiMessage, UseLessonAi } from '../../hooks/u
 import { LessonAiResponse } from '../../types/lesson';
 import { AiSkillId, AI_SKILL_META, isSpecialistSkill } from '../../types/aiSkill';
 import { useAutoGrowTextarea } from '../../hooks/useAutoGrowTextarea';
+import { useAiApplications } from '../../hooks/useAiApplications';
 import MarkdownRenderer from '../MarkdownRenderer';
 import { parseDifyMessage } from '../../utils/difyButtons';
 import AiCoachFace from '../shared/AiCoachFace';
@@ -226,6 +227,7 @@ export function AiCoachPane({
   const textareaRef = useAutoGrowTextarea(ai.input, [wide]);
   // 専門モードに入っているときだけ、その機能の説明・入力の案内を使う
   const specialistMeta = isSpecialistSkill(ai.skillId) ? AI_SKILL_META[ai.skillId] : null;
+  const catalog = useAiApplications();
   // 会話が始まる前だけ出すもの（空状態の案内・質問例）。始まったら邪魔になる
   const beforeFirstMessage = ai.messages.length === 0;
 
@@ -277,15 +279,15 @@ export function AiCoachPane({
                 <strong style={{ ...font.label, fontWeight: 800, color: color.text, display: 'block', marginBottom: 6 }}>
                   {/* 専門モードで会話が空のとき（一覧から機能を選んで開いた直後）は、
                       「モードを提案します」と案内しない。もうそのモードに入っている。 */}
-                  {specialistMeta
-                    ? specialistMeta.label
+                  {specialistMeta && isSpecialistSkill(ai.skillId)
+                    ? catalog.labelOf(ai.skillId)
                     : ai.context.lessonTitle
                       ? 'このレッスンを前提に回答します'
                       : '学習のことなら何でも相談できます'}
                 </strong>
                 <p style={{ margin: 0, fontSize: 11.5, lineHeight: 1.75, color: color.textBody }}>
-                  {specialistMeta
-                    ? `${specialistMeta.description}${specialistMeta.inputHint}を渡すと始められます。`
+                  {specialistMeta && isSpecialistSkill(ai.skillId)
+                    ? `${catalog.descriptionOf(ai.skillId)}${specialistMeta.inputHint}を渡すと始められます。`
                     : !ai.context.lessonTitle
                       ? // 教材の文脈が無い相談（常駐ドロワー・新規の相談）。
                         // ここで「外部コンテンツのため」と出すと、開いていないレッスンの話になってしまう。

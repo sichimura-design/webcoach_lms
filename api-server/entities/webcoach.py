@@ -88,6 +88,10 @@ class WebCoachAIApplication(Base):
     icon_url = Column(String(512), nullable=True)
     tags = Column(Text, nullable=True)
     secret_key = Column(String(256), nullable=True, comment='外部AI連携用の認証情報キー名（Secrets Manager JSON内のキー、Dify等）')
+    # name/description はAIチャットのツール説明文（どのアプリを呼ぶかのLLMの判断材料）にも使うため、
+    # 受講生向けの一覧表示は別カラムに分けている。NULLなら画面側で name/description 等にフォールバックする
+    display_name = Column(String(256), nullable=True, comment='一覧（AIコーチでできること）に出す表示名')
+    display_description = Column(String(512), nullable=True, comment='一覧（AIコーチでできること）に出す説明文')
     created_at = Column(TIMESTAMP, nullable=False, server_default=func.current_timestamp())
     updated_at = Column(TIMESTAMP, nullable=False, server_default=func.current_timestamp(), onupdate=func.current_timestamp())
 

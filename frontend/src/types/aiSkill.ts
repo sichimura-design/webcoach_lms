@@ -29,10 +29,14 @@ export type AiSkillId =
   | 'auto'
   | 'learning'
   | 'glossary'
+  | 'design-sprint'
   | 'quiz'
   | 'design-review'
   | 'writing'
   | 'copy'
+  | 'job-search-crowdworks'
+  | 'job-search-lancers'
+  | 'job-search-coconala'
   | 'application'
   | 'interview'
   | 'idea'
@@ -69,16 +73,28 @@ export type AiSkillIconKey =
   | 'document'
   | 'mic'
   | 'sparkles'
-  | 'wrench';
+  | 'wrench'
+  | 'briefcase';
 
 /**
- * スキル1件のユーザー向け情報。**ここに書いたことしかUIに出さない**。
- * 裏で呼ばれるDifyアプリ名は mocks/aiSkillCatalog.ts 側にあり、UIへは渡らない。
+ * スキル1件のユーザー向け情報。**ここに書いたこと（とDBの表示用カラム）しかUIに出さない**。
+ * 裏で呼ぶAIアプリは appKey で指すだけで、アプリ名はUIへ出さない。
  *
  * 名前は「AIアプリ」「メーカー」ではなく動詞で書く。
  * 受講生が判断できるのは「何ができるか」であって、アプリの商品名ではないため。
  */
 export interface AiSkillMeta {
+  /**
+   * 裏で呼ぶAIアプリ（webcoach_ai_application.secret_key）。
+   * 🔴 「AIコーチでできること」一覧に出るのは、これを持ち、かつDBにその行があるスキルだけ。
+   *    DBに無いものを並べると、押しても専用のAIアプリが動かない（汎用AIが答えるだけの）
+   *    カードになるため。表示名・説明もDBの display_name / display_description が優先で、
+   *    ここの label / description はDBが空のとき・取得に失敗したときの既定値。
+   *    （hooks/useAiApplications.ts 参照）
+   * 未設定のスキル（quiz / writing / idea / tooling）は一覧には出ず、入力内容からの
+   * モード提案（utils/aiSkillRouting.ts）でだけ使われる。
+   */
+  appKey?: string;
   /** 一覧・セレクタに出す表示名（動詞） */
   label: string;
   /** そのモードに入っているときのヘッダー表示。「制作物を添削モード」を避けるため別に持つ */
@@ -139,6 +155,7 @@ export const AI_SKILL_META: Record<ConcreteAiSkillId, AiSkillMeta> = {
   },
 
   glossary: {
+    appKey: 'technical-term-ai-assistant',
     label: '用語・文章をわかりやすくする',
     modeLabel: '用語解説モード',
     shortLabel: '用語解説',
@@ -153,6 +170,26 @@ export const AI_SKILL_META: Record<ConcreteAiSkillId, AiSkillMeta> = {
     placeholder: '分からない用語や文章を貼り付けてください…',
     needsImage: false,
     preferWide: false,
+  },
+
+  /* 🔴 カテゴリは「学習」。デザインの課題を出すアプリだが、やっていることは毎日の練習なので、
+        制作（＝作ったものを見てもらう）ではなくこちらに置く。 */
+  'design-sprint': {
+    appKey: 'design-sprint-challenger',
+    label: '今日のデザイン課題に挑戦する',
+    modeLabel: 'デザイン課題モード',
+    shortLabel: 'デザイン課題',
+    cta: '今日の課題を出す',
+    category: 'learn',
+    icon: 'sparkles',
+    description: '使える時間と挑戦したい分野を伝えると、その日のデザイン課題を出します。仕上げた画像を送るとフィードバックが返ります。',
+    inputHint: '今日使える時間・挑戦したい分野',
+    useCase: '何を作るか決まらない日に、とにかく手を動かし始めたいとき',
+    modeLead: '今日のデザイン課題を、使える時間と分野から決めます。',
+    quickActions: ['今日の課題を出して', '3時間で終わる課題がいい', 'バナーの課題にして'],
+    placeholder: '使える時間と、挑戦したい分野を書いてください…',
+    needsImage: false,
+    preferWide: true,
   },
 
   quiz: {
@@ -173,6 +210,7 @@ export const AI_SKILL_META: Record<ConcreteAiSkillId, AiSkillMeta> = {
   },
 
   'design-review': {
+    appKey: 'design-feedback-mentor-pro-v2',
     label: '制作物を添削する',
     modeLabel: '制作物添削モード',
     shortLabel: '制作物添削',
@@ -207,6 +245,7 @@ export const AI_SKILL_META: Record<ConcreteAiSkillId, AiSkillMeta> = {
   },
 
   copy: {
+    appKey: 'catchcopy-idea-maker',
     label: 'キャッチコピーを考える',
     modeLabel: 'コピー作成モード',
     shortLabel: 'コピー作成',
@@ -223,7 +262,67 @@ export const AI_SKILL_META: Record<ConcreteAiSkillId, AiSkillMeta> = {
     preferWide: true,
   },
 
+  /*
+   * 案件さがし。🔴 媒体ごとに別のAIアプリなので、1つにまとめて中で媒体を選ばせる形にはしない
+   * （探し方も単価の相場も媒体ごとに違う）。3件の違いは媒体名だけなので、文言は揃えてある。
+   * 案件を探す → 応募文をつくる → 面接練習、の順に並べる。
+   */
+  'job-search-crowdworks': {
+    appKey: 'project-extractor-crowdworks',
+    label: 'クラウドワークスで案件を探す',
+    modeLabel: '案件さがしモード（クラウドワークス）',
+    shortLabel: '案件さがし（CW）',
+    cta: 'クラウドワークスで探す',
+    category: 'career',
+    icon: 'briefcase',
+    description: '得意な作業や希望の条件に答えていくと、クラウドワークスで受けられそうな案件を探します。検索には1〜2分かかります。',
+    inputHint: '得意な作業・週に使える時間・希望単価',
+    useCase: 'クラウドワークスで受けられる案件を探したいとき',
+    modeLead: 'クラウドワークスで受けられる条件を整理して、案件を探します。',
+    quickActions: ['案件を探したい', 'はじめやすい案件は？', '単価の目安を知りたい'],
+    placeholder: '得意な作業と、希望の条件を書いてください…',
+    needsImage: false,
+    preferWide: false,
+  },
+
+  'job-search-lancers': {
+    appKey: 'project-extractor-lancers-lite-hardgate',
+    label: 'ランサーズで案件を探す',
+    modeLabel: '案件さがしモード（ランサーズ）',
+    shortLabel: '案件さがし（ランサーズ）',
+    cta: 'ランサーズで探す',
+    category: 'career',
+    icon: 'briefcase',
+    description: '得意な作業や希望の条件に答えていくと、ランサーズで受けられそうな案件を探します。検索には1〜2分かかります。',
+    inputHint: '得意な作業・週に使える時間・希望単価',
+    useCase: 'ランサーズで受けられる案件を探したいとき',
+    modeLead: 'ランサーズで受けられる条件を整理して、案件を探します。',
+    quickActions: ['案件を探したい', 'はじめやすい案件は？', '単価の目安を知りたい'],
+    placeholder: '得意な作業と、希望の条件を書いてください…',
+    needsImage: false,
+    preferWide: false,
+  },
+
+  'job-search-coconala': {
+    appKey: 'project-extractor-coconala',
+    label: 'ココナラで案件を探す',
+    modeLabel: '案件さがしモード（ココナラ）',
+    shortLabel: '案件さがし（ココナラ）',
+    cta: 'ココナラで探す',
+    category: 'career',
+    icon: 'briefcase',
+    description: '得意な作業や希望の条件に答えていくと、ココナラで受けられそうな案件を探します。検索には1〜2分かかります。',
+    inputHint: '得意な作業・週に使える時間・希望単価',
+    useCase: 'ココナラで受けられる案件を探したいとき',
+    modeLead: 'ココナラで受けられる条件を整理して、案件を探します。',
+    quickActions: ['案件を探したい', 'はじめやすい案件は？', '単価の目安を知りたい'],
+    placeholder: '得意な作業と、希望の条件を書いてください…',
+    needsImage: false,
+    preferWide: false,
+  },
+
   application: {
+    appKey: 'project-application-writer',
     label: '応募文をつくる',
     modeLabel: '応募文作成モード',
     shortLabel: '応募文作成',
@@ -241,6 +340,7 @@ export const AI_SKILL_META: Record<ConcreteAiSkillId, AiSkillMeta> = {
   },
 
   interview: {
+    appKey: 'ai-interview-simulator',
     label: 'AIと面接練習をする',
     modeLabel: '面接練習モード',
     shortLabel: '面接練習',
@@ -296,11 +396,28 @@ export const AI_SKILL_META: Record<ConcreteAiSkillId, AiSkillMeta> = {
 export const CONCRETE_AI_SKILLS = Object.keys(AI_SKILL_META) as ConcreteAiSkillId[];
 
 /**
- * カテゴリ別のスキル一覧（「すべてのAI機能」の並び）。
- * 宣言順をそのまま使うので、並べ替えは AI_SKILL_META の順序を変えるだけで済む。
+ * AIアプリ（DB）に依存せず、WebCoach自身が持っている機能。DBの登録内容にかかわらず一覧に出す。
+ * 'learning' は教材RAG（POST /webcoach/lesson-ai）で答える「教材について質問」。
  */
-export const skillsInCategory = (category: AiSkillCategory): ConcreteAiSkillId[] =>
-  CONCRETE_AI_SKILLS.filter((id) => AI_SKILL_META[id].category === category);
+export const BUILTIN_AI_SKILLS: ConcreteAiSkillId[] = ['learning'];
+
+/**
+ * 裏にAIアプリ（appKey）を持つスキル。「AIコーチでできること」一覧に出す候補で、
+ * 実際に出すのはこのうちDBに行があるもの（hooks/useAiApplications.ts が絞る）。
+ */
+export const APP_BACKED_AI_SKILLS: ConcreteAiSkillId[] = CONCRETE_AI_SKILLS.filter(
+  (id) => !!AI_SKILL_META[id].appKey
+);
+
+/**
+ * カテゴリ別のスキル一覧（「AIコーチでできること」の並び）。
+ * 宣言順をそのまま使うので、並べ替えは AI_SKILL_META の順序を変えるだけで済む。
+ * @param available 出してよいスキル（useAiApplications の listedSkills）
+ */
+export const skillsInCategory = (
+  category: AiSkillCategory,
+  available: readonly ConcreteAiSkillId[]
+): ConcreteAiSkillId[] => available.filter((id) => AI_SKILL_META[id].category === category);
 
 /**
  * 「よく使うAI」に出すスキル。
@@ -308,10 +425,11 @@ export const skillsInCategory = (category: AiSkillCategory): ConcreteAiSkillId[]
  */
 export const FEATURED_AI_SKILLS: ConcreteAiSkillId[] = [
   'design-review',
-  'writing',
+  'design-sprint',
   'copy',
-  'learning',
+  'glossary',
   'interview',
+  'job-search-crowdworks',
 ];
 
 /** AI_SKILL_META から1項目だけ抜き出した対応表を作る（表示名などの後方互換マップ用） */
@@ -360,14 +478,14 @@ export const AI_SKILL_PREFER_WIDE: Record<AiSkillId, boolean> = {
  * 従来から POST /webcoach/lesson-ai でやっていることそのもので、
  * 別のエンドポイントに回すと同じ処理が二重になる。
  *
- * 'interview' も含めない。POST /webcoach/ai-skill は実BFFに未実装（MSWモックのみ）
- * だが、AI面接シミュレーターは webcoach_ai_application 経由のDify動的ツールとして
- * 実際に稼働済み（POST /webcoach/ai 経由）。ここに残すと確認カード→未実装API呼び出しで
- * 必ずエラーになるだけで、実際のDify連携には到達できない。除外すると通常のAIコーチ会話
- * （既存のDify動的ツール）にそのまま流れ、Dify側が自分で必要な情報を聞いてくれる。
+ * 専門モードは実際には POST /webcoach/ai-skill（実BFFに未実装）ではなく、通常のAIチャット
+ * （POST /webcoach/ai）にモード指示を添えて実行する（hooks/useLessonAi.ts の runSkill）。
+ * モード指示には裏のAIアプリのツール名が入るので、カードから始めた会話はそのアプリへ届く。
+ * （以前は 'interview' を除外していたが、それは未実装APIへ迷い込むのを避けるためで、
+ *   runSkill が通常のAIチャットに切り替わった今は除外する理由が無い）
  */
 export const SPECIALIST_SKILLS: ConcreteAiSkillId[] = CONCRETE_AI_SKILLS.filter(
-  (id) => id !== 'learning' && id !== 'interview'
+  (id) => id !== 'learning'
 );
 
 export const isSpecialistSkill = (id: AiSkillId): id is ConcreteAiSkillId =>

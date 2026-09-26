@@ -1,4 +1,5 @@
 import axios, { AxiosInstance } from 'axios';
+import type { AiApplication } from '../types/aiApplication';
 import {
   UserInfo,
   Category,
@@ -1571,9 +1572,11 @@ class BFFClient {
   /**
    * AIアプリ一覧取得
    * GET /api/webcoach/ai-applications
+   * APIの既定は20件で、それを超えると後ろが欠ける（管理画面の全件CSVで22件中2件が落ちていた）。
+   * 件数は多くないので上限（100）で一度に取る。
    */
-  async getAIApplications(): Promise<any[]> {
-    const response = await this.api.get('/webcoach/ai-applications');
+  async getAIApplications(): Promise<AiApplication[]> {
+    const response = await this.api.get('/webcoach/ai-applications', { params: { limit: 100 } });
     const data = response.data;
     return Array.isArray(data) ? data : (data?.applications ?? []);
   }

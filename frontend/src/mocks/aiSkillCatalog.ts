@@ -45,6 +45,22 @@ export interface AiSkillMockConfig {
   latencyMs: number;
 }
 
+/** 案件さがし（媒体違いの3スキル）で共通の観点 */
+const JOB_SEARCH_ASPECTS: SkillAspect[] = [
+  {
+    label: '得意な作業',
+    terms: [],
+    fallbackVerdict: 'improve',
+    comment: 'いま納品まで持っていける作業を1つに絞ると、探す範囲が決まります。',
+  },
+  {
+    label: '使える時間と単価',
+    terms: [],
+    fallbackVerdict: 'improve',
+    comment: '週に使える時間と最低限ほしい単価を決めておくと、受けられる案件だけが残ります。',
+  },
+];
+
 export const AI_SKILL_MOCK: Record<ConcreteAiSkillId, AiSkillMockConfig> = {
   learning: {
     // 'learning' は lesson-ai がそのまま担うので通常この設定は使われない。
@@ -366,6 +382,50 @@ export const AI_SKILL_MOCK: Record<ConcreteAiSkillId, AiSkillMockConfig> = {
     ],
     producesRevision: false,
     latencyMs: 750,
+  },
+
+  // ── 以下は実DBのDifyアプリ（webcoach_ai_application）に合わせて追加したスキル ──
+  'design-sprint': {
+    internalApp: 'design-sprint-challenger',
+    summaryTemplate: () =>
+      '今日使える時間と分野から、手を動かせる大きさの課題を1つ決めます。仕上げたら画像を送ってください。',
+    aspects: [
+      {
+        label: '課題の大きさ',
+        terms: [],
+        fallbackVerdict: 'good',
+        comment: '使える時間の中で最後まで仕上げられる大きさに絞ります。',
+      },
+    ],
+    producesRevision: false,
+    latencyMs: 800,
+  },
+
+  'job-search-crowdworks': {
+    internalApp: 'project-extractor-crowdworks',
+    summaryTemplate: () =>
+      'クラウドワークスで受けられる案件を探すために、得意な作業と希望の条件から整理します。',
+    aspects: JOB_SEARCH_ASPECTS,
+    producesRevision: false,
+    latencyMs: 900,
+  },
+
+  'job-search-lancers': {
+    internalApp: 'project-extractor-lancers-lite-hardgate',
+    summaryTemplate: () =>
+      'ランサーズで受けられる案件を探すために、得意な作業と希望の条件から整理します。',
+    aspects: JOB_SEARCH_ASPECTS,
+    producesRevision: false,
+    latencyMs: 900,
+  },
+
+  'job-search-coconala': {
+    internalApp: 'project-extractor-coconala',
+    summaryTemplate: () =>
+      'ココナラで受けられる案件を探すために、得意な作業と希望の条件から整理します。',
+    aspects: JOB_SEARCH_ASPECTS,
+    producesRevision: false,
+    latencyMs: 900,
   },
 };
 

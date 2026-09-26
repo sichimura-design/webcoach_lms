@@ -897,6 +897,10 @@ def update_webcoach_database(
                             existing.icon_url = record.get('icon_url')
                             existing.tags = record.get('tags')
                             existing.secret_key = record.get('secret_key')
+                            # 表示用カラムはCSVに列があるときだけ上書きする（列の無い古いCSVで消さないため）
+                            for col in ('display_name', 'display_description'):
+                                if col in record:
+                                    setattr(existing, col, record[col] or None)
                             existing.updated_at = func.now()
                         else:
                             # 新規作成
@@ -908,6 +912,8 @@ def update_webcoach_database(
                                 icon_url=record.get('icon_url'),
                                 tags=record.get('tags'),
                                 secret_key=record.get('secret_key'),
+                                display_name=record.get('display_name') or None,
+                                display_description=record.get('display_description') or None,
                                 created_at=func.now(),
                                 updated_at=func.now()
                             )

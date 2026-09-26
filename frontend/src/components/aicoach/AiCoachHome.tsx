@@ -11,6 +11,7 @@ import {
 import SkillPlusMenu from '../learning/SkillPlusMenu';
 import { AI_SKILL_ICON } from './aiSkillIcons';
 import { useAutoGrowTextarea } from '../../hooks/useAutoGrowTextarea';
+import { useAiApplications } from '../../hooks/useAiApplications';
 
 /**
  * AI専用ページのホーム状態（要件§「画面は3つの状態に分ける」1）。
@@ -68,6 +69,8 @@ export function AiCoachHome({
   const [skillId, setSkillId] = useState<AiSkillId>('auto');
   const fileInputRef = useRef<HTMLInputElement>(null);
   const textareaRef = useAutoGrowTextarea(text);
+  // 一覧の顔ぶれ・表示名・説明はDB（webcoach_ai_application）が決める
+  const catalog = useAiApplications();
 
   const attachImage = (file: File) => {
     if (!file.type.startsWith('image/')) return;
@@ -323,11 +326,11 @@ export function AiCoachHome({
           AIコーチでできること
         </h3>
 
-        {/* 🔴 0件のカテゴリは見出しごと出さない。アプリの顔ぶれは実在のアプリに
-               合わせてあるので、カテゴリが空になることがある（いまは「そのほか」）。
+        {/* 🔴 0件のカテゴリは見出しごと出さない。顔ぶれはDBに登録された実在のAIアプリで
+               決まるので、カテゴリが空になることがある（いまは「そのほか」）。
                見出しだけが並ぶと、読み込みに失敗したように見える。 */}
         {AI_SKILL_CATEGORY_ORDER.map((category) => {
-          const skills = skillsInCategory(category);
+          const skills = skillsInCategory(category, catalog.listedSkills);
           if (skills.length === 0) return null;
           return (
             <section key={category} style={{ marginTop: 24 }}>
@@ -409,9 +412,8 @@ export function AiCoachHome({
           </span>
 
           <span style={{ display: 'block', padding: '12px 16px 14px' }}>
-            {/* 🔴 カードにはアプリ名（label）をそのまま出す。shortLabel（「専門用語」など）は
-                   提案チップやモードヘッダーのような幅の無い場所だけのもので、
-                   一覧でそれを出すと実際のアプリ名と違う名前で覚えることになる。
+            {/* 🔴 カードには表示名（DBの display_name、無ければ label）を出す。shortLabel は
+                   提案チップやモードヘッダーのような幅の無い場所だけのもの。
                    長い名前は truncate で切らず2行まで許す。 */}
             <span
               style={{
@@ -425,7 +427,7 @@ export function AiCoachHome({
                 color: 'var(--dc-text)',
               }}
             >
-              {meta.label}
+              {catalog.labelOf(id)}
             </span>
             <span
               style={{
@@ -439,7 +441,7 @@ export function AiCoachHome({
                 color: 'var(--dc-text-muted)',
               }}
             >
-              {meta.description}
+              {catalog.descriptionOf(id)}
             </span>
           </span>
         </button>

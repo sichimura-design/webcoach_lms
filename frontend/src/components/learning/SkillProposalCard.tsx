@@ -3,7 +3,6 @@ import { color, font } from '../../theme/webcoachTheme';
 import {
   AiSkillId,
   AI_SKILL_CTA,
-  AI_SKILL_META,
   AI_SKILL_NEEDS_IMAGE,
   AI_SKILL_PREFER_WIDE,
   AI_SKILL_SHORT_LABEL,
@@ -11,6 +10,9 @@ import {
   SkillSuggestion,
 } from '../../types/aiSkill';
 import type { ProposalResolution } from '../../types/aiCoach';
+// スキルの説明は一覧のカードと同じ情報源（DB → AI_SKILL_META）から取る。
+// ここに別の説明文を持つと、一覧のカードと提案カードで説明が食い違う。
+import { useAiApplications } from '../../hooks/useAiApplications';
 
 /**
  * 専門モードへ入る前の提案カード（仕様§2・§4）。
@@ -53,6 +55,7 @@ export function SkillProposalCard({
   onOpenWide,
 }: SkillProposalCardProps) {
   const name = AI_SKILL_SHORT_LABEL[suggestion.skillId];
+  const catalog = useAiApplications();
   const needsImage = AI_SKILL_NEEDS_IMAGE[suggestion.skillId] && !hasImage;
   const canOpenWide = !!onOpenWide && AI_SKILL_PREFER_WIDE[suggestion.skillId] && !needsImage;
 
@@ -93,7 +96,8 @@ export function SkillProposalCard({
       <p style={{ margin: 0, fontSize: 11, lineHeight: 1.75, color: color.textBody }}>
         {needsImage
           ? '制作物の画像を添付すると、いまの教材と課題基準に照らして項目別に確認できます。'
-          : descriptionOf(suggestion.skillId) || '教材の内容に沿って、もう一段詳しく見ていきます。'}
+          : (isConcreteSkill(suggestion.skillId) ? catalog.descriptionOf(suggestion.skillId) : '') ||
+            '教材の内容に沿って、もう一段詳しく見ていきます。'}
       </p>
 
       {suggestion.references.length > 0 && !needsImage && (
@@ -163,14 +167,6 @@ export function SkillProposalCard({
     </div>
   );
 }
-
-/**
- * スキルごとの説明。「何を根拠に、何をするか」だけを書く。
- * 文言は AI_SKILL_META（カードと同じ情報源）から取る。
- * ここに別の説明文を持つと、一覧のカードと提案カードで説明が食い違う。
- */
-const descriptionOf = (skillId: SkillSuggestion['skillId']): string =>
-  isConcreteSkill(skillId) ? AI_SKILL_META[skillId].description : '';
 
 const primaryStyle: React.CSSProperties = {
   gap: 5,

@@ -7,8 +7,10 @@ import {
   AI_SKILL_CATEGORY_ORDER,
   AI_SKILL_LABEL,
   AI_SKILL_MODE_LABEL,
+  isConcreteSkill,
   skillsInCategory,
 } from '../../types/aiSkill';
+import { useAiApplications } from '../../hooks/useAiApplications';
 
 /**
  * AIアプリ（モード）の選択口。入力欄の「＋」1つに集約したもの。
@@ -60,6 +62,8 @@ export function SkillPlusMenu({
   }, [open]);
 
   const active = value !== 'auto';
+  // 選べるモードは「AIコーチでできること」一覧と同じ顔ぶれ・同じ表示名にする
+  const catalog = useAiApplications();
 
   const renderOption = (id: AiSkillId) => (
     <button
@@ -88,7 +92,7 @@ export function SkillPlusMenu({
       }}
     >
       <span style={{ width: 12, flexShrink: 0 }}>{value === id && <Check size={12} />}</span>
-      {AI_SKILL_LABEL[id]}
+      {isConcreteSkill(id) ? catalog.labelOf(id) : AI_SKILL_LABEL[id]}
     </button>
   );
 
@@ -145,7 +149,7 @@ export function SkillPlusMenu({
           {renderOption('auto')}
           {/* 🔴 0件のカテゴリは見出しごと出さない（AiCoachHome と同じ理由） */}
           {AI_SKILL_CATEGORY_ORDER.map((category) => {
-            const skills = skillsInCategory(category);
+            const skills = skillsInCategory(category, catalog.listedSkills);
             if (skills.length === 0) return null;
             return (
               <div key={category}>

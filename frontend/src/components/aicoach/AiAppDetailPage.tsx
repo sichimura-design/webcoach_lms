@@ -21,6 +21,7 @@ import { useAiCoachStore } from '../../store/aiCoachStore';
 import { AI_SKILL_META, type ConcreteAiSkillId } from '../../types/aiSkill';
 import MarkdownRenderer from '../MarkdownRenderer';
 import { AI_SKILL_ICON } from './aiSkillIcons';
+import { useAiApplications } from '../../hooks/useAiApplications';
 
 type DocState = { kind: 'loading' } | { kind: 'ready'; body: string } | { kind: 'missing' };
 
@@ -29,6 +30,7 @@ export function AiAppDetailPage() {
   const navigate = useNavigate();
   const { user } = useAuth();
   const createSkillSession = useAiCoachStore((s) => s.createSkillSession);
+  const { labelOf, descriptionOf } = useAiApplications();
 
   const [doc, setDoc] = useState<DocState>({ kind: 'loading' });
 
@@ -132,10 +134,10 @@ export function AiAppDetailPage() {
 
             <div style={{ flex: 1, minWidth: 220 }}>
               <h1 style={{ margin: 0, fontSize: 24, fontWeight: 700, letterSpacing: '-0.01em', lineHeight: 1.3 }}>
-                {meta.label}
+                {labelOf(id)}
               </h1>
               <p style={{ margin: '8px 0 0', fontSize: 13.5, lineHeight: 1.8, color: 'var(--dc-text-body)' }}>
-                {meta.description}
+                {descriptionOf(id)}
               </p>
             </div>
           </div>

@@ -215,7 +215,9 @@ router.get('/ai/status/:jobId', requireAuth, async (req, res) => {
 });
 
 // Update database (bulk operation)
-router.post('/updatedb', requireAuth, async (req, res) => {
+// 管理画面（AIアプリ登録CSV）専用。AIアプリの説明文はAIチャットのツール選択にも使われるため、
+// 一般ユーザーに書き換えさせない
+router.post('/updatedb', requireAuth, requireAdmin, async (req, res) => {
   try {
     const { data_type, records } = req.body;
 

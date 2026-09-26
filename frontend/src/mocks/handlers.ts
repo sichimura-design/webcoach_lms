@@ -297,14 +297,24 @@ function buildSections(courseId: number) {
   }));
 }
 
-// AIアプリ（/webcoach/ai-applications）
+// AIアプリ（/webcoach/ai-applications）。実DB（webcoach_ai_application）のDify連携アプリと同じ顔ぶれ・同じ形。
+// 「AIコーチでできること」は app_key で types/aiSkill.ts と結んで一覧を作るので、形を崩さないこと。
+// 表示名・説明は scripts/db/add-webcoach-ai-application-display-columns.sql と揃えてある。
+const aiApp = (id: number, name: string, category: string, appKey: string, displayName: string, displayDescription: string) => ({
+  id, name, category, description: `${name}のAI向け説明`, url: null, icon_url: null, tags: ['AI'],
+  display_name: displayName, display_description: displayDescription, app_key: appKey,
+  created_at: '2026-09-11T00:00:00', updated_at: '2026-09-26T00:00:00',
+});
 const aiApps = [
-  { id: 1, name: '教材Q&Aチャット', category: '学習中に', hook: '教材を読んでいて「？」となったら', description: '本文を引用して質問すると、どこでつまずいているかを一緒に整理して、あなたに合わせた説明をしてくれる。', example: '「"余白を活かす"ってどういうこと？具体例がほしい」', icon: '💬', iconBg: '#FDF0F2', accent: '#C24358', url: 'https://example.com/qa-chat' },
-  { id: 2, name: '学習プランナーAI', category: '学習中に', hook: '今週なにをやるか迷ったら', description: 'ロードマップと使える時間を伝えると、1週間分の学習計画を提案。忙しい週のリスケも相談できる。', example: '「今週は3時間しか取れない。何を優先すべき？」', icon: '🗓', iconBg: '#FDF0F2', accent: '#C24358', url: 'https://example.com/planner' },
-  { id: 3, name: 'デザイン添削AI', category: '制作・課題に', hook: '作ったものに自信がないとき', description: 'バナーやLPの画像をアップすると、レイアウト・配色・文字組の観点で講評。提出前のセルフチェックに。', example: '「課題のバナーです。視線誘導の観点でアドバイスして」', icon: '🖼', iconBg: '#FBEACD', accent: '#B98A16', url: 'https://example.com/design-review' },
-  { id: 4, name: '文章ブラッシュアップAI', category: '制作・課題に', hook: '言葉づかいに迷ったら', description: 'ポートフォリオの自己紹介文やバナーコピーを、目的と読み手に合わせて磨いてくれる。', example: '「ポートフォリオの自己PRを300字で自然にして」', icon: '✎', iconBg: '#FBEACD', accent: '#B98A16', url: 'https://example.com/writing' },
-  { id: 5, name: 'キャリア相談AI', category: 'キャリア・コーチングに', hook: '将来がモヤモヤしてきたら', description: '働き方や案件の獲り方の悩みを整理。コーチングの前に考えをまとめておくのにも使える。', example: '「副業から始めたい。最初の一歩は何がいい？」', icon: '🧭', iconBg: '#EAF6ED', accent: '#2FA35C', url: 'https://example.com/career' },
-  { id: 6, name: 'コーチング準備・ふりかえりAI', category: 'キャリア・コーチングに', hook: 'コーチングの前後に', description: '話したいことの整理と、ミーティングノートの要約・ネクストアクション抽出。ロードマップ更新の下書きにも。', example: '「今日のノートを要約して、来週やることを3つに絞って」', icon: '📋', iconBg: '#EAF6ED', accent: '#2FA35C', url: 'https://example.com/coaching-prep' },
+  aiApp(14, 'デイリーデザインスプリントチャレンジャー', 'デザイン', 'design-sprint-challenger', '今日のデザイン課題に挑戦する', '使える時間と挑戦したい分野を伝えると、その日のデザイン課題を出します。仕上げた画像を送るとフィードバックが返ります。'),
+  aiApp(15, 'AI面接シュミレーター', '就活支援', 'ai-interview-simulator', 'AIと面接練習をする', 'AIが面接官役になって質問し、答えたその場で伝わり方を振り返ります。応募する求人に合わせた練習もできます。'),
+  aiApp(16, 'キャッチコピーアイデアメーカー', 'コンテンツ作成', 'catchcopy-idea-maker', 'キャッチコピーを考える', '誰に何を伝えたいかを渡すと、狙いの違うコピー案を並べて比べられます。'),
+  aiApp(17, 'デザインフィードバックメンターPro ver.2', 'デザイン', 'design-feedback-mentor-pro-v2', '制作物を添削する', '制作物の画像と、案件の概要・届けたい相手を伝えると、プロの視点で改善点を返します。'),
+  aiApp(18, '専門用語AIアシスタント', '学習支援', 'technical-term-ai-assistant', '専門用語をわかりやすくする', '教材や募集文に出てきた専門用語を、身近な言葉とたとえに置き換えて説明します。'),
+  aiApp(19, '案件応募文生成・添削メーカー', '案件サポート', 'project-application-writer', '応募文をつくる・添削する', '募集内容と自分の実績から、相手が判断しやすい応募文をつくります。書いた応募文の添削もできます。'),
+  aiApp(20, '案件抽出メーカー（Crowdworks）', '案件サポート', 'project-extractor-crowdworks', 'クラウドワークスで案件を探す', '得意な作業や希望の条件に答えていくと、クラウドワークスで受けられそうな案件を探します。検索には1〜2分かかります。'),
+  aiApp(21, '案件抽出メーカー（Lancers）簡易版_ハードゲート', '案件サポート', 'project-extractor-lancers-lite-hardgate', 'ランサーズで案件を探す', '得意な作業や希望の条件に答えていくと、ランサーズで受けられそうな案件を探します。検索には1〜2分かかります。'),
+  aiApp(22, '案件抽出メーカー（ココナラ）', '案件サポート', 'project-extractor-coconala', 'ココナラで案件を探す', '得意な作業や希望の条件に答えていくと、ココナラで受けられそうな案件を探します。検索には1〜2分かかります。'),
 ];
 
 // コーチ/運営向けの受講生一覧（GET /api/admin/students。実BFFには未実装のため全項目モック）
@@ -618,7 +628,9 @@ export const handlers = [
       { id: 3, badgeid: 3, userid: MOCK_USER_ID, dateissued: Math.floor(Date.now() / 1000) - 3 * 86400, uniquehash: 'mockhash3' },
     ])
   ),
-  http.get('*/api/webcoach/ai-applications', () => HttpResponse.json(aiApps)),
+  http.get('*/api/webcoach/ai-applications', () =>
+    HttpResponse.json({ total: aiApps.length, limit: 100, offset: 0, applications: aiApps })
+  ),
   // コース受講登録（クリック時）— 成功を返すだけ
   http.post('*/api/moodle/enroll-course/:courseid', () => HttpResponse.json({ success: true })),
   http.get('*/api/moodle/notifications/new-content', () =>
