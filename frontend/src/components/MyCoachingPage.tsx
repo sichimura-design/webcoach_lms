@@ -115,26 +115,28 @@ export function MyCoachingPage() {
 
   /**
    * 実施済みの回（「これまでのコーチング」「前回」に出すもの）。
-   * コーチが実施結果（終了・中断）を記録した回だけ。日付が過ぎていても実施記録の無い回は
-   * 未実施なので出さない。リスケで流れた回も実施していないので除く。
+   * コーチが実施結果（終了・中断）を記録した回に加え、実施結果が未記録でも実施日が昨日以前の回は
+   * 実施済みとみなす。実運用ではコーチが実施結果を記録しないことが多く、記録済みの回だけに絞ると
+   * 一覧が空になってしまうため。本日以降の回は「次回」側、リスケで流れた回は実施していないので除く
    */
-  const pastSchedules = useMemo(
-    () => schedulesByDateDesc.filter(s => s.status === 'completed' || s.status === 'interrupted'),
-    [schedulesByDateDesc],
-  );
+  const pastSchedules = useMemo(() => {
+    const today = toLocalDateKey(new Date());
+    return schedulesByDateDesc.filter(s =>
+      s.status === 'completed' || s.status === 'interrupted'
+      || (s.status === null && s.coaching_date < today));
+  }, [schedulesByDateDesc]);
 
   /**
    * 「これまでのコーチング」の一覧。実施済みの回に、リスケで流れた回を「リスケ」表示付きで混ぜる。
    * 予定が動いた経緯を受講生が追えるようにするため
    */
   const historySchedules = useMemo(
-    () => schedulesByDateDesc.filter(s =>
-      s.status === 'completed' || s.status === 'interrupted' || s.status === 'rescheduled'),
-    [schedulesByDateDesc],
+    () => schedulesByDateDesc.filter(s => pastSchedules.includes(s) || s.status === 'rescheduled'),
+    [schedulesByDateDesc, pastSchedules],
   );
 
   /**
-   * 次回コーチング: 未実施（実施結果が未記録）かつ実施日が本日以降のうち、最も日付が近い回。
+   * 次回コーチング: 実施結果が未記録かつ実施日が本日以降のうち、最も日付が近い回。
    * 無ければヒーローカードは出さない
    */
   const nextSchedule = useMemo(() => {
