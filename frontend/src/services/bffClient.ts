@@ -241,6 +241,9 @@ class BFFClient {
     this.api = axios.create({
       baseURL: BFF_BASE_URL,
       timeout: 60000,
+      // BFFは別オリジンのため、明示しないとALBのスティッキーCookie(AWSALBCORS)が
+      // 保存・送信されず、AIチャットのポーリングが別タスクへ振り分けられてしまう。
+      withCredentials: true,
       headers: {
         'Content-Type': 'application/json',
       },

@@ -64,6 +64,12 @@ export class ProdAlbStack extends cdk.Stack {
         unhealthyThresholdCount: 3,
       },
       deregistrationDelay: cdk.Duration.seconds(30),
+      // api-serverはAIチャットの非同期ジョブ(_chat_jobs)とDify会話キャッシュを
+      // プロセス内メモリに持っている。タスクが複数あると、ジョブ作成とポーリング・
+      // 会話の続きが別タスクに振り分けられて「job_idが見つからない」「会話がリセット
+      // される」ため、同じ利用者は同じタスクへ固定する(ALB生成Cookie、AWSALB/AWSALBCORS)。
+      // 共有ストア(Redis)へ移行したら外してよい。
+      stickinessCookieDuration: cdk.Duration.days(1),
     });
 
     if (albCertificateArn) {
