@@ -342,6 +342,10 @@ def _execute_chat_inner(request: ChatRequest, db: Session, usage_fields: dict) -
         # 添付画像はDify側アプリにも渡す（制作物添削アプリ等が画像を見て答えられるように）
         image=request.image.model_dump() if request.image else None,
     )
+    # DBを使うのはここまで(動的ツールは値をコピー済みでセッションを参照しない)。
+    # 以降のLLM/Dify待ち(最大90秒)の間も接続を握っていると、同時AIチャット数が
+    # 接続プール上限に達した時点でAI以外の全APIまで接続待ちで止まるため、ここで返す。
+    db.close()
 
     # 初期ステートを構築
     initial_state: LearningCoachState = {

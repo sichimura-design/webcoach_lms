@@ -25,6 +25,11 @@ engine = create_engine(
     pool_pre_ping=True,  # Verify connections before using
     pool_recycle=3600,   # Recycle connections after 1 hour
     echo=False,          # Set to True for SQL query logging
+    # 既定(常時5+追加10=15本)ではFastAPIの同期スレッドプール(40)に対して少なく、
+    # 同時アクセスが増えると接続待ちで詰まる。RDSのmax_connectionsは
+    # Moodle側の接続とタスク数ぶんを合算して超えないよう環境変数で調整する。
+    pool_size=int(os.getenv("DB_POOL_SIZE", "10")),
+    max_overflow=int(os.getenv("DB_MAX_OVERFLOW", "20")),
 )
 
 # Create session factory

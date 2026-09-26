@@ -223,6 +223,12 @@ export class ProdEcsStack extends cdk.Stack {
     // ----------------------------------------
     // 各コンテナイメージ: webcoach-lms リポジトリのタグで区別
     // ----------------------------------------
+    // memoryLimitMiBはハード上限(超えるとOOM killされ、essentialなのでタスクごと落ちる)。
+    // cpuは相対配分(ホストのCPUが空いていれば超えて使える)なので据え置き。
+    // 2026-09-26: 200人規模の同時利用に備えて引き上げ。t3.xlarge(16GiB)に1タスクのみ
+    // 載る構成(HOSTネットワーク)のため、合計11.5GiBでもホスト側に余裕がある。
+    // Moodle(Apache+PHP)は1リクエスト数十〜100MB使うため、旧値2GiBでは同時処理
+    // 20〜40件程度でOOMになる見込みだった。
     const nginxContainer = taskDef.addContainer('nginx', {
       image: ecs.ContainerImage.fromEcrRepository(repository, 'moodle-nginx-latest'),
       memoryLimitMiB: 256,
@@ -245,7 +251,7 @@ export class ProdEcsStack extends cdk.Stack {
 
     const bffContainer = taskDef.addContainer('bff-server', {
       image: ecs.ContainerImage.fromEcrRepository(repository, 'moodle-bff-latest'),
-      memoryLimitMiB: 512,
+      memoryLimitMiB: 1024,
       cpu: 512,
       logging: ecs.LogDrivers.awsLogs({ streamPrefix: 'bff', logGroup }),
       portMappings: [{ containerPort: 3001, protocol: ecs.Protocol.TCP }],
@@ -274,7 +280,7 @@ export class ProdEcsStack extends cdk.Stack {
 
     const apiContainer = taskDef.addContainer('api-server', {
       image: ecs.ContainerImage.fromEcrRepository(repository, 'moodle-api-latest'),
-      memoryLimitMiB: 1024,
+      memoryLimitMiB: 2048,
       cpu: 1024,
       logging: ecs.LogDrivers.awsLogs({ streamPrefix: 'api', logGroup }),
       portMappings: [{ containerPort: 8001, protocol: ecs.Protocol.TCP }],
@@ -311,7 +317,7 @@ export class ProdEcsStack extends cdk.Stack {
       // 誤読されていた問題)を特定・修正済み。デバッグ用の平文パスワードログを
       // 削除したクリーン版タグに戻す。
       image: ecs.ContainerImage.fromEcrRepository(repository, 'moodle-app-dbfix-20260802-clean'),
-      memoryLimitMiB: 2048,
+      memoryLimitMiB: 8192,
       cpu: 2048,
       logging: ecs.LogDrivers.awsLogs({ streamPrefix: 'lms', logGroup }),
       portMappings: [{ containerPort: 8080, protocol: ecs.Protocol.TCP }],
