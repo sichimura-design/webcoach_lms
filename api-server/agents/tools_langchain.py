@@ -6,11 +6,14 @@ import os
 import json
 import base64
 import logging
+import time
 from functools import lru_cache
 from typing import Dict, Any, List, Optional
 import requests
 from langchain_core.tools import Tool, StructuredTool, BaseTool
 from pydantic import BaseModel, Field
+
+from agents.usage_log import log_ai_usage
 
 logger = logging.getLogger(__name__)
 
@@ -425,6 +428,17 @@ def _call_dify_chat(
         else []
     )
 
+    # 利用ログ（agents/usage_log.py）。status/トークン/コストは応答に応じて埋める
+    usage_fields: Dict[str, Any] = {
+        "user_id": userid,
+        "app_id": app_id,
+        "session_id": session_id,
+        "new_conversation": not conversation_id,
+        "has_image": bool(files),
+        "message_chars": len(query),
+    }
+    started_at = time.monotonic()
+
     try:
         response = requests.post(
             f"{DIFY_API_BASE_URL}/chat-messages",
@@ -455,7 +469,18 @@ def _call_dify_chat(
         if new_conversation_id:
             _dify_conversation_cache[cache_key] = new_conversation_id
 
+        # blockingモードの応答にはmetadata.usageにトークン数・金額(Dify算出)が入る
+        usage = (data.get("metadata") or {}).get("usage") or {}
+        usage_fields.update(
+            conversation_id=new_conversation_id,
+            input_tokens=usage.get("prompt_tokens"),
+            output_tokens=usage.get("completion_tokens"),
+            total_price=usage.get("total_price"),
+            currency=usage.get("currency"),
+        )
+
         answer = data.get("answer", "")
+        usage_fields["status"] = "success" if answer.strip() else "empty"
         if not answer.strip():
             # Difyアプリによっては、会話の冒頭で用意された選択肢(suggested_questions)と
             # 厳密に一致する文言でないと、ワークフロー内の分岐が空の結果に落ちて何も
@@ -471,11 +496,22 @@ def _call_dify_chat(
 
     except requests.exceptions.Timeout as e:
         logger.error(f"Dify API call timed out: {e}")
+        usage_fields.update(status="timeout", error_type=type(e).__name__)
         return "案件検索に時間がかかっており、時間内に確認できませんでした。もう一度試すか、少し時間をおいてから聞いてみてください。"
 
     except requests.exceptions.RequestException as e:
         logger.error(f"Dify API call failed: {e}")
+        http_status = e.response.status_code if getattr(e, "response", None) is not None else None
+        usage_fields.update(status="error", error_type=type(e).__name__, http_status=http_status)
         return "外部サービスへの問い合わせでエラーが発生しました。もう一度試してみてください。"
+
+    except Exception as e:
+        usage_fields.update(status="error", error_type=type(e).__name__)
+        raise
+
+    finally:
+        usage_fields["duration_ms"] = int((time.monotonic() - started_at) * 1000)
+        log_ai_usage("ai_app_call", **usage_fields)
 
 
 def create_ai_application_tools(

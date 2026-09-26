@@ -20,6 +20,7 @@ from database import SessionLocal
 from dto.response.ai import AIResponse, AISource
 from agents.learning_coach_agent import get_learning_coach_graph
 from agents.state import LearningCoachState
+from agents.usage_log import log_ai_usage
 
 # ログ設定
 logging.basicConfig(level=logging.INFO)
@@ -188,7 +189,67 @@ def _run_chat_job(job_id: str, request: ChatRequest) -> None:
             _chat_jobs[job_id]["event"].set()
 
 
+def _summarize_llm_usage(messages) -> dict:
+    """このターンでLLM(Claude)が生成したAIMessageのトークン数・呼び出し回数・Difyアプリ呼び出しを集計する
+
+    会話履歴から組み立てたAIMessageにはusage_metadataが無いため、今回の呼び出し分だけが数えられる。
+    """
+    from langchain_core.messages import AIMessage
+
+    input_tokens = output_tokens = llm_calls = 0
+    dify_app_ids: List[int] = []
+    for msg in messages:
+        if not isinstance(msg, AIMessage):
+            continue
+        usage = getattr(msg, "usage_metadata", None)
+        if usage:
+            llm_calls += 1
+            input_tokens += usage.get("input_tokens", 0) or 0
+            output_tokens += usage.get("output_tokens", 0) or 0
+        for call in getattr(msg, "tool_calls", None) or []:
+            name = call.get("name", "")
+            if name.startswith("ask_ai_application_"):
+                try:
+                    dify_app_ids.append(int(name.rsplit("_", 1)[1]))
+                except ValueError:
+                    pass
+    return {
+        "llm_calls": llm_calls,
+        "input_tokens": input_tokens,
+        "output_tokens": output_tokens,
+        "dify_app_ids": dify_app_ids or None,
+    }
+
+
 def _execute_chat(request: ChatRequest, db: Session) -> ChatResponse:
+    """_execute_chat_innerを実行し、成否・所要時間・トークン数を利用ログ(agents/usage_log.py)へ1行出力する"""
+    usage_fields: dict = {
+        "user_id": request.user_id,
+        "session_id": request.session_id,
+        "course_id": request.course_id,
+        "has_image": bool(request.image),
+        "has_lesson_context": bool(request.lesson_context),
+        "message_chars": len(request.message),
+        "history_len": len(request.conversation_history or []),
+    }
+    started_at = time.monotonic()
+    try:
+        result = _execute_chat_inner(request, db, usage_fields)
+        usage_fields["status"] = "success"
+        return result
+    except HTTPException as e:
+        # 入力長超過など、こちらで弾いたもの（LLMは呼んでいない）
+        usage_fields.update(status="rejected", http_status=e.status_code)
+        raise
+    except Exception as e:
+        usage_fields.update(status="error", error_type=type(e).__name__)
+        raise
+    finally:
+        usage_fields["duration_ms"] = int((time.monotonic() - started_at) * 1000)
+        log_ai_usage("ai_chat", **usage_fields)
+
+
+def _execute_chat_inner(request: ChatRequest, db: Session, usage_fields: dict) -> ChatResponse:
     """AIチャット本体（同期の猶予時間内で完了した場合も、非同期ジョブとして実行される場合も、ここが呼ばれる）
 
     **特徴:**
@@ -310,6 +371,11 @@ def _execute_chat(request: ChatRequest, db: Session) -> ChatResponse:
     # グラフを実行
     logger.info("Executing LangGraph workflow...")
     final_state = graph.invoke(initial_state)
+
+    from agents import learning_coach_agent
+    usage_fields.update(_summarize_llm_usage(final_state.get("messages", [])))
+    usage_fields["model"] = getattr(learning_coach_agent.llm, "model", None)
+    usage_fields["iterations"] = final_state.get("iteration_count")
 
     # レスポンスを構築
     response_message = final_state.get("final_response", "回答を生成できませんでした。")
