@@ -2347,7 +2347,7 @@ def get_coaching_schedules(
     mdl_user_id: int,
 ) -> List[WebCoachCoachingSchedule]:
     """
-    受講生のコーチングスケジュール一覧を取得します（実施日・回数の降順）。
+    受講生のコーチングスケジュール一覧を取得します（回数の降順）。
 
     Args:
         db: Database session
@@ -2359,7 +2359,6 @@ def get_coaching_schedules(
     return db.query(WebCoachCoachingSchedule).filter(
         WebCoachCoachingSchedule.mdl_user_id == mdl_user_id
     ).order_by(
-        desc(WebCoachCoachingSchedule.coaching_date),
         desc(WebCoachCoachingSchedule.coaching_no),
     ).all()
 

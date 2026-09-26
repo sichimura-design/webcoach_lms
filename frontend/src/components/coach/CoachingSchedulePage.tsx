@@ -18,6 +18,12 @@ const NOTE_FIELD_LABELS: { key: keyof UpdateCoachingNoteRequest; label: string }
   { key: 'next_session_check', label: '次回確認すること' },
 ];
 
+function estimateNoteTextareaRows(text: string): number {
+  if (!text) return 2;
+  const lines = text.split('\n').reduce((sum, line) => sum + Math.max(1, Math.ceil(line.length / 45)), 0);
+  return Math.max(2, Math.min(14, lines));
+}
+
 const NOTE_STATUS_LABEL: Record<CoachingNoteStatus, string> = {
   ai_suggested: 'AI下書き',
   coach_confirmed: '確認済み（未公開）',
@@ -411,8 +417,8 @@ export function CoachingSchedulePage({ studentId }: CoachingSchedulePageProps) {
                               <textarea
                                 value={(noteForm[key] as string) || ''}
                                 onChange={e => setNoteForm(prev => ({ ...prev, [key]: e.target.value }))}
-                                rows={2}
-                                style={{ ...inputStyle, resize: 'none' }}
+                                rows={estimateNoteTextareaRows((noteForm[key] as string) || '')}
+                                style={{ ...inputStyle, resize: 'vertical' }}
                               />
                             </div>
                           ))}
