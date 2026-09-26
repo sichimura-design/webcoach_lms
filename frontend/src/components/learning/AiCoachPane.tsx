@@ -1,5 +1,5 @@
 import { useRef } from 'react';
-import { AlertTriangle, Copy, ImagePlus, Send, Star, StickyNote, X } from 'lucide-react';
+import { AlertTriangle, Copy, ImagePlus, MessageSquarePlus, Send, Star, StickyNote, X } from 'lucide-react';
 import { color, font } from '../../theme/webcoachTheme';
 import { AI_ERROR_CONCLUSION, LessonAiMessage, UseLessonAi } from '../../hooks/useLessonAi';
 import { LessonAiResponse } from '../../types/lesson';
@@ -67,6 +67,12 @@ interface AiCoachPaneProps {
   quickPrompts?: string[];
   /** 入力欄のプレースホルダの差し替え */
   placeholder?: string;
+  /**
+   * 直前の回答がエラーだったときの「新しいチャットで続ける」。
+   * 最後の質問を渡すので、呼び出し側で新しい会話を作って送り直す。
+   * 省略するとボタンを出さない（新しい会話を作れない教材パネル・常駐ドロワー）。
+   */
+  onRestartInNewChat?: (question: string) => void;
   /**
    * 提案を「広い画面で開く」導線。教材ページの右パネルだけで使う。
    * 押すとモードだけ切り替えてAI専用ページへ渡し、実行はそちらで行う。
@@ -204,8 +210,16 @@ export function AiCoachPane({
   quickPrompts,
   placeholder,
   onOpenWide,
+  onRestartInNewChat,
 }: AiCoachPaneProps) {
   const fileInputRef = useRef<HTMLInputElement>(null);
+
+  // 直前の回答がエラーなら、その前のユーザーの質問（新しいチャットで送り直す対象）
+  const lastMessage = ai.messages[ai.messages.length - 1];
+  const restartQuestion =
+    lastMessage?.role === 'assistant' && lastMessage.answer?.conclusion === AI_ERROR_CONCLUSION
+      ? [...ai.messages].reverse().find((m) => m.role === 'user')?.content ?? null
+      : null;
 
   const handlePaste = (e: React.ClipboardEvent) => {
     const item = Array.from(e.clipboardData?.items ?? []).find((i) => i.type.startsWith('image/'));
@@ -603,6 +617,49 @@ export function AiCoachPane({
               </div>
             );
           })}
+
+          {restartQuestion && onRestartInNewChat && !ai.loading && (
+            <div
+              className="flex items-center flex-wrap"
+              style={{
+                gap: 8,
+                margin: '-4px 0 14px',
+                padding: '8px 10px',
+                borderRadius: 8,
+                background: color.hoverBgTint,
+                border: `1px solid ${color.primaryBorder}`,
+                fontSize: 10.5,
+                lineHeight: 1.7,
+                color: color.textBody,
+              }}
+            >
+              <span style={{ flex: '1 1 200px' }}>
+                会話が長くなったり別の用途に切り替えたりすると、うまく答えられないことがあります。
+                新しいチャットで同じ質問を送り直せます。
+              </span>
+              <button
+                type="button"
+                onClick={() => onRestartInNewChat(restartQuestion)}
+                className="flex items-center wc-ai-chip focus-visible:ring-2 focus-visible:ring-[#F6B9BD]"
+                style={{
+                  gap: 4,
+                  border: `1px solid ${color.primaryBorder}`,
+                  borderRadius: 8,
+                  background: color.surface,
+                  color: color.primary,
+                  padding: '6px 10px',
+                  fontFamily: 'inherit',
+                  fontSize: 11,
+                  fontWeight: 700,
+                  cursor: 'pointer',
+                  whiteSpace: 'nowrap',
+                }}
+              >
+                <MessageSquarePlus size={13} />
+                新しいチャットで続ける
+              </button>
+            </div>
+          )}
 
           {ai.loading && <AiThinkingBubble skillId={ai.skillId} />}
           <div ref={ai.scrollAnchorRef} />

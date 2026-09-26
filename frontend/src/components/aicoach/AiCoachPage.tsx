@@ -179,6 +179,9 @@ export function AiCoachPage() {
               onOpenSession={openSession}
               autoSend={autoSendFor === activeId}
               onAutoSendDone={() => setAutoSendFor(null)}
+              // エラーになった会話はそのままにして、同じ質問を新しい会話で送り直す
+              // （ホームの入力欄から送ったときと同じ流れ。Dify連携アプリの会話も新しく始まる）
+              onRestartInNewChat={(question, skillId) => handleSubmit(question, null, skillId)}
               isDesktop={isDesktop}
             />
           ) : (

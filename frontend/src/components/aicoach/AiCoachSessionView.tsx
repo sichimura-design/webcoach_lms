@@ -47,6 +47,8 @@ interface AiCoachSessionViewProps {
    */
   autoSend?: boolean;
   onAutoSendDone?: () => void;
+  /** エラー後に「新しいチャットで続ける」を押したとき。新しい会話を作ってこの質問を送る */
+  onRestartInNewChat?: (question: string, skillId: AiSkillId) => void;
   isDesktop: boolean;
 }
 
@@ -58,6 +60,7 @@ export function AiCoachSessionView({
   onOpenSession,
   autoSend = false,
   onAutoSendDone,
+  onRestartInNewChat,
   isDesktop,
 }: AiCoachSessionViewProps) {
   const { showToast } = useToast();
@@ -425,6 +428,9 @@ export function AiCoachSessionView({
           onPickSkill={handlePickSkill}
           quickPrompts={meta?.quickActions}
           placeholder={meta?.placeholder}
+          onRestartInNewChat={
+            onRestartInNewChat ? (question) => onRestartInNewChat(question, ai.skillId) : undefined
+          }
         />
       </div>
 

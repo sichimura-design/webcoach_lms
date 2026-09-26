@@ -197,6 +197,34 @@ def _run_chat_job(job_id: str, request: ChatRequest) -> None:
             _chat_jobs[job_id]["event"].set()
 
 
+# 1リクエストあたりの入力（今回の発言+会話履歴）の推定トークン上限
+MAX_INPUT_TOKENS = 5000
+# 会話履歴の1件あたりの上限文字数。案件一覧のような長い回答は先頭だけ残す
+MAX_HISTORY_MESSAGE_CHARS = 1200
+
+
+def _fit_history(history: List[dict], budget: int) -> "tuple[List[dict], int]":
+    """会話履歴を推定トークン数budgetに収まるよう切り詰める。戻り値は(残す履歴, 削った件数)
+
+    - 1件ごとにMAX_HISTORY_MESSAGE_CHARSを超える部分を省略する
+    - それでも超える場合は古いものから削る
+    - 先頭がassistantの発言にならないようにする（LLMへの会話はuserから始める）
+    """
+    fitted = []
+    for msg in history:
+        content = str(msg.get("content", ""))
+        if len(content) > MAX_HISTORY_MESSAGE_CHARS:
+            content = content[:MAX_HISTORY_MESSAGE_CHARS] + "\n…（長いため以下省略）"
+        fitted.append({**msg, "content": content})
+
+    start = 0
+    total = sum(estimate_token_count(m["content"]) for m in fitted)
+    while start < len(fitted) and (total > budget or fitted[start].get("role") != "user"):
+        total -= estimate_token_count(fitted[start]["content"])
+        start += 1
+    return fitted[start:], start
+
+
 def _summarize_llm_usage(messages) -> dict:
     """このターンでLLM(Claude)が生成したAIMessageのトークン数・呼び出し回数・Difyアプリ呼び出しを集計する
 
@@ -277,21 +305,22 @@ def _execute_chat_inner(request: ChatRequest, db: Session, usage_fields: dict) -
     logger.info(f"LangGraph AI chat request: user_id={request.user_id}, message='{request.message[:50]}...'")
 
     # 入力トークン数をチェック（簡易版）
+    # 上限を超えても会話履歴が原因ならリクエストを弾かず、古い履歴から切り詰める。
+    # 以前は履歴込みで超えたら400を返しており、案件抽出メーカーの案件一覧のような
+    # 長い回答のあとは、同じチャットで何を送っても「一時的なエラー」になっていた。
+    # Difyアプリとの会話はサーバー側のconversation_idで継続するため、履歴を削っても続きは途切れない。
     message_tokens = estimate_token_count(request.message)
-    history_tokens = sum(
-        estimate_token_count(msg.get("content", ""))
-        for msg in request.conversation_history
-    )
-    total_input_tokens = message_tokens + history_tokens
-
-    # トークン数上限チェック（5000トークンまで）
-    MAX_INPUT_TOKENS = 5000
-    if total_input_tokens > MAX_INPUT_TOKENS:
-        logger.warning(f"Input tokens exceeded: {total_input_tokens} > {MAX_INPUT_TOKENS}")
+    if message_tokens > MAX_INPUT_TOKENS:
+        logger.warning(f"Input tokens exceeded: {message_tokens} > {MAX_INPUT_TOKENS}")
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
-            detail=f"入力が長すぎます。推定トークン数: {total_input_tokens} (上限: {MAX_INPUT_TOKENS})"
+            detail=f"入力が長すぎます。推定トークン数: {message_tokens} (上限: {MAX_INPUT_TOKENS})"
         )
+    history, dropped = _fit_history(request.conversation_history or [], MAX_INPUT_TOKENS - message_tokens)
+    if dropped:
+        logger.info(f"Conversation history trimmed: dropped {dropped} message(s) to fit token budget")
+        usage_fields["history_trimmed"] = dropped
+    total_input_tokens = message_tokens + sum(estimate_token_count(m["content"]) for m in history)
 
     logger.info(f"Estimated input tokens: {total_input_tokens}")
 
@@ -371,10 +400,10 @@ def _execute_chat_inner(request: ChatRequest, db: Session, usage_fields: dict) -
     logger.info(f"Initial state has {len(initial_state['messages'])} messages")
 
     # 会話履歴があれば追加（オプション）
-    if request.conversation_history:
+    if history:
         from langchain_core.messages import AIMessage
         history_messages = []
-        for msg in request.conversation_history:
+        for msg in history:
             if msg.get("role") == "user":
                 history_messages.append(HumanMessage(content=msg.get("content", "")))
             elif msg.get("role") == "assistant":

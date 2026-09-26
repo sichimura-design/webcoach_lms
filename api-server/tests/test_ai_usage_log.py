@@ -156,13 +156,18 @@ def test_chat_success_logs_ai_chat_event(usage_events):
     assert "こんにちは" not in json.dumps(event, ensure_ascii=False)
 
 
-def test_chat_input_too_long_logs_rejected(usage_events):
+def test_chat_long_history_is_trimmed_not_rejected(usage_events):
+    """履歴込みで上限を超えても弾かず、古い履歴を削って答える（削った件数をログに残す）"""
+    fake_graph = MagicMock()
+    fake_graph.invoke.return_value = {"messages": [AIMessage(content="ok")], "final_response": "ok", "iteration_count": 1}
     history = [{"role": "user", "content": "あ" * 3000}] * 10
-    with pytest.raises(HTTPException):
+    with patch.object(ai_langgraph, "get_learning_coach_graph", return_value=fake_graph), \
+         patch("agents.tools_langchain.create_ai_application_tools", return_value=([], None, None)):
         _execute_chat(_request(conversation_history=history), MagicMock())
 
     [event] = usage_events
-    assert (event["status"], event["http_status"]) == ("rejected", 400)
+    assert event["status"] == "success"
+    assert event["history_trimmed"] > 0
 
 
 def test_chat_exception_logs_error_and_reraises(usage_events):
