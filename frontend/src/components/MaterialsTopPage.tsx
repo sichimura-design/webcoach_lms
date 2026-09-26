@@ -19,7 +19,6 @@ import {
   type AreaFamily,
 } from '../constants/courseTaxonomy';
 import { lessonProgressFromPercent } from '../utils/lessonProgress';
-import type { MaterialSearchResult } from '../types/courses';
 import {
   ALL,
   COURSE_STATUSES,
@@ -69,8 +68,8 @@ interface NextLesson {
   minutes?: number;
 }
 
-/** AI検索バーの例。押すと入力欄に入る */
-const SEARCH_EXAMPLES = ['配色が苦手', 'バナーを作りたい', '次に学ぶべき教材は？'];
+/** 検索バーの例。押すとそのまま検索する（キーワード検索なので短い語にする） */
+const SEARCH_EXAMPLES = ['Figma', 'バナー', '生成AI'];
 
 /**
  * 「ほかに学習中」を畳まずに出す件数。
@@ -118,9 +117,10 @@ function MaterialsTopPage() {
   /** 「ほかに学習中」を全件出すか（既定は OTHER_ACTIVE_VISIBLE 件で畳む） */
   const [showAllActive, setShowAllActive] = useState(false);
 
-  const [aiQuery, setAiQuery] = useState('');
-  const [aiResult, setAiResult] = useState<MaterialSearchResult | null>(null);
-  const [aiState, setAiState] = useState<'idle' | 'loading' | 'error'>('idle');
+  const [searchQuery, setSearchQuery] = useState('');
+  /** 検索を実行した語と、Moodle検索で当たったコースID。null は「検索していない」 */
+  const [searchResult, setSearchResult] = useState<{ query: string; ids: number[] } | null>(null);
+  const [searchLoading, setSearchLoading] = useState(false);
   /** 例チップを出すかどうか。入力に用がある間だけ見せて、常設の飾りにしない */
   const [searchFocused, setSearchFocused] = useState(false);
 
@@ -308,40 +308,41 @@ function MaterialsTopPage() {
     navigate(nextLesson ? `/course/${resumableCourse.id}?module=${nextLesson.id}` : `/course/${resumableCourse.id}/curriculum`);
   };
 
-  const runAiSearch = (q: string) => {
+  /**
+   * 教材のキーワード検索。
+   * 🔴 Moodle標準検索（/moodle/courses/search = core_course_search_courses）は
+   *    コース名・概要しか見ないので、領域名・タグの一致は手元のカタログで補う。
+   *    Moodle側が落ちても手元の一致だけで結果を出す。
+   */
+  const runSearch = (q: string) => {
     const query = q.trim();
     if (!query) return;
-    setAiState('loading');
-    bffClient.searchMaterialsByAI(query)
-      .then((res) => { setAiResult(res); setAiState('idle'); })
-      // 実BFFにこのAPIは無い（モックOFFでは501）。ここで畳んで他の節に波及させない
-      .catch(() => { setAiResult(null); setAiState('error'); });
+    setSearchLoading(true);
+    bffClient.searchCourses(query)
+      .then((raw) => raw.map((c: any) => c.id as number))
+      .catch(() => [] as number[])
+      .then((ids) => { setSearchResult({ query, ids }); setSearchLoading(false); });
   };
 
-  const clearAiSearch = () => { setAiQuery(''); setAiResult(null); setAiState('idle'); };
+  const clearSearch = () => { setSearchQuery(''); setSearchResult(null); };
 
-  /** AI検索の結果は Moodle の生データで返るので、タイルが読める形に寄せる */
-  const aiCourses: Array<{ course: CatalogCourse; reason: string }> = useMemo(
-    () => (aiResult?.results ?? []).map(({ course, reason }) => {
-      const known = catalog.find((c) => c.id === course.id);
-      return {
-        reason,
-        course: known ?? {
-          id: course.id,
-          title: course.fullname || '',
-          description: course.summary || '',
-          categoryName: course.categoryname || '',
-          totalLessons: course.lessoncount,
-          duration: course.duration,
-          tags: Array.isArray(course.tags) ? course.tags : undefined,
-          thumbnailUrl: course.courseimage,
-          progress: 0,
-          isCurrent: false,
-        },
-      };
-    }),
-    [aiResult, catalog],
-  );
+  /**
+   * 検索結果。カタログにあるコースだけを出す（非表示コースをここで落とす）。
+   * 並びは Moodle の一致順 → 手元でだけ一致したもの。
+   */
+  const searchCourses: CatalogCourse[] = useMemo(() => {
+    if (!searchResult) return [];
+    const words = searchResult.query.toLowerCase().split(/[\s\u3000]+/).filter(Boolean);
+    const localHit = (c: CatalogCourse) => {
+      const hay = [c.title, c.description, c.categoryName, ...(c.tags ?? []).map((tg) => tg.rawname)]
+        .join(' ').toLowerCase();
+      return words.every((w) => hay.includes(w));
+    };
+    const byId = new Map(catalog.map((c) => [c.id, c]));
+    const moodleHits = searchResult.ids.map((id) => byId.get(id)).filter((c): c is CatalogCourse => !!c);
+    const seen = new Set(moodleHits.map((c) => c.id));
+    return [...moodleHits, ...catalog.filter((c) => !seen.has(c.id) && localHit(c))];
+  }, [searchResult, catalog]);
 
   return (
     <div className="min-h-screen flex flex-col" style={{ background: t.color.bg.page }}>
@@ -625,34 +626,34 @@ function MaterialsTopPage() {
                約140pxのブロックだった。1行の入力に対して場所を取りすぎるという
                レビューで、地色も見出しもやめて1本のツールバーに統合した
                （見出しの役目は placeholder と aria-label が引き受ける）。
-            🔴 コース名のキーワード検索にはしない。「配色が苦手」のような相談は
-               名前一致では空振りするので、入力はAIに投げる1本のままにする。
+            🔴 かつては相談文をAIに投げる設計（/webcoach/material-search）だったが、
+               実BFFに無いモック専用APIで本番では必ず失敗していた。いまはキーワード検索。
             ============================================================ */}
         <section style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 10, flexWrap: 'wrap' }}>
             <form
-              onSubmit={(e) => { e.preventDefault(); runAiSearch(aiQuery); }}
+              onSubmit={(e) => { e.preventDefault(); runSearch(searchQuery); }}
               style={{ position: 'relative', flex: '1 1 320px', minWidth: 0, maxWidth: 460 }}
             >
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke={t.color.text.muted} strokeWidth="1.75" strokeLinecap="round" style={{ position: 'absolute', left: 14, top: 12 }} aria-hidden>
                 <path d="M11 4a7 7 0 1 0 0 14 7 7 0 0 0 0-14zm10 17-5-5" />
               </svg>
               <input
-                value={aiQuery}
-                onChange={(e) => setAiQuery(e.target.value)}
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
                 onFocus={() => setSearchFocused(true)}
                 onBlur={() => setSearchFocused(false)}
-                placeholder="学びたいこと・つまずいていることでさがす"
-                aria-label="学びたいこと・つまずいていることから教材をさがす"
+                placeholder="コース名・キーワードでさがす"
+                aria-label="コース名・キーワードで教材をさがす"
                 style={{ width: '100%', boxSizing: 'border-box', height: 40, borderRadius: t.radius.pill, border: `1px solid ${t.color.primaryBorder}`, background: t.color.bg.card, padding: '0 78px 0 38px', fontSize: 'var(--dc-fs-body)', fontFamily: 'inherit', color: t.color.text.primary, outline: 'none' }}
               />
               <button
                 type="submit"
-                disabled={aiState === 'loading' || !aiQuery.trim()}
+                disabled={searchLoading || !searchQuery.trim()}
                 className="appearance-none border-0 outline-none focus-visible:ring-2 focus-visible:ring-[#F6B9BD]"
-                style={{ position: 'absolute', right: 4, top: 4, height: 32, borderRadius: t.radius.pill, background: aiQuery.trim() ? t.color.primary : t.color.text.subtle, padding: '0 14px', color: '#fff', fontSize: 'var(--dc-fs-body)', fontWeight: t.font.weight.semibold, fontFamily: 'inherit', cursor: aiQuery.trim() ? 'pointer' : 'default' }}
+                style={{ position: 'absolute', right: 4, top: 4, height: 32, borderRadius: t.radius.pill, background: searchQuery.trim() ? t.color.primary : t.color.text.subtle, padding: '0 14px', color: '#fff', fontSize: 'var(--dc-fs-body)', fontWeight: t.font.weight.semibold, fontFamily: 'inherit', cursor: searchQuery.trim() ? 'pointer' : 'default' }}
               >
-                {aiState === 'loading' ? 'さがし中…' : 'さがす'}
+                {searchLoading ? 'さがし中…' : 'さがす'}
               </button>
             </form>
 
@@ -703,14 +704,14 @@ function MaterialsTopPage() {
           {/* 例チップ。入力に用がある間だけ出す（常設の飾りにしない）。
               🔴 onMouseDown で既定動作を止める。止めないと blur が click より先に
                  走ってチップが消え、押せないボタンになる。 */}
-          {(searchFocused || aiQuery !== '') && (
+          {(searchFocused || searchQuery !== '') && (
             <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap' }}>
               <span style={{ fontSize: 'var(--dc-fs-caption)', color: t.color.text.subtle, flexShrink: 0 }}>例：</span>
               {SEARCH_EXAMPLES.map((ex) => (
                 <button
                   key={ex}
                   onMouseDown={(e) => e.preventDefault()}
-                  onClick={() => { setAiQuery(ex); runAiSearch(ex); }}
+                  onClick={() => { setSearchQuery(ex); runSearch(ex); }}
                   className="appearance-none outline-none cursor-pointer focus-visible:ring-2 focus-visible:ring-[#F6B9BD]"
                   style={{ background: t.color.bg.card, border: `1px solid ${t.color.primaryBorder}`, borderRadius: t.radius.pill, padding: '4px 12px', fontSize: 'var(--dc-fs-caption)', fontFamily: 'inherit', color: t.color.text.body }}
                 >
@@ -721,42 +722,29 @@ function MaterialsTopPage() {
           )}
         </section>
 
-        {/* AI検索の結果。実BFF（モックOFF）ではこのAPIが無いので、1行のことわりだけ出して一覧に戻す */}
-        {aiState === 'error' && (
-          <div style={{ display: 'flex', alignItems: 'baseline', gap: 10, flexWrap: 'wrap', fontSize: 'var(--dc-fs-body)', color: t.color.text.muted }}>
-            いまは教材のおすすめを取得できませんでした。下のコース一覧から探してください。
-            <button
-              onClick={clearAiSearch}
-              className="appearance-none border-0 outline-none cursor-pointer focus-visible:ring-2 focus-visible:ring-[#F6B9BD]"
-              style={{ background: 'transparent', padding: '2px 4px', fontSize: 'var(--dc-fs-body)', fontFamily: 'inherit', color: t.color.text.muted, textDecoration: 'underline' }}
-            >
-              閉じる
-            </button>
-          </div>
-        )}
-
-        {aiResult && (
+        {searchResult && (
           <section style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
             <div style={{ display: 'flex', alignItems: 'baseline', gap: 10, flexWrap: 'wrap' }}>
-              <div style={{ fontSize: 'var(--dc-fs-lead)', fontWeight: t.font.weight.bold, lineHeight: 'var(--dc-lh-heading)' }}>AIが選んだ教材</div>
-              <div style={{ flex: 1, minWidth: 0, fontSize: 'var(--dc-fs-body)', color: t.color.text.muted }}>{aiResult.summary}</div>
+              <div style={{ fontSize: 'var(--dc-fs-lead)', fontWeight: t.font.weight.bold, lineHeight: 'var(--dc-lh-heading)' }}>検索結果</div>
+              <div style={{ flex: 1, minWidth: 0, fontSize: 'var(--dc-fs-body)', color: t.color.text.muted }}>
+                {searchCourses.length > 0
+                  ? `「${searchResult.query}」に一致する${LEARNING_HIERARCHY.course} ${searchCourses.length}件`
+                  : `「${searchResult.query}」に一致する${LEARNING_HIERARCHY.course}は見つかりませんでした。別の言葉で試すか、下の一覧から探してください。`}
+              </div>
               {/* 結果を畳む導線は結果側に置く。ツールバーに常設すると、結果が
                   出ていないときも場所を取る */}
               <button
-                onClick={clearAiSearch}
+                onClick={clearSearch}
                 className="appearance-none border-0 outline-none cursor-pointer focus-visible:ring-2 focus-visible:ring-[#F6B9BD]"
                 style={{ background: 'transparent', padding: '2px 4px', flexShrink: 0, fontSize: 'var(--dc-fs-body)', fontFamily: 'inherit', color: t.color.text.muted, textDecoration: 'underline' }}
               >
                 結果を閉じる
               </button>
             </div>
-            {aiCourses.length > 0 && (
+            {searchCourses.length > 0 && (
               <div className="grid" style={{ gridTemplateColumns: 'repeat(auto-fill, minmax(230px, 1fr))', gap: 14 }}>
-                {aiCourses.map(({ course, reason }) => (
-                  <div key={course.id} style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
-                    <CourseTile course={course} onClick={() => navigate(`/course/${course.id}/curriculum`)} />
-                    <div style={{ fontSize: 'var(--dc-fs-body)', color: t.color.text.muted, lineHeight: 'var(--dc-lh-prose)' }}>{reason}</div>
-                  </div>
+                {searchCourses.map((course) => (
+                  <CourseTile key={course.id} course={course} onClick={() => navigate(`/course/${course.id}/curriculum`)} />
                 ))}
               </div>
             )}
