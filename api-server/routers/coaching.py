@@ -3,6 +3,7 @@ Coach-Student Mapping endpoints
 """
 from typing import List
 import logging
+from datetime import datetime, timedelta, timezone
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 
@@ -462,6 +463,13 @@ def create_coaching_schedule_endpoint(
     Returns:
         作成されたコーチングスケジュール
     """
+    # 過去日の新規登録は不可(実施日は日本時間の今日以降)
+    if data.coaching_date < datetime.now(timezone(timedelta(hours=9))).date():
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="実施日には今日以降の日付を指定してください"
+        )
+
     try:
         schedule = create_coaching_schedule(
             db=db,

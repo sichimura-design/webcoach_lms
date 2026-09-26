@@ -6,6 +6,8 @@ import { useAuth } from '../../contexts/AuthContext';
 import bffClient from '../../services/bffClient';
 import { CoachingSchedule, CoachingScheduleStatus, CoachingNote, CoachingNoteStatus, UpdateCoachingNoteRequest } from '../../types/api';
 import { color, font, t } from '../../theme/webcoachTheme';
+import { toLocalDateKey } from '../../utils/studyStats';
+import { getUserMessage } from '../../utils/errorMessage';
 
 const NOTE_FIELD_LABELS: { key: keyof UpdateCoachingNoteRequest; label: string }[] = [
   { key: 'session_summary', label: 'セッション概要' },
@@ -49,8 +51,9 @@ interface ScheduleFormState {
   meeting_provider: 'google_meet' | '';
 }
 
-const emptyForm: ScheduleFormState = {
-  coaching_date: new Date().toISOString().slice(0, 10),
+/** 新規登録フォームの初期値。実施日は開いた日（ローカル日付）にする */
+const newEmptyForm = (): ScheduleFormState => ({
+  coaching_date: toLocalDateKey(new Date()),
   status: '',
   // 新規作成時は常にGoogle Meetを自動発行する前提(コーチが手動でURLを貼る経路は
   // 廃止した)。文字起こし自動取り込み(TranscriptSyncService)がGoogle Meet
@@ -58,7 +61,7 @@ const emptyForm: ScheduleFormState = {
   // AIコーチングノートが一部の回だけ生成されない不整合が生じる。
   meeting_provider: 'google_meet',
   meeting_url: '',
-};
+});
 
 const SCHEDULE_STATUS_LABEL: Record<CoachingScheduleStatus, string> = {
   completed: '終了',
@@ -115,11 +118,11 @@ export function CoachingSchedulePage({ studentId }: CoachingSchedulePageProps) {
   const [error, setError] = useState<string | null>(null);
 
   const [showAddForm, setShowAddForm] = useState(false);
-  const [addForm, setAddForm] = useState<ScheduleFormState>(emptyForm);
+  const [addForm, setAddForm] = useState<ScheduleFormState>(newEmptyForm);
   const [saving, setSaving] = useState(false);
 
   const [editingId, setEditingId] = useState<number | null>(null);
-  const [editForm, setEditForm] = useState<ScheduleFormState>(emptyForm);
+  const [editForm, setEditForm] = useState<ScheduleFormState>(newEmptyForm);
 
   const [noteOpenId, setNoteOpenId] = useState<number | null>(null);
   const [notes, setNotes] = useState<Record<number, CoachingNote | 'none'>>({});
@@ -148,6 +151,12 @@ export function CoachingSchedulePage({ studentId }: CoachingSchedulePageProps) {
 
   const handleCreate = async () => {
     if (!user || saving) return;
+    // 過去日の新規登録は不可（BFF・api-serverでも同じチェックをしている）
+    if (!addForm.coaching_date || addForm.coaching_date < toLocalDateKey(new Date())) {
+      setError('実施日には今日以降の日付を指定してください');
+      return;
+    }
+    setError(null);
     setSaving(true);
     try {
       await bffClient.createCoachingSchedule(studentId, {
@@ -156,11 +165,15 @@ export function CoachingSchedulePage({ studentId }: CoachingSchedulePageProps) {
         meeting_url: addForm.meeting_provider === 'google_meet' ? '' : addForm.meeting_url,
         meeting_provider: addForm.meeting_provider || null,
       });
-      setAddForm(emptyForm);
+      setAddForm(newEmptyForm());
       setShowAddForm(false);
       loadSchedules();
-    } catch {
-      setError('コーチング記録の作成に失敗しました');
+    } catch (err) {
+      // 400（過去日など入力の問題）はサーバーの理由をそのまま出す
+      const isBadRequest = (err as { response?: { status?: number } })?.response?.status === 400;
+      setError(isBadRequest
+        ? getUserMessage(err, 'コーチング記録の作成に失敗しました')
+        : 'コーチング記録の作成に失敗しました');
     } finally {
       setSaving(false);
     }
@@ -277,7 +290,7 @@ export function CoachingSchedulePage({ studentId }: CoachingSchedulePageProps) {
           <h1 style={{ ...font.pageTitle, color: color.text, margin: 0 }}>
             コーチング記録{studentName ? `：${studentName}` : ''}
           </h1>
-          <button type="button" style={smallPrimaryButton} onClick={() => setShowAddForm(v => !v)}>
+          <button type="button" style={smallPrimaryButton} onClick={() => { setAddForm(newEmptyForm()); setShowAddForm(v => !v); }}>
             <Plus className="w-4 h-4" />
             新しいセッションを記録
           </button>
@@ -470,6 +483,7 @@ function ScheduleForm({
           <input
             type="date"
             value={form.coaching_date}
+            min={mode === 'create' ? toLocalDateKey(new Date()) : undefined}
             onChange={e => onChange({ ...form, coaching_date: e.target.value })}
             style={inputStyle}
           />

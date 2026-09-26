@@ -267,10 +267,23 @@ router.post('/schedule/:userid', requireAuth, async (req, res) => {
       });
     }
 
+    // 過去日の新規登録は不可。Google MeetのSpace発行より前に弾く(発行後に弾くとSpaceが孤立する)
+    const coachingDate = req.body?.coaching_date;
+    const todayJst = new Date().toLocaleDateString('sv-SE', { timeZone: 'Asia/Tokyo' });
+    if (typeof coachingDate !== 'string' || !/^\d{4}-\d{2}-\d{2}$/.test(coachingDate) || coachingDate < todayJst) {
+      return res.status(400).json({
+        error: 'Bad Request',
+        message: '実施日には今日以降の日付を指定してください'
+      });
+    }
+
     const schedule = await coachingService.createCoachingSchedule(parseInt(userid), req.body);
     res.status(201).json(schedule);
   } catch (error) {
     console.error('[Coaching] Create coaching schedule error:', error.message);
+    if (error.response?.status === 400) {
+      return res.status(400).json({ error: 'Bad Request', message: error.response.data?.detail || '入力内容に誤りがあります' });
+    }
     const errorResponse = createErrorResponse(error, 'general', 500);
     res.status(500).json(errorResponse);
   }

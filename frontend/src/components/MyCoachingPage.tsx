@@ -104,31 +104,44 @@ export function MyCoachingPage() {
   }, [notes]);
 
   /**
-   * 実施済みの回（「これまでのコーチング」「前回」に出すもの）。
-   * コーチが実施結果（終了・中断）を記録した回だけ。日付が過ぎていても実施記録の無い回は
-   * 未実施なので出さない。リスケで流れた回も実施していないので除く。
-   * 並びはAPIの coaching_date 降順のまま。
+   * 実施日の降順（同日は回数の降順）に並べ直した一覧。
+   * APIは coaching_no の降順で返すため、後から前の日付の回を追加すると日付順と食い違う
    */
-  const pastSchedules = useMemo(
-    () => schedules.filter(s => s.status === 'completed' || s.status === 'interrupted'),
+  const schedulesByDateDesc = useMemo(
+    () => [...schedules].sort((a, b) =>
+      b.coaching_date.localeCompare(a.coaching_date) || b.coaching_no - a.coaching_no),
     [schedules],
   );
 
   /**
-   * 「これまでのコーチング」の一覧。実施済みの回に、リスケで流れた回を「リスケ」表示付きで混ぜる。
-   * 予定が動いた経緯を受講生が追えるようにするため。日付順はAPIの降順のまま
+   * 実施済みの回（「これまでのコーチング」「前回」に出すもの）。
+   * コーチが実施結果（終了・中断）を記録した回だけ。日付が過ぎていても実施記録の無い回は
+   * 未実施なので出さない。リスケで流れた回も実施していないので除く。
    */
-  const historySchedules = useMemo(() => {
-    const past = new Set(pastSchedules.map(s => s.id));
-    return schedules.filter(s => past.has(s.id) || s.status === 'rescheduled');
-  }, [schedules, pastSchedules]);
+  const pastSchedules = useMemo(
+    () => schedulesByDateDesc.filter(s => s.status === 'completed' || s.status === 'interrupted'),
+    [schedulesByDateDesc],
+  );
 
-  /** 未実施の予約のうち最も近いもの。無ければヒーローカードは出さない */
+  /**
+   * 「これまでのコーチング」の一覧。実施済みの回に、リスケで流れた回を「リスケ」表示付きで混ぜる。
+   * 予定が動いた経緯を受講生が追えるようにするため
+   */
+  const historySchedules = useMemo(
+    () => schedulesByDateDesc.filter(s =>
+      s.status === 'completed' || s.status === 'interrupted' || s.status === 'rescheduled'),
+    [schedulesByDateDesc],
+  );
+
+  /**
+   * 次回コーチング: 未実施（実施結果が未記録）かつ実施日が本日以降のうち、最も日付が近い回。
+   * 無ければヒーローカードは出さない
+   */
   const nextSchedule = useMemo(() => {
     const today = toLocalDateKey(new Date());
-    const upcoming = schedules.filter(s => s.coaching_date >= today && s.status === null);
+    const upcoming = schedulesByDateDesc.filter(s => s.status === null && s.coaching_date >= today);
     return upcoming.length > 0 ? upcoming[upcoming.length - 1] : null;
-  }, [schedules]);
+  }, [schedulesByDateDesc]);
 
   /** 直近の実施済みセッション（「前回の振り返り」用） */
   const lastSchedule = pastSchedules[0] ?? null;
