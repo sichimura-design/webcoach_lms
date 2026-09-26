@@ -396,3 +396,35 @@ describe('NoteEditorBar の保存状態', () => {
     expect(v.saveBtn.disabled).toBe(true);
   });
 });
+
+describe('NoteGrid の空の表示', () => {
+  // eslint-disable-next-line @typescript-eslint/no-var-requires
+  const NoteGrid = require('./NoteGrid').default ?? require('./NoteGrid').NoteGrid;
+  const grid = (props: Partial<Record<string, unknown>>) => {
+    render(
+      createElement(NoteGrid, {
+        items: [], loading: false, totalCount: 0, folders: [], filter: { kind: 'all' }, hasOtherFilters: false,
+        onOpen: () => undefined, onToggleFavorite: () => undefined, onMove: () => undefined,
+        onCreate: () => undefined, onClearFilters: () => undefined, ...props,
+      })
+    );
+    return container.textContent ?? '';
+  };
+
+  it('1枚も無ければ「最初のノート」', () => {
+    expect(grid({})).toContain('最初のノートをつくりましょう');
+  });
+
+  it('検索して0件のときは「最初のノート」ではなく「一致しない」', () => {
+    const text = grid({ hasOtherFilters: true });
+    expect(text).toContain('条件に一致するノートがありません');
+    expect(text).not.toContain('最初のノート');
+  });
+
+  it('空のフォルダ・空の重要', () => {
+    expect(grid({ totalCount: 2, filter: { kind: 'folder', id: '3' } })).toContain('このフォルダにはまだノートがありません');
+    act(() => root!.unmount());
+    root = null;
+    expect(grid({ totalCount: 2, filter: { kind: 'favorite' } })).toContain('重要にしたノートはありません');
+  });
+});
