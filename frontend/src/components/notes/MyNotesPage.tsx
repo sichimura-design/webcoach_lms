@@ -10,6 +10,7 @@ import { useNoteFolders } from '../../hooks/useNoteFolders';
 import { pageTitleStyle } from '../../theme/pageTitle';
 import { useNoteList } from '../../hooks/useNoteList';
 import { BackTo } from '../../hooks/useNoteCapture';
+import { QuickMemoButton, useQuickMemoWindow } from '../quickMemo/QuickMemoLauncher';
 import {
   NOTE_ORIGIN_LABEL,
   NOTE_SORT_LABEL,
@@ -83,6 +84,7 @@ export function MyNotesPage() {
   // /notes?note=<id> で直接開けるようにするため（ルート定義は増やさない）。
   const [searchParams, setSearchParams] = useSearchParams();
   const selectedId = searchParams.get('note');
+  const detail = useNote(selectedId);
   const rawFilter = useMemo(() => parseFolderParam(searchParams.get('folder')), [searchParams]);
 
   // 消えたフォルダを指す ?folder= は「すべて」として扱う（読み込み中は判定しない）
@@ -104,9 +106,10 @@ export function MyNotesPage() {
     const next = new URLSearchParams(searchParams);
     if (id) next.set('note', id);
     else next.delete('note');
-    setSearchParams(next, { replace: id === null });
     // ノート面で本文を書くと updatedAt と書き出しが変わる。一覧へ戻るときに取り直して並びを合わせる
-    if (id === null && selectedId) void list.reload();
+    // 🔴 未保存の本文を送り終えてから取り直す。先に取ると一覧の書き出しが古いまま残る
+    if (id === null && selectedId) void detail.saveBody().then(() => list.reload());
+    setSearchParams(next, { replace: id === null });
   };
 
   const [page, setPage] = useState(1);
@@ -125,7 +128,6 @@ export function MyNotesPage() {
     [searchParams, setSearchParams]
   );
 
-  const detail = useNote(selectedId);
 
   // 絞り込みとページ送りは、取得済みの一覧に対してその場でかける。
   // チップごとに再取得しないので、押した瞬間に切り替わる。
@@ -190,7 +192,11 @@ export function MyNotesPage() {
     setFolder({ kind: 'all' });
   };
 
-  /** クリップ・AI回答から元のレッスンへ。?block= で保存した箇所まで戻す */
+  /**
+   * 元のレッスンを **教材ページで** 開く。上部バーの「『◯◯』に戻る」だけが使う。
+   * ノート本文の出どころ行と「教材から引用」は、遷移ではなく引用モーダルを開く
+   * （NoteEditor / QuoteFromLessonModal）。
+   */
   const openSource = (source: NoteSourceRef, blockId: string | null) => {
     const params = new URLSearchParams({ module: String(source.lessonId) });
     if (source.blockId) params.set('block', source.blockId);
@@ -289,6 +295,32 @@ export function MyNotesPage() {
       }
     : null;
 
+  /*
+   * ── ノートを小窓で開く（Document Picture-in-Picture）──
+   * 教材の動画や会議を見ながら、このノートの本文を書き足すための常時最前面の小窓。
+   *
+   * 🔴 小窓を持つのはこのページで、ボタンだけを上部バーに置く。
+   *    バーは detail.note が消えると一緒に消えるので、そこに小窓を持たせると
+   *    再描画のたびに小窓が落ちる。
+   * 🔴 本文の state は detail（useNote）と**共有する**。小窓に別のテキスト状態を持たせない。
+   * 🔴 小窓には保存ボタンが無いので、小窓から抜けたとき（onFlush）に保存する。
+   * 🔴 ノートを閉じたら小窓も閉じる。
+   */
+  const memoWindow = useQuickMemoWindow({
+    targetLabel: detail.note ? `→ ${detail.note.title || '無題のノート'}` : '',
+    windowTitle: 'ノート — WEBCOACH',
+    text: detail.note?.body ?? '',
+    onChangeText: detail.setBody,
+    onFlush: () => void detail.saveBody(),
+    status: detail.saveState.saving ? 'saving' : detail.saveState.lastSavedAt ? 'saved' : 'idle',
+    error: detail.saveState.error,
+  });
+
+  const { isOpen: memoIsOpen, close: closeMemo } = memoWindow;
+  useEffect(() => {
+    if (memoIsOpen && !detail.note) closeMemo();
+  }, [memoIsOpen, detail.note, closeMemo]);
+
   return (
     <div className="wc-warm min-h-screen flex flex-col" style={{ background: 'var(--dc-bg)' }}>
       <AppHeader userName={user?.username || 'User'} />
@@ -311,16 +343,26 @@ export function MyNotesPage() {
                     onMoveToFolder={(folderId) => void moveNote(detail.note!.id, folderId, true)}
                     onToggleFavorite={() => void toggleFavoriteInEditor()}
                     onDelete={() => void handleDelete(detail.note!.id, detail.note!.title)}
+                    onSave={() => void detail.saveBody()}
+                    quickMemo={
+                      memoWindow.supported ? (
+                        <QuickMemoButton
+                          isOpen={memoWindow.isOpen}
+                          onClick={() => void memoWindow.toggle()}
+                          className="notes-tool focus-visible:ring-2 focus-visible:ring-[#F6B9BD]"
+                        />
+                      ) : null
+                    }
                   />
                   <div style={{ width: '100%', flex: 1, display: 'flex', flexDirection: 'column' }}>
                     <NoteEditor
                       note={detail.note}
                       onRename={renameInEditor}
+                      onBodyChange={detail.setBody}
+                      onSave={() => void detail.saveBody()}
                       onAddBlock={detail.addBlock}
                       onPatchBlock={detail.patchBlock}
-                      onMoveBlock={detail.moveBlock}
                       onRemoveBlock={detail.removeBlock}
-                      onOpenSource={openSource}
                     />
                   </div>
                 </>
@@ -557,8 +599,13 @@ export function MyNotesPage() {
           )}
         </main>
 
-        <AppFooter style={{ padding: '32px 0 24px' }} />
+        {/* 🔴 ノート面ではフッターを出さない。紙を画面の底まで伸ばしているので、
+               その下にさらにフッターが付くと「まだ下がある」空白になる。 */}
+        {!selectedId && <AppFooter style={{ padding: '32px 0 24px' }} />}
       </div>
+
+      {/* 小窓の中身。バーの再描画で落ちないよう、ページの直下で描く */}
+      {memoWindow.portal}
     </div>
   );
 }

@@ -8,8 +8,8 @@
  * その中に文章・クリップ・AI回答を自由に追加して、自分なりの学習ノートを
  * 育てていけるものにする」。器（Note）と中身（NoteBlock）に分けたのはそのため。
  *
- * 実API `/api/my-note/*`（webcoach_my_note）に載っている。実APIは本文をMarkdownの
- * 1列で持つため、この型との相互変換は services/bffClient.ts が
+ * 実API `/api/my-note/*`（webcoach_my_note）に載っている。実APIは本文と素材を
+ * Markdownの1列で持つため、この型との相互変換は services/bffClient.ts が
  * utils/noteMarkdown.ts を通して行う。MSWのモックは廃止した。
  */
 
@@ -80,10 +80,6 @@ interface NoteBlockBase {
   updatedAt: string;
 }
 
-export interface NoteTextBlock extends NoteBlockBase {
-  kind: 'text';
-  text: string;
-}
 
 export interface NoteClipBlock extends NoteBlockBase {
   kind: 'clip';
@@ -102,11 +98,22 @@ export interface NoteAnswerBlock extends NoteBlockBase {
   source: NoteSourceRef | null;
 }
 
-export type NoteBlock = NoteTextBlock | NoteClipBlock | NoteAnswerBlock;
+/**
+ * 🔴 NoteBlock に text は**入らない**。本文は Note.body の1本（dev/miyabe の v6）。
+ *    ブロックとして残るのは、本文の下に並ぶ「素材」（クリップ / AI回答）だけ。
+ */
+export type NoteBlock = NoteClipBlock | NoteAnswerBlock;
 
 export interface Note {
   id: string;
   title: string;
+  /**
+   * 本文。1枚の紙に書いた1本の長いテキスト（記法は noteText.tsx が解釈する）。
+   * 🔴 ここを段落ごとのブロックに割り戻さないこと。以前は1段落＝1ブロックで、
+   *    段落を跨いだカーソル移動も Backspace での結合もできなかった。
+   */
+  body: string;
+  /** 素材。教材からの引用クリップと AI回答。本文の下に追加順で並ぶ */
   blocks: NoteBlock[];
   /**
    * 一覧のラベル「重要」。手で付けるラベルはこれ1種だけ。
@@ -189,6 +196,8 @@ export interface NoteCreateInput {
 export interface NoteUpdateInput {
   title?: string;
   favorite?: boolean;
+  /** 本文の全文。差分ではなく全文（本文は1本のテキストで、部分更新の単位が無い） */
+  body?: string;
   /** フォルダの移動。null で未整理へ。移動だけなら updatedAt は上がらない */
   folderId?: string | null;
 }
@@ -204,7 +213,7 @@ export interface NoteFolderUpdateInput {
 }
 
 /**
- * 一覧の左列で選ぶ「どこを見ているか」。
+ * 一覧の上部バーで選ぶ「どこを見ているか」。
  * all/favorite は集計ビュー、inbox は folderId=null、folder は1フォルダ。
  * URL の ?folder= に載せる（all は省略、favorite は star）。
  */
@@ -239,9 +248,11 @@ export function matchesFolderFilter(
   return note.folderId === filter.id;
 }
 
-/** POST /webcoach/notes/:id/blocks — kind ごとに必要なものだけ渡す */
+/**
+ * POST /webcoach/notes/:id/blocks — kind ごとに必要なものだけ渡す。
+ * 🔴 `{ kind: 'text' }` は無い。本文は NoteUpdateInput.body が受け持つ。
+ */
 export type NoteBlockInput =
-  | { kind: 'text'; text: string }
   | { kind: 'clip'; text: string; source: NoteSourceRef }
   | {
       kind: 'answer';
@@ -253,19 +264,19 @@ export type NoteBlockInput =
     };
 
 /**
- * 挿入位置。省略すると末尾。
- * ブロックの間の ＋ から差し込むために要る（`order` 列は持たず、配列の順序が正）。
+ * 教材・AIコーチからノートへ取り込むもの（hooks/useNoteCapture.ts）。
+ * 素材として足すか、本文の末尾に書き足すかの2通り。
+ * 🔴 `{ kind:'text' }` はブロックではなく **Note.body への追記**。
  */
-export interface NoteBlockInsert {
-  index?: number;
-}
+export type NoteCaptureInput = NoteBlockInput | { kind: 'text'; text: string };
 
-/** PATCH /webcoach/notes/:id/blocks/:blockId */
+/**
+ * PATCH /webcoach/notes/:id/blocks/:blockId
+ * 🔴 並べ替えの `index` は無い。素材は追加順に並ぶだけで、動かせない。
+ */
 export interface NoteBlockPatch {
   text?: string;
   answer?: string;
-  /** 並べ替え。この位置へ動かす（ノート面の ⠿）。範囲外は端に寄せる */
-  index?: number;
 }
 
 /**

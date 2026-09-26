@@ -102,7 +102,6 @@ import {
   Note,
   NoteBlock,
   NoteBlockInput,
-  NoteBlockInsert,
   NoteBlockPatch,
   NoteClipRef,
   NoteCreateInput,
@@ -207,17 +206,16 @@ function buildBlockFromInput(input: NoteBlockInput, index: number): NoteBlock {
       question: input.question,
       answer: input.answer,
       selectedText: input.selectedText ?? null,
-      image: input.image ?? null,
+      image: null,
       source: input.source ?? null,
     };
   }
-  return { ...base, kind: 'text', text: input.text ?? '' };
+  throw new Error('unknown note block kind');
 }
 
 /** ブロックの部分更新。種別ごとに書き換えられる項目だけ当てる */
 function applyBlockPatch(block: NoteBlock, patch: NoteBlockPatch): NoteBlock {
   const updatedAt = new Date().toISOString();
-  if (block.kind === 'text' && patch.text !== undefined) return { ...block, text: patch.text, updatedAt };
   if (block.kind === 'clip' && patch.text !== undefined) return { ...block, text: patch.text, updatedAt };
   if (block.kind === 'answer' && patch.answer !== undefined) return { ...block, answer: patch.answer, updatedAt };
   return block;
@@ -1951,8 +1949,8 @@ class BFFClient {
   // ==================== マイノート（自由帳） ====================
   // 実API `/api/my-note/*`（webcoach_my_note / webcoach_my_note_folder）に載せている。
   //
-  // 🔴 UI側の型（Note / NoteBlock）は変えていない。実APIは本文を Markdown の1列で持つので、
-  //    ここで blocks[] ⇔ Markdown を変換する（utils/noteMarkdown.ts）。
+  // 🔴 実APIは本文と素材を Markdown の1列（contents）で持つので、
+  //    ここで { body, blocks } ⇔ Markdown を変換する（utils/noteMarkdown.ts）。
   // 🔴 実APIは userid をパスに要る。UIのフック・コンポーネントを触らずに済ませるため、
   //    ここで現在ユーザーのMoodle IDを解決してキャッシュする。
   // 🔴 一覧は絞り込み・並び替え・全文検索をクライアント側で行う。実APIが本文ごと返すため
@@ -1974,12 +1972,14 @@ class BFFClient {
     return this.moodleUserIdPromise;
   }
 
-  /** 実APIのノート → UIのNote（本文をブロックへ展開する） */
+  /** 実APIのノート → UIのNote（contents を本文と素材に分ける） */
   private toNote(row: MyNote): Note {
+    const { body, blocks } = parseNoteMarkdown(row.contents, row.updated_at);
     return {
       id: String(row.noteid),
       title: row.title,
-      blocks: parseNoteMarkdown(row.contents, row.updated_at),
+      body,
+      blocks,
       favorite: row.favorite === 1,
       origin: originOf(row),
       folderId: row.folder_id === null ? null : String(row.folder_id),
@@ -2016,11 +2016,11 @@ class BFFClient {
     return response.data;
   }
 
-  /** ブロック配列を書き戻す */
-  private async saveBlocks(id: string, blocks: NoteBlock[]): Promise<Note> {
+  /** 本文と素材を書き戻す */
+  private async saveContents(id: string, body: string, blocks: NoteBlock[]): Promise<Note> {
     const userId = await this.getMoodleUserId();
     const response = await this.api.put(`/my-note/notes/${userId}/${id}`, {
-      contents: serializeNoteMarkdown(blocks),
+      contents: serializeNoteMarkdown(body, blocks),
     });
     return this.toNote(response.data);
   }
@@ -2064,10 +2064,18 @@ class BFFClient {
     return this.toNote(response.data);
   }
 
-  /** PUT /api/my-note/notes/{userid}/{noteid} — タイトル・お気に入り・フォルダ移動 */
+  /**
+   * PUT /api/my-note/notes/{userid}/{noteid} — タイトル・お気に入り・フォルダ移動・本文
+   * 🔴 本文を送るときは素材を読み直して組み直す。contents は本文と素材の1列なので、
+   *    素材を知らずに書くと、別の画面から足された素材を消してしまう。
+   */
   async updateNote(id: string, body: NoteUpdateInput): Promise<Note> {
     const userId = await this.getMoodleUserId();
     const payload: Record<string, unknown> = {};
+    if (body.body !== undefined) {
+      const current = parseNoteMarkdown((await this.fetchNoteRow(id)).contents);
+      payload.contents = serializeNoteMarkdown(body.body, current.blocks);
+    }
     if (body.title !== undefined) payload.title = body.title;
     if (body.favorite !== undefined) payload.favorite = body.favorite ? 1 : 0;
     // null を明示的に送ると未整理へ移す。キー自体を送らなければ変更しない
@@ -2085,49 +2093,37 @@ class BFFClient {
   }
 
   /**
-   * ブロックの追加。実APIはブロック単位の口を持たないので、
-   * 本文を読み直して差し込み、丸ごと書き戻す。
+   * 素材（クリップ / AI回答）の追加。実APIはブロック単位の口を持たないので、
+   * 読み直して末尾に足し、丸ごと書き戻す。
    */
-  async appendNoteBlock(
-    noteId: string,
-    input: NoteBlockInput & NoteBlockInsert
-  ): Promise<NoteBlock> {
+  async appendNoteBlock(noteId: string, input: NoteBlockInput): Promise<NoteBlock> {
     const row = await this.fetchNoteRow(noteId);
-    const blocks = parseNoteMarkdown(row.contents, row.updated_at);
+    const { body, blocks } = parseNoteMarkdown(row.contents, row.updated_at);
     const block = buildBlockFromInput(input, blocks.length);
-    const at = input.index;
-    if (typeof at === 'number' && at >= 0 && at < blocks.length) blocks.splice(at, 0, block);
-    else blocks.push(block);
-    await this.saveBlocks(noteId, blocks);
+    await this.saveContents(noteId, body, [...blocks, block]);
     return block;
   }
 
-  /** ブロックの書き換え、または index による並べ替え */
+  /** 素材の書き換え */
   async updateNoteBlock(noteId: string, blockId: string, patch: NoteBlockPatch): Promise<NoteBlock> {
     const row = await this.fetchNoteRow(noteId);
-    const blocks = parseNoteMarkdown(row.contents, row.updated_at);
+    const { body, blocks } = parseNoteMarkdown(row.contents, row.updated_at);
     const at = blocks.findIndex((b) => b.id === blockId);
     if (at < 0) throw new Error(`note block not found: ${blockId}`);
 
     const updated = applyBlockPatch(blocks[at], patch);
     blocks[at] = updated;
-
-    if (typeof patch.index === 'number') {
-      const to = Math.max(0, Math.min(blocks.length - 1, patch.index));
-      const [moved] = blocks.splice(at, 1);
-      blocks.splice(to, 0, moved);
-    }
-
-    await this.saveBlocks(noteId, blocks);
+    await this.saveContents(noteId, body, blocks);
     return updated;
   }
 
-  /** ブロックの削除 */
+  /** 素材の削除 */
   async deleteNoteBlock(noteId: string, blockId: string): Promise<void> {
     const row = await this.fetchNoteRow(noteId);
-    const blocks = parseNoteMarkdown(row.contents, row.updated_at);
-    await this.saveBlocks(
+    const { body, blocks } = parseNoteMarkdown(row.contents, row.updated_at);
+    await this.saveContents(
       noteId,
+      body,
       blocks.filter((b) => b.id !== blockId)
     );
   }
@@ -2145,7 +2141,7 @@ class BFFClient {
 
     const clips: NoteClipRef[] = [];
     for (const row of rows) {
-      for (const block of parseNoteMarkdown(row.contents, row.updated_at)) {
+      for (const block of parseNoteMarkdown(row.contents, row.updated_at).blocks) {
         if (block.kind !== 'clip' || block.source.lessonId !== lessonId) continue;
         clips.push({
           noteId: String(row.noteid),

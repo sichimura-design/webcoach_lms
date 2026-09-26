@@ -80,20 +80,11 @@ function foldToV6(note: NoteV5): Note {
       blocks.push(block);
     }
   }
-  // 既に body を持っているノート（v6形式のシード）は、その本文を先頭に置いて取りこぼさない
+  // 既に body を持っているノート（v6）は、その本文を先頭に置いて取りこぼさない
   const head = (note.body ?? '').trim();
-  const text = [head, ...texts].filter(Boolean).join('\n\n');
+  const body = [head, ...texts].filter(Boolean).join('\n\n');
   const { body: _ignored, ...rest } = note;
-  if (text) {
-    blocks.unshift({
-      id: nextId('block'),
-      createdAt: note.createdAt,
-      updatedAt: note.updatedAt,
-      kind: 'text',
-      text,
-    });
-  }
-  return { ...rest, blocks };
+  return { ...rest, body, blocks };
 }
 
 export interface NoteStoreV6 {

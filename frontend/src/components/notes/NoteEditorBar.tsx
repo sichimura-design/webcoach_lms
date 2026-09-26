@@ -9,6 +9,7 @@ import {
   Inbox,
   Loader2,
   MoreHorizontal,
+  Save,
   Star,
   Trash2,
 } from 'lucide-react';
@@ -37,6 +38,13 @@ interface NoteEditorBarProps {
   onMoveToFolder: (folderId: string | null) => void;
   onToggleFavorite: () => void;
   onDelete: () => void;
+  /** 本文を保存する（自動保存はしない。useNote の saveBody） */
+  onSave: () => void;
+  /**
+   * 「ノートを小窓で開く」。中身は MyNotesPage が渡す。
+   * ここに置くのは並びだけ（このバーは note が消えると一緒に消えるので、小窓の寿命を預けられない）。
+   */
+  quickMemo?: React.ReactNode;
 }
 
 /** ② 保存先のピル。押すと 未整理＋フォルダ の一覧が開く */
@@ -122,7 +130,7 @@ function FolderPill({
           {folders.map((f) => item(f.id, f.name, <Folder size={14} />))}
           {folders.length === 0 && (
             <p style={{ margin: '4px 10px 6px', fontSize: 12, lineHeight: 1.7, color: 'var(--dc-text-subtle)' }}>
-              フォルダは一覧の左列で作れます。
+              一覧に戻って「フォルダを開く」から作れます。
             </p>
           )}
         </div>
@@ -146,6 +154,14 @@ function SaveStatus({ saveState, fallbackAt }: { saveState: NoteSaveState; fallb
       <span style={base} role="status" aria-live="polite">
         <Loader2 size={14} className="animate-spin" style={{ color: 'var(--dc-text-subtle)' }} />
         保存中…
+      </span>
+    );
+  }
+  if (saveState.dirty) {
+    return (
+      <span style={base} role="status" aria-live="polite">
+        <AlertCircle size={14} style={{ color: 'var(--dc-text-subtle)' }} />
+        未保存の変更があります
       </span>
     );
   }
@@ -177,6 +193,8 @@ export function NoteEditorBar({
   onMoveToFolder,
   onToggleFavorite,
   onDelete,
+  onSave,
+  quickMemo,
 }: NoteEditorBarProps) {
   const [moreOpen, setMoreOpen] = useState(false);
   const moreRef = useRef<HTMLDivElement>(null);
@@ -224,7 +242,37 @@ export function NoteEditorBar({
 
       <span style={{ flex: 1 }} />
 
+      {quickMemo}
+
       <SaveStatus saveState={saveState} fallbackAt={note.updatedAt} />
+
+      {/* 🔴 本文は自動保存しない。未保存があるときだけ押せる（Ctrl+S でも同じ） */}
+      <button
+        type="button"
+        onClick={onSave}
+        disabled={!saveState.dirty || saveState.saving}
+        title="保存（Ctrl+S）"
+        className="focus-visible:ring-2 focus-visible:ring-[#F6B9BD]"
+        style={{
+          display: 'inline-flex',
+          alignItems: 'center',
+          gap: 6,
+          height: 32,
+          padding: '0 16px',
+          border: 0,
+          borderRadius: 9999,
+          background: saveState.dirty ? 'var(--dc-primary)' : 'var(--dc-sunken)',
+          color: saveState.dirty ? '#fff' : 'var(--dc-text-subtle)',
+          fontFamily: 'inherit',
+          fontSize: 12,
+          fontWeight: 700,
+          cursor: saveState.dirty && !saveState.saving ? 'pointer' : 'default',
+          whiteSpace: 'nowrap',
+        }}
+      >
+        <Save size={14} />
+        保存
+      </button>
 
       <button
         type="button"
