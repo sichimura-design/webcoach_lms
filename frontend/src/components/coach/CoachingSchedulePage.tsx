@@ -426,9 +426,6 @@ export function CoachingSchedulePage({ studentId }: CoachingSchedulePageProps) {
                             <button type="button" style={ghostSmallButton} onClick={() => handleSaveNote(schedule.id)} disabled={noteSaving}>
                               {noteSaving ? '保存中...' : '下書き保存'}
                             </button>
-                            <button type="button" style={smallPrimaryButton} onClick={() => handleSaveNote(schedule.id, 'coach_confirmed')} disabled={noteSaving}>
-                              内容を確定
-                            </button>
                             <button
                               type="button"
                               style={{ ...smallPrimaryButton, background: '#1E7A34' }}
