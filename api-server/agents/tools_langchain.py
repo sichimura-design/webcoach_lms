@@ -5,7 +5,9 @@ BFF APIツールをLangChain Tool形式で定義
 import os
 import json
 import base64
+import html
 import logging
+import re
 import time
 from functools import lru_cache
 from typing import Dict, Any, List, Optional
@@ -310,6 +312,21 @@ _dify_conversation_cache: Dict[tuple, str] = {}
 # プロセス内メモリのみ。
 _dify_sticky_app_cache: Dict[tuple, int] = {}
 
+# 直前のDify応答に含まれていたボタンの値（(userid, session_id) -> {data-message値}）。
+# 次の発言がこのいずれかと一致した場合だけ、直前のアプリへツール選択を強制する
+# （ボタン値の完全一致で進むステップ形式のフローを確実に続けるため）。それ以外の
+# 発言はLLMに選ばせ直し、会話の途中でも別のアプリへ切り替えられるようにする。
+# プロセス内メモリのみ。
+_dify_last_buttons_cache: Dict[tuple, set] = {}
+
+_BUTTON_VALUE_RE = re.compile(r'<button\b[^>]*\bdata-message="([^"]*)"', re.IGNORECASE)
+
+
+def _extract_button_values(answer: str) -> set:
+    """Dify応答（またはフォールバックで組み立てたボタンHTML）からボタンの送信値を抜き出す"""
+    return {html.unescape(v).strip() for v in _BUTTON_VALUE_RE.findall(answer or "") if v.strip()}
+
+
 # 必須入力変数(extra_inputs)のセッション内キャッシュ（(userid, app_id, session_id) -> inputs辞書）。
 # LLMには「一度聞き取ったら以降の全ターンでextra_inputsに設定し続けること」と指示しているが、
 # 実際には省略してしまうことがあり(非決定的)、その場合Difyがrequired変数不足で
@@ -365,6 +382,7 @@ def get_sticky_dify_app_id(userid: int, session_id: Optional[str] = None) -> Opt
 def clear_sticky_dify_app(userid: int, session_id: Optional[str] = None) -> None:
     """Difyツールを使わずにターンが完了した場合、次ターンでのツール固定を解除する"""
     _dify_sticky_app_cache.pop((userid, session_id), None)
+    _dify_last_buttons_cache.pop((userid, session_id), None)
 
 
 def _call_dify_chat(
@@ -489,9 +507,11 @@ def _call_dify_chat(
             # ユーザーに見せず、選べる選択肢がある場合はボタンとして提示する。
             suggested_questions = _get_dify_parameters(api_key).get("suggested_questions") or []
             if suggested_questions:
-                return _render_suggested_questions_html(suggested_questions)
-            return "回答を生成できませんでした。別の言い方で試すか、少し時間をおいてから聞いてみてください。"
+                answer = _render_suggested_questions_html(suggested_questions)
+            else:
+                answer = "回答を生成できませんでした。別の言い方で試すか、少し時間をおいてから聞いてみてください。"
 
+        _dify_last_buttons_cache[(userid, session_id)] = _extract_button_values(answer)
         return answer
 
     except requests.exceptions.Timeout as e:
@@ -520,7 +540,7 @@ def create_ai_application_tools(
     userid: int = None,
     session_id: Optional[str] = None,
     image: Optional[Dict[str, str]] = None,
-) -> "tuple[List[BaseTool], Optional[str]]":
+) -> "tuple[List[BaseTool], Optional[str], Optional[str]]":
     """
     DBに登録済みのAIアプリケーション（webcoach_ai_application.secret_keyが設定されているもの）を
     LangChain Toolとして動的に生成する。
@@ -533,9 +553,16 @@ def create_ai_application_tools(
     持つことがあり、LLMによる言い換えを挟むとフローが先に進まなくなるため。
     同じ理由で、ユーザーの添付画像(image)もLLMを介さずそのままDifyへ渡す。
 
-    戻り値の2つ目は、このターンで会話継続のために固定すべきツール名
-    （前ターンで使っていたDifyアプリと同一のもの）。ユーザーの発言に他アプリ
-    固有のタグキーワードが含まれる場合は明示的な切り替え意図とみなし、Noneを返す。
+    戻り値は (tools, forced_tool_name, continuing_tool_name)。
+    - forced_tool_name: ユーザーの発言が直前のDify応答のボタン値と一致した場合の、
+      前ターンのアプリのツール名。LLMに選ばせずこのツールへ固定する。
+    - continuing_tool_name: それ以外で前ターンのアプリがある場合のツール名。
+      固定はせず「続きなら同じツールを」とLLMに伝えるだけにする（自由入力の回答は
+      続きとして扱わせつつ、会話の途中でも別アプリの用途の依頼なら切り替えられるように）。
+      ユーザーの発言に他アプリ固有のタグキーワードが含まれる場合は明示的な
+      切り替え意図とみなし、Noneを返す。
+    以前は後者の場合も固定しており、一度Difyアプリを使うと「キャッチコピーを考えて」
+    等の別用途の依頼まで同じアプリへ送られ、同じ質問が繰り返されていた。
     """
     from entities.webcoach import WebCoachAIApplication
 
@@ -615,11 +642,18 @@ def create_ai_application_tools(
             )
         )
 
-    sticky_tool_name = None
+    forced_tool_name = None
+    continuing_tool_name = None
     sticky_app_id = get_sticky_dify_app_id(userid, session_id) if userid is not None else None
-    if sticky_app_id is not None:
-        sticky_app = next((a for a in apps if a.id == sticky_app_id), None)
-        if sticky_app:
+    sticky_app = next((a for a in apps if a.id == sticky_app_id), None) if sticky_app_id is not None else None
+    if sticky_app:
+        sticky_name = f"ask_ai_application_{sticky_app_id}"
+        last_buttons = _dify_last_buttons_cache.get((userid, session_id)) or set()
+        if raw_user_message.strip() in last_buttons:
+            # 直前のDify応答のボタンを押した（またはその値をそのまま入力した）
+            # → そのアプリの続きであることが確実なので、LLMに選ばせず固定する
+            forced_tool_name = sticky_name
+        else:
             sticky_tags = {t.strip() for t in (sticky_app.tags or "").split(",")}
             other_tags = set()
             for other in apps:
@@ -630,9 +664,9 @@ def create_ai_application_tools(
             distinctive_other_tags = {t for t in (other_tags - sticky_tags) if t}
             switched = any(tag in raw_user_message for tag in distinctive_other_tags)
             if not switched:
-                sticky_tool_name = f"ask_ai_application_{sticky_app_id}"
+                continuing_tool_name = sticky_name
 
-    return tools, sticky_tool_name
+    return tools, forced_tool_name, continuing_tool_name
 
 
 # LangChain Tools定義

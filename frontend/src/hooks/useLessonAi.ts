@@ -87,15 +87,17 @@ const EMPTY_MESSAGES: AiCoachMessage[] = [];
 const AI_MESSAGE_MAX_LENGTH = 1000;
 
 /**
- * 専門モードの依頼文。実BFFに POST /webcoach/ai-skill は無いので、専門モードも
- * 通常のAIチャット（POST /webcoach/ai）で実行し、モードの意図をこの前置きで伝える。
+ * 専門モードの指示文。実BFFに POST /webcoach/ai-skill は無いので、専門モードも
+ * 通常のAIチャット（POST /webcoach/ai）で実行し、モードの意図をこの指示文で伝える。
  * 画像はそのままLLM（マルチモーダル）へ渡るので、制作物添削も成り立つ。
+ *
+ * 本文(message)の前置きにはせず mode_instruction として別に送る。message はDify連携
+ * アプリへそのまま転送されるため、前置きが付くとボタンを押しても値が一致せず、
+ * Dify側が同じ質問（例:「今日使える時間について教えてください！」）を繰り返していた。
  */
-const skillRequestMessage = (skillId: ConcreteAiSkillId, question: string): string => {
+const skillModeInstruction = (skillId: ConcreteAiSkillId): string => {
   const meta = AI_SKILL_META[skillId];
-  const framed = `【${meta.modeLabel}】${meta.modeLead}観点ごとに整理して答え、最後に次にやることを示してください。\n\n${question}`;
-  // 上限を超えるとAPIが400を返すので、そのときは前置きを諦めて質問だけ送る
-  return framed.length <= AI_MESSAGE_MAX_LENGTH ? framed : question;
+  return `【${meta.modeLabel}】${meta.modeLead}観点ごとに整理して答え、最後に次にやることを示してください。`;
 };
 
 /** エラー時の回答の結論文。AiCoachPane がこれで「エラー発生時」のサジェストに切り替える */
@@ -260,20 +262,23 @@ export function useLessonAi(doc: LessonDoc | null, sessionIdOverride?: string): 
   /**
    * 汎用AIエンドポイント（POST /webcoach/ai）で応答する。
    *
-   * @param requestMessage APIへ送る文面。専門モードの前置きを付けるときだけ指定し、
+   * @param requestMessage APIへ送る文面。引用を含めるときだけ指定し、
    *   省略時は question をそのまま送る（画面に出るユーザー発言は常に question のまま）。
+   * @param modeInstruction 専門モードの指示文（skillModeInstruction）。message とは別に送る。
    */
   const runGeneralAi = useCallback(
     async (
       question: string,
       img: string | null,
       localSuggestion?: SkillSuggestion | null,
-      requestMessage?: string
+      requestMessage?: string,
+      modeInstruction?: string
     ) => {
       try {
         const res = await bffClient.sendAIMessage(
           {
             message: requestMessage ?? question,
+            ...(modeInstruction ? { mode_instruction: modeInstruction } : {}),
             // 会話履歴を渡さないと、DBに登録したAIアプリ(Dify)へ問い合わせ中の
             // 2ターン目以降でLLMが文脈を見失い、別のツールを呼んでしまう
             // (例: ボタン選択の「WEBデザイン」だけ送ると学習相談ツールに逸れる)。
@@ -403,7 +408,9 @@ export function useLessonAi(doc: LessonDoc | null, sessionIdOverride?: string): 
       }
       // 引用していた教材本文は汎用AIに渡す欄が無いので、依頼文に含める
       const body = q?.text ? `${question}\n\n引用:「${q.text}」` : question;
-      await runGeneralAi(question, img, null, skillRequestMessage(targetSkill, body));
+      // 上限を超えるとAPIが400を返すので、そのときは引用を諦めて質問だけ送る
+      const message = body.length <= AI_MESSAGE_MAX_LENGTH ? body : question;
+      await runGeneralAi(question, img, null, message, skillModeInstruction(targetSkill));
     },
     [runGeneralAi, runLessonAi]
   );

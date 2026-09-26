@@ -142,7 +142,7 @@ def test_chat_success_logs_ai_chat_event(usage_events):
         "iteration_count": 1,
     }
     with patch.object(ai_langgraph, "get_learning_coach_graph", return_value=fake_graph), \
-         patch("agents.tools_langchain.create_ai_application_tools", return_value=([], None)):
+         patch("agents.tools_langchain.create_ai_application_tools", return_value=([], None, None)):
         result = _execute_chat(_request(), MagicMock())
 
     assert result.message == "やあ"
@@ -169,7 +169,7 @@ def test_chat_exception_logs_error_and_reraises(usage_events):
     fake_graph = MagicMock()
     fake_graph.invoke.side_effect = RuntimeError("anthropic down")
     with patch.object(ai_langgraph, "get_learning_coach_graph", return_value=fake_graph), \
-         patch("agents.tools_langchain.create_ai_application_tools", return_value=([], None)):
+         patch("agents.tools_langchain.create_ai_application_tools", return_value=([], None, None)):
         with pytest.raises(RuntimeError):
             _execute_chat(_request(), MagicMock())
 

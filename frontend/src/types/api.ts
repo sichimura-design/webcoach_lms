@@ -422,6 +422,12 @@ export interface AIRequest {
    */
   session_id?: string;
   lesson_context?: AILessonContext;
+  /**
+   * 専門モード（制作物添削等）の指示文。message には混ぜず別項目で送る。
+   * message はDify連携アプリへ一言一句そのまま転送されるため、前置きを付けると
+   * ボタン値の完全一致で進むDifyのフローが先に進まなくなる（api-server側はLLMへの指示にだけ使う）。
+   */
+  mode_instruction?: string;
 }
 
 export interface AISource {

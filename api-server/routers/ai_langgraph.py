@@ -99,6 +99,14 @@ class ChatRequest(BaseModel):
     lesson_context: Optional[LessonContext] = Field(
         None, description="教材ページで開いているレッスン・見出し・選択文章等（教材ページからのみ）"
     )
+    mode_instruction: Optional[str] = Field(
+        None,
+        max_length=500,
+        description=(
+            "専門モード（制作物添削等）の指示文。LLMへの指示にだけ使い、Dify連携アプリへは送らない"
+            "（messageはDifyへそのまま転送されるため、前置きを混ぜるとボタン値が一致しなくなる）"
+        ),
+    )
 
 
 class ChatResponse(BaseModel):
@@ -229,6 +237,7 @@ def _execute_chat(request: ChatRequest, db: Session) -> ChatResponse:
         "course_id": request.course_id,
         "has_image": bool(request.image),
         "has_lesson_context": bool(request.lesson_context),
+        "has_mode_instruction": bool(request.mode_instruction),
         "message_chars": len(request.message),
         "history_len": len(request.conversation_history or []),
     }
@@ -325,7 +334,7 @@ def _execute_chat_inner(request: ChatRequest, db: Session, usage_fields: dict) -
 
     # DBに登録済みのAIアプリケーション（secret_key設定済み）を動的ツールとして構築
     from agents.tools_langchain import create_ai_application_tools
-    dynamic_tools, sticky_dify_tool_name = create_ai_application_tools(
+    dynamic_tools, sticky_dify_tool_name, continuing_dify_tool_name = create_ai_application_tools(
         db,
         request.message,
         request.user_id,
@@ -349,6 +358,8 @@ def _execute_chat_inner(request: ChatRequest, db: Session, usage_fields: dict) -
         "final_response": None,
         "dify_bypass_response": None,
         "sticky_dify_tool_name": sticky_dify_tool_name,
+        "continuing_dify_tool_name": continuing_dify_tool_name,
+        "mode_instruction": request.mode_instruction,
         "iteration_count": 0,
         "max_iterations": calculated_max_iterations
     }
