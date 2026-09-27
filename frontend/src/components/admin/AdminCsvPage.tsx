@@ -37,7 +37,7 @@ const CSV_TEMPLATES: Record<DataType, { filename: string; content: string }> = {
     content: [
       'id,name,category,description,url,icon_url,tags,secret_key,display_name,display_description,display_category,sort_order,updateFlag,deleteFlag',
       ',ChatGPT,生成AI,対話型AIチャットボット,https://chat.openai.com,https://example.com/chatgpt.png,"AI,チャット,自然言語処理",,,,,,0,0',
-      ',デイリーデザインスプリントチャレンジャー,デザイン,その日に取り組むデザイン練習の課題を出題し、仕上げた作品の画像にフィードバックする。「今日の課題を出して」など練習のお題が欲しいときに使う。,https://udify.app/chat/9kWaflrs1psrwRvs,,"AI,デザイン",design-sprint-challenger,今日のデザイン課題に挑戦する,使える時間と分野を答えると、その日のデザイン課題を出します。,学習サポート,20,0,0',
+      ',デイリーデザインスプリントチャレンジャー,デザイン,その日に取り組むデザイン練習の課題を出題し、仕上げた作品の画像にフィードバックする。「今日の課題を出して」など練習のお題が欲しいときに使う。,https://udify.app/chat/9kWaflrs1psrwRvs,,"AI,デザイン",design-sprint-challenger,デザインスプリントチャレンジャー,使える時間と分野を答えると、その日のデザイン課題を出します。,学習サポート,20,0,0',
     ].join('\n'),
   },
   avatars: {
@@ -109,7 +109,7 @@ const CSV_FORMAT: Record<DataType, CsvColumn[]> = {
     { col: 'icon_url',    required: false, desc: 'アイコン画像のURL' },
     { col: 'tags',        required: false, desc: 'タグ（カンマ区切り、複数の場合はダブルクォートで囲む）' },
     { col: 'secret_key',  required: false, desc: 'AIチャットから呼び出す場合のみ指定。Secrets Managerに登録した認証情報JSON内のキー名（APIキー自体は含めない）。「AIコーチでできること」一覧とはこの値で結び付く' },
-    { col: 'display_name',        required: false, desc: '「AIコーチでできること」一覧に出す名前（例: 面接練習をする）。空欄なら name を出す。列ごと省くと既存の値を変えない' },
+    { col: 'display_name',        required: false, desc: '「AIコーチでできること」一覧に出す名前（例: AI面接シュミレーター）。空欄なら name を出す。列ごと省くと既存の値を変えない' },
     { col: 'display_description', required: false, desc: '「AIコーチでできること」一覧に出す説明文（512文字まで）。空欄なら description を出す。列ごと省くと既存の値を変えない' },
     { col: 'display_category',    required: false, desc: '一覧で束ねる分類の見出し（例: 学習サポート／制作サポート／案件獲得）。空欄なら「そのほか」。列ごと省くと既存の値を変えない' },
     { col: 'sort_order',          required: false, desc: '一覧の並び順（整数、小さい順）。分類の並びも、各分類でいちばん小さい値の順になる。空欄なら末尾。列ごと省くと既存の値を変えない' },

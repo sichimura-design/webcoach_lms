@@ -300,7 +300,7 @@ function buildSections(courseId: number) {
 // AIアプリ（/webcoach/ai-applications）。実DB（webcoach_ai_application）のDify連携アプリと同じ顔ぶれ・同じ形。
 // 「AIコーチでできること」は app_key で types/aiSkill.ts と結んで一覧を作るので、形を崩さないこと。
 // 表示名・説明・分類・並び順は scripts/db/ の add-webcoach-ai-application-display-columns.sql と
-// add-webcoach-ai-application-category-sort.sql を適用した後のDBと揃えてある。
+// add-webcoach-ai-application-category-sort.sql・update-ai-application-display-names-miyabe.sql を適用した後のDBと揃えてある。
 const aiApp = (
   id: number, name: string, category: string, appKey: string,
   displayName: string, displayDescription: string, displayCategory: string, sortOrder: number
@@ -311,15 +311,15 @@ const aiApp = (
   created_at: '2026-09-11T00:00:00', updated_at: '2026-09-28T00:00:00',
 });
 const aiApps = [
-  aiApp(14, 'デイリーデザインスプリントチャレンジャー', 'デザイン', 'design-sprint-challenger', '今日のデザイン課題に挑戦する', '使える時間と分野を答えると、その日のデザイン課題を出します。仕上げて出すとフィードバックが返ります。', '学習サポート', 20),
-  aiApp(15, 'AI面接シュミレーター', '就活支援', 'ai-interview-simulator', 'AIと面接練習をする', 'AIが面接官役になって質問し、答えたその場で伝わり方を振り返ります。', '案件獲得', 70),
-  aiApp(16, 'キャッチコピーアイデアメーカー', 'コンテンツ作成', 'catchcopy-idea-maker', 'キャッチコピーを考える', '誰に何を伝えたいかを渡すと、狙いの違うコピー案を並べて比べられます。', '制作サポート', 50),
-  aiApp(17, 'デザインフィードバックメンターPro ver.2', 'デザイン', 'design-feedback-mentor-pro-v2', '制作物を添削する', '画像をアップロードすると、教材と課題の基準に沿って改善点を項目別に確認できます。', '制作サポート', 30),
-  aiApp(18, '専門用語AIアシスタント', '学習支援', 'technical-term-ai-assistant', '専門用語をわかりやすくする', '専門用語や回りくどい文章を、身近な言葉とたとえに置き換えて説明します。', '学習サポート', 10),
-  aiApp(19, '案件応募文生成・添削メーカー', '案件サポート', 'project-application-writer', '応募文をつくる・添削する', '募集内容と自分の実績から、相手が判断できる応募文を組み立てます。', '案件獲得', 60),
-  aiApp(20, '案件抽出メーカー（Crowdworks）', '案件サポート', 'project-extractor-crowdworks', 'クラウドワークスで案件を探す', 'できることと使える時間を整理して、クラウドワークスで受けられる案件の条件まで絞ります。', '案件獲得', 80),
-  aiApp(21, '案件抽出メーカー（Lancers）簡易版_ハードゲート', '案件サポート', 'project-extractor-lancers-lite-hardgate', 'ランサーズで案件を探す', 'できることと使える時間を整理して、ランサーズで受けられる案件の条件まで絞ります。', '案件獲得', 100),
-  aiApp(22, '案件抽出メーカー（ココナラ）', '案件サポート', 'project-extractor-coconala', 'ココナラで案件を探す', 'できることと使える時間を整理して、ココナラで受けられる案件の条件まで絞ります。', '案件獲得', 90),
+  aiApp(14, 'デイリーデザインスプリントチャレンジャー', 'デザイン', 'design-sprint-challenger', 'デザインスプリントチャレンジャー', '使える時間と分野を答えると、その日のデザイン課題を出します。仕上げて出すとフィードバックが返ります。', '学習サポート', 20),
+  aiApp(15, 'AI面接シュミレーター', '就活支援', 'ai-interview-simulator', 'AI面接シュミレーター', 'AIが面接官役になって質問し、答えたその場で伝わり方を振り返ります。', '案件獲得', 70),
+  aiApp(16, 'キャッチコピーアイデアメーカー', 'コンテンツ作成', 'catchcopy-idea-maker', 'キャッチコピーアイデアメーカー', '誰に何を伝えたいかを渡すと、狙いの違うコピー案を並べて比べられます。', '制作サポート', 50),
+  aiApp(17, 'デザインフィードバックメンターPro ver.2', 'デザイン', 'design-feedback-mentor-pro-v2', 'デザインフィードバックメンタープロ', '画像をアップロードすると、教材と課題の基準に沿って改善点を項目別に確認できます。', '制作サポート', 30),
+  aiApp(18, '専門用語AIアシスタント', '学習支援', 'technical-term-ai-assistant', '専門用語AIアシスタント', '専門用語や回りくどい文章を、身近な言葉とたとえに置き換えて説明します。', '学習サポート', 10),
+  aiApp(19, '案件応募文生成・添削メーカー', '案件サポート', 'project-application-writer', '案件応募文 生成・添削メーカー', '募集内容と自分の実績から、相手が判断できる応募文を組み立てます。', '案件獲得', 60),
+  aiApp(20, '案件抽出メーカー（Crowdworks）', '案件サポート', 'project-extractor-crowdworks', '案件抽出メーカー（クラウドワークス）', 'できることと使える時間を整理して、クラウドワークスで受けられる案件の条件まで絞ります。', '案件獲得', 80),
+  aiApp(21, '案件抽出メーカー（Lancers）簡易版_ハードゲート', '案件サポート', 'project-extractor-lancers-lite-hardgate', '案件抽出メーカー（ランサーズ）', 'できることと使える時間を整理して、ランサーズで受けられる案件の条件まで絞ります。', '案件獲得', 100),
+  aiApp(22, '案件抽出メーカー（ココナラ）', '案件サポート', 'project-extractor-coconala', '案件抽出メーカー（ココナラ）', 'できることと使える時間を整理して、ココナラで受けられる案件の条件まで絞ります。', '案件獲得', 90),
 ];
 
 // コーチ/運営向けの受講生一覧（GET /api/admin/students。実BFFには未実装のため全項目モック）
