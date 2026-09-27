@@ -47,21 +47,6 @@ export type ConcreteAiSkillId = Exclude<AiSkillId, 'auto'>;
 
 export const isConcreteSkill = (id: AiSkillId): id is ConcreteAiSkillId => id !== 'auto';
 
-/**
- * 一覧の分類（要件「すべてのAI機能」）。
- * 全部を同じ大きさで並べると結局どれを使うか迷うので、目的で束ねる。
- */
-export type AiSkillCategory = 'learn' | 'create' | 'career' | 'other';
-
-export const AI_SKILL_CATEGORY_LABEL: Record<AiSkillCategory, string> = {
-  learn: '学習',
-  create: '制作',
-  career: 'キャリア',
-  other: 'そのほか',
-};
-
-export const AI_SKILL_CATEGORY_ORDER: AiSkillCategory[] = ['learn', 'create', 'career', 'other'];
-
 /** カードのアイコン。types を lucide-react に依存させないため、キーだけを持つ */
 export type AiSkillIconKey =
   | 'book'
@@ -95,7 +80,10 @@ export interface AiSkillMeta {
    * モード提案（utils/aiSkillRouting.ts）でだけ使われる。
    */
   appKey?: string;
-  /** 一覧・セレクタに出す表示名（動詞） */
+  /**
+   * 表示名。一覧・セレクタではDBの display_name（無ければ name）を出すので、
+   * これが出るのはDBに行が無いとき（教材について質問・一覧の読み込み前）だけ
+   */
   label: string;
   /** そのモードに入っているときのヘッダー表示。「制作物を添削モード」を避けるため別に持つ */
   modeLabel: string;
@@ -106,7 +94,6 @@ export interface AiSkillMeta {
    * 意図的に「アプリを起動」ではなくユーザーの目的語にしている。
    */
   cta: string;
-  category: AiSkillCategory;
   icon: AiSkillIconKey;
   /**
    * 一覧カードのサムネイル画像。public/ 起点の相対パス（例 'images/ai-apps/design-review.png'）。
@@ -115,7 +102,7 @@ export interface AiSkillMeta {
    * 未設定なら icon のフォールバックを出すので、画像が揃うまで空のままでよい。
    */
   thumbnail?: string;
-  /** カードの説明＝何ができるか（1〜2文） */
+  /** 説明。label と同じく、DBに行が無いときだけ使う（一覧はDBの display_description） */
   description: string;
   /** カードの補助＝何を入力するか */
   inputHint: string;
@@ -142,7 +129,6 @@ export const AI_SKILL_META: Record<ConcreteAiSkillId, AiSkillMeta> = {
     modeLabel: '学習相談モード',
     shortLabel: '学習相談',
     cta: '教材に沿って詳しく調べる',
-    category: 'learn',
     icon: 'book',
     description: '教材のどこに書いてあるかを示しながら、いま学んでいる内容の疑問に答えます。',
     inputHint: '質問したいこと・引用したい教材の文',
@@ -160,7 +146,6 @@ export const AI_SKILL_META: Record<ConcreteAiSkillId, AiSkillMeta> = {
     modeLabel: '用語解説モード',
     shortLabel: '用語解説',
     cta: 'やさしい言葉に置き換える',
-    category: 'learn',
     icon: 'glossary',
     description: '専門用語や回りくどい文章を、身近な言葉とたとえに置き換えて説明します。',
     inputHint: '分からない用語・そのままコピーした文章',
@@ -172,15 +157,12 @@ export const AI_SKILL_META: Record<ConcreteAiSkillId, AiSkillMeta> = {
     preferWide: false,
   },
 
-  /* 🔴 カテゴリは「学習」。デザインの課題を出すアプリだが、やっていることは毎日の練習なので、
-        制作（＝作ったものを見てもらう）ではなくこちらに置く。 */
   'design-sprint': {
     appKey: 'design-sprint-challenger',
     label: '今日のデザイン課題に挑戦する',
     modeLabel: 'デザイン課題モード',
     shortLabel: 'デザイン課題',
     cta: '今日の課題を出す',
-    category: 'learn',
     icon: 'sparkles',
     description: '使える時間と挑戦したい分野を伝えると、その日のデザイン課題を出します。仕上げた画像を送るとフィードバックが返ります。',
     inputHint: '今日使える時間・挑戦したい分野',
@@ -197,7 +179,6 @@ export const AI_SKILL_META: Record<ConcreteAiSkillId, AiSkillMeta> = {
     modeLabel: '理解度チェックモード',
     shortLabel: '理解度チェック',
     cta: '確認の問題を出す',
-    category: 'learn',
     icon: 'quiz',
     description: '学んだ範囲から質問を出して、自分の言葉で説明できるかを確かめます。',
     inputHint: '確認したい教材・単元の名前',
@@ -215,7 +196,6 @@ export const AI_SKILL_META: Record<ConcreteAiSkillId, AiSkillMeta> = {
     modeLabel: '制作物添削モード',
     shortLabel: '制作物添削',
     cta: '項目別に添削する',
-    category: 'create',
     icon: 'image',
     description: '画像をアップロードすると、教材と課題の基準に沿って改善点を項目別に確認できます。',
     inputHint: '制作物の画像（PNG・JPG）',
@@ -232,7 +212,6 @@ export const AI_SKILL_META: Record<ConcreteAiSkillId, AiSkillMeta> = {
     modeLabel: '文章改善モード',
     shortLabel: '文章改善',
     cta: '文章を書き直す',
-    category: 'create',
     icon: 'pen',
     description: '書いた文章を、読み手が判断しやすい順序と長さに整えて、修正案まで出します。',
     inputHint: '直したい文章',
@@ -250,7 +229,6 @@ export const AI_SKILL_META: Record<ConcreteAiSkillId, AiSkillMeta> = {
     modeLabel: 'コピー作成モード',
     shortLabel: 'コピー作成',
     cta: 'コピー案を出す',
-    category: 'create',
     icon: 'lightbulb',
     description: '誰に何を伝えたいかを渡すと、狙いの違うコピー案を並べて比べられます。',
     inputHint: '伝えたい相手・商品やサービスの内容',
@@ -273,7 +251,6 @@ export const AI_SKILL_META: Record<ConcreteAiSkillId, AiSkillMeta> = {
     modeLabel: '案件さがしモード（クラウドワークス）',
     shortLabel: '案件さがし（CW）',
     cta: 'クラウドワークスで探す',
-    category: 'career',
     icon: 'briefcase',
     description: '得意な作業や希望の条件に答えていくと、クラウドワークスで受けられそうな案件を探します。検索には1〜2分かかります。',
     inputHint: '得意な作業・週に使える時間・希望単価',
@@ -291,7 +268,6 @@ export const AI_SKILL_META: Record<ConcreteAiSkillId, AiSkillMeta> = {
     modeLabel: '案件さがしモード（ランサーズ）',
     shortLabel: '案件さがし（ランサーズ）',
     cta: 'ランサーズで探す',
-    category: 'career',
     icon: 'briefcase',
     description: '得意な作業や希望の条件に答えていくと、ランサーズで受けられそうな案件を探します。検索には1〜2分かかります。',
     inputHint: '得意な作業・週に使える時間・希望単価',
@@ -309,7 +285,6 @@ export const AI_SKILL_META: Record<ConcreteAiSkillId, AiSkillMeta> = {
     modeLabel: '案件さがしモード（ココナラ）',
     shortLabel: '案件さがし（ココナラ）',
     cta: 'ココナラで探す',
-    category: 'career',
     icon: 'briefcase',
     description: '得意な作業や希望の条件に答えていくと、ココナラで受けられそうな案件を探します。検索には1〜2分かかります。',
     inputHint: '得意な作業・週に使える時間・希望単価',
@@ -327,7 +302,6 @@ export const AI_SKILL_META: Record<ConcreteAiSkillId, AiSkillMeta> = {
     modeLabel: '応募文作成モード',
     shortLabel: '応募文作成',
     cta: '応募文を組み立てる',
-    category: 'career',
     icon: 'document',
     description: '募集内容と自分の実績から、相手が判断できる応募文を組み立てます。',
     inputHint: '募集内容・これまでの制作物や経験',
@@ -345,7 +319,6 @@ export const AI_SKILL_META: Record<ConcreteAiSkillId, AiSkillMeta> = {
     modeLabel: '面接練習モード',
     shortLabel: '面接練習',
     cta: '面接の練習を始める',
-    category: 'career',
     icon: 'mic',
     description: 'AIが面接官役になって質問し、答えたその場で伝わり方を振り返ります。',
     inputHint: '受ける職種・想定している働き方',
@@ -362,7 +335,6 @@ export const AI_SKILL_META: Record<ConcreteAiSkillId, AiSkillMeta> = {
     modeLabel: 'アイデア整理モード',
     shortLabel: 'アイデア整理',
     cta: '考えを整理する',
-    category: 'other',
     icon: 'sparkles',
     description: 'いま決めることと後回しにできることを分けて、次の一歩まで落とします。',
     inputHint: '迷っていること・やりたいこと',
@@ -379,7 +351,6 @@ export const AI_SKILL_META: Record<ConcreteAiSkillId, AiSkillMeta> = {
     modeLabel: 'トラブル相談モード',
     shortLabel: 'トラブル相談',
     cta: '原因を順に切り分ける',
-    category: 'other',
     icon: 'wrench',
     description: 'エラーや動かない症状を、再現条件から順に切り分けて原因を絞ります。',
     inputHint: '出ているメッセージ・直前にした操作',
@@ -394,30 +365,6 @@ export const AI_SKILL_META: Record<ConcreteAiSkillId, AiSkillMeta> = {
 
 /** 実スキルの一覧（AI_SKILL_META の宣言順） */
 export const CONCRETE_AI_SKILLS = Object.keys(AI_SKILL_META) as ConcreteAiSkillId[];
-
-/**
- * AIアプリ（DB）に依存せず、WebCoach自身が持っている機能。DBの登録内容にかかわらず一覧に出す。
- * 'learning' は教材RAG（POST /webcoach/lesson-ai）で答える「教材について質問」。
- */
-export const BUILTIN_AI_SKILLS: ConcreteAiSkillId[] = ['learning'];
-
-/**
- * 裏にAIアプリ（appKey）を持つスキル。「AIコーチでできること」一覧に出す候補で、
- * 実際に出すのはこのうちDBに行があるもの（hooks/useAiApplications.ts が絞る）。
- */
-export const APP_BACKED_AI_SKILLS: ConcreteAiSkillId[] = CONCRETE_AI_SKILLS.filter(
-  (id) => !!AI_SKILL_META[id].appKey
-);
-
-/**
- * カテゴリ別のスキル一覧（「AIコーチでできること」の並び）。
- * 宣言順をそのまま使うので、並べ替えは AI_SKILL_META の順序を変えるだけで済む。
- * @param available 出してよいスキル（useAiApplications の listedSkills）
- */
-export const skillsInCategory = (
-  category: AiSkillCategory,
-  available: readonly ConcreteAiSkillId[]
-): ConcreteAiSkillId[] => available.filter((id) => AI_SKILL_META[id].category === category);
 
 /**
  * 「よく使うAI」に出すスキル。

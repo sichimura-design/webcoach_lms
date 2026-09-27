@@ -1316,6 +1316,8 @@ def _to_ai_application_response(app) -> AIApplicationResponse:
         tags=app.tags.split(',') if app.tags else [],
         display_name=app.display_name,
         display_description=app.display_description,
+        display_category=app.display_category,
+        sort_order=app.sort_order,
         app_key=app.secret_key,
         created_at=app.created_at,
         updated_at=app.updated_at

@@ -35,9 +35,9 @@ const CSV_TEMPLATES: Record<DataType, { filename: string; content: string }> = {
   'ai-applications': {
     filename: 'template_ai_applications.csv',
     content: [
-      'id,name,category,description,url,icon_url,tags,secret_key,display_name,display_description,updateFlag,deleteFlag',
-      ',ChatGPT,生成AI,対話型AIチャットボット,https://chat.openai.com,https://example.com/chatgpt.png,"AI,チャット,自然言語処理",,,,0,0',
-      ',デイリーデザインスプリントチャレンジャー,デザイン,その日に取り組むデザイン練習の課題を出題し、仕上げた作品の画像にフィードバックする。「今日の課題を出して」など練習のお題が欲しいときに使う。,https://udify.app/chat/9kWaflrs1psrwRvs,,"AI,デザイン",design-sprint-challenger,今日のデザイン課題に挑戦する,使える時間と挑戦したい分野を伝えると、その日のデザイン課題を出します。,0,0',
+      'id,name,category,description,url,icon_url,tags,secret_key,display_name,display_description,display_category,sort_order,updateFlag,deleteFlag',
+      ',ChatGPT,生成AI,対話型AIチャットボット,https://chat.openai.com,https://example.com/chatgpt.png,"AI,チャット,自然言語処理",,,,,,0,0',
+      ',デイリーデザインスプリントチャレンジャー,デザイン,その日に取り組むデザイン練習の課題を出題し、仕上げた作品の画像にフィードバックする。「今日の課題を出して」など練習のお題が欲しいときに使う。,https://udify.app/chat/9kWaflrs1psrwRvs,,"AI,デザイン",design-sprint-challenger,今日のデザイン課題に挑戦する,使える時間と分野を答えると、その日のデザイン課題を出します。,学習サポート,20,0,0',
     ].join('\n'),
   },
   avatars: {
@@ -109,8 +109,10 @@ const CSV_FORMAT: Record<DataType, CsvColumn[]> = {
     { col: 'icon_url',    required: false, desc: 'アイコン画像のURL' },
     { col: 'tags',        required: false, desc: 'タグ（カンマ区切り、複数の場合はダブルクォートで囲む）' },
     { col: 'secret_key',  required: false, desc: 'AIチャットから呼び出す場合のみ指定。Secrets Managerに登録した認証情報JSON内のキー名（APIキー自体は含めない）。「AIコーチでできること」一覧とはこの値で結び付く' },
-    { col: 'display_name',        required: false, desc: '「AIコーチでできること」一覧に出す名前（例: 面接練習をする）。空欄なら画面側の既定の名前。列ごと省くと既存の値を変えない' },
-    { col: 'display_description', required: false, desc: '「AIコーチでできること」一覧に出す説明文（512文字まで）。空欄なら画面側の既定の説明。列ごと省くと既存の値を変えない' },
+    { col: 'display_name',        required: false, desc: '「AIコーチでできること」一覧に出す名前（例: 面接練習をする）。空欄なら name を出す。列ごと省くと既存の値を変えない' },
+    { col: 'display_description', required: false, desc: '「AIコーチでできること」一覧に出す説明文（512文字まで）。空欄なら description を出す。列ごと省くと既存の値を変えない' },
+    { col: 'display_category',    required: false, desc: '一覧で束ねる分類の見出し（例: 学習サポート／制作サポート／案件獲得）。空欄なら「そのほか」。列ごと省くと既存の値を変えない' },
+    { col: 'sort_order',          required: false, desc: '一覧の並び順（整数、小さい順）。分類の並びも、各分類でいちばん小さい値の順になる。空欄なら末尾。列ごと省くと既存の値を変えない' },
     { col: 'updateFlag',  required: false, desc: '参考用（無視される）。id、または name + category が一致する行があれば更新、無ければ新規作成になる' },
     { col: 'deleteFlag',  required: false, desc: '1 の場合、該当レコードを削除する。id があれば id で、空なら name + category で対象を探す（見つからなければエラー）' },
   ],
@@ -270,11 +272,12 @@ export const AdminCsvPage: React.FC<AdminCsvPageProps> = ({ dataType }) => {
         const apps = await bffClient.getAIApplications();
         // 🔴 secret_key を必ず含める。以前は出力に無く、このCSVをそのまま再アップロードすると
         //    secret_key が空で上書きされ、AIチャットからDifyアプリを呼べなくなっていた
-        const header = 'id,name,category,description,url,icon_url,tags,secret_key,display_name,display_description,updateFlag,deleteFlag';
+        const header = 'id,name,category,description,url,icon_url,tags,secret_key,display_name,display_description,display_category,sort_order,updateFlag,deleteFlag';
         const rows = apps.map((a) => toCsvRow([
           a.id ?? '', a.name ?? '', a.category ?? '', a.description ?? '',
           a.url ?? '', a.icon_url ?? '', (a.tags ?? []).join(','), a.app_key ?? '',
-          a.display_name ?? '', a.display_description ?? '', 0, 0,
+          a.display_name ?? '', a.display_description ?? '',
+          a.display_category ?? '', a.sort_order ?? '', 0, 0,
         ]));
         downloadCsvContent([header, ...rows].join('\n'), `all_ai_applications_${today}.csv`);
       } else if (dataType === 'avatars') {

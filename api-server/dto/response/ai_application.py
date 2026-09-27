@@ -15,8 +15,10 @@ class AIApplicationResponse(BaseModel):
     url: Optional[str] = Field(None, description="アプリケーションURL")
     icon_url: Optional[str] = Field(None, description="アイコンURL")
     tags: List[str] = Field(default_factory=list, description="タグ一覧")
-    display_name: Optional[str] = Field(None, description="一覧に出す表示名（NULLなら画面側の既定の名前を使う）")
-    display_description: Optional[str] = Field(None, description="一覧に出す説明文（NULLなら画面側の既定の説明を使う）")
+    display_name: Optional[str] = Field(None, description="一覧に出す表示名（NULLなら name を使う）")
+    display_description: Optional[str] = Field(None, description="一覧に出す説明文（NULLなら description を使う）")
+    display_category: Optional[str] = Field(None, description="一覧で束ねる分類の見出し（NULLなら「そのほか」）")
+    sort_order: Optional[int] = Field(None, description="一覧の並び順（小さい順、NULLは末尾）")
     # secret_key列の値。Secrets Manager内のキー名であって、APIキーそのものではない。
     # 画面側はこれでアプリとUI定義（アイコン等）を紐付ける（idは環境ごとに変わりうるため使わない）
     app_key: Optional[str] = Field(None, description="AIチャット連携用のキー名（NULLならAIチャットから呼べない）")

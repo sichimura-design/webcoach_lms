@@ -1,7 +1,7 @@
 """
 WebCoach specific entity models
 """
-from sqlalchemy import Column, BigInteger, SmallInteger, String, Text, TIMESTAMP, Date, Index, func
+from sqlalchemy import Column, BigInteger, SmallInteger, Integer, String, Text, TIMESTAMP, Date, Index, func
 from database import Base
 
 
@@ -92,6 +92,8 @@ class WebCoachAIApplication(Base):
     # 受講生向けの一覧表示は別カラムに分けている。NULLなら画面側で name/description 等にフォールバックする
     display_name = Column(String(256), nullable=True, comment='一覧（AIコーチでできること）に出す表示名')
     display_description = Column(String(512), nullable=True, comment='一覧（AIコーチでできること）に出す説明文')
+    display_category = Column(String(64), nullable=True, comment='一覧で束ねる分類の見出し（例: 学習サポート）')
+    sort_order = Column(Integer, nullable=True, comment='一覧の並び順（小さい順。分類の並びも各分類の最小値で決まる）')
     created_at = Column(TIMESTAMP, nullable=False, server_default=func.current_timestamp())
     updated_at = Column(TIMESTAMP, nullable=False, server_default=func.current_timestamp(), onupdate=func.current_timestamp())
 

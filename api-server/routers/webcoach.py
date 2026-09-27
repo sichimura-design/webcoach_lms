@@ -835,6 +835,17 @@ def _find_ai_application(db: Session, record: dict):
     ).first()
 
 
+def _parse_sort_order(value):
+    """CSVの sort_order（文字列）を整数に。空欄は NULL（一覧の末尾）"""
+    text = str(value if value is not None else '').strip()
+    if not text:
+        return None
+    try:
+        return int(text)
+    except ValueError:
+        raise ValueError(f"sort_order は整数で指定してください: {text}")
+
+
 def _ai_application_label(record: dict) -> str:
     raw_id = str(record.get('id') or '').strip()
     return f"id={raw_id}" if raw_id else f"{record.get('name')} / {record.get('category')}"
@@ -915,9 +926,11 @@ def update_webcoach_database(
                             existing.tags = record.get('tags')
                             existing.secret_key = record.get('secret_key')
                             # 表示用カラムはCSVに列があるときだけ上書きする（列の無い古いCSVで消さないため）
-                            for col in ('display_name', 'display_description'):
+                            for col in ('display_name', 'display_description', 'display_category'):
                                 if col in record:
                                     setattr(existing, col, record[col] or None)
+                            if 'sort_order' in record:
+                                existing.sort_order = _parse_sort_order(record['sort_order'])
                             existing.updated_at = func.now()
                         else:
                             # 新規作成
@@ -931,6 +944,8 @@ def update_webcoach_database(
                                 secret_key=record.get('secret_key'),
                                 display_name=record.get('display_name') or None,
                                 display_description=record.get('display_description') or None,
+                                display_category=record.get('display_category') or None,
+                                sort_order=_parse_sort_order(record.get('sort_order')),
                                 created_at=func.now(),
                                 updated_at=func.now()
                             )

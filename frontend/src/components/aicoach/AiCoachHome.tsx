@@ -2,11 +2,8 @@ import { useRef, useState, type CSSProperties } from 'react';
 import { ArrowUp, HelpCircle, History, ImagePlus, Sparkles, X } from 'lucide-react';
 import {
   AiSkillId,
-  AI_SKILL_CATEGORY_LABEL,
-  AI_SKILL_CATEGORY_ORDER,
   AI_SKILL_META,
   ConcreteAiSkillId,
-  skillsInCategory,
 } from '../../types/aiSkill';
 import SkillPlusMenu from '../learning/SkillPlusMenu';
 import { AI_SKILL_ICON } from './aiSkillIcons';
@@ -318,7 +315,7 @@ export function AiCoachHome({
                ゼロ状態の文字量を増やすだけになっていた。 */}
 
         {/* ── AIコーチでできること ──
-            機能を見て選びたい人の入口。並びは AI_SKILL_META の宣言順（固定）で、
+            機能を見て選びたい人の入口。並びはDBの sort_order（固定）で、
             「最近使った順」に並べ替えない。毎回場所が変わると覚えられないため。
             🔴 見出しは「AIコーチ」。カードの1枚1枚はアプリ名で呼ぶが、
                この一覧が何なのかは「AIコーチでできること」と言い切る。 */}
@@ -326,14 +323,16 @@ export function AiCoachHome({
           AIコーチでできること
         </h3>
 
-        {/* 🔴 0件のカテゴリは見出しごと出さない。顔ぶれはDBに登録された実在のAIアプリで
-               決まるので、カテゴリが空になることがある（いまは「そのほか」）。
-               見出しだけが並ぶと、読み込みに失敗したように見える。 */}
-        {AI_SKILL_CATEGORY_ORDER.map((category) => {
-          const skills = skillsInCategory(category, catalog.listedSkills);
-          if (skills.length === 0) return null;
+        {/* 🔴 分類の見出し・並びはDB（display_category / sort_order）で決まる。
+               行のある分類しかできないので、見出しだけが並ぶことはない。 */}
+        {catalog.failed && (
+          <p style={{ margin: '16px 0 0', fontSize: 13, color: 'var(--dc-text-muted)' }}>
+            AIアプリの一覧を読み込めませんでした。時間をおいて再読み込みしてください。
+          </p>
+        )}
+        {catalog.groups.map(({ label, skills }) => {
           return (
-            <section key={category} style={{ marginTop: 24 }}>
+            <section key={label} style={{ marginTop: 24 }}>
               <h4
                 style={{
                   margin: '0 0 12px',
@@ -343,7 +342,7 @@ export function AiCoachHome({
                   color: 'var(--dc-text-muted)',
                 }}
               >
-                {AI_SKILL_CATEGORY_LABEL[category]}
+                {label}
               </h4>
               <div className="ai-home-apps">{skills.map(renderCard)}</div>
             </section>

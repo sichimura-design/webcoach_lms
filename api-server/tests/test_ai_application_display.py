@@ -44,6 +44,8 @@ def test_list_returns_display_columns_and_app_key(client, test_db):
     assert coconala["display_name"] == "ココナラで案件を探す"
     assert coconala["display_description"] == "条件に合う案件を探します。"
     assert coconala["app_key"] == "project-extractor-coconala"
+    assert coconala["display_category"] is None
+    assert coconala["sort_order"] is None
     assert coconala["tags"] == ["AI", "案件", "ココナラ"]
     # AIチャット連携の無い行は app_key が null（画面の一覧には出ない）
     assert apps["ChatGPT"]["app_key"] is None
@@ -176,3 +178,30 @@ def test_updatedb_updates_by_id_even_when_name_changes(client, test_db):
     test_db.expire_all()
     rows = test_db.query(WebCoachAIApplication).all()
     assert [r.name for r in rows] == ["新しい名前"]  # 別の行として増えない
+
+
+def test_updatedb_sets_category_and_sort_order(client, test_db):
+    app = _add_app(test_db)
+
+    body = _post(client, [{
+        "id": str(app.id), "name": app.name, "category": app.category,
+        "description": app.description, "secret_key": app.secret_key,
+        "display_category": "案件獲得", "sort_order": "90",
+    }])
+
+    assert body["recordsFailed"] == 0, body
+    res = client.get("/api/ai-applications", params={"limit": 100}).json()["applications"][0]
+    assert res["display_category"] == "案件獲得"
+    assert res["sort_order"] == 90
+
+
+def test_updatedb_rejects_non_integer_sort_order(client, test_db):
+    app = _add_app(test_db)
+
+    body = _post(client, [{
+        "id": str(app.id), "name": app.name, "category": app.category,
+        "description": app.description, "sort_order": "先頭",
+    }])
+
+    assert body["recordsFailed"] == 1
+    assert "sort_order" in body["errors"][0]["message"]
