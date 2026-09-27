@@ -9,6 +9,7 @@ import {
   NewPasswordRequiredResult,
 } from '../services/cognitoAuth';
 import { bffClient } from '../services/bffClient';
+import { useRecentCourseStore } from '../store/recentCourseStore';
 import { fetchUserProfile } from '../services/mypageApi';
 
 interface User {
@@ -103,6 +104,9 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     try {
       const userInfo = await bffClient.getUserInfo();
       moodleUserId = userInfo.moodle?.id || 0;
+      // 端末に残っている「最近開いた教材」が別ユーザーのものなら捨てる（recentCourseStore の doc）。
+      // setUser より前に呼び、画面が前のユーザーの履歴を読まないようにする
+      useRecentCourseStore.getState().bindUser(moodleUserId);
       setUser({
         sub: result.sub,
         email: result.email,
