@@ -85,7 +85,7 @@ function MyPage() {
   const { stats: studyStats, loading: studyStatsLoading, unavailable: studyStatsUnavailable } = useStudyStats(user?.userid);
   const learningSummary = useLearningSummary(learningCourses, studyStats);
   // 「続きから学習」に出すコースの候補（優先順）。レッスンを持つ最初の1つを useResumeLesson が選ぶ。
-  // resumecourse（レッスン完了時にしか書かれない）→ この端末で最近開いた順 → Moodle の最終アクセス順
+  // resumecourse（コースを開いたときに書かれる）→ この端末で最近開いた順 → Moodle の最終アクセス順
   // → 受講一覧の順。受講しただけの生徒で一覧の先頭の空コースに当たらないように（useResumeLesson の doc）
   const recentEntries = useRecentCourseStore((s) => s.entries);
   const enrolledIds = new Set(learningCourses.map((c) => c.id));

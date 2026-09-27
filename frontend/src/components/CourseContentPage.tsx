@@ -381,6 +381,20 @@ function CourseContentPage({ courseId, initialModuleId, onBack }: CourseContentP
     });
   }, [courseId, courseName, selectedModule]);
 
+  // サーバの「前回の続き」（/webcoach/resumecourse）も開いた時点で書く。
+  // 🔴 以前はレッスン完了時にしか書いておらず、受講して開いただけの生徒には記録が無く、
+  //    マイページ「続きから学習」が受講一覧の先頭（空のコースのことがある）に落ちていた。
+  //    記録はユーザーごとに1行・コース単位なので、同じコース内でレッスンを移っても書き直さない。
+  //    progress_percent は BFF が読み出し時に Moodle の完了状態から計算し直すので、表示には使われない。
+  const userId = user?.userid;
+  const opened = !!selectedModule;
+  useEffect(() => {
+    if (!userId || !courseId || !opened) return;
+    bffClient
+      .updateResumeCourse(userId, { courseid: courseId, progress_percent: 0 })
+      .catch((e) => console.error('[ResumeCourse] Update failed:', e?.response?.data?.message ?? e));
+  }, [userId, courseId, opened]);
+
   // ─── URL コンテンツの事前チェック ─────────
   const [iframeError, setIframeError] = useState(false);
 

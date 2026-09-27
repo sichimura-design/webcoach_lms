@@ -9,9 +9,9 @@ import { persist } from 'zustand/middleware';
  * touch していて、courseId から名前・レッスン名・進捗を引ける唯一の場所になっている。
  * ここを見れば済むので、記録を始めるためにAPIを叩き直す必要がない。
  *
- * 「前回の続き」は実BFFの /webcoach/resumecourse が持っているが、そちらは
- * レッスンを完了したときにしか更新されない（hooks/useLessonCompletion.ts）。
- * 「開いただけの教材」を覚えている場所が無かったので、端末ごとの履歴として持つ。
+ * 「前回の続き」は実BFFの /webcoach/resumecourse も持っているが、そちらは
+ * ユーザーごとに1行・コース単位（どのレッスンかを持たない）。
+ * 「開いたレッスン」を覚えている場所が無かったので、端末ごとの履歴として持つ。
  * サーバに送る意味がないUI寄りの情報なので zustand + persist
  * （progressionStore.ts / studyTimerStore.ts と同じ作法）。
  */
