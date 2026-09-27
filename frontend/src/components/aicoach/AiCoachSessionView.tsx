@@ -2,9 +2,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Home, PanelRight } from 'lucide-react';
 import { color, font } from '../../theme/webcoachTheme';
-import { useToast } from '../../contexts/ToastContext';
 import { useLessonAi, LessonAiMessage } from '../../hooks/useLessonAi';
-import { useNotes } from '../../hooks/useNotes';
 import { useNoteCapture } from '../../hooks/useNoteCapture';
 import { useAiCoachStore } from '../../store/aiCoachStore';
 import { bffClient } from '../../services/bffClient';
@@ -63,7 +61,6 @@ export function AiCoachSessionView({
   onRestartInNewChat,
   isDesktop,
 }: AiCoachSessionViewProps) {
-  const { showToast } = useToast();
   const navigate = useNavigate();
   const [referenceOpen, setReferenceOpen] = useState(true);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -118,11 +115,6 @@ export function AiCoachSessionView({
       cancelled = true;
     };
   }, [courseId, lessonId]);
-
-  // 下書き（自動保存）は教材に紐づく相談のときだけ動く。
-  // lessonId が無いと appendToMemo がローカル state を書くだけで保存されず、
-  // 成功したように見えてしまう。
-  const notes = useNotes({ lessonId: lessonId ?? null });
 
   // ノートへの取り込みは教材ページと同じ入口を使う（保存先の判断を2箇所に置かない）
   const capture = useNoteCapture();
@@ -222,19 +214,6 @@ export function AiCoachSessionView({
       });
     },
     [answerToText, ai.context, capture, courseId, lessonId, questionFor]
-  );
-
-  const handleAppendToMemo = useCallback(
-    (message: LessonAiMessage) => {
-      if (!lessonId) {
-        showToast('教材に紐づく相談だけ下書きに追加できます', 'error');
-        return;
-      }
-      const { question } = questionFor(message);
-      notes.appendToMemo(question, answerToText(message));
-      showToast('AI回答を下書きに追加しました', 'success');
-    },
-    [answerToText, lessonId, notes, questionFor, showToast]
   );
 
   const latestImage = useMemo(() => {
@@ -421,7 +400,6 @@ export function AiCoachSessionView({
           ai={ai}
           variant="page"
           onSaveAnswer={handleSaveAnswer}
-          onAppendToMemo={handleAppendToMemo}
           onJumpToBlock={openLesson}
           disabled={!ai.context.structured}
           headerSlot={headerSlot}

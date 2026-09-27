@@ -1,5 +1,5 @@
 import { useRef } from 'react';
-import { AlertTriangle, Copy, ImagePlus, MessageSquarePlus, Send, Star, StickyNote, X } from 'lucide-react';
+import { AlertTriangle, Copy, ImagePlus, MessageSquarePlus, Send, Star, X } from 'lucide-react';
 import { color, font } from '../../theme/webcoachTheme';
 import { AI_ERROR_CONCLUSION, LessonAiMessage, UseLessonAi } from '../../hooks/useLessonAi';
 import { LessonAiResponse } from '../../types/lesson';
@@ -8,6 +8,7 @@ import { useAutoGrowTextarea } from '../../hooks/useAutoGrowTextarea';
 import { useAiApplications } from '../../hooks/useAiApplications';
 import MarkdownRenderer from '../MarkdownRenderer';
 import { parseDifyMessage } from '../../utils/difyButtons';
+import { stripHtmlForNote } from '../../utils/stripHtmlForNote';
 import AiCoachFace from '../shared/AiCoachFace';
 import SkillPlusMenu from './SkillPlusMenu';
 import SkillProposalCard from './SkillProposalCard';
@@ -39,7 +40,6 @@ import AiThinkingBubble from './AiThinkingBubble';
 interface AiCoachPaneProps {
   ai: UseLessonAi;
   onSaveAnswer: (message: LessonAiMessage) => void;
-  onAppendToMemo: (message: LessonAiMessage) => void;
   onJumpToBlock: (blockId: string) => void;
   disabled: boolean; // 縮退モード（Moodleフォールバック）では教材根拠を作れない
   /**
@@ -144,7 +144,7 @@ function answerToPlainText(answer: LessonAiResponse): string {
   if (answer.next) lines.push(`次にやること：${answer.next}`);
   if (answer.generalNote) lines.push(`教材外の一般的な補足：${answer.generalNote}`);
   if (answer.sources.length) lines.push(`参照箇所：${answer.sources.map((s) => s.heading).join(' / ')}`);
-  return lines.join('\n');
+  return stripHtmlForNote(lines.join('\n'));
 }
 
 function AnswerSection({ label, body }: { label: string; body: string }) {
@@ -201,7 +201,6 @@ function AiAvatar() {
 export function AiCoachPane({
   ai,
   onSaveAnswer,
-  onAppendToMemo,
   onJumpToBlock,
   disabled,
   variant = 'panel',
@@ -576,12 +575,12 @@ export function AiCoachPane({
                     />
                   )}
 
-                  {/* 回答ごとに3つ並ぶと本文が読みにくいので、ホバー／フォーカスで出す。
+                  {/* 回答ごとに並ぶと本文が読みにくいので、ホバー／フォーカスで出す。
                       ホバーできない端末では常に出る（index.css の @media (hover: none)）。
 
-                      🔴 行き先が違うので言葉も分ける。
-                        ・マイノートに残す … ピッカーでノートを選んで保存（＝/notes に入る）
-                        ・下書きに追加     … マイノート欄の下書き（まだノートではない）に足す */}
+                      🔴 以前あった「下書きに追加」は撤去した。保存先の lesson-notes API が
+                         BFF に無く（MSW モックだけ）、下書き欄も未ルーティングの教材画面にしか
+                         無かったため、成功トーストが出るだけで何も残らなかった。 */}
                   <div
                     className="wc-ai-answer-actions flex flex-wrap"
                     style={{ gap: 5, marginTop: 9 }}
@@ -603,14 +602,6 @@ export function AiCoachPane({
                       style={actionButtonStyle}
                     >
                       <Star size={11} /> マイノートに残す
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => onAppendToMemo(message)}
-                      className="wc-ai-chip inline-flex items-center focus-visible:ring-2 focus-visible:ring-[#F6B9BD]"
-                      style={actionButtonStyle}
-                    >
-                      <StickyNote size={11} /> 下書きに追加
                     </button>
                   </div>
                 </div>

@@ -1,7 +1,6 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useLocation, useNavigate, useSearchParams } from 'react-router-dom';
 import { color, font } from '../../theme/webcoachTheme';
-import { useToast } from '../../contexts/ToastContext';
 import { useLessonDoc } from '../../hooks/useLessonDoc';
 import { useLessonCompletion } from '../../hooks/useLessonCompletion';
 import { useLessonCheer } from '../../hooks/useLessonCheer';
@@ -56,7 +55,6 @@ interface LearningWorkspacePageProps {
 }
 
 export function LearningWorkspacePage({ courseId, initialModuleId, onBack }: LearningWorkspacePageProps) {
-  const { showToast } = useToast();
   const navigate = useNavigate();
   const location = useLocation();
   const [searchParams, setSearchParams] = useSearchParams();
@@ -363,7 +361,7 @@ export function LearningWorkspacePage({ courseId, initialModuleId, onBack }: Lea
     });
   }, [selection, doc, sourceOf, capture, clearSelection, backToLesson]);
 
-  // ── AI回答をマイノートに残す／下書きに追加 ──
+  // ── AI回答をマイノートに残す ──
   const questionFor = useCallback(
     (message: LessonAiMessage): { question: string; quote: string | null; image: string | null } => {
       const index = ai.messages.findIndex((m) => m.id === message.id);
@@ -462,16 +460,6 @@ export function LearningWorkspacePage({ courseId, initialModuleId, onBack }: Lea
       capture.openNotes(noteId, backToLesson('notes'));
     },
     [capture, backToLesson]
-  );
-
-  const handleAppendToMemo = useCallback(
-    (message: LessonAiMessage) => {
-      const { question } = questionFor(message);
-      notes.appendToMemo(question, answerToText(message));
-      openSupport('notes');
-      showToast('AI回答を下書きに追加しました', 'success');
-    },
-    [questionFor, notes, answerToText, openSupport, showToast]
   );
 
   /**
@@ -698,7 +686,6 @@ export function LearningWorkspacePage({ courseId, initialModuleId, onBack }: Lea
               <AiCoachPane
                 ai={ai}
                 onSaveAnswer={handleSaveAnswer}
-                onAppendToMemo={handleAppendToMemo}
                 onJumpToBlock={jumpToBlock}
                 disabled={!selectionEnabled}
                 onOpenWide={handleOpenWideWithSkill}

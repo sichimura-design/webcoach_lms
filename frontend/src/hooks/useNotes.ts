@@ -17,8 +17,6 @@ export interface UseNotes {
   memoDraft: string;
   setMemoDraft: (text: string) => void;
   memoStatus: 'idle' | 'saving' | 'saved';
-  /** AI回答を下書きへ追記する（編集してから残したいとき用） */
-  appendToMemo: (question: string, answer: string) => void;
 }
 
 const AUTOSAVE_DELAY_MS = 500;
@@ -79,13 +77,5 @@ export function useNotes(options: UseNotesOptions = {}): UseNotes {
     [lessonId]
   );
 
-  const appendToMemo = useCallback(
-    (question: string, answer: string) => {
-      const block = `\n\n── AIコーチから追加 ──\nQ. ${question}\n${answer}\n──\n`;
-      setMemoDraft(`${memoDraft.trimEnd()}${block}`);
-    },
-    [memoDraft, setMemoDraft]
-  );
-
-  return { memoDraft, setMemoDraft, memoStatus, appendToMemo };
+  return { memoDraft, setMemoDraft, memoStatus };
 }

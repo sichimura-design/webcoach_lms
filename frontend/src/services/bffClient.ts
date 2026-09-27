@@ -135,6 +135,7 @@ import {
 } from '../types/learningPlan';
 import { getIdToken } from './cognitoAuth';
 import { MOCKS_ENABLED } from '../mocks/config';
+import { stripHtmlForNote } from '../utils/stripHtmlForNote';
 
 /**
  * BFF Client - 統合APIクライアント
@@ -217,7 +218,9 @@ function buildBlockFromInput(input: NoteBlockInput, index: number): NoteBlock {
       ...base,
       kind: 'answer',
       question: input.question,
-      answer: input.answer,
+      // 🔴 Difyアプリの応答はHTML（ボタン付きカード等）を含むことがあり、ノートでは
+      //    タグが文字として見えてしまう。保存経路はすべてここを通るので、ここで外す
+      answer: stripHtmlForNote(input.answer),
       selectedText: input.selectedText ?? null,
       image: null,
       source: input.source ?? null,
