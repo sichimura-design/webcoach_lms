@@ -5,7 +5,7 @@ import time
 from datetime import datetime, timedelta, timezone, date
 from typing import Optional, List, Dict, Any
 from sqlalchemy.orm import Session
-from sqlalchemy import desc, text, func, bindparam, or_
+from sqlalchemy import desc, text, func, bindparam, or_, and_
 from entities import (
     UserLastCourseAccess,
     UserProfileSettings,
@@ -1623,17 +1623,45 @@ def delete_avatar(db: Session, avatar_id: int) -> bool:
 
 def get_latest_coaching_schedule_id(db: Session, mdl_user_id: int) -> Optional[int]:
     """
-    受講生の直近のコーチング回のIDを取得する（次回目標リストの紐付け先を決めるため）
+    受講生の直近の「実施済み」コーチング回のIDを取得する（次回目標リストの紐付け先を決めるため）
+
+    🔴 単純に日付が最新の回を取ると、次回の予約（未来日）を登録した時点で
+       そちらに切り替わり、まだ目標が1件も無いため「次回コーチングまでのTODO」が
+       空になってしまう。そのため未実施の回は対象外にする。
+    実施済みの判定は /coaching（MyCoachingPage.tsx）と揃える:
+      - status が completed / interrupted
+      - status が未記録(NULL)で実施日が昨日以前（JST）
+        ※コーチが実施結果を記録しない運用が多いため、statusだけでは判定しない
+      - 目標行を持つ回（ノートを公開した＝実施済み。当日中に公開した場合のため）
+    リスケ（rescheduled）の回は常に除く。
 
     Args:
         db: Database session
         mdl_user_id: 受講生のMoodleユーザーID
 
     Returns:
-        直近のwebcoach_coaching_schedule.id。1件も無ければNone
+        直近の実施済みwebcoach_coaching_schedule.id。1件も無ければNone
     """
+    from entities.webcoach import WebCoachNextCoachingGoal
+
+    today_jst = datetime.now(JST).date()
+    has_goals = db.query(WebCoachNextCoachingGoal.coaching_schedule_id).filter(
+        WebCoachNextCoachingGoal.coaching_schedule_id == WebCoachCoachingSchedule.id
+    ).exists()
     schedule = db.query(WebCoachCoachingSchedule).filter(
-        WebCoachCoachingSchedule.mdl_user_id == mdl_user_id
+        WebCoachCoachingSchedule.mdl_user_id == mdl_user_id,
+        or_(
+            WebCoachCoachingSchedule.status.is_(None),
+            WebCoachCoachingSchedule.status != 'rescheduled',
+        ),
+        or_(
+            WebCoachCoachingSchedule.status.in_(['completed', 'interrupted']),
+            and_(
+                WebCoachCoachingSchedule.status.is_(None),
+                WebCoachCoachingSchedule.coaching_date < today_jst,
+            ),
+            has_goals,
+        ),
     ).order_by(
         WebCoachCoachingSchedule.coaching_date.desc(),
         WebCoachCoachingSchedule.id.desc()
@@ -1908,12 +1936,55 @@ def bulk_upsert_next_coaching_goals(db: Session, coaching_schedule_id: int, mdl_
     return result_goals
 
 
+def _incomplete_goals_before(db: Session, coaching_schedule_id: int, mdl_user_id: int) -> List[str]:
+    """
+    指定したコーチング回より前で目標を持つ直近の回から、未完了の目標の文言を表示順に返す。
+    前回分もその前の未完了を持ち越し済みなので、直前の1回だけ見れば足りる。
+    リスケの回は目標を持たない想定だが、持っていても対象外にはしない（目標行があれば引き継ぐ）。
+    """
+    from entities.webcoach import WebCoachNextCoachingGoal
+
+    current = db.query(WebCoachCoachingSchedule).filter(
+        WebCoachCoachingSchedule.id == coaching_schedule_id
+    ).first()
+    if current is None:
+        return []
+
+    previous = db.query(WebCoachCoachingSchedule).join(
+        WebCoachNextCoachingGoal,
+        WebCoachNextCoachingGoal.coaching_schedule_id == WebCoachCoachingSchedule.id,
+    ).filter(
+        WebCoachCoachingSchedule.mdl_user_id == mdl_user_id,
+        WebCoachCoachingSchedule.id != coaching_schedule_id,
+        or_(
+            WebCoachCoachingSchedule.coaching_date < current.coaching_date,
+            and_(
+                WebCoachCoachingSchedule.coaching_date == current.coaching_date,
+                WebCoachCoachingSchedule.id < current.id,
+            ),
+        ),
+    ).order_by(
+        WebCoachCoachingSchedule.coaching_date.desc(),
+        WebCoachCoachingSchedule.id.desc(),
+    ).first()
+    if previous is None:
+        return []
+
+    goals = db.query(WebCoachNextCoachingGoal).filter(
+        WebCoachNextCoachingGoal.coaching_schedule_id == previous.id,
+        WebCoachNextCoachingGoal.is_completed == 0,
+    ).order_by(WebCoachNextCoachingGoal.display_order, WebCoachNextCoachingGoal.no).all()
+    return [g.description.strip() for g in goals if g.description and g.description.strip()]
+
+
 def sync_next_coaching_goals_from_note(db: Session, coaching_schedule_id: int, mdl_user_id: int, actions: List[str]) -> List["WebCoachNextCoachingGoal"]:
     """
     AIコーチングノートが「受講生に公開」された時点で、client_next_actions（配列）から
     次回目標リストを作り直す。
 
-    このコーチング回の既存のgoal行を全て消して、渡されたactionsで作り直す
+    このコーチング回の既存のgoal行を全て消して、渡されたactionsで作り直す。
+    前回（この回より前で目標を持つ直近の回）の未完了の目標は、actionsの後ろに持ち越す
+    （表示は直近の実施済みの回の分だけなので、持ち越さないと未完了のまま見えなくなる）。
     （完了チェックは公開のたびにリセットされる。ノートの再公開は運用上まれで、
     かつ「公開しなおした＝内容が変わった」とみなせるため、チェック状態の引き継ぎはしない）。
 
@@ -1928,12 +1999,22 @@ def sync_next_coaching_goals_from_note(db: Session, coaching_schedule_id: int, m
     """
     from entities.webcoach import WebCoachNextCoachingGoal
 
+    carried = _incomplete_goals_before(db, coaching_schedule_id, mdl_user_id)
+
     db.query(WebCoachNextCoachingGoal).filter(
         WebCoachNextCoachingGoal.coaching_schedule_id == coaching_schedule_id
     ).delete()
 
+    texts = [a.strip() for a in actions if a and a.strip()]
+    # 前回の未完了分を後ろに持ち越す（今回のアクションと同じ文言は二重に並べない）
+    seen = set(texts)
+    for text in carried:
+        if text not in seen:
+            seen.add(text)
+            texts.append(text)
+
     result_goals = []
-    for index, action in enumerate([a.strip() for a in actions if a and a.strip()]):
+    for index, action in enumerate(texts):
         goal = WebCoachNextCoachingGoal(
             coaching_schedule_id=coaching_schedule_id,
             mdl_user_id=mdl_user_id,
