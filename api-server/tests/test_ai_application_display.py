@@ -102,3 +102,77 @@ def test_updatedb_blank_display_columns_become_null(client, test_db):
     app = test_db.query(WebCoachAIApplication).one()
     assert app.display_name is None
     assert app.display_description is None
+
+
+# ------------------------------------------------------------
+# CSVでの削除（見出しは deleteFlag）
+# ------------------------------------------------------------
+
+def _post(client, records):
+    res = client.post("/api/updatedb", json={"data_type": "ai_applications", "records": records})
+    assert res.status_code == 200, res.text
+    return res.json()
+
+
+def test_updatedb_deletes_by_id_with_deleteflag(client, test_db):
+    keep = _add_app(test_db, name="残すアプリ", secret_key=None)
+    target = _add_app(test_db, name="消すアプリ", secret_key=None)
+
+    # 管理画面のCSVそのままの形（値はすべて文字列、見出しは deleteFlag）
+    body = _post(client, [{
+        "id": str(target.id), "name": "消すアプリ", "category": "案件サポート",
+        "description": "", "updateFlag": "0", "deleteFlag": "1",
+    }])
+
+    assert body["recordsFailed"] == 0, body
+    test_db.expire_all()
+    names = [a.name for a in test_db.query(WebCoachAIApplication).all()]
+    assert names == [keep.name]
+
+
+def test_updatedb_deletes_by_name_and_category_without_id(client, test_db):
+    _add_app(test_db)
+
+    body = _post(client, [{
+        "id": "", "name": "案件抽出メーカー（ココナラ）", "category": "案件サポート", "deleteFlag": "1",
+    }])
+
+    assert body["recordsFailed"] == 0, body
+    assert test_db.query(WebCoachAIApplication).count() == 0
+
+
+def test_updatedb_delete_of_missing_row_is_reported(client, test_db):
+    _add_app(test_db)
+
+    body = _post(client, [{"id": "999", "name": "x", "category": "y", "deleteFlag": "1"}])
+
+    assert body["recordsFailed"] == 1
+    assert "999" in body["errors"][0]["message"]
+    assert test_db.query(WebCoachAIApplication).count() == 1
+
+
+def test_updatedb_deleteflag_zero_does_not_delete(client, test_db):
+    app = _add_app(test_db)
+
+    body = _post(client, [{
+        "id": str(app.id), "name": app.name, "category": app.category,
+        "description": "説明を更新", "secret_key": app.secret_key, "deleteFlag": "0",
+    }])
+
+    assert body["recordsFailed"] == 0, body
+    test_db.expire_all()
+    assert test_db.query(WebCoachAIApplication).one().description == "説明を更新"
+
+
+def test_updatedb_updates_by_id_even_when_name_changes(client, test_db):
+    app = _add_app(test_db)
+
+    body = _post(client, [{
+        "id": str(app.id), "name": "新しい名前", "category": app.category,
+        "description": app.description, "secret_key": app.secret_key,
+    }])
+
+    assert body["recordsFailed"] == 0, body
+    test_db.expire_all()
+    rows = test_db.query(WebCoachAIApplication).all()
+    assert [r.name for r in rows] == ["新しい名前"]  # 別の行として増えない

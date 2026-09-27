@@ -101,7 +101,7 @@ const CSV_FORMAT: Record<DataType, CsvColumn[]> = {
     { col: 'deleteFlag',       required: false, desc: '1 の場合、該当レコードを削除する（mdl_user_id必須）' },
   ],
   'ai-applications': [
-    { col: 'id',          required: false, desc: 'AIアプリID（更新・削除時に指定、新規は空欄）' },
+    { col: 'id',          required: false, desc: 'AIアプリID（更新・削除時に指定、新規は空欄）。指定すると name を変えても同じ行を更新する' },
     { col: 'name',        required: true,  desc: 'AIアプリ名' },
     { col: 'category',    required: false, desc: 'カテゴリ名（例: 生成AI / 画像生成AI）' },
     { col: 'description', required: false, desc: 'AI向けの説明文。AIチャットがどのアプリを呼ぶか決める材料になる（何をするか・どんな依頼で使うか・似たアプリとの違いを書く。256文字まで）' },
@@ -111,8 +111,8 @@ const CSV_FORMAT: Record<DataType, CsvColumn[]> = {
     { col: 'secret_key',  required: false, desc: 'AIチャットから呼び出す場合のみ指定。Secrets Managerに登録した認証情報JSON内のキー名（APIキー自体は含めない）。「AIコーチでできること」一覧とはこの値で結び付く' },
     { col: 'display_name',        required: false, desc: '「AIコーチでできること」一覧に出す名前（例: 面接練習をする）。空欄なら画面側の既定の名前。列ごと省くと既存の値を変えない' },
     { col: 'display_description', required: false, desc: '「AIコーチでできること」一覧に出す説明文（512文字まで）。空欄なら画面側の既定の説明。列ごと省くと既存の値を変えない' },
-    { col: 'updateFlag',  required: false, desc: '1 の場合、既存レコードを更新する' },
-    { col: 'deleteFlag',  required: false, desc: '1 の場合、該当レコードを削除する（id必須）' },
+    { col: 'updateFlag',  required: false, desc: '参考用（無視される）。id、または name + category が一致する行があれば更新、無ければ新規作成になる' },
+    { col: 'deleteFlag',  required: false, desc: '1 の場合、該当レコードを削除する。id があれば id で、空なら name + category で対象を探す（見つからなければエラー）' },
   ],
   avatars: [
     { col: 'avatar_id', required: false, desc: 'アバターID（更新・削除時に指定、新規は空欄）' },

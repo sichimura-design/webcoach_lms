@@ -4,6 +4,7 @@ WebCoach specific endpoints (Resume courses, profiles, etc.)
 from typing import List, Optional
 from datetime import datetime, date
 import logging
+import re
 from fastapi import APIRouter, Depends, HTTPException, Query, status
 from sqlalchemy.orm import Session
 from sqlalchemy import text, func
@@ -806,6 +807,39 @@ def get_peer_study_streak_ranking_endpoint(
 # UpdateDB Endpoint
 # ==========================================
 
+def _is_flag_on(record: dict, name: str) -> bool:
+    """CSVのフラグ列が 1 か。見出しの書き方の揺れ（deleteFlag / delete_flag / deleteflag）も受ける"""
+    snake = re.sub(r'(?<!^)(?=[A-Z])', '_', name).lower()
+    for key in (name, snake, name.lower()):
+        value = record.get(key)
+        if value is True or str(value).strip().lower() in ('1', 'true'):
+            return True
+    return False
+
+
+def _find_ai_application(db: Session, record: dict):
+    """CSVの行が指す既存のAIアプリ。id があれば id で、無ければ name + category で探す"""
+    raw_id = str(record.get('id') or '').strip()
+    if raw_id:
+        if not raw_id.isdigit():
+            raise ValueError(f"id が数値ではありません: {raw_id}")
+        existing = db.query(WebCoachAIApplication).filter(WebCoachAIApplication.id == int(raw_id)).first()
+        if existing is None:
+            raise ValueError(f"id={raw_id} のAIアプリが見つかりません")
+        return existing
+    if not record.get('name') or 'category' not in record:
+        raise ValueError("id が空のときは name と category が必要です")
+    return db.query(WebCoachAIApplication).filter(
+        WebCoachAIApplication.name == record['name'],
+        WebCoachAIApplication.category == record['category']
+    ).first()
+
+
+def _ai_application_label(record: dict) -> str:
+    raw_id = str(record.get('id') or '').strip()
+    return f"id={raw_id}" if raw_id else f"{record.get('name')} / {record.get('category')}"
+
+
 @router.post(
     "/updatedb",
     response_model=dict,
@@ -857,41 +891,24 @@ def update_webcoach_database(
             try:
                 # ai_applicationsの処理
                 if entity_class == WebCoachAIApplication:
-                    # delete_flagのチェック（物理削除）
-                    delete_flag = record.get('delete_flag') or record.get('deleteflag')
+                    existing = _find_ai_application(db, record)
 
-                    if delete_flag == 1 or delete_flag == '1' or delete_flag is True:
-                        # 削除処理
-                        # 必須フィールドチェック (削除の場合はname + categoryのみ必要)
-                        if not all(k in record for k in ['name', 'category']):
-                            raise ValueError("Missing required fields for deletion: name, category")
-
-                        # 既存レコードをチェック
-                        existing = db.query(WebCoachAIApplication).filter(
-                            WebCoachAIApplication.name == record['name'],
-                            WebCoachAIApplication.category == record['category']
-                        ).first()
-
-                        if existing:
-                            # 物理削除
-                            db.delete(existing)
-                            logger.info(f"Deleted AI application: {record['name']} ({record['category']})")
-                        else:
-                            logger.warning(f"AI application not found for deletion: {record['name']} ({record['category']})")
+                    if _is_flag_on(record, 'deleteFlag'):
+                        # 物理削除（CSVの見出しは deleteFlag）
+                        if existing is None:
+                            raise ValueError(f"削除対象のAIアプリが見つかりません（{_ai_application_label(record)}）")
+                        db.delete(existing)
+                        logger.info(f"Deleted AI application: id={existing.id} {existing.name}")
                     else:
                         # 通常の作成/更新処理
                         # 必須フィールドチェック
                         if not all(k in record for k in ['name', 'category', 'description']):
                             raise ValueError("Missing required fields: name, category, description")
 
-                        # 既存レコードをチェック (name + category で一意)
-                        existing = db.query(WebCoachAIApplication).filter(
-                            WebCoachAIApplication.name == record['name'],
-                            WebCoachAIApplication.category == record['category']
-                        ).first()
-
                         if existing:
                             # 更新
+                            existing.name = record['name']
+                            existing.category = record['category']
                             existing.description = record['description']
                             existing.url = record.get('url')
                             existing.icon_url = record.get('icon_url')
