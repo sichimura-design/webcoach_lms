@@ -50,7 +50,7 @@ def _reset_caches():
 
 def _db():
     db = MagicMock()
-    db.query.return_value.filter.return_value.all.return_value = APPS
+    db.query.return_value.filter.return_value.order_by.return_value.all.return_value = APPS
     return db
 
 

@@ -137,37 +137,21 @@ class GetUserBadgesInput(BaseModel):
 
 
 class AskAiApplicationInput(BaseModel):
-    """AIアプリケーション連携ツールの入力"""
+    """AIアプリケーション連携ツールの入力
+
+    この引数スキーマはDB登録アプリの数だけ（全ツールに同じものが）LLMへ送られるため、
+    説明文は短くし、判断基準（start_new_conversation/extra_inputsの使い方）は
+    learning_coach_agent.agent_nodeのシステムプロンプトに1回だけ書く。
+    """
     # 実際にDifyへ送る内容には使わない（ユーザーの発言をそのまま送るため）。
     # ツール呼び出しのスキーマ上必要なため残しているが、値は無視される。
-    query: str = Field(..., description="AIアプリに問い合わせる質問内容")
+    query: str = Field(..., description="問い合わせ内容")
     userid: int = Field(..., description="ユーザーID")
     start_new_conversation: bool = Field(
-        False,
-        description=(
-            "デフォルトはfalse。trueにすると、このアプリとの会話を最初からやり直します"
-            "（これまで選択済みの職種・予算・納期・プラットフォームなどの条件を破棄します）。"
-            "**falseのままにすべき場合（迷ったら必ずfalse）**: ユーザーの発言が、直前にこの"
-            "アプリが尋ねた質問への回答になっている場合（例：アプリが「どのプラットフォームで"
-            "探したいですか？」と聞いた直後に「Crowdworksで探している」「Crowdworksです」と"
-            "答えた、予算や納期を聞かれて数値で答えた、など）。この場合は会話が正常に進んでいる"
-            "だけなので、文中に「探している」「探したい」という言葉が含まれていてもfalseのまま"
-            "にしてください。"
-            "**trueにすべき場合**: ユーザーが「新しく」「最初から」「別の条件で」「今の検索とは"
-            "別に」のように、進行中のやり取り（すでに答えた条件）を明示的に破棄して一から"
-            "やり直したいと述べた場合のみ。"
-        ),
+        False, description="会話を最初からやり直すときだけtrue（基準はシステムプロンプト参照）"
     )
     extra_inputs: Optional[Dict[str, str]] = Field(
-        None,
-        description=(
-            "このツールの説明文で追加の入力が必要と指示されている場合にのみ使う任意項目。"
-            "指示された変数名をキーにして、ユーザーから聞き取った値を設定すること。"
-            "まだユーザーから聞き取れていない場合は、このツールを呼ばずに先にユーザーへ質問する"
-            "こと。値が分かった一度きりではなく、それ以降の同じ会話の全ターンで毎回同じ値を"
-            "設定し続けること（省略すると再びエラーになる）。追加入力が不要なツールでは常に"
-            "省略してよい。"
-        ),
+        None, description="ツール説明にある入力項目の値（キーは項目名）。不要なら省略"
     )
 
 
@@ -567,9 +551,10 @@ def create_ai_application_tools(
     from entities.webcoach import WebCoachAIApplication
 
     tools: List[Tool] = []
+    # 並び順を固定する（ツール定義はプロンプトキャッシュの対象なので、順序が揺れるとキャッシュが効かない）
     apps = db.query(WebCoachAIApplication).filter(
         WebCoachAIApplication.secret_key.isnot(None)
-    ).all()
+    ).order_by(WebCoachAIApplication.id).all()
 
     for app in apps:
         api_key = _get_dify_api_key(app.secret_key)
@@ -617,17 +602,11 @@ def create_ai_application_tools(
         ]
         required_inputs_text = ""
         if required_vars:
-            var_list = "、".join(required_vars)
+            # 未取得でも聞き返さずに呼んでよい（未取得の必須変数は_call_dify_chatが空文字で補い、
+            # 聞き取りはDify側のフローに任せる）
             required_inputs_text = (
-                f" このアプリはDify側で次の入力項目を持っています: {var_list}。"
-                f"ユーザーの発言や会話の流れから読み取れる場合は、キー名をそのまま使って"
-                f"extra_inputsに設定してください。**まだ読み取れていない場合でも、"
-                f"自分から確認質問をしてユーザーに聞き返したりせず、ユーザーが"
-                f"このアプリの利用を求めている最初の発言でそのまま（extra_inputsを"
-                f"省略して）このツールを呼び出してください。アプリ側が必要な情報を"
-                f"自分から尋ねてくれるので、こちらで事前に聞き取る必要はありません**。"
-                f"一度聞き取った値は、同じ会話の以降の全呼び出しでも毎回extra_inputsに"
-                f"設定し続けること。"
+                f" 入力項目: {'、'.join(required_vars)}（発言から読み取れたらextra_inputsに設定。"
+                f"未取得でも聞き返さずに呼び出す）"
             )
 
         tools.append(

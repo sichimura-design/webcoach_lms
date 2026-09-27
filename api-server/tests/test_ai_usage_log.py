@@ -126,6 +126,8 @@ def test_summarize_counts_only_messages_with_usage_and_dify_calls():
         "llm_calls": 2,
         "input_tokens": 300,
         "output_tokens": 60,
+        "cache_read_tokens": 0,
+        "cache_creation_tokens": 0,
         "dify_app_ids": [20],
     }
 

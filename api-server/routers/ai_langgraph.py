@@ -232,7 +232,7 @@ def _summarize_llm_usage(messages) -> dict:
     """
     from langchain_core.messages import AIMessage
 
-    input_tokens = output_tokens = llm_calls = 0
+    input_tokens = output_tokens = llm_calls = cache_read = cache_creation = 0
     dify_app_ids: List[int] = []
     for msg in messages:
         if not isinstance(msg, AIMessage):
@@ -242,6 +242,10 @@ def _summarize_llm_usage(messages) -> dict:
             llm_calls += 1
             input_tokens += usage.get("input_tokens", 0) or 0
             output_tokens += usage.get("output_tokens", 0) or 0
+            # input_tokensはキャッシュ読み書き分を含む合計。内訳はコスト計算用（読み≒0.1倍、書き≒1.25倍の単価）
+            details = usage.get("input_token_details") or {}
+            cache_read += details.get("cache_read", 0) or 0
+            cache_creation += details.get("cache_creation", 0) or 0
         for call in getattr(msg, "tool_calls", None) or []:
             name = call.get("name", "")
             if name.startswith("ask_ai_application_"):
@@ -253,6 +257,8 @@ def _summarize_llm_usage(messages) -> dict:
         "llm_calls": llm_calls,
         "input_tokens": input_tokens,
         "output_tokens": output_tokens,
+        "cache_read_tokens": cache_read,
+        "cache_creation_tokens": cache_creation,
         "dify_app_ids": dify_app_ids or None,
     }
 
