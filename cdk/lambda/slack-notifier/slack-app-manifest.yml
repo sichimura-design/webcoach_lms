@@ -1,0 +1,17 @@
+# Slackアプリ「WebCoach Monitor」のマニフェスト
+# https://api.slack.com/apps → Create New App → From a manifest に貼り付けて作成する。
+# インストール後、Incoming Webhooksで「Add New Webhook」をチャンネルごとに1本ずつ発行し、
+# URLをSecrets Managerの <env>/moodle/slack-usage-webhook / slack-alert-webhook へ登録する
+# (devと本番は同じチャンネルに投稿するので、Webhookは2本をdev/prodで共用する)。
+display_information:
+  name: WebCoach Monitor
+  description: WebCoachのAI利用状況の日次集計と、api-server/bff-serverのエラーを通知
+  background_color: "#E86D78"
+oauth_config:
+  scopes:
+    bot:
+      - incoming-webhook
+settings:
+  org_deploy_enabled: false
+  socket_mode_enabled: false
+  token_rotation_enabled: false
