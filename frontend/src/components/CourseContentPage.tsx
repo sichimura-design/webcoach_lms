@@ -32,6 +32,7 @@ import {
 import MarkdownRenderer from './MarkdownRenderer';
 import { parseDifyMessage } from '../utils/difyButtons';
 import { getUserMessage } from '../utils/errorMessage';
+import { announcementModuleIds } from '../utils/courseAnnouncement';
 import { color, font, radius, shadow } from '../theme/webcoachTheme';
 import LessonTopBar from './learning/LessonTopBar';
 import LessonFloatingActions from './learning/LessonFloatingActions';
@@ -371,15 +372,20 @@ function CourseContentPage({ courseId, initialModuleId, onBack }: CourseContentP
   // 🔴 以前は未ルーティングの LearningWorkspacePage（useLessonDoc）だけが書いていたので、
   //    実際の教材ページで何を開いても履歴が空のままで、「続きから学習する」が毎回
   //    コースの1本目に戻っていた。
+  // 🔴 アナウンスメントは教材ではないので「開いた教材」に数えない（下の resumecourse も同じ）。
+  //    コースを開くと既定で先頭のモジュール＝アナウンスメントが選ばれるため、数えると
+  //    アナウンスメントしか無い空のコースが「続きから学習」に出てしまう（utils/courseAnnouncement）
+  const announcementIds = useMemo(() => announcementModuleIds(sections), [sections]);
+  const openedLesson = !!selectedModule && !announcementIds.has(selectedModule.id);
   useEffect(() => {
-    if (!selectedModule || !courseName) return;
+    if (!selectedModule || !courseName || !openedLesson) return;
     useRecentCourseStore.getState().touch({
       courseId,
       courseTitle: courseName,
       lessonId: selectedModule.id,
       lessonTitle: selectedModule.name,
     });
-  }, [courseId, courseName, selectedModule]);
+  }, [courseId, courseName, selectedModule, openedLesson]);
 
   // サーバの「前回の続き」（/webcoach/resumecourse）も開いた時点で書く。
   // 🔴 以前はレッスン完了時にしか書いておらず、受講して開いただけの生徒には記録が無く、
@@ -387,13 +393,12 @@ function CourseContentPage({ courseId, initialModuleId, onBack }: CourseContentP
   //    記録はユーザーごとに1行・コース単位なので、同じコース内でレッスンを移っても書き直さない。
   //    progress_percent は BFF が読み出し時に Moodle の完了状態から計算し直すので、表示には使われない。
   const userId = user?.userid;
-  const opened = !!selectedModule;
   useEffect(() => {
-    if (!userId || !courseId || !opened) return;
+    if (!userId || !courseId || !openedLesson) return;
     bffClient
       .updateResumeCourse(userId, { courseid: courseId, progress_percent: 0 })
       .catch((e) => console.error('[ResumeCourse] Update failed:', e?.response?.data?.message ?? e));
-  }, [userId, courseId, opened]);
+  }, [userId, courseId, openedLesson]);
 
   // ─── URL コンテンツの事前チェック ─────────
   const [iframeError, setIframeError] = useState(false);

@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import { bffClient } from '../services/bffClient';
 import { useRecentCourseStore } from '../store/recentCourseStore';
+import { announcementModuleIds } from '../utils/courseAnnouncement';
 
 /**
  * マイページ「続きから学習」の中身（どのコースの・どのレッスンの続きか・何本中何本済みか）。
@@ -15,12 +16,15 @@ import { useRecentCourseStore } from '../store/recentCourseStore';
  *    まだ何も開いていない生徒には無い。そのとき受講一覧の先頭を機械的に選ぶと、
  *    アナウンスメントのフォーラムしか無い空のコースに当たり「アナウンスメント／0％完了」と
  *    出ていた（複数コース受講時）。
- *    候補（呼び出し側で優先順に並べる）の中で、レッスンを1本以上持つ最初のコースを採る。
- *    どれも持たなければ先頭の候補（レッスン情報なし＝コース名＋％表示）に落とす。
+ *    候補（呼び出し側で優先順に並べる）の中で、アナウンスメント以外の教材を1本以上持つ
+ *    最初のコースを採る。どれも持たなければ先頭の候補（レッスン情報なし＝コース名＋％表示）に落とす。
+ *    🔴 「教材がある」を完了トラッキングの有無で判定しない。完了チェックを付けていない
+ *       教材だけのコースまで空扱いにして飛ばしてしまう。進捗の数え方（下）とは別の話。
  *
  * 🔴 数え方はコース目次（CourseTopPage）に揃える。
- *    - レッスン＝完了トラッキング対象（completion >= 1）のモジュールだけ。
+ *    - レッスン数・通し番号＝完了トラッキング対象（completion >= 1）のモジュールだけ。
  *      ラベル等の対象外モジュールまで数えると分母だけ膨らみ、目次の「◯/◯」と食い違う。
+ *      対象が1本も無いコースはレッスン数0（カードは分数を出さない）。
  *    - 完了＝受講生本人の完了状態（/courses/:id/activities/completion）で state >= 1。
  *      目次に付いてくる completiondata は BFF の接続ユーザー側の値が残ることがあるので正にしない
  *      （取れなかったときだけそちらに落とす）。
@@ -33,7 +37,7 @@ export interface ResumeLesson {
   lessonTitle: string;
   /** レッスンの通し番号（1始まり）。前回開いたのがレッスン外のモジュールなら無し */
   lessonNo?: number;
-  /** レッスン総数（1以上） */
+  /** レッスン総数（完了トラッキング対象の数。0 のこともある） */
   totalLessons: number;
   completedLessons: number;
 }
@@ -41,6 +45,8 @@ export interface ResumeLesson {
 interface LessonModule {
   id: number;
   name: string;
+  /** アナウンスメント（教材ではない）。続きのレッスンにも、教材があるかの判定にも使わない */
+  announcement: boolean;
   trackable: boolean;
   done: boolean;
 }
@@ -54,10 +60,13 @@ async function loadModules(courseId: number): Promise<LessonModule[]> {
     bffClient.getCourseActivitiesCompletion(courseId).catch(() => null),
   ]);
   const stateByCmid = new Map((completion?.statuses ?? []).map((s) => [s.cmid, s.state] as const));
-  const flat = (Array.isArray(sections) ? sections : []).flatMap((s: any) => s.modules ?? []);
+  const list = Array.isArray(sections) ? sections : [];
+  const announcements = announcementModuleIds(list);
+  const flat = list.flatMap((s: any) => s.modules ?? []);
   return flat.map((m: any) => ({
     id: m.id,
     name: m.name ?? '',
+    announcement: announcements.has(m.id),
     trackable: (m.completion ?? 0) >= 1,
     done: (stateByCmid.get(m.id) ?? m.completiondata?.state ?? 0) >= 1,
   }));
@@ -93,12 +102,12 @@ export function useResumeLesson(candidateIds: number[]): {
       for (const id of ids.slice(0, MAX_PROBES)) {
         const modules = await loadModules(id).catch(() => [] as LessonModule[]);
         if (cancelled) return;
-        if (modules.some((m) => m.trackable)) {
+        if (modules.some((m) => !m.announcement)) {
           setResult({ key, courseId: id, modules });
           return;
         }
       }
-      // レッスンのあるコースが無い → 先頭の候補をコース名＋％表示で出す
+      // 教材のあるコースが無い → 先頭の候補をコース名＋％表示で出す
       if (!cancelled) setResult({ key, courseId: ids[0], modules: [] });
     })();
     return () => {
@@ -112,15 +121,18 @@ export function useResumeLesson(candidateIds: number[]): {
   const recentLessonId = recent?.lessonId;
 
   const modules = !loading && result ? result.modules : [];
-  const lessons = modules.filter((m) => m.trackable);
-  // 🔴 レッスンが1本も無いコースで modules[0]（たいていアナウンスメントのフォーラム）を
-  //    レッスン名として出さない。lesson=null でコース名＋％表示に落とす
-  if (lessons.length === 0) return { courseId, lesson: null, loading };
+  const materials = modules.filter((m) => !m.announcement);
+  const lessons = materials.filter((m) => m.trackable);
+  // 🔴 教材が1本も無いコースで modules[0]（アナウンスメント）をレッスン名として出さない。
+  //    lesson=null でコース名＋％表示に落とす
+  if (materials.length === 0) return { courseId, lesson: null, loading };
 
+  // 前回開いたのがアナウンスメントなら（この修正より前の履歴）続きには使わない
   const target =
-    (recentLessonId != null && modules.find((m) => m.id === recentLessonId)) ||
+    (recentLessonId != null && materials.find((m) => m.id === recentLessonId)) ||
     lessons.find((m) => !m.done) ||
-    lessons[0];
+    lessons[0] ||
+    materials[0];
   const no = lessons.indexOf(target);
 
   return {
