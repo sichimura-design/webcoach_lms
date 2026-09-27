@@ -224,3 +224,17 @@ def test_publish_carries_over_incomplete_goals(client, test_db):
     assert all(g.is_completed == 0 for g in goals)
     # 前回の行はそのまま残る
     assert len(crud.get_schedule_next_coaching_goals(test_db, first.id)) == 3
+
+
+def test_future_schedule_with_goals_is_skipped(client, test_db):
+    """未来日の回にノートが公開されていても、実施前なので直近の回として扱わない"""
+    userid = 304
+    held = _create_schedule(test_db, mdl_user_id=userid, coaching_no=1,
+                            coaching_date=_today() - timedelta(days=2))
+    future = _create_schedule(test_db, mdl_user_id=userid, coaching_no=2,
+                              coaching_date=_today() + timedelta(days=1))
+    test_db.commit()
+    _publish(client, test_db, held, ["A"])
+    _publish(client, test_db, future, ["B"])
+
+    assert _descriptions(client, userid) == ["A"]

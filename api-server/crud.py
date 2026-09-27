@@ -1632,7 +1632,8 @@ def get_latest_coaching_schedule_id(db: Session, mdl_user_id: int) -> Optional[i
       - status が completed / interrupted
       - status が未記録(NULL)で実施日が昨日以前（JST）
         ※コーチが実施結果を記録しない運用が多いため、statusだけでは判定しない
-      - 目標行を持つ回（ノートを公開した＝実施済み。当日中に公開した場合のため）
+      - 目標行を持つ当日以前の回（ノートを公開した＝実施済み。当日中に公開した場合のため）
+        ※未来日の回にノートが公開されていても（テストデータ等）、実施前なので対象外
     リスケ（rescheduled）の回は常に除く。
 
     Args:
@@ -1660,7 +1661,7 @@ def get_latest_coaching_schedule_id(db: Session, mdl_user_id: int) -> Optional[i
                 WebCoachCoachingSchedule.status.is_(None),
                 WebCoachCoachingSchedule.coaching_date < today_jst,
             ),
-            has_goals,
+            and_(has_goals, WebCoachCoachingSchedule.coaching_date <= today_jst),
         ),
     ).order_by(
         WebCoachCoachingSchedule.coaching_date.desc(),
