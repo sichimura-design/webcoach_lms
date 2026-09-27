@@ -1,9 +1,10 @@
 """
 Difyアプリの会話継続と切り替え (agents/tools_langchain.py, routers/ai_langgraph.py)
 
-- 直前のDify応答のボタン値が送られたときだけ、直前のアプリへツールを固定する
-- 自由入力の発言は固定せず「続きなら同じツールを」とLLMに伝えるだけにする（別用途なら切り替えられる）
-- 他アプリ固有のタグを含む発言では、続きの案内も出さない
+- 直前のDify応答のボタン値が送られたとき、または直前のターンがDifyだったときは、直前のアプリへツールを固定する
+- 間にチャットのAIが答えたターンを挟んだら、固定せず「続きなら同じツールを」とLLMに伝えるだけにする
+- Difyを使わないターンが2回続いたら固定を解除する
+- 他アプリ固有のタグを含む発言では、ボタン値以外は固定も続きの案内もしない
 - 専門モードの指示文はDifyへ送る発言に混ぜない
 """
 from types import SimpleNamespace
@@ -14,7 +15,12 @@ from langchain_core.messages import AIMessage
 
 import agents.tools_langchain as tools_langchain
 import routers.ai_langgraph as ai_langgraph
-from agents.tools_langchain import _call_dify_chat, clear_sticky_dify_app, create_ai_application_tools
+from agents.tools_langchain import (
+    _call_dify_chat,
+    clear_sticky_dify_app,
+    create_ai_application_tools,
+    note_turn_without_dify,
+)
 from routers.ai_langgraph import ChatRequest, _execute_chat
 
 SPRINT_ANSWER = (
@@ -44,6 +50,7 @@ def _reset_caches():
         tools_langchain._dify_extra_inputs_cache,
         tools_langchain._dify_image_cache,
         tools_langchain._dify_last_buttons_cache,
+        tools_langchain._dify_idle_turns_cache,
     ):
         cache.clear()
 
@@ -80,10 +87,37 @@ def test_button_value_forces_previous_app():
     assert _decide("3時間（スピードを意識したい人向け）") == ("ask_ai_application_14", None)
 
 
-@pytest.mark.parametrize("message", ["3時間くらいです", "キャッチコピーを考えてほしい", "別のことを相談したい"])
-def test_free_text_is_not_forced_but_hinted(message):
+@pytest.mark.parametrize("message", ["3時間くらいです", "バナー制作", "別のことを相談したい"])
+def test_free_text_right_after_dify_is_forced(message):
+    """Difyが答えを待っている途中の自由入力も、チャットのAIに答えさせずDifyへ送る"""
     _talk_to_sprint_app()
-    assert _decide(message) == (None, "ask_ai_application_14")
+    assert _decide(message) == ("ask_ai_application_14", None)
+
+
+def test_free_text_after_a_non_dify_turn_is_hinted():
+    _talk_to_sprint_app()
+    note_turn_without_dify(7, "s")
+    assert _decide("バナー制作") == (None, "ask_ai_application_14")
+
+
+def test_button_value_is_forced_even_after_a_non_dify_turn():
+    _talk_to_sprint_app()
+    note_turn_without_dify(7, "s")
+    assert _decide("3時間（スピードを意識したい人向け）") == ("ask_ai_application_14", None)
+
+
+def test_sticky_is_cleared_after_two_non_dify_turns():
+    _talk_to_sprint_app()
+    note_turn_without_dify(7, "s")
+    note_turn_without_dify(7, "s")
+    assert _decide("バナー制作") == (None, None)
+
+
+def test_dify_call_resets_non_dify_turn_count():
+    _talk_to_sprint_app()
+    note_turn_without_dify(7, "s")
+    _talk_to_sprint_app()
+    assert _decide("バナー制作") == ("ask_ai_application_14", None)
 
 
 def test_other_app_tag_drops_hint():

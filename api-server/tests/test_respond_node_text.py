@@ -18,7 +18,7 @@ def _state(messages):
 
 
 def _run(messages):
-    with patch("agents.tools_langchain.clear_sticky_dify_app"):
+    with patch("agents.tools_langchain.note_turn_without_dify"):
         return respond_node(_state(messages))["final_response"]
 
 

@@ -297,11 +297,19 @@ _dify_conversation_cache: Dict[tuple, str] = {}
 _dify_sticky_app_cache: Dict[tuple, int] = {}
 
 # 直前のDify応答に含まれていたボタンの値（(userid, session_id) -> {data-message値}）。
-# 次の発言がこのいずれかと一致した場合だけ、直前のアプリへツール選択を強制する
-# （ボタン値の完全一致で進むステップ形式のフローを確実に続けるため）。それ以外の
-# 発言はLLMに選ばせ直し、会話の途中でも別のアプリへ切り替えられるようにする。
+# 次の発言がこのいずれかと一致した場合は、間にチャットのAIが答えたターンがあっても
+# 直前のアプリへツール選択を強制する（ボタン値の完全一致で進むステップ形式のフローを
+# 確実に続けるため）。自由入力の扱いは_dify_idle_turns_cache参照。
 # プロセス内メモリのみ。
 _dify_last_buttons_cache: Dict[tuple, set] = {}
+
+# 直前のDify呼び出しから、Difyを使わずに終わったターンの数（(userid, session_id) -> 回数）。
+# 0（直前のターンがDify）なら、Difyが答えを待っている途中なので自由入力もそのアプリへ送る。
+# チャットのAIが自分で答えたターンがあっても1回だけなら固定を解かず「続きなら同じアプリを」と
+# 伝え続け、_STICKY_IDLE_LIMIT回続いたら案件検索等のフローが終わったとみなして解除する。
+# プロセス内メモリのみ。
+_dify_idle_turns_cache: Dict[tuple, int] = {}
+_STICKY_IDLE_LIMIT = 2
 
 _BUTTON_VALUE_RE = re.compile(r'<button\b[^>]*\bdata-message="([^"]*)"', re.IGNORECASE)
 
@@ -367,6 +375,23 @@ def clear_sticky_dify_app(userid: int, session_id: Optional[str] = None) -> None
     """Difyツールを使わずにターンが完了した場合、次ターンでのツール固定を解除する"""
     _dify_sticky_app_cache.pop((userid, session_id), None)
     _dify_last_buttons_cache.pop((userid, session_id), None)
+    _dify_idle_turns_cache.pop((userid, session_id), None)
+
+
+def note_turn_without_dify(userid: int, session_id: Optional[str] = None) -> None:
+    """Difyツールを使わずにターンが完了したことを記録し、続いたら次ターンでのツール固定を解除する
+
+    1回で解除すると、Difyの聞き取りの途中でチャットのAIが自分で答えてしまったとき、
+    以降の発言がDifyへ届かなくなり、Dify側は途中の条件を知らないままになる。
+    """
+    key = (userid, session_id)
+    if key not in _dify_sticky_app_cache:
+        return
+    idle = _dify_idle_turns_cache.get(key, 0) + 1
+    if idle >= _STICKY_IDLE_LIMIT:
+        clear_sticky_dify_app(userid, session_id)
+    else:
+        _dify_idle_turns_cache[key] = idle
 
 
 def _call_dify_chat(
@@ -392,6 +417,7 @@ def _call_dify_chat(
     cache_key = (userid, app_id, session_id)
     conversation_id = "" if reset else _dify_conversation_cache.get(cache_key, "")
     _dify_sticky_app_cache[(userid, session_id)] = app_id
+    _dify_idle_turns_cache.pop((userid, session_id), None)
 
     # extra_inputsはLLMが送り忘れることがあるため、一度渡された値をセッション単位で
     # 覚えておき、今回省略されていてもマージして補う（新しい値が来れば上書きする）。
@@ -538,15 +564,16 @@ def create_ai_application_tools(
     同じ理由で、ユーザーの添付画像(image)もLLMを介さずそのままDifyへ渡す。
 
     戻り値は (tools, forced_tool_name, continuing_tool_name)。
-    - forced_tool_name: ユーザーの発言が直前のDify応答のボタン値と一致した場合の、
-      前ターンのアプリのツール名。LLMに選ばせずこのツールへ固定する。
-    - continuing_tool_name: それ以外で前ターンのアプリがある場合のツール名。
-      固定はせず「続きなら同じツールを」とLLMに伝えるだけにする（自由入力の回答は
-      続きとして扱わせつつ、会話の途中でも別アプリの用途の依頼なら切り替えられるように）。
-      ユーザーの発言に他アプリ固有のタグキーワードが含まれる場合は明示的な
-      切り替え意図とみなし、Noneを返す。
-    以前は後者の場合も固定しており、一度Difyアプリを使うと「キャッチコピーを考えて」
-    等の別用途の依頼まで同じアプリへ送られ、同じ質問が繰り返されていた。
+    - forced_tool_name: 前ターンのアプリのツール名で、LLMに選ばせずこのツールへ固定する場合。
+      ユーザーの発言が直前のDify応答のボタン値と一致したとき、または直前のターンが
+      Difyだった（Difyが答えを待っている途中の）とき。LLMに選ばせると自由入力の答えに
+      チャットのAIが自分で答えてしまい、その後の条件がDifyへ届かず「忘れた」ように見えていた。
+    - continuing_tool_name: 前ターンのアプリはあるが、間にチャットのAIが答えたターンを
+      挟んだ場合のツール名。固定はせず「続きなら同じツールを」とLLMに伝えるだけにする。
+    ユーザーの発言に他アプリ固有のタグキーワードが含まれる場合は明示的な切り替え意図と
+    みなし、ボタン値の一致以外ではどちらもNoneを返す。タグに当たらない別用途の依頼
+    （コースの質問等）は、Difyの途中では前ターンのアプリへ送られる。抜けたいときは
+    「新しいチャットで続ける」で別セッションにする前提。
     """
     from entities.webcoach import WebCoachAIApplication
 
@@ -642,7 +669,13 @@ def create_ai_application_tools(
             # 汎用タグ（AI/案件など複数アプリで共通のもの）は切り替え判定から除外する
             distinctive_other_tags = {t for t in (other_tags - sticky_tags) if t}
             switched = any(tag in raw_user_message for tag in distinctive_other_tags)
-            if not switched:
+            if switched:
+                pass
+            elif _dify_idle_turns_cache.get((userid, session_id), 0) == 0:
+                # 直前のターンがDifyの質問 → 自由入力の答えもそのアプリへ送る。
+                # LLMに選ばせると自分で答えてしまうことがあり、その発言がDifyへ届かない
+                forced_tool_name = sticky_name
+            else:
                 continuing_tool_name = sticky_name
 
     return tools, forced_tool_name, continuing_tool_name

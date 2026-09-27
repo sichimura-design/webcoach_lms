@@ -321,6 +321,7 @@ def agent_node(state: LearningCoachState) -> LearningCoachState:
     if continuing_tool_name and any(t.name == continuing_tool_name for t in dynamic_tools):
         dynamic_parts.append(f"""# 進行中のAIアプリケーション:
 - 直前のやり取りでは {continuing_tool_name} を使っていました。ユーザーの発言がそのアプリの質問への回答や続きであれば、同じ {continuing_tool_name} を呼び出してください
+- そのアプリの代わりに、条件や選択肢をあなた自身が聞き取ったり、検索するふりをしたりしないでください（あなたへの返事はアプリに届かず、アプリ側はその条件を知らないままになります）
 - ただし、ユーザーの発言が別のツールの用途に当たる新しい依頼（例: 別のAIアプリケーションの説明に合う依頼、コースや学習状況の質問）であれば、{continuing_tool_name} に送らず、その用途に合うツールを使うか、あなた自身が回答してください""")
 
     # 専門モード（制作物添削等）の指示。フロントがユーザー発言とは別に送ってくる
@@ -506,11 +507,11 @@ def respond_node(state: LearningCoachState) -> LearningCoachState:
     if state.get("dify_bypass_response"):
         final_response = state["dify_bypass_response"]
     else:
-        # Difyツールを使わずにターンが完了した場合は、話題が変わった/
-        # 案件検索等のフローが終わったとみなし、次ターンでのツール固定を解除する。
+        # Difyツールを使わずにターンが完了したことを記録する。何ターンか続いたら
+        # 話題が変わった/案件検索等のフローが終わったとみなし、ツール固定を解除する。
         if state.get("user_id") is not None:
-            from agents.tools_langchain import clear_sticky_dify_app
-            clear_sticky_dify_app(state["user_id"], state.get("session_id"))
+            from agents.tools_langchain import note_turn_without_dify
+            note_turn_without_dify(state["user_id"], state.get("session_id"))
 
         # 今回のユーザー発言以降のAIメッセージの本文をすべてつなげる。
         # ツール呼び出しと同時に書いた本文（選択肢の提示など）を、最後の短い発言で
