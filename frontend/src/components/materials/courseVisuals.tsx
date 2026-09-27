@@ -27,6 +27,11 @@ export interface GalleryCourse {
   purposes?: string[];
   /** いま「続きから」で再開できるコース */
   isCurrent: boolean;
+  /**
+   * 受講登録済み。進捗は完了トラッキング対象のレッスンを完了して初めて増えるので、
+   * 受講したが未完了のコースは progress 0 のまま。これが無いと「未受講」と区別できない
+   */
+  enrolled?: boolean;
   /** コース画像。あればサムネに使う（無ければタイポグラフィのサムネを描く） */
   thumbnailUrl?: string;
 }
@@ -162,14 +167,14 @@ export function CourseThumb({
 }
 
 /** 受講状況のバッジ。「進行中」は続きから再開できる1コースだけ */
-export function statusBadge(course: Pick<GalleryCourse, 'isCurrent' | 'progress'>) {
+export function statusBadge(course: Pick<GalleryCourse, 'isCurrent' | 'progress' | 'enrolled'>) {
   if (course.isCurrent) {
     return { label: '進行中', style: { background: t.color.primarySoft, color: t.color.primary } };
   }
   if (course.progress >= 100) {
     return { label: '修了', style: { background: t.color.successSoft, color: t.color.success } };
   }
-  if (course.progress > 0) {
+  if (course.enrolled || course.progress > 0) {
     return { label: '受講中', style: { background: t.color.primarySoft, color: t.color.primary } };
   }
   // subtle(#A29A9C) は白地でコントラストが足りない。バッジの文字なので一段濃い方を使う

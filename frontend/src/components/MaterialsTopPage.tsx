@@ -10,6 +10,7 @@ import { useAuth } from '../contexts/AuthContext';
 import { useMypageData } from '../hooks/useMypageData';
 import { useLearningSummary } from '../hooks/useLearningSummary';
 import { bffClient } from '../services/bffClient';
+import { useRecentCourseStore } from '../store/recentCourseStore';
 import { t } from '../theme/tokens';
 import { pageTitleStyle } from '../theme/pageTitle';
 import { LEARNING_HIERARCHY } from '../constants/learningTaxonomy';
@@ -195,11 +196,23 @@ function MaterialsTopPage() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [resumableCourse?.id]);
 
-  /** ほかに学習中。続きから学ぶコースと修了済みは除く */
-  const otherActive = useMemo(
-    () => activeCourses.filter((c) => c.id !== resumableCourse?.id && (c.progress ?? 0) > 0 && (c.progress ?? 0) < 100),
-    [activeCourses, resumableCourse?.id],
-  );
+  /**
+   * ほかに学習中。続きから学ぶコースと修了済みは除く。
+   * 🔴 進捗 0％ のコースも出す。以前は「進捗 > 0」で絞っていたが、進捗は完了トラッキング
+   *    対象のレッスンを完了して初めて増えるので、受講して読み始めただけのコースが
+   *    全部落ち、並行受講していても何も出なかった。受講登録は本人が「受講する」を押した
+   *    結果なので、未修了なら学習中として扱う。
+   *    並びはこの端末で最近開いた順（開いていないコースは受講一覧の順のまま後ろ）。
+   */
+  const recentEntries = useRecentCourseStore((s) => s.entries);
+  const otherActive = useMemo(() => {
+    const openedAt = new Map(recentEntries.map((e) => [e.courseId, e.openedAt] as const));
+    return activeCourses
+      .filter((c) => c.id !== resumableCourse?.id && (c.progress ?? 0) < 100)
+      .map((c, i) => ({ c, i, at: openedAt.get(c.id) ?? 0 }))
+      .sort((a, b) => b.at - a.at || a.i - b.i)
+      .map(({ c }) => c);
+  }, [activeCourses, resumableCourse?.id, recentEntries]);
 
   /**
    * 領域カードの中身。件数と「学習中」は実データ（カタログ）から数え、
@@ -235,7 +248,7 @@ function MaterialsTopPage() {
     return [...known, ...unknown].map((a) => ({
       ...a,
       count: a.courses.length,
-      inProgress: a.courses.filter((c) => c.progress > 0 && c.progress < 100).length,
+      inProgress: a.courses.filter((c) => courseStatusOf(c) === COURSE_STATUS.inProgress).length,
     }));
   }, [catalog]);
 

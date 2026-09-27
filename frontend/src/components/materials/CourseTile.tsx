@@ -50,7 +50,7 @@ export function CourseTile({ course, onClick }: { course: GalleryCourse; onClick
                手を付けたコースだけが目印を持つ方が、目で拾える。
             地色は必ず白にする。バッジの淡い地色のままだと淡いサムネに溶けて読めない。
             角丸は pill ではなく badge(5px)。押せない状態ラベルなので四角い側に揃える。 */}
-        {(course.isCurrent || course.progress > 0) && (
+        {(course.isCurrent || course.enrolled || course.progress > 0) && (
           <span
             style={{
               position: 'absolute', top: 10, right: 10,

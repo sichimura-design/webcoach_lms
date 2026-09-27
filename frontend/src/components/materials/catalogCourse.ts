@@ -34,6 +34,7 @@ export function toCatalogCourse(
     thumbnailUrl: usableCourseImage(raw.courseimage),
     progress: enrolled?.progress ?? 0,
     isCurrent,
+    enrolled: !!enrolled,
   };
 }
 

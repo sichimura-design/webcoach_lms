@@ -32,7 +32,7 @@ export const COURSE_STATUSES: readonly CourseStatus[] = [
   COURSE_STATUS.completed,
 ];
 
-type StatusSource = Pick<GalleryCourse, 'progress' | 'isCurrent'>;
+type StatusSource = Pick<GalleryCourse, 'progress' | 'isCurrent' | 'enrolled'>;
 
 /**
  * 修了したコース。
@@ -45,8 +45,8 @@ export function isCompleted(course: Pick<GalleryCourse, 'progress'>): boolean {
 
 export function courseStatusOf(course: StatusSource): CourseStatus {
   if (isCompleted(course)) return COURSE_STATUS.completed;
-  // 「続きから」の1コース（isCurrent）は progress 0 でも学習中として扱う
-  if (course.isCurrent || course.progress > 0) return COURSE_STATUS.inProgress;
+  // 「続きから」の1コース（isCurrent）と受講登録済みのコースは progress 0 でも学習中として扱う
+  if (course.isCurrent || course.enrolled || course.progress > 0) return COURSE_STATUS.inProgress;
   return COURSE_STATUS.notStarted;
 }
 
