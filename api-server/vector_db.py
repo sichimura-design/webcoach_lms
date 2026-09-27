@@ -206,6 +206,13 @@ class FAISSRetriever(VectorDBRetriever):
                 self.metadatas = metadata.get('metadatas', [])
 
             logger.info(f"Loaded {len(self.documents)} documents from S3")
+            if self.index.ntotal != len(self.documents):
+                # keywordモードの取り込みでmetadata.jsonだけ更新された場合など。ずれた索引は使わない
+                logger.error(
+                    f"FAISS index size ({self.index.ntotal}) does not match documents ({len(self.documents)}). "
+                    "Ignoring the index; re-ingest with embeddings or use VECTOR_DB_ENV=keyword."
+                )
+                self.index = None
 
         except Exception as e:
             logger.error(f"Failed to load from S3: {e}")
@@ -350,12 +357,63 @@ class AuroraPgvectorRetriever(VectorDBRetriever):
         return 0
 
 
+class KeywordRetriever(VectorDBRetriever):
+    """キーワード検索リトリーバー（埋め込みモデル不要。keyword_search.py参照）
+
+    教材チャンクの本文はFAISS取り込み(routers/faiss_ingest.py)がS3に保存している
+    metadata.json（documents/metadatas）をそのまま使う。起動時に1回読み込んでメモリ上に
+    索引を作る。取り込み後は /api/faiss/reload で読み直す。
+    """
+
+    def __init__(self, s3_bucket: str = None, s3_prefix: str = None, aws_region: str = None):
+        from keyword_search import KeywordIndex
+
+        self.s3_bucket = s3_bucket or os.getenv('S3_BUCKET_NAME')
+        self.s3_prefix = s3_prefix or os.getenv('FAISS_S3_PREFIX', 'vector_db/')
+        self.aws_region = aws_region or os.getenv('AWS_REGION', 'ap-northeast-1')
+        if not self.s3_bucket:
+            raise ValueError("S3_BUCKET_NAME environment variable or s3_bucket parameter is required")
+
+        documents, metadatas = self._load_from_s3()
+        self.index = KeywordIndex(documents, metadatas)
+        logger.info(f"Keyword index built: {len(self.index)} documents")
+
+    def _load_from_s3(self):
+        import boto3
+        from botocore.exceptions import ClientError
+
+        key = f"{self.s3_prefix}metadata.json"
+        try:
+            body = boto3.client('s3', region_name=self.aws_region).get_object(
+                Bucket=self.s3_bucket, Key=key
+            )['Body'].read()
+        except ClientError as e:
+            if e.response['Error']['Code'] in ('404', 'NoSuchKey'):
+                logger.warning(f"s3://{self.s3_bucket}/{key} not found. Keyword index is empty.")
+                return [], []
+            raise
+        metadata = json.loads(body)
+        return metadata.get('documents', []), metadata.get('metadatas', [])
+
+    def search(
+        self,
+        query: str,
+        n_results: int = 5,
+        course_id: Optional[int] = None,
+        module_name: Optional[str] = None
+    ) -> Dict[str, Any]:
+        return self.index.search(query, n_results=n_results, course_id=course_id, module_name=module_name)
+
+    def get_document_count(self) -> int:
+        return len(self.index)
+
+
 def get_vector_db_retriever(environment: str = None, db_session=None) -> VectorDBRetriever:
     """
     環境に応じたベクトルDBリトリーバーを取得
 
     Args:
-        environment: 実行環境（"chromadb", "faiss", "pgvector", None=環境変数から判定）
+        environment: 実行環境（"keyword", "chromadb", "faiss", "pgvector", None=環境変数から判定）
         db_session: DBセッション（Aurora pgvector用）
 
     Returns:
@@ -366,7 +424,9 @@ def get_vector_db_retriever(environment: str = None, db_session=None) -> VectorD
 
     logger.info(f"Initializing vector DB retriever for environment: {environment}")
 
-    if environment == "faiss":
+    if environment == "keyword":
+        return KeywordRetriever()
+    elif environment == "faiss":
         return FAISSRetriever()
     elif environment == "pgvector":
         return AuroraPgvectorRetriever(db_session=db_session)

@@ -291,7 +291,7 @@ export class ProdEcsStack extends cdk.Stack {
         MOODLE_DB_NAME: 'moodle',
         MOODLE_URL: 'http://localhost:8080',
         ALLOWED_ORIGINS: allowedOrigins ?? '',
-        VECTOR_DB_ENV: vectorDbEnv ?? 'faiss',
+        VECTOR_DB_ENV: vectorDbEnv ?? 'keyword',
         COGNITO_REGION: this.region,
         DIFY_API_BASE_URL: 'https://api.dify.ai/v1',
         DIFY_CREDENTIALS_SECRET_ID: difySecret.secretName,

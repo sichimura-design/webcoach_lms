@@ -162,6 +162,11 @@ class FAISSManager:
         # S3クライアント
         self.s3_client = boto3.client('s3', region_name=self.aws_region)
 
+        # VECTOR_DB_ENV=keyword のときは埋め込みを作らず、教材本文(metadata.json)だけを
+        # 更新する（チャット側はvector_db.KeywordRetrieverが本文から索引を作る）。
+        # sentence-transformers(torch)はkeywordモードではインストールしない前提
+        self.use_embeddings = os.getenv('VECTOR_DB_ENV', '') != 'keyword'
+
         # 埋め込みモデル（遅延ロード）
         self.embedder = None
         self.dimension = None
@@ -193,6 +198,16 @@ class FAISSManager:
         metadata_path = cache_dir / "metadata.json"
 
         try:
+            if not self.use_embeddings:
+                logger.info(f"Downloading metadata from s3://{self.s3_bucket}/{metadata_key} (keyword mode)")
+                self.s3_client.download_file(self.s3_bucket, metadata_key, str(metadata_path))
+                with open(metadata_path, 'r', encoding='utf-8') as f:
+                    metadata = json.load(f)
+                self.documents = metadata.get('documents', [])
+                self.metadatas = metadata.get('metadatas', [])
+                logger.info(f"Loaded {len(self.documents)} documents from S3")
+                return
+
             # FAISSインデックスをダウンロード
             logger.info(f"Downloading FAISS index from s3://{self.s3_bucket}/{index_key}")
             self.s3_client.download_file(self.s3_bucket, index_key, str(index_path))
@@ -229,6 +244,12 @@ class FAISSManager:
             return
 
         logger.info(f"Adding {len(documents)} documents to FAISS index...")
+
+        if not self.use_embeddings:
+            self.documents.extend(documents)
+            self.metadatas.extend(metadatas)
+            logger.info(f"Added {len(documents)} documents (keyword mode). Total: {len(self.documents)}")
+            return
 
         try:
             # 埋め込みモデルをロード
@@ -268,14 +289,17 @@ class FAISSManager:
         index_path = cache_dir / "faiss_index.bin"
         metadata_path = cache_dir / "metadata.json"
 
-        logger.info(f"Saving FAISS index to {index_path}")
-        faiss.write_index(self.index, str(index_path))
+        if self.use_embeddings:
+            logger.info(f"Saving FAISS index to {index_path}")
+            faiss.write_index(self.index, str(index_path))
 
         logger.info(f"Saving metadata to {metadata_path}")
         metadata = {
             'documents': self.documents,
             'metadatas': self.metadatas,
-            'embedding_model': self.embedding_model_name,
+            # keywordモードでは埋め込みを作らないので、S3上の古いfaiss_index.binとは件数が合わなくなる
+            # (FAISSRetriever側で件数不一致を検知して使わない)
+            'embedding_model': self.embedding_model_name if self.use_embeddings else None,
             'dimension': self.dimension,
             'total_documents': len(self.documents),
             'updated_at': datetime.now().isoformat()
@@ -288,8 +312,9 @@ class FAISSManager:
         index_key = f"{self.s3_prefix}faiss_index.bin"
         metadata_key = f"{self.s3_prefix}metadata.json"
 
-        logger.info(f"Uploading to s3://{self.s3_bucket}/{index_key}")
-        self.s3_client.upload_file(str(index_path), self.s3_bucket, index_key)
+        if self.use_embeddings:
+            logger.info(f"Uploading to s3://{self.s3_bucket}/{index_key}")
+            self.s3_client.upload_file(str(index_path), self.s3_bucket, index_key)
 
         logger.info(f"Uploading to s3://{self.s3_bucket}/{metadata_key}")
         self.s3_client.upload_file(str(metadata_path), self.s3_bucket, metadata_key)
@@ -299,7 +324,7 @@ class FAISSManager:
     def get_stats(self) -> Dict[str, Any]:
         """インデックスの統計情報を取得"""
         # 埋め込みモデルをロード（dimensionが必要な場合）
-        if self.dimension is None:
+        if self.dimension is None and self.use_embeddings:
             self._ensure_embedder_loaded()
 
         return {
@@ -736,6 +761,10 @@ def reload_faiss_index():
 
         manager = get_faiss_manager()  # 再初期化
         stats = manager.get_stats()
+
+        # AIチャット側の検索(learning_coach_agent.vector_db)も読み直す
+        from agents.learning_coach_agent import reload_vector_db
+        reload_vector_db()
 
         return {
             "success": True,

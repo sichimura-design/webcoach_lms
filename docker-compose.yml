@@ -91,7 +91,7 @@ services:
       ALLOWED_ORIGINS: ${ALLOWED_ORIGINS:-http://localhost:3000}
       ENABLE_DOCS: ${ENABLE_DOCS:-true}
       # Vector DB configuration
-      VECTOR_DB_ENV: ${VECTOR_DB_ENV:-chromadb}
+      VECTOR_DB_ENV: ${VECTOR_DB_ENV:-keyword}
       S3_BUCKET_NAME: ${S3_BUCKET_NAME}
       FAISS_CACHE_DIR: ${FAISS_CACHE_DIR:-/tmp/faiss_cache}
       BFF_SERVER_URL: http://bff-server:3001

@@ -1,0 +1,114 @@
+"""
+教材のキーワード検索 (keyword_search.py / vector_db.KeywordRetriever / faiss_ingestのkeywordモード)
+
+埋め込みモデル(torch)を使わずに、日本語の質問で関係する教材だけを拾えること。
+"""
+import json
+from unittest.mock import MagicMock, patch
+
+import pytest
+
+import agents.learning_coach_agent as agent
+from keyword_search import KeywordIndex, content_tokens, tokenize
+
+DOCS = [
+    "Canvaのアカウントを作成して初期設定を完了する。アカウントの作り方: canva.comのトップページ右上の「登録」ボタンからメールアドレスで登録する方法が一番簡単です。",
+    "Canvaは動画編集・SNS運用・マーケティングの武器になる。テンプレートを使えばバナーもリール動画も短時間で作れます。",
+    "無料版とCanva Proの違い。Proではブランドキットや背景リムーバが使え、素材も増えます。",
+    "ポートフォリオの作り方。作品ごとに目的・工夫・成果を書き、クライアントに見せられる形にまとめます。",
+    "AIツールを使ったデザイン作成。画像生成AIでラフを作り、デザインツールで仕上げます。",
+]
+
+
+@pytest.fixture
+def index():
+    return KeywordIndex(DOCS, [{"filename": f"d{i}"} for i in range(len(DOCS))])
+
+
+def _best(index, query):
+    result = index.search(query, n_results=1)
+    if not result["documents"][0]:
+        return None, 0.0
+    return result["documents"][0][0], 1 - result["distances"][0][0]
+
+
+def test_tokenize_normalizes_and_makes_bigrams():
+    # 全角英字はNFKCで半角・小文字に、全角スペースは区切りになる
+    assert tokenize("Ｃａｎｖａ　の登録") == ["ca", "an", "nv", "va", "の登", "登録"]
+
+
+def test_content_tokens_drop_hiragana_only_bigrams():
+    tokens = content_tokens("登録方法を教えてください")
+    assert "登録" in tokens and "方法" in tokens
+    assert "えて" not in tokens and "ださ" not in tokens
+
+
+@pytest.mark.parametrize("query, expected_doc", [
+    ("Canvaのアカウントを作る方法を教えて", 0),
+    ("Canvaは動画編集にも使えますか", 1),
+    ("Canvaの無料版とProの違いは？", 2),
+    ("ポートフォリオはどう作る？", 3),
+])
+def test_related_questions_find_the_right_material_above_floor(index, query, expected_doc):
+    doc, relevance = _best(index, query)
+    assert doc == DOCS[expected_doc]
+    assert relevance >= agent.RAG_MIN_SIMILARITY
+
+
+@pytest.mark.parametrize("query", [
+    "面接の練習をしたい",
+    "キャッチコピーを考えてほしい",
+    "3時間（スピードを意識したい人向け）",
+    "こんにちは",
+])
+def test_unrelated_questions_stay_below_floor(index, query):
+    _, relevance = _best(index, query)
+    assert relevance < agent.RAG_MIN_SIMILARITY
+
+
+def test_course_filter_and_empty_query(index):
+    assert index.search("Canva", course_id=99)["documents"] == [[]]
+    assert index.search("です。", n_results=3)["documents"] == [[]]
+
+
+def test_keyword_retriever_loads_metadata_from_s3():
+    from vector_db import KeywordRetriever
+
+    body = json.dumps({"documents": DOCS, "metadatas": [{} for _ in DOCS]}).encode()
+    s3 = MagicMock()
+    s3.get_object.return_value = {"Body": MagicMock(read=MagicMock(return_value=body))}
+    with patch("boto3.client", return_value=s3):
+        retriever = KeywordRetriever(s3_bucket="bucket", s3_prefix="vector_db/")
+
+    s3.get_object.assert_called_once_with(Bucket="bucket", Key="vector_db/metadata.json")
+    assert retriever.get_document_count() == len(DOCS)
+    assert retriever.search("Canvaの無料版とProの違い", n_results=1)["documents"][0] == [DOCS[2]]
+
+
+def test_ingest_in_keyword_mode_uploads_only_metadata(tmp_path, monkeypatch):
+    """keywordモードの取り込みは埋め込みを作らず、metadata.jsonだけを更新する"""
+    import routers.faiss_ingest as ingest
+
+    monkeypatch.setenv("VECTOR_DB_ENV", "keyword")
+    monkeypatch.setenv("S3_BUCKET_NAME", "bucket")
+    monkeypatch.setenv("FAISS_CACHE_DIR", str(tmp_path))
+
+    def download(bucket, key, path):
+        with open(path, "w", encoding="utf-8") as f:
+            json.dump({"documents": ["既存"], "metadatas": [{}]}, f)
+
+    s3 = MagicMock()
+    s3.download_file.side_effect = download
+    with patch.object(ingest.boto3, "client", return_value=s3):
+        manager = ingest.FAISSManager()
+        manager.add_documents(["新しい教材"], [{"filename": "new.html"}])
+        manager.save_and_upload()
+        stats = manager.get_stats()
+
+    assert manager.embedder is None
+    uploaded_keys = [c.args[2] for c in s3.upload_file.call_args_list]
+    assert uploaded_keys == ["vector_db/metadata.json"]
+    saved = json.loads((tmp_path / "metadata.json").read_text(encoding="utf-8"))
+    assert saved["documents"] == ["既存", "新しい教材"]
+    assert saved["embedding_model"] is None
+    assert stats["total_documents"] == 2

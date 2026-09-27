@@ -104,7 +104,9 @@ def _run_retrieve(documents, distances):
 
 def test_rag_drops_low_similarity_results():
     # distance = 1 - similarity
-    fake_db, state = _run_retrieve(["関連", "無関係A", "無関係B"], [0.31, 0.53, 0.60])
+    floor = agent.RAG_MIN_SIMILARITY
+    # distance = 1 - 関連度。下限ちょうどは残し、下限未満は落とす
+    fake_db, state = _run_retrieve(["関連", "無関係A", "無関係B"], [1 - floor, 1 - floor + 0.01, 0.95])
     assert fake_db.search.call_args.kwargs["n_results"] == agent.RAG_MAX_RESULTS
     assert "関連" in state["rag_context"]
     assert "無関係" not in state["rag_context"]
@@ -112,5 +114,5 @@ def test_rag_drops_low_similarity_results():
 
 
 def test_rag_injects_nothing_when_all_results_are_irrelevant():
-    _, state = _run_retrieve(["無関係A", "無関係B"], [0.55, 0.60])
+    _, state = _run_retrieve(["無関係A", "無関係B"], [1 - agent.RAG_MIN_SIMILARITY + 0.01, 0.95])
     assert not state.get("rag_context")

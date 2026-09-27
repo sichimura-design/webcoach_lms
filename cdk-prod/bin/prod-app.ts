@@ -40,6 +40,8 @@
  *   Parameter Store (/moodle/prod/config/*) で確認した値をデフォルトにしている
  *   (2026-07-12 時点、実体は uat.webcoach.jp 環境の設定値)。
  *   本番用の正式な値が決まったら --context で上書きすること。
+ *   ※ vectorDbEnv は 2026-09-27 に faiss → keyword へ変更（埋め込みモデル/torchを使わないキーワード検索。
+ *     api-server/keyword_search.py 参照）。Parameter Store側の値とは異なる。
  *   secrets 系 (contentTokenSecret / internalApiKey / sessionSecret /
  *   moodleServicePassword / cognitoClientSecret / anthropicApiKey) はデフォルト値を
  *   設定していない。未指定の場合 'REPLACE_ME' で Secrets Manager に作成されるため、
@@ -241,7 +243,7 @@ const ecsStack = new ProdEcsStack(app, `${envName}-EcsStack`, {
   moodleServiceName: app.node.tryGetContext('moodleServiceName') ?? 'moodle-api-service',
   moodleServiceUsername: app.node.tryGetContext('moodleServiceUsername') ?? 'admin',
   moodleLang: app.node.tryGetContext('moodleLang') ?? 'ja',
-  vectorDbEnv: app.node.tryGetContext('vectorDbEnv') ?? 'faiss',
+  vectorDbEnv: app.node.tryGetContext('vectorDbEnv') ?? 'keyword',
   // prod-SpaStack デプロイ後に出力される値を渡す (未指定なら未設定のまま)
   cloudfrontDomain: app.node.tryGetContext('cloudfrontDomain'),
   s3BucketName: app.node.tryGetContext('s3BucketName'),
