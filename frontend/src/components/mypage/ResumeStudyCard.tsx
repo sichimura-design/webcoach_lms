@@ -7,6 +7,7 @@ import { formatMinutesHM } from '../../utils/studyStats';
 import { splitLesson } from './ContinueLearningHero';
 import LessonProgressBar from '../shared/LessonProgressBar';
 import { ResumeArt, courseArtOf } from '../materials/courseVisuals';
+import { t } from '../../theme/tokens';
 
 /**
  * 続きから学習（マイページ左上）。claude.ai/design『トップページ 3案』8a 準拠。
@@ -79,7 +80,10 @@ export function ResumeStudyCard({ course, known, lessonLoading, onOpenLesson, on
   // 絵柄が文字組み（画像なし）のときはサムネ側がコース名を持つ。本文にも出すと
   // 同じ名前が2回並ぶので、画像があるときだけ本文のコース名行を出す。
   // 単元名が無いときは下の見出しが course.title に倒れるので、そのときも出さない
-  const showCourseTitle = !!art?.thumbnailUrl && (!!name || !!lessonLoading);
+  // 🔴 読み込み中はコース名も出さない。読み込み中の course は候補の先頭にすぎず、
+  //    そのコースにレッスンが無ければ別のコースに差し替わる（useResumeLesson）。
+  //    ここで先頭候補のコース名・サムネを出すと、表示が別コースに入れ替わって見える
+  const showCourseTitle = !lessonLoading && !!art?.thumbnailUrl && !!name;
 
   return (
     <section style={CARD_STYLE} aria-busy={lessonLoading || undefined}>
@@ -113,7 +117,22 @@ export function ResumeStudyCard({ course, known, lessonLoading, onOpenLesson, on
                    以前はここに 150×100 の枠を --dc-badge-pink 直指定で置いていたが、
                    モックにも resumecourse にもコース画像が無いため空のピンク矩形に
                    見えていた。地色は領域ごとの淡いトーン（categoryTint）に変わる。 */}
-            <ResumeArt course={courseArtOf(course, known)} />
+            {lessonLoading ? (
+              // サムネも同じ理由で、確定するまでは ResumeArt と同じ寸法の淡い矩形にする
+              <span
+                aria-hidden
+                style={{
+                  display: 'block',
+                  width: 'min(180px, 42vw)',
+                  aspectRatio: '5 / 3',
+                  flexShrink: 0,
+                  borderRadius: t.radius.inner,
+                  background: 'var(--dc-soft-100)',
+                }}
+              />
+            ) : (
+              <ResumeArt course={courseArtOf(course, known)} />
+            )}
 
             <div style={{ flex: 1, minWidth: 0 }}>
               {/* コース名は「どのコースの続きか」の識別に必要なので caption(12px) には落とさない。
