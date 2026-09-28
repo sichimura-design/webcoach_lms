@@ -30,7 +30,7 @@ export function AiAppDetailPage() {
   const navigate = useNavigate();
   const { user } = useAuth();
   const createSkillSession = useAiCoachStore((s) => s.createSkillSession);
-  const { labelOf, descriptionOf } = useAiApplications();
+  const { labelOf, descriptionOf, thumbnailOf } = useAiApplications();
 
   const [doc, setDoc] = useState<DocState>({ kind: 'loading' });
 
@@ -119,8 +119,8 @@ export function AiAppDetailPage() {
               className="ai-home-app-thumb"
               style={{ width: 208, flex: 'none', borderRadius: 'var(--dc-radius-md)' }}
             >
-              {meta.thumbnail ? (
-                <img src={`${process.env.PUBLIC_URL}/${meta.thumbnail}`} alt="" />
+              {thumbnailOf(id) ? (
+                <img src={thumbnailOf(id) ?? undefined} alt="" />
               ) : (
                 <span
                   aria-hidden

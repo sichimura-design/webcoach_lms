@@ -98,7 +98,20 @@ export interface AiSkillCatalog {
   labelOf: (skillId: ConcreteAiSkillId) => string;
   /** 説明文。DBの display_description → description の順（DBに行が無いときは AI_SKILL_META） */
   descriptionOf: (skillId: ConcreteAiSkillId) => string;
+  /**
+   * カードのサムネURL。DBの icon_url → AI_SKILL_META.thumbnail の順、どちらも無ければ null（アイコン表示）。
+   * 管理画面「AIアプリ登録」の CSV で icon_url を入れればコード変更なしで差し替わる
+   */
+  thumbnailOf: (skillId: ConcreteAiSkillId) => string | null;
 }
+
+/** 絶対URLはそのまま、相対パス（images/ai-apps/x.webp など）は PUBLIC_URL 配下として解決する */
+const resolveThumbnail = (url: string | null | undefined): string | null => {
+  const u = url?.trim();
+  if (!u) return null;
+  if (/^https?:\/\//i.test(u)) return u;
+  return `${process.env.PUBLIC_URL ?? ''}/${u.replace(/^\//, '')}`;
+};
 
 /** 並び順: sort_order の小さい順、NULLは末尾、同じなら id 順 */
 const bySortOrder = (a: AiApplication, b: AiApplication) =>
@@ -148,6 +161,10 @@ export function useAiApplications(): AiSkillCatalog {
       descriptionOf: (id) => {
         const app = findAiApplication(apps, id);
         return app ? app.display_description || app.description : AI_SKILL_META[id].description;
+      },
+      thumbnailOf: (id) => {
+        const app = findAiApplication(apps, id);
+        return resolveThumbnail(app?.icon_url) ?? resolveThumbnail(AI_SKILL_META[id].thumbnail);
       },
     };
   }, [apps, failed]);

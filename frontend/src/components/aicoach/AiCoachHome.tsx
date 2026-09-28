@@ -366,6 +366,8 @@ export function AiCoachHome({
   function renderCard(id: ConcreteAiSkillId) {
     const meta = AI_SKILL_META[id];
     const Icon = AI_SKILL_ICON[meta.icon];
+    // 表示名・説明と同じくDB（icon_url）が優先。無ければコード側の thumbnail、それも無ければアイコン
+    const thumbnail = catalog.thumbnailOf(id);
 
     return (
       <div
@@ -396,8 +398,8 @@ export function AiCoachHome({
           }}
         >
           <span className="ai-home-app-thumb">
-            {meta.thumbnail ? (
-              <img src={`${process.env.PUBLIC_URL}/${meta.thumbnail}`} alt="" />
+            {thumbnail ? (
+              <img src={thumbnail} alt="" loading="lazy" />
             ) : (
               // 画像が未登録のアプリ。枠を空けずにアイコンで埋める
               <span
