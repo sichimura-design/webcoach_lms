@@ -46,8 +46,8 @@ export const fetchUserProfile = async (userId: number): Promise<Profile> => {
  * 再開可能なコースの候補（新しい順、最大 limit 件）。
  * 🔴 resumecourse は削除・非表示にしたコースも返してくる（名前が引けず「Course 75」になり、
  *    開くとエラーになる）。先頭をそのまま使わず、呼び出し側で受講中のコースと突き合わせること
- *    （useMypageData）。コース一覧（/moodle/courses）で存在確認すると応答が数秒遅く、
- *    マイページ全体の表示を待たせるので使わない。
+ *    （useMypageData の pickResumableCourse）。受講中で決まらないときだけコース一覧で確かめる。
+ *    （コース一覧は応答が数秒かかるので、先に受講中と突き合わせる）
  */
 export const fetchResumeCourses = async (userId: number, limit = 5): Promise<Course[]> => {
   const response = await bffClient.getResumeCourses(userId, limit);
