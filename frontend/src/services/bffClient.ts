@@ -396,7 +396,17 @@ class BFFClient {
    */
   async getCourseContent(courseid: number): Promise<any[]> {
     const response = await this.api.get(`/moodle/courses/${courseid}/contents`);
-    return response.data;
+    // BFF は管理者トークンで Moodle を引くので、非表示（visible=0）のモジュールも返ってくる。
+    // Moodle が自動で作る「アナウンスメント」などを管理画面で隠しても受講生に見えてしまうため、
+    // ここで落とす（コース一覧の buildCatalog と同じ扱い）。呼び出し側が7か所あるので窓口で揃える。
+    const isHidden = (v: unknown) => v === 0 || v === '0' || v === false;
+    const data = response.data;
+    if (!Array.isArray(data)) return data;
+    return data.map((section: any) =>
+      Array.isArray(section?.modules)
+        ? { ...section, modules: section.modules.filter((m: any) => !isHidden(m?.visible)) }
+        : section
+    );
   }
 
   /**
