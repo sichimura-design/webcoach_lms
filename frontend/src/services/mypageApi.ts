@@ -46,10 +46,26 @@ export const fetchUserProfile = async (userId: number): Promise<Profile> => {
  * 再開可能なコース取得
  */
 export const fetchResumeCourse = async (userId: number): Promise<Course | null> => {
-  const response = await bffClient.getResumeCourses(userId, 1);
+  // 🔴 resumecourse は削除・非表示にしたコースも返してくる（名前が引けず「Course 75」になり、
+  //    開くとエラーになる）。コース一覧に実在し、非表示（visible=0）でないものだけを候補にする。
+  //    一覧が取れなかったときは判定できないので、従来どおり先頭を使う。
+  const [response, catalog] = await Promise.all([
+    bffClient.getResumeCourses(userId, 5),
+    bffClient.getCourses().catch(() => null),
+  ]);
+  const alive = Array.isArray(catalog)
+    ? new Set(
+        catalog
+          .filter((c: any) => c?.visible !== 0 && c?.visible !== '0')
+          .map((c: any) => Number(c?.id))
+      )
+    : null;
+  const candidates = Array.isArray(response)
+    ? response.filter((c) => !alive || alive.has(Number(c.courseid)))
+    : [];
 
-  if (Array.isArray(response) && response.length > 0) {
-    const course = response[0];
+  if (candidates.length > 0) {
+    const course = candidates[0];
     return {
       id: course.courseid,
       title: course.fullname || '',
