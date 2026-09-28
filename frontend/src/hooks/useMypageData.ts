@@ -2,7 +2,7 @@ import { Profile } from '../types/api';
 import { Course, MonthlyGoal, CareerGoal, StreakInfo } from '../types/mypage';
 import {
   fetchUserProfile,
-  fetchResumeCourse,
+  fetchResumeCourses,
   fetchUserCourses,
   fetchMonthlyGoal,
   fetchCareerGoal,
@@ -31,16 +31,18 @@ export function useMypageData(userId: number | undefined) {
           fetchUserProfile(userId),
           fetchMonthlyGoal(userId),
           fetchCareerGoal(userId),
-          fetchResumeCourse(userId),
+          fetchResumeCourses(userId),
           fetchUserCourses(userId),
           // ストリークはEXPボーナス判定にしか使わない付随データ。ここが失敗しただけで
           // プロフィール等ページ全体まで巻き添えでエラー表示にしないよう個別にcatchする。
           fetchStreak(userId).catch(() => ({ days: 0, week: [] })),
-        ]).then(([userProfile, monthlyGoal, careerGoal, resumableCourse, activeCourses, streak]) => ({
+        ]).then(([userProfile, monthlyGoal, careerGoal, resumeCandidates, activeCourses, streak]) => ({
           userProfile,
           monthlyGoal,
           careerGoal,
-          resumableCourse,
+          // 🔴 resumecourse は削除済みコースも返す。受講中（/moodle/courses/{userid}）に居るものの先頭だけ使う。
+          //    削除されたコースは受講一覧から消えるので、ここで落ちる（「Course 75」が出ていた不具合）
+          resumableCourse: resumeCandidates.find((r) => activeCourses.some((a) => a.id === r.id)) ?? null,
           activeCourses,
           streak,
         }))

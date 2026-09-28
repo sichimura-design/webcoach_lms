@@ -43,49 +43,38 @@ export const fetchUserProfile = async (userId: number): Promise<Profile> => {
 };
 
 /**
- * 再開可能なコース取得
+ * 再開可能なコースの候補（新しい順、最大 limit 件）。
+ * 🔴 resumecourse は削除・非表示にしたコースも返してくる（名前が引けず「Course 75」になり、
+ *    開くとエラーになる）。先頭をそのまま使わず、呼び出し側で受講中のコースと突き合わせること
+ *    （useMypageData）。コース一覧（/moodle/courses）で存在確認すると応答が数秒遅く、
+ *    マイページ全体の表示を待たせるので使わない。
  */
-export const fetchResumeCourse = async (userId: number): Promise<Course | null> => {
-  // 🔴 resumecourse は削除・非表示にしたコースも返してくる（名前が引けず「Course 75」になり、
-  //    開くとエラーになる）。コース一覧に実在し、非表示（visible=0）でないものだけを候補にする。
-  //    一覧が取れなかったときは判定できないので、従来どおり先頭を使う。
-  const [response, catalog] = await Promise.all([
-    bffClient.getResumeCourses(userId, 5),
-    bffClient.getCourses().catch(() => null),
-  ]);
-  const alive = Array.isArray(catalog)
-    ? new Set(
-        catalog
-          .filter((c: any) => c?.visible !== 0 && c?.visible !== '0')
-          .map((c: any) => Number(c?.id))
-      )
-    : null;
-  const candidates = Array.isArray(response)
-    ? response.filter((c) => !alive || alive.has(Number(c.courseid)))
-    : [];
-
-  if (candidates.length > 0) {
-    const course = candidates[0];
-    return {
-      id: course.courseid,
-      title: course.fullname || '',
-      description: course.summary || '',
-      progress: course.progress || 0,
-      thumbnailUrl: course.image_url,
-      roadmapName: 'ロードマップ',
-      categoryName: 'カテゴリ',
-      categoryColor: '#F3A7A7',
-      currentLesson: course.currentlesson,
-      currentChapter: course.currentchapter,
-      remainingMinutes: course.remainingminutes,
-      lastAccessDate: course.lastaccess ? new Date(course.lastaccess * 1000).toISOString() : undefined,
-      durationMinutes: course.durationminutes,
-      totalLessons: course.totallessons,
-    };
-  }
-
-  return null;
+export const fetchResumeCourses = async (userId: number, limit = 5): Promise<Course[]> => {
+  const response = await bffClient.getResumeCourses(userId, limit);
+  if (!Array.isArray(response)) return [];
+  return response.map((course) => ({
+    id: course.courseid,
+    title: course.fullname || '',
+    description: course.summary || '',
+    progress: course.progress || 0,
+    thumbnailUrl: course.image_url,
+    roadmapName: 'ロードマップ',
+    categoryName: 'カテゴリ',
+    categoryColor: '#F3A7A7',
+    currentLesson: course.currentlesson,
+    currentChapter: course.currentchapter,
+    remainingMinutes: course.remainingminutes,
+    lastAccessDate: course.lastaccess ? new Date(course.lastaccess * 1000).toISOString() : undefined,
+    durationMinutes: course.durationminutes,
+    totalLessons: course.totallessons,
+  }));
 };
+
+/**
+ * 再開可能なコース取得（先頭1件）。存在確認はしないので、マイページは fetchResumeCourses を使う
+ */
+export const fetchResumeCourse = async (userId: number): Promise<Course | null> =>
+  (await fetchResumeCourses(userId, 1))[0] ?? null;
 
 /**
  * ユーザーのロードマップ（進行中のコース）取得
