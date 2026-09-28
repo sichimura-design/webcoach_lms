@@ -120,6 +120,40 @@ export const AI_SKILL_MOCK: Record<ConcreteAiSkillId, AiSkillMockConfig> = {
     latencyMs: 950,
   },
 
+  'video-review': {
+    internalApp: 'webcoach-video-review',
+    summaryTemplate: (heading) =>
+      `教材「${heading}」の基準で見ると、伝えたい内容は伝わる流れになっています。テンポとテロップの読みやすさを整えると、もう一段見やすくなります。`,
+    aspects: [
+      {
+        label: 'カット割りとテンポ',
+        terms: ['カット', 'テンポ', '間', '尺', 'ジャンプ'],
+        fallbackVerdict: 'improve',
+        comment: '説明が止まる「間」を詰め、1カットに1つの情報になっているかを確認してください。',
+      },
+      {
+        label: 'テロップの読みやすさ',
+        terms: ['テロップ', '字幕', '文字', 'フォント'],
+        fallbackVerdict: 'improve',
+        comment: '表示時間が読み切れる長さか、背景に埋もれていないかを見てください。',
+      },
+      {
+        label: '音（BGM・効果音・声）',
+        terms: ['BGM', '音量', '効果音', 'ナレーション', '声'],
+        fallbackVerdict: 'good',
+        comment: '声が BGM に負けていないか、音量の上下が急でないかを確認してください。',
+      },
+      {
+        label: '構成（冒頭・締め）',
+        terms: ['冒頭', 'つかみ', '構成', '締め', 'CTA'],
+        fallbackVerdict: 'improve',
+        comment: '最初の数秒で何の動画かが伝わるか、最後に次の行動が示されているかを見てください。',
+      },
+    ],
+    producesRevision: false,
+    latencyMs: 950,
+  },
+
   writing: {
     internalApp: 'webcoach-writing',
     summaryTemplate: (heading) =>

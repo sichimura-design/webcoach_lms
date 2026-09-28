@@ -32,6 +32,7 @@ export type AiSkillId =
   | 'design-sprint'
   | 'quiz'
   | 'design-review'
+  | 'video-review'
   | 'writing'
   | 'copy'
   | 'job-search-crowdworks'
@@ -53,6 +54,7 @@ export type AiSkillIconKey =
   | 'glossary'
   | 'quiz'
   | 'image'
+  | 'video'
   | 'pen'
   | 'lightbulb'
   | 'document'
@@ -204,6 +206,29 @@ export const AI_SKILL_META: Record<ConcreteAiSkillId, AiSkillMeta> = {
     quickActions: ['全体を添削して', '配色を確認して', '優先順位を教えて', '提出できる状態か見て'],
     placeholder: '添削してほしい観点があれば書いてください…',
     needsImage: true,
+    preferWide: true,
+  },
+
+  /*
+   * 動画編集フィードバックPro。DBに行（app_key = 'video-feedback-pro'）が入った時点で一覧に出る。
+   * 🔴 それまでは一覧・セレクタに出ない（appKey を持つスキルはDBに行があるものだけ並ぶ）。
+   *    表示名・説明・分類・並び順・サムネはDBの display_* / sort_order / icon_url が優先で、
+   *    ここの label / description は行が無いときの既定値。
+   */
+  'video-review': {
+    appKey: 'video-feedback-pro',
+    label: '動画を添削する',
+    modeLabel: '動画添削モード',
+    shortLabel: '動画添削',
+    cta: '動画を添削する',
+    icon: 'video',
+    description: '編集した動画を、カット・テロップ・音・構成の観点から項目別にフィードバックします。',
+    inputHint: '動画のURL、または気になる場面のスクリーンショット',
+    useCase: '動画の課題や案件を納品する前に見てもらいたいとき',
+    modeLead: '編集した動画を、カット割り・テロップ・音・構成の観点で添削します。',
+    quickActions: ['全体を添削して', 'テロップを確認して', 'テンポとカット割りを見て', '納品できる状態か見て'],
+    placeholder: '動画のURLと、見てほしい観点を書いてください…',
+    needsImage: false,
     preferWide: true,
   },
 

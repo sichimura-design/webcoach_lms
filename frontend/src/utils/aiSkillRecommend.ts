@@ -86,6 +86,10 @@ const GENERIC: Record<ConcreteAiSkillId, { title: string; reason: string }> = {
     title: '制作物を提出前にチェックする',
     reason: '画像を添付すると、教材の基準で改善点を確認できます。',
   },
+  'video-review': {
+    title: '編集した動画を納品前にチェックする',
+    reason: 'カット・テロップ・音・構成の観点で、直す順番まで確認できます。',
+  },
   writing: {
     title: '書いた文章を読みやすく整える',
     reason: '結論の位置と一文の長さを直すだけで伝わり方が変わります。',
