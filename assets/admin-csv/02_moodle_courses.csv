@@ -1,5 +1,5 @@
 id,fullname,shortname,categoryid,summary,format,visible,startdate,enddate,tag,imageUrl,updateFlag,deleteFlag,area
-,チュートリアル,tutorial,,,topics,1,,,,,0,0,学習ガイド
+,チュートリアル,tutorial,,,topics,1,,,,https://dmn2v7nl0g3fq.cloudfront.net/branches/dev-kanegae/images/courses/tutorial.webp,0,0,学習ガイド
 ,学習に必要な心得集,mindset,,,topics,1,,,,https://dmn2v7nl0g3fq.cloudfront.net/branches/dev-kanegae/images/courses/mindset.webp,0,0,学習ガイド
 ,デザイン基礎,design-basics,,,topics,1,,,,https://dmn2v7nl0g3fq.cloudfront.net/branches/dev-kanegae/images/courses/design-basics.webp,0,0,Webデザイン
 ,Figma,figma,,,topics,1,,,,https://dmn2v7nl0g3fq.cloudfront.net/branches/dev-kanegae/images/courses/figma.webp,0,0,Webデザイン
@@ -30,7 +30,7 @@ id,fullname,shortname,categoryid,summary,format,visible,startdate,enddate,tag,im
 ,実践課題：サービス紹介動画制作,practice-service-video,,,topics,1,,,,https://dmn2v7nl0g3fq.cloudfront.net/branches/dev-kanegae/images/courses/practice-service-video.webp,0,0,動画編集
 ,実践課題：ポートフォリオムービー制作,practice-portfolio-movie,,,topics,1,,,,https://dmn2v7nl0g3fq.cloudfront.net/branches/dev-kanegae/images/courses/practice-portfolio-movie.webp,0,0,動画編集
 ,マーケティング概論,marketing-overview,,,topics,1,,,,https://dmn2v7nl0g3fq.cloudfront.net/branches/dev-kanegae/images/courses/marketing-overview.webp,0,0,Webマーケティング
-,Google Analytics,google-analytics,,,topics,1,,,,,0,0,Webマーケティング
+,Google Analytics,google-analytics,,,topics,1,,,,https://dmn2v7nl0g3fq.cloudfront.net/branches/dev-kanegae/images/courses/google-analytics.webp,0,0,Webマーケティング
 ,Google Search Console,search-console,,,topics,1,,,,https://dmn2v7nl0g3fq.cloudfront.net/branches/dev-kanegae/images/courses/search-console.webp,0,0,Webマーケティング
 ,ヒートマップ,heatmap,,,topics,1,,,,https://dmn2v7nl0g3fq.cloudfront.net/branches/dev-kanegae/images/courses/heatmap.webp,0,0,Webマーケティング
 ,SEO,seo,,,topics,1,,,,https://dmn2v7nl0g3fq.cloudfront.net/branches/dev-kanegae/images/courses/seo.webp,0,0,Webマーケティング
