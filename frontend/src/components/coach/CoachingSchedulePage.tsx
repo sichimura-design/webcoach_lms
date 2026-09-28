@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { Calendar, Plus, ExternalLink, Trash2, Pencil, Sparkles, ChevronDown, ChevronUp } from 'lucide-react';
-import { AppHeader } from '../shared';
+import { Calendar, Plus, ExternalLink, Trash2, Pencil, Sparkles, ChevronDown, ChevronUp, Video, CalendarX } from 'lucide-react';
+import { AppHeader, ConfirmDialog } from '../shared';
 import { useAuth } from '../../contexts/AuthContext';
 import bffClient from '../../services/bffClient';
 import { CoachingSchedule, CoachingScheduleStatus, CoachingNote, CoachingNoteStatus, UpdateCoachingNoteRequest } from '../../types/api';
@@ -100,6 +100,20 @@ const SCHEDULE_STATUS_LABEL: Record<CoachingScheduleStatus, string> = {
   rescheduled: 'リスケ',
 };
 
+/** 実施した回に付ける結果。リスケは実施前に「リスケにする」から付けるので、ここには出さない */
+type HeldResult = 'completed' | 'interrupted';
+
+/**
+ * 実施結果は「いつ決まるか」で入口を分けている。
+ * - リスケ: 実施前に決まる → これからの回の「リスケにする」
+ * - 終了・中断: 実施後に決まる → AIコーチングノートを直して公開するところで一緒に選ぶ
+ * 🔴 以前は「編集」の中のセレクトで全部選ばせていたが、ノートを公開したあとに
+ *    わざわざ編集を開き直す手順になっていて、記録されないことが多かった。
+ */
+const isUpcoming = (s: CoachingSchedule, today: string) => s.status === null && s.coaching_date >= today;
+const isHeld = (s: CoachingSchedule, today: string) =>
+  s.status === 'completed' || s.status === 'interrupted' || (s.status === null && s.coaching_date <= today);
+
 const smallPrimaryButton: React.CSSProperties = {
   display: 'flex', alignItems: 'center', gap: 8,
   background: color.primary,
@@ -160,6 +174,18 @@ export function CoachingSchedulePage({ studentId }: CoachingSchedulePageProps) {
   const [noteLoading, setNoteLoading] = useState(false);
   const [noteForm, setNoteForm] = useState<UpdateCoachingNoteRequest>({});
   const [noteSaving, setNoteSaving] = useState(false);
+  const [resultDraft, setResultDraft] = useState<Record<number, HeldResult>>({});
+
+  const [rescheduleTarget, setRescheduleTarget] = useState<CoachingSchedule | null>(null);
+  const [rescheduleMode, setRescheduleMode] = useState<'date' | 'later'>('date');
+  const [rescheduleDate, setRescheduleDate] = useState('');
+  const [rescheduleError, setRescheduleError] = useState<string | null>(null);
+  const [deleteTarget, setDeleteTarget] = useState<CoachingSchedule | null>(null);
+
+  const today = toLocalDateKey(new Date());
+  /** 未記録の回は「終了」を選んだ状態で出す。ほとんどの回は終了なので、迷わず公開できるように */
+  const resultOf = (s: CoachingSchedule): HeldResult =>
+    resultDraft[s.id] ?? (s.status === 'interrupted' ? 'interrupted' : 'completed');
 
   const loadSchedules = () => {
     setLoading(true);
@@ -228,7 +254,7 @@ export function CoachingSchedulePage({ studentId }: CoachingSchedulePageProps) {
     // 日付を動かすときだけ前後の回との順序を見る（リスケの回は日付が前にずれうるので対象外）
     const current = schedules.find(s => s.id === id);
     if (current && editForm.coaching_date !== current.coaching_date
-      && (editForm.status || current.status) !== 'rescheduled') {
+      && current.status !== 'rescheduled') {
       const updateViolation = findOrderViolation(schedules, {
         id, coach_user_id: current.coach_user_id, coaching_no: current.coaching_no,
         coaching_date: editForm.coaching_date,
@@ -243,7 +269,6 @@ export function CoachingSchedulePage({ studentId }: CoachingSchedulePageProps) {
     try {
       await bffClient.updateCoachingSchedule(studentId, id, {
         coaching_date: editForm.coaching_date,
-        status: editForm.status || undefined,
         meeting_url: editForm.meeting_url,
       });
       setEditingId(null);
@@ -279,31 +304,124 @@ export function CoachingSchedulePage({ studentId }: CoachingSchedulePageProps) {
     }
   };
 
-  const handleSaveNote = async (scheduleId: number, status?: CoachingNoteStatus) => {
+  /** 選んでいる実施結果を保存する。すでに同じなら何もしない */
+  const saveResult = async (schedule: CoachingSchedule) => {
+    const result = resultOf(schedule);
+    if (schedule.status === result) return;
+    const updated = await bffClient.updateCoachingSchedule(studentId, schedule.id, { status: result });
+    setSchedules(prev => prev.map(s => (s.id === schedule.id ? { ...s, ...updated, status: result } : s)));
+  };
+
+  /** ノートの保存（下書き／公開）と実施結果の保存を一度に行う */
+  const handleSaveNote = async (schedule: CoachingSchedule, status?: CoachingNoteStatus) => {
     if (noteSaving) return;
     setNoteSaving(true);
+    setError(null);
     try {
-      const updated = await bffClient.updateCoachingNote(scheduleId, {
+      const updated = await bffClient.updateCoachingNote(schedule.id, {
         ...noteForm,
         ...(status ? { status } : {}),
       });
-      setNotes(prev => ({ ...prev, [scheduleId]: updated }));
+      setNotes(prev => ({ ...prev, [schedule.id]: updated }));
       setNoteForm({ ...updated });
     } catch {
       setError('コーチングノートの保存に失敗しました');
+      setNoteSaving(false);
+      return;
+    }
+    try {
+      await saveResult(schedule);
+    } catch {
+      setError('ノートは保存しましたが、実施結果の保存に失敗しました。もう一度お試しください');
     } finally {
       setNoteSaving(false);
     }
   };
 
-  const handleDelete = async (id: number) => {
-    if (saving) return;
+  /** AIノートが届かなかった回でも、実施結果だけは残せるようにする */
+  const handleSaveResultOnly = async (schedule: CoachingSchedule) => {
+    if (noteSaving) return;
+    setNoteSaving(true);
+    setError(null);
+    try {
+      await saveResult(schedule);
+    } catch {
+      setError('実施結果の保存に失敗しました');
+    } finally {
+      setNoteSaving(false);
+    }
+  };
+
+  const openReschedule = (schedule: CoachingSchedule) => {
+    setRescheduleTarget(schedule);
+    setRescheduleMode('date');
+    setRescheduleDate('');
+    setRescheduleError(null);
+  };
+
+  /**
+   * リスケ = 元の回を「リスケ」にして、振替日があれば新しい回として登録する。
+   * 🔴 振替日の検証は元の回をリスケ扱いにした一覧で行う（リスケの回は前後の比較から外れるため）。
+   *    先に検証してから書き込むので、日付の誤りで「リスケだけされて振替が無い」状態にはならない。
+   * 🔴 リスケは取り消せない（api-server は status を null に戻せない）ので、必ず確認を挟む。
+   */
+  const handleReschedule = async () => {
+    const target = rescheduleTarget;
+    if (!target || !user || saving) return;
+    const withDate = rescheduleMode === 'date';
+    if (withDate) {
+      if (!rescheduleDate || rescheduleDate < today) {
+        setRescheduleError('振替日には今日以降の日付を選んでください');
+        return;
+      }
+      const violation = findOrderViolation(
+        schedules.map(s => (s.id === target.id ? { ...s, status: 'rescheduled' as const } : s)),
+        { id: null, coach_user_id: user.userid, coaching_no: null, coaching_date: rescheduleDate },
+      );
+      if (violation) {
+        setRescheduleError(violation);
+        return;
+      }
+    }
+    setSaving(true);
+    setRescheduleError(null);
+    try {
+      await bffClient.updateCoachingSchedule(studentId, target.id, { status: 'rescheduled' });
+    } catch (err) {
+      setRescheduleError(errorMessageFor(err, 'リスケにできませんでした。もう一度お試しください'));
+      setSaving(false);
+      return;
+    }
+    try {
+      if (withDate) {
+        await bffClient.createCoachingSchedule(studentId, {
+          coach_user_id: user.userid,
+          coaching_date: rescheduleDate,
+          meeting_url: '',
+          meeting_provider: 'google_meet',
+        });
+      }
+      setRescheduleTarget(null);
+    } catch (err) {
+      setRescheduleTarget(null);
+      setError(errorMessageFor(err, 'リスケにしましたが、振替日の登録に失敗しました。「新しいセッションを記録」から登録してください'));
+    } finally {
+      setSaving(false);
+      loadSchedules();
+    }
+  };
+
+  const handleDelete = async () => {
+    const target = deleteTarget;
+    if (!target || saving) return;
     setSaving(true);
     try {
-      await bffClient.deleteCoachingSchedule(studentId, id);
+      await bffClient.deleteCoachingSchedule(studentId, target.id);
       setEditingId(null);
+      setDeleteTarget(null);
       loadSchedules();
     } catch {
+      setDeleteTarget(null);
       setError('コーチング記録の削除に失敗しました');
     } finally {
       setSaving(false);
@@ -386,7 +504,7 @@ export function CoachingSchedulePage({ studentId }: CoachingSchedulePageProps) {
                       </button>
                       <button
                         type="button"
-                        onClick={() => handleDelete(schedule.id)}
+                        onClick={() => setDeleteTarget(schedule)}
                         disabled={saving}
                         style={{
                           display: 'flex', alignItems: 'center', gap: 6, marginLeft: 'auto',
@@ -408,13 +526,15 @@ export function CoachingSchedulePage({ studentId }: CoachingSchedulePageProps) {
                           <Calendar className="w-3.5 h-3.5" />
                           {schedule.coaching_date}
                         </span>
-                        {schedule.status && (
+                        {schedule.status ? (
                           <span style={{ ...t.chip, background: '#F1EFEA', color: color.textMuted }}>
                             {SCHEDULE_STATUS_LABEL[schedule.status]}
                           </span>
+                        ) : isUpcoming(schedule, today) && (
+                          <span style={{ ...t.chip, background: '#E8F0FC', color: '#3A5C8F' }}>予定</span>
                         )}
                       </span>
-                      {schedule.meeting_url && (
+                      {schedule.meeting_url && schedule.status !== 'rescheduled' && (
                         <a
                           href={schedule.meeting_url}
                           target="_blank"
@@ -424,6 +544,25 @@ export function CoachingSchedulePage({ studentId }: CoachingSchedulePageProps) {
                           <ExternalLink className="w-3 h-3" />
                           {schedule.meeting_url}
                         </a>
+                      )}
+                      {isUpcoming(schedule, today) && (
+                        <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap', marginTop: 8 }}>
+                          {schedule.meeting_url && (
+                            <a
+                              href={schedule.meeting_url}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              style={{ ...smallPrimaryButton, textDecoration: 'none' }}
+                            >
+                              <Video className="w-4 h-4" />
+                              Meetに参加
+                            </a>
+                          )}
+                          <button type="button" style={ghostSmallButton} onClick={() => openReschedule(schedule)} disabled={saving}>
+                            <CalendarX className="w-4 h-4" />
+                            リスケにする
+                          </button>
+                        </div>
                       )}
                     </div>
                     <button
@@ -442,6 +581,7 @@ export function CoachingSchedulePage({ studentId }: CoachingSchedulePageProps) {
                   </div>
                 )}
 
+                {isHeld(schedule, today) && (
                 <div style={{ marginTop: 10, paddingTop: 10, borderTop: `1px solid ${color.borderSoft}` }}>
                   <button
                     type="button"
@@ -467,9 +607,20 @@ export function CoachingSchedulePage({ studentId }: CoachingSchedulePageProps) {
                       {noteLoading ? (
                         <p style={{ ...font.meta, color: color.textMuted }}>読み込み中…</p>
                       ) : notes[schedule.id] === 'none' ? (
-                        <p style={{ ...font.meta, color: color.textSubtle }}>
-                          まだAIノートが生成されていません（文字起こし取得後に自動生成されます）。
-                        </p>
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+                          <p style={{ ...font.meta, color: color.textSubtle, margin: 0 }}>
+                            まだAIノートが生成されていません（文字起こし取得後に自動生成されます）。
+                          </p>
+                          <ResultPicker
+                            value={resultOf(schedule)}
+                            onChange={v => setResultDraft(prev => ({ ...prev, [schedule.id]: v }))}
+                          />
+                          <div>
+                            <button type="button" style={ghostSmallButton} onClick={() => handleSaveResultOnly(schedule)} disabled={noteSaving}>
+                              {noteSaving ? '保存中...' : '実施結果を保存'}
+                            </button>
+                          </div>
+                        </div>
                       ) : (
                         <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
                           {NOTE_FIELD_LABELS.map(({ key, label }) => (
@@ -483,14 +634,18 @@ export function CoachingSchedulePage({ studentId }: CoachingSchedulePageProps) {
                               />
                             </div>
                           ))}
+                          <ResultPicker
+                            value={resultOf(schedule)}
+                            onChange={v => setResultDraft(prev => ({ ...prev, [schedule.id]: v }))}
+                          />
                           <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap' }}>
-                            <button type="button" style={ghostSmallButton} onClick={() => handleSaveNote(schedule.id)} disabled={noteSaving}>
+                            <button type="button" style={ghostSmallButton} onClick={() => handleSaveNote(schedule)} disabled={noteSaving}>
                               {noteSaving ? '保存中...' : '下書き保存'}
                             </button>
                             <button
                               type="button"
                               style={{ ...smallPrimaryButton, background: '#1E7A34' }}
-                              onClick={() => handleSaveNote(schedule.id, 'published')}
+                              onClick={() => handleSaveNote(schedule, 'published')}
                               disabled={noteSaving}
                             >
                               受講生に公開
@@ -501,11 +656,49 @@ export function CoachingSchedulePage({ studentId }: CoachingSchedulePageProps) {
                     </div>
                   )}
                 </div>
+                )}
               </div>
             ))
           )}
         </div>
       </main>
+
+      {/* 🔴 記録画面は webcoachTheme の色で組んでいて .wc-warm が無い。ダイアログは --dc-* を
+          使うので、ここだけ .wc-warm で包んでトークンを効かせる */}
+      {rescheduleTarget && (
+        <div className="wc-warm">
+          <ConfirmDialog
+            title={`第${rescheduleTarget.coaching_no}回（${rescheduleTarget.coaching_date}）をリスケにしますか？`}
+            description="受講生の画面ではこの回に「リスケ」と表示され、参加ボタンが消えます。リスケは取り消せません。"
+            confirmLabel={saving ? '保存中...' : 'リスケにする'}
+            busy={saving}
+            onConfirm={handleReschedule}
+            onCancel={() => setRescheduleTarget(null)}
+          >
+            <RescheduleChoice
+              mode={rescheduleMode}
+              date={rescheduleDate}
+              min={today}
+              error={rescheduleError}
+              onMode={setRescheduleMode}
+              onDate={setRescheduleDate}
+            />
+          </ConfirmDialog>
+        </div>
+      )}
+
+      {deleteTarget && (
+        <div className="wc-warm">
+          <ConfirmDialog
+            title={`第${deleteTarget.coaching_no}回（${deleteTarget.coaching_date}）を削除しますか？`}
+            description="この回の予定とAIコーチングノートが消え、受講生の画面からも見えなくなります。元に戻せません。"
+            confirmLabel={saving ? '削除中...' : '削除する'}
+            busy={saving}
+            onConfirm={handleDelete}
+            onCancel={() => setDeleteTarget(null)}
+          />
+        </div>
+      )}
     </div>
   );
 }
@@ -539,8 +732,8 @@ function ScheduleForm({
         <div style={{ flex: 2, minWidth: 220 }}>
           <label style={{ ...font.label, color: color.textSubtle, display: 'block', marginBottom: 4 }}>ミーティングURL</label>
           {isGoogleMeet ? (
-            <div style={{ ...inputStyle, color: color.textSubtle, display: 'flex', alignItems: 'center' }}>
-              作成時に自動的にGoogle MeetのURLを発行します
+            <div style={{ ...inputStyle, color: color.textSubtle, display: 'flex', alignItems: 'center', wordBreak: 'break-all' }}>
+              {mode === 'create' || !form.meeting_url ? '作成時に自動的にGoogle MeetのURLを発行します' : form.meeting_url}
             </div>
           ) : (
             <input
@@ -552,22 +745,85 @@ function ScheduleForm({
             />
           )}
         </div>
-        {mode === 'edit' && (
-          <div style={{ flex: 1, minWidth: 140 }}>
-            <label style={{ ...font.label, color: color.textSubtle, display: 'block', marginBottom: 4 }}>実施結果</label>
-            <select
-              value={form.status}
-              onChange={e => onChange({ ...form, status: e.target.value as ScheduleFormState['status'] })}
-              style={inputStyle}
-            >
-              <option value="">未設定</option>
-              <option value="completed">終了</option>
-              <option value="interrupted">中断</option>
-              <option value="rescheduled">リスケ</option>
-            </select>
-          </div>
-        )}
       </div>
+    </div>
+  );
+}
+
+/** 実施した回の結果（終了／中断）。AIコーチングノートの保存・公開と一緒に保存される */
+function ResultPicker({ value, onChange }: { value: HeldResult; onChange: (v: HeldResult) => void }) {
+  const options: { v: HeldResult; label: string }[] = [
+    { v: 'completed', label: '終了' },
+    { v: 'interrupted', label: '中断' },
+  ];
+  return (
+    <div role="radiogroup" aria-label="実施結果" style={{ display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap' }}>
+      <span style={{ ...font.label, color: color.textSubtle, marginRight: 4 }}>実施結果</span>
+      {options.map(o => {
+        const on = value === o.v;
+        return (
+          <button
+            key={o.v}
+            type="button"
+            role="radio"
+            aria-checked={on}
+            onClick={() => onChange(o.v)}
+            style={{
+              ...font.buttonSm, fontFamily: 'inherit', cursor: 'pointer',
+              padding: '7px 16px', borderRadius: t.chip.borderRadius,
+              border: `1px solid ${on ? color.textStrong : color.borderSoft}`,
+              background: on ? color.textStrong : color.surface,
+              color: on ? color.surface : color.textStrong,
+            }}
+          >
+            {o.label}
+          </button>
+        );
+      })}
+    </div>
+  );
+}
+
+/** リスケの確認ダイアログの中身。振替日をその場で登録するか、あとで登録するかを選ぶ */
+function RescheduleChoice({
+  mode, date, min, error, onMode, onDate,
+}: {
+  mode: 'date' | 'later';
+  date: string;
+  min: string;
+  error: string | null;
+  onMode: (m: 'date' | 'later') => void;
+  onDate: (d: string) => void;
+}) {
+  const row: React.CSSProperties = { display: 'flex', alignItems: 'center', gap: 8, cursor: 'pointer', fontSize: 'var(--dc-fs-body)', color: 'var(--dc-text)' };
+  return (
+    <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+      <label style={row}>
+        <input type="radio" name="reschedule-mode" checked={mode === 'date'} onChange={() => onMode('date')} />
+        振替日を登録する
+      </label>
+      {mode === 'date' && (
+        <input
+          type="date"
+          aria-label="振替日"
+          value={date}
+          min={min}
+          onChange={e => onDate(e.target.value)}
+          style={{ ...inputStyle, marginLeft: 24, width: 'calc(100% - 24px)' }}
+        />
+      )}
+      <label style={row}>
+        <input type="radio" name="reschedule-mode" checked={mode === 'later'} onChange={() => onMode('later')} />
+        振替日はあとで登録する
+      </label>
+      {mode === 'date' && (
+        <p style={{ margin: 0, fontSize: 'var(--dc-fs-caption, 12px)', color: 'var(--dc-text-muted)', lineHeight: 1.7 }}>
+          振替日は新しい回として登録され、Meet の URL も新しく発行されます。
+        </p>
+      )}
+      {error && (
+        <p role="alert" style={{ margin: 0, fontSize: 'var(--dc-fs-body)', color: 'var(--dc-primary)' }}>{error}</p>
+      )}
     </div>
   );
 }
