@@ -83,6 +83,33 @@ def _get_dify_parameters(api_key: str) -> Dict[str, Any]:
         return {}
 
 
+_DIFY_FORM_RE = re.compile(r"<form\b[\s\S]*?</form>", re.IGNORECASE)
+_DIFY_BUTTON_BLOCK_RE = re.compile(r"<div\b[^>]*>(?:(?!</div>)[\s\S])*?<button\b[\s\S]*?</div>", re.IGNORECASE)
+_DIFY_BUTTON_RE = re.compile(r"<button\b[\s\S]*?</button>", re.IGNORECASE)
+
+
+def _with_opening_statement(answer: str, api_key: str) -> str:
+    """新しい会話の最初の応答の前に、アプリの挨拶文（opening_statement）を付ける。
+
+    Dify標準UIは会話の最初に挨拶文を出すが、WebCoachはユーザーの最初の発言をそのまま
+    送るので見えていなかった。挨拶文で用語や入力例を説明しているアプリ（デザイン
+    フィードバックメンターProの「プロジェクトの情報」等）では、説明の無いまま
+    「プロジェクトの概要をおしえてください」とだけ返ってきて意味が通じなかった。
+    応答側にもボタン・フォームがあるときは、選択肢が二重にならないよう挨拶文の側を外す。
+    """
+    opening = (_get_dify_parameters(api_key).get("opening_statement") or "").strip()
+    if not opening:
+        return answer
+    if "<button" in answer or "<form" in answer:
+        opening = _DIFY_FORM_RE.sub("", opening)
+        opening = _DIFY_BUTTON_BLOCK_RE.sub("", opening)
+        opening = _DIFY_BUTTON_RE.sub("", opening)
+        opening = re.sub(r"\n{3,}", "\n\n", opening).strip()
+    if not opening or opening in answer:
+        return answer
+    return f"{opening}\n\n{answer}"
+
+
 def _render_suggested_questions_html(questions: List[str]) -> str:
     """suggested_questionsを、フロントエンドが解釈できる<button data-message>形式で描画する"""
     buttons = "\n".join(
@@ -625,6 +652,9 @@ def _call_dify_chat(
                 answer = _render_suggested_questions_html(suggested_questions)
             else:
                 answer = "回答を生成できませんでした。別の言い方で試すか、少し時間をおいてから聞いてみてください。"
+
+        if not conversation_id:
+            answer = _with_opening_statement(answer, api_key)
 
         _dify_last_buttons_cache[(userid, session_id)] = _extract_button_values(answer)
         return answer
