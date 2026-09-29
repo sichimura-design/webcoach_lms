@@ -8,6 +8,7 @@ import { useAutoGrowTextarea } from '../../hooks/useAutoGrowTextarea';
 import { useAiApplications } from '../../hooks/useAiApplications';
 import MarkdownRenderer from '../MarkdownRenderer';
 import { parseDifyMessage } from '../../utils/difyButtons';
+import { extractChoiceButtons } from '../../utils/aiChoices';
 import DifyFormCard from '../shared/DifyFormCard';
 import { stripHtmlForNote } from '../../utils/stripHtmlForNote';
 import AiCoachFace from '../shared/AiCoachFace';
@@ -234,6 +235,9 @@ export function AiCoachPane({
   // 続けて質問できてしまうと「さっきの提案はどうなったのか」が分からなくなる。
   const canSend =
     (!!ai.input.trim() || !!ai.image || !!ai.quote) && !ai.loading && !ai.pendingProposal;
+
+  // 最新の AI の回答（一時表示は除く）。選択肢ボタンを出すのはここだけ
+  const lastAssistantId = [...ai.messages].reverse().find((m) => m.role === 'assistant' && !m.transient)?.id;
 
   const wide = variant === 'page';
   const contentWidth = wide ? 760 : undefined;
@@ -485,7 +489,13 @@ export function AiCoachPane({
                         </>
                       ) : (
                         (() => {
-                          const { text, buttons, forms } = parseDifyMessage(message.answer.conclusion);
+                          const { text, buttons: difyButtons, forms } = parseDifyMessage(message.answer.conclusion);
+                          // Dify のボタンが無い選択式の問いかけも押せるようにする（B-011/B-015）。
+                          // 過去の回答まで押せると話が巻き戻るので、最新の回答だけ
+                          const buttons =
+                            difyButtons.length > 0 || forms.length > 0 || message.id !== lastAssistantId
+                              ? difyButtons
+                              : extractChoiceButtons(text);
                           return (
                             <div style={{ fontSize: 11.5, lineHeight: 1.75, color: color.textBody }}>
                               <MarkdownRenderer content={text} compact />

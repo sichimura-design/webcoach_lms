@@ -14,6 +14,7 @@ import SidebarStudyTimer from './SidebarStudyTimer';
 import { withCfToken } from '../profile/AvatarPicker';
 import { color, radius } from '../../theme/webcoachTheme';
 import { parseDifyMessage } from '../../utils/difyButtons';
+import { extractChoiceButtons } from '../../utils/aiChoices';
 import DifyFormCard from './DifyFormCard';
 
 interface AppHeaderProps {
@@ -1326,7 +1327,12 @@ export function AppHeader({ userName, avatarUrl }: AppHeaderProps) {
                     )}
                     {message.role === 'assistant' ? (
                       (() => {
-                        const { text, buttons, forms } = parseDifyMessage(message.content);
+                        const { text, buttons: difyButtons, forms } = parseDifyMessage(message.content);
+                        // 選択式の問いかけも押せるようにする（B-011/B-015）。最新の回答だけ
+                        const buttons =
+                          difyButtons.length > 0 || forms.length > 0 || message !== messages[messages.length - 1]
+                            ? difyButtons
+                            : extractChoiceButtons(text);
                         return (
                           <>
                             <ReactMarkdown

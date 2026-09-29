@@ -32,6 +32,7 @@ import {
 } from 'lucide-react';
 import MarkdownRenderer from './MarkdownRenderer';
 import { parseDifyMessage } from '../utils/difyButtons';
+import { extractChoiceButtons } from '../utils/aiChoices';
 import DifyFormCard from './shared/DifyFormCard';
 import { getUserMessage } from '../utils/errorMessage';
 import { announcementModuleIds } from '../utils/courseAnnouncement';
@@ -1304,7 +1305,12 @@ function AiCoachPanel({
                   )}
                   {msg.role === 'assistant' ? (
                     (() => {
-                      const { text, buttons, forms } = parseDifyMessage(msg.content);
+                      const { text, buttons: difyButtons, forms } = parseDifyMessage(msg.content);
+                      // 選択式の問いかけも押せるようにする（B-011/B-015）。最新の回答だけ
+                      const buttons =
+                        difyButtons.length > 0 || forms.length > 0 || index !== aiMessages.length - 1
+                          ? difyButtons
+                          : extractChoiceButtons(text);
                       return (
                         <>
                           <MarkdownRenderer content={text} compact />
