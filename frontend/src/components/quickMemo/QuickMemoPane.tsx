@@ -1,9 +1,9 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { AlertCircle, Check, Loader2 } from 'lucide-react';
 import { color, font, radius } from '../../theme/webcoachTheme';
 
 /**
- * PiP小窓の中身。ノートの本文そのものを編集する textarea 1枚。
+ * PiP小窓の中身。ノートの本文そのものを編集する textarea 1枚と、タイトル欄。
  * ============================================================
  * 🔴 このファイルは自己完結していること。
  *    描画先は親と別のドキュメントなので、以下は一切効かない。
@@ -30,6 +30,9 @@ const SELF_CONTAINED_CSS = [
   `.qm-input::placeholder{color:${color.textFaint}}`,
   `.qm-input:focus{outline:none;border-color:${color.primaryBorder};`,
   `box-shadow:0 0 0 3px ${color.primarySoft}}`,
+  `.qm-title::placeholder{color:${color.textFaint}}`,
+  `.qm-title:hover{border-color:${color.border}}`,
+  `.qm-title:focus{outline:none;border-color:${color.primaryBorder};background:${color.surface}}`,
   '.qm-input::-webkit-scrollbar{width:10px}',
   `.qm-input::-webkit-scrollbar-thumb{background:${color.borderNeutral};border-radius:999px;`,
   'border:3px solid transparent;background-clip:content-box}',
@@ -45,6 +48,76 @@ export interface QuickMemoPaneProps {
   status: 'idle' | 'saving' | 'saved';
   /** 保存に失敗したときの文言。出ている間も打った文字は消さない */
   error: string | null;
+  /**
+   * ノートのタイトル。onRename と一緒に渡すと、見出しがタイトルの入力欄になる（B-020）。
+   * 渡さない呼び出し側では従来どおり targetLabel を表示だけする。
+   */
+  title?: string;
+  onRename?: (title: string) => void;
+}
+
+/**
+ * 小窓のタイトル欄。確定の仕方は本画面の NoteEditor と揃える
+ * （Enter / フォーカスが外れたら確定、Esc で戻す、空なら元に戻す）。
+ */
+function TitleInput({ title, onRename }: { title: string; onRename: (title: string) => void }) {
+  const [draft, setDraft] = useState(title);
+  const focusedRef = useRef(false);
+
+  // 本画面で名前を変えたら追従する。打っている最中は上書きしない
+  useEffect(() => {
+    if (!focusedRef.current) setDraft(title);
+  }, [title]);
+
+  const commit = () => {
+    focusedRef.current = false;
+    const next = draft.trim();
+    if (!next) {
+      setDraft(title);
+      return;
+    }
+    if (next !== title) onRename(next);
+  };
+
+  return (
+    <input
+      className="qm-title"
+      aria-label="タイトル"
+      value={draft}
+      placeholder="無題のノート"
+      onFocus={() => {
+        focusedRef.current = true;
+      }}
+      onChange={(e) => setDraft(e.target.value)}
+      onBlur={commit}
+      onKeyDown={(e) => {
+        // 日本語入力の変換確定の Enter では確定しない
+        if (e.nativeEvent.isComposing) return;
+        if (e.key === 'Enter') e.currentTarget.blur();
+        if (e.key === 'Escape') {
+          setDraft(title);
+          focusedRef.current = false;
+          e.currentTarget.blur();
+        }
+      }}
+      style={{
+        flex: 1,
+        minWidth: 0,
+        boxSizing: 'border-box',
+        padding: '4px 8px',
+        margin: '0 0 0 -8px',
+        border: '1px solid transparent',
+        borderRadius: 8,
+        background: 'transparent',
+        fontFamily: 'inherit',
+        fontSize: 13,
+        fontWeight: 800,
+        color: color.text,
+        textOverflow: 'ellipsis',
+        transition: 'border-color .15s, background .15s',
+      }}
+    />
+  );
 }
 
 function StatusLine({ status }: { status: QuickMemoPaneProps['status'] }) {
@@ -83,6 +156,8 @@ export function QuickMemoPane({
   onFlush,
   status,
   error,
+  title,
+  onRename,
 }: QuickMemoPaneProps) {
   const inputRef = useRef<HTMLTextAreaElement>(null);
 
@@ -111,6 +186,9 @@ export function QuickMemoPane({
       }}
     >
       <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+        {onRename ? (
+          <TitleInput title={title ?? ''} onRename={onRename} />
+        ) : (
         <span
           style={{
             ...font.caption,
@@ -126,6 +204,7 @@ export function QuickMemoPane({
         >
           {targetLabel}
         </span>
+        )}
         <StatusLine status={status} />
       </div>
 

@@ -314,6 +314,9 @@ export function MyNotesPage() {
     onFlush: () => void detail.saveBody(),
     status: detail.saveState.saving ? 'saving' : detail.saveState.lastSavedAt ? 'saved' : 'idle',
     error: detail.saveState.error,
+    // 小窓からも本画面と同じ経路で改名する（一覧のカードも同時に変わる）
+    title: detail.note?.title ?? '',
+    onRename: renameInEditor,
   });
 
   const { isOpen: memoIsOpen, close: closeMemo } = memoWindow;

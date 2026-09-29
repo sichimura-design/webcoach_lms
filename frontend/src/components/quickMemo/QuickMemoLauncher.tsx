@@ -48,6 +48,10 @@ export interface UseQuickMemoWindowOptions {
   error: string | null;
   /** 小窓を開く前にやること（コーチングでは記録ノートを作る）。失敗したら開かない */
   onBeforeOpen?: () => Promise<boolean>;
+  /** ノートのタイトル。onRename と一緒に渡すと小窓からタイトルを変えられる（B-020） */
+  title?: string;
+  /** 呼び出し側の改名処理（マイノートでは renameInEditor）をそのまま渡す */
+  onRename?: (title: string) => void;
 }
 
 export interface QuickMemoWindow {
@@ -70,6 +74,8 @@ export function useQuickMemoWindow({
   status,
   error,
   onBeforeOpen,
+  title,
+  onRename,
 }: UseQuickMemoWindowOptions): QuickMemoWindow {
   const { supported, pipWindow, open, close } = useDocumentPiP();
 
@@ -100,6 +106,8 @@ export function useQuickMemoWindow({
           onFlush={onFlush}
           status={status}
           error={error}
+          title={title}
+          onRename={onRename}
         />,
         pipWindow.document.body
       )
