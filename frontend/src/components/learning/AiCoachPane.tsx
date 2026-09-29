@@ -1,5 +1,6 @@
 import { useRef } from 'react';
-import { AlertTriangle, Copy, ImagePlus, MessageSquarePlus, Send, Square, Star, X } from 'lucide-react';
+import { AlertTriangle, Copy, ImagePlus, MessageSquarePlus, Mic, MicOff, Send, Square, Star, X } from 'lucide-react';
+import { useSpeechInput } from '../../hooks/useSpeechInput';
 import { color, font } from '../../theme/webcoachTheme';
 import { AI_ERROR_CONCLUSION, LessonAiMessage, UseLessonAi } from '../../hooks/useLessonAi';
 import { LessonAiResponse } from '../../types/lesson';
@@ -235,6 +236,8 @@ export function AiCoachPane({
   // 続けて質問できてしまうと「さっきの提案はどうなったのか」が分からなくなる。
   const canSend =
     (!!ai.input.trim() || !!ai.image || !!ai.quote) && !ai.loading && !ai.pendingProposal;
+
+  const speech = useSpeechInput(ai.input, ai.setInput);
 
   // 最新の AI の回答（一時表示は除く）。選択肢ボタンを出すのはここだけ
   const lastAssistantId = [...ai.messages].reverse().find((m) => m.role === 'assistant' && !m.transient)?.id;
@@ -908,8 +911,31 @@ export function AiCoachPane({
               >
                 <ImagePlus size={15} />
               </button>
-              <span style={{ fontSize: 9, color: color.textFaint }}>
-                画像貼り付けにも対応 / Ctrl+Enter で送信
+              {/* 音声入力（B-006）。対応していないブラウザ（Firefox）では出さない */}
+              {speech.supported && (
+                <button
+                  type="button"
+                  onClick={speech.toggle}
+                  disabled={ai.loading}
+                  aria-pressed={speech.listening}
+                  aria-label={speech.listening ? '音声入力を止める' : '音声で入力'}
+                  title={speech.listening ? '音声入力を止める' : '音声で入力'}
+                  className="wc-ai-icon-btn grid place-items-center focus-visible:ring-2 focus-visible:ring-[#F6B9BD] disabled:opacity-50"
+                  style={{
+                    width: 30,
+                    height: 30,
+                    border: 0,
+                    borderRadius: 8,
+                    background: speech.listening ? color.primary : color.hoverBg,
+                    color: speech.listening ? color.textOnPrimary : color.iconMuted,
+                    cursor: ai.loading ? 'default' : 'pointer',
+                  }}
+                >
+                  {speech.listening ? <MicOff size={15} /> : <Mic size={15} />}
+                </button>
+              )}
+              <span style={{ fontSize: 9, color: speech.error ? color.primary : color.textFaint }} role={speech.error ? 'alert' : undefined}>
+                {speech.error ?? (speech.listening ? '聞き取っています…もう一度押すと止まります' : '画像貼り付けにも対応 / Ctrl+Enter で送信')}
               </span>
               {ai.loading ? (
                 // 生成中は送信の代わりに中止（B-009）。サーバー側は止まらず、結果を捨てるだけ
