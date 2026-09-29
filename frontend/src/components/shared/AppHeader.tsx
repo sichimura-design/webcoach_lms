@@ -330,11 +330,20 @@ export function AppHeader({ userName, avatarUrl }: AppHeaderProps) {
    * 🔴 項目数はサイドバーの高さ予算にも効く（下の SZ のコメント参照）。
    * ============================================================
    */
+  /*
+   * 🔴 コーチには「コーチング」（受講生が自分の記録を見る /coaching）を出さず、
+   *    同じ枠に「受講生一覧」を置く。コーチ自身はコーチングを受けないので、
+   *    /coaching を開いても「まだ記録がありません。」しか出ない（2026-09-29 決定）。
+   *    ルートは残してあるので URL 直打ちでは開ける。
+   */
+  const coachingItem = user?.isCoach
+    ? { label: '受講生一覧', icon: UserRound, path: '/coach/students', active: isStudentsPage }
+    : { label: 'コーチング', icon: MessagesSquare, path: '/coaching', active: isCoaching };
   const navItems = [
     { label: 'トップ', icon: Home, path: '/mypage', active: isTop },
     { label: '学習する', icon: BookOpen, path: '/courses', active: isCoursesPage },
     { label: 'AIコーチ', icon: Sparkles, path: '/ai-coach', active: isAiCoach },
-    { label: 'コーチング', icon: MessagesSquare, path: '/coaching', active: isCoaching },
+    coachingItem,
     { label: 'マイノート', icon: NotebookPen, path: '/notes', active: isNotes },
     // 「蓄積を見る」の末尾。アイコンはページの主役がカレンダーなので CalendarDays
     { label: '記録', icon: CalendarDays, path: '/study-log', active: isStudyLog },
@@ -347,14 +356,11 @@ export function AppHeader({ userName, avatarUrl }: AppHeaderProps) {
    *    コーチ画面への導線が1本も出なかった。両方持っているなら両方出す。
    * 🔴 コーチの「連携設定」(/coach/settings, CoachSettingsPage.tsx)はナビから外してある。
    *    ルート自体は残しているので、URL直打ちでは開ける。
+   * 🔴 コーチの「受講生一覧」は navItems の「コーチング」の枠に移した（coachingItem）。
+   *    ここに残すと同じ項目が2本並ぶ。
    */
   const manageItems = [
     ...(user?.isAdmin ? [{ label: '管理', icon: ShieldCheck, path: '/admin', active: isAdmin }] : []),
-    ...(user?.isCoach
-      ? [
-          { label: '受講生一覧', icon: UserRound, path: '/coach/students', active: isStudentsPage },
-        ]
-      : []),
   ];
 
   /*
@@ -371,7 +377,8 @@ export function AppHeader({ userName, avatarUrl }: AppHeaderProps) {
    *    できると、SPからその画面へ到達できなくなる。
    * ============================================================
    */
-  const BOTTOM_BAR_PATHS = ['/mypage', '/courses', '/ai-coach', '/coaching', '/study-log'];
+  // '/coach/students' はコーチのときに「コーチング」の枠へ入る（coachingItem）
+  const BOTTOM_BAR_PATHS = ['/mypage', '/courses', '/ai-coach', '/coaching', '/coach/students', '/study-log'];
   const bottomBarItems = navItems.filter((i) => BOTTOM_BAR_PATHS.includes(i.path));
   const sheetNavItems = [...navItems.filter((i) => !BOTTOM_BAR_PATHS.includes(i.path)), ...manageItems];
   /*
