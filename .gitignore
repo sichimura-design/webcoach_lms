@@ -150,3 +150,6 @@ bff-server/.local-secrets/
 
 !frontend/design-canvas/screens/*.dc.html
 !frontend/design-canvas/notes/*.dc.html
+
+# Clipkitから取得した教材画像（464MB）。S3の materials/_clipkit/ が実体で、scripts/materials/localize_clipkit_images.py で再取得できる
+assets/materials/_clipkit/

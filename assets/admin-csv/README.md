@@ -48,6 +48,19 @@ AWS_PROFILE=PowerUserAccess-840513866884 \
   --content-type "text/html; charset=utf-8"
 ```
 
+教材HTMLに Clipkit(cdn.clipkit.co)の画像URLが入っている場合（新しく取得したHTMLなど）は、
+代わりに次のスクリプトで「画像の取得 → `../../_clipkit/...` への書き換え → `_clipkit/` と `html/` のアップロード」をまとめて行う。
+置き場所は Clipkit のパスで決め打ちなので、本番でも `materials/` を同じ構成で置けばリンクはそのまま使える。
+
+```sh
+python3 scripts/materials/localize_clipkit_images.py \
+  --s3-bucket dev-devspastack-spabucket48e1059f-yymyziswolti --profile PowerUserAccess-840513866884
+# 本番は --s3-bucket / --profile を本番の値に。--dry-run で対象件数だけ確認できる。
+```
+
+Clipkit 側で既に消えている画像（403）はリンクを元のまま残す（2026-09-29時点で2枚、web-design/ha1xn と generative-ai の4ページ）。
+CSS/JS(`cdn.clipkit.co/clipkit/...`)と、ダウンロード用の psd/ai/pdf 素材は対象外。
+
 ### 想定ユースケース
 
 - 新しく追加した教材（HTML）をAIコーチの検索対象に反映する
