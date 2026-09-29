@@ -365,16 +365,13 @@ router.delete('/schedule/:userid/:id', requireAuth, async (req, res) => {
 
 /**
  * GET /api/coaching/notes/:coaching_schedule_id
- * Get AI coaching note (Admin, Coach: any status. Student: only if published)
+ * Get AI coaching note (Admin, current assigned coach: any status. Student: only if published)
  */
 router.get('/notes/:coaching_schedule_id', requireAuth, async (req, res) => {
   try {
     const { coaching_schedule_id } = req.params;
     const scheduleId = parseInt(coaching_schedule_id);
 
-    const userGroups = req.user?.groups || [];
-    const isAdmin = userGroups.includes('admin');
-    const isCoach = userGroups.includes('coach');
     const moodleUserId = req.user?.moodleUserId;
 
     const schedule = await coachingService.getCoachingScheduleById(scheduleId);
@@ -382,13 +379,15 @@ router.get('/notes/:coaching_schedule_id', requireAuth, async (req, res) => {
       return res.status(404).json({ error: 'Not Found', detail: 'Coaching schedule not found' });
     }
 
-    // Ownership check (not just role): a coach may only see their own
-    // students' notes, and a student only their own (and only once published).
-    const isOwningCoach = isCoach && moodleUserId == schedule.coach_user_id;
+    // Ownership check (not just role): a coach may only see the notes of students
+    // currently assigned to them — including sessions run by a previous coach, so a
+    // new coach can take over and a released coach loses access. A student only
+    // their own, and only once published.
     const isOwningStudent = moodleUserId == schedule.mdl_user_id;
 
     const note = await coachingService.getCoachingNote(scheduleId);
-    const allowed = isAdmin || isOwningCoach || (isOwningStudent && note.status === 'published');
+    const allowed = (await isAdminOrAssignedCoach(req, schedule.mdl_user_id))
+      || (isOwningStudent && note.status === 'published');
 
     if (!allowed) {
       console.warn(`[SECURITY ALERT] Unauthorized user ${req.user?.email} attempted to access coaching note ${coaching_schedule_id}`);
@@ -411,26 +410,20 @@ router.get('/notes/:coaching_schedule_id', requireAuth, async (req, res) => {
 
 /**
  * PUT /api/coaching/notes/:coaching_schedule_id
- * Edit/confirm/publish AI coaching note (Admin, or the schedule's own coach)
+ * Edit/confirm/publish AI coaching note (Admin, or the student's current assigned coach)
  */
 router.put('/notes/:coaching_schedule_id', requireAuth, async (req, res) => {
   try {
     const { coaching_schedule_id } = req.params;
     const scheduleId = parseInt(coaching_schedule_id);
 
-    const userGroups = req.user?.groups || [];
-    const isAdmin = userGroups.includes('admin');
-    const isCoach = userGroups.includes('coach');
-    const moodleUserId = req.user?.moodleUserId;
-
     const schedule = await coachingService.getCoachingScheduleById(scheduleId);
     if (!schedule) {
       return res.status(404).json({ error: 'Not Found', detail: 'Coaching schedule not found' });
     }
 
-    const isOwningCoach = isCoach && moodleUserId == schedule.coach_user_id;
-
-    if (!isAdmin && !isOwningCoach) {
+    // Same rule as GET: the student's current coach (not necessarily the one who ran the session)
+    if (!(await isAdminOrAssignedCoach(req, schedule.mdl_user_id))) {
       console.warn(`[SECURITY ALERT] Unauthorized user ${req.user?.email} attempted to update coaching note ${coaching_schedule_id}`);
       return res.status(403).json({
         error: 'Forbidden',
