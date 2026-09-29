@@ -1003,7 +1003,7 @@ function CourseContentPage({ courseId, initialModuleId, onBack }: CourseContentP
                           ここまでで「{selectedModule?.name ?? courseName}」は終了です
                         </h3>
                         <p style={{ margin: '0 0 18px', ...font.label, lineHeight: 1.9, color: color.textMuted }}>
-                          内容を確認できたら、このモジュールを完了しましょう。
+                          内容を確認できたら、このレッスンを完了しましょう。
                           <br />
                           完了すると学習進捗に反映されます。
                         </p>
@@ -1019,7 +1019,7 @@ function CourseContentPage({ courseId, initialModuleId, onBack }: CourseContentP
                           }}
                         >
                           <Check size={16} strokeWidth={2.5} />
-                          {completing ? '送信中…' : 'このモジュールを完了する'}
+                          {completing ? '送信中…' : 'このレッスンを完了する'}
                         </button>
                       </div>
                     ) : (
@@ -1069,7 +1069,7 @@ function CourseContentPage({ courseId, initialModuleId, onBack }: CourseContentP
                           }}
                         >
                           <ArrowLeft size={14} />
-                          前のモジュールへ
+                          前のレッスンへ
                         </button>
                       ) : <span />}
                       {nextModule ? (
@@ -1083,7 +1083,7 @@ function CourseContentPage({ courseId, initialModuleId, onBack }: CourseContentP
                             fontFamily: 'inherit', ...font.buttonSm, cursor: 'pointer',
                           }}
                         >
-                          次のモジュールへ
+                          次のレッスンへ
                           <ArrowRight size={14} />
                         </button>
                       ) : (
