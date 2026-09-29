@@ -7,6 +7,7 @@ import { CsvUploader } from './CsvUploader';
 import { UploadResult } from './UploadResult';
 import { UploadHistory } from './UploadHistory';
 import { getUserMessage } from '../../utils/errorMessage';
+import { parseCoachMappingCsv, toUploadResult } from '../../utils/coachMappingCsv';
 
 // ─── Types ───────────────────────────────────────────────────────────────────
 
@@ -190,8 +191,8 @@ const TEMPLATE_CONTENT = [
 const CSV_FORMAT = [
   { col: 'coach_user_id',   required: true,  desc: 'コーチのMoodleユーザーID' },
   { col: 'student_user_id', required: true,  desc: '受講生のMoodleユーザーID' },
-  { col: 'updateFlag',      required: false, desc: '1 の場合、既存マッピングを更新する' },
-  { col: 'deleteFlag',      required: false, desc: '1 の場合、該当マッピングを削除する' },
+  { col: 'updateFlag',      required: false, desc: '1 の場合、解除済みの割り当てを復元する（有効な割り当てがあればエラー）' },
+  { col: 'deleteFlag',      required: false, desc: '1 の場合、該当の割り当てを解除する。コーチ変更は「旧コーチの行を deleteFlag=1」+「新コーチの行」の2行で行う' },
 ];
 
 function downloadCsvContent(content: string, filename: string) {
@@ -374,56 +375,13 @@ export const AdminCoachMappingPage: React.FC = () => {
     setIsUploading(true);
     setUploadResult(null);
     try {
-      const text = await file.text();
-      const lines = text.split('\n').filter(line => line.trim());
-      if (lines.length < 2) throw new Error('データ行がありません（ヘッダー行のみです）');
-
-      const headers = lines[0].split(',').map(h => h.trim().replace(/^﻿/, ''));
-      if (!headers.includes('coach_user_id') || !headers.includes('student_user_id')) {
-        throw new Error('CSVに coach_user_id と student_user_id カラムが必要です');
-      }
-
-      const coachIdx   = headers.indexOf('coach_user_id');
-      const studentIdx = headers.indexOf('student_user_id');
-      const updateIdx  = headers.indexOf('updateFlag');
-      const deleteIdx  = headers.indexOf('deleteFlag');
-
-      interface MappingRecord { coach_user_id: number; student_user_id: number; updateFlag: number; deleteFlag: number; row: number; }
-      const records: MappingRecord[] = [];
-
-      for (let i = 1; i < lines.length; i++) {
-        const values = lines[i].split(',').map(v => v.trim());
-        const coachId   = parseInt(values[coachIdx], 10);
-        const studentId = parseInt(values[studentIdx], 10);
-        if (isNaN(coachId) || isNaN(studentId)) throw new Error(`行 ${i + 1}: coach_user_id と student_user_id は数値で入力してください`);
-        const updateFlag = updateIdx >= 0 ? parseInt(values[updateIdx] || '0', 10) : 0;
-        const deleteFlag = deleteIdx >= 0 ? parseInt(values[deleteIdx] || '0', 10) : 0;
-        if (updateFlag === 1 && deleteFlag === 1) throw new Error(`行 ${i + 1}: updateFlag と deleteFlag の両方を 1 にすることはできません`);
-        records.push({ coach_user_id: coachId, student_user_id: studentId, updateFlag, deleteFlag, row: i + 1 });
-      }
-
-      let successCount = 0;
-      const errors: Array<{ row: number; message: string }> = [];
-
-      await Promise.allSettled(
-        records.map(async ({ coach_user_id, student_user_id, updateFlag, deleteFlag, row }) => {
-          try {
-            await bffClient.createCoachingMapping(coach_user_id, student_user_id, updateFlag, deleteFlag);
-            successCount++;
-          } catch (err: any) {
-            console.error(`Failed to create coaching mapping (row ${row}):`, err);
-            errors.push({ row, message: getUserMessage(err, '登録に失敗しました') });
-          }
-        })
+      // 解除→復元→登録の順にBFFが処理するので、「旧コーチを解除+新コーチを登録」の2行で差し替えられる
+      const rows = parseCoachMappingCsv(await file.text());
+      const response = await bffClient.manageCoachingMappings(
+        rows.map(({ coach_user_id, student_user_id, updateFlag, deleteFlag }) =>
+          ({ coach_user_id, student_user_id, updateFlag, deleteFlag }))
       );
-
-      const result: UploadResultType = {
-        success: errors.length === 0,
-        recordsProcessed: successCount,
-        recordsFailed: errors.length,
-        message: `登録成功: ${successCount}件 / 失敗: ${errors.length}件`,
-        errors: errors.length > 0 ? errors : undefined,
-      };
+      const result = toUploadResult(rows, response);
       setUploadResult(result);
       setUploadHistory(prev => [{
         id: Date.now().toString(),

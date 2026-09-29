@@ -2219,7 +2219,13 @@ def delete_coach_student_mapping(
         return False
 
     # トランザクション内でDELETE + INSERT
-    # 1. 有効なレコードを削除
+    # 1. 有効なレコードと、過去の解除で残った削除済みレコードを削除
+    #    (解除→復元→解除で削除済み行が主キー重複しないように)
+    db.query(WebCoachStudentCoachMapping).filter(
+        WebCoachStudentCoachMapping.coach_user_id == coach_user_id,
+        WebCoachStudentCoachMapping.student_user_id == student_user_id,
+        WebCoachStudentCoachMapping.logical_deleted == 1
+    ).delete(synchronize_session=False)
     db.delete(existing)
     db.flush()
 

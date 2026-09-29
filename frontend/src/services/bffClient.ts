@@ -136,6 +136,7 @@ import {
 import { getIdToken } from './cognitoAuth';
 import { MOCKS_ENABLED } from '../mocks/config';
 import { stripHtmlForNote } from '../utils/stripHtmlForNote';
+import type { ManageMappingsResult } from '../utils/coachMappingCsv';
 
 /**
  * BFF Client - 統合APIクライアント
@@ -1752,18 +1753,23 @@ class BFFClient {
    * コーチ・受講生マッピング登録
    * POST /api/coaching/mappings
    */
-  async createCoachingMapping(
-    coach_user_id: number,
-    student_user_id: number,
-    updateFlag = 0,
-    deleteFlag = 0,
-  ): Promise<any> {
-    const response = await this.api.post('/coaching/mappings', {
-      coach_user_id,
-      student_user_id,
-      updateFlag,
-      deleteFlag,
-    });
+  async createCoachingMapping(coach_user_id: number, student_user_id: number): Promise<any> {
+    const response = await this.api.post('/coaching/mappings', { coach_user_id, student_user_id });
+    return response.data;
+  }
+
+  /**
+   * コーチ・受講生マッピング一括登録/復元/解除（CSV用）
+   * POST /api/coaching/manage-mappings
+   * 一部の行が失敗しても200で返り、失敗はerrorsに入る
+   */
+  async manageCoachingMappings(mappings: Array<{
+    coach_user_id: number;
+    student_user_id: number;
+    updateFlag: boolean;
+    deleteFlag: boolean;
+  }>): Promise<ManageMappingsResult> {
+    const response = await this.api.post('/coaching/manage-mappings', { mappings });
     return response.data;
   }
 
