@@ -941,8 +941,10 @@ function CourseContentPage({ courseId, initialModuleId, onBack }: CourseContentP
                     padding: 'clamp(20px, 4vw, 40px)',
                   }}
                 >
-                  {/* ── タイトル ── */}
-                  <h1 style={{ margin: '0 0 18px', fontSize: 'clamp(20px, 2.4vw, 26px)', fontWeight: 900, lineHeight: 1.4, letterSpacing: '-.01em', color: color.text }}>
+                  {/* ── タイトル ──
+                      教材HTML（mod/url）はメインビジュアルに同じタイトルを持っているので、
+                      画面上はトップバーと教材側に任せ、ここは読み上げ用にだけ残す（B-022）。 */}
+                  <h1 className={selectedModule?.modname === 'url' ? 'sr-only' : undefined} style={{ margin: '0 0 18px', fontSize: 'clamp(20px, 2.4vw, 26px)', fontWeight: 900, lineHeight: 1.4, letterSpacing: '-.01em', color: color.text }}>
                     {selectedModule ? selectedModule.name : courseName}
                   </h1>
 
