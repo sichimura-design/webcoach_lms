@@ -289,6 +289,19 @@ def get_user_badges(userid: int) -> str:
 # プロセス内メモリのみ。複数コンテナ構成やコンテナ再起動をまたぐ継続には対応しない。
 _dify_conversation_cache: Dict[tuple, str] = {}
 
+# ユーザー自身がやり直しをはっきり言ったときの言い回し
+_DIFY_RESTART_RE = re.compile(r"新しく|新たに|最初から|はじめから|始めから|一から|やり直|別の条件|リセット")
+
+
+def _should_reset_dify_conversation(message: str, requested: bool) -> bool:
+    """LLMが付けた start_new_conversation を、ユーザーの発言で裏付けが取れたときだけ通す。
+
+    システムプロンプトで「明示的なやり直しのときだけtrue」と指示していても、続きの回答
+    （デザインスプリントで業種に「飲食店」と答えた等）にtrueを付けることがあり、Difyが
+    最初の質問に戻っていた（B-008）。やり直しの判断はLLMに任せず、発言の言葉で決める。
+    """
+    return bool(requested and message and _DIFY_RESTART_RE.search(message))
+
 # 直前のターンでユーザーが実際に呼び出したDifyアプリ（(userid, session_id) -> app_id）。
 # 会話履歴(conversation_history)はロールとテキストのみをやり取り相手に送っており
 # どのask_ai_application_*ツールを使ったかの情報が失われるため、似た説明を持つ
@@ -705,7 +718,7 @@ def create_ai_application_tools(
                     userid,
                     api_key,
                     app_id,
-                    reset=start_new_conversation,
+                    reset=_should_reset_dify_conversation(message, start_new_conversation),
                     inputs=extra_inputs,
                     session_id=session_id,
                     image=image,
