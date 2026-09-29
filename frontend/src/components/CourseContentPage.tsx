@@ -31,6 +31,7 @@ import {
 } from 'lucide-react';
 import MarkdownRenderer from './MarkdownRenderer';
 import { parseDifyMessage } from '../utils/difyButtons';
+import DifyFormCard from './shared/DifyFormCard';
 import { getUserMessage } from '../utils/errorMessage';
 import { announcementModuleIds } from '../utils/courseAnnouncement';
 import { color, font, radius, shadow } from '../theme/webcoachTheme';
@@ -1299,10 +1300,13 @@ function AiCoachPanel({
                   )}
                   {msg.role === 'assistant' ? (
                     (() => {
-                      const { text, buttons } = parseDifyMessage(msg.content);
+                      const { text, buttons, forms } = parseDifyMessage(msg.content);
                       return (
                         <>
                           <MarkdownRenderer content={text} compact />
+                          {forms.map((form, i) => (
+                            <DifyFormCard key={i} form={form} disabled={aiLoading} onSubmit={(m) => onSend(m)} />
+                          ))}
                           {buttons.length > 0 && (
                             <div className="flex flex-wrap" style={{ gap: 6, marginTop: 4 }}>
                               {buttons.map((btn, i) => (

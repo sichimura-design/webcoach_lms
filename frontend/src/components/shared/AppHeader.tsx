@@ -14,6 +14,7 @@ import SidebarStudyTimer from './SidebarStudyTimer';
 import { withCfToken } from '../profile/AvatarPicker';
 import { color, radius } from '../../theme/webcoachTheme';
 import { parseDifyMessage } from '../../utils/difyButtons';
+import DifyFormCard from './DifyFormCard';
 
 interface AppHeaderProps {
   userName?: string;
@@ -1325,7 +1326,7 @@ export function AppHeader({ userName, avatarUrl }: AppHeaderProps) {
                     )}
                     {message.role === 'assistant' ? (
                       (() => {
-                        const { text, buttons } = parseDifyMessage(message.content);
+                        const { text, buttons, forms } = parseDifyMessage(message.content);
                         return (
                           <>
                             <ReactMarkdown
@@ -1349,6 +1350,9 @@ export function AppHeader({ userName, avatarUrl }: AppHeaderProps) {
                                 hr: () => <hr className="my-2 border-gray-200" />,
                               }}
                             />
+                            {forms.map((form, i) => (
+                              <DifyFormCard key={i} form={form} disabled={loading} onSubmit={(m) => void sendMessage(m)} />
+                            ))}
                             {buttons.length > 0 && (
                               <div className="flex flex-wrap gap-1.5 mt-1">
                                 {buttons.map((btn, i) => (

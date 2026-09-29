@@ -8,6 +8,7 @@ import { useAutoGrowTextarea } from '../../hooks/useAutoGrowTextarea';
 import { useAiApplications } from '../../hooks/useAiApplications';
 import MarkdownRenderer from '../MarkdownRenderer';
 import { parseDifyMessage } from '../../utils/difyButtons';
+import DifyFormCard from '../shared/DifyFormCard';
 import { stripHtmlForNote } from '../../utils/stripHtmlForNote';
 import AiCoachFace from '../shared/AiCoachFace';
 import SkillPlusMenu from './SkillPlusMenu';
@@ -484,10 +485,18 @@ export function AiCoachPane({
                         </>
                       ) : (
                         (() => {
-                          const { text, buttons } = parseDifyMessage(message.answer.conclusion);
+                          const { text, buttons, forms } = parseDifyMessage(message.answer.conclusion);
                           return (
                             <div style={{ fontSize: 11.5, lineHeight: 1.75, color: color.textBody }}>
                               <MarkdownRenderer content={text} compact />
+                              {forms.map((form, i) => (
+                                <DifyFormCard
+                                  key={i}
+                                  form={form}
+                                  disabled={ai.loading}
+                                  onSubmit={(msg) => void ai.send(msg)}
+                                />
+                              ))}
                               {buttons.length > 0 && (
                                 <div className="flex flex-wrap" style={{ gap: 6, marginTop: 6 }}>
                                   {buttons.map((btn, i) => (

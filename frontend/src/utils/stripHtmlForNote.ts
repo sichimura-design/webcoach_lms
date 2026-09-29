@@ -14,7 +14,8 @@ const CODE_RE = /(```[\s\S]*?```|`[^`\n]*`)/g;
 const TAG_RE = /<\/?[a-zA-Z][^>]*>/;
 const ANY_TAG_RE = /<\/?[a-zA-Z][^>]*>/g;
 
-const DROP_TAGS = new Set(['SCRIPT', 'STYLE', 'BUTTON', 'TEMPLATE']);
+// FORM：Dify の入力フォーム（応募文メーカー等）もチャット上の操作用なので、ノートには残さない
+const DROP_TAGS = new Set(['SCRIPT', 'STYLE', 'BUTTON', 'TEMPLATE', 'FORM']);
 const BLOCK_TAGS = new Set([
   'P', 'DIV', 'SECTION', 'ARTICLE', 'HEADER', 'FOOTER', 'UL', 'OL', 'TABLE', 'THEAD', 'TBODY',
   'TR', 'H1', 'H2', 'H3', 'H4', 'H5', 'H6', 'BLOCKQUOTE', 'PRE', 'HR', 'DL', 'DT', 'DD',
