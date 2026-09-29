@@ -1,5 +1,6 @@
 import { forwardRef, Fragment, useCallback, useImperativeHandle, useLayoutEffect, useRef } from 'react';
 import { toggleTaskLine } from './noteText';
+import { TextHistory, TextSnap } from './textHistory';
 
 /**
  * ノート本文の入力欄。見た目は「書いたとおりに整う」、中身は素のテキスト。
@@ -151,11 +152,27 @@ function MirrorLine({
   return <div>{renderInline(line, key)}</div>;
 }
 
+/** ツールバーの「元に戻す／やり直す」から呼ぶ口 */
+export interface NoteBodyHistoryApi {
+  undo: () => void;
+  redo: () => void;
+  /** 次の変更を単独の1手にする（ツールバーの記法挿入の前に呼ぶ） */
+  breakGroup: () => void;
+}
+
 interface NoteBodyEditorProps {
   value: string;
   onChange: (value: string) => void;
   onBlur?: () => void;
   placeholder?: string;
+  /**
+   * 履歴の単位。変わったら履歴を捨てる（ノートの id を渡す）。
+   * 🔴 渡さずにノートを切り替えると、Ctrl+Z で前のノートの本文が入ってしまう。
+   */
+  historyKey?: string;
+  historyApiRef?: React.MutableRefObject<NoteBodyHistoryApi | null>;
+  /** 戻せる／やり直せるかが変わったら呼ぶ（ボタンの押せる・押せないに使う） */
+  onHistoryStateChange?: (state: { canUndo: boolean; canRedo: boolean }) => void;
 }
 
 /**
@@ -184,11 +201,86 @@ export function replaceRange(
 }
 
 export const NoteBodyEditor = forwardRef<HTMLTextAreaElement, NoteBodyEditorProps>(function NoteBodyEditor(
-  { value, onChange, onBlur, placeholder },
+  { value, onChange, onBlur, placeholder, historyKey, historyApiRef, onHistoryStateChange },
   forwardedRef
 ) {
   const ref = useRef<HTMLTextAreaElement>(null);
   useImperativeHandle(forwardedRef, () => ref.current as HTMLTextAreaElement);
+
+  // ── 元に戻す／やり直す（B-021。理由は textHistory.ts） ──
+  const historyRef = useRef<TextHistory | null>(null);
+  if (!historyRef.current) historyRef.current = new TextHistory({ value, start: value.length, end: value.length });
+  const historyKeyRef = useRef(historyKey);
+  const composingRef = useRef(false);
+  const boundaryRef = useRef(false);
+  const onHistoryStateRef = useRef(onHistoryStateChange);
+  onHistoryStateRef.current = onHistoryStateChange;
+  const lastReportedRef = useRef({ canUndo: false, canRedo: false });
+
+  const reportHistory = useCallback(() => {
+    const h = historyRef.current!;
+    const next = { canUndo: h.canUndo, canRedo: h.canRedo };
+    const prev = lastReportedRef.current;
+    if (prev.canUndo === next.canUndo && prev.canRedo === next.canRedo) return;
+    lastReportedRef.current = next;
+    onHistoryStateRef.current?.(next);
+  }, []);
+
+  const recordNow = useCallback(
+    (v: string) => {
+      const el = ref.current;
+      const start = el ? el.selectionStart : v.length;
+      const end = el ? el.selectionEnd : v.length;
+      historyRef.current!.record({ value: v, start, end }, Date.now(), { boundary: boundaryRef.current });
+      boundaryRef.current = false;
+      reportHistory();
+    },
+    [reportHistory]
+  );
+
+  // 打鍵・記法の挿入・□・小窓からの書き換え、どれも value の変化としてここで拾う
+  useLayoutEffect(() => {
+    if (historyKeyRef.current !== historyKey) {
+      historyKeyRef.current = historyKey;
+      historyRef.current!.reset({ value, start: value.length, end: value.length });
+      reportHistory();
+      return;
+    }
+    // 変換中の途中経過は積まない。確定したとき（compositionend）にまとめて積む
+    if (composingRef.current) return;
+    recordNow(value);
+  }, [value, historyKey, recordNow, reportHistory]);
+
+  const applySnap = useCallback(
+    (snap: TextSnap | null) => {
+      if (!snap) return;
+      reportHistory();
+      onChange(snap.value);
+      requestAnimationFrame(() => {
+        const el = ref.current;
+        if (!el) return;
+        el.focus();
+        el.setSelectionRange(Math.min(snap.start, el.value.length), Math.min(snap.end, el.value.length));
+      });
+    },
+    [onChange, reportHistory]
+  );
+
+  const undo = useCallback(() => applySnap(historyRef.current!.undo()), [applySnap]);
+  const redo = useCallback(() => applySnap(historyRef.current!.redo()), [applySnap]);
+
+  useImperativeHandle(
+    historyApiRef as React.Ref<NoteBodyHistoryApi> | undefined,
+    () => ({
+      undo,
+      redo,
+      breakGroup: () => {
+        historyRef.current!.breakGroup();
+        boundaryRef.current = true;
+      },
+    }),
+    [undo, redo]
+  );
 
   // 中身に合わせて伸ばす（中スクロールさせない。理由は冒頭）
   const fit = useCallback(() => {
@@ -209,6 +301,8 @@ export const NoteBodyEditor = forwardRef<HTMLTextAreaElement, NoteBodyEditorProp
   };
 
   const handleToggleTask = (lineIndex: number, checked: boolean) => {
+    historyRef.current!.breakGroup();
+    boundaryRef.current = true;
     onChange(toggleTaskLine(value, lineIndex, checked));
   };
 
@@ -221,6 +315,18 @@ export const NoteBodyEditor = forwardRef<HTMLTextAreaElement, NoteBodyEditorProp
     const el = e.currentTarget;
     // 変換中の Enter は確定。触らない
     if (e.nativeEvent.isComposing || e.keyCode === 229) return;
+
+    // 元に戻す：Ctrl/⌘+Z　やり直す：Ctrl/⌘+Shift+Z・Ctrl+Y。ブラウザ標準の取り消しは使わない
+    if ((e.ctrlKey || e.metaKey) && !e.altKey) {
+      const k = e.key.toLowerCase();
+      if (k === 'z' || k === 'y') {
+        e.preventDefault();
+        if (k === 'y' || e.shiftKey) redo();
+        else undo();
+        return;
+      }
+    }
+
     if (el.selectionStart !== el.selectionEnd) return;
     if (e.shiftKey || e.altKey || e.ctrlKey || e.metaKey) return;
 
@@ -263,6 +369,13 @@ export const NoteBodyEditor = forwardRef<HTMLTextAreaElement, NoteBodyEditorProp
         value={value}
         onChange={(e) => onChange(e.target.value)}
         onKeyDown={handleKeyDown}
+        onCompositionStart={() => {
+          composingRef.current = true;
+        }}
+        onCompositionEnd={(e) => {
+          composingRef.current = false;
+          recordNow(e.currentTarget.value);
+        }}
         onBlur={onBlur}
         placeholder={placeholder}
         spellCheck={false}

@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { Note, NoteBlockInput, NoteBlockPatch, NoteSourceRef } from '../../types/notes';
 import NoteBlockView from './NoteBlockView';
-import NoteBodyEditor, { replaceRange } from './NoteBodyEditor';
+import NoteBodyEditor, { NoteBodyHistoryApi, replaceRange } from './NoteBodyEditor';
 import { InsertKind, NoteEditorToolbar, TEXT_PREFIX } from './NoteEditorToolbar';
 import QuoteFromLessonModal, { QuoteTarget } from './QuoteFromLessonModal';
 
@@ -97,6 +97,8 @@ export function NoteEditor({
 }: NoteEditorProps) {
   const [titleDraft, setTitleDraft] = useState(note.title);
   const bodyRef = useRef<HTMLTextAreaElement>(null);
+  const historyApiRef = useRef<NoteBodyHistoryApi | null>(null);
+  const [historyState, setHistoryState] = useState({ canUndo: false, canRedo: false });
 
   /**
    * 教材の引用モーダル。ツールバーの「教材から引用」と、クリップ／AI回答の
@@ -132,6 +134,8 @@ export function NoteEditor({
   const handleInsert = (kind: InsertKind) => {
     const el = bodyRef.current;
     if (!el) return;
+    // 記法の挿入は直前の打鍵と混ぜず、単独で戻せる1手にする
+    historyApiRef.current?.breakGroup();
     const { from, to, insert, selStart, selEnd } = applyInsert(
       kind,
       el.value,
@@ -237,6 +241,10 @@ export function NoteEditor({
 
       <NoteEditorToolbar
         onInsert={handleInsert}
+        onUndo={() => historyApiRef.current?.undo()}
+        onRedo={() => historyApiRef.current?.redo()}
+        canUndo={historyState.canUndo}
+        canRedo={historyState.canRedo}
         onQuote={() =>
           setQuote({
             // 教材から作られたノートは元レッスンを開く。そうでなければモーダル側で選ばせる
@@ -259,6 +267,9 @@ export function NoteEditor({
           ref={bodyRef}
           value={note.body}
           onChange={onBodyChange}
+          historyKey={note.id}
+          historyApiRef={historyApiRef}
+          onHistoryStateChange={setHistoryState}
           placeholder="ここに入力して、自由に書いていきましょう…"
         />
       </div>

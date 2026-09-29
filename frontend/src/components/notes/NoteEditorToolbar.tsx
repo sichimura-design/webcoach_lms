@@ -1,4 +1,4 @@
-import { BookOpen, Heading, Highlighter, List, ListChecks } from 'lucide-react';
+import { BookOpen, Heading, Highlighter, List, ListChecks, Redo2, Undo2 } from 'lucide-react';
 
 /** ツールバーが本文に差し込める記法（解釈は noteText.tsx） */
 export type InsertKind = 'heading' | 'list' | 'task' | 'marker';
@@ -40,9 +40,30 @@ interface NoteEditorToolbarProps {
   onInsert: (kind: InsertKind) => void;
   /** 「教材から引用」。引用モーダルを開く（NoteEditor が持っている） */
   onQuote: () => void;
+  /** 元に戻す／やり直す（B-021）。渡さなければボタンを出さない */
+  onUndo?: () => void;
+  onRedo?: () => void;
+  canUndo?: boolean;
+  canRedo?: boolean;
 }
 
-export function NoteEditorToolbar({ onInsert, onQuote }: NoteEditorToolbarProps) {
+const isMac = typeof navigator !== 'undefined' && /Mac|iPhone|iPad/.test(navigator.platform || navigator.userAgent);
+
+export function NoteEditorToolbar({ onInsert, onQuote, onUndo, onRedo, canUndo = false, canRedo = false }: NoteEditorToolbarProps) {
+  const historyButton = (label: string, shortcut: string, icon: React.ReactNode, onClick: () => void, enabled: boolean) => (
+    <button
+      type="button"
+      aria-label={label}
+      title={`${label}（${shortcut}）`}
+      disabled={!enabled}
+      onMouseDown={(e) => e.preventDefault()}
+      onClick={onClick}
+      className="notes-tool notes-tool--light focus-visible:ring-2 focus-visible:ring-[#F6B9BD] disabled:opacity-40"
+      style={{ cursor: enabled ? 'pointer' : 'default' }}
+    >
+      {icon}
+    </button>
+  );
   const tool = (kind: InsertKind, icon: React.ReactNode) => (
     <button
       key={kind}
@@ -71,6 +92,13 @@ export function NoteEditorToolbar({ onInsert, onQuote }: NoteEditorToolbarProps)
         background: '#FFFDFA',
       }}
     >
+      {onUndo && onRedo && (
+        <>
+          {historyButton('元に戻す', isMac ? '⌘Z' : 'Ctrl+Z', <Undo2 size={14} />, onUndo, canUndo)}
+          {historyButton('やり直す', isMac ? '⌘⇧Z' : 'Ctrl+Y', <Redo2 size={14} />, onRedo, canRedo)}
+          <span aria-hidden="true" style={{ width: 1, height: 18, background: 'var(--dc-border)', margin: '0 2px' }} />
+        </>
+      )}
       {tool('heading', <Heading size={14} />)}
       {tool('list', <List size={14} />)}
       {tool('task', <ListChecks size={14} />)}

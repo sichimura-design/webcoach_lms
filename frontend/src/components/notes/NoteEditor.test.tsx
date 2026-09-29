@@ -428,3 +428,74 @@ describe('NoteGrid の空の表示', () => {
     expect(grid({ totalCount: 2, filter: { kind: 'favorite' } })).toContain('重要にしたノートはありません');
   });
 });
+
+describe('NoteBodyEditor の元に戻す／やり直す（B-021）', () => {
+  /** 外から本文とノートIDを差し替えられる Host。打鍵・小窓からの書き換え・ノート切り替えを模す */
+  function renderHistoryBody(initial: string) {
+    const api: { current: any } = { current: null };
+    const state: { value: string; set: (v: string) => void; setKey: (k: string) => void } = {
+      value: initial,
+      set: () => {},
+      setKey: () => {},
+    };
+    const Host = () => {
+      const [v, setV] = useState(initial);
+      const [k, setK] = useState('n1');
+      state.value = v;
+      state.set = setV;
+      state.setKey = setK;
+      return createElement(NoteBodyEditor, { value: v, onChange: setV, historyKey: k, historyApiRef: api });
+    };
+    render(createElement(Host));
+    const ta = container.querySelector('textarea')!;
+    return { state, ta, api };
+  }
+
+  let now = 0;
+  beforeEach(() => {
+    now = 10_000;
+    jest.spyOn(Date, 'now').mockImplementation(() => now);
+  });
+  afterEach(() => jest.restoreAllMocks());
+
+  it('Ctrl+Z で戻し、Ctrl+Y / Ctrl+Shift+Z でやり直す', () => {
+    const t = renderHistoryBody('');
+    act(() => t.state.set('一行目'));
+    now += 5000;
+    act(() => t.state.set('一行目\n二行目'));
+    expect(key(t.ta, 'z', 0, { ctrlKey: true }).defaultPrevented).toBe(true);
+    expect(t.state.value).toBe('一行目');
+    key(t.ta, 'z', 0, { ctrlKey: true });
+    expect(t.state.value).toBe('');
+    key(t.ta, 'y', 0, { ctrlKey: true });
+    expect(t.state.value).toBe('一行目');
+    key(t.ta, 'z', 0, { ctrlKey: true, shiftKey: true });
+    expect(t.state.value).toBe('一行目\n二行目');
+  });
+
+  it('□の切り替えも1手として戻せる', () => {
+    const t = renderHistoryBody('- [ ] a');
+    act(() => container.querySelector<HTMLInputElement>('input.notes-body-check')!.click());
+    expect(t.state.value).toBe('- [x] a');
+    act(() => t.api.current.undo());
+    expect(t.state.value).toBe('- [ ] a');
+  });
+
+  it('外から（小窓で）書き換えた本文も戻せる', () => {
+    const t = renderHistoryBody('本文');
+    act(() => t.state.set('本文と小窓で足した文'));
+    act(() => t.api.current.undo());
+    expect(t.state.value).toBe('本文');
+  });
+
+  it('別のノートに切り替えたら、前のノートの本文へは戻らない', () => {
+    const t = renderHistoryBody('ノートA');
+    act(() => t.state.set('ノートAを編集'));
+    act(() => {
+      t.state.setKey('n2');
+      t.state.set('ノートB');
+    });
+    key(t.ta, 'z', 0, { ctrlKey: true });
+    expect(t.state.value).toBe('ノートB');
+  });
+});
