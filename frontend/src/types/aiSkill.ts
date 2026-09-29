@@ -112,7 +112,13 @@ export interface AiSkillMeta {
   useCase: string;
   /** モードに入った直後にヘッダー下へ出す1行 */
   modeLead: string;
-  /** モード中のクイックアクション。押すとそのまま送信する */
+  /**
+   * モード中のクイックアクション。押すとそのまま送信する。
+   * 🔴 裏が Dify アプリのモードでは「会話の途中でしか意味を持たない依頼」を置かない
+   *    （例：「3時間で終わる課題がいい」「答え方を直して」）。最初に押すと Dify の手順が
+   *    飛んで会話が破綻する（B-012/B-013）。1つ目は「始める」、残りは手順に乗らなくても
+   *    答えられる質問にする。
+   */
   quickActions: string[];
   /** モード中の入力欄プレースホルダ */
   placeholder: string;
@@ -170,7 +176,7 @@ export const AI_SKILL_META: Record<ConcreteAiSkillId, AiSkillMeta> = {
     inputHint: '今日使える時間・挑戦したい分野',
     useCase: '何を作るか決まらない日に、とにかく手を動かし始めたいとき',
     modeLead: '今日のデザイン課題を、使える時間と分野から決めます。',
-    quickActions: ['今日の課題を出して', '3時間で終わる課題がいい', 'バナーの課題にして'],
+    quickActions: ['今日の課題を始める', 'どんな課題が出るか知りたい', '初心者向けの課題はある？'],
     placeholder: '使える時間と、挑戦したい分野を書いてください…',
     needsImage: false,
     preferWide: true,
@@ -332,7 +338,7 @@ export const AI_SKILL_META: Record<ConcreteAiSkillId, AiSkillMeta> = {
     inputHint: '募集内容・これまでの制作物や経験',
     useCase: 'クラウドソーシングや求人に応募するとき',
     modeLead: '募集内容に合わせて、応募文の骨組みから作ります。',
-    quickActions: ['応募文を作って', '実績の書き方を教えて', '単価の伝え方を知りたい'],
+    quickActions: ['応募文を作りたい', '今ある応募文を添削してほしい', '単価の伝え方を知りたい'],
     placeholder: '募集内容と、書けそうな実績を貼り付けてください…',
     needsImage: false,
     preferWide: true,
@@ -349,7 +355,7 @@ export const AI_SKILL_META: Record<ConcreteAiSkillId, AiSkillMeta> = {
     inputHint: '受ける職種・想定している働き方',
     useCase: '面談や商談の前に、話す練習をしておきたいとき',
     modeLead: 'AIが面接官役として質問します。答えると講評します。',
-    quickActions: ['質問を出して', '答え方を直して', '想定質問を教えて'],
+    quickActions: ['面接練習を始める', '応募したい求人に合わせて練習したい', 'よく聞かれる質問を知りたい'],
     placeholder: '受ける職種や、答えたい内容を書いてください…',
     needsImage: false,
     preferWide: true,
