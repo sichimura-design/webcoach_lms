@@ -139,7 +139,22 @@ export function NoteCard({
         </button>
       </div>
 
-      <h3 style={{ margin: 0, fontSize: 15, fontWeight: 700, lineHeight: 1.5, color: 'var(--dc-text)' }}>
+      {/* 長いタイトルで一覧のカード高さが揃わなくなるので2行で切る。全文は title 属性で見られる（B-018） */}
+      <h3
+        title={note.title}
+        style={{
+          margin: 0,
+          fontSize: 15,
+          fontWeight: 700,
+          lineHeight: 1.5,
+          color: 'var(--dc-text)',
+          display: '-webkit-box',
+          WebkitLineClamp: 2,
+          WebkitBoxOrient: 'vertical',
+          overflow: 'hidden',
+          overflowWrap: 'anywhere',
+        }}
+      >
         {note.title}
       </h3>
 
