@@ -21,4 +21,7 @@ assets/
   バケツ名（web-design・coding・sns 等）はコースslugではなく**学習領域サイズ**なので、
   アプリへ載せるときはコース単位に割り直す（`frontend/src/mocks/migratedMaterials.ts` の注意参照）。
   `html/` が参照する `../../_assets/` は未取得。
+- `materials/_clipkit/` … `html/` が参照していた Clipkit(cdn.clipkit.co) の画像（約3,400枚・464MB、git管理外）。
+  `html/` のリンクは相対パス `../../_clipkit/<cdn.clipkit.co以降のパス>` に書き換え済みで、
+  実体は S3 の `materials/_clipkit/`。`scripts/materials/localize_clipkit_images.py` で再取得・書き換え・アップロードできる。
 - `thumbnails/<コースslug>.png` … 54枚。`instagram.png` は原本名「Instagram広告運用」だが、対応する広告コースが無いため「インスタグラム運用」(instagram)に割り当てた。
