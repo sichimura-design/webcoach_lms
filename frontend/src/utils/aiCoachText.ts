@@ -63,7 +63,8 @@ export function toHistory(
   limit = 10
 ): { role: 'user' | 'assistant'; content: string }[] {
   return messages
-    .filter((m) => m.role === 'user' || m.role === 'assistant')
+    // 待機中の一時表示（transient）は AI の発言ではないので渡さない
+    .filter((m) => (m.role === 'user' || m.role === 'assistant') && !m.transient)
     .slice(-limit)
     .map((m) => ({
       role: m.role === 'assistant' ? ('assistant' as const) : ('user' as const),

@@ -1476,8 +1476,8 @@ class BFFClient {
    * AI非同期チャットジョブの状態取得（ポーリング用）
    * GET /api/webcoach/ai/status/:jobId
    */
-  async getAIChatStatus(jobId: string): Promise<AIResponse> {
-    const response = await this.api.get(`/webcoach/ai/status/${jobId}`);
+  async getAIChatStatus(jobId: string, signal?: AbortSignal): Promise<AIResponse> {
+    const response = await this.api.get(`/webcoach/ai/status/${jobId}`, { signal });
     return response.data;
   }
 
@@ -1492,9 +1492,11 @@ class BFFClient {
    *
    * @param onWaiting ポーリングに切り替わった瞬間に1回だけ呼ばれる
    *   （「検索に時間がかかっています」等の一時表示に使う）
+   * @param signal 「生成を中止」（B-009）。中止すると待機・ポーリングをやめて AbortError で抜ける。
+   *   🔴 api-server にキャンセルAPIは無いので、サーバー側の生成は最後まで走る（結果を捨てるだけ）。
    */
-  async sendAIMessage(request: AIRequest, onWaiting?: () => void): Promise<AIResponse> {
-    const response = await this.api.post('/webcoach/ai', request);
+  async sendAIMessage(request: AIRequest, onWaiting?: () => void, signal?: AbortSignal): Promise<AIResponse> {
+    const response = await this.api.post('/webcoach/ai', request, { signal });
     const data: AIResponse = response.data;
 
     if (data.status !== 'processing' || !data.job_id) {
@@ -1507,10 +1509,15 @@ class BFFClient {
     const pollIntervalMs = 3000;
     const maxWaitMs = 3 * 60 * 1000;
     const startedAt = Date.now();
+    const aborted = () => new DOMException('生成を中止しました', 'AbortError');
 
     while (Date.now() - startedAt < maxWaitMs) {
-      await new Promise((resolve) => setTimeout(resolve, pollIntervalMs));
-      const statusResponse = await this.getAIChatStatus(jobId);
+      await new Promise<void>((resolve, reject) => {
+        if (signal?.aborted) return reject(aborted());
+        const t = setTimeout(resolve, pollIntervalMs);
+        signal?.addEventListener('abort', () => { clearTimeout(t); reject(aborted()); }, { once: true });
+      });
+      const statusResponse = await this.getAIChatStatus(jobId, signal);
       if (statusResponse.status !== 'processing') {
         return statusResponse;
       }

@@ -65,6 +65,12 @@ export interface AiCoachMessage {
   /** proposal のとき: 確認カードの内容と決着 */
   proposal?: SkillSuggestion;
   resolution?: ProposalResolution;
+  /**
+   * assistant のとき: 「回答を作成しています…」のような待機中の一時表示。
+   * 🔴 AI の発言ではないので会話履歴（toHistory）に入れない。入れると Dify 側から見て
+   *    同じ文を AI が言ったことになり、次の返答がずれる（B-008 の一因）。
+   */
+  transient?: boolean;
   createdAt: string;
 }
 

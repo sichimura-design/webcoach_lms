@@ -1,5 +1,5 @@
 import { useRef } from 'react';
-import { AlertTriangle, Copy, ImagePlus, MessageSquarePlus, Send, Star, X } from 'lucide-react';
+import { AlertTriangle, Copy, ImagePlus, MessageSquarePlus, Send, Square, Star, X } from 'lucide-react';
 import { color, font } from '../../theme/webcoachTheme';
 import { AI_ERROR_CONCLUSION, LessonAiMessage, UseLessonAi } from '../../hooks/useLessonAi';
 import { LessonAiResponse } from '../../types/lesson';
@@ -901,6 +901,30 @@ export function AiCoachPane({
               <span style={{ fontSize: 9, color: color.textFaint }}>
                 画像貼り付けにも対応 / Ctrl+Enter で送信
               </span>
+              {ai.loading ? (
+                // 生成中は送信の代わりに中止（B-009）。サーバー側は止まらず、結果を捨てるだけ
+                <button
+                  type="button"
+                  onClick={ai.stop}
+                  className="inline-flex items-center focus-visible:ring-2 focus-visible:ring-[#F6B9BD]"
+                  style={{
+                    marginLeft: 'auto',
+                    gap: 5,
+                    height: 30,
+                    padding: '0 12px',
+                    border: `1px solid ${color.primaryBorder}`,
+                    borderRadius: 8,
+                    background: color.surface,
+                    color: color.primary,
+                    fontFamily: 'inherit',
+                    fontSize: 11.5,
+                    fontWeight: 700,
+                    cursor: 'pointer',
+                  }}
+                >
+                  <Square size={10} fill="currentColor" /> 生成を中止
+                </button>
+              ) : (
               <button
                 type="button"
                 onClick={() => void ai.send()}
@@ -923,6 +947,7 @@ export function AiCoachPane({
               >
                 <Send size={12} /> 送信
               </button>
+              )}
             </div>
           </div>
         </div>

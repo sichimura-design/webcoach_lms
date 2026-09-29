@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect, useLayoutEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { Bell, Home, BookOpen, Sparkles, Settings, ShieldCheck, BookMarked, HelpCircle, FileText, Mail, CalendarDays, ChevronDown, ChevronRight, ChevronsLeft, PanelLeftOpen, MessagesSquare, NotebookPen, UserRound, Send, X, User, Paperclip, ImageOff, MoreHorizontal } from 'lucide-react';
+import { Bell, Home, BookOpen, Sparkles, Settings, ShieldCheck, BookMarked, HelpCircle, FileText, Mail, CalendarDays, ChevronDown, ChevronRight, ChevronsLeft, PanelLeftOpen, MessagesSquare, NotebookPen, UserRound, Send, Square, X, User, Paperclip, ImageOff, MoreHorizontal } from 'lucide-react';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import { useAuth } from '../../contexts/AuthContext';
@@ -45,7 +45,7 @@ export function AppHeader({ userName, avatarUrl }: AppHeaderProps) {
   //   このドロワーとの重複を解消する（教材表示アーキテクチャの決定待ち）。
   const { chatOpen, setChatOpen } = useChatStore();
   const {
-    messages, input, setInput, loading, messagesEndRef, sendMessage, handleKeyPress,
+    messages, input, setInput, loading, messagesEndRef, sendMessage, stop: stopMessage, handleKeyPress,
     pendingImage, imageError, handleImageSelect, clearPendingImage,
   } = useAiChat();
   const chatImageInputRef = useRef<HTMLInputElement>(null);
@@ -1476,6 +1476,19 @@ export function AppHeader({ userName, avatarUrl }: AppHeaderProps) {
                 rows={1}
                 className="flex-1 px-3 py-2 border border-gray-300 rounded-lg resize-none focus:outline-none focus:ring-2 focus:ring-brand focus:border-transparent disabled:bg-gray-100"
               />
+              {loading ? (
+                // 生成中は送信の代わりに中止（B-009）
+                <button
+                  type="button"
+                  onClick={stopMessage}
+                  aria-label="生成を中止"
+                  title="生成を中止"
+                  className="p-2 rounded-lg border transition-colors"
+                  style={{ borderColor: color.primaryBorder, background: color.surface, color: color.primary }}
+                >
+                  <Square className="w-5 h-5" fill="currentColor" />
+                </button>
+              ) : (
               <button
                 onClick={() => void sendMessage()}
                 disabled={(!input.trim() && !pendingImage) || loading}
@@ -1483,6 +1496,7 @@ export function AppHeader({ userName, avatarUrl }: AppHeaderProps) {
               >
                 <Send className="w-5 h-5" />
               </button>
+              )}
             </div>
           </div>
         </div>

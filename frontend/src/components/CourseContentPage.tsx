@@ -28,6 +28,7 @@ import {
   ImageOff,
   NotebookPen,
   Sparkles,
+  Square,
 } from 'lucide-react';
 import MarkdownRenderer from './MarkdownRenderer';
 import { parseDifyMessage } from '../utils/difyButtons';
@@ -228,7 +229,7 @@ function CourseContentPage({ courseId, initialModuleId, onBack }: CourseContentP
   // AI コーチ
   const {
     messages: aiMessages, input: aiQuestion, setInput: setAiQuestion, loading: aiLoading,
-    messagesEndRef: chatEndRef, sendMessage: sendAiMessage,
+    messagesEndRef: chatEndRef, sendMessage: sendAiMessage, stop: stopAiMessage,
     pendingImage: aiPendingImage, imageError: aiImageError, handleImageSelect: handleAiImageSelect,
     clearPendingImage: clearAiPendingImage,
   } = useAiChat();
@@ -873,6 +874,7 @@ function CourseContentPage({ courseId, initialModuleId, onBack }: CourseContentP
       setAiQuestion={setAiQuestion}
       handleAiKeyPress={handleAiKeyDown}
       onSend={handleAiQuestion}
+      onStop={stopAiMessage}
       selection={aiSelection}
       onClearSelection={() => setAiSelection(null)}
       chatEndRef={chatEndRef}
@@ -1216,6 +1218,8 @@ interface AiCoachPanelProps {
   setAiQuestion: (v: string) => void;
   handleAiKeyPress: (e: React.KeyboardEvent<HTMLTextAreaElement>) => void;
   onSend: (overrideMessage?: string) => void;
+  /** 回答の生成を中止する（B-009） */
+  onStop: () => void;
   chatEndRef: React.RefObject<HTMLDivElement>;
   pendingImage: PendingImage | null;
   imageError: string | null;
@@ -1235,7 +1239,7 @@ const GROUNDING_LABEL: Record<AIGrounding, { label: string; fg: string; bg: stri
 };
 
 function AiCoachPanel({
-  aiMessages, aiLoading, aiQuestion, setAiQuestion, handleAiKeyPress, onSend, chatEndRef,
+  aiMessages, aiLoading, aiQuestion, setAiQuestion, handleAiKeyPress, onSend, onStop, chatEndRef,
   pendingImage, imageError, onImageSelect, onClearImage, onSaveAnswer, selection, onClearSelection,
 }: AiCoachPanelProps) {
   const textareaRef = useRef<HTMLTextAreaElement>(null);
@@ -1466,6 +1470,23 @@ function AiCoachPanel({
               fontFamily: 'inherit',
             }}
           />
+          {aiLoading ? (
+            // 生成中は送信の代わりに中止（B-009）
+            <button
+              type="button"
+              onClick={onStop}
+              aria-label="生成を中止"
+              title="生成を中止"
+              style={{
+                width: 26, height: 26, borderRadius: '50%', flexShrink: 0,
+                display: 'flex', alignItems: 'center', justifyContent: 'center',
+                border: `1px solid ${color.primaryBorder}`, background: color.surface, color: color.primary,
+                cursor: 'pointer',
+              }}
+            >
+              <Square size={9} fill="currentColor" />
+            </button>
+          ) : (
           <button
             onClick={() => onSend()}
             disabled={!canSend}
@@ -1478,6 +1499,7 @@ function AiCoachPanel({
           >
             <Send size={12} color="#fff" />
           </button>
+          )}
         </div>
       </div>
     </section>

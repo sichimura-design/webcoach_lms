@@ -56,6 +56,8 @@ export interface UseLessonAi {
   /** リロードで添付画像が失われたか（再添付を促すため） */
   imageDropped: boolean;
   send: (overrideQuestion?: string) => Promise<void>;
+  /** 回答の生成を中止する（B-009）。画面上で止めて結果を捨てるだけで、サーバー側の生成は続く */
+  stop: () => void;
   /** 選択文章の「💡かんたん解説」。会話履歴には残さない */
   explain: (quote: AiCoachQuote) => Promise<string>;
 
@@ -155,6 +157,30 @@ export function useLessonAi(doc: LessonDoc | null, sessionIdOverride?: string): 
     loadingRef.current = v;
     setLoadingState(v);
   }, []);
+
+  /*
+   * ── 生成中の1回ぶん（B-009「生成を中止」） ──
+   * 中止したら runRef を外す。あとから返ってきた回答は runRef と一致しないので捨てる。
+   * 🔴 送信の finally で無条件に setLoading(false) しないこと。中止してすぐ次を送ったとき、
+   *    前の回の finally が新しい回の「送信中」を消してしまう（endRun が自分の回かを見る）。
+   * 🔴 api-server にキャンセルAPIは無い。サーバー側の生成とトークン消費は最後まで続き、
+   *    Dify 側の会話も1ターン進む（相談リストでエンジニアに依頼中）。
+   */
+  const runRef = useRef<{ controller: AbortController } | null>(null);
+  const beginRun = useCallback(() => {
+    const run = { controller: new AbortController() };
+    runRef.current = run;
+    setLoading(true);
+    return run;
+  }, [setLoading]);
+  const endRun = useCallback(
+    (run: { controller: AbortController }) => {
+      if (runRef.current !== run) return;
+      runRef.current = null;
+      setLoading(false);
+    },
+    [setLoading]
+  );
 
   const ensureSession = useAiCoachStore((s) => s.ensureSession);
   const patchContext = useAiCoachStore((s) => s.patchContext);
@@ -285,6 +311,9 @@ export function useLessonAi(doc: LessonDoc | null, sessionIdOverride?: string): 
       requestMessage?: string,
       modeInstruction?: string
     ) => {
+      // 中止されたら、この回の結果は画面に出さない
+      const run = runRef.current;
+      const live = () => !run || runRef.current === run;
       // 直前の selectSkill / 提案の受け入れで鍵が変わっていることがあるので、描画時の値ではなくストアから読む
       const store = useAiCoachStore.getState();
       let serverKey = store.sessions[sessionId]?.serverKey;
@@ -317,16 +346,20 @@ export function useLessonAi(doc: LessonDoc | null, sessionIdOverride?: string): 
           // Dify連携ツールの実検索など時間がかかる場合、bffClient側が裏でポーリングに
           // 切り替えた瞬間に1回だけ呼ばれる。待機中であることが分かるよう一時メッセージを積む。
           () => {
+            if (!live()) return;
             appendMessage(sessionId, {
               id: nextId('a'),
               role: 'assistant',
               content: '',
               answer: waitingAnswer(),
               references,
+              transient: true,
               createdAt: new Date().toISOString(),
             });
-          }
+          },
+          run?.controller.signal
         );
+        if (!live()) return;
         appendMessage(sessionId, {
           id: nextId('a'),
           role: 'assistant',
@@ -346,6 +379,7 @@ export function useLessonAi(doc: LessonDoc | null, sessionIdOverride?: string): 
           createdAt: new Date().toISOString(),
         });
       } catch {
+        if (!live()) return;
         appendMessage(sessionId, {
           id: nextId('a'),
           role: 'assistant',
@@ -385,8 +419,11 @@ export function useLessonAi(doc: LessonDoc | null, sessionIdOverride?: string): 
         return;
       }
 
+      const run = runRef.current;
+      const live = () => !run || runRef.current === run;
       try {
         const answer = await bffClient.askLessonAi(request);
+        if (!live()) return;
         appendMessage(sessionId, {
           id: nextId('a'),
           role: 'assistant',
@@ -399,6 +436,7 @@ export function useLessonAi(doc: LessonDoc | null, sessionIdOverride?: string): 
           createdAt: new Date().toISOString(),
         });
       } catch {
+        if (!live()) return;
         appendMessage(sessionId, {
           id: nextId('a'),
           role: 'assistant',
@@ -505,7 +543,7 @@ export function useLessonAi(doc: LessonDoc | null, sessionIdOverride?: string): 
         return;
       }
 
-      setLoading(true);
+      const run = beginRun();
       try {
         // すでに専門モードに入っているならそのまま専門処理を続ける（追従）
         if (isSpecialistSkill(skillId)) {
@@ -516,7 +554,7 @@ export function useLessonAi(doc: LessonDoc | null, sessionIdOverride?: string): 
           await runLessonAi(question, currentQuote, currentImage, suggestion);
         }
       } finally {
-        setLoading(false);
+        endRun(run);
       }
     },
     [
@@ -530,7 +568,8 @@ export function useLessonAi(doc: LessonDoc | null, sessionIdOverride?: string): 
       sessionId,
       setImageInStore,
       setInput,
-      setLoading,
+      beginRun,
+      endRun,
       skillId,
     ]
   );
@@ -554,11 +593,11 @@ export function useLessonAi(doc: LessonDoc | null, sessionIdOverride?: string): 
       const image = lastUserMessage?.image ?? null;
       const quote = session?.quote ?? null;
 
-      setLoading(true);
+      const run = beginRun();
       try {
         await runSkill(suggestion.skillId, question, quote, image);
       } finally {
-        setLoading(false);
+        endRun(run);
       }
     },
     [
@@ -570,7 +609,8 @@ export function useLessonAi(doc: LessonDoc | null, sessionIdOverride?: string): 
       runSkill,
       session,
       sessionId,
-      setLoading,
+      beginRun,
+      endRun,
       setSkillInStore,
     ]
   );
@@ -585,7 +625,7 @@ export function useLessonAi(doc: LessonDoc | null, sessionIdOverride?: string): 
       // 回答下の控えめな提案（role:'assistant'）を断った場合は、もう回答済みなので何もしない。
       if (target.role !== 'proposal') return;
 
-      setLoading(true);
+      const run = beginRun();
       try {
         await runLessonAi(
           lastUserMessage?.content ?? '',
@@ -593,11 +633,26 @@ export function useLessonAi(doc: LessonDoc | null, sessionIdOverride?: string): 
           lastUserMessage?.image ?? null
         );
       } finally {
-        setLoading(false);
+        endRun(run);
       }
     },
-    [lastUserMessage, loadingRef, messages, patchMessage, runLessonAi, session, sessionId, setLoading]
+    [beginRun, endRun, lastUserMessage, loadingRef, messages, patchMessage, runLessonAi, session, sessionId]
   );
+
+  /** 回答の生成を中止する（B-009）。結果は捨てる。サーバー側は止まらない（runRef の注記） */
+  const stop = useCallback(() => {
+    const run = runRef.current;
+    if (!run) return;
+    run.controller.abort();
+    runRef.current = null;
+    setLoading(false);
+    appendMessage(sessionId, {
+      id: nextId('s'),
+      role: 'system',
+      content: '回答の生成を中止しました。',
+      createdAt: new Date().toISOString(),
+    });
+  }, [appendMessage, sessionId, setLoading]);
 
   const selectSkill = useCallback(
     (next: AiSkillId) => {
@@ -645,6 +700,7 @@ export function useLessonAi(doc: LessonDoc | null, sessionIdOverride?: string): 
     clearImage,
     imageDropped: session?.imageDropped ?? false,
     send,
+    stop,
     explain,
     skillId,
     selectSkill,

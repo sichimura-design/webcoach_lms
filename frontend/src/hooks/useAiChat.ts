@@ -46,6 +46,8 @@ export function useAiChat() {
   const [pendingImage, setPendingImage] = useState<PendingImage | null>(null);
   const [imageError, setImageError] = useState<string | null>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  // 生成中の1回ぶん。中止したら外し、あとから返ってきた回答は捨てる（B-009。useLessonAi と同じ考え方）
+  const runRef = useRef<AbortController | null>(null);
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
@@ -98,6 +100,8 @@ export function useAiChat() {
     setPendingImage(null);
     setImageError(null);
     setLoading(true);
+    const run = new AbortController();
+    runRef.current = run;
 
     try {
       const result = await bffClient.sendAIMessage({
@@ -114,7 +118,8 @@ export function useAiChat() {
               },
             }
           : {}),
-      });
+      }, undefined, run.signal);
+      if (runRef.current !== run) return;
 
       const assistantMessage: ChatMessage = {
         id: (Date.now() + 1).toString(),
@@ -133,6 +138,7 @@ export function useAiChat() {
 
       addMessage(assistantMessage);
     } catch (error: any) {
+      if (runRef.current !== run) return;
       addMessage({
         id: (Date.now() + 1).toString(),
         role: 'assistant',
@@ -140,8 +146,21 @@ export function useAiChat() {
         timestamp: new Date(),
       });
     } finally {
-      setLoading(false);
+      // 中止したあとに次を送っていたら、そちらの「送信中」は消さない
+      if (runRef.current === run) {
+        runRef.current = null;
+        setLoading(false);
+      }
     }
+  };
+
+  /** 回答の生成を中止する。結果を捨てるだけで、サーバー側の生成は続く */
+  const stop = () => {
+    const run = runRef.current;
+    if (!run) return;
+    run.abort();
+    runRef.current = null;
+    setLoading(false);
   };
 
   const handleKeyPress = (e: React.KeyboardEvent) => {
@@ -158,6 +177,7 @@ export function useAiChat() {
     loading,
     messagesEndRef,
     sendMessage,
+    stop,
     handleKeyPress,
     pendingImage,
     imageError,
