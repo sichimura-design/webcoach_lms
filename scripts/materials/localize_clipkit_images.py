@@ -113,7 +113,9 @@ def main() -> int:
             subprocess.run(
                 aws + ["s3", "sync", str(d), f"{dest}/{d.parent.name}/html",
                        "--exclude", "*", "--include", "*.html",
-                       "--content-type", "text/html; charset=utf-8", "--only-show-errors"],
+                       "--content-type", "text/html; charset=utf-8",
+                       # Cache-Control が無いとブラウザが古いHTMLを持ち続け、書き換えが見えない
+                       "--cache-control", "no-cache", "--only-show-errors"],
                 check=True,
             )
         print(f"uploaded to {dest}/")
