@@ -20,7 +20,7 @@ import {
 import { findAiApplication, getLoadedAiApplications } from './useAiApplications';
 import { detectSkill } from '../utils/aiSkillRouting';
 import { toHistory } from '../utils/aiCoachText';
-import { useAiCoachStore } from '../store/aiCoachStore';
+import { newServerKey, useAiCoachStore } from '../store/aiCoachStore';
 
 /**
  * AIコーチ（教材ページの右パネル／AI専用ページの中央）。
@@ -285,6 +285,13 @@ export function useLessonAi(doc: LessonDoc | null, sessionIdOverride?: string): 
       requestMessage?: string,
       modeInstruction?: string
     ) => {
+      // 直前の selectSkill / 提案の受け入れで鍵が変わっていることがあるので、描画時の値ではなくストアから読む
+      const store = useAiCoachStore.getState();
+      let serverKey = store.sessions[sessionId]?.serverKey;
+      if (!serverKey) {
+        serverKey = newServerKey();
+        store.patchSession(sessionId, { serverKey });
+      }
       try {
         const res = await bffClient.sendAIMessage(
           {
@@ -294,9 +301,10 @@ export function useLessonAi(doc: LessonDoc | null, sessionIdOverride?: string): 
             // 2ターン目以降でLLMが文脈を見失い、別のツールを呼んでしまう
             // (例: ボタン選択の「WEBデザイン」だけ送ると学習相談ツールに逸れる)。
             conversation_history: toHistory(messages),
-            // 「新しい相談を始める」等で別のsessionIdになった場合、Dify連携ツール側の
+            // 「新しい相談を始める」等で別の会話になった場合、Dify連携ツール側の
             // 会話継続キャッシュも区切って、前回の検索条件を引き継がないようにする。
-            session_id: sessionId,
+            // 画面上の sessionId（'page:1' 等）は再利用されるので送らない（B-007、AiCoachSession.serverKey）。
+            session_id: serverKey,
             ...(img
               ? {
                   image: {

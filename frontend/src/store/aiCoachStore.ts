@@ -70,6 +70,15 @@ function deriveTitle(messages: AiCoachMessage[]): string | null {
   return text.length > 22 ? `${text.slice(0, 22)}…` : text;
 }
 
+/** api-server へ送る会話の鍵（AiCoachSession.serverKey）。タブや端末をまたいでも重ならない値にする */
+export function newServerKey(): string {
+  const rand =
+    typeof crypto !== 'undefined' && typeof crypto.randomUUID === 'function'
+      ? crypto.randomUUID()
+      : `${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 10)}`;
+  return `c:${rand}`;
+}
+
 function newSession(id: string, context?: Partial<AiCoachContext>): AiCoachSession {
   const now = new Date().toISOString();
   return {
@@ -83,6 +92,7 @@ function newSession(id: string, context?: Partial<AiCoachContext>): AiCoachSessi
     quote: null,
     image: null,
     imageDropped: false,
+    serverKey: newServerKey(),
     createdAt: now,
     updatedAt: now,
   };
@@ -208,7 +218,12 @@ export const useAiCoachStore = create<AiCoachState>()(
           };
         }),
 
-      setSkill: (id, skillId) => get().patchSession(id, { skillId }),
+      // モードが変わる＝呼ぶ Dify アプリが変わるので、サーバー側の会話も新しく始める（B-007）
+      setSkill: (id, skillId) => {
+        const current = get().sessions[id];
+        if (current && current.skillId === skillId) return;
+        get().patchSession(id, { skillId, serverKey: newServerKey() });
+      },
       setInput: (id, input) => get().patchSession(id, { input }),
       setQuote: (id, quote) => get().patchSession(id, { quote }),
       setImage: (id, image) => get().patchSession(id, { image, imageDropped: false }),

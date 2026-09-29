@@ -40,7 +40,7 @@ export interface AiChatPageContext {
 }
 
 export function useAiChat() {
-  const { messages, addMessage } = useChatStore();
+  const { messages, addMessage, serverKey } = useChatStore();
   const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);
   const [pendingImage, setPendingImage] = useState<PendingImage | null>(null);
@@ -103,6 +103,7 @@ export function useAiChat() {
       const result = await bffClient.sendAIMessage({
         message: messageText,
         conversation_history: toConversationHistory(messages),
+        session_id: serverKey,
         ...(pageContext?.courseId ? { course_id: pageContext.courseId } : {}),
         ...(pageContext?.lessonContext ? { lesson_context: pageContext.lessonContext } : {}),
         ...(currentImage
