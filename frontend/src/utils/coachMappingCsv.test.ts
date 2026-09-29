@@ -1,4 +1,4 @@
-import { parseCoachMappingCsv, toUploadResult } from './coachMappingCsv';
+import { mappingConflictMessage, parseCoachMappingCsv, toUploadResult } from './coachMappingCsv';
 
 describe('parseCoachMappingCsv', () => {
   it('フラグを読み取り、BOMと空行を無視する', () => {
@@ -48,5 +48,26 @@ describe('toUploadResult', () => {
     expect(result.success).toBe(false);
     expect(result.recordsFailed).toBe(1);
     expect(result.errors).toEqual([{ row: 3, message: '解除: 有効な割り当てが見つかりません' }]);
+  });
+});
+
+describe('mappingConflictMessage', () => {
+  it('受講生に別コーチがいる場合', () => {
+    expect(mappingConflictMessage('Student already has an active coach: student=12, coach=5'))
+      .toBe('この受講生には既に別のコーチ（ID: 5）が割り当てられています。先に解除してください');
+  });
+
+  it('同じ組み合わせが有効な場合', () => {
+    expect(mappingConflictMessage('Active mapping already exists: coach=5, student=12'))
+      .toBe('既に有効な割り当てがあります');
+  });
+
+  it('CSVの登録行でも使われる', () => {
+    const rows = parseCoachMappingCsv('coach_user_id,student_user_id\n6,12');
+    const result = toUploadResult(rows, {
+      created: 0, updated: 0, deleted: 0,
+      errors: [{ operation: 'create', coach_user_id: 6, student_user_id: 12, message: 'Student already has an active coach: student=12, coach=5' }],
+    });
+    expect(result.errors).toEqual([{ row: 2, message: '登録: この受講生には既に別のコーチ（ID: 5）が割り当てられています。先に解除してください' }]);
   });
 });

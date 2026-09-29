@@ -63,9 +63,18 @@ export function parseCoachMappingCsv(text: string): CoachMappingCsvRow[] {
   });
 }
 
+/** api-serverの409 detail(英語)を画面向けの文言にする。該当しなければnull */
+export function mappingConflictMessage(detail: string): string | null {
+  const otherCoach = detail.match(/already has an active coach.*coach=(\d+)/i);
+  if (otherCoach) return `この受講生には既に別のコーチ（ID: ${otherCoach[1]}）が割り当てられています。先に解除してください`;
+  if (/already exists/i.test(detail)) return '既に有効な割り当てがあります';
+  return null;
+}
+
 function toErrorMessage(err: ManageMappingsError): string {
   const label = OPERATION_LABEL[err.operation] ?? err.operation;
-  if (/already exists/i.test(err.message)) return `${label}: 既に有効な割り当てがあります`;
+  const conflict = mappingConflictMessage(err.message);
+  if (conflict) return `${label}: ${conflict}`;
   if (/not found/i.test(err.message)) return `${label}: 有効な割り当てが見つかりません`;
   return `${label}に失敗しました`;
 }

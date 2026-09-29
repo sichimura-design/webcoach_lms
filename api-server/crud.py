@@ -2038,6 +2038,22 @@ def sync_next_coaching_goals_from_note(db: Session, coaching_schedule_id: int, m
 # Coach-Student Mapping CRUD
 # ==========================================
 
+def _ensure_student_has_no_other_coach(db: Session, coach_user_id: int, student_user_id: int) -> None:
+    """
+    受講生1人にコーチ1人。別のコーチと有効な割り当てがあればValueError(=409)。
+    コーチ変更は旧コーチを解除してから新コーチを登録する(CSVなら同じファイルに両方書けばBFFが解除→登録の順に処理する)。
+    """
+    other = db.query(WebCoachStudentCoachMapping.coach_user_id).filter(
+        WebCoachStudentCoachMapping.student_user_id == student_user_id,
+        WebCoachStudentCoachMapping.coach_user_id != coach_user_id,
+        WebCoachStudentCoachMapping.logical_deleted == 0
+    ).first()
+    if other:
+        raise ValueError(
+            f"Student already has an active coach: student={student_user_id}, coach={other[0]}"
+        )
+
+
 def create_coach_student_mapping(
     db: Session,
     coach_user_id: int,
@@ -2068,6 +2084,7 @@ def create_coach_student_mapping(
         raise ValueError(
             f"Active mapping already exists: coach={coach_user_id}, student={student_user_id}"
         )
+    _ensure_student_has_no_other_coach(db, coach_user_id, student_user_id)
 
     # 新規マッピングを作成
     mapping = WebCoachStudentCoachMapping(
@@ -2271,6 +2288,7 @@ def restore_coach_student_mapping(
         raise ValueError(
             f"Active mapping already exists: coach={coach_user_id}, student={student_user_id}"
         )
+    _ensure_student_has_no_other_coach(db, coach_user_id, student_user_id)
 
     # 新しい有効なマッピングを作成
     restored_mapping = WebCoachStudentCoachMapping(

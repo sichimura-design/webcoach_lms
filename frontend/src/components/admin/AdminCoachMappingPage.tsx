@@ -7,7 +7,7 @@ import { CsvUploader } from './CsvUploader';
 import { UploadResult } from './UploadResult';
 import { UploadHistory } from './UploadHistory';
 import { getUserMessage } from '../../utils/errorMessage';
-import { parseCoachMappingCsv, toUploadResult } from '../../utils/coachMappingCsv';
+import { mappingConflictMessage, parseCoachMappingCsv, toUploadResult } from '../../utils/coachMappingCsv';
 
 // ─── Types ───────────────────────────────────────────────────────────────────
 
@@ -305,7 +305,10 @@ export const AdminCoachMappingPage: React.FC = () => {
       setSelectedStudent(null);
     } catch (err: any) {
       console.error('Failed to create coaching mapping:', err);
-      setToast({ type: 'error', message: getUserMessage(err, '登録に失敗しました') });
+      const conflict = err?.response?.status === 409 && typeof err.response.data?.detail === 'string'
+        ? mappingConflictMessage(err.response.data.detail)
+        : null;
+      setToast({ type: 'error', message: conflict ?? getUserMessage(err, '登録に失敗しました') });
     } finally {
       setRegistering(false);
     }
