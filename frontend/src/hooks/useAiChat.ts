@@ -154,13 +154,20 @@ export function useAiChat() {
     }
   };
 
-  /** 回答の生成を中止する。結果を捨てるだけで、サーバー側の生成は続く */
+  /** 回答の生成を中止する。サーバー側の生成も止まる（bffClient.sendAIMessage） */
   const stop = () => {
     const run = runRef.current;
     if (!run) return;
     run.abort();
     runRef.current = null;
     setLoading(false);
+    // 質問は残し、止めたことを会話に残す（Claude/Gemini と同じく、そのまま次の質問を続けられる）
+    addMessage({
+      id: Date.now().toString(),
+      role: 'assistant',
+      content: '回答の生成を中止しました。',
+      timestamp: new Date(),
+    });
   };
 
   const handleKeyPress = (e: React.KeyboardEvent) => {

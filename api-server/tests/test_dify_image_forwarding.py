@@ -13,6 +13,7 @@ import requests
 
 import agents.tools_langchain as tools_langchain
 from agents.tools_langchain import _call_dify_chat
+from tests.dify_stream_mock import dify_response
 
 IMAGE = {"media_type": "image/png", "data": base64.b64encode(b"fake-png").decode()}
 
@@ -40,10 +41,7 @@ def _reset_caches():
 
 
 def _response(payload):
-    resp = MagicMock()
-    resp.json.return_value = payload
-    resp.raise_for_status.return_value = None
-    return resp
+    return dify_response(payload)
 
 
 def _fake_post(upload_id="file-1"):

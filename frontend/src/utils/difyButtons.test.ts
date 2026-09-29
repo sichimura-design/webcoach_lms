@@ -47,3 +47,42 @@ describe('parseDifyMessage のフォーム', () => {
     expect(forms).toEqual([]);
   });
 });
+
+// 応募文メーカー（B-016）が実際に返した本文の形。1行改行で区切り、フォームの手前に区切り線を置く
+describe('Dify 本文の改行・区切り線（B-016）', () => {
+  it('フォーム手前の区切り線で、直前の段落が見出しに化けない', () => {
+    const { text } = parseDifyMessage(
+      'ご回答いただけましたら、応募文を作成いたします。\n----------------------------------------------------------\n\n' +
+        FORM_REPLY,
+    );
+    // 「本文\n---」は Markdown では h2 見出しになるので、区切り線ごと落とす
+    expect(text).toBe('ご回答いただけましたら、応募文を作成いたします。');
+  });
+
+  it('本文の途中の区切り線は、見出しにせず罫線として残す', () => {
+    const { text } = parseDifyMessage('前半です。\n-----\n後半です。');
+    expect(text).toBe('前半です。\n\n---\n\n後半です。');
+  });
+
+  it('1行改行はそのまま改行として表示されるようにする', () => {
+    const { text } = parseDifyMessage(
+      '情報のご入力ありがとうございます。\n現在、URLから案件の詳細を読み取れませんでした。\n\n① スキルについて\n- 得意なジャンルは？\n- ポートフォリオは？',
+    );
+    expect(text).toBe(
+      // 箇条書きは段落の直後でもそのまま始まるので、区切りを足さない
+      '情報のご入力ありがとうございます。  \n現在、URLから案件の詳細を読み取れませんでした。\n\n① スキルについて\n- 得意なジャンルは？\n- ポートフォリオは？',
+    );
+  });
+
+  it('ボタン・フォームの無い応答（完成した応募文）も改行を保つ', () => {
+    const { text } = parseDifyMessage('以下のポートフォリオをご覧いただけます。\nhttps://example.com/pf');
+    expect(text).toBe('以下のポートフォリオをご覧いただけます。  \nhttps://example.com/pf');
+  });
+
+  it('コードブロックと表は崩さない', () => {
+    const code = '```\na\nb\n```';
+    expect(parseDifyMessage(code).text).toBe(code);
+    const table = '| a | b |\n| --- | --- |\n| 1 | 2 |';
+    expect(parseDifyMessage(table).text).toBe(table);
+  });
+});

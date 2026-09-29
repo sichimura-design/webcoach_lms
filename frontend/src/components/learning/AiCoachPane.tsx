@@ -938,7 +938,7 @@ export function AiCoachPane({
                 {speech.error ?? (speech.listening ? '聞き取っています…もう一度押すと止まります' : '画像貼り付けにも対応 / Ctrl+Enter で送信')}
               </span>
               {ai.loading ? (
-                // 生成中は送信の代わりに中止（B-009）。サーバー側は止まらず、結果を捨てるだけ
+                // 生成中は送信の代わりに中止（B-009）。サーバー側の生成も止まる
                 <button
                   type="button"
                   onClick={ai.stop}

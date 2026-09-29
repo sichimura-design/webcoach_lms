@@ -78,6 +78,13 @@ class WebCoachService {
   }
 
   /**
+   * Cancel a running AI chat (「生成を中止」)
+   */
+  async cancelAIChat(userId, runId) {
+    return await apiServerAdapter.cancelAIChat(userId, runId);
+  }
+
+  /**
    * Get async AI chat job status
    */
   async getAIChatStatus(jobId) {

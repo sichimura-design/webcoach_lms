@@ -56,7 +56,7 @@ export interface UseLessonAi {
   /** リロードで添付画像が失われたか（再添付を促すため） */
   imageDropped: boolean;
   send: (overrideQuestion?: string) => Promise<void>;
-  /** 回答の生成を中止する（B-009）。画面上で止めて結果を捨てるだけで、サーバー側の生成は続く */
+  /** 回答の生成を中止する（B-009）。画面上で止め、サーバー側の生成（Claude・Dify）も止める */
   stop: () => void;
   /** 選択文章の「💡かんたん解説」。会話履歴には残さない */
   explain: (quote: AiCoachQuote) => Promise<string>;
@@ -163,8 +163,8 @@ export function useLessonAi(doc: LessonDoc | null, sessionIdOverride?: string): 
    * 中止したら runRef を外す。あとから返ってきた回答は runRef と一致しないので捨てる。
    * 🔴 送信の finally で無条件に setLoading(false) しないこと。中止してすぐ次を送ったとき、
    *    前の回の finally が新しい回の「送信中」を消してしまう（endRun が自分の回かを見る）。
-   * 🔴 api-server にキャンセルAPIは無い。サーバー側の生成とトークン消費は最後まで続き、
-   *    Dify 側の会話も1ターン進む（相談リストでエンジニアに依頼中）。
+   * サーバー側の生成は bffClient.sendAIMessage が run_id で /webcoach/ai/cancel を呼んで止める。
+   * Dify 側の会話は止めたところまで残り、次の発言はその続きになる（Claude/Gemini で止めたときと同じ）。
    */
   const runRef = useRef<{ controller: AbortController } | null>(null);
   const beginRun = useCallback(() => {
@@ -650,7 +650,7 @@ export function useLessonAi(doc: LessonDoc | null, sessionIdOverride?: string): 
     [beginRun, endRun, lastUserMessage, loadingRef, messages, patchMessage, runLessonAi, session, sessionId]
   );
 
-  /** 回答の生成を中止する（B-009）。結果は捨てる。サーバー側は止まらない（runRef の注記） */
+  /** 回答の生成を中止する（B-009）。サーバー側も止まる（runRef の注記） */
   const stop = useCallback(() => {
     const run = runRef.current;
     if (!run) return;

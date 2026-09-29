@@ -22,6 +22,7 @@ from agents.tools_langchain import (
     note_turn_without_dify,
 )
 from routers.ai_langgraph import ChatRequest, _execute_chat
+from tests.dify_stream_mock import dify_response
 
 SPRINT_ANSWER = (
     "今日使える時間について教えてください！\n<div>"
@@ -62,10 +63,7 @@ def _db():
 
 
 def _response(payload):
-    resp = MagicMock()
-    resp.json.return_value = payload
-    resp.raise_for_status.return_value = None
-    return resp
+    return dify_response(payload)
 
 
 def _talk_to_sprint_app(answer=SPRINT_ANSWER):

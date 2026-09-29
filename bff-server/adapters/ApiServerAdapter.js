@@ -307,6 +307,22 @@ class ApiServerAdapter {
   }
 
   /**
+   * Cancel a running AI chat (LangGraph version)
+   */
+  async cancelAIChat(userId, runId) {
+    const response = await axios.post(
+      `${this.apiServerUrl}/api/ai/chat/cancel`,
+      { user_id: userId, run_id: runId },
+      {
+        headers: { 'Content-Type': 'application/json' },
+        // Difyの停止API(タイムアウト10秒)を待ってから返る
+        timeout: 15000
+      }
+    );
+    return response.data;
+  }
+
+  /**
    * Get async AI chat job status (LangGraph version)
    */
   async getAIChatStatus(jobId) {

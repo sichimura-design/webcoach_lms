@@ -194,6 +194,33 @@ router.post('/ai', requireAuth, async (req, res) => {
   }
 });
 
+// Cancel a running AI chat (「生成を中止」). run_id is the one the client sent with POST /ai.
+// user_id comes from the session so a user can only stop their own generation.
+router.post('/ai/cancel', requireAuth, async (req, res) => {
+  try {
+    const runId = req.body && req.body.run_id;
+    if (typeof runId !== 'string' || runId.length === 0 || runId.length > 64) {
+      return res.status(400).json({ error: 'Bad Request', detail: 'run_id is required' });
+    }
+    if (!req.user || !req.user.moodleUserId) {
+      return res.status(401).json({ error: 'Unauthorized' });
+    }
+    const result = await webCoachService.cancelAIChat(req.user.moodleUserId, runId);
+    res.json(result);
+  } catch (error) {
+    console.error('[WebCoach AI Cancel] Error:', error.message);
+
+    if (error.response) {
+      return res.status(error.response.status).json(error.response.data);
+    }
+
+    res.status(500).json({
+      error: 'Failed to cancel AI chat',
+      detail: error.message
+    });
+  }
+});
+
 // Get async AI chat job status (polling)
 router.get('/ai/status/:jobId', requireAuth, async (req, res) => {
   try {

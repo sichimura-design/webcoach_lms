@@ -237,6 +237,13 @@ function applyBlockPatch(block: NoteBlock, patch: NoteBlockPatch): NoteBlock {
   return block;
 }
 
+/** 「生成を中止」用の実行ID。送信ごとに作る */
+function newRunId(): string {
+  return typeof crypto !== 'undefined' && typeof crypto.randomUUID === 'function'
+    ? crypto.randomUUID()
+    : `${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 12)}`;
+}
+
 class BFFClient {
   private api: AxiosInstance;
 
@@ -1493,9 +1500,30 @@ class BFFClient {
    * @param onWaiting ポーリングに切り替わった瞬間に1回だけ呼ばれる
    *   （「検索に時間がかかっています」等の一時表示に使う）
    * @param signal 「生成を中止」（B-009）。中止すると待機・ポーリングをやめて AbortError で抜ける。
-   *   🔴 api-server にキャンセルAPIは無いので、サーバー側の生成は最後まで走る（結果を捨てるだけ）。
+   *   あわせて run_id で POST /webcoach/ai/cancel を呼び、サーバー側の生成（Claude・Dify）も止める。
+   *   Dify の会話は止めたところまで残るので、次の発言はその続きとして送られる（Claude/Gemini と同じ）。
    */
   async sendAIMessage(request: AIRequest, onWaiting?: () => void, signal?: AbortSignal): Promise<AIResponse> {
+    const runId = request.run_id ?? newRunId();
+    // 🔴 POST の応答（最初の8秒）を待つ前から登録する。job_id が返る前に止められても run_id で止まる
+    const cancelOnServer = () => {
+      this.cancelAIMessage(runId).catch(() => undefined);
+    };
+    signal?.addEventListener('abort', cancelOnServer, { once: true });
+    try {
+      return await this.pollAIMessage({ ...request, run_id: runId }, onWaiting, signal);
+    } finally {
+      // 終わったあとの中止はサーバーへ送らない
+      signal?.removeEventListener('abort', cancelOnServer);
+    }
+  }
+
+  /** 実行中のAIチャットを止める（POST /api/webcoach/ai/cancel）。本人の run だけが止まる */
+  async cancelAIMessage(runId: string): Promise<void> {
+    await this.api.post('/webcoach/ai/cancel', { run_id: runId });
+  }
+
+  private async pollAIMessage(request: AIRequest, onWaiting?: () => void, signal?: AbortSignal): Promise<AIResponse> {
     const response = await this.api.post('/webcoach/ai', request, { signal });
     const data: AIResponse = response.data;
 

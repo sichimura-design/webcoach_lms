@@ -6,11 +6,12 @@ import os
 import re
 import logging
 from typing import Dict, Any, List, Literal, Optional, Tuple
-from langchain_core.messages import HumanMessage, AIMessage, SystemMessage, ToolMessage
+from langchain_core.messages import HumanMessage, AIMessage, SystemMessage, ToolMessage, message_chunk_to_message
 from langchain_anthropic import ChatAnthropic
 from langgraph.graph import StateGraph, END
 from langgraph.prebuilt import ToolNode
 
+from agents.run_control import ChatCancelled, check_cancelled, get_run
 from agents.state import LearningCoachState
 from agents.tools_langchain import create_bff_tools
 from vector_db import get_vector_db_retriever, VectorDBRetriever
@@ -196,6 +197,7 @@ def retrieve_node(state: LearningCoachState) -> LearningCoachState:
     RAG検索ノード
     ベクトルDBから関連コンテキストを検索
     """
+    check_cancelled(state.get("run_id"))
     logger.info(f"Running retrieve_node - Input: {len(state['messages'])} messages")
     for i, msg in enumerate(state["messages"]):
         logger.info(f"  [{i}] {type(msg).__name__}")
@@ -275,11 +277,32 @@ def retrieve_node(state: LearningCoachState) -> LearningCoachState:
     }
 
 
+def _invoke_llm(llm_runnable, messages, run_id: Optional[str]):
+    """LLMを呼ぶ。「生成を中止」できるrunがあるときはストリーミングで受け、
+    中止されたら受信の途中で接続を切って生成を止める（Claudeの生成とトークン消費もそこで止まる）。"""
+    run = get_run(run_id)
+    if run is None:
+        return llm_runnable.invoke(messages)
+    run.raise_if_cancelled()
+    merged = None
+    stream = llm_runnable.stream(messages)
+    try:
+        for chunk in stream:
+            if run.cancelled:
+                raise ChatCancelled()
+            merged = chunk if merged is None else merged + chunk
+    finally:
+        stream.close()
+    run.raise_if_cancelled()
+    return message_chunk_to_message(merged) if merged is not None else AIMessage(content="")
+
+
 def agent_node(state: LearningCoachState) -> LearningCoachState:
     """
     エージェント推論ノード
     LLMにメッセージを渡してツール呼び出しまたは回答を生成
     """
+    check_cancelled(state.get("run_id"))
     logger.info(f"Running agent_node - Input: {len(state['messages'])} messages, iteration: {state['iteration_count']}")
     for i, msg in enumerate(state["messages"]):
         content_preview = str(msg.content)[:50] if hasattr(msg, 'content') else "N/A"
@@ -372,7 +395,7 @@ def agent_node(state: LearningCoachState) -> LearningCoachState:
         if hasattr(msg, 'tool_calls') and msg.tool_calls:
             logger.info(f"    -> Has {len(msg.tool_calls)} tool_calls")
 
-    response = llm_with_tools.invoke(messages)
+    response = _invoke_llm(llm_with_tools, messages, state.get("run_id"))
 
     logger.info(f"agent_node - Output: adding 1 new AIMessage")
     # 新しいメッセージのみを返す（operator.addで既存のmessagesに追加される）
@@ -388,6 +411,7 @@ def tools_node(state: LearningCoachState) -> LearningCoachState:
     ツール実行ノード
     LangGraphのToolNodeを使用してツールを実行
     """
+    check_cancelled(state.get("run_id"))
     logger.info(f"Running tools_node - Input: {len(state['messages'])} messages")
     for i, msg in enumerate(state["messages"]):
         logger.info(f"  [{i}] {type(msg).__name__}")
@@ -422,6 +446,8 @@ def tools_node(state: LearningCoachState) -> LearningCoachState:
 
     # ツール実行（全体のmessagesを渡す）
     result = tool_node.invoke({"messages": state["messages"]})
+    # ToolNodeはツール内の例外（中止を含む）をエラーのToolMessageにして続行するので、ここで改めて見る
+    check_cancelled(state.get("run_id"))
     logger.info(f"ToolNode result keys: {result.keys()}")
     logger.info(f"ToolNode returned {len(result.get('messages', []))} messages")
 
@@ -500,6 +526,7 @@ def respond_node(state: LearningCoachState) -> LearningCoachState:
     最終回答ノード
     最後のAIメッセージを最終回答として設定
     """
+    check_cancelled(state.get("run_id"))
     logger.info("Running respond_node")
 
     # AIアプリケーション（Dify）ツールの応答をそのまま使う場合は、

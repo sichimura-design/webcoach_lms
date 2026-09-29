@@ -433,6 +433,11 @@ export interface AIRequest {
    * 最初の発言だけに付け、LLMの判断に任せずそのDifyアプリへ送らせる。
    */
   force_app_key?: string;
+  /**
+   * このターンの実行ID。「生成を中止」で POST /webcoach/ai/cancel に同じ値を送り、
+   * サーバー側（LLM・Dify）の生成も止める。bffClient.sendAIMessage が採番するので呼び出し側は付けなくてよい
+   */
+  run_id?: string;
 }
 
 export interface AISource {
@@ -459,7 +464,7 @@ export interface AIResponse {
   timestamp?: string;
   suggestions?: string[];
   /** "processing"の場合、Dify連携ツールの実検索等で時間がかかっており、job_idでポーリング中であることを示す */
-  status?: 'done' | 'processing';
+  status?: 'done' | 'processing' | 'cancelled';
   job_id?: string;
   /** 教材ページ(lesson_contextあり)での回答の根拠区分。それ以外はnull/未定義 */
   grounding?: AIGrounding | null;

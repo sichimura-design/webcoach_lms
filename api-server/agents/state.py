@@ -29,6 +29,9 @@ class LearningCoachState(TypedDict):
     # このセッション単位で区切るために使う。tools_langchain.create_ai_application_tools参照）
     session_id: Optional[str]
 
+    # 「生成を中止」用のrun ID（agents/run_control）。各ノードの入口で中止されていないかを見る
+    run_id: Optional[str]
+
     # DBの webcoach_ai_application から動的に生成されたツール（リクエストごとに構築）
     dynamic_tools: List[BaseTool]
 

@@ -15,6 +15,7 @@ import requests
 from langchain_core.tools import Tool, StructuredTool, BaseTool
 from pydantic import BaseModel, Field
 
+from agents.run_control import ChatCancelled, get_run
 from agents.usage_log import log_ai_usage
 
 logger = logging.getLogger(__name__)
@@ -394,6 +395,86 @@ def note_turn_without_dify(userid: int, session_id: Optional[str] = None) -> Non
         _dify_idle_turns_cache[key] = idle
 
 
+# Difyの1回の問い合わせ全体の上限。実検索で72秒かかった例がある。異常に長時間化した場合の安全弁
+DIFY_TOTAL_TIMEOUT_SECONDS = 120
+
+
+class DifyStreamError(requests.exceptions.RequestException):
+    """ストリーミング応答の途中でDifyが error イベントを返した"""
+
+
+def _stop_dify_task(api_key: str, task_id: str, userid: int) -> None:
+    """Difyの生成を止める（POST /chat-messages/{task_id}/stop）"""
+    requests.post(
+        f"{DIFY_API_BASE_URL}/chat-messages/{task_id}/stop",
+        headers={"Authorization": f"Bearer {api_key}", "Content-Type": "application/json"},
+        json={"user": f"webcoach-user-{userid}"},
+        timeout=10,
+    )
+
+
+def _read_dify_stream(response, api_key: str, userid: int, run=None, on_conversation_id=None) -> Dict[str, Any]:
+    """Difyのストリーミング応答（SSE）を読み、blockingモードと同じ形の辞書にして返す。
+
+    - 最初に届いた task_id で、run（「生成を中止」）にDifyの停止処理を登録する
+    - conversation_id は届いた時点で on_conversation_id に渡す（中止しても会話を続けられるように）
+    - 中止されたら受信を打ち切って ChatCancelled、全体の上限を超えたらDifyを止めて Timeout
+    """
+    deadline = time.monotonic() + DIFY_TOTAL_TIMEOUT_SECONDS
+    answer = ""
+    conversation_id = None
+    metadata: Dict[str, Any] = {}
+    task_id = None
+    try:
+        for raw in response.iter_lines():
+            if run is not None and run.cancelled:
+                raise ChatCancelled()
+            if time.monotonic() > deadline:
+                if task_id:
+                    try:
+                        _stop_dify_task(api_key, task_id, userid)
+                    except requests.exceptions.RequestException as e:
+                        logger.warning(f"Failed to stop timed-out Dify task: {e}")
+                raise requests.exceptions.Timeout(f"Dify did not finish within {DIFY_TOTAL_TIMEOUT_SECONDS}s")
+            if not raw:
+                continue
+            line = raw.decode("utf-8") if isinstance(raw, bytes) else raw
+            if not line.startswith("data:"):
+                continue
+            try:
+                event = json.loads(line[5:].strip())
+            except ValueError:
+                continue
+
+            if not task_id and event.get("task_id"):
+                task_id = event["task_id"]
+                if run is not None:
+                    run.set_dify_stopper(lambda t=task_id: _stop_dify_task(api_key, t, userid))
+            if not conversation_id and event.get("conversation_id"):
+                conversation_id = event["conversation_id"]
+                if on_conversation_id:
+                    on_conversation_id(conversation_id)
+
+            kind = event.get("event")
+            if kind in ("message", "agent_message"):
+                answer += event.get("answer") or ""
+            elif kind == "message_replace":
+                answer = event.get("answer") or ""
+            elif kind == "message_end":
+                metadata = event.get("metadata") or {}
+            elif kind == "error":
+                raise DifyStreamError(f"Dify stream error: {event.get('code')} {event.get('message')}")
+    finally:
+        if run is not None:
+            run.set_dify_stopper(None)
+        response.close()
+
+    # 停止APIで止まった場合、ストリームは正常に閉じるので、ここでも中止を確かめる
+    if run is not None and run.cancelled:
+        raise ChatCancelled()
+    return {"answer": answer, "conversation_id": conversation_id, "metadata": metadata}
+
+
 def _call_dify_chat(
     query: str,
     userid: int,
@@ -403,6 +484,7 @@ def _call_dify_chat(
     inputs: Optional[Dict[str, str]] = None,
     session_id: Optional[str] = None,
     image: Optional[Dict[str, str]] = None,
+    run_id: Optional[str] = None,
 ) -> str:
     """Dify上に構築されたAIアプリに問い合わせる（同一ユーザー・同一アプリ・同一セッションの
     会話はプロセス内で継続する）
@@ -413,6 +495,10 @@ def _call_dify_chat(
     image（{"media_type", "data"(base64)}）が渡され、Dify側アプリで画像アップロードが
     有効な場合は、Difyへアップロードしてfilesとして添付する。以降のターンで画像が
     無くても、同じ会話のあいだは最後の画像を添付し続ける（_dify_image_cache参照）。
+
+    run_id（agents/run_control）で「生成を中止」されたら、Difyの停止APIを呼んで
+    ChatCancelled を送出する。途中までの会話はDify側に残るので、conversation_idは
+    受け取った時点で覚え、次の発言はその続きとして送る。
     """
     cache_key = (userid, app_id, session_id)
     conversation_id = "" if reset else _dify_conversation_cache.get(cache_key, "")
@@ -468,6 +554,11 @@ def _call_dify_chat(
     started_at = time.monotonic()
 
     try:
+        run = get_run(run_id)
+        if run is not None:
+            run.raise_if_cancelled()
+        # 「生成を中止」でDifyの停止APIを呼ぶには task_id が要り、task_id はストリーミングでしか
+        # 受け取れないため streaming で呼ぶ。応答は blocking と同じ形（answer/conversation_id/metadata）に組み直す。
         response = requests.post(
             f"{DIFY_API_BASE_URL}/chat-messages",
             headers={
@@ -477,27 +568,28 @@ def _call_dify_chat(
             json={
                 "inputs": request_inputs,
                 "query": query,
-                "response_mode": "blocking",
+                "response_mode": "streaming",
                 "conversation_id": conversation_id,
                 "user": f"webcoach-user-{userid}",
                 **({"files": files} if files else {}),
             },
-            # 2026-09-17: routers/ai_langgraph.pyがバックグラウンドスレッド+ポーリング
-            # 方式(SYNC_WAIT_SECONDS超過時はjob_id化)に変更されたため、この呼び出しは
-            # もはやCloudFront/BFFの同期タイムアウトに縛られない。
-            # 実測: 「案件抽出メーカー」の実検索ステップはDify側で72秒かかった例がある
-            # (Dify `GET /v1/messages`のprovider_response_latencyで確認)。それでも
-            # 無制限にはせず、異常に長時間化した場合の安全弁として120秒を上限とする。
-            timeout=120,
+            stream=True,
+            # 読み取りのタイムアウトはイベント間の無通信時間。Difyは処理中も10秒ごとにpingを送る。
+            # 全体の上限（実検索で72秒かかった例がある）は _read_dify_stream の DIFY_TOTAL_TIMEOUT_SECONDS で見る
+            timeout=(10, 60),
         )
         response.raise_for_status()
-        data = response.json()
+
+        def remember_conversation(new_id: str) -> None:
+            _dify_conversation_cache[cache_key] = new_id
+
+        data = _read_dify_stream(response, api_key, userid, run, on_conversation_id=remember_conversation)
 
         new_conversation_id = data.get("conversation_id")
         if new_conversation_id:
             _dify_conversation_cache[cache_key] = new_conversation_id
 
-        # blockingモードの応答にはmetadata.usageにトークン数・金額(Dify算出)が入る
+        # message_end の metadata.usage にトークン数・金額(Dify算出)が入る
         usage = (data.get("metadata") or {}).get("usage") or {}
         usage_fields.update(
             conversation_id=new_conversation_id,
@@ -523,6 +615,10 @@ def _call_dify_chat(
 
         _dify_last_buttons_cache[(userid, session_id)] = _extract_button_values(answer)
         return answer
+
+    except ChatCancelled:
+        usage_fields["status"] = "cancelled"
+        raise
 
     except requests.exceptions.Timeout as e:
         logger.error(f"Dify API call timed out: {e}")
@@ -550,6 +646,7 @@ def create_ai_application_tools(
     userid: int = None,
     session_id: Optional[str] = None,
     image: Optional[Dict[str, str]] = None,
+    run_id: Optional[str] = None,
 ) -> "tuple[List[BaseTool], Optional[str], Optional[str]]":
     """
     DBに登録済みのAIアプリケーション（webcoach_ai_application.secret_keyが設定されているもの）を
@@ -595,6 +692,7 @@ def create_ai_application_tools(
             message: str = raw_user_message,
             session_id: Optional[str] = session_id,
             image: Optional[Dict[str, str]] = image,
+            run_id: Optional[str] = run_id,
         ):
             def _call(
                 query: str,
@@ -611,6 +709,7 @@ def create_ai_application_tools(
                     inputs=extra_inputs,
                     session_id=session_id,
                     image=image,
+                    run_id=run_id,
                 )
             return _call
 

@@ -20,6 +20,7 @@ from database import SessionLocal
 from dto.response.ai import AIResponse, AISource
 from agents.learning_coach_agent import get_learning_coach_graph
 from agents.state import LearningCoachState
+from agents.run_control import ChatCancelled, ChatRun, cancel_run, finish_run, start_run
 from agents.usage_log import log_ai_usage
 
 # ログ設定
@@ -114,6 +115,14 @@ class ChatRequest(BaseModel):
             "（messageはDifyへそのまま転送されるため、前置きを混ぜるとボタン値が一致しなくなる）"
         ),
     )
+    run_id: Optional[str] = Field(
+        None,
+        max_length=64,
+        description=(
+            "このターンの実行ID（フロントが送信ごとに採番）。「生成を中止」で "
+            "POST /chat/cancel に同じ値を送ると、実行中のLLM・Difyの生成を止める"
+        ),
+    )
     force_app_key: Optional[str] = Field(
         None,
         max_length=128,
@@ -136,7 +145,7 @@ class ChatResponse(BaseModel):
     # Dify連携ツールの実検索等、SYNC_WAIT_SECONDSを超えて完了しなかった場合は
     # status="processing"+job_idを返し、GET /chat/status/{job_id} でポーリングする。
     # 通常(数秒で完了)は status="done" のままで、呼び出し側の扱いは今までと変わらない。
-    status: str = Field("done", description="done | processing")
+    status: str = Field("done", description="done | processing | cancelled")
     job_id: Optional[str] = Field(None, description="非同期実行中のジョブID（statusがprocessingの場合のみ）")
     # 教材ページ(lesson_contextあり)での回答の根拠区分。
     # material=教材のみ / mixed=教材+教材外の一般知識 / general=教材に該当なし(一般知識のみ)。
@@ -184,7 +193,11 @@ def _cleanup_old_jobs() -> None:
             del _chat_jobs[jid]
 
 
-def _run_chat_job(job_id: str, request: ChatRequest) -> None:
+def _cancelled_response() -> "ChatResponse":
+    return ChatResponse(success=False, message="", iteration_count=0, status="cancelled")
+
+
+def _run_chat_job(job_id: str, request: ChatRequest, run: ChatRun) -> None:
     """バックグラウンドスレッドで_execute_chatを実行し、結果をジョブストアへ書き戻す。
 
     Depends(get_db)で注入されたセッションはリクエストハンドラの終了とともに
@@ -192,10 +205,14 @@ def _run_chat_job(job_id: str, request: ChatRequest) -> None:
     """
     db = SessionLocal()
     try:
-        result = _execute_chat(request, db)
+        result = _execute_chat(request, db, run)
         with _chat_jobs_lock:
             _chat_jobs[job_id]["status"] = "done"
             _chat_jobs[job_id]["result"] = result
+    except ChatCancelled:
+        with _chat_jobs_lock:
+            _chat_jobs[job_id]["status"] = "done"
+            _chat_jobs[job_id]["result"] = _cancelled_response()
     except HTTPException as e:
         with _chat_jobs_lock:
             _chat_jobs[job_id]["status"] = "error"
@@ -209,6 +226,7 @@ def _run_chat_job(job_id: str, request: ChatRequest) -> None:
             _chat_jobs[job_id]["detail"] = f"AI chat failed: {e}"
     finally:
         db.close()
+        finish_run(run)
         with _chat_jobs_lock:
             _chat_jobs[job_id]["event"].set()
 
@@ -279,7 +297,7 @@ def _summarize_llm_usage(messages) -> dict:
     }
 
 
-def _execute_chat(request: ChatRequest, db: Session) -> ChatResponse:
+def _execute_chat(request: ChatRequest, db: Session, run: Optional[ChatRun] = None) -> ChatResponse:
     """_execute_chat_innerを実行し、成否・所要時間・トークン数を利用ログ(agents/usage_log.py)へ1行出力する"""
     usage_fields: dict = {
         "user_id": request.user_id,
@@ -293,9 +311,12 @@ def _execute_chat(request: ChatRequest, db: Session) -> ChatResponse:
     }
     started_at = time.monotonic()
     try:
-        result = _execute_chat_inner(request, db, usage_fields)
+        result = _execute_chat_inner(request, db, usage_fields, run)
         usage_fields["status"] = "success"
         return result
+    except ChatCancelled:
+        usage_fields["status"] = "cancelled"
+        raise
     except HTTPException as e:
         # 入力長超過など、こちらで弾いたもの（LLMは呼んでいない）
         usage_fields.update(status="rejected", http_status=e.status_code)
@@ -308,7 +329,9 @@ def _execute_chat(request: ChatRequest, db: Session) -> ChatResponse:
         log_ai_usage("ai_chat", **usage_fields)
 
 
-def _execute_chat_inner(request: ChatRequest, db: Session, usage_fields: dict) -> ChatResponse:
+def _execute_chat_inner(
+    request: ChatRequest, db: Session, usage_fields: dict, run: Optional[ChatRun] = None
+) -> ChatResponse:
     """AIチャット本体（同期の猶予時間内で完了した場合も、非同期ジョブとして実行される場合も、ここが呼ばれる）
 
     **特徴:**
@@ -392,6 +415,7 @@ def _execute_chat_inner(request: ChatRequest, db: Session, usage_fields: dict) -
         session_id=request.session_id,
         # 添付画像はDify側アプリにも渡す（制作物添削アプリ等が画像を見て答えられるように）
         image=request.image.model_dump() if request.image else None,
+        run_id=run.run_id if run else None,
     )
     # アプリのモードに入った直後の最初の発言は、指定されたアプリへ必ず送る
     # （ボタン値の継続より優先する。モードを選び直した＝そのアプリを使うという明示の操作のため）
@@ -413,6 +437,7 @@ def _execute_chat_inner(request: ChatRequest, db: Session, usage_fields: dict) -
         "messages": [HumanMessage(content=user_content)],
         "user_id": request.user_id,
         "session_id": request.session_id,
+        "run_id": run.run_id if run else None,
         "course_id": request.course_id,
         "lesson_context": request.lesson_context.model_dump() if request.lesson_context else None,
         "grounding": None,
@@ -504,7 +529,8 @@ def ai_chat_langgraph(request: ChatRequest):
         }
     event = _chat_jobs[job_id]["event"]
 
-    thread = threading.Thread(target=_run_chat_job, args=(job_id, request), daemon=True)
+    run = start_run(request.run_id, request.user_id)
+    thread = threading.Thread(target=_run_chat_job, args=(job_id, request, run), daemon=True)
     thread.start()
 
     if event.wait(timeout=SYNC_WAIT_SECONDS):
@@ -522,6 +548,23 @@ def ai_chat_langgraph(request: ChatRequest):
         status="processing",
         job_id=job_id
     )
+
+
+class CancelRequest(BaseModel):
+    user_id: int = Field(..., ge=1, description="ユーザーID（BFFが認証済みの本人のIDで上書きする）")
+    run_id: str = Field(..., min_length=1, max_length=64, description="POST /chat に付けた run_id")
+
+
+@router.post(
+    "/chat/cancel",
+    summary="AIチャットの生成を中止",
+    description=(
+        "POST /chat に付けた run_id の生成を止める（LLMの受信を打ち切り、Difyには停止APIを送る）。"
+        "本人のrun以外は止めない。/chat より先に届いた場合も、あとから始まるその run を止める"
+    ),
+)
+def cancel_chat(request: CancelRequest):
+    return {"cancelled": cancel_run(request.run_id, request.user_id)}
 
 
 @router.get(

@@ -18,6 +18,7 @@ import agents.usage_log as usage_log
 import routers.ai_langgraph as ai_langgraph
 from agents.tools_langchain import _call_dify_chat
 from routers.ai_langgraph import ChatRequest, _execute_chat, _summarize_llm_usage
+from tests.dify_stream_mock import dify_response
 
 PARAMS = {"file_upload": {"enabled": False}, "user_input_form": []}
 
@@ -46,10 +47,7 @@ def _reset_dify_caches():
 
 
 def _dify_response(payload):
-    resp = MagicMock()
-    resp.json.return_value = payload
-    resp.raise_for_status.return_value = None
-    return resp
+    return dify_response(payload)
 
 
 # ---- ai_app_call (Dify) ----
