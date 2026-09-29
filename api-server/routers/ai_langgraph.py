@@ -75,6 +75,13 @@ class LessonContext(BaseModel):
     lesson_text: Optional[str] = Field(None, max_length=6000, description="レッスン本文の抜粋")
 
 
+def _tool_name_for_app_key(db: Session, app_key: str) -> Optional[str]:
+    """secret_key（app_key）に対応する動的ツール名（ask_ai_application_{id}）"""
+    from entities.webcoach import WebCoachAIApplication
+    row = db.query(WebCoachAIApplication.id).filter(WebCoachAIApplication.secret_key == app_key).first()
+    return f"ask_ai_application_{row.id}" if row else None
+
+
 # リクエスト/レスポンス定義
 class ChatRequest(BaseModel):
     """AIチャットリクエスト（LangGraph版）"""
@@ -105,6 +112,15 @@ class ChatRequest(BaseModel):
         description=(
             "専門モード（制作物添削等）の指示文。LLMへの指示にだけ使い、Dify連携アプリへは送らない"
             "（messageはDifyへそのまま転送されるため、前置きを混ぜるとボタン値が一致しなくなる）"
+        ),
+    )
+    force_app_key: Optional[str] = Field(
+        None,
+        max_length=128,
+        description=(
+            "このターンで必ず呼ぶAIアプリの secret_key（一覧APIの app_key）。"
+            "「AIコーチでできること」等からアプリのモードに入った直後の最初の発言で、"
+            "LLMの判断に任せず、そのDifyアプリへ確実に送るために使う（2ターン目以降は送らない）"
         ),
     )
 
@@ -377,6 +393,16 @@ def _execute_chat_inner(request: ChatRequest, db: Session, usage_fields: dict) -
         # 添付画像はDify側アプリにも渡す（制作物添削アプリ等が画像を見て答えられるように）
         image=request.image.model_dump() if request.image else None,
     )
+    # アプリのモードに入った直後の最初の発言は、指定されたアプリへ必ず送る
+    # （ボタン値の継続より優先する。モードを選び直した＝そのアプリを使うという明示の操作のため）
+    if request.force_app_key:
+        forced_tool_name = _tool_name_for_app_key(db, request.force_app_key)
+        if forced_tool_name and any(t.name == forced_tool_name for t in dynamic_tools):
+            logger.info(f"Forcing Dify tool for first message in app mode: {forced_tool_name}")
+            sticky_dify_tool_name = forced_tool_name
+        else:
+            logger.warning(f"force_app_key={request.force_app_key} に対応するAIアプリのツールがありません")
+
     # DBを使うのはここまで(動的ツールは値をコピー済みでセッションを参照しない)。
     # 以降のLLM/Dify待ち(最大90秒)の間も接続を握っていると、同時AIチャット数が
     # 接続プール上限に達した時点でAI以外の全APIまで接続待ちで止まるため、ここで返す。

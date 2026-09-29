@@ -302,6 +302,8 @@ export function useLessonAi(doc: LessonDoc | null, sessionIdOverride?: string): 
    * @param requestMessage APIへ送る文面。引用を含めるときだけ指定し、
    *   省略時は question をそのまま送る（画面に出るユーザー発言は常に question のまま）。
    * @param modeInstruction 専門モードの指示文（skillModeInstruction）。message とは別に送る。
+   * @param appKey 専門モードの裏にあるAIアプリ。モードに入ってから最初の発言だけ、
+   *   このアプリへ必ず送らせる（force_app_key）。2回目以降はLLMの判断と会話の継続に任せる。
    */
   const runGeneralAi = useCallback(
     async (
@@ -309,7 +311,8 @@ export function useLessonAi(doc: LessonDoc | null, sessionIdOverride?: string): 
       img: string | null,
       localSuggestion?: SkillSuggestion | null,
       requestMessage?: string,
-      modeInstruction?: string
+      modeInstruction?: string,
+      appKey?: string
     ) => {
       // 中止されたら、この回の結果は画面に出さない
       const run = runRef.current;
@@ -321,11 +324,15 @@ export function useLessonAi(doc: LessonDoc | null, sessionIdOverride?: string): 
         serverKey = newServerKey();
         store.patchSession(sessionId, { serverKey });
       }
+      // モードに入ると serverKey が作り直されるので、「この鍵でまだ強制していない」＝モード最初の発言
+      const forceAppKey =
+        appKey && store.sessions[sessionId]?.appForcedFor !== serverKey ? appKey : undefined;
       try {
         const res = await bffClient.sendAIMessage(
           {
             message: requestMessage ?? question,
             ...(modeInstruction ? { mode_instruction: modeInstruction } : {}),
+            ...(forceAppKey ? { force_app_key: forceAppKey } : {}),
             // 会話履歴を渡さないと、DBに登録したAIアプリ(Dify)へ問い合わせ中の
             // 2ターン目以降でLLMが文脈を見失い、別のツールを呼んでしまう
             // (例: ボタン選択の「WEBデザイン」だけ送ると学習相談ツールに逸れる)。
@@ -359,6 +366,8 @@ export function useLessonAi(doc: LessonDoc | null, sessionIdOverride?: string): 
           },
           run?.controller.signal
         );
+        // 失敗したときは印を付けない（送り直しでも最初の発言としてアプリへ送る）
+        if (forceAppKey) useAiCoachStore.getState().patchSession(sessionId, { appForcedFor: serverKey });
         if (!live()) return;
         appendMessage(sessionId, {
           id: nextId('a'),
@@ -467,7 +476,9 @@ export function useLessonAi(doc: LessonDoc | null, sessionIdOverride?: string): 
       const body = q?.text ? `${question}\n\n引用:「${q.text}」` : question;
       // 上限を超えるとAPIが400を返すので、そのときは引用を諦めて質問だけ送る
       const message = body.length <= AI_MESSAGE_MAX_LENGTH ? body : question;
-      await runGeneralAi(question, img, null, message, skillModeInstruction(targetSkill));
+      // 裏のAIアプリがDBにあれば、モード最初の発言はそのアプリへ必ず送る
+      const appKey = findAiApplication(getLoadedAiApplications(), targetSkill)?.app_key ?? undefined;
+      await runGeneralAi(question, img, null, message, skillModeInstruction(targetSkill), appKey);
     },
     [runGeneralAi, runLessonAi]
   );

@@ -147,6 +147,11 @@ export interface AiCoachSession {
    *    古い保存データには無いので、送る直前に無ければ作る。
    */
   serverKey?: string;
+  /**
+   * 最初の発言をAIアプリへ強制で送り終えた serverKey。
+   * モードに入る（＝serverKey が作り直される）たびに、最初の1回だけ force_app_key を付けるための印。
+   */
+  appForcedFor?: string;
   createdAt: string;
   updatedAt: string;
 }

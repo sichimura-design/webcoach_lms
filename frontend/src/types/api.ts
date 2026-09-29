@@ -428,6 +428,11 @@ export interface AIRequest {
    * ボタン値の完全一致で進むDifyのフローが先に進まなくなる（api-server側はLLMへの指示にだけ使う）。
    */
   mode_instruction?: string;
+  /**
+   * このターンで必ず呼ぶAIアプリ（一覧APIの app_key）。アプリのモードに入った直後の
+   * 最初の発言だけに付け、LLMの判断に任せずそのDifyアプリへ送らせる。
+   */
+  force_app_key?: string;
 }
 
 export interface AISource {
