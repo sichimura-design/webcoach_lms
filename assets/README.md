@@ -23,5 +23,6 @@ assets/
   `html/` が参照する `../../_assets/` は未取得。
 - `materials/_clipkit/` … `html/` が参照していた Clipkit(cdn.clipkit.co) の画像（約3,400枚・464MB、git管理外）。
   `html/` のリンクは相対パス `../../_clipkit/<cdn.clipkit.co以降のパス>` に書き換え済みで、
-  実体は S3 の `materials/_clipkit/`。`scripts/materials/localize_clipkit_images.py` で再取得・書き換え・アップロードできる。
+  実体は S3 の `materials/_clipkit/`。`scripts/materials/localize_clipkit_images.py` で再取得・書き換え・アップロードできる
+  （UAT・本番はS3上のHTMLがローカルと違うので `--pull` を付ける。`admin-csv/README.md` 参照）。
 - `thumbnails/<コースslug>.png` … 54枚。`instagram.png` は原本名「Instagram広告運用」だが、対応する広告コースが無いため「インスタグラム運用」(instagram)に割り当てた。

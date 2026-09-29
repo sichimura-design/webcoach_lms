@@ -52,10 +52,21 @@ AWS_PROFILE=PowerUserAccess-840513866884 \
 代わりに次のスクリプトで「画像の取得 → `../../_clipkit/...` への書き換え → `_clipkit/` と `html/` のアップロード」をまとめて行う。
 置き場所は Clipkit のパスで決め打ちなので、本番でも `materials/` を同じ構成で置けばリンクはそのまま使える。
 
+Moodleの教材リンク（mod/url）は dev/UAT 共用DBで `https://uat.webcoach.jp/materials/...` を指している。
+uat.webcoach.jp の実体はdevプレビューとは別（アカウント822824391912のバケット
+`moodle-spa-frontend-spafrontendbucketa0c499f3-1q1oez2ib24b`、CloudFront `E1C5CM5I7NU8VT`）で、
+HTMLも `lms-skin.css` 注入済み・909ファイルとローカルと中身が違う。ローカルのHTMLを上げると上書きしてしまうので、
+dev以外は `--pull`（バケットのHTMLを落として書き換えて戻す）で流す。
+
 ```sh
+# devプレビュー（assets/materials と同じ内容）
 python3 scripts/materials/localize_clipkit_images.py \
   --s3-bucket dev-devspastack-spabucket48e1059f-yymyziswolti --profile PowerUserAccess-840513866884
-# 本番は --s3-bucket / --profile を本番の値に。--dry-run で対象件数だけ確認できる。
+# UAT（uat.webcoach.jp）。2026-09-30 実施済み
+python3 scripts/materials/localize_clipkit_images.py --pull \
+  --s3-bucket moodle-spa-frontend-spafrontendbucketa0c499f3-1q1oez2ib24b \
+  --profile PowerUserAccess-822824391912 --invalidate E1C5CM5I7NU8VT
+# 本番も --pull で、--s3-bucket / --profile / --invalidate を本番の値に。--dry-run で対象件数だけ確認できる。
 ```
 
 Clipkit 側で既に消えている画像（403）はリンクを元のまま残す（2026-09-29時点で2枚、web-design/ha1xn と generative-ai の4ページ）。
