@@ -54,6 +54,69 @@ const ANY_TAG_RE = /<[^>]+>/g;
 const FORM_RE = /<form\b/i;
 
 export function parseDifyMessage(content: string): ParsedDifyMessage {
+  const parsed = extractDifyParts(content);
+  return { ...parsed, text: normalizeChatMarkdown(parsed.text) };
+}
+
+// 罫線だけの行（--- / *** / ___ / ===）
+const SEPARATOR_LINE_RE = /^ {0,3}([-*_=])(?:[ \t]*\1){2,}[ \t]*$/;
+const FENCE_RE = /^ {0,3}(```|~~~)/;
+// 段落を中断して始まるブロック（箇条書き・見出し・引用・表・コード）。この手前に改行記号は要らない
+const BLOCK_START_RE = /^ {0,3}([-*+] |\d+[.)] |#{1,6}(\s|$)|>|\||```|~~~)/;
+
+/**
+ * Dify アプリの本文を、チャットの Markdown 描画で崩れない形に整える（B-016）。
+ *
+ * Dify 標準UIは1行改行をそのまま改行として出すが、react-markdown では同じ段落に
+ * つながってしまい、文がくっついて読めない。また応募文メーカー等はフォームの手前に
+ * 「-----」の区切り線を置くため、その直前の段落が Markdown の見出し（h2）に化けていた。
+ * - 本文中の1行改行は、行末に空白2つを付けて改行として描画させる
+ * - 区切り線は前後に空行を入れて罫線にする。先頭・末尾の区切り線（ボタン・フォームの
+ *   手前だったもの）は意味が無いので落とす
+ * - コードブロックの中と表は触らない
+ */
+export function normalizeChatMarkdown(text: string): string {
+  if (!text) return text;
+  const lines = text.split('\n');
+  const out: string[] = [];
+  let inFence = false;
+
+  for (let i = 0; i < lines.length; i++) {
+    const line = lines[i];
+    if (FENCE_RE.test(line)) {
+      inFence = !inFence;
+      out.push(line);
+      continue;
+    }
+    if (inFence) {
+      out.push(line);
+      continue;
+    }
+    if (SEPARATOR_LINE_RE.test(line)) {
+      out.push('', '---', '');
+      continue;
+    }
+    const next = lines[i + 1];
+    const needsBreak =
+      line.trim() !== '' &&
+      !/^ {0,3}(#|\|)/.test(line) &&
+      next !== undefined &&
+      next.trim() !== '' &&
+      !SEPARATOR_LINE_RE.test(next) &&
+      !BLOCK_START_RE.test(next) &&
+      !/ {2}$/.test(line);
+    out.push(needsBreak ? `${line.replace(/[ \t]+$/, '')}  ` : line);
+  }
+
+  return out
+    .join('\n')
+    .replace(/\n{3,}/g, '\n\n')
+    .replace(/^(?:\s*---\s*)+/, '')
+    .replace(/(?:\s*---\s*)+$/, '')
+    .trim();
+}
+
+function extractDifyParts(content: string): ParsedDifyMessage {
   const buttons: DifyMessageButton[] = [];
   const forms: DifyForm[] = [];
 
