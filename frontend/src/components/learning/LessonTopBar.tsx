@@ -48,6 +48,10 @@ export function LessonTopBar({
       className="flex items-center"
       style={{
         position: 'relative',
+        // 🔴 親の .wc-lesson-main はグリッドで、子の最小幅は既定で中身の幅（min-width: auto）。
+        //    折り返さないレッスン名の幅がそのまま列の最小幅になり、長い名前だと
+        //    スマホ幅で画面ごと横にはみ出していた。0 にしてパンくず側の … 省略に任せる。
+        minWidth: 0,
         gap: 20,
         padding: '0 24px',
         borderBottom: `1px solid ${color.border}`,
