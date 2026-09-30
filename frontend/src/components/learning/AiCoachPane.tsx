@@ -140,7 +140,19 @@ function pickQuickPrompts(ai: UseLessonAi): string[] {
   return ai.context.heading ? READING_PROMPTS : QUICK_PROMPTS;
 }
 
+/**
+ * 教材準拠API（askLessonAi）の構造化回答か。
+ * 汎用AI・専門モード（Dify）の回答は conclusion に本文が丸ごと入り、ほかの欄は空で返る。
+ * 教材を開いたまま専門モードを使うとこちらになるので、「結論」見出しの下に素の文字で出すと
+ * Markdown も Dify のボタン・フォームも崩れる（A-1）。欄の有無で見分ける。
+ */
+function isStructuredAnswer(answer: LessonAiResponse): boolean {
+  return !!(answer.basis || answer.apply || answer.next || answer.generalNote || answer.sources.length);
+}
+
 function answerToPlainText(answer: LessonAiResponse): string {
+  // 構造化されていない回答に「結論：」を付けると、コピーした文の頭に余計な見出しが付く
+  if (!isStructuredAnswer(answer)) return stripHtmlForNote(answer.conclusion);
   const lines = [`結論：${answer.conclusion}`];
   if (answer.basis) lines.push(`教材の根拠：${answer.basis}`);
   if (answer.apply) lines.push(`今回のケースへの当てはめ：${answer.apply}`);
@@ -249,6 +261,10 @@ export function AiCoachPane({
     lastSettled.answer.conclusion !== AI_ERROR_CONCLUSION &&
     needsTypedReply(lastSettled.answer.conclusion);
 
+  // 教材の文脈があり、教材準拠の構造化回答のときだけ「結論」見出し付きで出す
+  const structuredInLesson = (answer: LessonAiResponse) =>
+    !!ai.context.lessonTitle && isStructuredAnswer(answer);
+
   const wide = variant === 'page';
   const contentWidth = wide ? 760 : undefined;
   // 入力欄は書いた分だけ伸びる。wide で min/max も変わるので、切り替わったら測り直す
@@ -349,6 +365,8 @@ export function AiCoachPane({
           )}
 
           {ai.messages.map((message) => {
+            // 待機中の一時表示は生成中だけ。以前の版で保存された会話に残っていても出さない
+            if (message.transient && !ai.loading) return null;
             // ── 経過の説明（モードの切り替わり） ──
             if (message.role === 'system') {
               return (
@@ -463,7 +481,7 @@ export function AiCoachPane({
                     <>
                       {/* 教材の文脈がある会話でだけ「教材だけでは判断できません」を出す。
                           教材と無関係な相談で出すと、何も約束していないことを謝る形になる。 */}
-                      {!message.answer.groundedInMaterial && !!ai.context.lessonTitle && (
+                      {!message.answer.groundedInMaterial && structuredInLesson(message.answer) && (
                         <div
                           className="flex items-start"
                           style={{
@@ -484,9 +502,9 @@ export function AiCoachPane({
                       )}
 
                       {/* 教材準拠の回答は「結論」見出し付きの構造で読ませる。
-                          教材の文脈が無い一般相談は普通の会話なので見出しを付けず、
-                          汎用AIが返すMarkdownをそのまま整形して出す。 */}
-                      {ai.context.lessonTitle ? (
+                          教材の文脈が無い一般相談と、教材を開いたままの専門モード（Dify）は
+                          普通の会話なので見出しを付けず、Markdown と Dify のボタン・フォームで出す。 */}
+                      {structuredInLesson(message.answer) ? (
                         <>
                           <strong
                             style={{ display: 'block', marginBottom: 6, ...font.label, fontWeight: 800, color: color.text }}

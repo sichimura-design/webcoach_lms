@@ -232,7 +232,10 @@ export const useAiCoachStore = create<AiCoachState>()(
         set((state) => {
           const session = state.sessions[id];
           if (!session) return state;
-          const messages = [...session.messages, message];
+          // 待機中の一時表示（transient）は、次の発言（回答・エラー・中止）が来たら役目を終える。
+          // 残すと回答の上に「回答を作成しています…」が居座り、コピー・保存の対象にもなる（A-2）
+          const kept = message.transient ? session.messages : session.messages.filter((m) => !m.transient);
+          const messages = [...kept, message];
           return {
             sessions: {
               ...state.sessions,
