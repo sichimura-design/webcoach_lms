@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect, useLayoutEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { Bell, Home, BookOpen, Sparkles, Settings, ShieldCheck, BookMarked, HelpCircle, FileText, Mail, CalendarDays, ChevronDown, ChevronRight, ChevronsLeft, PanelLeftOpen, MessagesSquare, NotebookPen, UserRound, Send, Square, X, User, Paperclip, ImageOff, MoreHorizontal } from 'lucide-react';
+import { Bell, Home, BookOpen, Sparkles, Settings, ShieldCheck, BookMarked, HelpCircle, FileText, Mail, CalendarDays, ChevronDown, ChevronRight, ChevronsLeft, PanelLeftOpen, MessagesSquare, NotebookPen, UserRound, Send, Square, X, User, Paperclip, ImageOff, MoreHorizontal, PencilLine } from 'lucide-react';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import { useAuth } from '../../contexts/AuthContext';
@@ -14,7 +14,7 @@ import SidebarStudyTimer from './SidebarStudyTimer';
 import { withCfToken } from '../profile/AvatarPicker';
 import { color, radius } from '../../theme/webcoachTheme';
 import { parseDifyMessage } from '../../utils/difyButtons';
-import { extractChoiceButtons } from '../../utils/aiChoices';
+import { needsTypedReply, TYPED_REPLY_HINT, TYPED_REPLY_PLACEHOLDER } from '../../utils/aiAwaitingReply';
 import DifyFormCard from './DifyFormCard';
 
 interface AppHeaderProps {
@@ -50,6 +50,10 @@ export function AppHeader({ userName, avatarUrl }: AppHeaderProps) {
     pendingImage, imageError, handleImageSelect, clearPendingImage,
   } = useAiChat();
   const chatImageInputRef = useRef<HTMLInputElement>(null);
+  // 最新の発言が AI の問いかけで、Dify のボタンも無いときは「文章で答える」ことを案内する（B-015）
+  const lastChatMessage = messages[messages.length - 1];
+  const awaitingTypedReply =
+    !loading && lastChatMessage?.role === 'assistant' && needsTypedReply(lastChatMessage.content);
 
   const { items: notificationItems, markAllRead } = useNotificationStore();
   const [notifOpen, setNotifOpen] = useState(false);
@@ -1334,12 +1338,7 @@ export function AppHeader({ userName, avatarUrl }: AppHeaderProps) {
                     )}
                     {message.role === 'assistant' ? (
                       (() => {
-                        const { text, buttons: difyButtons, forms } = parseDifyMessage(message.content);
-                        // 選択式の問いかけも押せるようにする（B-011/B-015）。最新の回答だけ
-                        const buttons =
-                          difyButtons.length > 0 || forms.length > 0 || message !== messages[messages.length - 1]
-                            ? difyButtons
-                            : extractChoiceButtons(text);
+                        const { text, buttons, forms } = parseDifyMessage(message.content);
                         return (
                           <>
                             <ReactMarkdown
@@ -1460,6 +1459,12 @@ export function AppHeader({ userName, avatarUrl }: AppHeaderProps) {
             {imageError && (
               <p className="text-xs text-red-500 mb-2">{imageError}</p>
             )}
+            {awaitingTypedReply && (
+              <p className="mb-2 flex items-start gap-1.5 text-xs font-bold leading-relaxed text-brand">
+                <PencilLine className="w-3.5 h-3.5 flex-shrink-0 mt-0.5" />
+                <span>{TYPED_REPLY_HINT}</span>
+              </p>
+            )}
             <div className="flex gap-2">
               <input
                 ref={chatImageInputRef}
@@ -1484,7 +1489,7 @@ export function AppHeader({ userName, avatarUrl }: AppHeaderProps) {
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
                 onKeyPress={handleKeyPress}
-                placeholder="質問を入力してください..."
+                placeholder={awaitingTypedReply ? TYPED_REPLY_PLACEHOLDER : '質問を入力してください...'}
                 disabled={loading}
                 rows={1}
                 className="flex-1 px-3 py-2 border border-gray-300 rounded-lg resize-none focus:outline-none focus:ring-2 focus:ring-brand focus:border-transparent disabled:bg-gray-100"

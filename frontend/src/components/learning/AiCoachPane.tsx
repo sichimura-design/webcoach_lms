@@ -1,5 +1,5 @@
 import { useRef } from 'react';
-import { AlertTriangle, Copy, ImagePlus, MessageSquarePlus, Mic, MicOff, Send, Square, Star, X } from 'lucide-react';
+import { AlertTriangle, Copy, ImagePlus, MessageSquarePlus, Mic, MicOff, PencilLine, Send, Square, Star, X } from 'lucide-react';
 import { useSpeechInput } from '../../hooks/useSpeechInput';
 import { color, font } from '../../theme/webcoachTheme';
 import { AI_ERROR_CONCLUSION, LessonAiMessage, UseLessonAi } from '../../hooks/useLessonAi';
@@ -9,7 +9,7 @@ import { useAutoGrowTextarea } from '../../hooks/useAutoGrowTextarea';
 import { useAiApplications } from '../../hooks/useAiApplications';
 import MarkdownRenderer from '../MarkdownRenderer';
 import { parseDifyMessage } from '../../utils/difyButtons';
-import { extractChoiceButtons } from '../../utils/aiChoices';
+import { needsTypedReply, TYPED_REPLY_HINT, TYPED_REPLY_PLACEHOLDER } from '../../utils/aiAwaitingReply';
 import DifyFormCard from '../shared/DifyFormCard';
 import { stripHtmlForNote } from '../../utils/stripHtmlForNote';
 import AiCoachFace from '../shared/AiCoachFace';
@@ -239,8 +239,15 @@ export function AiCoachPane({
 
   const speech = useSpeechInput(ai.input, ai.setInput);
 
-  // 最新の AI の回答（一時表示は除く）。選択肢ボタンを出すのはここだけ
-  const lastAssistantId = [...ai.messages].reverse().find((m) => m.role === 'assistant' && !m.transient)?.id;
+  // 最新の発言が AI の問いかけで、Dify のボタンも無いときは「文章で答える」ことを案内する（B-015）
+  const lastSettled = [...ai.messages].reverse().find((m) => !m.transient);
+  const awaitingTypedReply =
+    !ai.loading &&
+    !ai.pendingProposal &&
+    lastSettled?.role === 'assistant' &&
+    !!lastSettled.answer &&
+    lastSettled.answer.conclusion !== AI_ERROR_CONCLUSION &&
+    needsTypedReply(lastSettled.answer.conclusion);
 
   const wide = variant === 'page';
   const contentWidth = wide ? 760 : undefined;
@@ -492,13 +499,7 @@ export function AiCoachPane({
                         </>
                       ) : (
                         (() => {
-                          const { text, buttons: difyButtons, forms } = parseDifyMessage(message.answer.conclusion);
-                          // Dify のボタンが無い選択式の問いかけも押せるようにする（B-011/B-015）。
-                          // 過去の回答まで押せると話が巻き戻るので、最新の回答だけ
-                          const buttons =
-                            difyButtons.length > 0 || forms.length > 0 || message.id !== lastAssistantId
-                              ? difyButtons
-                              : extractChoiceButtons(text);
+                          const { text, buttons, forms } = parseDifyMessage(message.answer.conclusion);
                           return (
                             <div style={{ fontSize: 11.5, lineHeight: 1.75, color: color.textBody }}>
                               <MarkdownRenderer content={text} compact />
@@ -824,6 +825,15 @@ export function AiCoachPane({
               上の確認に答えると続けられます。
             </p>
           )}
+          {awaitingTypedReply && (
+            <p
+              className="flex items-start"
+              style={{ gap: 5, margin: '0 0 6px', fontSize: 10.5, lineHeight: 1.5, fontWeight: 700, color: color.primary }}
+            >
+              <PencilLine size={12} style={{ flexShrink: 0, marginTop: 2 }} />
+              <span>{TYPED_REPLY_HINT}</span>
+            </p>
+          )}
           {/* 🔴 overflow:hidden を付けない。＋メニューが absolute で上へ開くので切れる
                 （AiCoachHome の入力欄にも同じ注意書きがある）。
                 textarea の角は自前で丸めているので、はみ出しの心配はない。 */}
@@ -847,7 +857,9 @@ export function AiCoachPane({
               }}
               placeholder={
                 placeholder ??
-                (ai.quote
+                (awaitingTypedReply
+                  ? TYPED_REPLY_PLACEHOLDER
+                  : ai.quote
                   ? '選択した文章について質問する…'
                   : ai.context.lessonTitle
                     ? 'このレッスンについて質問する…'

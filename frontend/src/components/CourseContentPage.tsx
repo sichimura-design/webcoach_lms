@@ -29,10 +29,11 @@ import {
   NotebookPen,
   Sparkles,
   Square,
+  PencilLine,
 } from 'lucide-react';
 import MarkdownRenderer from './MarkdownRenderer';
 import { parseDifyMessage } from '../utils/difyButtons';
-import { extractChoiceButtons } from '../utils/aiChoices';
+import { needsTypedReply, TYPED_REPLY_HINT, TYPED_REPLY_PLACEHOLDER } from '../utils/aiAwaitingReply';
 import DifyFormCard from './shared/DifyFormCard';
 import { getUserMessage } from '../utils/errorMessage';
 import { announcementModuleIds } from '../utils/courseAnnouncement';
@@ -1258,6 +1259,10 @@ function AiCoachPanel({
   }, [selection]);
 
   const canSend = (!!aiQuestion.trim() || !!pendingImage || !!selection) && !aiLoading;
+  // 最新の発言が AI の問いかけで、Dify のボタンも無いときは「文章で答える」ことを案内する（B-015）
+  const lastAiMessage = aiMessages[aiMessages.length - 1];
+  const awaitingTypedReply =
+    !aiLoading && lastAiMessage?.role === 'assistant' && needsTypedReply(lastAiMessage.content);
 
   return (
     <section className="flex flex-col" style={{ minHeight: 0, height: '100%', overflow: 'hidden' }}>
@@ -1305,12 +1310,7 @@ function AiCoachPanel({
                   )}
                   {msg.role === 'assistant' ? (
                     (() => {
-                      const { text, buttons: difyButtons, forms } = parseDifyMessage(msg.content);
-                      // 選択式の問いかけも押せるようにする（B-011/B-015）。最新の回答だけ
-                      const buttons =
-                        difyButtons.length > 0 || forms.length > 0 || index !== aiMessages.length - 1
-                          ? difyButtons
-                          : extractChoiceButtons(text);
+                      const { text, buttons, forms } = parseDifyMessage(msg.content);
                       return (
                         <>
                           <MarkdownRenderer content={text} compact />
@@ -1396,6 +1396,15 @@ function AiCoachPanel({
           </div>
         )}
         {imageError && <p style={{ fontSize: 11, color: '#DC2626', marginBottom: 8 }}>{imageError}</p>}
+        {awaitingTypedReply && !selection && (
+          <p
+            className="flex items-start"
+            style={{ gap: 5, margin: '0 0 8px', fontSize: 10.5, lineHeight: 1.5, fontWeight: 700, color: color.primary }}
+          >
+            <PencilLine size={12} style={{ flexShrink: 0, marginTop: 2 }} />
+            <span>{TYPED_REPLY_HINT}</span>
+          </p>
+        )}
         {selection && (
           <div
             className="flex items-start"
@@ -1447,7 +1456,13 @@ function AiCoachPanel({
           </button>
           <textarea
             ref={textareaRef}
-            placeholder={selection ? 'この箇所について質問（空のまま送ると解説します）' : '質問を入力...'}
+            placeholder={
+              selection
+                ? 'この箇所について質問（空のまま送ると解説します）'
+                : awaitingTypedReply
+                  ? TYPED_REPLY_PLACEHOLDER
+                  : '質問を入力...'
+            }
             value={aiQuestion}
             rows={1}
             onChange={e => {
