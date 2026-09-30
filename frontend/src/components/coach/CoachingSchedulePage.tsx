@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { Calendar, Plus, ExternalLink, Trash2, Pencil, Sparkles, ChevronDown, ChevronUp, Video, CalendarX } from 'lucide-react';
+import { Calendar, Plus, ExternalLink, Pencil, Sparkles, ChevronDown, ChevronUp, Video, CalendarX } from 'lucide-react';
 import { AppHeader, ConfirmDialog } from '../shared';
 import { useAuth } from '../../contexts/AuthContext';
 import bffClient from '../../services/bffClient';
@@ -186,7 +186,6 @@ export function CoachingSchedulePage({ studentId }: CoachingSchedulePageProps) {
   const [rescheduleMode, setRescheduleMode] = useState<'date' | 'later'>('date');
   const [rescheduleDate, setRescheduleDate] = useState('');
   const [rescheduleError, setRescheduleError] = useState<string | null>(null);
-  const [deleteTarget, setDeleteTarget] = useState<CoachingSchedule | null>(null);
 
   const today = toLocalDateKey(new Date());
   /** 未記録の回は「終了」を選んだ状態で出す。ほとんどの回は終了なので、迷わず公開できるように */
@@ -423,22 +422,6 @@ export function CoachingSchedulePage({ studentId }: CoachingSchedulePageProps) {
     }
   };
 
-  const handleDelete = async () => {
-    const target = deleteTarget;
-    if (!target || saving) return;
-    setSaving(true);
-    try {
-      await bffClient.deleteCoachingSchedule(studentId, target.id);
-      setEditingId(null);
-      setDeleteTarget(null);
-      loadSchedules();
-    } catch {
-      setDeleteTarget(null);
-      setError('この回の削除に失敗しました');
-    } finally {
-      setSaving(false);
-    }
-  };
 
   return (
     <div style={{ minHeight: '100vh', background: color.pageBg, display: 'flex', flexDirection: 'column' }}>
@@ -514,19 +497,8 @@ export function CoachingSchedulePage({ studentId }: CoachingSchedulePageProps) {
                       <button type="button" style={ghostSmallButton} onClick={() => setEditingId(null)}>
                         キャンセル
                       </button>
-                      <button
-                        type="button"
-                        onClick={() => setDeleteTarget(schedule)}
-                        disabled={saving}
-                        style={{
-                          display: 'flex', alignItems: 'center', gap: 6, marginLeft: 'auto',
-                          ...font.buttonSm, color: color.primary, background: color.primarySoft,
-                          border: 'none', borderRadius: t.chip.borderRadius, padding: '10px 16px', cursor: 'pointer',
-                        }}
-                      >
-                        <Trash2 className="w-3.5 h-3.5" />
-                        削除
-                      </button>
+                      {/* 削除ボタンは置かない（2026-09-30 決定）。コーチングの記録は消す必要がなく、
+                          誤って消すと予定もコーチング記録も戻せないため。やめた回は「リスケ」で扱う */}
                     </div>
                   </>
                 ) : (
@@ -712,18 +684,6 @@ export function CoachingSchedulePage({ studentId }: CoachingSchedulePageProps) {
         </div>
       )}
 
-      {deleteTarget && (
-        <div className="wc-warm">
-          <ConfirmDialog
-            title={`第${deleteTarget.coaching_no}回（${deleteTarget.coaching_date}）を削除しますか？`}
-            description="この回の予定とコーチング記録が消え、受講生の画面からも見えなくなります。元に戻せません。"
-            confirmLabel={saving ? '削除中...' : '削除する'}
-            busy={saving}
-            onConfirm={handleDelete}
-            onCancel={() => setDeleteTarget(null)}
-          />
-        </div>
-      )}
     </div>
   );
 }
