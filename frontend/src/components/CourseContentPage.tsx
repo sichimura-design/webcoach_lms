@@ -37,6 +37,7 @@ import { parseDifyMessage } from '../utils/difyButtons';
 import { needsTypedReply, TYPED_REPLY_HINT, TYPED_REPLY_PLACEHOLDER } from '../utils/aiAwaitingReply';
 import DifyFormCard from './shared/DifyFormCard';
 import DifyChoiceButtons from './shared/DifyChoiceButtons';
+import AiWaitLabel from './shared/AiWaitLabel';
 import { getUserMessage } from '../utils/errorMessage';
 import { announcementModuleIds } from '../utils/courseAnnouncement';
 import { color, font, radius, shadow } from '../theme/webcoachTheme';
@@ -1401,7 +1402,7 @@ function AiCoachPanel({
               <div style={{ borderRadius: radius.md, border: `1px solid ${color.border}`, background: color.surface, padding: '10px 12px' }}>
                 <div className="flex items-center" style={{ gap: 8 }}>
                   <span className="animate-spin rounded-full" style={{ width: 12, height: 12, border: `2px solid ${color.primary}`, borderTopColor: 'transparent' }} />
-                  <span style={{ fontSize: 11.5, color: color.textMuted }}>考え中...</span>
+                  <AiWaitLabel style={{ fontSize: 11.5, color: color.textMuted }} />
                 </div>
               </div>
             </div>

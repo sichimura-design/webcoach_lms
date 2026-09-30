@@ -17,6 +17,7 @@ import { parseDifyMessage } from '../../utils/difyButtons';
 import { needsTypedReply, TYPED_REPLY_HINT, TYPED_REPLY_PLACEHOLDER } from '../../utils/aiAwaitingReply';
 import DifyFormCard from './DifyFormCard';
 import DifyChoiceButtons from './DifyChoiceButtons';
+import AiWaitLabel from './AiWaitLabel';
 
 interface AppHeaderProps {
   userName?: string;
@@ -1453,7 +1454,7 @@ export function AppHeader({ userName, avatarUrl }: AppHeaderProps) {
                 <div className="p-3 bg-white rounded-lg shadow-sm">
                   <div className="flex items-center gap-2">
                     <div className="w-4 h-4 border-2 border-brand border-t-transparent rounded-full animate-spin" />
-                    <span className="text-sm text-gray-500">考え中...</span>
+                    <AiWaitLabel className="text-sm text-gray-500" />
                   </div>
                 </div>
               </div>

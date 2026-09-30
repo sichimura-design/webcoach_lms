@@ -380,8 +380,9 @@ export function AiCoachPane({
           )}
 
           {ai.messages.map((message) => {
-            // 待機中の一時表示は生成中だけ。以前の版で保存された会話に残っていても出さない
-            if (message.transient && !ai.loading) return null;
+            // 待機中の一時表示は出さない。待っていることと経過は AiThinkingBubble が出す（A-6）。
+            // 以前の版で保存された会話に残っていても出さない
+            if (message.transient) return null;
             // ── 経過の説明（モードの切り替わり） ──
             if (message.role === 'system') {
               return (
