@@ -19,7 +19,7 @@ import {
 } from '../types/aiSkill';
 import { findAiApplication, getLoadedAiApplications } from './useAiApplications';
 import { detectSkill } from '../utils/aiSkillRouting';
-import { toHistory } from '../utils/aiCoachText';
+import { AI_ERROR_CONCLUSION, toHistory } from '../utils/aiCoachText';
 import { newServerKey, useAiCoachStore } from '../store/aiCoachStore';
 
 /**
@@ -58,6 +58,8 @@ export interface UseLessonAi {
   send: (overrideQuestion?: string) => Promise<void>;
   /** 回答の生成を中止する（B-009）。画面上で止め、サーバー側の生成（Claude・Dify）も止める */
   stop: () => void;
+  /** 直前の回答がエラーのとき、そのエラーを消して同じ質問をもう一度送る（A-5） */
+  retry: () => Promise<void>;
   /** 選択文章の「💡かんたん解説」。会話履歴には残さない */
   explain: (quote: AiCoachQuote) => Promise<string>;
 
@@ -113,8 +115,8 @@ const skillModeInstruction = (skillId: ConcreteAiSkillId): string => {
   );
 };
 
-/** エラー時の回答の結論文。AiCoachPane がこれで「エラー発生時」のサジェストに切り替える */
-export const AI_ERROR_CONCLUSION = '一時的なエラーで回答を取得できませんでした。';
+// エラー時の結論文は履歴から外す判定でも使うので aiCoachText 側に置いた。ここからも使えるよう再エクスポートする
+export { AI_ERROR_CONCLUSION };
 
 const errorAnswer = (): LessonAiResponse => ({
   conclusion: AI_ERROR_CONCLUSION,
@@ -186,6 +188,7 @@ export function useLessonAi(doc: LessonDoc | null, sessionIdOverride?: string): 
   const patchContext = useAiCoachStore((s) => s.patchContext);
   const appendMessage = useAiCoachStore((s) => s.appendMessage);
   const patchMessage = useAiCoachStore((s) => s.patchMessage);
+  const removeMessage = useAiCoachStore((s) => s.removeMessage);
   const setSkillInStore = useAiCoachStore((s) => s.setSkill);
   const setInputInStore = useAiCoachStore((s) => s.setInput);
   const setQuoteInStore = useAiCoachStore((s) => s.setQuote);
@@ -650,6 +653,39 @@ export function useLessonAi(doc: LessonDoc | null, sessionIdOverride?: string): 
     [beginRun, endRun, lastUserMessage, loadingRef, messages, patchMessage, runLessonAi, session, sessionId]
   );
 
+  /**
+   * エラーの回答を消して、直前の質問をもう一度送る（A-5）。
+   * ユーザーの発言は積み直さない（同じ質問が2つ並ばないように）。専門モードならそのモードで送る。
+   */
+  const retry = useCallback(async () => {
+    if (loadingRef.current || !lastUserMessage) return;
+    const last = messages[messages.length - 1];
+    if (!(last?.role === 'assistant' && last.answer?.conclusion === AI_ERROR_CONCLUSION)) return;
+    removeMessage(sessionId, last.id);
+    const question = lastUserMessage.content;
+    const image = lastUserMessage.image ?? null;
+    const quote = session?.quote ?? null;
+    const run = beginRun();
+    try {
+      if (isSpecialistSkill(skillId)) await runSkill(skillId, question, quote, image);
+      else await runLessonAi(question, quote, image);
+    } finally {
+      endRun(run);
+    }
+  }, [
+    beginRun,
+    endRun,
+    lastUserMessage,
+    loadingRef,
+    messages,
+    removeMessage,
+    runLessonAi,
+    runSkill,
+    session,
+    sessionId,
+    skillId,
+  ]);
+
   /** 回答の生成を中止する（B-009）。サーバー側も止まる（runRef の注記） */
   const stop = useCallback(() => {
     const run = runRef.current;
@@ -712,6 +748,7 @@ export function useLessonAi(doc: LessonDoc | null, sessionIdOverride?: string): 
     imageDropped: session?.imageDropped ?? false,
     send,
     stop,
+    retry,
     explain,
     skillId,
     selectSkill,

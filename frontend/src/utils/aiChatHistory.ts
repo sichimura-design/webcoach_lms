@@ -7,6 +7,8 @@ interface ChatLikeMessage {
   content: string;
   /** 教材ページで選択した文章について質問した場合の選択文章 */
   quote?: string;
+  /** 画面が出した定型文（中止・エラー）。AI の発言ではない */
+  kind?: 'notice' | 'error';
 }
 
 /**
@@ -14,9 +16,12 @@ interface ChatLikeMessage {
  * バックエンド(ai_langgraph.py)のmax_length=10に合わせて直近10件に切り詰める。
  * 選択文章についての質問は、続けて「もう少し詳しく」等と聞かれても対象が分かるよう、
  * 選択文章を発言の前に添える。
+ * 画面が出した定型文（中止しました・エラー）は AI の発言ではないので渡さない（A-4）。
+ * 渡すと相手からは AI がそう言ったことに見え、次の返答がずれる（B-008 と同じ理由）。
  */
 export function toConversationHistory(messages: ChatLikeMessage[]): AIConversationMessage[] {
   return messages
+    .filter((m) => !m.kind)
     .slice(-MAX_HISTORY_MESSAGES)
     .map(({ role, content, quote }) => ({
       role,

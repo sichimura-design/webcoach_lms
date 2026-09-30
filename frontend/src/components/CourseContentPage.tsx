@@ -30,6 +30,7 @@ import {
   Sparkles,
   Square,
   PencilLine,
+  RotateCcw,
 } from 'lucide-react';
 import MarkdownRenderer from './MarkdownRenderer';
 import { parseDifyMessage } from '../utils/difyButtons';
@@ -232,7 +233,7 @@ function CourseContentPage({ courseId, initialModuleId, onBack }: CourseContentP
   // AI コーチ
   const {
     messages: aiMessages, input: aiQuestion, setInput: setAiQuestion, loading: aiLoading,
-    messagesEndRef: chatEndRef, sendMessage: sendAiMessage, stop: stopAiMessage,
+    messagesEndRef: chatEndRef, sendMessage: sendAiMessage, stop: stopAiMessage, retry: retryAiMessage,
     pendingImage: aiPendingImage, imageError: aiImageError, handleImageSelect: handleAiImageSelect,
     clearPendingImage: clearAiPendingImage,
   } = useAiChat();
@@ -878,6 +879,7 @@ function CourseContentPage({ courseId, initialModuleId, onBack }: CourseContentP
       handleAiKeyPress={handleAiKeyDown}
       onSend={handleAiQuestion}
       onStop={stopAiMessage}
+      onRetry={retryAiMessage}
       selection={aiSelection}
       onClearSelection={() => setAiSelection(null)}
       chatEndRef={chatEndRef}
@@ -1223,6 +1225,8 @@ interface AiCoachPanelProps {
   onSend: (overrideMessage?: string) => void;
   /** 回答の生成を中止する（B-009） */
   onStop: () => void;
+  /** 直前のエラーを消して同じ質問を送り直す（A-5） */
+  onRetry: () => void;
   chatEndRef: React.RefObject<HTMLDivElement>;
   pendingImage: PendingImage | null;
   imageError: string | null;
@@ -1242,7 +1246,7 @@ const GROUNDING_LABEL: Record<AIGrounding, { label: string; fg: string; bg: stri
 };
 
 function AiCoachPanel({
-  aiMessages, aiLoading, aiQuestion, setAiQuestion, handleAiKeyPress, onSend, onStop, chatEndRef,
+  aiMessages, aiLoading, aiQuestion, setAiQuestion, handleAiKeyPress, onSend, onStop, onRetry, chatEndRef,
   pendingImage, imageError, onImageSelect, onClearImage, onSaveAnswer, selection, onClearSelection,
 }: AiCoachPanelProps) {
   const textareaRef = useRef<HTMLTextAreaElement>(null);
@@ -1263,7 +1267,7 @@ function AiCoachPanel({
   // 最新の発言が AI の問いかけで、Dify のボタンも無いときは「文章で答える」ことを案内する（B-015）
   const lastAiMessage = aiMessages[aiMessages.length - 1];
   const awaitingTypedReply =
-    !aiLoading && lastAiMessage?.role === 'assistant' && needsTypedReply(lastAiMessage.content);
+    !aiLoading && lastAiMessage?.role === 'assistant' && !lastAiMessage.kind && needsTypedReply(lastAiMessage.content);
 
   return (
     <section className="flex flex-col" style={{ minHeight: 0, height: '100%', overflow: 'hidden' }}>
@@ -1274,7 +1278,39 @@ function AiCoachPanel({
           </p>
         )}
         <div className="space-y-3">
-          {aiMessages.map((msg, index) => (
+          {aiMessages.map((msg, index) =>
+            // 画面が出した定型文は吹き出しにしない（A-4）。中止は区切り線、エラーは送り直しボタン付き
+            msg.kind === 'notice' ? (
+              <div key={msg.id} className="flex items-center" style={{ gap: 8, fontSize: 10.5, color: color.textFaint }}>
+                <span aria-hidden style={{ flex: 1, height: 1, background: color.border }} />
+                <span>{msg.content}</span>
+                <span aria-hidden style={{ flex: 1, height: 1, background: color.border }} />
+              </div>
+            ) : msg.kind === 'error' ? (
+              <div
+                key={msg.id}
+                style={{ padding: '10px 12px', borderRadius: radius.md, background: '#FFF8E6', border: '1px solid #F0DCA6', fontSize: 12, lineHeight: 1.7, color: '#7A6320' }}
+              >
+                <p style={{ margin: 0 }}>{msg.content}</p>
+                {index === aiMessages.length - 1 && (
+                  <button
+                    type="button"
+                    onClick={onRetry}
+                    disabled={aiLoading}
+                    className="inline-flex items-center wc-ai-chip focus-visible:ring-2 focus-visible:ring-[#F6B9BD]"
+                    style={{
+                      gap: 4, marginTop: 8, padding: '6px 10px', borderRadius: 8, fontFamily: 'inherit',
+                      fontSize: 11, fontWeight: 700, color: color.primary, background: color.surface,
+                      border: `1px solid ${color.primaryBorder}`, cursor: aiLoading ? 'default' : 'pointer',
+                      opacity: aiLoading ? 0.6 : 1,
+                    }}
+                  >
+                    <RotateCcw size={12} />
+                    もう一度送る
+                  </button>
+                )}
+              </div>
+            ) : (
             <div key={msg.id} className={`flex ${msg.role === 'user' ? 'flex-row-reverse' : ''}`} style={{ gap: 8 }}>
               <div
                 className="flex items-center justify-center flex-shrink-0"

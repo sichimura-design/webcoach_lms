@@ -1,5 +1,5 @@
 import { useRef } from 'react';
-import { AlertTriangle, Copy, ImagePlus, MessageSquarePlus, Mic, MicOff, PencilLine, Send, Square, Star, X } from 'lucide-react';
+import { AlertTriangle, Copy, ImagePlus, MessageSquarePlus, Mic, MicOff, PencilLine, RotateCcw, Send, Square, Star, X } from 'lucide-react';
 import { useSpeechInput } from '../../hooks/useSpeechInput';
 import { color, font } from '../../theme/webcoachTheme';
 import { AI_ERROR_CONCLUSION, LessonAiMessage, UseLessonAi } from '../../hooks/useLessonAi';
@@ -162,6 +162,20 @@ function answerToPlainText(answer: LessonAiResponse): string {
   if (answer.sources.length) lines.push(`参照箇所：${answer.sources.map((s) => s.heading).join(' / ')}`);
   return stripHtmlForNote(lines.join('\n'));
 }
+
+const restartButtonStyle: React.CSSProperties = {
+  gap: 4,
+  border: `1px solid ${color.primaryBorder}`,
+  borderRadius: 8,
+  background: color.surface,
+  color: color.primary,
+  padding: '6px 10px',
+  fontFamily: 'inherit',
+  fontSize: 11,
+  fontWeight: 700,
+  cursor: 'pointer',
+  whiteSpace: 'nowrap',
+};
 
 function AnswerSection({ label, body }: { label: string; body: string }) {
   if (!body) return null;
@@ -631,7 +645,7 @@ export function AiCoachPane({
             );
           })}
 
-          {restartQuestion && onRestartInNewChat && !ai.loading && (
+          {restartQuestion && !ai.loading && (
             <div
               className="flex items-center flex-wrap"
               style={{
@@ -647,30 +661,31 @@ export function AiCoachPane({
               }}
             >
               <span style={{ flex: '1 1 200px' }}>
-                会話が長くなったり別の用途に切り替えたりすると、うまく答えられないことがあります。
-                新しいチャットで同じ質問を送り直せます。
+                {onRestartInNewChat
+                  ? 'もう一度送るか、うまくいかないときは新しいチャットで同じ質問を送り直せます。'
+                  : '同じ質問をもう一度送れます。'}
               </span>
+              {/* 送り直しはどの画面でも出す（A-5）。新しいチャットは器が対応しているときだけ */}
               <button
                 type="button"
-                onClick={() => onRestartInNewChat(restartQuestion)}
+                onClick={() => void ai.retry()}
                 className="flex items-center wc-ai-chip focus-visible:ring-2 focus-visible:ring-[#F6B9BD]"
-                style={{
-                  gap: 4,
-                  border: `1px solid ${color.primaryBorder}`,
-                  borderRadius: 8,
-                  background: color.surface,
-                  color: color.primary,
-                  padding: '6px 10px',
-                  fontFamily: 'inherit',
-                  fontSize: 11,
-                  fontWeight: 700,
-                  cursor: 'pointer',
-                  whiteSpace: 'nowrap',
-                }}
+                style={restartButtonStyle}
               >
-                <MessageSquarePlus size={13} />
-                新しいチャットで続ける
+                <RotateCcw size={13} />
+                もう一度送る
               </button>
+              {onRestartInNewChat && (
+                <button
+                  type="button"
+                  onClick={() => onRestartInNewChat(restartQuestion)}
+                  className="flex items-center wc-ai-chip focus-visible:ring-2 focus-visible:ring-[#F6B9BD]"
+                  style={restartButtonStyle}
+                >
+                  <MessageSquarePlus size={13} />
+                  新しいチャットで続ける
+                </button>
+              )}
             </div>
           )}
 

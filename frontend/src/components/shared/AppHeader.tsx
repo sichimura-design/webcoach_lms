@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect, useLayoutEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { Bell, Home, BookOpen, Sparkles, Settings, ShieldCheck, BookMarked, HelpCircle, FileText, Mail, CalendarDays, ChevronDown, ChevronRight, ChevronsLeft, PanelLeftOpen, MessagesSquare, NotebookPen, UserRound, Send, Square, X, User, Paperclip, ImageOff, MoreHorizontal, PencilLine } from 'lucide-react';
+import { Bell, Home, BookOpen, Sparkles, Settings, ShieldCheck, BookMarked, HelpCircle, FileText, Mail, CalendarDays, ChevronDown, ChevronRight, ChevronsLeft, PanelLeftOpen, MessagesSquare, NotebookPen, UserRound, Send, Square, X, User, Paperclip, ImageOff, MoreHorizontal, PencilLine, RotateCcw } from 'lucide-react';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import { useAuth } from '../../contexts/AuthContext';
@@ -47,14 +47,14 @@ export function AppHeader({ userName, avatarUrl }: AppHeaderProps) {
   //   このドロワーとの重複を解消する（教材表示アーキテクチャの決定待ち）。
   const { chatOpen, setChatOpen } = useChatStore();
   const {
-    messages, input, setInput, loading, messagesEndRef, sendMessage, stop: stopMessage, handleKeyPress,
+    messages, input, setInput, loading, messagesEndRef, sendMessage, stop: stopMessage, retry: retryMessage, handleKeyPress,
     pendingImage, imageError, handleImageSelect, clearPendingImage,
   } = useAiChat();
   const chatImageInputRef = useRef<HTMLInputElement>(null);
   // 最新の発言が AI の問いかけで、Dify のボタンも無いときは「文章で答える」ことを案内する（B-015）
   const lastChatMessage = messages[messages.length - 1];
   const awaitingTypedReply =
-    !loading && lastChatMessage?.role === 'assistant' && needsTypedReply(lastChatMessage.content);
+    !loading && lastChatMessage?.role === 'assistant' && !lastChatMessage.kind && needsTypedReply(lastChatMessage.content);
 
   const { items: notificationItems, markAllRead } = useNotificationStore();
   const [notifOpen, setNotifOpen] = useState(false);
@@ -1308,7 +1308,41 @@ export function AppHeader({ userName, avatarUrl }: AppHeaderProps) {
 
           {/* Messages Area */}
           <div className="flex-1 overflow-y-auto p-4 bg-gray-50 space-y-4">
-            {messages.map((message) => (
+            {/* 会話が空のときの案内。以前は固定の挨拶を1件目の発言として積んでいた（A-8、chatStore の注記） */}
+            {messages.length === 0 && !loading && (
+              <div className="flex gap-3">
+                <div className="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 bg-brand">
+                  <img src={`${process.env.PUBLIC_URL}/teleoperation-icon.png`} alt="AIコーチ" className="w-4 h-4 object-contain" />
+                </div>
+                <div className="max-w-[85%] sm:max-w-[75%] p-3 rounded-lg bg-white shadow-sm text-sm text-gray-700 leading-relaxed">
+                  学習に関する質問や、コースのおすすめ、キャリアの相談など、お気軽にどうぞ。
+                </div>
+              </div>
+            )}
+            {messages.map((message, index) =>
+              // 画面が出した定型文は吹き出しにしない（A-4）。中止は区切り線、エラーは送り直しボタン付き
+              message.kind === 'notice' ? (
+                <div key={message.id} className="flex items-center gap-2 text-xs text-gray-400">
+                  <span aria-hidden className="flex-1 h-px bg-gray-200" />
+                  <span>{message.content}</span>
+                  <span aria-hidden className="flex-1 h-px bg-gray-200" />
+                </div>
+              ) : message.kind === 'error' ? (
+                <div key={message.id} className="rounded-lg border border-amber-200 bg-amber-50 p-3 text-sm text-amber-900">
+                  <p>{message.content}</p>
+                  {index === messages.length - 1 && (
+                    <button
+                      type="button"
+                      onClick={() => void retryMessage()}
+                      disabled={loading}
+                      className="mt-2 inline-flex items-center gap-1 rounded-lg border border-brand bg-white px-3 py-1.5 text-xs font-bold text-brand hover:bg-gray-50 disabled:opacity-50 focus-visible:ring-2 focus-visible:ring-brand"
+                    >
+                      <RotateCcw className="w-3.5 h-3.5" />
+                      もう一度送る
+                    </button>
+                  )}
+                </div>
+              ) : (
               <div
                 key={message.id}
                 className={`flex gap-3 ${message.role === 'user' ? 'flex-row-reverse' : ''}`}

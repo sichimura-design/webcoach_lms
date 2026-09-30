@@ -126,6 +126,8 @@ interface AiCoachState {
   setImage: (id: string, image: string | null) => void;
   appendMessage: (id: string, message: AiCoachMessage) => void;
   patchMessage: (id: string, messageId: string, patch: Partial<AiCoachMessage>) => void;
+  /** 発言を1件取り除く（エラーの回答を「もう一度送る」で置き換えるとき） */
+  removeMessage: (id: string, messageId: string) => void;
   resetSession: (id: string) => void;
   /** AI専用ページで新しい相談を始める。作ったセッションIDを返す */
   createPageSession: () => string;
@@ -249,6 +251,18 @@ export const useAiCoachStore = create<AiCoachState>()(
             // 発言があった会話を一覧の先頭へ。AI専用ページを ?session= 無しで開いたときの
             // 初期表示（order[0]）が「直前まで話していた相談」になる。
             order: touch(state.order, id),
+          };
+        }),
+
+      removeMessage: (id, messageId) =>
+        set((state) => {
+          const session = state.sessions[id];
+          if (!session) return state;
+          return {
+            sessions: {
+              ...state.sessions,
+              [id]: { ...session, messages: session.messages.filter((m) => m.id !== messageId) },
+            },
           };
         }),
 
