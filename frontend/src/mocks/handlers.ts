@@ -17,7 +17,7 @@
  *     コンソールに「未実装のモックAPIです」と出たらここにハンドラを足すこと。
  * ============================================================
  */
-import { http, HttpResponse, passthrough } from 'msw';
+import { delay, http, HttpResponse, passthrough } from 'msw';
 import type {
   UserInfo,
   Profile,
@@ -654,6 +654,39 @@ export const handlers = [
       hasImage = !!body?.image;
     } catch {
       /* ignore */
+    }
+
+    // ── 画面確認用の合言葉（A-1〜A-6 の確認で使う。本文に含めて送る） ──
+    //   【確認:ボタン】… Dify のボタン付き応答（選択肢を押すと「【確認:ボタン2】…」が送られる）
+    //   【確認:エラー】… 500 を返す（「もう一度送る」の確認）
+    //   【確認:遅い】  … 35秒待ってから返す（経過表示の確認）
+    if (message.includes('【確認:ボタン')) {
+      const step = message.includes('【確認:ボタン2】') ? 2 : 1;
+      return HttpResponse.json({
+        success: true,
+        message:
+          step === 1
+            ? [
+                '案件を探す媒体を選んでください。',
+                '',
+                '**どれにしますか？**',
+                '<div><button data-message="【確認:ボタン2】クラウドワークス">クラウドワークス</button><button data-message="【確認:ボタン2】ランサーズ">ランサーズ</button></div>',
+              ].join('\n')
+            : [
+                '条件を確認しました。',
+                '',
+                '**今日使える時間はどれくらいですか？**',
+                '<div><button data-message="30分">30分</button><button data-message="1時間">1時間</button></div>',
+              ].join('\n'),
+        sources: [],
+        timestamp: '2026-09-30T00:00:00Z',
+      });
+    }
+    if (message.includes('【確認:エラー】')) {
+      return HttpResponse.json({ success: false, error: 'mock error' }, { status: 500 });
+    }
+    if (message.includes('【確認:遅い】')) {
+      await delay(35000);
     }
 
     // 画像が添付されている場合は、画像を読み取った体で回答する（モック）
