@@ -38,7 +38,7 @@ export function RecordingStatus({ session, onFinish, finishing }: RecordingStatu
           }}
         />
         <h2 style={{ ...font.sectionTitle, color: color.text, margin: 0 }}>
-          AIコーチングノート記録中
+          コーチングを記録中
         </h2>
       </div>
 

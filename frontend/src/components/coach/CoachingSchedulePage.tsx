@@ -9,14 +9,17 @@ import { color, font, t } from '../../theme/webcoachTheme';
 import { toLocalDateKey } from '../../utils/studyStats';
 import { getUserMessage } from '../../utils/errorMessage';
 
+type NoteState = CoachingNote | 'none' | 'forbidden' | 'error';
+const isNote = (v: NoteState | undefined): v is CoachingNote => typeof v === 'object' && v !== null;
+
 const NOTE_FIELD_LABELS: { key: keyof UpdateCoachingNoteRequest; label: string }[] = [
   { key: 'session_summary', label: 'セッション概要' },
-  { key: 'client_status_and_goal', label: 'Clientの現状と目標' },
+  { key: 'client_status_and_goal', label: '受講生の現状と目標' },
   { key: 'main_issues', label: '主な課題' },
-  { key: 'coach_feedback', label: 'Coachからのフィードバック' },
+  { key: 'coach_feedback', label: 'コーチからのフィードバック' },
   { key: 'decisions', label: '今回決めたこと' },
-  { key: 'client_next_actions', label: 'Clientの次回までのアクション' },
-  { key: 'coach_follow_up', label: 'Coach側のフォロー事項' },
+  { key: 'client_next_actions', label: '受講生の次回までの目標' },
+  { key: 'coach_follow_up', label: 'コーチ側のフォロー事項' },
   { key: 'next_session_check', label: '次回確認すること' },
 ];
 
@@ -170,7 +173,10 @@ export function CoachingSchedulePage({ studentId }: CoachingSchedulePageProps) {
   const [editForm, setEditForm] = useState<ScheduleFormState>(newEmptyForm);
 
   const [noteOpenId, setNoteOpenId] = useState<number | null>(null);
-  const [notes, setNotes] = useState<Record<number, CoachingNote | 'none'>>({});
+  // 'none' … まだ作られていない（404）／'forbidden' … 担当ではない（403。コーチ交代で外れた旧コーチ）
+  // 'error' … それ以外の失敗。開き直すと取り直す（M-5。以前はどの失敗も 'none' 扱いで
+  // 「まだ作られていません」と出て、担当外のコーチにも保存ボタンが出ていた）
+  const [notes, setNotes] = useState<Record<number, NoteState>>({});
   const [noteLoading, setNoteLoading] = useState(false);
   const [noteForm, setNoteForm] = useState<UpdateCoachingNoteRequest>({});
   const [noteSaving, setNoteSaving] = useState(false);
@@ -191,7 +197,7 @@ export function CoachingSchedulePage({ studentId }: CoachingSchedulePageProps) {
     setLoading(true);
     bffClient.getCoachingSchedules(studentId)
       .then(setSchedules)
-      .catch(() => setError('コーチング記録の取得に失敗しました'))
+      .catch(() => setError('コーチングの予定の取得に失敗しました'))
       .finally(() => setLoading(false));
   };
 
@@ -233,7 +239,7 @@ export function CoachingSchedulePage({ studentId }: CoachingSchedulePageProps) {
       setShowAddForm(false);
       loadSchedules();
     } catch (err) {
-      setError(errorMessageFor(err, 'コーチング記録の作成に失敗しました'));
+      setError(errorMessageFor(err, 'コーチングの予定の作成に失敗しました'));
     } finally {
       setSaving(false);
     }
@@ -274,7 +280,7 @@ export function CoachingSchedulePage({ studentId }: CoachingSchedulePageProps) {
       setEditingId(null);
       loadSchedules();
     } catch (err) {
-      setError(errorMessageFor(err, 'コーチング記録の更新に失敗しました'));
+      setError(errorMessageFor(err, 'コーチングの予定の更新に失敗しました'));
     } finally {
       setSaving(false);
     }
@@ -286,18 +292,24 @@ export function CoachingSchedulePage({ studentId }: CoachingSchedulePageProps) {
       return;
     }
     setNoteOpenId(scheduleId);
-    if (notes[scheduleId]) {
-      const existing = notes[scheduleId];
-      setNoteForm(existing === 'none' ? {} : { ...existing });
+    const existing = notes[scheduleId];
+    if (existing && existing !== 'error') {
+      setNoteForm(isNote(existing) ? { ...existing } : {});
       return;
     }
+    await loadNote(scheduleId);
+  };
+
+  const loadNote = async (scheduleId: number) => {
     setNoteLoading(true);
     try {
       const note = await bffClient.getCoachingNote(scheduleId);
       setNotes(prev => ({ ...prev, [scheduleId]: note }));
       setNoteForm({ ...note });
-    } catch {
-      setNotes(prev => ({ ...prev, [scheduleId]: 'none' }));
+    } catch (err: any) {
+      const status = err?.response?.status;
+      const state: NoteState = status === 404 ? 'none' : status === 403 ? 'forbidden' : 'error';
+      setNotes(prev => ({ ...prev, [scheduleId]: state }));
       setNoteForm({});
     } finally {
       setNoteLoading(false);
@@ -325,14 +337,14 @@ export function CoachingSchedulePage({ studentId }: CoachingSchedulePageProps) {
       setNotes(prev => ({ ...prev, [schedule.id]: updated }));
       setNoteForm({ ...updated });
     } catch {
-      setError('コーチングノートの保存に失敗しました');
+      setError('コーチング記録の保存に失敗しました');
       setNoteSaving(false);
       return;
     }
     try {
       await saveResult(schedule);
     } catch {
-      setError('ノートは保存しましたが、実施結果の保存に失敗しました。もう一度お試しください');
+      setError('コーチング記録は保存しましたが、実施結果の保存に失敗しました。もう一度お試しください');
     } finally {
       setNoteSaving(false);
     }
@@ -422,7 +434,7 @@ export function CoachingSchedulePage({ studentId }: CoachingSchedulePageProps) {
       loadSchedules();
     } catch {
       setDeleteTarget(null);
-      setError('コーチング記録の削除に失敗しました');
+      setError('この回の削除に失敗しました');
     } finally {
       setSaving(false);
     }
@@ -454,7 +466,7 @@ export function CoachingSchedulePage({ studentId }: CoachingSchedulePageProps) {
 
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 12 }}>
           <h1 style={{ ...font.pageTitle, color: color.text, margin: 0 }}>
-            コーチング記録{studentName ? `：${studentName}` : ''}
+            コーチング{studentName ? `：${studentName}` : ''}
           </h1>
           <button type="button" style={smallPrimaryButton} onClick={() => { setAddForm(newEmptyForm()); setShowAddForm(v => !v); }}>
             <Plus className="w-4 h-4" />
@@ -487,7 +499,7 @@ export function CoachingSchedulePage({ studentId }: CoachingSchedulePageProps) {
             <p style={{ ...font.meta, color: color.textMuted, textAlign: 'center', padding: '48px 0' }}>読み込み中…</p>
           ) : schedules.length === 0 ? (
             <p style={{ ...font.meta, color: color.textSubtle, textAlign: 'center', padding: '48px 0' }}>
-              まだコーチング記録がありません。
+              まだコーチングの予定がありません。
             </p>
           ) : (
             schedules.map(schedule => (
@@ -593,8 +605,8 @@ export function CoachingSchedulePage({ studentId }: CoachingSchedulePageProps) {
                     }}
                   >
                     <Sparkles className="w-3.5 h-3.5" />
-                    AIコーチングノート
-                    {notes[schedule.id] && notes[schedule.id] !== 'none' && (
+                    コーチング記録
+                    {isNote(notes[schedule.id]) && (
                       <span style={{ ...t.chip, ...NOTE_STATUS_STYLE[(notes[schedule.id] as CoachingNote).status] }}>
                         {NOTE_STATUS_LABEL[(notes[schedule.id] as CoachingNote).status]}
                       </span>
@@ -606,10 +618,23 @@ export function CoachingSchedulePage({ studentId }: CoachingSchedulePageProps) {
                     <div style={{ marginTop: 12 }}>
                       {noteLoading ? (
                         <p style={{ ...font.meta, color: color.textMuted }}>読み込み中…</p>
+                      ) : notes[schedule.id] === 'forbidden' ? (
+                        <p style={{ ...font.meta, color: color.textSubtle, margin: 0 }}>
+                          この受講生の担当ではないため、コーチング記録を表示できません。担当の変更は運営にお問い合わせください。
+                        </p>
+                      ) : notes[schedule.id] === 'error' ? (
+                        <div style={{ display: 'flex', alignItems: 'center', gap: 10, flexWrap: 'wrap' }}>
+                          <p style={{ ...font.meta, color: color.textSubtle, margin: 0 }}>
+                            コーチング記録を読み込めませんでした。
+                          </p>
+                          <button type="button" style={ghostSmallButton} onClick={() => loadNote(schedule.id)} disabled={noteLoading}>
+                            もう一度読み込む
+                          </button>
+                        </div>
                       ) : notes[schedule.id] === 'none' ? (
                         <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
                           <p style={{ ...font.meta, color: color.textSubtle, margin: 0 }}>
-                            まだAIノートが生成されていません（文字起こし取得後に自動生成されます）。
+                            まだコーチング記録がありません（録画の文字起こしが届くと、記録から要約を作成します）。
                           </p>
                           <ResultPicker
                             value={resultOf(schedule)}
@@ -691,7 +716,7 @@ export function CoachingSchedulePage({ studentId }: CoachingSchedulePageProps) {
         <div className="wc-warm">
           <ConfirmDialog
             title={`第${deleteTarget.coaching_no}回（${deleteTarget.coaching_date}）を削除しますか？`}
-            description="この回の予定とAIコーチングノートが消え、受講生の画面からも見えなくなります。元に戻せません。"
+            description="この回の予定とコーチング記録が消え、受講生の画面からも見えなくなります。元に戻せません。"
             confirmLabel={saving ? '削除中...' : '削除する'}
             busy={saving}
             onConfirm={handleDelete}

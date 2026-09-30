@@ -34,7 +34,7 @@ const NOTE_FIELD_LABELS: { key: keyof CoachingNote; label: string }[] = [
   { key: 'main_issues', label: '主な課題' },
   { key: 'coach_feedback', label: 'コーチからのフィードバック' },
   { key: 'decisions', label: '今回決めたこと' },
-  { key: 'client_next_actions', label: '次回までのアクション' },
+  { key: 'client_next_actions', label: '次回までの目標' },
   { key: 'coach_follow_up', label: 'コーチからのフォロー' },
   { key: 'next_session_check', label: '次回確認すること' },
 ];
@@ -380,7 +380,7 @@ export function MyCoachingPage() {
                       )}
                       {note && (
                         <div style={{ borderTop: `1px solid ${color.divider}`, paddingTop: 12, display: 'flex', flexDirection: 'column', gap: 12 }}>
-                          <p style={{ ...font.rowTitle, color: color.text, margin: 0 }}>AIコーチングノート</p>
+                          <p style={{ ...font.rowTitle, color: color.text, margin: 0 }}>コーチング記録</p>
                           {NOTE_FIELD_LABELS.map(({ key, label }) => (
                             note[key] ? (
                               <div key={key}>
