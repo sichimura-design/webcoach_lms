@@ -618,6 +618,8 @@ export function AiCoachPane({
                       🔴 以前あった「下書きに追加」は撤去した。保存先の lesson-notes API が
                          BFF に無く（MSW モックだけ）、下書き欄も未ルーティングの教材画面にしか
                          無かったため、成功トーストが出るだけで何も残らなかった。 */}
+                  {/* エラーの定型文はコピー・保存しても意味が無いので出さない（A-4） */}
+                  {message.answer?.conclusion !== AI_ERROR_CONCLUSION && (
                   <div
                     className="wc-ai-answer-actions flex flex-wrap"
                     style={{ gap: 5, marginTop: 9 }}
@@ -641,6 +643,7 @@ export function AiCoachPane({
                       <Star size={11} /> マイノートに残す
                     </button>
                   </div>
+                  )}
                 </div>
               </div>
             );
