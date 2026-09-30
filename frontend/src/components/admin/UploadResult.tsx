@@ -11,10 +11,13 @@ export const UploadResult: React.FC<UploadResultProps> = ({ result, onClose }) =
 
   if (!result) return null;
 
+  // 行番号をサーバーが返さず画面で推定できなかったときは 0 が来る。「行 0」と出さない（M-3）
+  const rowLabel = (row: number) => (row > 0 ? `行 ${row}` : '行番号不明');
+
   const handleCopyErrors = async () => {
     if (!result.errors || result.errors.length === 0) return;
     const text = result.errors
-      .map((e) => `行 ${e.row}: ${e.message}`)
+      .map((e) => `${rowLabel(e.row)}: ${e.message}`)
       .join('\n');
     await navigator.clipboard.writeText(text);
     setCopied(true);
@@ -111,7 +114,7 @@ export const UploadResult: React.FC<UploadResultProps> = ({ result, onClose }) =
                         borderBottom: index < result.errors!.length - 1 ? '1px solid #f5f5f5' : 'none'
                       }}
                     >
-                      <strong>行 {error.row}:</strong> {error.message}
+                      <strong>{rowLabel(error.row)}:</strong> {error.message}
                     </div>
                   ))}
                 </div>

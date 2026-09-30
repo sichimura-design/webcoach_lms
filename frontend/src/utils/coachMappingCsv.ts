@@ -71,6 +71,12 @@ export function mappingConflictMessage(detail: string): string | null {
   return null;
 }
 
+/** 1人1コーチの409から、いま付いているコーチの Moodle ユーザーID を取り出す。該当しなければnull */
+export function conflictCoachId(detail: string): number | null {
+  const m = detail.match(/already has an active coach.*coach=(\d+)/i);
+  return m ? Number(m[1]) : null;
+}
+
 function toErrorMessage(err: ManageMappingsError): string {
   const label = OPERATION_LABEL[err.operation] ?? err.operation;
   const conflict = mappingConflictMessage(err.message);

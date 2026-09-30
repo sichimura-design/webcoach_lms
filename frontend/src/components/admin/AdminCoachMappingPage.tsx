@@ -1,5 +1,5 @@
 import React, { useState, useMemo, useEffect, useRef } from 'react';
-import { Search, User, Users, X, CheckCircle, AlertCircle, ChevronDown, Link2 } from 'lucide-react';
+import { Search, User, Users, X, CheckCircle, AlertCircle, ChevronDown, Link2, Unlink } from 'lucide-react';
 import { Button } from '../ui/button';
 import { bffClient } from '../../services/bffClient';
 import { UploadHistory as UploadHistoryType, UploadResult as UploadResultType } from '../../types/admin';
@@ -7,7 +7,8 @@ import { CsvUploader } from './CsvUploader';
 import { UploadResult } from './UploadResult';
 import { UploadHistory } from './UploadHistory';
 import { getUserMessage } from '../../utils/errorMessage';
-import { mappingConflictMessage, parseCoachMappingCsv, toUploadResult } from '../../utils/coachMappingCsv';
+import { conflictCoachId, mappingConflictMessage, parseCoachMappingCsv, toUploadResult } from '../../utils/coachMappingCsv';
+import { ConfirmDialog } from '../shared/ConfirmDialog';
 
 // ─── Types ───────────────────────────────────────────────────────────────────
 
@@ -228,6 +229,38 @@ interface Toast {
   message: string;
 }
 
+/**
+ * 登録の失敗はトーストにせず、カードの中に残す（M-2）。
+ * 以前は3.5秒で消えるトーストだけで、1人1コーチのエラーのような長い文を読み切れなかった。
+ */
+interface RegisterError {
+  message: string;
+  /** 1人1コーチに当たったとき、いま付いているコーチ（担当一覧へ飛ぶ導線に使う） */
+  currentCoach?: CoachUser;
+}
+
+/** 失敗を知らせる枠。閉じるまで残る */
+function ErrorPanel({ message, onClose, children }: { message: string; onClose: () => void; children?: React.ReactNode }) {
+  return (
+    <div role="alert" className="flex items-start gap-2 p-3 rounded-xl mb-4" style={{ background: '#FFF5F5', border: '1px solid #FFAAAA' }}>
+      <AlertCircle className="w-4 h-4 flex-shrink-0 mt-0.5" style={{ color: '#E86D78' }} />
+      <div className="flex-1 min-w-0">
+        <p className="text-sm" style={{ color: '#4B3A33' }}>{message}</p>
+        {children}
+      </div>
+      <button
+        type="button"
+        onClick={onClose}
+        aria-label="閉じる"
+        className="w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0"
+        style={{ background: '#FFE3E3' }}
+      >
+        <X className="w-3.5 h-3.5" style={{ color: '#7E6E68' }} />
+      </button>
+    </div>
+  );
+}
+
 // ─── Main Component ───────────────────────────────────────────────────────────
 
 export const AdminCoachMappingPage: React.FC = () => {
@@ -240,12 +273,18 @@ export const AdminCoachMappingPage: React.FC = () => {
   const [selectedStudent, setSelectedStudent] = useState<StudentUser | null>(null);
   const [registering, setRegistering] = useState(false);
   const [toast, setToast] = useState<Toast | null>(null);
+  const [registerError, setRegisterError] = useState<RegisterError | null>(null);
 
   const [lookupCoach, setLookupCoach] = useState<CoachUser | null>(null);
   const [lookupStudents, setLookupStudents] = useState<StudentUser[]>([]);
   const [loadingLookup, setLoadingLookup] = useState(false);
   const [lookupError, setLookupError] = useState<string | null>(null);
   const [lookupDone, setLookupDone] = useState(false);
+  const [lookupCoachMoodleId, setLookupCoachMoodleId] = useState<number | null>(null);
+  // 画面から解除する受講生（確認ダイアログを出しているあいだ）。M-1
+  const [unassignTarget, setUnassignTarget] = useState<StudentUser | null>(null);
+  const [unassigning, setUnassigning] = useState(false);
+  const lookupCardRef = useRef<HTMLDivElement>(null);
 
   const [isDownloadingAll, setIsDownloadingAll] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
@@ -272,6 +311,7 @@ export const AdminCoachMappingPage: React.FC = () => {
 
   const handleRegister = async () => {
     if (!selectedCoach || !selectedStudent) return;
+    setRegisterError(null);
 
     // Moodle IDはcoach APIのmoodleUserIdを優先。なければcallMoodleAPIで取得
     let coachMoodleId = selectedCoach.moodleUserId;
@@ -284,13 +324,13 @@ export const AdminCoachMappingPage: React.FC = () => {
         );
         coachMoodleId = result?.[0]?.id;
       } catch {
-        setToast({ type: 'error', message: 'コーチのMoodleユーザーIDを取得できませんでした' });
+        setRegisterError({ message: 'コーチのMoodleユーザーIDを取得できませんでした' });
         return;
       }
     }
 
     if (!coachMoodleId) {
-      setToast({ type: 'error', message: `コーチ "${selectedCoach.username}" はMoodleに存在しません` });
+      setRegisterError({ message: `コーチ "${selectedCoach.username}" はMoodleに存在しません` });
       return;
     }
 
@@ -305,10 +345,15 @@ export const AdminCoachMappingPage: React.FC = () => {
       setSelectedStudent(null);
     } catch (err: any) {
       console.error('Failed to create coaching mapping:', err);
-      const conflict = err?.response?.status === 409 && typeof err.response.data?.detail === 'string'
-        ? mappingConflictMessage(err.response.data.detail)
+      const detail: string | null = err?.response?.status === 409 && typeof err.response.data?.detail === 'string'
+        ? err.response.data.detail
         : null;
-      setToast({ type: 'error', message: conflict ?? getUserMessage(err, '登録に失敗しました') });
+      const conflict = detail ? mappingConflictMessage(detail) : null;
+      const currentId = detail ? conflictCoachId(detail) : null;
+      setRegisterError({
+        message: conflict ?? getUserMessage(err, '登録に失敗しました'),
+        currentCoach: currentId != null ? coaches.find(c => c.moodleUserId === currentId) : undefined,
+      });
     } finally {
       setRegistering(false);
     }
@@ -319,6 +364,7 @@ export const AdminCoachMappingPage: React.FC = () => {
     setLookupStudents([]);
     setLookupError(null);
     setLookupDone(false);
+    setLookupCoachMoodleId(null);
     if (!coach) return;
 
     let coachMoodleId = coach.moodleUserId;
@@ -340,6 +386,7 @@ export const AdminCoachMappingPage: React.FC = () => {
       return;
     }
 
+    setLookupCoachMoodleId(coachMoodleId);
     setLoadingLookup(true);
     try {
       const mappings = await bffClient.getAllCoachingMappings();
@@ -354,6 +401,38 @@ export const AdminCoachMappingPage: React.FC = () => {
       setLookupError('データの取得に失敗しました');
     } finally {
       setLoadingLookup(false);
+    }
+  };
+
+  /** 1人1コーチのエラーから、いま付いているコーチの担当一覧を開く（そこで解除できる） */
+  const openCurrentCoach = (coach: CoachUser) => {
+    setRegisterError(null);
+    void handleLookupCoach(coach);
+    lookupCardRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  };
+
+  /**
+   * 画面から割り当てを解除する（M-1）。CSV と同じ manage-mappings に deleteFlag の1件を送る。
+   * 以前は解除が CSV でしかできず、「先に解除してください」と言われても画面に手段が無かった。
+   */
+  const handleUnassign = async () => {
+    if (!unassignTarget || lookupCoachMoodleId == null || !lookupCoach) return;
+    setUnassigning(true);
+    try {
+      const res = await bffClient.manageCoachingMappings([
+        { coach_user_id: lookupCoachMoodleId, student_user_id: unassignTarget.id, updateFlag: false, deleteFlag: true },
+      ]);
+      if (res.errors.length > 0 || res.deleted === 0) {
+        setLookupError(`${unassignTarget.fullname} の割り当てを解除できませんでした（有効な割り当てが見つかりません）`);
+      } else {
+        setToast({ type: 'success', message: `${lookupCoach.username} の担当から ${unassignTarget.fullname} を外しました` });
+        await handleLookupCoach(lookupCoach);
+      }
+    } catch (err) {
+      setLookupError(getUserMessage(err, '解除に失敗しました'));
+    } finally {
+      setUnassigning(false);
+      setUnassignTarget(null);
     }
   };
 
@@ -415,7 +494,10 @@ export const AdminCoachMappingPage: React.FC = () => {
     <div>
       <div className="mb-6">
         <h1 className="text-2xl font-bold mb-1 text-brand-text">コーチ割り当て</h1>
-        <p className="text-sm text-brand-muted">コーチと受講生を検索して割り当てを登録します</p>
+        <p className="text-sm text-brand-muted">
+          コーチと受講生の割り当てを登録・解除します。受講生1人に付けられるコーチは1人です。
+          コーチを替えるときは、今のコーチの担当から外してから登録してください。
+        </p>
       </div>
 
       {/* ── Toast ── */}
@@ -500,6 +582,21 @@ export const AdminCoachMappingPage: React.FC = () => {
             />
           </div>
 
+          {registerError && (
+            <ErrorPanel message={registerError.message} onClose={() => setRegisterError(null)}>
+              {registerError.currentCoach && (
+                <button
+                  type="button"
+                  onClick={() => openCurrentCoach(registerError.currentCoach!)}
+                  className="mt-2 text-xs font-bold underline"
+                  style={{ color: '#E86D78' }}
+                >
+                  今のコーチ（{registerError.currentCoach.username}）の担当一覧を開いて外す
+                </button>
+              )}
+            </ErrorPanel>
+          )}
+
           {/* Register button */}
           <div className="flex justify-end">
             <Button
@@ -517,7 +614,8 @@ export const AdminCoachMappingPage: React.FC = () => {
 
       {/* ── Coach Student Lookup Card ── */}
       <div
-        className="rounded-3xl mb-6"
+        ref={lookupCardRef}
+        className="rounded-3xl mb-6 scroll-mt-6"
         style={{ backgroundColor: '#FFFFFF', boxShadow: '0 2px 8px rgba(0,0,0,0.06)' }}
       >
         <div
@@ -531,8 +629,8 @@ export const AdminCoachMappingPage: React.FC = () => {
             <Users className="w-4 h-4 text-white" />
           </div>
           <div>
-            <p className="text-white font-bold text-sm">コーチで紐づき生徒を確認</p>
-            <p className="text-white/70 text-xs">コーチを選択して現在割り当てられている受講生を表示</p>
+            <p className="text-white font-bold text-sm">コーチの担当受講生を確認・解除</p>
+            <p className="text-white/70 text-xs">コーチを選ぶと、いま担当している受講生が出ます。ここから担当を外せます</p>
           </div>
         </div>
 
@@ -556,20 +654,15 @@ export const AdminCoachMappingPage: React.FC = () => {
             <p className="text-sm text-brand-muted">読み込み中...</p>
           )}
 
-          {lookupError && (
-            <div className="flex items-center gap-2 p-3 rounded-xl" style={{ background: '#FFF5F5', border: '1px solid #FFAAAA' }}>
-              <AlertCircle className="w-4 h-4 flex-shrink-0" style={{ color: '#E86D78' }} />
-              <p className="text-sm" style={{ color: '#4B3A33' }}>{lookupError}</p>
-            </div>
-          )}
+          {lookupError && <ErrorPanel message={lookupError} onClose={() => setLookupError(null)} />}
 
           {!loadingLookup && lookupDone && (
             lookupStudents.length === 0 ? (
-              <p className="text-sm text-brand-muted">現在紐づいている受講生はいません</p>
+              <p className="text-sm text-brand-muted">いま担当している受講生はいません</p>
             ) : (
               <div>
                 <p className="text-xs font-semibold mb-3" style={{ color: '#7E6E68' }}>
-                  紐づき受講生 ({lookupStudents.length}人)
+                  担当している受講生（{lookupStudents.length}人）
                 </p>
                 <ul className="space-y-2">
                   {lookupStudents.map(s => (
@@ -588,6 +681,16 @@ export const AdminCoachMappingPage: React.FC = () => {
                         <p className="text-xs" style={{ color: '#7E6E68' }}>{s.username} (ID: {s.id})</p>
                         <p className="font-bold text-sm truncate" style={{ color: '#4B3A33' }}>{s.fullname}</p>
                       </div>
+                      <Button
+                        onClick={() => setUnassignTarget(s)}
+                        disabled={unassigning || lookupCoachMoodleId == null}
+                        variant="brand-outline"
+                        size="pill-sm"
+                        className="flex-shrink-0 gap-1"
+                      >
+                        <Unlink className="w-3.5 h-3.5" />
+                        担当から外す
+                      </Button>
                     </li>
                   ))}
                 </ul>
@@ -602,7 +705,10 @@ export const AdminCoachMappingPage: React.FC = () => {
         className="rounded-3xl p-6 sm:p-8"
         style={{ backgroundColor: '#FFFFFF', boxShadow: '0 2px 8px rgba(0,0,0,0.06)' }}
       >
-        <h2 className="text-sm font-bold mb-4 text-brand-text">CSVで一括登録</h2>
+        <h2 className="text-sm font-bold mb-1 text-brand-text">CSVで登録・解除・復元</h2>
+        <p className="text-xs mb-4 text-brand-muted">
+          まとめて処理するときに使います。ID は Moodle のユーザーIDです。今の割り当ては「全件ダウンロード」で確認できます。
+        </p>
 
         <div className="mb-6 p-4 rounded-xl bg-brand-bg" style={{ border: '1px solid #E8E0DA' }}>
           <h3 className="text-xs font-bold mb-2 text-brand-text">CSVフォーマット</h3>
@@ -650,6 +756,20 @@ export const AdminCoachMappingPage: React.FC = () => {
         <CsvUploader onUpload={handleUpload} isUploading={isUploading} />
         <UploadHistory history={uploadHistory} />
       </div>
+
+      {unassignTarget && lookupCoach && (
+        // 確認ダイアログの色（--dc-*）は .wc-warm の中で決まる。管理画面の外枠には無いので包む
+        <div className="wc-warm">
+          <ConfirmDialog
+            title={`${unassignTarget.fullname} を ${lookupCoach.username} の担当から外しますか？`}
+            description="割り当てを解除するだけで、これまでのコーチングの記録は消えません。あとから CSV の updateFlag で復元できます。"
+            confirmLabel="担当から外す"
+            busy={unassigning}
+            onConfirm={() => void handleUnassign()}
+            onCancel={() => setUnassignTarget(null)}
+          />
+        </div>
+      )}
     </div>
   );
 };

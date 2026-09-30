@@ -1,4 +1,4 @@
-import { mappingConflictMessage, parseCoachMappingCsv, toUploadResult } from './coachMappingCsv';
+import { conflictCoachId, mappingConflictMessage, parseCoachMappingCsv, toUploadResult } from './coachMappingCsv';
 
 describe('parseCoachMappingCsv', () => {
   it('フラグを読み取り、BOMと空行を無視する', () => {
@@ -69,5 +69,14 @@ describe('mappingConflictMessage', () => {
       errors: [{ operation: 'create', coach_user_id: 6, student_user_id: 12, message: 'Student already has an active coach: student=12, coach=5' }],
     });
     expect(result.errors).toEqual([{ row: 2, message: '登録: この受講生には既に別のコーチ（ID: 5）が割り当てられています。先に解除してください' }]);
+  });
+});
+
+describe('conflictCoachId', () => {
+  it('1人1コーチの409から、いま付いているコーチのIDを取り出す', () => {
+    expect(conflictCoachId('Student already has an active coach (coach=32)')).toBe(32);
+  });
+  it('ほかのエラーでは null', () => {
+    expect(conflictCoachId('Mapping already exists')).toBeNull();
   });
 });
