@@ -1,4 +1,5 @@
 import axios, { AxiosInstance } from 'axios';
+import type { AiApplication } from '../types/aiApplication';
 import {
   UserInfo,
   Category,
@@ -9,27 +10,53 @@ import {
   ProfileUpdate,
   ResumeCourse,
   UpdateResumeCourseRequest,
-  Roadmap,
-  RoadmapQueryParams,
-  AIRequest,
-  AIResponse,
-  UpdateDBRequest,
-  UpdateDBResponse,
-  HealthResponse,
+  StudyNote,
+  UpdateStudyNoteRequest,
+  MyNoteFolder,
+  CreateMyNoteFolderRequest,
+  UpdateMyNoteFolderRequest,
+  MyNote,
+  CreateMyNoteRequest,
+  UpdateMyNoteRequest,
+  MyNoteListQuery,
   CoachingSchedule,
   CreateCoachingScheduleRequest,
   UpdateCoachingScheduleRequest,
   CoachingNote,
   UpdateCoachingNoteRequest,
+  Roadmap,
+  RoadmapQueryParams,
+  RoadmapSkill,
+  RoadmapPhase,
+  UserRoadmap,
+  RoadmapProgress,
+  RoadmapProgressUpdate,
+  RoadmapQuestion,
+  RoadmapAnswer,
+  AIRequest,
+  AIResponse,
+  UpdateDBRequest,
+  UpdateDBResponse,
+  HealthResponse,
 } from '../types/api';
 import { CoachingGoalApi, CoachingGoalUpdateItem, DailyTodo, StreakInfo, CommunityPulse, Journey } from '../types/mypage';
 import {
+  StudySession,
+  ActiveStudySessionInfo,
+  StudyStats,
+  StudyStreakInfo,
+  StudyCalendarData,
+  StudyRanking,
+  CourseAccess,
+  CourseMaterialAccess,
   StudyActivity,
   StudyActivityInput,
   StudyActivityPage,
   StudyActivityPatch,
   StudyActivityQuery,
   StudyStatsSummary,
+  StudyReflection,
+  StudyReflectionPatch,
 } from '../types/studyActivity';
 import {
   GoalDeclaration,
@@ -43,7 +70,8 @@ import {
   FocusBoothPulse,
   StreakRanking,
   StreakRankingPeriod,
-  StudyRanking,
+  // dev/kanegae統合: 実装(types/studyActivity.ts)と同名・別形の仲間ランキング型なので別名で入れる
+  StudyRanking as PeerStudyRanking,
   StudyRankingPeriod,
 } from '../types/focusBooth';
 import {
@@ -82,9 +110,18 @@ import {
   NoteFolderCreateInput,
   NoteFolderUpdateInput,
   NoteListQuery,
+  NoteOrigin,
+  NoteSort,
+  NoteSourceRef,
   NoteSummary,
   NoteUpdateInput,
 } from '../types/notes';
+import {
+  blockCountOf,
+  excerptFromMarkdown,
+  parseNoteMarkdown,
+  serializeNoteMarkdown,
+} from '../utils/noteMarkdown';
 import {
   CheckinAnswers,
   CheckinPrompt,
@@ -98,6 +135,8 @@ import {
 } from '../types/learningPlan';
 import { getIdToken } from './cognitoAuth';
 import { MOCKS_ENABLED } from '../mocks/config';
+import { stripHtmlForNote } from '../utils/stripHtmlForNote';
+import type { ManageMappingsResult } from '../utils/coachMappingCsv';
 
 /**
  * BFF Client - 統合APIクライアント
@@ -114,6 +153,98 @@ const BFF_BASE_URL = process.env.REACT_APP_BFF_URL
 // '/branches/<slug>/login' になる。
 const LOGIN_PATH = `${process.env.PUBLIC_URL || ''}/login`;
 
+// ==================== マイノートの実API変換ヘルパー ====================
+// 実API（webcoach_my_note）の行と、UI側の型（Note / NoteSummary）の橋渡し。
+
+/**
+ * 実APIの日時（MySQL TIMESTAMP）はタイムゾーン無しの UTC で返ってくる（例: `2026-09-26T03:53:00`）。
+ * そのまま new Date() に渡すと端末のローカル時刻として読まれ、日本では9時間ずれる
+ * （12:53 に保存したノートが「保存しました 03:53」、日付も日付変わり前後でずれる）。
+ * タイムゾーンの無い値にだけ Z を付けて UTC として読ませる。
+ */
+export function utcIso(value: string): string {
+  if (!value) return value;
+  if (/(Z|[+-]\d{2}:?\d{2})$/.test(value)) return value;
+  return `${value.replace(' ', 'T')}Z`;
+}
+
+/**
+ * 出どころのバッジ。実APIは from_ai / from_coaching の2フラグ＋cmid で持つので、
+ * UIの排他的な4値へ畳む。
+ * 🔴 両方立っている行があり得るため、優先順位を決めてある（coaching > ai > 教材 > 自分）。
+ */
+function originOf(row: MyNote): NoteOrigin {
+  if (row.from_coaching === 1) return 'coaching';
+  if (row.from_ai === 1) return 'ai';
+  if (row.cmid !== null) return 'material';
+  return 'self';
+}
+
+/**
+ * ノートの出どころ（メタ行「コース名 / レッスン名」の元）。
+ * 🔴 実APIは courseid / cmid しか持たない。表示名は保存していないので空で返す。
+ *    名前を出したい場合は呼び出し側でコース情報から引くこと。
+ */
+function sourceOf(row: MyNote): NoteSourceRef | null {
+  if (row.courseid === null && row.cmid === null) return null;
+  return {
+    courseId: row.courseid ?? 0,
+    courseName: '',
+    lessonId: row.cmid ?? 0,
+    lessonTitle: '',
+    heading: null,
+    blockId: null,
+    offset: null,
+  };
+}
+
+/** 一覧の並び替え。MSWの sortNotes と同じ順序にしてある */
+function sortNoteRows(rows: MyNote[], sort: NoteSort): MyNote[] {
+  const copy = [...rows];
+  if (sort === 'title') return copy.sort((a, b) => a.title.localeCompare(b.title, 'ja'));
+  if (sort === 'created') return copy.sort((a, b) => b.created_at.localeCompare(a.created_at));
+  if (sort === 'createdAsc') return copy.sort((a, b) => a.created_at.localeCompare(b.created_at));
+  if (sort === 'updatedAsc') return copy.sort((a, b) => a.updated_at.localeCompare(b.updated_at));
+  return copy.sort((a, b) => b.updated_at.localeCompare(a.updated_at));
+}
+
+/** 追加リクエストからブロックを組む。IDは本文に持てないので描画用に振る */
+function buildBlockFromInput(input: NoteBlockInput, index: number): NoteBlock {
+  const at = new Date().toISOString();
+  const base = { id: `blk_${index}`, createdAt: at, updatedAt: at };
+
+  if (input.kind === 'clip') return { ...base, kind: 'clip', text: input.text, source: input.source };
+  if (input.kind === 'answer') {
+    return {
+      ...base,
+      kind: 'answer',
+      question: input.question,
+      // 🔴 Difyアプリの応答はHTML（ボタン付きカード等）を含むことがあり、ノートでは
+      //    タグが文字として見えてしまう。保存経路はすべてここを通るので、ここで外す
+      answer: stripHtmlForNote(input.answer),
+      selectedText: input.selectedText ?? null,
+      image: null,
+      source: input.source ?? null,
+    };
+  }
+  throw new Error('unknown note block kind');
+}
+
+/** ブロックの部分更新。種別ごとに書き換えられる項目だけ当てる */
+function applyBlockPatch(block: NoteBlock, patch: NoteBlockPatch): NoteBlock {
+  const updatedAt = new Date().toISOString();
+  if (block.kind === 'clip' && patch.text !== undefined) return { ...block, text: patch.text, updatedAt };
+  if (block.kind === 'answer' && patch.answer !== undefined) return { ...block, answer: patch.answer, updatedAt };
+  return block;
+}
+
+/** 「生成を中止」用の実行ID。送信ごとに作る */
+function newRunId(): string {
+  return typeof crypto !== 'undefined' && typeof crypto.randomUUID === 'function'
+    ? crypto.randomUUID()
+    : `${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 12)}`;
+}
+
 class BFFClient {
   private api: AxiosInstance;
 
@@ -121,6 +252,9 @@ class BFFClient {
     this.api = axios.create({
       baseURL: BFF_BASE_URL,
       timeout: 60000,
+      // BFFは別オリジンのため、明示しないとALBのスティッキーCookie(AWSALBCORS)が
+      // 保存・送信されず、AIチャットのポーリングが別タスクへ振り分けられてしまう。
+      withCredentials: true,
       headers: {
         'Content-Type': 'application/json',
       },
@@ -270,7 +404,17 @@ class BFFClient {
    */
   async getCourseContent(courseid: number): Promise<any[]> {
     const response = await this.api.get(`/moodle/courses/${courseid}/contents`);
-    return response.data;
+    // BFF は管理者トークンで Moodle を引くので、非表示（visible=0）のモジュールも返ってくる。
+    // Moodle が自動で作る「アナウンスメント」などを管理画面で隠しても受講生に見えてしまうため、
+    // ここで落とす（コース一覧の buildCatalog と同じ扱い）。呼び出し側が7か所あるので窓口で揃える。
+    const isHidden = (v: unknown) => v === 0 || v === '0' || v === false;
+    const data = response.data;
+    if (!Array.isArray(data)) return data;
+    return data.map((section: any) =>
+      Array.isArray(section?.modules)
+        ? { ...section, modules: section.modules.filter((m: any) => !isHidden(m?.visible)) }
+        : section
+    );
   }
 
   /**
@@ -279,6 +423,18 @@ class BFFClient {
    */
   async getActivityCompletion(cmid: number, courseid: number): Promise<any> {
     const response = await this.api.get(`/moodle/activities/${cmid}/completion`, { params: { courseid } });
+    return response.data;
+  }
+
+  /**
+   * コース内の全アクティビティの完了状態（ログイン中の受講生本人のもの）
+   * GET /api/moodle/courses/{courseid}/activities/completion
+   * 返り値は Moodle の core_completion_get_activities_completion_status そのまま（statuses[].cmid/state/tracking）
+   */
+  async getCourseActivitiesCompletion(
+    courseid: number
+  ): Promise<{ statuses?: { cmid: number; state: number; tracking: number }[] }> {
+    const response = await this.api.get(`/moodle/courses/${courseid}/activities/completion`);
     return response.data;
   }
 
@@ -398,6 +554,7 @@ class BFFClient {
    *    （/api/admin/s3-upload は管理者用・任意キー受け取りなので流用できない）。
    */
 
+
   /**
    * 再開コース取得
    * GET /api/webcoach/resumecourse/{userid}
@@ -425,12 +582,284 @@ class BFFClient {
   }
 
   /**
+   * 学習メモ取得
+   * GET /api/webcoach/study-note/{userid}/{courseid}/{cmid}
+   */
+  async getStudyNote(userId: number, courseId: number, cmid: number): Promise<StudyNote> {
+    const response = await this.api.get(
+      `/webcoach/study-note/${userId}/${courseId}/${cmid}`
+    );
+    return response.data;
+  }
+
+  /**
+   * 学習メモ更新
+   * PUT /api/webcoach/study-note/{userid}/{courseid}/{cmid}
+   */
+  async updateStudyNote(
+    userId: number,
+    courseId: number,
+    cmid: number,
+    data: UpdateStudyNoteRequest
+  ): Promise<StudyNote> {
+    const response = await this.api.put(
+      `/webcoach/study-note/${userId}/${courseId}/${cmid}`,
+      data
+    );
+    return response.data;
+  }
+
+  /**
+   * その日の学習の振り返り(達成度・メモ)取得
+   * GET /api/webcoach/study-reflection/{userid}/{date}
+   */
+  async getStudyReflection(userId: number, date: string): Promise<StudyReflection> {
+    const response = await this.api.get(`/webcoach/study-reflection/${userId}/${date}`);
+    return response.data;
+  }
+
+  /**
+   * その日の学習の振り返り(達成度・メモ)更新
+   * PUT /api/webcoach/study-reflection/{userid}/{date}
+   */
+  async updateStudyReflection(userId: number, date: string, data: StudyReflectionPatch): Promise<StudyReflection> {
+    const response = await this.api.put(`/webcoach/study-reflection/${userId}/${date}`, data);
+    return response.data;
+  }
+
+  /**
+   * その日の学習の振り返り(達成度・メモ)削除
+   * DELETE /api/webcoach/study-reflection/{userid}/{date}
+   */
+  async deleteStudyReflection(userId: number, date: string): Promise<void> {
+    await this.api.delete(`/webcoach/study-reflection/${userId}/${date}`);
+  }
+
+  /**
+   * マイノートフォルダ一覧取得（フラット。ツリー化はフロント側でparent_folder_idから行う）
+   * GET /api/my-note/folders/{userid}
+   */
+  async getMyNoteFolders(userId: number): Promise<MyNoteFolder[]> {
+    const response = await this.api.get(`/my-note/folders/${userId}`);
+    return response.data;
+  }
+
+  /**
+   * マイノートフォルダ作成
+   * POST /api/my-note/folders/{userid}
+   */
+  async createMyNoteFolder(
+    userId: number,
+    data: CreateMyNoteFolderRequest
+  ): Promise<MyNoteFolder> {
+    const response = await this.api.post(`/my-note/folders/${userId}`, data);
+    return response.data;
+  }
+
+  /**
+   * マイノートフォルダ更新（リネーム・移動）
+   * PUT /api/my-note/folders/{userid}/{folderId}
+   */
+  async updateMyNoteFolder(
+    userId: number,
+    folderId: number,
+    data: UpdateMyNoteFolderRequest
+  ): Promise<MyNoteFolder> {
+    const response = await this.api.put(`/my-note/folders/${userId}/${folderId}`, data);
+    return response.data;
+  }
+
+  /**
+   * マイノートフォルダ削除
+   * DELETE /api/my-note/folders/{userid}/{folderId}
+   */
+  async deleteMyNoteFolder(userId: number, folderId: number): Promise<void> {
+    await this.api.delete(`/my-note/folders/${userId}/${folderId}`);
+  }
+
+  /**
+   * マイノート一覧取得
+   * folderId を指定するとそのフォルダ直下のみ（0はルート直下のみ）、
+   * cmid を指定するとその教材に紐づくノートのみを返す。
+   * GET /api/my-note/notes/{userid}
+   */
+  async getMyNotes(userId: number, query: MyNoteListQuery = {}): Promise<MyNote[]> {
+    const params: Record<string, number> = {};
+    if (query.folderId !== undefined) params.folder_id = query.folderId;
+    if (query.cmid !== undefined) params.cmid = query.cmid;
+
+    const response = await this.api.get(`/my-note/notes/${userId}`, {
+      params: Object.keys(params).length > 0 ? params : undefined,
+    });
+    return response.data;
+  }
+
+  /**
+   * マイノート作成
+   * POST /api/my-note/notes/{userid}
+   */
+  async createMyNote(userId: number, data: CreateMyNoteRequest): Promise<MyNote> {
+    const response = await this.api.post(`/my-note/notes/${userId}`, data);
+    return response.data;
+  }
+
+  /**
+   * マイノート取得
+   * GET /api/my-note/notes/{userid}/{noteId}
+   */
+  async getMyNote(userId: number, noteId: number): Promise<MyNote> {
+    const response = await this.api.get(`/my-note/notes/${userId}/${noteId}`);
+    return response.data;
+  }
+
+  /**
+   * マイノート更新
+   * PUT /api/my-note/notes/{userid}/{noteId}
+   */
+  async updateMyNote(
+    userId: number,
+    noteId: number,
+    data: UpdateMyNoteRequest
+  ): Promise<MyNote> {
+    const response = await this.api.put(`/my-note/notes/${userId}/${noteId}`, data);
+    return response.data;
+  }
+
+  /**
+   * マイノート削除
+   * DELETE /api/my-note/notes/{userid}/{noteId}
+   */
+  async deleteMyNote(userId: number, noteId: number): Promise<void> {
+    await this.api.delete(`/my-note/notes/${userId}/${noteId}`);
+  }
+
+
+  /**
    * おすすめバッジ取得
    * GET /api/webcoach/recomendbadge/{userid}
    */
   async getRecommendedBadges(userId: number): Promise<Badge[]> {
     const response = await this.api.get(`/webcoach/recomendbadge/${userId}`);
     return response.data;
+  }
+
+  /**
+   * 集中ブース学習セッションの開始/再開(一時停止後)
+   * POST /api/study/sessions/{userid}/start
+   */
+  async startStudySession(userId: number, courseId?: number): Promise<void> {
+    await this.api.post(`/study/sessions/${userId}/start`, { courseid: courseId });
+  }
+
+  /**
+   * 集中ブース学習セッションの一時停止/終了
+   * POST /api/study/sessions/{userid}/end
+   */
+  async endStudySession(userId: number, courseId?: number): Promise<void> {
+    await this.api.post(`/study/sessions/${userId}/end`, { courseid: courseId });
+  }
+
+  /**
+   * 直前に終了した区間の学習時間を手動で補正(低頻度)
+   * POST /api/study/sessions/{userid}/correct
+   */
+  async correctStudySession(userId: number, deltaMinutes: number, courseId?: number): Promise<void> {
+    await this.api.post(`/study/sessions/${userId}/correct`, { deltaMinutes, courseid: courseId });
+  }
+
+  /**
+   * 進行中の学習セッション取得(無ければ404)
+   * GET /api/study/sessions/{userid}/active
+   */
+  async getActiveStudySession(userId: number): Promise<ActiveStudySessionInfo | null> {
+    try {
+      const response = await this.api.get(`/study/sessions/${userId}/active`);
+      return response.data;
+    } catch (error: any) {
+      if (error?.response?.status === 404) return null;
+      throw error;
+    }
+  }
+
+  /**
+   * 直近の学習セッション一覧取得
+   * GET /api/study/sessions/{userid}/recent
+   */
+  async getRecentStudySessions(userId: number, limit = 10): Promise<StudySession[]> {
+    const response = await this.api.get(`/study/sessions/${userId}/recent`, { params: { limit } });
+    return response.data;
+  }
+
+  /**
+   * 指定日に完了した学習セッション一覧取得（学習記録の日別詳細用）
+   * GET /api/study/sessions/{userid}/by-date?date=YYYY-MM-DD
+   */
+  async getStudySessionsByDate(userId: number, date: string): Promise<StudySession[]> {
+    const response = await this.api.get(`/study/sessions/${userId}/by-date`, { params: { date } });
+    return response.data;
+  }
+
+  /**
+   * 今日・今週・累計の学習時間取得
+   * GET /api/study/stats/{userid}
+   */
+  async getStudyStatsBundle(userId: number): Promise<StudyStats> {
+    const response = await this.api.get(`/study/stats/${userId}`);
+    return response.data;
+  }
+
+  /**
+   * 学習ストリーク取得
+   * GET /api/study/streak/{userid}
+   */
+  async getStudyStreak(userId: number): Promise<StudyStreakInfo> {
+    const response = await this.api.get(`/study/streak/${userId}`);
+    return response.data;
+  }
+
+  /**
+   * 学習カレンダー取得
+   * GET /api/study/calendar/{userid}?year=&month=
+   */
+  async getStudyCalendar(userId: number, year: number, month: number): Promise<StudyCalendarData> {
+    const response = await this.api.get(`/study/calendar/${userId}`, { params: { year, month } });
+    return response.data;
+  }
+
+  /**
+   * 学習時間ランキング取得
+   * GET /api/study/ranking?period=&limit=
+   */
+  async getStudyRanking(period: 'week' | 'month' | 'all' = 'week', limit = 20): Promise<StudyRanking> {
+    const response = await this.api.get('/study/ranking', { params: { period, limit } });
+    return response.data;
+  }
+
+  /**
+   * コースごとのアクセス集計取得
+   * GET /api/study/course-access/{userid}
+   */
+  async getCourseAccess(userId: number): Promise<CourseAccess> {
+    const response = await this.api.get(`/study/course-access/${userId}`);
+    return response.data;
+  }
+
+  /**
+   * コース内の教材ごとのアクセス集計取得
+   * GET /api/study/course-access/{userid}/{courseid}/materials
+   */
+  async getCourseMaterialAccess(userId: number, courseId: number): Promise<CourseMaterialAccess> {
+    const response = await this.api.get(`/study/course-access/${userId}/${courseId}/materials`);
+    return response.data;
+  }
+
+  /**
+   * 教材(page/url/resource)閲覧ログ記録。courseid/cmidをネイティブ列として記録する
+   * 自前イベント(course_material_viewed)を発火する。cmidは省略可(コース単位のみ記録)。
+   * POST /api/study/modules/{userid}/viewed
+   */
+  async logModuleView(userId: number, courseId: number, cmid?: number): Promise<void> {
+    await this.api.post(`/study/modules/${userId}/viewed`, { courseid: courseId, cmid });
   }
 
   /**
@@ -498,11 +927,16 @@ class BFFClient {
   }
 
   /**
-   * 学習ストリーク（連続学習日数・週間の学習有無）取得
+   * 学習ストリーク（連続学習日数）取得
+   * 🔴 旧 `/webcoach/streak/{userid}` は実BFFに存在しない(モック専用ハンドラのみ)。
+   *    実装は StudySessionService 側の `/study/streak/{userid}`(getStudyStreak が使う経路)
+   *    に統合済みのため、こちらもそちらを呼ぶ。`week`(曜日別の学習有無)は実APIに無く、
+   *    かつ現状の呼び出し元(useMypageData → EXPボーナス判定)は `days` しか見ていないため空で返す。
    */
   async getStreak(userId: number): Promise<StreakInfo> {
-    const response = await this.api.get(`/webcoach/streak/${userId}`);
-    return response.data;
+    const response = await this.api.get(`/study/streak/${userId}`);
+    const data = response.data as StudyStreakInfo;
+    return { days: data.current_streak, week: [] };
   }
 
   /**
@@ -554,12 +988,13 @@ class BFFClient {
   }
 
   /**
-   * 今日/今週/今月・ストリーク・日別・教材別・最近の履歴をまとめて取得する
-   * GET /api/webcoach/study-stats/{userId}?days=35
+   * 今日/今週/先週/今月/累計・ストリーク・日別/月別・コース別内訳をまとめて取得する
+   * GET /api/study/stats-summary/{userId}?days=35
    * 画面はこれ1本で描けるようにしてある（リクエストを増やさない）。
+   * byCategory/recentは実データの取得元が無いため常に空配列（project_dev-miyabe-ai-app-gap.md参照）。
    */
-  async getStudyStats(userId: number, days: number | 'all' = 35): Promise<StudyStatsSummary> {
-    const response = await this.api.get(`/webcoach/study-stats/${userId}`, { params: { days } });
+  async getStudyStatsSummary(userId: number, days: number | 'all' = 35): Promise<StudyStatsSummary> {
+    const response = await this.api.get(`/study/stats-summary/${userId}`, { params: { days } });
     return response.data;
   }
 
@@ -585,21 +1020,19 @@ class BFFClient {
   }
 
   /**
-   * 学習時間ランキング（今週／今月）
+   * 学習時間の仲間ランキング（今週／今月）。自分+他の実受講者(仮名＋絵文字)
    * GET /api/webcoach/study-ranking/{userId}?period=week|month
-   * 🔴 実BFFには無い。他ユーザー横断の集計はサーバの仕事なので、モックで提供している。
    */
-  async getStudyRanking(userId: number, period: StudyRankingPeriod): Promise<StudyRanking> {
+  async getPeerStudyRanking(userId: number, period: StudyRankingPeriod): Promise<PeerStudyRanking> {
     const response = await this.api.get(`/webcoach/study-ranking/${userId}`, { params: { period } });
     return response.data;
   }
 
   /**
-   * ストリークランキング（今月／累計の学習日数）
+   * 学習日数の仲間ランキング（今月／累計）。自分+他の実受講者(仮名＋絵文字)
    * GET /api/webcoach/study-ranking-streak/{userId}?period=month|total
-   * 🔴 実BFFには無い。学習時間ランキングと同じくモックで提供している。
    */
-  async getStreakRanking(userId: number, period: StreakRankingPeriod): Promise<StreakRanking> {
+  async getPeerStudyStreakRanking(userId: number, period: StreakRankingPeriod): Promise<StreakRanking> {
     const response = await this.api.get(`/webcoach/study-ranking-streak/${userId}`, {
       params: { period },
     });
@@ -779,8 +1212,7 @@ class BFFClient {
    *
    * 音声/動画の実体はこのAPIには通さない。1時間規模の音声・動画をAPIサーバーの
    * メモリと帯域に通すのは無理があるため、本番では presigned URL でブラウザから
-   * ストレージへ直接アップロードし、ここにはそのメタデータだけを送る設計にする
-   * （frontend/docs/ai-coaching-notes-design.md「6. 音声ファイルの保存」）。
+   * ストレージへ直接アップロードし、ここにはそのメタデータだけを送る設計にする。
    */
   async importCoachingRecord(
     sessionId: number,
@@ -908,33 +1340,6 @@ class BFFClient {
     data: UpdateCoachingNoteRequest
   ): Promise<CoachingNote> {
     const response = await this.api.put(`/coaching/notes/${coachingScheduleId}`, data);
-    return response.data;
-  }
-
-  /**
-   * 自分（コーチ）のミーティング連携状態取得
-   * GET /api/integrations/status
-   */
-  async getMeetingIntegrationStatus(): Promise<{
-    coach_user_id: number;
-    integrations: Array<{
-      coach_user_id: number;
-      provider: string;
-      provider_account_email: string | null;
-      connected_at: string;
-      updated_at: string;
-    }>;
-  }> {
-    const response = await this.api.get('/integrations/status');
-    return response.data;
-  }
-
-  /**
-   * Zoom/Google Meet連携の認可URL取得
-   * GET /api/integrations/{provider}/authorize
-   */
-  async getMeetingIntegrationAuthorizeUrl(provider: 'zoom' | 'google'): Promise<{ authorizeUrl: string }> {
-    const response = await this.api.get(`/integrations/${provider}/authorize`);
     return response.data;
   }
 
@@ -1076,12 +1481,78 @@ class BFFClient {
   }
 
   /**
+   * AI非同期チャットジョブの状態取得（ポーリング用）
+   * GET /api/webcoach/ai/status/:jobId
+   */
+  async getAIChatStatus(jobId: string, signal?: AbortSignal): Promise<AIResponse> {
+    const response = await this.api.get(`/webcoach/ai/status/${jobId}`, { signal });
+    return response.data;
+  }
+
+  /**
    * AIチャット
    * POST /api/webcoach/ai
+   *
+   * 「案件抽出メーカー」等のDify連携ツールが実際に検索を行うステップは70〜90秒
+   * かかることがある。api-server側は短い猶予時間(8秒)を超えると
+   * status: "processing" + job_id を返すので、その場合はここで透過的に
+   * ポーリングし、呼び出し側(useLessonAi.ts等)は今まで通りawaitするだけでよい。
+   *
+   * @param onWaiting ポーリングに切り替わった瞬間に1回だけ呼ばれる
+   *   （「検索に時間がかかっています」等の一時表示に使う）
+   * @param signal 「生成を中止」（B-009）。中止すると待機・ポーリングをやめて AbortError で抜ける。
+   *   あわせて run_id で POST /webcoach/ai/cancel を呼び、サーバー側の生成（Claude・Dify）も止める。
+   *   Dify の会話は止めたところまで残るので、次の発言はその続きとして送られる（Claude/Gemini と同じ）。
    */
-  async sendAIMessage(request: AIRequest): Promise<AIResponse> {
-    const response = await this.api.post('/webcoach/ai', request);
-    return response.data;
+  async sendAIMessage(request: AIRequest, onWaiting?: () => void, signal?: AbortSignal): Promise<AIResponse> {
+    const runId = request.run_id ?? newRunId();
+    // 🔴 POST の応答（最初の8秒）を待つ前から登録する。job_id が返る前に止められても run_id で止まる
+    const cancelOnServer = () => {
+      this.cancelAIMessage(runId).catch(() => undefined);
+    };
+    signal?.addEventListener('abort', cancelOnServer, { once: true });
+    try {
+      return await this.pollAIMessage({ ...request, run_id: runId }, onWaiting, signal);
+    } finally {
+      // 終わったあとの中止はサーバーへ送らない
+      signal?.removeEventListener('abort', cancelOnServer);
+    }
+  }
+
+  /** 実行中のAIチャットを止める（POST /api/webcoach/ai/cancel）。本人の run だけが止まる */
+  async cancelAIMessage(runId: string): Promise<void> {
+    await this.api.post('/webcoach/ai/cancel', { run_id: runId });
+  }
+
+  private async pollAIMessage(request: AIRequest, onWaiting?: () => void, signal?: AbortSignal): Promise<AIResponse> {
+    const response = await this.api.post('/webcoach/ai', request, { signal });
+    const data: AIResponse = response.data;
+
+    if (data.status !== 'processing' || !data.job_id) {
+      return data;
+    }
+
+    onWaiting?.();
+
+    const jobId = data.job_id;
+    const pollIntervalMs = 3000;
+    const maxWaitMs = 3 * 60 * 1000;
+    const startedAt = Date.now();
+    const aborted = () => new DOMException('生成を中止しました', 'AbortError');
+
+    while (Date.now() - startedAt < maxWaitMs) {
+      await new Promise<void>((resolve, reject) => {
+        if (signal?.aborted) return reject(aborted());
+        const t = setTimeout(resolve, pollIntervalMs);
+        signal?.addEventListener('abort', () => { clearTimeout(t); reject(aborted()); }, { once: true });
+      });
+      const statusResponse = await this.getAIChatStatus(jobId, signal);
+      if (statusResponse.status !== 'processing') {
+        return statusResponse;
+      }
+    }
+
+    throw new Error('AIチャットの応答がタイムアウトしました');
   }
 
   /**
@@ -1153,9 +1624,11 @@ class BFFClient {
   /**
    * AIアプリ一覧取得
    * GET /api/webcoach/ai-applications
+   * APIの既定は20件で、それを超えると後ろが欠ける（管理画面の全件CSVで22件中2件が落ちていた）。
+   * 件数は多くないので上限（100）で一度に取る。
    */
-  async getAIApplications(): Promise<any[]> {
-    const response = await this.api.get('/webcoach/ai-applications');
+  async getAIApplications(): Promise<AiApplication[]> {
+    const response = await this.api.get('/webcoach/ai-applications', { params: { limit: 100 } });
     const data = response.data;
     return Array.isArray(data) ? data : (data?.applications ?? []);
   }
@@ -1280,18 +1753,76 @@ class BFFClient {
    * コーチ・受講生マッピング登録
    * POST /api/coaching/mappings
    */
-  async createCoachingMapping(
-    coach_user_id: number,
-    student_user_id: number,
-    updateFlag = 0,
-    deleteFlag = 0,
-  ): Promise<any> {
-    const response = await this.api.post('/coaching/mappings', {
-      coach_user_id,
-      student_user_id,
-      updateFlag,
-      deleteFlag,
-    });
+  async createCoachingMapping(coach_user_id: number, student_user_id: number): Promise<any> {
+    const response = await this.api.post('/coaching/mappings', { coach_user_id, student_user_id });
+    return response.data;
+  }
+
+  /**
+   * コーチ・受講生マッピング一括登録/復元/解除（CSV用）
+   * POST /api/coaching/manage-mappings
+   * 一部の行が失敗しても200で返り、失敗はerrorsに入る
+   */
+  async manageCoachingMappings(mappings: Array<{
+    coach_user_id: number;
+    student_user_id: number;
+    updateFlag: boolean;
+    deleteFlag: boolean;
+  }>): Promise<ManageMappingsResult> {
+    const response = await this.api.post('/coaching/manage-mappings', { mappings });
+    return response.data;
+  }
+
+  // ==================== ミーティング連携 (Zoom / Google Meet) ====================
+
+  /**
+   * 自分（コーチ）のミーティング連携状態取得
+   * GET /api/integrations/status
+   */
+  async getMeetingIntegrationStatus(): Promise<{
+    coach_user_id: number;
+    integrations: Array<{
+      coach_user_id: number;
+      provider: string;
+      provider_account_email: string | null;
+      connected_at: string;
+      updated_at: string;
+    }>;
+  }> {
+    const response = await this.api.get('/integrations/status');
+    return response.data;
+  }
+
+  /**
+   * Zoom/Google Meet連携の認可URL取得
+   * GET /api/integrations/{provider}/authorize
+   */
+  async getMeetingIntegrationAuthorizeUrl(provider: 'zoom' | 'google'): Promise<{ authorizeUrl: string }> {
+    const response = await this.api.get(`/integrations/${provider}/authorize`);
+    return response.data;
+  }
+
+  /**
+   * Organizer（会社共有Googleアカウント）の連携状態取得（管理者のみ）
+   * GET /api/integrations/organizer/status
+   */
+  async getOrganizerIntegrationStatus(): Promise<{
+    provider: string;
+    connected: boolean;
+    providerAccountEmail?: string | null;
+    expiresAt?: string;
+    connectedAt?: string;
+  }> {
+    const response = await this.api.get('/integrations/organizer/status');
+    return response.data;
+  }
+
+  /**
+   * Organizer Google Meet連携の認可URL取得（管理者のみ）
+   * GET /api/integrations/organizer/{provider}/authorize
+   */
+  async getOrganizerIntegrationAuthorizeUrl(provider: 'google'): Promise<{ authorizeUrl: string }> {
+    const response = await this.api.get(`/integrations/organizer/${provider}/authorize`);
     return response.data;
   }
 
@@ -1332,12 +1863,84 @@ class BFFClient {
     return response.data;
   }
 
+  // ==================== キャリアロードマップ（フェーズ制・スキル別テンプレート） ====================
+
+  /**
+   * ロードマップ スキル一覧取得
+   * GET /api/roadmap/skills
+   */
+  async getRoadmapSkills(): Promise<RoadmapSkill[]> {
+    const response = await this.api.get('/roadmap/skills');
+    return response.data;
+  }
+
+  /**
+   * スキルのフェーズ・テンプレート取得
+   * GET /api/roadmap/phases?skill_id=
+   */
+  async getRoadmapPhases(skillId: number): Promise<RoadmapPhase[]> {
+    const response = await this.api.get('/roadmap/phases', { params: { skill_id: skillId } });
+    return response.data;
+  }
+
+  /**
+   * ロードマップ開始
+   * POST /api/roadmap/users/{userid}
+   */
+  async startUserRoadmap(userId: number, skillId: number): Promise<UserRoadmap> {
+    const response = await this.api.post(`/roadmap/users/${userId}`, { skill_id: skillId });
+    return response.data;
+  }
+
+  /**
+   * 現在のロードマップ取得
+   * GET /api/roadmap/users/{userid}
+   */
+  async getUserRoadmap(userId: number): Promise<UserRoadmap> {
+    const response = await this.api.get(`/roadmap/users/${userId}`);
+    return response.data;
+  }
+
+  /**
+   * フェーズ進捗更新（管理者・コーチのみ）
+   * PUT /api/roadmap/progress/{id}
+   */
+  async updateRoadmapProgress(progressId: number, data: RoadmapProgressUpdate): Promise<RoadmapProgress> {
+    const response = await this.api.put(`/roadmap/progress/${progressId}`, data);
+    return response.data;
+  }
+
+  /**
+   * 見直し質問一覧取得
+   * GET /api/roadmap/questions/{reviewNo}
+   */
+  async getRoadmapQuestions(reviewNo: number): Promise<RoadmapQuestion[]> {
+    const response = await this.api.get(`/roadmap/questions/${reviewNo}`);
+    return response.data;
+  }
+
+  /**
+   * 見直し回答登録
+   * POST /api/roadmap/users/{userid}/answers
+   */
+  async submitRoadmapAnswers(
+    userId: number,
+    reviewNo: number,
+    answers: Array<{ question_no: number; answer: string }>
+  ): Promise<RoadmapAnswer[]> {
+    const response = await this.api.post(`/roadmap/users/${userId}/answers`, {
+      review_no: reviewNo,
+      answers,
+    });
+    return response.data;
+  }
+
   // ==================== 教材学習ワークスペース（モック） ====================
   //
   // 実BFFには存在しないエンドポイント群。frontend/src/mocks/lessonHandlers.ts が
   // MSW で応答する。モックOFF（本番）では 404 になるため、呼び出し側
   // （hooks/useLessonDoc.ts）が実Moodle教材へフォールバックする。
-  // 仕様は frontend/docs/learning-workspace-design.md を参照。
+  // TODO(backend未実装): このセクション一式（教材目次/本文/lesson-ai/lesson-notes）。
 
   /**
    * 教材目次（コース内のセクション＋レッスン一覧）
@@ -1398,6 +2001,8 @@ class BFFClient {
    * POST /api/webcoach/ai-skill
    *
    * 実BFFには未実装。すべて mocks/aiSkillHandlers.ts のMSWモックが応答する。
+   * ⚠ 実BFFで呼ぶと必ず失敗するため、useLessonAi は現在これを呼ばず、専門モードも
+   *   sendAIMessage（POST /webcoach/ai）で実行している。BFFに実装したら戻すこと。
    * 本番ではこのエンドポイントが Dify 呼び出しの唯一の境界になり、
    * BFF が skillId を Difyアプリの資格情報へ解決して代理呼び出しする。
    * フロントはアプリIDやURLを一切持たない（ユーザーにも見せない）。
@@ -1426,106 +2031,265 @@ class BFFClient {
   }
 
   // ==================== マイノート（自由帳） ====================
-  // 実BFFには未実装。すべて mocks/noteHandlers.ts のMSWモックが応答する。
-  // 器（Note）と中身（NoteBlock）に分かれているので、一覧は軽量な NoteSummary を返す。
+  // 実API `/api/my-note/*`（webcoach_my_note / webcoach_my_note_folder）に載せている。
+  //
+  // 🔴 実APIは本文と素材を Markdown の1列（contents）で持つので、
+  //    ここで { body, blocks } ⇔ Markdown を変換する（utils/noteMarkdown.ts）。
+  // 🔴 実APIは userid をパスに要る。UIのフック・コンポーネントを触らずに済ませるため、
+  //    ここで現在ユーザーのMoodle IDを解決してキャッシュする。
+  // 🔴 一覧は絞り込み・並び替え・全文検索をクライアント側で行う。実APIが本文ごと返すため
+  //    追加のリクエストが要らず、MSWのときと同じ見え方になる。
 
-  /** GET /api/webcoach/notes?q=&sort=&favorite=&lessonId= */
+  /**
+   * 現在ユーザーのMoodle ID。ノート系APIのパスに要るので解決して使い回す。
+   * 🔴 IDトークンごとに持つ。ページを読み直さずにアカウントが変わる
+   *    （ログアウト→別アカウントでログイン、別タブでの切り替え）と、前の人のIDで
+   *    `/my-note/notes/<前の人>/…` を叩き続けて 403 になっていた。
+   *    トークンの更新（約1時間ごと）で1回 /user/info を取り直すだけなので安い。
+   */
+  private moodleUserId: { token: string | null; promise: Promise<number> } | null = null;
+
+  private async getMoodleUserId(): Promise<number> {
+    const token = await getIdToken();
+    if (!this.moodleUserId || this.moodleUserId.token !== token) {
+      const entry = {
+        token,
+        promise: this.getUserInfo()
+          .then((info) => info.moodle.id)
+          .catch((e) => {
+            // 失敗を握り続けると以降ずっとノートが開けなくなる。次回やり直せるようにする
+            if (this.moodleUserId === entry) this.moodleUserId = null;
+            throw e;
+          }),
+      };
+      this.moodleUserId = entry;
+    }
+    return this.moodleUserId.promise;
+  }
+
+  /** 実APIのノート → UIのNote（contents を本文と素材に分ける） */
+  private toNote(row: MyNote): Note {
+    const { body, blocks } = parseNoteMarkdown(row.contents, utcIso(row.updated_at));
+    return {
+      id: String(row.noteid),
+      title: row.title,
+      body,
+      blocks,
+      favorite: row.favorite === 1,
+      origin: originOf(row),
+      folderId: row.folder_id === null ? null : String(row.folder_id),
+      source: sourceOf(row),
+      createdAt: utcIso(row.created_at),
+      updatedAt: utcIso(row.updated_at),
+    };
+  }
+
+  /** 一覧用の軽量表現。本文は持たせず、書き出しと件数だけにする */
+  private toSummary(row: MyNote): NoteSummary {
+    return {
+      id: String(row.noteid),
+      title: row.title,
+      favorite: row.favorite === 1,
+      origin: originOf(row),
+      folderId: row.folder_id === null ? null : String(row.folder_id),
+      blockCount: blockCountOf(row.contents),
+      excerpt: excerptFromMarkdown(row.contents),
+      source: sourceOf(row),
+      createdAt: utcIso(row.created_at),
+      updatedAt: utcIso(row.updated_at),
+    };
+  }
+
+  private toFolder(row: MyNoteFolder): NoteFolder {
+    return { id: String(row.folder_id), name: row.name, createdAt: utcIso(row.created_at) };
+  }
+
+  /** ノート1件を生で取る（ブロック操作の read-modify-write に使う） */
+  private async fetchNoteRow(id: string): Promise<MyNote> {
+    const userId = await this.getMoodleUserId();
+    const response = await this.api.get(`/my-note/notes/${userId}/${id}`);
+    return response.data;
+  }
+
+  /** 本文と素材を書き戻す */
+  private async saveContents(id: string, body: string, blocks: NoteBlock[]): Promise<Note> {
+    const userId = await this.getMoodleUserId();
+    const response = await this.api.put(`/my-note/notes/${userId}/${id}`, {
+      contents: serializeNoteMarkdown(body, blocks),
+    });
+    return this.toNote(response.data);
+  }
+
+  /** GET /api/my-note/notes/{userid} — 絞り込みと並び替えはクライアント側 */
   async listNotes(query: NoteListQuery = {}): Promise<NoteSummary[]> {
-    const response = await this.api.get('/webcoach/notes', { params: query });
-    return response.data;
+    const userId = await this.getMoodleUserId();
+    const params = query.lessonId !== undefined ? { cmid: query.lessonId } : undefined;
+    const response = await this.api.get(`/my-note/notes/${userId}`, { params });
+    const rows: MyNote[] = response.data;
+
+    const q = (query.q ?? '').trim().toLowerCase();
+    const filtered = rows.filter((row) => {
+      if (query.favorite && row.favorite !== 1) return false;
+      // coachingSessionId は列が無いため「コーチング由来か」までしか絞れない
+      if (query.coachingSessionId !== undefined && row.from_coaching !== 1) return false;
+      if (!q) return true;
+      return `${row.title}\n${row.contents}`.toLowerCase().includes(q);
+    });
+
+    return sortNoteRows(filtered, query.sort ?? 'updated').map((row) => this.toSummary(row));
   }
 
-  /** GET /api/webcoach/notes/{id} — ブロック込みの1件 */
+  /** GET /api/my-note/notes/{userid}/{noteid} */
   async getNote(id: string): Promise<Note> {
-    const response = await this.api.get(`/webcoach/notes/${id}`);
-    return response.data;
+    return this.toNote(await this.fetchNoteRow(id));
   }
 
-  /** POST /api/webcoach/notes */
+  /** POST /api/my-note/notes/{userid} */
   async createNote(body: NoteCreateInput = {}): Promise<Note> {
-    const response = await this.api.post('/webcoach/notes', body);
-    return response.data;
-  }
-
-  /** PATCH /api/webcoach/notes/{id} — タイトル・本文・お気に入り・フォルダ移動 */
-  async updateNote(id: string, body: NoteUpdateInput): Promise<Note> {
-    const response = await this.api.patch(`/webcoach/notes/${id}`, body);
-    return response.data;
-  }
-
-  /** DELETE /api/webcoach/notes/{id} */
-  async deleteNote(id: string): Promise<void> {
-    await this.api.delete(`/webcoach/notes/${id}`);
+    const userId = await this.getMoodleUserId();
+    const response = await this.api.post(`/my-note/notes/${userId}`, {
+      title: body.title ?? '無題のノート',
+      contents: '',
+      folder_id: body.folderId === undefined || body.folderId === null ? null : Number(body.folderId),
+      courseid: body.source?.courseId ?? null,
+      cmid: body.source?.lessonId ?? null,
+      from_ai: body.origin === 'ai' ? 1 : 0,
+      from_coaching: body.origin === 'coaching' || body.coachingSessionId != null ? 1 : 0,
+    });
+    return this.toNote(response.data);
   }
 
   /**
-   * POST /api/webcoach/notes/{id}/blocks — 素材（クリップ / AI回答）の追加。常に末尾。
-   * 🔴 本文はここを通らない。本文は Note.body の1本で、updateNote({ body }) で送る。
+   * PUT /api/my-note/notes/{userid}/{noteid} — タイトル・お気に入り・フォルダ移動・本文
+   * 🔴 本文を送るときは素材を読み直して組み直す。contents は本文と素材の1列なので、
+   *    素材を知らずに書くと、別の画面から足された素材を消してしまう。
+   */
+  async updateNote(id: string, body: NoteUpdateInput): Promise<Note> {
+    const userId = await this.getMoodleUserId();
+    const payload: Record<string, unknown> = {};
+    if (body.body !== undefined) {
+      const current = parseNoteMarkdown((await this.fetchNoteRow(id)).contents);
+      payload.contents = serializeNoteMarkdown(body.body, current.blocks);
+    }
+    if (body.title !== undefined) payload.title = body.title;
+    if (body.favorite !== undefined) payload.favorite = body.favorite ? 1 : 0;
+    // null を明示的に送ると未整理へ移す。キー自体を送らなければ変更しない
+    if (body.folderId !== undefined) {
+      payload.folder_id = body.folderId === null ? null : Number(body.folderId);
+    }
+    const response = await this.api.put(`/my-note/notes/${userId}/${id}`, payload);
+    return this.toNote(response.data);
+  }
+
+  /** DELETE /api/my-note/notes/{userid}/{noteid} */
+  async deleteNote(id: string): Promise<void> {
+    const userId = await this.getMoodleUserId();
+    await this.api.delete(`/my-note/notes/${userId}/${id}`);
+  }
+
+  /**
+   * 素材（クリップ / AI回答）の追加。実APIはブロック単位の口を持たないので、
+   * 読み直して末尾に足し、丸ごと書き戻す。
    */
   async appendNoteBlock(noteId: string, input: NoteBlockInput): Promise<NoteBlock> {
-    const response = await this.api.post(`/webcoach/notes/${noteId}/blocks`, input);
-    return response.data;
+    const row = await this.fetchNoteRow(noteId);
+    const { body, blocks } = parseNoteMarkdown(row.contents, utcIso(row.updated_at));
+    const block = buildBlockFromInput(input, blocks.length);
+    await this.saveContents(noteId, body, [...blocks, block]);
+    return block;
   }
 
-  /** PATCH /api/webcoach/notes/{id}/blocks/{blockId} — クリップ本文・AI回答・画像キャプションの書き換え */
+  /** 素材の書き換え */
   async updateNoteBlock(noteId: string, blockId: string, patch: NoteBlockPatch): Promise<NoteBlock> {
-    const response = await this.api.patch(`/webcoach/notes/${noteId}/blocks/${blockId}`, patch);
-    return response.data;
+    const row = await this.fetchNoteRow(noteId);
+    const { body, blocks } = parseNoteMarkdown(row.contents, utcIso(row.updated_at));
+    const at = blocks.findIndex((b) => b.id === blockId);
+    if (at < 0) throw new Error(`note block not found: ${blockId}`);
+
+    const updated = applyBlockPatch(blocks[at], patch);
+    blocks[at] = updated;
+    await this.saveContents(noteId, body, blocks);
+    return updated;
   }
 
-  /** DELETE /api/webcoach/notes/{id}/blocks/{blockId} */
+  /** 素材の削除 */
   async deleteNoteBlock(noteId: string, blockId: string): Promise<void> {
-    await this.api.delete(`/webcoach/notes/${noteId}/blocks/${blockId}`);
+    const row = await this.fetchNoteRow(noteId);
+    const { body, blocks } = parseNoteMarkdown(row.contents, utcIso(row.updated_at));
+    await this.saveContents(
+      noteId,
+      body,
+      blocks.filter((b) => b.id !== blockId)
+    );
   }
 
   /**
-   * GET /api/webcoach/note-clips?lessonId=
-   * 教材本文のハイライト復元用。これが無いと、<mark> を当てるためだけに
-   * 全ノートの全ブロックを取りに行くことになる。
+   * 教材画面が引く、そのレッスン由来のクリップ一覧。
+   * 実APIは cmid でノート単位に引けるので、そのノートの本文からクリップを拾い直す。
+   * 🔴 取り込み位置（教材ブロックID・オフセット）は保存していないため、
+   *    教材本文のハイライト復元はできない。返すのは「どのノートのどの引用か」まで。
    */
   async listNoteClips(lessonId: number): Promise<NoteClipRef[]> {
-    const response = await this.api.get('/webcoach/note-clips', { params: { lessonId } });
-    return response.data;
+    const userId = await this.getMoodleUserId();
+    const response = await this.api.get(`/my-note/notes/${userId}`, { params: { cmid: lessonId } });
+    const rows: MyNote[] = response.data;
+
+    const clips: NoteClipRef[] = [];
+    for (const row of rows) {
+      for (const block of parseNoteMarkdown(row.contents, utcIso(row.updated_at)).blocks) {
+        if (block.kind !== 'clip' || block.source.lessonId !== lessonId) continue;
+        clips.push({
+          noteId: String(row.noteid),
+          noteTitle: row.title,
+          blockId: block.id,
+          sourceBlockId: '',
+          text: block.text,
+          offset: null,
+        });
+      }
+    }
+    return clips;
   }
 
-  // --- フォルダ（マイノートの上部バー）。実BFFには無く、noteHandlers.ts が応答する ---
+  // --- フォルダ（一覧の左列）---
 
-  /** GET /api/webcoach/note-folders — 作成順 */
+  /** GET /api/my-note/folders/{userid} — 作成順 */
   async listNoteFolders(): Promise<NoteFolder[]> {
-    const response = await this.api.get('/webcoach/note-folders');
-    return response.data;
+    const userId = await this.getMoodleUserId();
+    const response = await this.api.get(`/my-note/folders/${userId}`);
+    const rows: MyNoteFolder[] = response.data;
+    return [...rows]
+      .sort((a, b) => a.created_at.localeCompare(b.created_at))
+      .map((row) => this.toFolder(row));
   }
 
-  /** POST /api/webcoach/note-folders */
+  /** POST /api/my-note/folders/{userid} */
   async createNoteFolder(body: NoteFolderCreateInput): Promise<NoteFolder> {
-    const response = await this.api.post('/webcoach/note-folders', body);
-    return response.data;
+    const userId = await this.getMoodleUserId();
+    const response = await this.api.post(`/my-note/folders/${userId}`, { name: body.name });
+    return this.toFolder(response.data);
   }
 
-  /** PATCH /api/webcoach/note-folders/{id} — 名前の変更 */
+  /** PUT /api/my-note/folders/{userid}/{folderId} — 名前の変更 */
   async updateNoteFolder(id: string, body: NoteFolderUpdateInput): Promise<NoteFolder> {
-    const response = await this.api.patch(`/webcoach/note-folders/${id}`, body);
-    return response.data;
+    const userId = await this.getMoodleUserId();
+    const response = await this.api.put(`/my-note/folders/${userId}/${id}`, { name: body.name });
+    return this.toFolder(response.data);
   }
 
   /**
-   * DELETE /api/webcoach/note-folders/{id}
-   * 中のノートは消さず未整理へ移す。moved はその件数（トーストに出す）。
+   * DELETE /api/my-note/folders/{userid}/{folderId}
+   * 中のノートは消えず、DBの外部キー（ON DELETE SET NULL）で未整理へ移る。
+   * moved はトーストに出す件数で、消す前に数えておく。
    */
   async deleteNoteFolder(id: string): Promise<{ moved: number }> {
-    const response = await this.api.delete(`/webcoach/note-folders/${id}`);
-    return response.data;
+    const userId = await this.getMoodleUserId();
+    const before = await this.api.get(`/my-note/notes/${userId}`, { params: { folder_id: Number(id) } });
+    const moved = Array.isArray(before.data) ? before.data.length : 0;
+    await this.api.delete(`/my-note/folders/${userId}/${id}`);
+    return { moved };
   }
 
-  /**
-   * POST /api/webcoach/notes/reset — デモノートを指定件数で入れ直す（モック専用）
-   * ページ送りや空状態の見え方を、件数を変えて確かめるための開発用。
-   * 実BFFには無いので、本番ビルドでは呼び出し側（NotesDevPanel）ごと消える。
-   */
-  async resetNotes(count: number): Promise<{ ok: boolean; count: number }> {
-    const response = await this.api.post('/webcoach/notes/reset', { count });
-    return response.data;
-  }
 
   // ==================== 学習ロードマップ（LearningPlan） ====================
   // 実BFFには未実装。すべて mocks/learningPlanHandlers.ts のMSWモックが応答する。

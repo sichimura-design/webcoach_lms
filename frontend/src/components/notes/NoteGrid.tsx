@@ -23,7 +23,7 @@ import { INBOX_LABEL, folderNameOf } from './folderRows';
 interface NoteGridProps {
   items: NoteSummary[];
   loading: boolean;
-  /** 検索・チップを掛ける前の総数。0 なら「まだ1枚も無い」 */
+  /** 種類チップを掛ける前の総数（検索語は掛かっている）。絞り込みが無くて 0 なら「まだ1枚も無い」 */
   totalCount: number;
   folders: NoteFolder[];
   filter: NoteFolderFilter;
@@ -85,7 +85,9 @@ export function NoteGrid({
   }
 
   if (items.length === 0) {
-    if (totalCount === 0) {
+    // 🔴 totalCount は検索語で絞った後の件数（一覧の取得自体に検索語が掛かる）。
+    //    検索中の0件を「まだ1枚も無い」と取り違えないよう、絞り込みが無いときだけ見る
+    if (totalCount === 0 && !hasOtherFilters) {
       return (
         <EmptyState
           icon={<NotebookPen size={26} style={{ color: 'var(--dc-primary)' }} />}

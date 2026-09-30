@@ -3,12 +3,15 @@ import {
   BookOpen,
   BookMarked,
   Briefcase,
+  Clapperboard,
   FileText,
   Image as ImageIcon,
   Lightbulb,
+  ListChecks,
   Mic,
+  PenLine,
   Sparkles,
-  Video,
+  Wrench,
   type LucideProps,
 } from 'lucide-react';
 import { AiSkillIconKey } from '../../types/aiSkill';
@@ -31,13 +34,16 @@ import { AiSkillIconKey } from '../../types/aiSkill';
 export const AI_SKILL_ICON: Record<AiSkillIconKey, ComponentType<LucideProps>> = {
   book: BookOpen,
   glossary: BookMarked,
+  quiz: ListChecks,
   image: ImageIcon,
-  video: Video,
+  video: Clapperboard,
+  pen: PenLine,
   lightbulb: Lightbulb,
   document: FileText,
   mic: Mic,
-  briefcase: Briefcase,
   sparkles: Sparkles,
+  wrench: Wrench,
+  briefcase: Briefcase,
 };
 
 export default AI_SKILL_ICON;

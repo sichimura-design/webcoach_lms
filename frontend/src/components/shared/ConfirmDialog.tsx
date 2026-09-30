@@ -24,6 +24,8 @@ interface ConfirmDialogProps {
   confirmLabel: string;
   cancelLabel?: string;
   busy?: boolean;
+  /** 確認の前に選ばせたいもの（日付の入力など）。一覧の下・ボタンの上に出す */
+  children?: React.ReactNode;
   onConfirm: () => void;
   onCancel: () => void;
 }
@@ -38,6 +40,7 @@ export function ConfirmDialog({
   confirmLabel,
   cancelLabel = 'やめる',
   busy = false,
+  children,
   onConfirm,
   onCancel,
 }: ConfirmDialogProps) {
@@ -167,6 +170,8 @@ export function ConfirmDialog({
             )}
           </ul>
         )}
+
+        {children && <div style={{ marginTop: 14 }}>{children}</div>}
 
         <div style={{ display: 'flex', gap: 9, justifyContent: 'flex-end', marginTop: 18 }}>
           <button

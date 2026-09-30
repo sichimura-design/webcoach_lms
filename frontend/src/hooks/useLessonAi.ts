@@ -11,14 +11,16 @@ import {
 } from '../types/aiCoach';
 import {
   AiSkillId,
-  AiSkillRequest,
+  AI_SKILL_META,
   AI_SKILL_SHORT_LABEL,
+  ConcreteAiSkillId,
   isSpecialistSkill,
   SkillSuggestion,
 } from '../types/aiSkill';
+import { findAiApplication, getLoadedAiApplications } from './useAiApplications';
 import { detectSkill } from '../utils/aiSkillRouting';
-import { toHistory } from '../utils/aiCoachText';
-import { useAiCoachStore } from '../store/aiCoachStore';
+import { AI_ERROR_CONCLUSION, toHistory } from '../utils/aiCoachText';
+import { newServerKey, useAiCoachStore } from '../store/aiCoachStore';
 
 /**
  * AIコーチ（教材ページの右パネル／AI専用ページの中央）。
@@ -54,6 +56,10 @@ export interface UseLessonAi {
   /** リロードで添付画像が失われたか（再添付を促すため） */
   imageDropped: boolean;
   send: (overrideQuestion?: string) => Promise<void>;
+  /** 回答の生成を中止する（B-009）。画面上で止め、サーバー側の生成（Claude・Dify）も止める */
+  stop: () => void;
+  /** 直前の回答がエラーのとき、そのエラーを消して同じ質問をもう一度送る（A-5） */
+  retry: () => Promise<void>;
   /** 選択文章の「💡かんたん解説」。会話履歴には残さない */
   explain: (quote: AiCoachQuote) => Promise<string>;
 
@@ -82,11 +88,55 @@ const nextId = (prefix: string) => `${prefix}-${Date.now()}-${(seq += 1)}`;
 /** セッションが未作成のあいだの既定値。毎レンダーで新しい参照を作らないよう定数にする */
 const EMPTY_MESSAGES: AiCoachMessage[] = [];
 
+/** api-server の ChatRequest.message の上限（ai_langgraph.py の max_length） */
+const AI_MESSAGE_MAX_LENGTH = 1000;
+
+/**
+ * 専門モードの指示文。実BFFに POST /webcoach/ai-skill は無いので、専門モードも
+ * 通常のAIチャット（POST /webcoach/ai）で実行し、モードの意図をこの指示文で伝える。
+ * 画像はそのままLLM（マルチモーダル）へ渡るので、制作物添削も成り立つ。
+ *
+ * 本文(message)の前置きにはせず mode_instruction として別に送る。message はDify連携
+ * アプリへそのまま転送されるため、前置きが付くとボタンを押しても値が一致せず、
+ * Dify側が同じ質問（例:「今日使える時間について教えてください！」）を繰り返していた。
+ */
+const skillModeInstruction = (skillId: ConcreteAiSkillId): string => {
+  const meta = AI_SKILL_META[skillId];
+  const base = `【${meta.modeLabel}】${meta.modeLead}観点ごとに整理して答え、最後に次にやることを示してください。`;
+  // 裏にAIアプリがあるモードは、そのアプリのツールをAPI側のツール名で名指しする。
+  // 名指ししないとLLMがモード名の雰囲気からツールを選ぶことになり、似た説明のアプリ
+  // （媒体違いの案件さがし等）や、ツールを呼ばずに自分で答える方へずれることがあった。
+  const app = findAiApplication(getLoadedAiApplications(), skillId);
+  if (!app) return base;
+  return (
+    `${base}このモードはAIアプリ「${app.name}」（ツール名 ask_ai_application_${app.id}）で行います。` +
+    `ユーザーの依頼や回答はこのツールに渡してください。` +
+    `ただし、明らかに別のAIアプリやコースの質問に当たる依頼なら、そちらを優先してください。`
+  );
+};
+
+// エラー時の結論文は履歴から外す判定でも使うので aiCoachText 側に置いた。ここからも使えるよう再エクスポートする
+export { AI_ERROR_CONCLUSION };
+
 const errorAnswer = (): LessonAiResponse => ({
-  conclusion: '一時的なエラーで回答を取得できませんでした。',
+  conclusion: AI_ERROR_CONCLUSION,
   basis: '',
   apply: '',
   next: 'しばらく時間をおいてから、もう一度お試しください。',
+  sources: [],
+  groundedInMaterial: false,
+  generalNote: null,
+});
+
+/** 回答に時間がかかっているあいだ、待機中であることを伝える一時メッセージ（bffClient.sendAIMessageの
+ *  onWaitingコールバックから使う。完了時は別の通常メッセージがこの下に追加される）。
+ *  api-serverは8秒を超えると一律ポーリングに切り替えるため、Dify連携ツールの実検索に限らず
+ *  画像添削のような普通の回答でも出る。「検索」と書くと質問と噛み合わないので中立な文言にする。 */
+const waitingAnswer = (): LessonAiResponse => ({
+  conclusion: '回答を作成しています。もうしばらくお待ちください…',
+  basis: '',
+  apply: '',
+  next: '',
   sources: [],
   groundedInMaterial: false,
   generalNote: null,
@@ -110,10 +160,35 @@ export function useLessonAi(doc: LessonDoc | null, sessionIdOverride?: string): 
     setLoadingState(v);
   }, []);
 
+  /*
+   * ── 生成中の1回ぶん（B-009「生成を中止」） ──
+   * 中止したら runRef を外す。あとから返ってきた回答は runRef と一致しないので捨てる。
+   * 🔴 送信の finally で無条件に setLoading(false) しないこと。中止してすぐ次を送ったとき、
+   *    前の回の finally が新しい回の「送信中」を消してしまう（endRun が自分の回かを見る）。
+   * サーバー側の生成は bffClient.sendAIMessage が run_id で /webcoach/ai/cancel を呼んで止める。
+   * Dify 側の会話は止めたところまで残り、次の発言はその続きになる（Claude/Gemini で止めたときと同じ）。
+   */
+  const runRef = useRef<{ controller: AbortController } | null>(null);
+  const beginRun = useCallback(() => {
+    const run = { controller: new AbortController() };
+    runRef.current = run;
+    setLoading(true);
+    return run;
+  }, [setLoading]);
+  const endRun = useCallback(
+    (run: { controller: AbortController }) => {
+      if (runRef.current !== run) return;
+      runRef.current = null;
+      setLoading(false);
+    },
+    [setLoading]
+  );
+
   const ensureSession = useAiCoachStore((s) => s.ensureSession);
   const patchContext = useAiCoachStore((s) => s.patchContext);
   const appendMessage = useAiCoachStore((s) => s.appendMessage);
   const patchMessage = useAiCoachStore((s) => s.patchMessage);
+  const removeMessage = useAiCoachStore((s) => s.removeMessage);
   const setSkillInStore = useAiCoachStore((s) => s.setSkill);
   const setInputInStore = useAiCoachStore((s) => s.setInput);
   const setQuoteInStore = useAiCoachStore((s) => s.setQuote);
@@ -225,6 +300,111 @@ export function useLessonAi(doc: LessonDoc | null, sessionIdOverride?: string): 
   );
 
   /**
+   * 汎用AIエンドポイント（POST /webcoach/ai）で応答する。
+   *
+   * @param requestMessage APIへ送る文面。引用を含めるときだけ指定し、
+   *   省略時は question をそのまま送る（画面に出るユーザー発言は常に question のまま）。
+   * @param modeInstruction 専門モードの指示文（skillModeInstruction）。message とは別に送る。
+   * @param appKey 専門モードの裏にあるAIアプリ。モードに入ってから最初の発言だけ、
+   *   このアプリへ必ず送らせる（force_app_key）。2回目以降はLLMの判断と会話の継続に任せる。
+   */
+  const runGeneralAi = useCallback(
+    async (
+      question: string,
+      img: string | null,
+      localSuggestion?: SkillSuggestion | null,
+      requestMessage?: string,
+      modeInstruction?: string,
+      appKey?: string
+    ) => {
+      // 中止されたら、この回の結果は画面に出さない
+      const run = runRef.current;
+      const live = () => !run || runRef.current === run;
+      // 直前の selectSkill / 提案の受け入れで鍵が変わっていることがあるので、描画時の値ではなくストアから読む
+      const store = useAiCoachStore.getState();
+      let serverKey = store.sessions[sessionId]?.serverKey;
+      if (!serverKey) {
+        serverKey = newServerKey();
+        store.patchSession(sessionId, { serverKey });
+      }
+      // モードに入ると serverKey が作り直されるので、「この鍵でまだ強制していない」＝モード最初の発言
+      const forceAppKey =
+        appKey && store.sessions[sessionId]?.appForcedFor !== serverKey ? appKey : undefined;
+      try {
+        const res = await bffClient.sendAIMessage(
+          {
+            message: requestMessage ?? question,
+            ...(modeInstruction ? { mode_instruction: modeInstruction } : {}),
+            ...(forceAppKey ? { force_app_key: forceAppKey } : {}),
+            // 会話履歴を渡さないと、DBに登録したAIアプリ(Dify)へ問い合わせ中の
+            // 2ターン目以降でLLMが文脈を見失い、別のツールを呼んでしまう
+            // (例: ボタン選択の「WEBデザイン」だけ送ると学習相談ツールに逸れる)。
+            conversation_history: toHistory(messages),
+            // 「新しい相談を始める」等で別の会話になった場合、Dify連携ツール側の
+            // 会話継続キャッシュも区切って、前回の検索条件を引き継がないようにする。
+            // 画面上の sessionId（'page:1' 等）は再利用されるので送らない（B-007、AiCoachSession.serverKey）。
+            session_id: serverKey,
+            ...(img
+              ? {
+                  image: {
+                    media_type: img.slice(5, img.indexOf(';')) || 'image/png',
+                    data: img.split(',')[1] || '',
+                  },
+                }
+              : {}),
+          },
+          // Dify連携ツールの実検索など時間がかかる場合、bffClient側が裏でポーリングに
+          // 切り替えた瞬間に1回だけ呼ばれる。待機中であることが分かるよう一時メッセージを積む。
+          () => {
+            if (!live()) return;
+            appendMessage(sessionId, {
+              id: nextId('a'),
+              role: 'assistant',
+              content: '',
+              answer: waitingAnswer(),
+              references,
+              transient: true,
+              createdAt: new Date().toISOString(),
+            });
+          },
+          run?.controller.signal
+        );
+        // 失敗したときは印を付けない（送り直しでも最初の発言としてアプリへ送る）
+        if (forceAppKey) useAiCoachStore.getState().patchSession(sessionId, { appForcedFor: serverKey });
+        if (!live()) return;
+        appendMessage(sessionId, {
+          id: nextId('a'),
+          role: 'assistant',
+          content: '',
+          answer: {
+            conclusion: res.message || '回答を取得できませんでした。',
+            basis: '',
+            apply: '',
+            next: '',
+            sources: [],
+            groundedInMaterial: false,
+            generalNote: null,
+          },
+          suggestion:
+            localSuggestion && localSuggestion.strength !== 'none' ? localSuggestion : null,
+          references,
+          createdAt: new Date().toISOString(),
+        });
+      } catch {
+        if (!live()) return;
+        appendMessage(sessionId, {
+          id: nextId('a'),
+          role: 'assistant',
+          content: '',
+          answer: errorAnswer(),
+          createdAt: new Date().toISOString(),
+        });
+      }
+    },
+    [appendMessage, messages, references, sessionId]
+  );
+
+  /**
    * 通常のAIコーチとして回答する（教材準拠の構造化回答）。
    *
    * @param localSuggestion 教材の文脈が無い会話で、回答の下に出す提案。
@@ -247,40 +427,15 @@ export function useLessonAi(doc: LessonDoc | null, sessionIdOverride?: string): 
       // 教材の根拠が無いのは当然なので、ここでは警告扱いにしない
       // （UI側も教材の文脈が無いときは「教材だけでは判断できません」を出さない）。
       if (!request) {
-        try {
-          const res = await bffClient.sendAIMessage({ message: question, image: img ?? undefined });
-          appendMessage(sessionId, {
-            id: nextId('a'),
-            role: 'assistant',
-            content: '',
-            answer: {
-              conclusion: res.message || '回答を取得できませんでした。',
-              basis: '',
-              apply: '',
-              next: '',
-              sources: [],
-              groundedInMaterial: false,
-              generalNote: null,
-            },
-            suggestion:
-              localSuggestion && localSuggestion.strength !== 'none' ? localSuggestion : null,
-            references,
-            createdAt: new Date().toISOString(),
-          });
-        } catch {
-          appendMessage(sessionId, {
-            id: nextId('a'),
-            role: 'assistant',
-            content: '',
-            answer: errorAnswer(),
-            createdAt: new Date().toISOString(),
-          });
-        }
+        await runGeneralAi(question, img, localSuggestion);
         return;
       }
 
+      const run = runRef.current;
+      const live = () => !run || runRef.current === run;
       try {
         const answer = await bffClient.askLessonAi(request);
+        if (!live()) return;
         appendMessage(sessionId, {
           id: nextId('a'),
           role: 'assistant',
@@ -293,6 +448,7 @@ export function useLessonAi(doc: LessonDoc | null, sessionIdOverride?: string): 
           createdAt: new Date().toISOString(),
         });
       } catch {
+        if (!live()) return;
         appendMessage(sessionId, {
           id: nextId('a'),
           role: 'assistant',
@@ -302,47 +458,32 @@ export function useLessonAi(doc: LessonDoc | null, sessionIdOverride?: string): 
         });
       }
     },
-    [appendMessage, buildRequest, references, sessionId]
+    [appendMessage, buildRequest, references, runGeneralAi, sessionId]
   );
 
-  /** 専門モードを実行する（裏でDifyアプリが呼ばれる箇所） */
+  /**
+   * 専門モードを実行する。
+   *
+   * 本来は POST /webcoach/ai-skill（項目別の構造化添削）を呼ぶ設計だが、実BFFには
+   * 未実装で、呼ぶと必ず「一時的なエラー」になっていた。実装されるまでは、実在する
+   * 汎用AIエンドポイントへモードの意図を前置きして送る。回答は項目別カードではなく
+   * 通常の回答として表示される。
+   */
   const runSkill = useCallback(
     async (targetSkill: AiSkillId, question: string, q: AiCoachQuote | null, img: string | null) => {
       if (!isSpecialistSkill(targetSkill)) {
         await runLessonAi(question, q, img);
         return;
       }
-      const request: AiSkillRequest = {
-        skillId: targetSkill,
-        question,
-        image: img ?? undefined,
-        quote: q?.text ?? null,
-        courseId: context.courseId,
-        lessonId: context.lessonId,
-        blockIds: q?.blockId ? [q.blockId] : [],
-        history: toHistory(messages),
-      };
-      try {
-        const skillResult = await bffClient.runAiSkill(request);
-        appendMessage(sessionId, {
-          id: nextId('a'),
-          role: 'assistant',
-          content: '',
-          skillResult,
-          references,
-          createdAt: new Date().toISOString(),
-        });
-      } catch {
-        appendMessage(sessionId, {
-          id: nextId('a'),
-          role: 'assistant',
-          content: '',
-          answer: errorAnswer(),
-          createdAt: new Date().toISOString(),
-        });
-      }
+      // 引用していた教材本文は汎用AIに渡す欄が無いので、依頼文に含める
+      const body = q?.text ? `${question}\n\n引用:「${q.text}」` : question;
+      // 上限を超えるとAPIが400を返すので、そのときは引用を諦めて質問だけ送る
+      const message = body.length <= AI_MESSAGE_MAX_LENGTH ? body : question;
+      // 裏のAIアプリがDBにあれば、モード最初の発言はそのアプリへ必ず送る
+      const appKey = findAiApplication(getLoadedAiApplications(), targetSkill)?.app_key ?? undefined;
+      await runGeneralAi(question, img, null, message, skillModeInstruction(targetSkill), appKey);
     },
-    [appendMessage, context, messages, references, runLessonAi, sessionId]
+    [runGeneralAi, runLessonAi]
   );
 
   /** 未回答の確認カードを探す。最後の1件だけを見る */
@@ -416,7 +557,7 @@ export function useLessonAi(doc: LessonDoc | null, sessionIdOverride?: string): 
         return;
       }
 
-      setLoading(true);
+      const run = beginRun();
       try {
         // すでに専門モードに入っているならそのまま専門処理を続ける（追従）
         if (isSpecialistSkill(skillId)) {
@@ -427,7 +568,7 @@ export function useLessonAi(doc: LessonDoc | null, sessionIdOverride?: string): 
           await runLessonAi(question, currentQuote, currentImage, suggestion);
         }
       } finally {
-        setLoading(false);
+        endRun(run);
       }
     },
     [
@@ -441,7 +582,8 @@ export function useLessonAi(doc: LessonDoc | null, sessionIdOverride?: string): 
       sessionId,
       setImageInStore,
       setInput,
-      setLoading,
+      beginRun,
+      endRun,
       skillId,
     ]
   );
@@ -465,11 +607,11 @@ export function useLessonAi(doc: LessonDoc | null, sessionIdOverride?: string): 
       const image = lastUserMessage?.image ?? null;
       const quote = session?.quote ?? null;
 
-      setLoading(true);
+      const run = beginRun();
       try {
         await runSkill(suggestion.skillId, question, quote, image);
       } finally {
-        setLoading(false);
+        endRun(run);
       }
     },
     [
@@ -481,7 +623,8 @@ export function useLessonAi(doc: LessonDoc | null, sessionIdOverride?: string): 
       runSkill,
       session,
       sessionId,
-      setLoading,
+      beginRun,
+      endRun,
       setSkillInStore,
     ]
   );
@@ -496,7 +639,7 @@ export function useLessonAi(doc: LessonDoc | null, sessionIdOverride?: string): 
       // 回答下の控えめな提案（role:'assistant'）を断った場合は、もう回答済みなので何もしない。
       if (target.role !== 'proposal') return;
 
-      setLoading(true);
+      const run = beginRun();
       try {
         await runLessonAi(
           lastUserMessage?.content ?? '',
@@ -504,11 +647,59 @@ export function useLessonAi(doc: LessonDoc | null, sessionIdOverride?: string): 
           lastUserMessage?.image ?? null
         );
       } finally {
-        setLoading(false);
+        endRun(run);
       }
     },
-    [lastUserMessage, loadingRef, messages, patchMessage, runLessonAi, session, sessionId, setLoading]
+    [beginRun, endRun, lastUserMessage, loadingRef, messages, patchMessage, runLessonAi, session, sessionId]
   );
+
+  /**
+   * エラーの回答を消して、直前の質問をもう一度送る（A-5）。
+   * ユーザーの発言は積み直さない（同じ質問が2つ並ばないように）。専門モードならそのモードで送る。
+   */
+  const retry = useCallback(async () => {
+    if (loadingRef.current || !lastUserMessage) return;
+    const last = messages[messages.length - 1];
+    if (!(last?.role === 'assistant' && last.answer?.conclusion === AI_ERROR_CONCLUSION)) return;
+    removeMessage(sessionId, last.id);
+    const question = lastUserMessage.content;
+    const image = lastUserMessage.image ?? null;
+    const quote = session?.quote ?? null;
+    const run = beginRun();
+    try {
+      if (isSpecialistSkill(skillId)) await runSkill(skillId, question, quote, image);
+      else await runLessonAi(question, quote, image);
+    } finally {
+      endRun(run);
+    }
+  }, [
+    beginRun,
+    endRun,
+    lastUserMessage,
+    loadingRef,
+    messages,
+    removeMessage,
+    runLessonAi,
+    runSkill,
+    session,
+    sessionId,
+    skillId,
+  ]);
+
+  /** 回答の生成を中止する（B-009）。サーバー側も止まる（runRef の注記） */
+  const stop = useCallback(() => {
+    const run = runRef.current;
+    if (!run) return;
+    run.controller.abort();
+    runRef.current = null;
+    setLoading(false);
+    appendMessage(sessionId, {
+      id: nextId('s'),
+      role: 'system',
+      content: '回答の生成を中止しました。',
+      createdAt: new Date().toISOString(),
+    });
+  }, [appendMessage, sessionId, setLoading]);
 
   const selectSkill = useCallback(
     (next: AiSkillId) => {
@@ -556,6 +747,8 @@ export function useLessonAi(doc: LessonDoc | null, sessionIdOverride?: string): 
     clearImage,
     imageDropped: session?.imageDropped ?? false,
     send,
+    stop,
+    retry,
     explain,
     skillId,
     selectSkill,

@@ -92,7 +92,7 @@ export function GlobalAiCoachDrawer() {
     [ai.messages, capture]
   );
 
-  // メモ下書きとブロックジャンプは教材の文脈がないと意味をなさないので、
+  // ブロックジャンプは教材の文脈がないと意味をなさないので、
   // ここでは拡大ページへ促す（無言で失敗させない）。
   const notSupported = useCallback(() => handleExpand(), [handleExpand]);
 
@@ -209,7 +209,6 @@ export function GlobalAiCoachDrawer() {
           variant="panel"
           onOpenWide={handleOpenWide}
           onSaveAnswer={(message) => void handleSaveAnswer(message)}
-          onAppendToMemo={notSupported}
           onJumpToBlock={notSupported}
           // disabled は「教材はあるがブロック単位の根拠が取れない」縮退モードの意味。
           // ドロワーには教材の文脈そのものが無いので、ここでは false が正しい。

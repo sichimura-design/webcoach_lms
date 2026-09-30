@@ -52,9 +52,6 @@ let schedulesStore: CoachingSchedule[] = [
     meeting_url: 'https://meet.google.com/abc-defg-hij',
     meeting_provider: 'google_meet',
     meet_space_name: 'spaces/mock-abc-defg-hij',
-    coaching_summary:
-      '初回。Webデザインに興味があるが、何から手を付けるか決めきれていない状態。まずは配色とレイアウトの基礎を1ヶ月で終える計画を一緒に立てた。',
-    todo: '配色の基礎レッスンを最後まで見る / バナーを1本作ってみる',
     created_at: nowIso(),
     updated_at: nowIso(),
   },
@@ -68,8 +65,6 @@ let schedulesStore: CoachingSchedule[] = [
     meeting_url: '',
     meeting_provider: null,
     meet_space_name: null,
-    coaching_summary: '体調不良の連絡があり開始5分で日程変更。次週に振り替え。',
-    todo: null,
     created_at: nowIso(),
     updated_at: nowIso(),
   },
@@ -83,9 +78,6 @@ let schedulesStore: CoachingSchedule[] = [
     meeting_url: 'https://us02web.zoom.us/j/8812345678',
     meeting_provider: null,
     meet_space_name: null,
-    coaching_summary:
-      'バナー3本を持参。余白の取り方が良くなっている一方、文字の優先順位がまだ弱い。次回までにジャンプ率を意識した作り直しを1本。',
-    todo: 'バナーを1本作り直す / レイアウト実践に着手する',
     created_at: nowIso(),
     updated_at: nowIso(),
   },
@@ -99,8 +91,6 @@ let schedulesStore: CoachingSchedule[] = [
     meeting_url: 'https://us02web.zoom.us/j/8899887766',
     meeting_provider: null,
     meet_space_name: null,
-    coaching_summary: '接続不良で中断。以降ログインが確認できていないため、運営から状況確認を依頼した。',
-    todo: null,
     created_at: nowIso(),
     updated_at: nowIso(),
   },
@@ -220,8 +210,6 @@ export const coachScheduleHandlers = [
       meeting_url: isMeet ? `https://meet.google.com/${meetId}` : body.meeting_url,
       meeting_provider: body.meeting_provider ?? null,
       meet_space_name: isMeet ? `spaces/${meetId}` : null,
-      coaching_summary: body.coaching_summary ?? null,
-      todo: body.todo ?? null,
       created_at: nowIso(),
       updated_at: nowIso(),
     };
@@ -238,8 +226,6 @@ export const coachScheduleHandlers = [
     if (body.coaching_date !== undefined) target.coaching_date = body.coaching_date;
     if (body.status !== undefined) target.status = body.status;
     if (body.meeting_url !== undefined) target.meeting_url = body.meeting_url;
-    if (body.coaching_summary !== undefined) target.coaching_summary = body.coaching_summary;
-    if (body.todo !== undefined) target.todo = body.todo;
     target.updated_at = nowIso();
 
     return HttpResponse.json(target);

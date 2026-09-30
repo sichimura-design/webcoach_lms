@@ -17,7 +17,7 @@ import { LESSON_BLOCK_KIND_LABEL } from '../../types/lesson';
  * 何のための画面か:
  *   「ボタンが4系統ある」「同じカードなのに影が3種類ある」といった横断のばらつきは、
  *   34画面を巡らなくても、部品を横に並べれば1画面で全部見える。
- *   UI/UXレビュー（frontend/docs/ui-review/）の1〜4日目「横串」で使う。
+ *   UI/UXレビューの1〜4日目「横串」で使う。
  *
  * この画面のルール:
  *   🔴 ここは「実装をそのまま並べて見比べる」ための画面なので、意図的に
@@ -57,7 +57,7 @@ const DC_COLOR_GROUPS: { group: string; vars: string[] }[] = [
 
 /**
  * タイポグラフィスケール（.mypage-3d スコープ）。実効pxは実行時に測る。
- * 大きい順。20px以下は固定px・28px以上だけ可変（frontend/docs/typography.md）。
+ * 大きい順。20px以下は固定px・28px以上だけ可変。
  * 🔴 レビューでは「12px未満が出ていないこと」をこの節で確定させる。
  */
 const DC_FONT_VARS = [
@@ -261,7 +261,6 @@ export default function DevCatalogPage() {
         </h1>
         <p style={{ fontSize: 13.5, lineHeight: 1.8, color: 'var(--dc-text-muted)', margin: '0 0 20px' }}>
           横断のばらつき（A分類）を1画面で見つけるための比較台。
-          運用は <code>frontend/docs/ui-review/README.md</code> を参照。
           <br />
           <strong>ブラウザ幅を 1920 → 1520 → 390 と変えながら見てください。</strong>
           1520px は Windows の表示倍率125%に相当し、最も崩れる幅です。
@@ -427,7 +426,7 @@ export default function DevCatalogPage() {
           <p style={{ fontSize: 12.5, lineHeight: 1.8, color: 'var(--dc-text-muted)', marginTop: 14 }}>
             ブランド赤は統一済み。**残っている食い違いは面・枠・文字のニュートラル**で、
             画面をまたぐと背景と文字の濃さがわずかに変わる。どちらを正にするかは
-            <code>frontend/docs/ui-rules.md</code>（未作成）で決める。
+            UIルールとして別途決める。
           </p>
         </Section>
 

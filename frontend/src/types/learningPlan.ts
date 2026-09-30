@@ -6,7 +6,7 @@
  * - 指導方法はコーチに任せ、**ロードマップの構造と更新方法だけをLMS側で標準化**する。
  *   そのためフェーズは固定（自由記述で増やせるのは 'custom' のみ）、マイルストーンは
  *   候補テンプレートからの選択を既定とし、自由記述は最小限に留める。
- * - **コーチはLMSアカウントを持たず、LMSを操作しない**（docs/ai-coaching-notes-design.md）。
+ * - **コーチはLMSアカウントを持たず、LMSを操作しない**。
  *   よって編集・確定の操作主体は受講生本人であり、コーチングの場で受講生が画面共有しながら
  *   コーチと一緒に操作する。「コーチが承認する」ステートは存在しない。
  * - LMSの自動生成物が黙って「コーチ合意済み」に昇格しないよう PlanStatus で段階を分ける
@@ -171,8 +171,7 @@ export const MILESTONE_STATUS_LABEL: Record<MilestoneStatus, string> = {
 
 /**
  * 達成状況をLMSが自動判定するための指標。
- * artifact_count / submission_count / application_count は実BFFに対応テーブルが無く
- * （docs/student-outcomes-tracking-requirements.md で優先度B と整理済み）、現状はモック値。
+ * artifact_count / submission_count / application_count は実BFFに対応テーブルが無く、現状はモック値。
  */
 export type MetricKind =
   | 'course_progress'

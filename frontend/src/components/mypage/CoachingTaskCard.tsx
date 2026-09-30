@@ -181,7 +181,7 @@ export function CoachingTaskCard({ userId }: CoachingTaskCardProps) {
             lineHeight: 'var(--dc-lh-heading)',
           }}
         >
-          次回コーチングまでの目標
+          次回コーチングまでのTODO
         </h2>
         <button
           type="button"

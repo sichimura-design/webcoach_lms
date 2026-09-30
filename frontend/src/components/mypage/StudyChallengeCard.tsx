@@ -6,7 +6,13 @@ import { Course } from '../../types/mypage';
 import { formatMinutesHM } from '../../utils/studyStats';
 import { lessonProgressFromPercent } from '../../utils/lessonProgress';
 import { LEARNING_HIERARCHY } from '../../constants/learningTaxonomy';
-import { splitLesson } from './ContinueLearningHero';
+
+function splitLesson(currentLesson: string | undefined): { no: string | null; name: string | null } {
+  if (!currentLesson) return { no: null, name: null };
+  const m = currentLesson.match(/^\s*((?:Lesson|LESSON|レッスン)\s*\d+)[\s:：.．-]*(.*)$/);
+  if (!m || !m[2]) return { no: null, name: currentLesson };
+  return { no: m[1], name: m[2] };
+}
 
 /**
  * 学習時間チャレンジ（マイページ右上）。claude.ai/design『トップページ 3案』5a 準拠。

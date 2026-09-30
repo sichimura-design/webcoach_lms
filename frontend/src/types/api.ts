@@ -153,78 +153,81 @@ export interface UpdateResumeCourseRequest {
   progress_percent: number;
 }
 
-// WebCoach Roadmap
-export interface Roadmap {
-  id: number;
+// WebCoach StudyNote
+export interface StudyNote {
+  content: string;
+  updated_at: string | null;
+}
+
+export interface UpdateStudyNoteRequest {
+  content: string;
+}
+
+// WebCoach MyNote（教材に紐づかない自由記述のノート。フォルダは入れ子対応）
+export interface MyNoteFolder {
+  folder_id: number;
+  mdl_user_id: number;
+  name: string;
+  parent_folder_id: number | null;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface CreateMyNoteFolderRequest {
+  name: string;
+  parent_folder_id?: number | null;
+}
+
+export interface UpdateMyNoteFolderRequest {
+  name?: string;
+  parent_folder_id?: number | null;
+}
+
+export interface MyNote {
+  noteid: number;
+  mdl_user_id: number;
+  folder_id: number | null;
+  courseid: number | null;
+  /** 関連レッスン（MoodleコースモジュールID）。教材画面からの逆引きに使う */
+  cmid: number | null;
+  /** 重要ラベル（0/1） */
+  favorite: number;
+  /** AIコーチの回答から作られたか（0/1） */
+  from_ai: number;
+  /** コーチングから作られたか（0/1） */
+  from_coaching: number;
+  title: string;
+  contents: string;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface CreateMyNoteRequest {
+  title: string;
+  contents?: string;
+  folder_id?: number | null;
+  courseid?: number | null;
+  cmid?: number | null;
+  favorite?: number;
+  from_ai?: number;
+  from_coaching?: number;
+}
+
+export interface UpdateMyNoteRequest {
   title?: string;
-  category?: string;
-  difficulty?: string;
-  description?: string;
+  contents?: string;
+  folder_id?: number | null;
+  courseid?: number | null;
+  cmid?: number | null;
+  favorite?: number;
+  from_ai?: number;
+  from_coaching?: number;
 }
 
-export interface RoadmapQueryParams {
-  category?: string;
-  difficulty?: string;
-  limit?: number;
-  offset?: number;
-}
-
-// WebCoach AI
-export interface AIRequest {
-  message: string;
-  user_id?: number;
-  course_id?: number;
-  context?: Record<string, any>;
-  max_chunks?: number;
-  use_tools?: boolean;
-  image?: string; // 添付画像（data URL）。AIが読み取って回答する。
-}
-
-export interface AISource {
-  chunk_index?: number;
-  module_name?: string;
-  filename?: string;
-  section_name?: string;
-  similarity?: number;
-}
-
-export interface AIToolCall {
-  tool_name?: string;
-  success?: boolean;
-  result?: Record<string, any>;
-  error?: string;
-}
-
-export interface AIResponse {
-  success: boolean;
-  message?: string;
-  sources?: AISource[];
-  tool_calls?: AIToolCall[];
-  context?: Record<string, any>;
-  timestamp?: string;
-  suggestions?: string[];
-}
-
-// WebCoach Database
-export interface UpdateDBRequest {
-  data_type: string;
-  records: Record<string, any>[];
-}
-
-export interface UpdateDBResponse {
-  success: boolean;
-  recordsProcessed: number;
-  recordsFailed: number;
-  message: string;
-  errors?: Array<{ row: number; message: string }>;
-}
-
-// Health
-export interface HealthResponse {
-  status: string;
-  timestamp?: string;
-  service?: string;
-  environment?: string;
+/** マイノート一覧の絞り込み。folderId=0 はルート直下のみ、cmid はその教材のノートのみ */
+export interface MyNoteListQuery {
+  folderId?: number;
+  cmid?: number;
 }
 
 // WebCoach CoachingSchedule
@@ -240,8 +243,6 @@ export interface CoachingSchedule {
   meeting_url: string;
   meeting_provider: 'google_meet' | null;
   meet_space_name: string | null;
-  coaching_summary: string | null;
-  todo: string | null;
   created_at: string;
   updated_at: string;
 }
@@ -251,16 +252,12 @@ export interface CreateCoachingScheduleRequest {
   coaching_date: string;
   meeting_url: string;
   meeting_provider?: 'google_meet' | null;
-  coaching_summary?: string | null;
-  todo?: string | null;
 }
 
 export interface UpdateCoachingScheduleRequest {
   coaching_date?: string;
   status?: CoachingScheduleStatus;
   meeting_url?: string;
-  coaching_summary?: string | null;
-  todo?: string | null;
 }
 
 // WebCoach AI Coaching Note
@@ -293,4 +290,204 @@ export interface UpdateCoachingNoteRequest {
   client_next_actions?: string | null;
   coach_follow_up?: string | null;
   next_session_check?: string | null;
+}
+
+// WebCoach Roadmap
+export interface Roadmap {
+  id: number;
+  title?: string;
+  category?: string;
+  difficulty?: string;
+  description?: string;
+}
+
+export interface RoadmapQueryParams {
+  category?: string;
+  difficulty?: string;
+  limit?: number;
+  offset?: number;
+}
+
+// WebCoach Career Roadmap（フェーズ制・スキル別テンプレート）
+export interface RoadmapSkill {
+  id: number;
+  code: string;
+  name: string;
+  goal_label: string | null;
+  display_order: number;
+}
+
+export interface RoadmapTodo {
+  phase_id: number;
+  todo_no: number;
+  description: string;
+}
+
+export interface RoadmapPhase {
+  id: number;
+  skill_id: number;
+  phase_no: number;
+  name: string;
+  goal: string;
+  milestone: string;
+  duration_days: number | null;
+  todos: RoadmapTodo[];
+}
+
+export interface RoadmapProgress {
+  id: number;
+  user_roadmap_id: number;
+  phase_id: number;
+  status: 'not_started' | 'in_progress' | 'completed' | 'skipped';
+  start: string | null;
+  end: string | null;
+  updated_by: number | null;
+  phase: RoadmapPhase;
+}
+
+export interface UserRoadmap {
+  id: number;
+  mdl_user_id: number;
+  skill_id: number;
+  is_completed: boolean;
+  skill: RoadmapSkill;
+  target_date: string | null;
+  phases: RoadmapProgress[];
+}
+
+export interface RoadmapProgressUpdate {
+  status?: 'not_started' | 'in_progress' | 'completed' | 'skipped';
+  start?: string;
+  end?: string;
+}
+
+export interface RoadmapQuestion {
+  review_no: number;
+  question_no: number;
+  question: string;
+}
+
+export interface RoadmapAnswer {
+  mdl_user_id: number;
+  review_no: number;
+  question_no: number;
+  answer: string;
+  created_at: string;
+}
+
+// WebCoach AI
+export interface AIImageAttachment {
+  media_type: string;
+  data: string; // Base64エンコード済み（data:URIプレフィックスなし）
+}
+
+export interface AIConversationMessage {
+  role: 'user' | 'assistant';
+  content: string;
+}
+
+/**
+ * 教材ページ(CourseContentPage)のAIコーチが送る「いま見ている箇所」の文脈。
+ * これがあるとapi-serverは教材を最優先の根拠にし、教材外の一般知識と区別して答える。
+ */
+export interface AILessonContext {
+  course_name?: string;
+  section_name?: string;
+  lesson_id?: number;
+  lesson_name?: string;
+  heading?: string;
+  selected_text?: string;
+  context_before?: string;
+  context_after?: string;
+  lesson_text?: string;
+}
+
+/** 教材ページでの回答の根拠区分（material=教材のみ / mixed=教材+一般知識 / general=一般知識のみ） */
+export type AIGrounding = 'material' | 'mixed' | 'general';
+
+export interface AIRequest {
+  message: string;
+  user_id?: number;
+  course_id?: number;
+  context?: Record<string, any>;
+  max_chunks?: number;
+  use_tools?: boolean;
+  image?: AIImageAttachment;
+  conversation_history?: AIConversationMessage[];
+  /**
+   * フロント側のチャットセッションID（例: "lesson:123" や常設ドロワーのDRAWER_SESSION_ID）。
+   * Dify連携ツールの会話継続キャッシュをこの単位で区切るために使う。
+   * 「新しい相談を始める」等で別セッションになった場合、以前の検索条件を
+   * 引き継がないようにする（省略時は従来通りuser_id単位で共有される）。
+   */
+  session_id?: string;
+  lesson_context?: AILessonContext;
+  /**
+   * 専門モード（制作物添削等）の指示文。message には混ぜず別項目で送る。
+   * message はDify連携アプリへ一言一句そのまま転送されるため、前置きを付けると
+   * ボタン値の完全一致で進むDifyのフローが先に進まなくなる（api-server側はLLMへの指示にだけ使う）。
+   */
+  mode_instruction?: string;
+  /**
+   * このターンで必ず呼ぶAIアプリ（一覧APIの app_key）。アプリのモードに入った直後の
+   * 最初の発言だけに付け、LLMの判断に任せずそのDifyアプリへ送らせる。
+   */
+  force_app_key?: string;
+  /**
+   * このターンの実行ID。「生成を中止」で POST /webcoach/ai/cancel に同じ値を送り、
+   * サーバー側（LLM・Dify）の生成も止める。bffClient.sendAIMessage が採番するので呼び出し側は付けなくてよい
+   */
+  run_id?: string;
+}
+
+export interface AISource {
+  chunk_index?: number;
+  module_name?: string;
+  filename?: string;
+  section_name?: string;
+  similarity?: number;
+}
+
+export interface AIToolCall {
+  tool_name?: string;
+  success?: boolean;
+  result?: Record<string, any>;
+  error?: string;
+}
+
+export interface AIResponse {
+  success: boolean;
+  message?: string;
+  sources?: AISource[];
+  tool_calls?: AIToolCall[];
+  context?: Record<string, any>;
+  timestamp?: string;
+  suggestions?: string[];
+  /** "processing"の場合、Dify連携ツールの実検索等で時間がかかっており、job_idでポーリング中であることを示す */
+  status?: 'done' | 'processing' | 'cancelled';
+  job_id?: string;
+  /** 教材ページ(lesson_contextあり)での回答の根拠区分。それ以外はnull/未定義 */
+  grounding?: AIGrounding | null;
+}
+
+// WebCoach Database
+export interface UpdateDBRequest {
+  data_type: string;
+  records: Record<string, any>[];
+}
+
+export interface UpdateDBResponse {
+  success: boolean;
+  recordsProcessed: number;
+  recordsFailed: number;
+  message: string;
+  errors?: Array<{ row: number; message: string }>;
+}
+
+// Health
+export interface HealthResponse {
+  status: string;
+  timestamp?: string;
+  service?: string;
+  environment?: string;
 }

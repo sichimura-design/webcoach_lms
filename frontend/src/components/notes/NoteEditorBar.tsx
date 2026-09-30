@@ -9,6 +9,7 @@ import {
   Inbox,
   Loader2,
   MoreHorizontal,
+  Save,
   Star,
   Trash2,
 } from 'lucide-react';
@@ -37,10 +38,11 @@ interface NoteEditorBarProps {
   onMoveToFolder: (folderId: string | null) => void;
   onToggleFavorite: () => void;
   onDelete: () => void;
+  /** 本文を保存する（自動保存はしない。useNote の saveBody） */
+  onSave: () => void;
   /**
-   * 「速記メモを小窓で開く」。中身は MyNotesPage が渡す。
-   * ここに置くのは並びだけで、転記先の決定も下書きも持たせない
-   * （このバーは note が消えると一緒に消えるので、小窓の寿命を預けられない）。
+   * 「ノートを小窓で開く」。中身は MyNotesPage が渡す。
+   * ここに置くのは並びだけ（このバーは note が消えると一緒に消えるので、小窓の寿命を預けられない）。
    */
   quickMemo?: React.ReactNode;
 }
@@ -155,11 +157,20 @@ function SaveStatus({ saveState, fallbackAt }: { saveState: NoteSaveState; fallb
       </span>
     );
   }
+  // 🔴 失敗は未保存より先に出す。未保存を先にすると、保存に失敗しても「未保存」としか見えない
   if (saveState.error) {
     return (
       <span style={{ ...base, color: 'var(--dc-primary)' }} role="status" aria-live="polite">
         <AlertCircle size={14} />
         {saveState.error}
+      </span>
+    );
+  }
+  if (saveState.dirty) {
+    return (
+      <span style={base} role="status" aria-live="polite">
+        <AlertCircle size={14} style={{ color: 'var(--dc-text-subtle)' }} />
+        未保存の変更があります
       </span>
     );
   }
@@ -183,6 +194,7 @@ export function NoteEditorBar({
   onMoveToFolder,
   onToggleFavorite,
   onDelete,
+  onSave,
   quickMemo,
 }: NoteEditorBarProps) {
   const [moreOpen, setMoreOpen] = useState(false);
@@ -234,6 +246,34 @@ export function NoteEditorBar({
       {quickMemo}
 
       <SaveStatus saveState={saveState} fallbackAt={note.updatedAt} />
+
+      {/* 🔴 本文は自動保存しない。未保存があるときだけ押せる（Ctrl+S でも同じ） */}
+      <button
+        type="button"
+        onClick={onSave}
+        disabled={!saveState.dirty || saveState.saving}
+        title="保存（Ctrl+S）"
+        className="focus-visible:ring-2 focus-visible:ring-[#F6B9BD]"
+        style={{
+          display: 'inline-flex',
+          alignItems: 'center',
+          gap: 6,
+          height: 32,
+          padding: '0 16px',
+          border: 0,
+          borderRadius: 9999,
+          background: saveState.dirty ? 'var(--dc-primary)' : 'var(--dc-sunken)',
+          color: saveState.dirty ? '#fff' : 'var(--dc-text-subtle)',
+          fontFamily: 'inherit',
+          fontSize: 12,
+          fontWeight: 700,
+          cursor: saveState.dirty && !saveState.saving ? 'pointer' : 'default',
+          whiteSpace: 'nowrap',
+        }}
+      >
+        <Save size={14} />
+        保存
+      </button>
 
       <button
         type="button"

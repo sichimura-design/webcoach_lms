@@ -5,6 +5,7 @@ import { UploadResult } from './UploadResult';
 import { UploadHistory } from './UploadHistory';
 import { bffClient } from '../../services/bffClient';
 import { Button } from '../ui/button';
+import { getUserMessage } from '../../utils/errorMessage';
 
 // ─── CSV テンプレート定義 ────────────────────────────────────────────────────
 
@@ -14,22 +15,6 @@ const CSV_TEMPLATES: Record<DataType, { filename: string; content: string }> = {
     content: [
       'id,fullname,shortname,categoryid,summary,format,visible,startdate,enddate,tag,imageUrl,updateFlag,deleteFlag',
       ',Introduction to Programming,PROG101,1,プログラミングの基礎を学ぶコースです,topics,1,2024-04-01,2025-03-31,Python,https://example.com/course.png,0,0',
-    ].join('\n'),
-  },
-  courses: {
-    filename: 'template_roadmaps.csv',
-    content: [
-      'roadmap_id,name,category,required_study_time,icon_url,updateFlag,deleteFlag',
-      ',Webデザイン基礎,デザイン,1200,https://example.com/icons/webdesign.png,0,0',
-    ].join('\n'),
-  },
-  enrollments: {
-    filename: 'template_roadmap_steps.csv',
-    content: [
-      'roadmap_id,step_number,mdl_course_id,updateFlag,deleteFlag',
-      '1,1,101,0,0',
-      '1,2,102,0,0',
-      '1,3,103,0,0',
     ].join('\n'),
   },
   categories: {
@@ -50,9 +35,9 @@ const CSV_TEMPLATES: Record<DataType, { filename: string; content: string }> = {
   'ai-applications': {
     filename: 'template_ai_applications.csv',
     content: [
-      'id,name,category,description,url,icon_url,tags,updateFlag,deleteFlag',
-      ',ChatGPT,生成AI,対話型AIチャットボット,https://chat.openai.com,https://example.com/chatgpt.png,"AI,チャット,自然言語処理",0,0',
-      ',Midjourney,画像生成AI,テキストから画像を生成するAIツール,https://midjourney.com,,,0,0',
+      'id,name,category,description,url,icon_url,tags,secret_key,display_name,display_description,display_category,sort_order,updateFlag,deleteFlag',
+      ',ChatGPT,生成AI,対話型AIチャットボット,https://chat.openai.com,https://example.com/chatgpt.png,"AI,チャット,自然言語処理",,,,,,0,0',
+      ',デイリーデザインスプリントチャレンジャー,デザイン,その日に取り組むデザイン練習の課題を出題し、仕上げた作品の画像にフィードバックする。「今日の課題を出して」など練習のお題が欲しいときに使う。,https://udify.app/chat/9kWaflrs1psrwRvs,,"AI,デザイン",design-sprint-challenger,デザインスプリントチャレンジャー,使える時間と分野を答えると、その日のデザイン課題を出します。,学習サポート,20,0,0',
     ].join('\n'),
   },
   avatars: {
@@ -94,22 +79,6 @@ const CSV_FORMAT: Record<DataType, CsvColumn[]> = {
     { col: 'updateFlag',    required: false, desc: '1 の場合、既存コースを更新する' },
     { col: 'deleteFlag',    required: false, desc: '1 の場合、該当コースを削除する（id必須）' },
   ],
-  courses: [
-    { col: 'roadmap_id',          required: false, desc: 'ロードマップID（更新・削除時に指定、新規は空欄）' },
-    { col: 'name',                required: true,  desc: 'ロードマップ名' },
-    { col: 'category',            required: false, desc: 'カテゴリ名' },
-    { col: 'required_study_time', required: false, desc: '必要学習時間（分）' },
-    { col: 'icon_url',            required: false, desc: 'アイコン画像のURL' },
-    { col: 'updateFlag',          required: false, desc: '1 の場合、既存レコードを更新する' },
-    { col: 'deleteFlag',          required: false, desc: '1 の場合、該当レコードを削除する（roadmap_id必須）' },
-  ],
-  enrollments: [
-    { col: 'roadmap_id',    required: true,  desc: 'ロードマップID' },
-    { col: 'step_number',   required: true,  desc: 'ステップ番号（コース内の順番）' },
-    { col: 'mdl_course_id', required: true,  desc: 'MoodleコースID' },
-    { col: 'updateFlag',    required: false, desc: '1 の場合、既存レコードを更新する' },
-    { col: 'deleteFlag',    required: false, desc: '1 の場合、該当レコードを削除する' },
-  ],
   categories: [
     { col: 'name',              required: true,  desc: 'カテゴリ名' },
     { col: 'parent',            required: false, desc: '親カテゴリID（0 = ルート直下）' },
@@ -132,15 +101,20 @@ const CSV_FORMAT: Record<DataType, CsvColumn[]> = {
     { col: 'deleteFlag',       required: false, desc: '1 の場合、該当レコードを削除する（mdl_user_id必須）' },
   ],
   'ai-applications': [
-    { col: 'id',          required: false, desc: 'AIアプリID（更新・削除時に指定、新規は空欄）' },
+    { col: 'id',          required: false, desc: 'AIアプリID（更新・削除時に指定、新規は空欄）。指定すると name を変えても同じ行を更新する' },
     { col: 'name',        required: true,  desc: 'AIアプリ名' },
     { col: 'category',    required: false, desc: 'カテゴリ名（例: 生成AI / 画像生成AI）' },
-    { col: 'description', required: false, desc: 'アプリの説明文' },
+    { col: 'description', required: false, desc: 'AI向けの説明文。AIチャットがどのアプリを呼ぶか決める材料になる（何をするか・どんな依頼で使うか・似たアプリとの違いを書く。256文字まで）' },
     { col: 'url',         required: false, desc: 'アクセスURL' },
     { col: 'icon_url',    required: false, desc: 'アイコン画像のURL' },
     { col: 'tags',        required: false, desc: 'タグ（カンマ区切り、複数の場合はダブルクォートで囲む）' },
-    { col: 'updateFlag',  required: false, desc: '1 の場合、既存レコードを更新する' },
-    { col: 'deleteFlag',  required: false, desc: '1 の場合、該当レコードを削除する（id必須）' },
+    { col: 'secret_key',  required: false, desc: 'AIチャットから呼び出す場合のみ指定。Secrets Managerに登録した認証情報JSON内のキー名（APIキー自体は含めない）。「AIコーチでできること」一覧とはこの値で結び付く' },
+    { col: 'display_name',        required: false, desc: '「AIコーチでできること」一覧に出す名前（例: AI面接シュミレーター）。空欄なら name を出す。列ごと省くと既存の値を変えない' },
+    { col: 'display_description', required: false, desc: '「AIコーチでできること」一覧に出す説明文（512文字まで）。空欄なら description を出す。列ごと省くと既存の値を変えない' },
+    { col: 'display_category',    required: false, desc: '一覧で束ねる分類の見出し（例: 学習サポート／制作サポート／案件獲得）。空欄なら「そのほか」。列ごと省くと既存の値を変えない' },
+    { col: 'sort_order',          required: false, desc: '一覧の並び順（整数、小さい順）。分類の並びも、各分類でいちばん小さい値の順になる。空欄なら末尾。列ごと省くと既存の値を変えない' },
+    { col: 'updateFlag',  required: false, desc: '参考用（無視される）。id、または name + category が一致する行があれば更新、無ければ新規作成になる' },
+    { col: 'deleteFlag',  required: false, desc: '1 の場合、該当レコードを削除する。id があれば id で、空なら name + category で対象を探す（見つからなければエラー）' },
   ],
   avatars: [
     { col: 'avatar_id', required: false, desc: 'アバターID（更新・削除時に指定、新規は空欄）' },
@@ -158,17 +132,9 @@ const dataTypeConfig: Record<DataType, { title: string; description: string }> =
     title: 'Moodleコース作成',
     description: 'CSVからMoodleにコースを一括作成します',
   },
-  courses: {
-    title: 'コース管理',
-    description: '学習ロードマップの一括登録・更新を行います',
-  },
   categories: {
     title: 'カテゴリ管理',
     description: 'カテゴリの一括登録・更新を行います',
-  },
-  enrollments: {
-    title: '受講登録',
-    description: 'ロードマップに紐づくコース情報の一括登録・更新を行います',
   },
   users: {
     title: 'ユーザー管理',
@@ -205,6 +171,41 @@ function escapeCsvValue(val: unknown): string {
   return str;
 }
 
+/**
+ * CSVの1行を列に分ける。ダブルクォートで囲んだ値の中のカンマ・「""」（＝"）を扱う。
+ * 🔴 単純な split(',') に戻さないこと。tags（"AI,デザイン"）や説明文のカンマで列がずれ、
+ *    実際にDBの tags が「"AI」だけになった行がある。ダウンロードCSVも escapeCsvValue で
+ *    クォートして出すので、読み込み側もクォートを解釈しないと往復で壊れる。
+ * 値の中の改行には対応しない（行単位で読んでいるため）。
+ */
+function parseCsvLine(line: string): string[] {
+  const values: string[] = [];
+  let current = '';
+  let inQuotes = false;
+  for (let i = 0; i < line.length; i++) {
+    const ch = line[i];
+    if (inQuotes) {
+      if (ch === '"' && line[i + 1] === '"') {
+        current += '"';
+        i++;
+      } else if (ch === '"') {
+        inQuotes = false;
+      } else {
+        current += ch;
+      }
+    } else if (ch === '"') {
+      inQuotes = true;
+    } else if (ch === ',') {
+      values.push(current);
+      current = '';
+    } else {
+      current += ch;
+    }
+  }
+  values.push(current);
+  return values;
+}
+
 function toCsvRow(values: unknown[]): string {
   return values.map(escapeCsvValue).join(',');
 }
@@ -228,7 +229,7 @@ interface AdminCsvPageProps {
   dataType: DataType;
 }
 
-const DOWNLOADABLE_ALL_TYPES: DataType[] = ['moodle-courses', 'courses', 'categories', 'ai-applications', 'avatars'];
+const DOWNLOADABLE_ALL_TYPES: DataType[] = ['moodle-courses', 'categories', 'ai-applications', 'avatars'];
 
 export const AdminCsvPage: React.FC<AdminCsvPageProps> = ({ dataType }) => {
   const [isUploading, setIsUploading] = useState(false);
@@ -258,14 +259,6 @@ export const AdminCsvPage: React.FC<AdminCsvPageProps> = ({ dataType }) => {
           c.tag ?? '', c.imageUrl ?? '', 0, 0,
         ]));
         downloadCsvContent([header, ...rows].join('\n'), `all_moodle_courses_${today}.csv`);
-      } else if (dataType === 'courses') {
-        const roadmaps = await bffClient.getRoadmaps();
-        const header = 'roadmap_id,name,category,required_study_time,icon_url,updateFlag,deleteFlag';
-        const rows = roadmaps.map((r: any) => toCsvRow([
-          r.id ?? '', r.name ?? r.title ?? '', r.category ?? '',
-          r.required_study_time ?? '', r.icon_url ?? '', 0, 0,
-        ]));
-        downloadCsvContent([header, ...rows].join('\n'), `all_roadmaps_${today}.csv`);
       } else if (dataType === 'categories') {
         const categories = await bffClient.getCategories();
         const header = 'id,name,parent,idnumber,description,descriptionformat,imageUrl,updateFlag,deleteFlag';
@@ -277,10 +270,14 @@ export const AdminCsvPage: React.FC<AdminCsvPageProps> = ({ dataType }) => {
         downloadCsvContent([header, ...rows].join('\n'), `all_categories_${today}.csv`);
       } else if (dataType === 'ai-applications') {
         const apps = await bffClient.getAIApplications();
-        const header = 'id,name,category,description,url,icon_url,tags,updateFlag,deleteFlag';
-        const rows = apps.map((a: any) => toCsvRow([
+        // 🔴 secret_key を必ず含める。以前は出力に無く、このCSVをそのまま再アップロードすると
+        //    secret_key が空で上書きされ、AIチャットからDifyアプリを呼べなくなっていた
+        const header = 'id,name,category,description,url,icon_url,tags,secret_key,display_name,display_description,display_category,sort_order,updateFlag,deleteFlag';
+        const rows = apps.map((a) => toCsvRow([
           a.id ?? '', a.name ?? '', a.category ?? '', a.description ?? '',
-          a.url ?? '', a.icon_url ?? '', a.tags ?? '', 0, 0,
+          a.url ?? '', a.icon_url ?? '', (a.tags ?? []).join(','), a.app_key ?? '',
+          a.display_name ?? '', a.display_description ?? '',
+          a.display_category ?? '', a.sort_order ?? '', 0, 0,
         ]));
         downloadCsvContent([header, ...rows].join('\n'), `all_ai_applications_${today}.csv`);
       } else if (dataType === 'avatars') {
@@ -299,16 +296,18 @@ export const AdminCsvPage: React.FC<AdminCsvPageProps> = ({ dataType }) => {
     setUploadResult(null);
 
     try {
-      const text = await file.text();
+      // 「全件ダウンロード」のCSVは Excel 向けに BOM 付きなので、先頭の BOM を落とす
+      // （残すと1列目の見出しが「\uFEFFid」になり、id 列が読めない）
+      const text = (await file.text()).replace(/^\uFEFF/, '');
       const lines = text.split('\n').filter(line => line.trim());
 
       if (lines.length === 0) throw new Error('CSVファイルが空です');
 
-      const headers = lines[0].split(',').map(h => h.trim());
+      const headers = parseCsvLine(lines[0]).map(h => h.trim());
       const records = [];
 
       for (let i = 1; i < lines.length; i++) {
-        const values = lines[i].split(',').map(v => v.trim());
+        const values = parseCsvLine(lines[i]).map(v => v.trim());
         const record: Record<string, string> = {};
         headers.forEach((header, index) => { record[header] = values[index] || ''; });
         records.push(record);
@@ -408,11 +407,12 @@ export const AdminCsvPage: React.FC<AdminCsvPageProps> = ({ dataType }) => {
         errorMessage: newResult.success ? undefined : newResult.message,
       }, ...prev]);
     } catch (error) {
+      console.error('CSV upload failed:', error);
       setUploadResult({
         success: false,
         recordsProcessed: 0,
         recordsFailed: 0,
-        message: error instanceof Error ? error.message : 'アップロード中にエラーが発生しました',
+        message: getUserMessage(error, 'アップロード中にエラーが発生しました'),
       });
     } finally {
       setIsUploading(false);

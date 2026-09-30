@@ -1,7 +1,6 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useLocation, useNavigate, useSearchParams } from 'react-router-dom';
 import { color, font } from '../../theme/webcoachTheme';
-import { useToast } from '../../contexts/ToastContext';
 import { useLessonDoc } from '../../hooks/useLessonDoc';
 import { useLessonCompletion } from '../../hooks/useLessonCompletion';
 import { useLessonCheer } from '../../hooks/useLessonCheer';
@@ -56,7 +55,6 @@ interface LearningWorkspacePageProps {
 }
 
 export function LearningWorkspacePage({ courseId, initialModuleId, onBack }: LearningWorkspacePageProps) {
-  const { showToast } = useToast();
   const navigate = useNavigate();
   const location = useLocation();
   const [searchParams, setSearchParams] = useSearchParams();
@@ -363,7 +361,7 @@ export function LearningWorkspacePage({ courseId, initialModuleId, onBack }: Lea
     });
   }, [selection, doc, sourceOf, capture, clearSelection, backToLesson]);
 
-  // ── AI回答をマイノートに残す／下書きに追加 ──
+  // ── AI回答をマイノートに残す ──
   const questionFor = useCallback(
     (message: LessonAiMessage): { question: string; quote: string | null; image: string | null } => {
       const index = ai.messages.findIndex((m) => m.id === message.id);
@@ -412,7 +410,7 @@ export function LearningWorkspacePage({ courseId, initialModuleId, onBack }: Lea
     async (message: LessonAiMessage) => {
       if (!doc || (!message.answer && !message.skillResult)) return;
       // 🔴 添付画像は持ってこない。ノートに任意の画像を残さない方針
-      //    （utils/noteImageStore.ts の冒頭）。質問に画像を使うのは従来どおり。
+      //    （マイノートの画像機能は廃止済み）。質問に画像を使うのは従来どおり。
       const { question, quote } = questionFor(message);
       const sources = message.answer?.sources ?? message.skillResult?.sources ?? [];
       const source = sourceOf({
@@ -462,16 +460,6 @@ export function LearningWorkspacePage({ courseId, initialModuleId, onBack }: Lea
       capture.openNotes(noteId, backToLesson('notes'));
     },
     [capture, backToLesson]
-  );
-
-  const handleAppendToMemo = useCallback(
-    (message: LessonAiMessage) => {
-      const { question } = questionFor(message);
-      notes.appendToMemo(question, answerToText(message));
-      openSupport('notes');
-      showToast('AI回答を下書きに追加しました', 'success');
-    },
-    [questionFor, notes, answerToText, openSupport, showToast]
   );
 
   /**
@@ -698,7 +686,6 @@ export function LearningWorkspacePage({ courseId, initialModuleId, onBack }: Lea
               <AiCoachPane
                 ai={ai}
                 onSaveAnswer={handleSaveAnswer}
-                onAppendToMemo={handleAppendToMemo}
                 onJumpToBlock={jumpToBlock}
                 disabled={!selectionEnabled}
                 onOpenWide={handleOpenWideWithSkill}

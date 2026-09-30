@@ -36,38 +36,36 @@ export interface RecommendInput {
 
 /**
  * 学習領域から、その領域で最初に効く機能を1つ選ぶ。
- * 現行の領域（constants/courseTaxonomy.ts の AREAS）すべてを網羅する。
- * 🔴 領域名を変えたらここも直すこと。網羅していない領域は FALLBACK_ORDER に落ちて、
- *    学習領域を見ていないのと同じ結果になる（型では検出できない）。
+ * 現行の10領域（constants/courseTaxonomy.ts の AREAS）すべてを網羅する。
+ * 領域名を変えたらここも直すこと。網羅していない領域は FALLBACK_ORDER に落ちて、
+ * 学習領域を見ていないのと同じ結果になる。
  */
 const CATEGORY_SKILL: Array<{ match: RegExp; skillId: ConcreteAiSkillId }> = [
   // 「Web×AI」「生成AI基礎」を先に見る（「Web×AI」は下のデザイン/制作にも当たるため）
   { match: /AI/, skillId: 'learning' },
-  { match: /動画/, skillId: 'video-review' },
   { match: /デザイン/, skillId: 'design-review' },
-  { match: /Web制作|コーディング|コード|プログラ/, skillId: 'learning' },
+  { match: /動画/, skillId: 'design-review' },
+  { match: /Web制作|コーディング|コード|プログラ/, skillId: 'tooling' },
   { match: /マーケ|ライティング|セールス/, skillId: 'copy' },
   { match: /SNS/, skillId: 'copy' },
-  { match: /キャリア|副業|案件|学習ガイド/, skillId: 'job-search-crowdworks' },
 ];
 
 /** 教材名から拾う、より具体的な手がかり。カテゴリより優先する */
 const TITLE_SKILL: Array<{ match: RegExp; skillId: ConcreteAiSkillId }> = [
-  { match: /動画|ムービー|ショート/, skillId: 'video-review' },
   { match: /バナー|サムネ|LP|ロゴ|チラシ|ポートフォリオサイト/, skillId: 'design-review' },
   { match: /キャッチ|コピー|見出し/, skillId: 'copy' },
   { match: /面接|面談|商談/, skillId: 'interview' },
   { match: /応募|提案|営業/, skillId: 'application' },
+  { match: /エラー|環境構築|セットアップ/, skillId: 'tooling' },
 ];
 
 /** 学習状況に依存しない、迷ったときの並び。ここから穴埋めする */
 const FALLBACK_ORDER: ConcreteAiSkillId[] = [
   'design-review',
-  'daily-design-sprint',
+  'writing',
   'learning',
   'copy',
-  'glossary',
-  'job-search-crowdworks',
+  'quiz',
 ];
 
 /** 機能ごとの既定の見出し・理由。学習状況が取れないときはこの文言で出す */
@@ -80,17 +78,21 @@ const GENERIC: Record<ConcreteAiSkillId, { title: string; reason: string }> = {
     title: '知らない用語をやさしく言い換える',
     reason: '専門用語をそのまま覚えるより、言い換えた方が先に進めます。',
   },
-  'daily-design-sprint': {
-    title: '今日のデザイン課題に取り組む',
-    reason: '使える時間から課題を出すので、何を作るか決める前に手が動きます。',
+  quiz: {
+    title: '学んだ範囲の理解度を確認する',
+    reason: '説明できるかどうかを確かめると、抜けが分かります。',
   },
   'design-review': {
     title: '制作物を提出前にチェックする',
     reason: '画像を添付すると、教材の基準で改善点を確認できます。',
   },
   'video-review': {
-    title: '編集した動画を見てもらう',
-    reason: 'テンポとテロップは、作った本人だと気づきにくいところです。',
+    title: '編集した動画を納品前にチェックする',
+    reason: 'カット・テロップ・音・構成の観点で、直す順番まで確認できます。',
+  },
+  writing: {
+    title: '書いた文章を読みやすく整える',
+    reason: '結論の位置と一文の長さを直すだけで伝わり方が変わります。',
   },
   copy: {
     title: 'キャッチコピーの案を並べて比べる',
@@ -104,17 +106,29 @@ const GENERIC: Record<ConcreteAiSkillId, { title: string; reason: string }> = {
     title: 'AIと面接の練習をする',
     reason: '声に出して答える練習を、相手を待たずにできます。',
   },
-  'job-search-crowdworks': {
-    title: 'クラウドワークスで受けられる案件を絞る',
-    reason: 'できることと使える時間を整理すると、探す範囲が決まります。',
+  idea: {
+    title: '何から始めるかを整理する',
+    reason: '決めることを分けると、今日動ける大きさになります。',
   },
-  'job-search-coconala': {
-    title: 'ココナラで受けられる案件を絞る',
-    reason: 'できることと使える時間を整理すると、探す範囲が決まります。',
+  'design-sprint': {
+    title: '今日のデザイン課題に挑戦する',
+    reason: '使える時間に合わせたお題があると、迷わず手を動かし始められます。',
+  },
+  'job-search-crowdworks': {
+    title: 'クラウドワークスで案件を探す',
+    reason: '得意な作業と条件を決めると、受けられる案件だけに絞れます。',
   },
   'job-search-lancers': {
-    title: 'ランサーズで受けられる案件を絞る',
-    reason: 'できることと使える時間を整理すると、探す範囲が決まります。',
+    title: 'ランサーズで案件を探す',
+    reason: '得意な作業と条件を決めると、受けられる案件だけに絞れます。',
+  },
+  'job-search-coconala': {
+    title: 'ココナラで案件を探す',
+    reason: '得意な作業と条件を決めると、受けられる案件だけに絞れます。',
+  },
+  tooling: {
+    title: 'ツールのエラーを切り分ける',
+    reason: '再現条件から順に見ると、原因の見当がつきます。',
   },
 };
 
@@ -161,16 +175,14 @@ export function buildRecommendations(input: RecommendInput): AiSkillRecommendati
     });
   }
 
-  // ② 進捗から。終盤なら手を動かす練習、序盤なら教材の理解を優先する
-  // 🔴 終盤に勧めていた「理解度チェック」はアプリが無くなったので、
-  //    同じ「仕上げに効くもの」としてデザインスプリントチャレンジャーに置き換えた。
+  // ② 進捗から。終盤なら定着の確認、序盤なら教材の理解を優先する
   if (typeof progress === 'number' && lessonName) {
     if (progress >= 70) {
       add({
-        skillId: 'daily-design-sprint',
-        title: `${lessonName}で学んだことを課題で試す`,
-        reason: `このコースを${Math.round(progress)}%まで進めているため、学んだ範囲を手を動かして確かめると定着します。`,
-        seedInput: `「${lessonName}」で学んだことを試せる課題を出してください`,
+        skillId: 'quiz',
+        title: `${lessonName}の理解度を確認する`,
+        reason: `このコースを${Math.round(progress)}%まで進めているため、説明できるかを確かめておくと定着します。`,
+        seedInput: `「${lessonName}」の範囲から確認の問題を出してください`,
       });
     } else if (progress <= 30) {
       add({

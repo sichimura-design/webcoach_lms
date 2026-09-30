@@ -4,11 +4,10 @@ import { bffClient } from '../services/bffClient';
 /**
  * 週間の学習時間目標（分）。トップページ 8a の「今週の目標」で使う。
  *
- * 保存先は Profile.weekly_target_minutes。
- * 🔴 実BFFの ProfileUpdate はこの項目を受け取らない（バックエンドは変更禁止）。
- *    モックONのときだけ往復し、本番では投げても無視されて GET でも返ってこない。
- *    そのため保存の成否に関わらず画面上の値は先に更新する（楽観的更新）。
- *    本番で目標を変えても、リロードすると既定値に戻る — これは仕様上の割り切り。
+ * 保存先は Profile.weekly_target_minutes（webcoach_user_profileテーブル、
+ * POST /api/updateprofile/{userid} 経由で永続化される。2026-09-11に実装)。
+ * 画面上は保存の成否を待たず先に値を更新する（楽観的更新）。通信失敗時も
+ * 画面の値は戻さない（保存はリトライされないので、次回保存操作まではその値のまま）。
  *
  * 30分きざみに丸めるのは 8a のステッパー（−／＋）の刻みに合わせるため。
  */
@@ -63,7 +62,7 @@ export function useWeeklyGoal(
       try {
         await bffClient.updateUserProfile(userId, { weekly_target_minutes: next });
       } catch {
-        /* 本番では保存先が無い。画面の値は戻さない（上のコメント参照） */
+        /* 通信失敗時も画面の値は戻さない（上のコメント参照） */
       } finally {
         setSaving(false);
       }

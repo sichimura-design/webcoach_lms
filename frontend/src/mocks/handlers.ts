@@ -17,7 +17,7 @@
  *     コンソールに「未実装のモックAPIです」と出たらここにハンドラを足すこと。
  * ============================================================
  */
-import { http, HttpResponse, passthrough } from 'msw';
+import { delay, http, HttpResponse, passthrough } from 'msw';
 import type {
   UserInfo,
   Profile,
@@ -25,10 +25,10 @@ import type {
 } from '../types/api';
 import type { FocusBoothMember } from '../types/focusBooth';
 import { coachingHandlers } from './coachingHandlers';
+import { coachMappingHandlers } from './coachMappingHandlers';
 import { coachScheduleHandlers } from './coachScheduleHandlers';
 import { buildCourseStructure, buildOutline, courseLessonCount, isLessonDone, lessonHandlers, setLessonDone } from './lessonHandlers';
 import { MIGRATED_COURSE_IDS, isMigratedCourse } from './migratedMaterials';
-import { noteHandlers } from './noteHandlers';
 import { learningPlanHandlers } from './learningPlanHandlers';
 import { aiSkillHandlers } from './aiSkillHandlers';
 import { currentStreakInfo, studyActivityHandlers } from './studyActivityHandlers';
@@ -298,14 +298,29 @@ function buildSections(courseId: number) {
   }));
 }
 
-// AIアプリ（/webcoach/ai-applications）
+// AIアプリ（/webcoach/ai-applications）。実DB（webcoach_ai_application）のDify連携アプリと同じ顔ぶれ・同じ形。
+// 「AIコーチでできること」は app_key で types/aiSkill.ts と結んで一覧を作るので、形を崩さないこと。
+// 表示名・説明・分類・並び順は scripts/db/ の add-webcoach-ai-application-display-columns.sql と
+// add-webcoach-ai-application-category-sort.sql・update-ai-application-display-names-miyabe.sql を適用した後のDBと揃えてある。
+const aiApp = (
+  id: number, name: string, category: string, appKey: string,
+  displayName: string, displayDescription: string, displayCategory: string, sortOrder: number
+) => ({
+  id, name, category, description: `${name}のAI向け説明`, url: null, icon_url: null, tags: ['AI'],
+  display_name: displayName, display_description: displayDescription,
+  display_category: displayCategory, sort_order: sortOrder, app_key: appKey,
+  created_at: '2026-09-11T00:00:00', updated_at: '2026-09-28T00:00:00',
+});
 const aiApps = [
-  { id: 1, name: '教材Q&Aチャット', category: '学習中に', hook: '教材を読んでいて「？」となったら', description: '本文を引用して質問すると、どこでつまずいているかを一緒に整理して、あなたに合わせた説明をしてくれる。', example: '「"余白を活かす"ってどういうこと？具体例がほしい」', icon: '💬', iconBg: '#FDF0F2', accent: '#C24358', url: 'https://example.com/qa-chat' },
-  { id: 2, name: '学習プランナーAI', category: '学習中に', hook: '今週なにをやるか迷ったら', description: 'ロードマップと使える時間を伝えると、1週間分の学習計画を提案。忙しい週のリスケも相談できる。', example: '「今週は3時間しか取れない。何を優先すべき？」', icon: '🗓', iconBg: '#FDF0F2', accent: '#C24358', url: 'https://example.com/planner' },
-  { id: 3, name: 'デザイン添削AI', category: '制作・課題に', hook: '作ったものに自信がないとき', description: 'バナーやLPの画像をアップすると、レイアウト・配色・文字組の観点で講評。提出前のセルフチェックに。', example: '「課題のバナーです。視線誘導の観点でアドバイスして」', icon: '🖼', iconBg: '#FBEACD', accent: '#B98A16', url: 'https://example.com/design-review' },
-  { id: 4, name: '文章ブラッシュアップAI', category: '制作・課題に', hook: '言葉づかいに迷ったら', description: 'ポートフォリオの自己紹介文やバナーコピーを、目的と読み手に合わせて磨いてくれる。', example: '「ポートフォリオの自己PRを300字で自然にして」', icon: '✎', iconBg: '#FBEACD', accent: '#B98A16', url: 'https://example.com/writing' },
-  { id: 5, name: 'キャリア相談AI', category: 'キャリア・コーチングに', hook: '将来がモヤモヤしてきたら', description: '働き方や案件の獲り方の悩みを整理。コーチングの前に考えをまとめておくのにも使える。', example: '「副業から始めたい。最初の一歩は何がいい？」', icon: '🧭', iconBg: '#EAF6ED', accent: '#2FA35C', url: 'https://example.com/career' },
-  { id: 6, name: 'コーチング準備・ふりかえりAI', category: 'キャリア・コーチングに', hook: 'コーチングの前後に', description: '話したいことの整理と、ミーティングノートの要約・ネクストアクション抽出。ロードマップ更新の下書きにも。', example: '「今日のノートを要約して、来週やることを3つに絞って」', icon: '📋', iconBg: '#EAF6ED', accent: '#2FA35C', url: 'https://example.com/coaching-prep' },
+  aiApp(14, 'デイリーデザインスプリントチャレンジャー', 'デザイン', 'design-sprint-challenger', 'デザインスプリントチャレンジャー', '使える時間と分野を答えると、その日のデザイン課題を出します。仕上げて出すとフィードバックが返ります。', '学習サポート', 20),
+  aiApp(15, 'AI面接シュミレーター', '就活支援', 'ai-interview-simulator', 'AI面接シュミレーター', 'AIが面接官役になって質問し、答えたその場で伝わり方を振り返ります。', '案件獲得', 70),
+  aiApp(16, 'キャッチコピーアイデアメーカー', 'コンテンツ作成', 'catchcopy-idea-maker', 'キャッチコピーアイデアメーカー', '誰に何を伝えたいかを渡すと、狙いの違うコピー案を並べて比べられます。', '制作サポート', 50),
+  aiApp(17, 'デザインフィードバックメンターPro ver.2', 'デザイン', 'design-feedback-mentor-pro-v2', 'デザインフィードバックメンタープロ', '画像をアップロードすると、教材と課題の基準に沿って改善点を項目別に確認できます。', '制作サポート', 30),
+  aiApp(18, '専門用語AIアシスタント', '学習支援', 'technical-term-ai-assistant', '専門用語AIアシスタント', '専門用語や回りくどい文章を、身近な言葉とたとえに置き換えて説明します。', '学習サポート', 10),
+  aiApp(19, '案件応募文生成・添削メーカー', '案件サポート', 'project-application-writer', '案件応募文 生成・添削メーカー', '募集内容と自分の実績から、相手が判断できる応募文を組み立てます。', '案件獲得', 60),
+  aiApp(20, '案件抽出メーカー（Crowdworks）', '案件サポート', 'project-extractor-crowdworks', '案件抽出メーカー（クラウドワークス）', 'できることと使える時間を整理して、クラウドワークスで受けられる案件の条件まで絞ります。', '案件獲得', 80),
+  aiApp(21, '案件抽出メーカー（Lancers）簡易版_ハードゲート', '案件サポート', 'project-extractor-lancers-lite-hardgate', '案件抽出メーカー（ランサーズ）', 'できることと使える時間を整理して、ランサーズで受けられる案件の条件まで絞ります。', '案件獲得', 100),
+  aiApp(22, '案件抽出メーカー（ココナラ）', '案件サポート', 'project-extractor-coconala', '案件抽出メーカー（ココナラ）', 'できることと使える時間を整理して、ココナラで受けられる案件の条件まで絞ります。', '案件獲得', 90),
 ];
 
 // コーチ/運営向けの受講生一覧（GET /api/admin/students。実BFFには未実装のため全項目モック）
@@ -443,6 +458,7 @@ export const handlers = [
    *    削除した。受講生が任意の画像を自分のアイコンにできる口を持たない方針のため。
    *    アイコンは下の「選べるアイコン」から選ぶだけ。足し直さないこと。
    */
+
 
   /**
    * 選べるアイコン。
@@ -618,7 +634,9 @@ export const handlers = [
       { id: 3, badgeid: 3, userid: MOCK_USER_ID, dateissued: Math.floor(Date.now() / 1000) - 3 * 86400, uniquehash: 'mockhash3' },
     ])
   ),
-  http.get('*/api/webcoach/ai-applications', () => HttpResponse.json(aiApps)),
+  http.get('*/api/webcoach/ai-applications', () =>
+    HttpResponse.json({ total: aiApps.length, limit: 100, offset: 0, applications: aiApps })
+  ),
   // コース受講登録（クリック時）— 成功を返すだけ
   http.post('*/api/moodle/enroll-course/:courseid', () => HttpResponse.json({ success: true })),
   http.get('*/api/moodle/notifications/new-content', () =>
@@ -637,6 +655,39 @@ export const handlers = [
       hasImage = !!body?.image;
     } catch {
       /* ignore */
+    }
+
+    // ── 画面確認用の合言葉（A-1〜A-6 の確認で使う。本文に含めて送る） ──
+    //   【確認:ボタン】… Dify のボタン付き応答（選択肢を押すと「【確認:ボタン2】…」が送られる）
+    //   【確認:エラー】… 500 を返す（「もう一度送る」の確認）
+    //   【確認:遅い】  … 35秒待ってから返す（経過表示の確認）
+    if (message.includes('【確認:ボタン')) {
+      const step = message.includes('【確認:ボタン2】') ? 2 : 1;
+      return HttpResponse.json({
+        success: true,
+        message:
+          step === 1
+            ? [
+                '案件を探す媒体を選んでください。',
+                '',
+                '**どれにしますか？**',
+                '<div><button data-message="【確認:ボタン2】クラウドワークス">クラウドワークス</button><button data-message="【確認:ボタン2】ランサーズ">ランサーズ</button></div>',
+              ].join('\n')
+            : [
+                '条件を確認しました。',
+                '',
+                '**今日使える時間はどれくらいですか？**',
+                '<div><button data-message="30分">30分</button><button data-message="1時間">1時間</button></div>',
+              ].join('\n'),
+        sources: [],
+        timestamp: '2026-09-30T00:00:00Z',
+      });
+    }
+    if (message.includes('【確認:エラー】')) {
+      return HttpResponse.json({ success: false, error: 'mock error' }, { status: 500 });
+    }
+    if (message.includes('【確認:遅い】')) {
+      await delay(35000);
     }
 
     // 画像が添付されている場合は、画像を読み取った体で回答する（モック）
@@ -826,6 +877,7 @@ export const handlers = [
   // ==================== コーチング記録 ====================
   // 取り込み・非同期処理・要約・目標確定。量が多いので coachingHandlers.ts に分離している。
   ...coachingHandlers,
+  ...coachMappingHandlers,
 
   // ==================== コーチ画面: スケジュール / AIノート / Zoom連携 ====================
   // 上の coachingHandlers は受講生側の /coaching が使う系統。こちらはコーチ画面
@@ -836,7 +888,6 @@ export const handlers = [
   // 教材目次・構造化教材・教材準拠のAI回答・メモ/クリップ/保存回答。
   // 量が多いので lessonHandlers.ts に分離している。
   ...lessonHandlers,
-  ...noteHandlers,
 
   // ==================== AIコーチの専門モード ====================
   // 従来「AIアプリ」として別タブで開いていたものを、AIコーチの専門モードとして内包する。

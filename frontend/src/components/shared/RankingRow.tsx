@@ -5,15 +5,21 @@
  * 「学習時間ランキング／ストリークランキング」（全件）が同じ見た目の行を使うので、
  * 描画だけをここに寄せる。並べ替え・順位付けはしない（サーバ役が確定させた順に描く）。
  *
- * 🔴 他の受講者は仮名＋絵文字のみ（frontend/docs/design-token-spec.md）。
- *    実名・メールアドレス・顔写真は出さない。
+ * 🔴 他の受講者は仮名＋アイコンのみ。
+ *    実名・メールアドレスは出さない。アイコンはプロフィール画面で選んだプリセット
+ *    (avatarUrl、/admin/avatarsが登録した画像)があればそれを使い、無ければ
+ *    絵文字(avatarEmoji)を出す。どちらも無ければ(アバター未設定の他の受講者)
+ *    アイコンは出さず、名前の位置を揃えるため同じ幅の空きだけ確保する。
  */
 
 export interface RankingRowItem {
   rank: number;
   /** 仮名。自分の行だけ「あなた」 */
   nickname: string;
+  /** 絵文字アイコン。空文字ならアイコンを出さない */
   avatarEmoji: string;
+  /** プロフィールでプリセットアバターを選択済みならそのURL(未設定ならavatarEmojiを使う) */
+  avatarUrl?: string;
   /** 表示用に整形済みの値（「3時間23分」「12日」） */
   value: string;
   isMe: boolean;
@@ -77,24 +83,44 @@ export function RankingRow({ item, divided, showAvatar = true }: RankingRowProps
       <RankBadge rank={item.rank} isMe={item.isMe} />
 
       {showAvatar && (
-        <span
-          aria-hidden="true"
-          style={{
-            width: 26,
-            height: 26,
-            flex: 'none',
-            borderRadius: 9999,
-            display: 'grid',
-            placeItems: 'center',
-            fontSize: 'var(--dc-fs-lead)',
-            lineHeight: 1,
-            background: item.isMe ? '#fff' : 'var(--dc-sunken)',
-            border: item.isMe ? '1px solid var(--dc-soft-200)' : '1px solid var(--dc-border)',
-            boxSizing: 'border-box',
-          }}
-        >
-          {item.avatarEmoji}
-        </span>
+        item.avatarUrl ? (
+          <img
+            src={item.avatarUrl}
+            alt=""
+            aria-hidden="true"
+            style={{
+              width: 26,
+              height: 26,
+              flex: 'none',
+              borderRadius: 9999,
+              objectFit: 'cover',
+              background: item.isMe ? '#fff' : 'var(--dc-sunken)',
+              border: item.isMe ? '1px solid var(--dc-soft-200)' : '1px solid var(--dc-border)',
+              boxSizing: 'border-box',
+            }}
+          />
+        ) : !item.avatarEmoji ? (
+          <span aria-hidden="true" style={{ width: 26, height: 26, flex: 'none' }} />
+        ) : (
+          <span
+            aria-hidden="true"
+            style={{
+              width: 26,
+              height: 26,
+              flex: 'none',
+              borderRadius: 9999,
+              display: 'grid',
+              placeItems: 'center',
+              fontSize: 'var(--dc-fs-lead)',
+              lineHeight: 1,
+              background: item.isMe ? '#fff' : 'var(--dc-sunken)',
+              border: item.isMe ? '1px solid var(--dc-soft-200)' : '1px solid var(--dc-border)',
+              boxSizing: 'border-box',
+            }}
+          >
+            {item.avatarEmoji}
+          </span>
+        )
       )}
 
       <span

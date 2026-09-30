@@ -1,5 +1,5 @@
 /**
- * ページ見出し（h1）の唯一の定義。frontend/docs/typography.md §2 の
+ * ページ見出し（h1）の唯一の定義。
  * --dc-fs-display（clamp(28px, 1.68vw, 32px)）/ 700 / --dc-lh-heading。
  *
  * かつてこの値はどこにも定義されておらず、各ページが h1 のインライン style に

@@ -200,7 +200,7 @@ h1, h2, h3 {
       ほぼ全段が clamp の下限に張り付き、カード見出しが 13.5px、
       最頻出のラベルが 10.5px、曜日ラベルが 9.5px まで落ちていた。
       日本語は漢字が潰れるので、幅に関係なく「12px未満を作らない／
-      UI の下限は 14px」を守る。詳細は frontend/docs/typography.md。
+      UI の下限は 14px」を守る。
    🔴 28px以上（h1・成果の数値）だけ可変を残す。ここを固定にすると
       125%環境で数字が原寸のまま残り、カードが縦に伸びて情報が入らなくなる。
       係数は「最大値 × 100 / 1900 ＝ vw」。
@@ -1136,6 +1136,12 @@ body.learning-immersive {
   to   { transform: translateY(0); opacity: 1; }
 }
 
+/* レッスン完了時の紙吹雪。画面上端から落ちながら回転してフェードアウトする */
+@keyframes wcConfettiFall {
+  0%   { transform: translateY(0) rotate(0deg); opacity: 1; }
+  100% { transform: translateY(100vh) rotate(360deg); opacity: 0; }
+}
+
 .wc-drawer-scrim {
   animation: wcFadeIn 160ms ease-out;
 }
@@ -1367,6 +1373,16 @@ body.learning-immersive {
   gap: calc(var(--dc-sp-gap) * 0.55);
 }
 
+/* ランキング2枚（学習時間｜ストリーク、管理者のみ）。
+   🔴 fcef713 でランキングを外した際にこのクラスごと消したが、TSX 側で管理者向けに
+      復活したときに戻し忘れ、2枚が隙間ゼロで縦に密着していた。 */
+.studylog-rank-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--dc-sp-gap);
+  align-items: start;
+}
+
 /* 学習カレンダー ｜ 選んだ日の記録。
    広い画面ではほぼ 1:1。
    🔴 かつて詳細側を 320〜380px の固定寄りにしていた（中は1行1記録なので広げても
@@ -1486,6 +1502,7 @@ body.learning-immersive {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
+  .studylog-rank-grid,
   .studylog-calendar-grid {
     grid-template-columns: 1fr;
   }
@@ -1504,6 +1521,7 @@ body.learning-immersive {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
+  body.sidebar-expanded .studylog-rank-grid,
   body.sidebar-expanded .studylog-calendar-grid,
   body.sidebar-expanded .mypage-3d-grid {
     grid-template-columns: 1fr;
@@ -2436,6 +2454,18 @@ body.learning-immersive {
   --border: 0 0% 14.9%;
   --input: 0 0% 14.9%;
   --ring: 0 0% 83.1%;
+}
+
+/* dev/kanegae統合: FocusBoothPage.tsx（集中ブース、/focus-boothで引き続き使用中） */
+.focus-main {
+  padding: 28px 60px 40px;
+}
+
+.focus-2col {
+  display: grid;
+  grid-template-columns: 660px 1fr;
+  gap: 18px;
+  align-items: start;
 }
 
 /* ─── AIコーチの手ざわり（教材パネル／常駐ドロワー／AI専用ページ共通）───────

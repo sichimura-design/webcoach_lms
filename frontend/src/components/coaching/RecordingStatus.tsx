@@ -7,14 +7,11 @@
  *
  * モック段階では実際の録画状態とは連動しない（見た目のみ）。
  */
-import React, { useCallback, useState } from 'react';
+import React from 'react';
 import { ExternalLink, Sparkles } from 'lucide-react';
 import { color, font, radius, t } from '../../theme/webcoachTheme';
 import { MOCKS_ENABLED } from '../../mocks/config';
 import { displayMeetingUrl } from '../../utils/parseMeetingLink';
-import { bffClient } from '../../services/bffClient';
-import { QuickMemoLauncher } from '../quickMemo/QuickMemoLauncher';
-import { useNote } from '../../hooks/useNote';
 import type { CoachingSessionDetail } from '../../types/coaching';
 
 interface RecordingStatusProps {
@@ -24,47 +21,8 @@ interface RecordingStatusProps {
   finishing: boolean;
 }
 
-/** ノートの表題。シードと同じ「M/D コーチング記録」に揃える（mocks/noteMigration.ts:250） */
-function coachingNoteTitle(iso: string): string {
-  const [, m, d] = iso.split('-');
-  if (!m || !d) return 'コーチング記録';
-  return `${Number(m)}/${Number(d)} コーチング記録`;
-}
-
 export function RecordingStatus({ session, onFinish, finishing }: RecordingStatusProps) {
   const link = session.meetingLink;
-
-  /*
-   * 小窓に出すのは「この回のノート」の本文。無ければ小窓を開いた時に作る。
-   *
-   * 🔴 解決は小窓を **開いたあと**（onBeforeOpen）でやる。開く前に await すると
-   *    requestWindow() の user activation が切れて小窓が開かなくなるので、
-   *    useQuickMemoWindow が窓を出してからこれを呼ぶ。
-   * 🔴 folderId は渡さない。存在しないフォルダIDを送ると noteHandlers.ts が
-   *    400 を返してノート作成ごと失敗する。取り込んだものはまず未整理へ（types/notes.ts）。
-   */
-  const [noteId, setNoteId] = useState<string | null>(null);
-  const note = useNote(noteId);
-
-  const ensureNote = useCallback(async () => {
-    if (noteId) return true;
-    try {
-      const existing = await bffClient.listNotes({ coachingSessionId: session.id });
-      const id =
-        existing[0]?.id ??
-        (
-          await bffClient.createNote({
-            title: coachingNoteTitle(session.date),
-            origin: 'coaching',
-            coachingSessionId: session.id,
-          })
-        ).id;
-      setNoteId(id);
-      return true;
-    } catch {
-      return false;
-    }
-  }, [noteId, session.id, session.date]);
 
   return (
     <section style={{ ...t.card, padding: 24 }}>
@@ -91,40 +49,17 @@ export function RecordingStatus({ session, onFinish, finishing }: RecordingStatu
         このページを閉じても、{link ? (link.provider === 'zoom' ? 'Zoom' : 'Google Meet') : '会議ツール'}側で記録は継続します。
       </p>
 
-      <div style={{ display: 'flex', alignItems: 'center', gap: 10, flexWrap: 'wrap' }}>
-        {link && (
-          <a
-            href={link.url}
-            target="_blank"
-            rel="noopener noreferrer"
-            style={{ ...t.outlineButton, display: 'inline-flex', textDecoration: 'none' }}
-          >
-            <ExternalLink className="w-4 h-4" />
-            会議画面を開く
-          </a>
-        )}
-
-        {/* 会議の上に浮かべたまま書ける小窓。Chrome / Edge 以外では自分で消える */}
-        <QuickMemoLauncher
-          targetLabel={`→ ${coachingNoteTitle(session.date)}`}
-          windowTitle="ノート — WEBCOACH"
-          text={note.note?.body ?? ''}
-          onChangeText={note.setBody}
-          onFlush={note.flushBody}
-          status={
-            note.saveState.saving ? 'saving' : note.saveState.lastSavedAt ? 'saved' : 'idle'
-          }
-          error={note.saveState.error}
-          onBeforeOpen={ensureNote}
-          buttonStyle={{
-            ...t.outlineButton,
-            display: 'inline-flex',
-            gap: 8,
-            border: `1px solid ${color.borderSoft}`,
-            color: color.textStrong,
-          }}
-        />
-      </div>
+      {link && (
+        <a
+          href={link.url}
+          target="_blank"
+          rel="noopener noreferrer"
+          style={{ ...t.outlineButton, display: 'inline-flex', textDecoration: 'none' }}
+        >
+          <ExternalLink className="w-4 h-4" />
+          会議画面を開く
+        </a>
+      )}
 
       {link && (
         <p style={{ ...font.caption, color: color.textSubtle, margin: '12px 0 0', wordBreak: 'break-all' }}>

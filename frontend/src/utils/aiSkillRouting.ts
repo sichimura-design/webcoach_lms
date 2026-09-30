@@ -73,8 +73,35 @@ const DESIGN_WORDS = [
   '提出',
 ];
 
-/** 動画の編集そのものが対象であることを示す語（静止画の制作物とは別のアプリへ送る） */
-const VIDEO_WORDS = ['動画', 'テロップ', 'カット編集', 'BGM', 'Premiere', 'CapCut', 'ショート'];
+/** 文章そのものが対象であることを示す語（「コピー」「キャッチ」はコピー作成側で拾う） */
+const WRITING_TARGET_WORDS = [
+  '文章',
+  '文言',
+  '自己PR',
+  '自己紹介',
+  'プロフィール',
+  '説明文',
+  'テキスト',
+  '言葉づかい',
+  '言い回し',
+  '表現',
+  'メール',
+  '返信',
+];
+
+/** 文章を直してほしいという動作の語 */
+const WRITING_ACTION_WORDS = [
+  '書き直',
+  'リライト',
+  '推敲',
+  'ブラッシュアップ',
+  '自然に',
+  '整えて',
+  '短く',
+  '読みやすく',
+  '直して',
+  '改善',
+];
 
 /** コピー・見出しを作りたいことを示す語 */
 const COPY_WORDS = ['キャッチコピー', 'キャッチ', 'コピー', '見出し', 'タイトル', '惹句', 'キャッチフレーズ'];
@@ -82,24 +109,8 @@ const COPY_WORDS = ['キャッチコピー', 'キャッチ', 'コピー', '見�
 /** コピーを「作ってほしい」という動作の語 */
 const COPY_ACTION_WORDS = ['考えて', '作って', 'つくって', '案を', 'アイデア', '出して', '提案して'];
 
-/** 面接・面談の練習を示す語 */
-const INTERVIEW_WORDS = ['面接', '面談', '商談', '顧客との打ち合わせ', '自己紹介の練習'];
-
 /** 応募・提案の文書を作りたいことを示す語 */
 const APPLICATION_WORDS = ['応募', '提案文', '営業文', 'エントリー', '職務経歴', '履歴書'];
-
-/** 案件そのものを探していることを示す語 */
-const JOB_WORDS = [
-  '案件',
-  '仕事を探',
-  '受注',
-  'クラウドソーシング',
-  'ランサーズ',
-  'クラウドワークス',
-  'ココナラ',
-  '副業',
-  '単価',
-];
 
 /** 言葉の意味が分からないことを示す語 */
 const GLOSSARY_WORDS = [
@@ -116,15 +127,41 @@ const GLOSSARY_WORDS = [
   '専門用語',
 ];
 
-/**
- * 案件抽出メーカーは媒体ごとに別アプリなので、名指しされた媒体へ送る。
- * 🔴 名指しが無いときの既定はクラウドワークス（アプリ一覧の並びの先頭）。
- *    どれを勧めても恣意的になるが、提案カードなので押さなければ何も起きない。
- */
-const JOB_SITE_SKILLS: Array<{ words: string[]; skillId: AiSkillId }> = [
-  { words: ['ココナラ', 'coconala'], skillId: 'job-search-coconala' },
-  { words: ['ランサーズ', 'Lancers', 'lancers'], skillId: 'job-search-lancers' },
-  { words: ['クラウドワークス', 'CrowdWorks', 'crowdworks'], skillId: 'job-search-crowdworks' },
+/** 理解できたか確かめたいことを示す語 */
+const QUIZ_WORDS = ['理解度', '確認テスト', '問題を出', 'クイズ', '覚えられた', '身についた', 'テストして', '復習したい'];
+
+/** ツール・環境のトラブルを示す語 */
+const TOOLING_WORDS = [
+  'エラー',
+  '動かない',
+  '動きません',
+  '表示されない',
+  '反映されない',
+  '開けない',
+  '落ちる',
+  'バグ',
+  '消えた',
+  '保存できない',
+  'インストール',
+  '設定',
+  '使い方がわからない',
+];
+
+/** 考えを整理したい・順序を決めたいことを示す語 */
+const IDEA_WORDS = [
+  '整理',
+  '洗い出',
+  'アイデア',
+  '企画',
+  '構成案',
+  '何から',
+  'どこから',
+  '優先',
+  '計画',
+  '段取り',
+  '迷って',
+  'まとめたい',
+  '決められない',
 ];
 
 /** 「文章を貼り付けた」と判断する長さ。これ未満は普通の質問文として扱う */
@@ -141,15 +178,21 @@ function buildReferences(
   const refs: string[] = [];
   if (input.contextHeading) refs.push(input.contextHeading);
 
-  if (skillId === 'design-review' || skillId === 'video-review') {
+  if (skillId === 'design-review') {
     if (input.taskHeading) refs.push(`${input.taskHeading}の評価基準`);
     if (input.hasImage) refs.push('添付画像');
   }
-  if (skillId === 'glossary') {
+  if (skillId === 'writing' || skillId === 'glossary') {
     refs.push(input.quote ? '選択した教材本文' : '入力した文章');
   }
   if (skillId === 'copy' || skillId === 'application') {
     refs.push('入力した内容');
+  }
+  if (skillId === 'quiz' && input.contextHeading === null) {
+    refs.push('これまでの学習範囲');
+  }
+  if (skillId === 'idea' && input.taskHeading) {
+    refs.push(input.taskHeading);
   }
   return refs;
 }
@@ -182,19 +225,6 @@ export function detectSkill(input: DetectSkillInput): SkillSuggestion {
 function detectRaw(input: DetectSkillInput, text: string): SkillSuggestion {
   const reviewWord = hit(text, REVIEW_WORDS);
   const designWord = hit(text, DESIGN_WORDS);
-
-  // ── 動画編集フィードバック ──
-  // 静止画の制作物とは別のアプリなので、デザイン添削より先に見る。
-  // 動画は画像として添付できないので、語だけで判断する（suggest どまり）。
-  const videoWord = hit(text, VIDEO_WORDS);
-  if (!input.hasImage && videoWord && reviewWord) {
-    return {
-      skillId: 'video-review',
-      strength: 'suggest',
-      reason: `「${videoWord}」＋「${reviewWord}」`,
-      references: buildReferences('video-review', input),
-    };
-  }
 
   // ── 制作物添削 ──
   // 画像が添付されているかどうかで強さを分ける。仕様§4の例がそのままここに対応する。
@@ -237,26 +267,34 @@ function detectRaw(input: DetectSkillInput, text: string): SkillSuggestion {
     };
   }
 
-  /*
-   * 🔴 「文章改善」への振り分けはここにあったが、対応するアプリが無くなったので
-   *    消した（長い文章の貼り付け・「読みやすくして」を拾っていた）。
-   *    いまは素のAIコーチがそのまま答える。アプリを増やすときに戻すこと。
-   */
+  // ── 文章改善 ──
+  // 長い文章を貼り付けている＝直してほしい対象が本文そのもの、という前提で拾う。
   const pasted = input.question.length >= PASTED_TEXT_MIN;
+  const writingAction = hit(text, WRITING_ACTION_WORDS);
+  const writingTarget = hit(text, WRITING_TARGET_WORDS);
 
-  // ── キャリア（面接練習・応募文・案件抽出）──
-  // 貼り付けの長さで判断するものより先に見る。募集要項を貼っただけの相談に
-  // 見当違いの提案を返さないため。
-  const interviewWord = hit(text, INTERVIEW_WORDS);
-  if (interviewWord) {
-    const practice = hit(text, ['練習', 'シミュレーション', '模擬', '想定質問']);
+  if (pasted && writingAction) {
     return {
-      skillId: 'interview',
-      strength: practice ? 'explicit' : 'suggest',
-      reason: practice ? `「${interviewWord}」＋「${practice}」` : `「${interviewWord}」`,
-      references: buildReferences('interview', input),
+      skillId: 'writing',
+      strength: 'explicit',
+      reason: `長い文章の貼り付け ＋「${writingAction}」`,
+      references: buildReferences('writing', input),
     };
   }
+  if (writingTarget && writingAction) {
+    return {
+      skillId: 'writing',
+      strength: 'suggest',
+      reason: `「${writingTarget}」＋「${writingAction}」`,
+      references: buildReferences('writing', input),
+    };
+  }
+  // ── キャリア（面接練習）──
+  // 'interview' は専門モード実行API（POST /webcoach/ai-skill、未実装）に回さない
+  // （types/aiSkill.ts の SPECIALIST_SKILLS 参照）。AI面接シミュレーターは既存の
+  // Dify動的ツール（通常のAIコーチ会話）としてすでに動いているため、ここで確認カードや
+  // 提案バッジを出すとかえって（未実装の）専門モード実行に迷い込む導線を作ってしまう。
+  // よって検知そのものを行わず、通常のAIコーチ会話にそのまま流す。
 
   const applicationWord = hit(text, APPLICATION_WORDS);
   if (applicationWord) {
@@ -268,23 +306,8 @@ function detectRaw(input: DetectSkillInput, text: string): SkillSuggestion {
     };
   }
 
-  const jobWord = hit(text, JOB_WORDS);
-  if (jobWord) {
-    // 媒体が名指しされていればその媒体のアプリへ。無ければ既定（クラウドワークス）
-    const site =
-      JOB_SITE_SKILLS.find((row) => hit(text, row.words) !== null)?.skillId ??
-      'job-search-crowdworks';
-    return {
-      skillId: site,
-      strength: 'suggest',
-      reason: `「${jobWord}」`,
-      references: buildReferences(site, input),
-    };
-  }
-
-  // ── 専門用語 ──
-  // 「わかりやすく」だけでは普通の言い換え依頼とも読めるので、
-  // 対象が言葉であることを示す語を必要とする。
+  // ── 用語解説 ──
+  // 「わかりやすく」だけでは文章改善とも読めるので、対象が言葉であることを示す語を必要とする。
   const glossaryWord = hit(text, GLOSSARY_WORDS);
   if (glossaryWord) {
     return {
@@ -295,11 +318,48 @@ function detectRaw(input: DetectSkillInput, text: string): SkillSuggestion {
     };
   }
 
-  /*
-   * 🔴 ここにあった「理解度チェック」「トラブル相談」「アイデア整理」、および
-   *    長文の貼り付けを文章改善へ送る分岐は、対応するアプリが無くなったので消した。
-   *    どれも素のAIコーチが答えられる相談なので、提案を出さずに素通しする。
-   */
+  // ── 理解度チェック ──
+  const quizWord = hit(text, QUIZ_WORDS);
+  if (quizWord) {
+    return {
+      skillId: 'quiz',
+      strength: 'suggest',
+      reason: `「${quizWord}」`,
+      references: buildReferences('quiz', input),
+    };
+  }
+
+  if (pasted) {
+    return {
+      skillId: 'writing',
+      strength: 'suggest',
+      reason: '長い文章が入力されています',
+      references: buildReferences('writing', input),
+    };
+  }
+
+  // ── トラブル相談 ──
+  // 教材の内容ではなく手元の環境の問題なので、教材根拠を探しても当たらない。
+  const toolingWord = hit(text, TOOLING_WORDS);
+  if (toolingWord) {
+    return {
+      skillId: 'tooling',
+      strength: 'suggest',
+      reason: `「${toolingWord}」`,
+      references: buildReferences('tooling', input),
+    };
+  }
+
+  // ── アイデア整理 ──
+  const ideaWord = hit(text, IDEA_WORDS);
+  if (ideaWord) {
+    return {
+      skillId: 'idea',
+      strength: 'suggest',
+      reason: `「${ideaWord}」`,
+      references: buildReferences('idea', input),
+    };
+  }
 
   // 教材についての普通の質問。専門モードは要らない。
   return none(input.currentSkillId);

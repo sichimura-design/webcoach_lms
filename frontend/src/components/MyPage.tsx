@@ -9,6 +9,7 @@ import { useStudyStats } from '../hooks/useStudyStats';
 import { useWeeklyGoal } from '../hooks/useWeeklyGoal';
 import { useGoalDeclaration } from '../hooks/useGoalDeclaration';
 import { useProgressionStore } from '../store/progressionStore';
+import { useResumeLesson } from '../hooks/useResumeLesson';
 import { useRecentCourseStore } from '../store/recentCourseStore';
 import { EXP_RULES } from '../utils/progression';
 import MypageGreeting from './mypage/MypageGreeting';
@@ -73,8 +74,6 @@ function MyPage() {
   } = useMypageData(user?.userid);
 
   const noteStreakDays = useProgressionStore((s) => s.noteStreakDays);
-  /** 前回どのレッスンを開いたか。「続きから学習する」の飛び先に使う */
-  const recentEntries = useRecentCourseStore((s) => s.entries);
 
   // 「学習中のコース」= 続きから(resumableCourse) + 受講中一覧。id重複は除外
   const learningCourses: Course[] = resumableCourse
@@ -83,9 +82,48 @@ function MyPage() {
 
   // 学習時間は集中ブースの実測を正にする（取れなければ進捗率からの推定に落ちる）。
   // useMypageData の Promise.all には足さない（ブートをブロックしないため）。
-  const { stats: studyStats, loading: studyStatsLoading } = useStudyStats(user?.userid);
+  const { stats: studyStats, loading: studyStatsLoading, unavailable: studyStatsUnavailable } = useStudyStats(user?.userid);
   const learningSummary = useLearningSummary(learningCourses, studyStats);
-  const primaryCourse = learningCourses[0];
+  // 「続きから学習」に出すコースの候補（優先順）。アナウンスメント以外の教材を持つ最初の1つを useResumeLesson が選ぶ。
+  // resumecourse（コースを開いたときに書かれる）→ この端末で最近開いた順 → Moodle の最終アクセス順
+  // → 受講一覧の順。受講しただけの生徒で一覧の先頭の空コースに当たらないように（useResumeLesson の doc）
+  const recentEntries = useRecentCourseStore((s) => s.entries);
+  const enrolledIds = new Set(learningCourses.map((c) => c.id));
+  const accessedAt = (c: Course) => (c.lastAccessDate ? new Date(c.lastAccessDate).getTime() : 0);
+  const byLastAccess = [...learningCourses].sort((a, b) => accessedAt(b) - accessedAt(a));
+  const resumeCandidateIds = [
+    ...(resumableCourse ? [resumableCourse.id] : []),
+    ...[...recentEntries]
+      .sort((a, b) => b.openedAt - a.openedAt)
+      .map((e) => e.courseId)
+      .filter((id) => enrolledIds.has(id)),
+    ...byLastAccess.map((c) => c.id),
+  ].filter((id, i, all) => all.indexOf(id) === i);
+  // 「続きから学習」のレッスン名・レッスン数は実 Moodle の目次から組み立てる（useResumeLesson の doc）
+  const {
+    courseId: resumeCourseId,
+    lesson: resumeLesson,
+    loading: resumeLessonLoading,
+  } = useResumeLesson(resumeCandidateIds);
+  const primaryCourse = learningCourses.find((c) => c.id === resumeCourseId) ?? learningCourses[0];
+  const resumeCourse: Course | undefined =
+    primaryCourse && resumeLesson
+      ? {
+          ...primaryCourse,
+          // dev/miyabe と同じ「Lesson 2 基本の考え方」の形で渡す（splitLesson が番号と名前に分けて2行に組む）。
+          // 名前が既に番号付きなら重ねない。レッスン外のモジュールなら番号は付けない
+          currentLesson:
+            resumeLesson.lessonNo == null || /^\s*(?:Lesson|LESSON|レッスン)\s*\d+/.test(resumeLesson.lessonTitle)
+              ? resumeLesson.lessonTitle
+              : `Lesson ${resumeLesson.lessonNo} ${resumeLesson.lessonTitle}`,
+          // レッスン数はコース目次と同じ数え方（完了トラッキング対象のみ）。
+          // 対象が1本も無いコースは分数にできないので、resumecourse の％のまま
+          ...(resumeLesson.totalLessons > 0 && {
+            totalLessons: resumeLesson.totalLessons,
+            progress: (resumeLesson.completedLessons / resumeLesson.totalLessons) * 100,
+          }),
+        }
+      : primaryCourse;
 
   // あなたの目標（受講生が自分の言葉で書く、期間つきの意思表明）。ここは表示だけで、
   // 書くのも直すのも /study-log 側（同じデータの編集入口を2箇所に置かない）。
@@ -161,16 +199,15 @@ function MyPage() {
    * 「続きから学習する」は没入型レッスンへ直行、「レッスン全体を見る」はコース目次へ。
    * 🔴 ?module= を必ず付ける。付けないと useLessonDoc の既定＝目次の先頭レッスンが
    *    開くので、「続きから」と書いてあるのに毎回1本目に戻っていた。
-   *    前回開いたレッスンは recentCourseStore が覚えている（同じ履歴を
-   *    ResumeStudyHost の「前回の続き」カードも使うので、両方の行き先が一致する）。
-   *    履歴が無いときだけコース既定の入口に落とす。
+   *    行き先はカードに出しているレッスン（useResumeLesson）と同じにする。
+   *    前回開いたレッスン（recentCourseStore）→ 最初の未完了 → 先頭 の順。
+   *    目次が取れなかったときだけコース既定の入口に落とす。
    */
   const openLesson = () => {
     if (!primaryCourse) return;
-    const recent = recentEntries.find((e) => e.courseId === primaryCourse.id);
     navigate(
-      recent?.lessonId
-        ? `/course/${primaryCourse.id}?module=${recent.lessonId}`
+      resumeLesson
+        ? `/course/${primaryCourse.id}?module=${resumeLesson.lessonId}`
         : `/course/${primaryCourse.id}`
     );
   };
@@ -202,24 +239,51 @@ function MyPage() {
           </div>
 
           <ResumeStudyCard
-            course={primaryCourse}
+            course={resumeCourse}
             // サムネの絵柄用。resumecourse は領域名もコース画像も返さないので、
             // 同じコースの受講中一覧（/moodle/courses）側の姿を添える
             known={activeCourses.find((c) => c.id === primaryCourse?.id)}
+            lessonLoading={resumeLessonLoading}
             onOpenLesson={openLesson}
             onOpenCurriculum={openCurriculum}
           />
           <CoachingTaskCard userId={user?.userid} />
         </div>
 
-        <StudyDashboardCard
-          stats={studyStats}
-          loading={studyStatsLoading}
-          completedLessons={learningSummary.completedLessons.total}
-          completedLessonsDelta={learningSummary.completedLessons.weekDelta}
-          goalMinutes={goalMinutes}
-          onEditGoal={() => setGoalOpen(true)}
-        />
+        {/*
+          B-001: キャリアロードマップへの導線カードは、UIが完成版ではないため非表示にしている。
+          RoadmapPage(/roadmap)・/api/roadmap/* 自体は残してあるので、完成したらここにカードを戻す。
+        */}
+
+        {studyStatsUnavailable ? (
+          // 🔴 通信失敗時にstats=nullのままStudyDashboardCardへ渡すと、
+          //    streakDays = stats?.streak.currentDays ?? 0 で「0日連続」が
+          //    確定値として表示されてしまう(実績と無関係の誤表示)。
+          //    /study-log の unavailable 表示と同じ方針で縮退させる。
+          <div
+            style={{
+              background: 'var(--dc-surface)',
+              border: '1px solid var(--dc-border)',
+              borderRadius: 'var(--dc-radius-lg)',
+              boxShadow: 'var(--dc-shadow-card)',
+              padding: 'var(--dc-sp-card-y) var(--dc-sp-card-x)',
+              fontSize: 'var(--dc-fs-body)',
+              color: 'var(--dc-text-muted)',
+              lineHeight: 'var(--dc-lh-prose)',
+            }}
+          >
+            学習状況を表示できませんでした。しばらくしてからもう一度お試しください。
+          </div>
+        ) : (
+          <StudyDashboardCard
+            stats={studyStats}
+            loading={studyStatsLoading}
+            completedLessons={learningSummary.completedLessons.total}
+            completedLessonsDelta={learningSummary.completedLessons.weekDelta}
+            goalMinutes={goalMinutes}
+            onEditGoal={() => setGoalOpen(true)}
+          />
+        )}
 
         <WeeklyGoalModal
           open={goalOpen}

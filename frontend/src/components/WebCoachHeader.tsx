@@ -27,6 +27,7 @@ import {
   Source,
 } from '@mui/icons-material';
 import { bffClient } from '../services/bffClient';
+import { toConversationHistory } from '../utils/aiChatHistory';
 import MarkdownRenderer from './MarkdownRenderer';
 
 interface ChatMessage {
@@ -102,6 +103,7 @@ function WebCoachHeader({
     try {
       const result = await bffClient.sendAIMessage({
         message: currentInput,
+        conversation_history: toConversationHistory(messages),
       });
 
       const assistantMessage: ChatMessage = {

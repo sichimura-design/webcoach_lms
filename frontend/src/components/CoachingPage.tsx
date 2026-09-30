@@ -483,14 +483,15 @@ export default function CoachingPage() {
           <>
             {/* 当日の入口（いつ・あと何日・参加・連絡手段）。ここだけ見れば
                 コーチング当日に迷わない、が1Cのヒーローの役割。 */}
+            {/* CoachingHeroCardは実装(Organizer中心モデル、会議リンクは常に発行済み)向けに
+                簡略化されたため、このページ(未接続・招待URL方式の旧設計を残したもの)では
+                リンク登録・開始状態の表示は再現していない。日時と会議URLの表示のみ。 */}
             {sessions?.next && (
               <CoachingHeroCard
-                next={sessions.next}
-                readiness={readiness}
-                onRegisterLink={registerLink}
-                onStart={handleStart}
-                onOpenSession={openSession}
-                starting={starting}
+                coachName={sessions.next.coach}
+                dateLabel={sessions.next.date}
+                startsAt={sessions.next.startsAt}
+                meetingUrl={sessions.next.meetingLink?.url ?? '#'}
               />
             )}
 
@@ -510,7 +511,7 @@ export default function CoachingPage() {
                 editing={editingGoals}
                 draft={goalDraft}
                 saving={savingGoals}
-                onToggle={(no) => void toggleGoalDone(no)}
+                onToggle={(no: number) => void toggleGoalDone(no)}
                 onStartEdit={startGoalEdit}
                 onCommit={() => void commitGoals()}
                 onCancel={cancelGoalEdit}

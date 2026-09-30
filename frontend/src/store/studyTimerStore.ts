@@ -57,6 +57,13 @@ interface StudyTimerState {
   clearSession: () => void;
   pauseSession: () => void;
   resumeSession: () => void;
+  /**
+   * dev/kanegae統合: サーバー(Moodleログ)に進行中セッションが見つかった場合、
+   * localStorageの状態をそれで置き換える（端末・タブ跨ぎの復元）。
+   * サーバーは単純な start/end しか持たないため、区間は 'material' 1本として
+   * 作り直す（store の migrate 関数と同じ変換方針）。
+   */
+  restoreFromServer: (session: { sessionId: number; courseId?: number; courseTitle?: string; startedAt: number }) => void;
   /** ポモドーロが設定時間に到達した。多重通知を防ぐため時刻を記録する */
   markTargetReached: () => void;
   /** 稼働中でも学習目標を書き足せる */
@@ -117,6 +124,26 @@ export const useStudyTimerStore = create<StudyTimerState>()(
       },
 
       clearSession: () => set({ session: null }),
+
+      restoreFromServer: ({ sessionId, courseId, courseTitle, startedAt }) => {
+        set({
+          session: {
+            mode: 'freeform',
+            targetMinutes: undefined,
+            courseId,
+            courseTitle,
+            startedAt,
+            pausedAt: null,
+            pausedCount: 0,
+            pausedTotalMs: 0,
+            activityId: newActivityId(sessionId),
+            targetReachedAt: null,
+            segments: [{ category: 'material', startedAt, endedAt: null }],
+            lastActiveAt: Date.now(),
+          },
+          finishDraft: null,
+        });
+      },
 
       pauseSession: () => {
         const { session } = get();

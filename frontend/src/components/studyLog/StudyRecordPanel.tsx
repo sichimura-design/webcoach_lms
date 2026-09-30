@@ -73,11 +73,11 @@ function Pill({
 }
 
 export function StudyRecordPanel({ stats, loading }: StudyRecordPanelProps) {
-  const [range, setRange] = useState<RangeKey>('30d');
+  const [range, setRange] = useState<RangeKey>('1w');
   /** 0 = 今週。1週間タブでのみ使う */
   const [weekOffset, setWeekOffset] = useState(0);
 
-  const activeRange = TREND_RANGES.find((r) => r.key === range) ?? TREND_RANGES[1];
+  const activeRange = TREND_RANGES.find((r) => r.key === range) ?? TREND_RANGES[0];
   const daily = useMemo(() => stats?.dailyTotals ?? [], [stats]);
 
   const series = useMemo(

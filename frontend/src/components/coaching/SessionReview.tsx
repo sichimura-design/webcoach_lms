@@ -360,7 +360,20 @@ export function SessionReview({ session, onDeleted }: SessionReviewProps) {
                     cursor: 'pointer',
                   }}
                 >
-                  <span style={{ ...font.rowTitle, color: color.textStrong, display: 'block' }}>{note.title}</span>
+                  <span
+                    title={note.title}
+                    style={{
+                      ...font.rowTitle,
+                      color: color.textStrong,
+                      display: '-webkit-box',
+                      WebkitLineClamp: 2,
+                      WebkitBoxOrient: 'vertical',
+                      overflow: 'hidden',
+                      overflowWrap: 'anywhere',
+                    }}
+                  >
+                    {note.title}
+                  </span>
                   {note.excerpt && (
                     <span
                       style={{

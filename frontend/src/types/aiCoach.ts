@@ -65,6 +65,12 @@ export interface AiCoachMessage {
   /** proposal のとき: 確認カードの内容と決着 */
   proposal?: SkillSuggestion;
   resolution?: ProposalResolution;
+  /**
+   * assistant のとき: 「回答を作成しています…」のような待機中の一時表示。
+   * 🔴 AI の発言ではないので会話履歴（toHistory）に入れない。入れると Dify 側から見て
+   *    同じ文を AI が言ったことになり、次の返答がずれる（B-008 の一因）。
+   */
+  transient?: boolean;
   createdAt: string;
 }
 
@@ -130,6 +136,22 @@ export interface AiCoachSession {
    * 復元時は落として「再添付してください」を出す。
    */
   imageDropped: boolean;
+  /**
+   * api-server に session_id として送る鍵。画面上の id とは別に持つ（B-007）。
+   *
+   * 🔴 id（'page:1' 'lesson:12' 'drawer'）はタブを開き直すと同じ値に戻るので、
+   *    そのまま送ると api-server の「この会話で直前に使ったAIアプリ」の記憶
+   *    （_dify_sticky_app_cache）と Dify 側の会話を、前の別の相談から引き継いでしまう
+   *    （デザインスプリントで面接アプリの回答が返ってきた原因）。
+   *    会話を作るたび・専門モードを切り替えるたびに作り直す。
+   *    古い保存データには無いので、送る直前に無ければ作る。
+   */
+  serverKey?: string;
+  /**
+   * 最初の発言をAIアプリへ強制で送り終えた serverKey。
+   * モードに入る（＝serverKey が作り直される）たびに、最初の1回だけ force_app_key を付けるための印。
+   */
+  appForcedFor?: string;
   createdAt: string;
   updatedAt: string;
 }

@@ -1,3 +1,4 @@
+import type { ReactNode } from 'react';
 import { color, font, radius } from '../../theme/webcoachTheme';
 
 /**
@@ -35,6 +36,8 @@ interface StudySessionPromptProps {
    * 'normal' … どちらも正当な選択（放置確認の「ここで終了する」）
    */
   secondaryEmphasis?: 'quiet' | 'normal';
+  /** 本文とボタンの間に置く追加の入力（開始前の教材選択など） */
+  children?: ReactNode;
   onPrimary: () => void;
   onSecondary: () => void;
 }
@@ -45,6 +48,7 @@ export function StudySessionPrompt({
   primaryLabel,
   secondaryLabel,
   secondaryEmphasis = 'quiet',
+  children,
   onPrimary,
   onSecondary,
 }: StudySessionPromptProps) {
@@ -83,6 +87,8 @@ export function StudySessionPrompt({
             {subject}
           </div>
         )}
+
+        {children && <div style={{ marginTop: 16 }}>{children}</div>}
 
         <button
           type="button"

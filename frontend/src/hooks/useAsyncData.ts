@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback, DependencyList } from 'react';
+import { getUserMessage } from '../utils/errorMessage';
 
 interface AsyncState<T> {
   data: T | null;
@@ -41,10 +42,11 @@ export function useAsyncData<T>(
       })
       .catch((err: any) => {
         if (!cancelled) {
+          console.error('useAsyncData fetch failed:', err);
           const message =
             err.response?.status === 403
               ? 'アクセス権がありません。'
-              : err.message || '読み込みに失敗しました';
+              : getUserMessage(err, '読み込みに失敗しました');
           setState({ data: null, loading: false, error: message });
         }
       });

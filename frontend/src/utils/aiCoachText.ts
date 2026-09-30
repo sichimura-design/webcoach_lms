@@ -50,16 +50,30 @@ export function messageSummary(message: AiCoachMessage): string {
   return message.content;
 }
 
+/** エラー時の回答の結論文。AiCoachPane がこれで「エラー発生時」の表示に切り替える */
+export const AI_ERROR_CONCLUSION = '一時的なエラーで回答を取得できませんでした。';
+
 /**
  * メッセージ列を LLM へ渡す履歴の形へ落とす。
  * 提案カードやモード切替の通知（proposal / system）は会話の中身ではないので除く。
  */
 export function toHistory(
   messages: AiCoachMessage[],
-  limit = 6
+  // バックエンド(ai_langgraph.pyのConversationHistory max_length=10)に合わせる。
+  // 6件(3往復)だと、DBに登録したAIアプリ(Dify)との複数ターンのやり取りで
+  // 「どのアプリと話しているか」を示す最初の発言が古いターンで押し出されてしまい、
+  // LLMが文脈を見失って無関係なツールを呼んでしまうことがあった。
+  limit = 10
 ): { role: 'user' | 'assistant'; content: string }[] {
   return messages
-    .filter((m) => m.role === 'user' || m.role === 'assistant')
+    // 待機中の一時表示（transient）とエラーの定型文は AI の発言ではないので渡さない。
+    // 渡すと Dify 側から見て AI がそう言ったことになり、次の返答がずれる（B-008 と同じ理由）
+    .filter(
+      (m) =>
+        (m.role === 'user' || m.role === 'assistant') &&
+        !m.transient &&
+        m.answer?.conclusion !== AI_ERROR_CONCLUSION
+    )
     .slice(-limit)
     .map((m) => ({
       role: m.role === 'assistant' ? ('assistant' as const) : ('user' as const),

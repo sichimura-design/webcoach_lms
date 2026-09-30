@@ -3,12 +3,11 @@ import { Check, Plus } from 'lucide-react';
 import { color, font } from '../../theme/webcoachTheme';
 import {
   AiSkillId,
-  AI_SKILL_CATEGORY_LABEL,
-  AI_SKILL_CATEGORY_ORDER,
   AI_SKILL_LABEL,
   AI_SKILL_MODE_LABEL,
-  skillsInCategory,
+  isConcreteSkill,
 } from '../../types/aiSkill';
+import { useAiApplications } from '../../hooks/useAiApplications';
 
 /**
  * AIアプリ（モード）の選択口。入力欄の「＋」1つに集約したもの。
@@ -60,6 +59,8 @@ export function SkillPlusMenu({
   }, [open]);
 
   const active = value !== 'auto';
+  // 選べるモードは「AIコーチでできること」一覧と同じ顔ぶれ・同じ表示名にする
+  const catalog = useAiApplications();
 
   const renderOption = (id: AiSkillId) => (
     <button
@@ -88,7 +89,7 @@ export function SkillPlusMenu({
       }}
     >
       <span style={{ width: 12, flexShrink: 0 }}>{value === id && <Check size={12} />}</span>
-      {AI_SKILL_LABEL[id]}
+      {isConcreteSkill(id) ? catalog.labelOf(id) : AI_SKILL_LABEL[id]}
     </button>
   );
 
@@ -140,15 +141,13 @@ export function SkillPlusMenu({
             boxShadow: '0 16px 44px rgba(33,42,57,.18)',
           }}
         >
-          {/* 'auto' を先頭に固定し、実スキルは目的（学習／制作／キャリア）で束ねる。
+          {/* 'auto' を先頭に固定し、実スキルはDBの分類（学習サポート／制作サポート／案件獲得など）で束ねる。
               機能が増えたのでフラットに並べると探せなくなる。 */}
           {renderOption('auto')}
-          {/* 🔴 0件のカテゴリは見出しごと出さない（AiCoachHome と同じ理由） */}
-          {AI_SKILL_CATEGORY_ORDER.map((category) => {
-            const skills = skillsInCategory(category);
-            if (skills.length === 0) return null;
+          {/* 分類の見出し・並びはDBで決まる（AiCoachHome と同じ） */}
+          {catalog.groups.map(({ label, skills }) => {
             return (
-              <div key={category}>
+              <div key={label}>
                 <p
                   style={{
                     margin: '5px 8px 2px',
@@ -158,7 +157,7 @@ export function SkillPlusMenu({
                     color: color.textFaint,
                   }}
                 >
-                  {AI_SKILL_CATEGORY_LABEL[category]}
+                  {label}
                 </p>
                 {skills.map(renderOption)}
               </div>

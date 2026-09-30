@@ -28,7 +28,7 @@ const LOGGED_IN_KEY = 'webcoach-mock-logged-in';
 const STUDY_TIMER_KEY = 'webcoach-study-timer';
 
 /**
- * 対象画面。id は frontend/docs/ui-review/screen-inventory.csv の画面ID に合わせる。
+ * 対象画面。id は UI/UXレビューの画面一覧の画面ID に合わせる。
  * - loggedIn: false の画面は未ログイン状態で開く（/login が出てほしいので）
  * - widths: 撮るビューポート幅（既定 [1440]）。SP も見たい画面は 375 を足す
  * - settle: 非同期の描画が落ち着くまでの待ち（ms）。アニメーションが長い画面は伸ばす

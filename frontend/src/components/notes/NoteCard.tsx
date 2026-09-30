@@ -1,7 +1,6 @@
 import { useState } from 'react';
-import { ChevronDown, Folder, Image as ImageIcon, Inbox, Star } from 'lucide-react';
+import { ChevronDown, Folder, Inbox, Star } from 'lucide-react';
 import { NOTE_ORIGIN_LABEL, NoteOrigin, NoteSummary } from '../../types/notes';
-import { useNoteImageUrl } from '../../hooks/useNoteImageUrl';
 import { formatNoteDateShort } from './noteDate';
 import { INBOX_LABEL } from './folderRows';
 
@@ -9,11 +8,7 @@ import { INBOX_LABEL } from './folderRows';
  * 一覧の1枚。デザイン『マイノート 改善案』のノートカード。
  *
  * 構成: 出どころバッジ ／ ★（押して重要を切り替える）／
- *       ［サムネイル］タイトル ＋ 抜粋 ／ フッター＝入っているフォルダ ＋ 日付
- *
- * 中に画像ブロックがあるノートは、タイトルの左に正方形のサムネイルが付く。
- * 自分の制作物（バナー・LP など）を貼ったノートを、一覧で絵として見分けるため。
- * 文字だけのノートは今までどおり抜粋3行のまま（サムネの空きを作らない）。
+ *       タイトル ＋ 抜粋（3行まで）／ フッター＝入っているフォルダ ＋ 日付
  *
  * ⋮ メニュー（開く／重要／削除）は無くしたままにする。「開く」はカード自体、
  * 「削除」はノート面の「その他」だけ。ただし★は右上に常時出す。重要は一覧を
@@ -49,45 +44,6 @@ const ORIGIN_STYLE: Record<NoteOrigin, { background: string; color: string }> = 
   self: { background: '#F7F3ED', color: 'var(--dc-text-muted)' },
 };
 
-/**
- * カード左のサムネイル。
- *
- * 🔴 読み込み中・見つからないときも枠は出したままにする。出し入れするとカードの
- *    高さが動いてグリッド全体が揺れる。「見つからない」は別の端末で貼った画像を
- *    見ているときに起きる（画像の実体はその端末の IndexedDB にしかない）ので、
- *    ノート面の「この端末に保存されていません」と同じく黙って隠さない。
- */
-function NoteCardThumb({ imageId, title }: { imageId: string; title: string }) {
-  const { url, status } = useNoteImageUrl(imageId);
-
-  return (
-    <div
-      className="notes-card__thumb"
-      style={{
-        background: status === 'ready' ? 'var(--dc-surface)' : 'var(--dc-bg)',
-        border: '1px solid var(--dc-border)',
-      }}
-    >
-      {url ? (
-        <img
-          src={url}
-          alt={`${title}の画像`}
-          // 画像は既定で掴める。カードの上で押して少し動かすと画像のドラッグが
-          // 始まってしまい、カードを押したつもりの操作が空振りするので止める
-          draggable={false}
-          style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
-        />
-      ) : (
-        <ImageIcon
-          size={18}
-          aria-hidden
-          style={{ color: 'var(--dc-text-subtle)', opacity: status === 'loading' ? 0.35 : 0.7 }}
-        />
-      )}
-    </div>
-  );
-}
-
 export function NoteCard({
   note,
   folderName,
@@ -100,7 +56,6 @@ export function NoteCard({
   const [starHover, setStarHover] = useState(false);
 
   const origin = ORIGIN_STYLE[note.origin] ?? ORIGIN_STYLE.self;
-  const hasThumb = Boolean(note.thumbnailImageId);
   const open = () => onOpen(note.id);
 
   return (
@@ -184,34 +139,41 @@ export function NoteCard({
         </button>
       </div>
 
-      {/* サムネイルがあるときだけ横並びにする。無いときは今までどおり縦に積む
-          （空の左余白ができると、文字だけのノートのタイトルが右にずれて見える） */}
-      <div style={{ display: 'flex', gap: 12, minWidth: 0 }}>
-        {hasThumb && <NoteCardThumb imageId={note.thumbnailImageId!} title={note.title} />}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 8, minWidth: 0, flex: 1 }}>
-          <h3 style={{ margin: 0, fontSize: 15, fontWeight: 700, lineHeight: 1.5, color: 'var(--dc-text)' }}>
-            {note.title}
-          </h3>
+      {/* 長いタイトルで一覧のカード高さが揃わなくなるので2行で切る。全文は title 属性で見られる（B-018） */}
+      <h3
+        title={note.title}
+        style={{
+          margin: 0,
+          fontSize: 15,
+          fontWeight: 700,
+          lineHeight: 1.5,
+          color: 'var(--dc-text)',
+          display: '-webkit-box',
+          WebkitLineClamp: 2,
+          WebkitBoxOrient: 'vertical',
+          overflow: 'hidden',
+          overflowWrap: 'anywhere',
+        }}
+      >
+        {note.title}
+      </h3>
 
-          {note.excerpt && (
-            <p
-              style={{
-                margin: 0,
-                fontSize: 12.5,
-                lineHeight: 1.7,
-                color: 'var(--dc-text-muted)',
-                display: '-webkit-box',
-                // サムネの横は幅が狭いので2行。サムネが無ければ従来どおり3行
-                WebkitLineClamp: hasThumb ? 2 : 3,
-                WebkitBoxOrient: 'vertical',
-                overflow: 'hidden',
-              }}
-            >
-              {note.excerpt}
-            </p>
-          )}
-        </div>
-      </div>
+      {note.excerpt && (
+        <p
+          style={{
+            margin: 0,
+            fontSize: 12.5,
+            lineHeight: 1.7,
+            color: 'var(--dc-text-muted)',
+            display: '-webkit-box',
+            WebkitLineClamp: 3,
+            WebkitBoxOrient: 'vertical',
+            overflow: 'hidden',
+          }}
+        >
+          {note.excerpt}
+        </p>
+      )}
 
       <div
         style={{

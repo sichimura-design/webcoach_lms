@@ -1,52 +1,54 @@
-# Moodle Frontend
+# frontend
 
-React TypeScript frontend for Moodle Web Services API
+WebCoach LMS の SPA。React 18 + TypeScript（Create React App / `react-scripts`）で実装し、Tailwind CSS と MUI を併用しています。API 呼び出しはすべて BFF 経由です。
 
-## Features
+## 構成
 
-- **Login Page**: Secure authentication using Moodle credentials
-- **Courses Page**: Display enrolled courses with search and filtering
-- **API Integration**: RESTful API service layer for Moodle Web Services
-- **Responsive Design**: Modern UI with CSS Grid and Flexbox
+```
+frontend/src/
+├── App.tsx / index.tsx
+├── routes/index.tsx   # ルーティング定義
+├── components/        # 画面・部品（mypage, coaching, aicoach, learning, studyLog, focus, notes ...）
+├── services/          # bffClient.ts, api.ts, cognitoAuth.ts, mypageApi.ts
+├── store/             # zustand ストア
+├── hooks/ contexts/ utils/ types/ constants/
+├── theme/             # デザイントークン（webcoachTheme.ts ほか）
+├── mocks/             # MSW モック（REACT_APP_ENABLE_MOCKS=true のとき有効）
+└── setupProxy.js      # 開発サーバーのプロキシ設定
+```
 
-## Setup
+`public/content/ai-apps/*.md` は AI アプリ詳細ページが実行時に読み込む本文です。削除しないでください。
 
-1. Install dependencies:
+## セットアップ・起動
+
 ```bash
 cd frontend
 npm install
+npm start        # http://localhost:3000
+npm run build    # build/ に本番ビルド
+npm test
+npx tsc --noEmit # 型チェック
 ```
 
-2. Start development server:
-```bash
-npm start
-```
+### 環境変数（`.env`）
 
-3. Build for production:
-```bash
-npm run build
-```
+| 変数 | 説明 |
+|---|---|
+| `REACT_APP_BFF_URL` | BFF の URL |
+| `REACT_APP_API_SERVER_URL` | api-server の URL（一部の直接呼び出し用） |
+| `REACT_APP_MOODLE_URL` | Moodle の URL |
+| `REACT_APP_COGNITO_USER_POOL_ID`, `REACT_APP_COGNITO_CLIENT_ID` | Cognito |
+| `REACT_APP_ENABLE_MOCKS` | `true` で MSW モックを使う（バックエンドなしで UI 開発） |
 
-## API Configuration
+## デザインシステム
 
-Update the `BASE_URL` in `src/services/api.ts` to match your Moodle installation:
+新規・改修コンポーネントは `src/theme/webcoachTheme.ts`（`color` / `font` / `radius` / `t` を export）を使ってください。Tailwind クラスに hex を直書きしている旧スタイルのコンポーネントは、順次置き換える対象です。フォントは Noto Sans JP です。
 
-```typescript
-const BASE_URL = 'http://your-moodle-site.com/webservice/rest/server.php';
-```
+## 注意
 
-## Moodle Web Services Setup
+- モックにはあるが実バックエンドにないフィールドに依存すると、実環境で「0件」「読み込み中のまま」になります。実 BFF のレスポンスで動作を確認してください。
+- エラー表示にはシステムの例外メッセージをそのまま出さず、`getUserMessage` ユーティリティを通してください。
 
-1. Enable Web Services in Moodle Admin
-2. Create a Web Service with required functions:
-   - `core_webservice_get_site_info`
-   - `core_course_get_enrolled_courses_by_timeline_classification`
-   - `core_course_search_courses`
-3. Create tokens for authentication
+## デプロイ
 
-## Components
-
-- `LoginPage`: Authentication form
-- `CoursesPage`: Course listing with search
-- `api.ts`: Moodle API service layer
-- TypeScript interfaces for type safety
+`dev/*` ブランチへの push で GitHub Actions（`.github/workflows/dev-preview.yml`）が `branches/<slug>/` 配下にプレビューをデプロイします。

@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { Note, NoteBlockInput, NoteBlockPatch, NoteSourceRef } from '../../types/notes';
 import NoteBlockView from './NoteBlockView';
-import NoteBodyEditor, { replaceRange } from './NoteBodyEditor';
+import NoteBodyEditor, { NoteBodyHistoryApi, replaceRange } from './NoteBodyEditor';
 import { InsertKind, NoteEditorToolbar, TEXT_PREFIX } from './NoteEditorToolbar';
 import QuoteFromLessonModal, { QuoteTarget } from './QuoteFromLessonModal';
 
@@ -16,8 +16,10 @@ import QuoteFromLessonModal, { QuoteTarget } from './QuoteFromLessonModal';
  *    ⠿ ハンドル・行の ＋ メニュー・ドラッグ並べ替え（NoteBlockRow）は一緒に消している。
  *    **戻さないこと。**
  *
- * 🔴 保存ボタンは置かない。打つのを止めれば useNote が自動で送る（デバウンス800ms）。
- *    保存されたかどうかは上部バー（NoteEditorBar）の「保存しました HH:MM」が出す。
+ * 🔴 本文は自動保存しない（dev/kanegae の判断。dev/miyabe は800msのデバウンス自動保存）。
+ *    上部バー（NoteEditorBar）の「保存」ボタンか Ctrl+S で送る。
+ *    実APIは本文と素材を1列で丸ごと書き戻すため、打つたびに送ると別画面からの取り込みと衝突しやすい。
+ *    ノートを切り替える・画面を離れるときは useNote が未保存分を送る。
  *
  * 🔴 素材（教材からの引用クリップ・AI回答）は本文の下にまとめる。
  *    本文の途中には差し込めない。本文が1本になって「段落と段落の間」という
@@ -35,10 +37,10 @@ import QuoteFromLessonModal, { QuoteTarget } from './QuoteFromLessonModal';
 interface NoteEditorProps {
   note: Note;
   onRename: (title: string) => void;
-  /** 本文が変わった。保存は useNote がデバウンスして送る */
+  /** 本文が変わった（画面だけ。保存はしない） */
   onBodyChange: (body: string) => void;
-  /** 本文から離れた。待たずに送る */
-  onBodyFlush: () => void;
+  /** 本文を保存する（Ctrl+S） */
+  onSave: () => void;
   /** 素材（クリップ / AI回答）を末尾に足す */
   onAddBlock: (input: NoteBlockInput) => Promise<{ id: string } | null>;
   onPatchBlock: (blockId: string, patch: NoteBlockPatch) => void;
@@ -52,7 +54,7 @@ const LINE_PREFIX_RE = /^(##\s+|-\s+\[[ xX]\]\s+|-\s+)/;
  * ツールバーの記法を本文へ差し込む差分。[from, to) を insert で置き換え、選択を sel に置く。
  * 全文ではなく差分で返すのは、textarea に execCommand で流し込んで Ctrl+Z を効かせるため。
  */
-function applyInsert(
+export function applyInsert(
   kind: InsertKind,
   text: string,
   start: number,
@@ -88,13 +90,15 @@ export function NoteEditor({
   note,
   onRename,
   onBodyChange,
-  onBodyFlush,
+  onSave,
   onAddBlock,
   onPatchBlock,
   onRemoveBlock,
 }: NoteEditorProps) {
   const [titleDraft, setTitleDraft] = useState(note.title);
   const bodyRef = useRef<HTMLTextAreaElement>(null);
+  const historyApiRef = useRef<NoteBodyHistoryApi | null>(null);
+  const [historyState, setHistoryState] = useState({ canUndo: false, canRedo: false });
 
   /**
    * 教材の引用モーダル。ツールバーの「教材から引用」と、クリップ／AI回答の
@@ -130,6 +134,8 @@ export function NoteEditor({
   const handleInsert = (kind: InsertKind) => {
     const el = bodyRef.current;
     if (!el) return;
+    // 記法の挿入は直前の打鍵と混ぜず、単独で戻せる1手にする
+    historyApiRef.current?.breakGroup();
     const { from, to, insert, selStart, selEnd } = applyInsert(
       kind,
       el.value,
@@ -170,6 +176,13 @@ export function NoteEditor({
   return (
     <section
       aria-label="ノート"
+      onKeyDown={(e) => {
+        // Ctrl+S / ⌘S で保存。ブラウザの「ページを保存」は出さない
+        if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 's') {
+          e.preventDefault();
+          onSave();
+        }
+      }}
       style={{
         width: '100%',
         background: 'var(--dc-surface)',
@@ -228,6 +241,10 @@ export function NoteEditor({
 
       <NoteEditorToolbar
         onInsert={handleInsert}
+        onUndo={() => historyApiRef.current?.undo()}
+        onRedo={() => historyApiRef.current?.redo()}
+        canUndo={historyState.canUndo}
+        canRedo={historyState.canRedo}
         onQuote={() =>
           setQuote({
             // 教材から作られたノートは元レッスンを開く。そうでなければモーダル側で選ばせる
@@ -250,7 +267,9 @@ export function NoteEditor({
           ref={bodyRef}
           value={note.body}
           onChange={onBodyChange}
-          onBlur={onBodyFlush}
+          historyKey={note.id}
+          historyApiRef={historyApiRef}
+          onHistoryStateChange={setHistoryState}
           placeholder="ここに入力して、自由に書いていきましょう…"
         />
       </div>

@@ -1,11 +1,18 @@
 import { useRef } from 'react';
-import { AlertTriangle, Copy, ImagePlus, Send, Star, StickyNote, X } from 'lucide-react';
+import { AlertTriangle, Copy, ImagePlus, MessageSquarePlus, Mic, MicOff, PencilLine, RotateCcw, Send, Square, Star, X } from 'lucide-react';
+import { useSpeechInput } from '../../hooks/useSpeechInput';
 import { color, font } from '../../theme/webcoachTheme';
-import { LessonAiMessage, UseLessonAi } from '../../hooks/useLessonAi';
+import { AI_ERROR_CONCLUSION, LessonAiMessage, UseLessonAi } from '../../hooks/useLessonAi';
 import { LessonAiResponse } from '../../types/lesson';
 import { AiSkillId, AI_SKILL_META, isSpecialistSkill } from '../../types/aiSkill';
 import { useAutoGrowTextarea } from '../../hooks/useAutoGrowTextarea';
+import { useAiApplications } from '../../hooks/useAiApplications';
 import MarkdownRenderer from '../MarkdownRenderer';
+import { parseDifyMessage } from '../../utils/difyButtons';
+import { needsTypedReply, TYPED_REPLY_HINT, TYPED_REPLY_PLACEHOLDER } from '../../utils/aiAwaitingReply';
+import DifyFormCard from '../shared/DifyFormCard';
+import DifyChoiceButtons from '../shared/DifyChoiceButtons';
+import { stripHtmlForNote } from '../../utils/stripHtmlForNote';
 import AiCoachFace from '../shared/AiCoachFace';
 import SkillPlusMenu from './SkillPlusMenu';
 import SkillProposalCard from './SkillProposalCard';
@@ -37,7 +44,6 @@ import AiThinkingBubble from './AiThinkingBubble';
 interface AiCoachPaneProps {
   ai: UseLessonAi;
   onSaveAnswer: (message: LessonAiMessage) => void;
-  onAppendToMemo: (message: LessonAiMessage) => void;
   onJumpToBlock: (blockId: string) => void;
   disabled: boolean; // 縮退モード（Moodleフォールバック）では教材根拠を作れない
   /**
@@ -66,37 +72,110 @@ interface AiCoachPaneProps {
   /** 入力欄のプレースホルダの差し替え */
   placeholder?: string;
   /**
+   * 直前の回答がエラーだったときの「新しいチャットで続ける」。
+   * 最後の質問を渡すので、呼び出し側で新しい会話を作って送り直す。
+   * 省略するとボタンを出さない（新しい会話を作れない教材パネル・常駐ドロワー）。
+   */
+  onRestartInNewChat?: (question: string) => void;
+  /**
    * 提案を「広い画面で開く」導線。教材ページの右パネルだけで使う。
    * 押すとモードだけ切り替えてAI専用ページへ渡し、実行はそちらで行う。
    */
   onOpenWide?: (skillId: AiSkillId) => void;
 }
 
-/** 画像添付後に出す、質問のきっかけ（要件§7） */
-const IMAGE_PROMPTS = [
-  'エラーの原因を知りたい',
-  '教材基準で添削して',
-  '改善点を教えて',
-  '次に何を直すべき？',
+/*
+ * 入力欄の上に出すサジェスト（B-010）。
+ * 押すとその文言がそのまま送信されるので、文脈が無くても「何をしてくれるか」が分かり、
+ * 追加説明なしでAIが処理を始められる、動詞で終わる具体的な文言にする。
+ * 状況（教材閲覧中・学習後・制作中・エラー発生時・教材の外）で出し分ける。
+ */
+
+/** 標準の4つ（教材を開いていて、まだ会話していないとき） */
+const QUICK_PROMPTS = [
+  'この教材の要点をまとめて',
+  'わからない箇所を質問する',
+  '理解度をチェックする',
+  '次にやることを教えて',
 ];
 
-/** 通常時のクイックプロンプト */
-const QUICK_PROMPTS = [
-  '簡単に説明して',
-  '具体例を出して',
-  'なぜそうするの？',
-  '制作物に当てはめると？',
+/** 教材閲覧中：いま読んでいる見出しがあるとき */
+const READING_PROMPTS = [
+  'このページを3行でまとめて',
+  '重要な用語を教えて',
+  'わからない箇所を質問する',
+  '理解度をチェックする',
 ];
+
+/** 学習後：教材について一度やり取りしたあと */
+const AFTER_STUDY_PROMPTS = [
+  '理解度チェックを始める',
+  '練習問題を出して',
+  '次にやることを教えて',
+];
+
+/** 制作中：画像を添付したとき（要件§7） */
+const IMAGE_PROMPTS = [
+  '制作物をレビューして',
+  '改善点を3つ教えて',
+  'エラーの原因を調べる',
+  '直し方を順番に教えて',
+];
+
+/** エラー発生時：直前の回答がエラーだったとき */
+const ERROR_PROMPTS = ['エラーの原因を調べる', '直し方を順番に教えて'];
+
+/** 教材の外（ヘッダーのAIコーチ・AI専用ページ）：AIアプリ一覧から選ぶ前提 */
+const NO_LESSON_PROMPTS = [
+  '目的に合うAIアプリを探す',
+  'AIアプリの使い方を聞く',
+  '次にやることを教えて',
+];
+
+function pickQuickPrompts(ai: UseLessonAi): string[] {
+  if (ai.image) return IMAGE_PROMPTS;
+  const last = ai.messages[ai.messages.length - 1];
+  if (last?.role === 'assistant' && last.answer?.conclusion === AI_ERROR_CONCLUSION) return ERROR_PROMPTS;
+  if (!ai.context.lessonTitle) return NO_LESSON_PROMPTS;
+  if (ai.messages.length > 0) return AFTER_STUDY_PROMPTS;
+  return ai.context.heading ? READING_PROMPTS : QUICK_PROMPTS;
+}
+
+/**
+ * 教材準拠API（askLessonAi）の構造化回答か。
+ * 汎用AI・専門モード（Dify）の回答は conclusion に本文が丸ごと入り、ほかの欄は空で返る。
+ * 教材を開いたまま専門モードを使うとこちらになるので、「結論」見出しの下に素の文字で出すと
+ * Markdown も Dify のボタン・フォームも崩れる（A-1）。欄の有無で見分ける。
+ */
+function isStructuredAnswer(answer: LessonAiResponse): boolean {
+  return !!(answer.basis || answer.apply || answer.next || answer.generalNote || answer.sources.length);
+}
 
 function answerToPlainText(answer: LessonAiResponse): string {
+  // 構造化されていない回答に「結論：」を付けると、コピーした文の頭に余計な見出しが付く
+  if (!isStructuredAnswer(answer)) return stripHtmlForNote(answer.conclusion);
   const lines = [`結論：${answer.conclusion}`];
   if (answer.basis) lines.push(`教材の根拠：${answer.basis}`);
   if (answer.apply) lines.push(`今回のケースへの当てはめ：${answer.apply}`);
   if (answer.next) lines.push(`次にやること：${answer.next}`);
   if (answer.generalNote) lines.push(`教材外の一般的な補足：${answer.generalNote}`);
   if (answer.sources.length) lines.push(`参照箇所：${answer.sources.map((s) => s.heading).join(' / ')}`);
-  return lines.join('\n');
+  return stripHtmlForNote(lines.join('\n'));
 }
+
+const restartButtonStyle: React.CSSProperties = {
+  gap: 4,
+  border: `1px solid ${color.primaryBorder}`,
+  borderRadius: 8,
+  background: color.surface,
+  color: color.primary,
+  padding: '6px 10px',
+  fontFamily: 'inherit',
+  fontSize: 11,
+  fontWeight: 700,
+  cursor: 'pointer',
+  whiteSpace: 'nowrap',
+};
 
 function AnswerSection({ label, body }: { label: string; body: string }) {
   if (!body) return null;
@@ -152,7 +231,6 @@ function AiAvatar() {
 export function AiCoachPane({
   ai,
   onSaveAnswer,
-  onAppendToMemo,
   onJumpToBlock,
   disabled,
   variant = 'panel',
@@ -161,8 +239,16 @@ export function AiCoachPane({
   quickPrompts,
   placeholder,
   onOpenWide,
+  onRestartInNewChat,
 }: AiCoachPaneProps) {
   const fileInputRef = useRef<HTMLInputElement>(null);
+
+  // 直前の回答がエラーなら、その前のユーザーの質問（新しいチャットで送り直す対象）
+  const lastMessage = ai.messages[ai.messages.length - 1];
+  const restartQuestion =
+    lastMessage?.role === 'assistant' && lastMessage.answer?.conclusion === AI_ERROR_CONCLUSION
+      ? [...ai.messages].reverse().find((m) => m.role === 'user')?.content ?? null
+      : null;
 
   const handlePaste = (e: React.ClipboardEvent) => {
     const item = Array.from(e.clipboardData?.items ?? []).find((i) => i.type.startsWith('image/'));
@@ -178,12 +264,29 @@ export function AiCoachPane({
   const canSend =
     (!!ai.input.trim() || !!ai.image || !!ai.quote) && !ai.loading && !ai.pendingProposal;
 
+  const speech = useSpeechInput(ai.input, ai.setInput);
+
+  // 最新の発言が AI の問いかけで、Dify のボタンも無いときは「文章で答える」ことを案内する（B-015）
+  const lastSettled = [...ai.messages].reverse().find((m) => !m.transient);
+  const awaitingTypedReply =
+    !ai.loading &&
+    !ai.pendingProposal &&
+    lastSettled?.role === 'assistant' &&
+    !!lastSettled.answer &&
+    lastSettled.answer.conclusion !== AI_ERROR_CONCLUSION &&
+    needsTypedReply(lastSettled.answer.conclusion);
+
+  // 教材の文脈があり、教材準拠の構造化回答のときだけ「結論」見出し付きで出す
+  const structuredInLesson = (answer: LessonAiResponse) =>
+    !!ai.context.lessonTitle && isStructuredAnswer(answer);
+
   const wide = variant === 'page';
   const contentWidth = wide ? 760 : undefined;
   // 入力欄は書いた分だけ伸びる。wide で min/max も変わるので、切り替わったら測り直す
   const textareaRef = useAutoGrowTextarea(ai.input, [wide]);
   // 専門モードに入っているときだけ、その機能の説明・入力の案内を使う
   const specialistMeta = isSpecialistSkill(ai.skillId) ? AI_SKILL_META[ai.skillId] : null;
+  const catalog = useAiApplications();
   // 会話が始まる前だけ出すもの（空状態の案内・質問例）。始まったら邪魔になる
   const beforeFirstMessage = ai.messages.length === 0;
 
@@ -235,15 +338,15 @@ export function AiCoachPane({
                 <strong style={{ ...font.label, fontWeight: 800, color: color.text, display: 'block', marginBottom: 6 }}>
                   {/* 専門モードで会話が空のとき（一覧から機能を選んで開いた直後）は、
                       「モードを提案します」と案内しない。もうそのモードに入っている。 */}
-                  {specialistMeta
-                    ? specialistMeta.label
+                  {specialistMeta && isSpecialistSkill(ai.skillId)
+                    ? catalog.labelOf(ai.skillId)
                     : ai.context.lessonTitle
                       ? 'このレッスンを前提に回答します'
                       : '学習のことなら何でも相談できます'}
                 </strong>
                 <p style={{ margin: 0, fontSize: 11.5, lineHeight: 1.75, color: color.textBody }}>
-                  {specialistMeta
-                    ? `${specialistMeta.description}${specialistMeta.inputHint}を渡すと始められます。`
+                  {specialistMeta && isSpecialistSkill(ai.skillId)
+                    ? `${catalog.descriptionOf(ai.skillId)}${specialistMeta.inputHint}を渡すと始められます。`
                     : !ai.context.lessonTitle
                       ? // 教材の文脈が無い相談（常駐ドロワー・新規の相談）。
                         // ここで「外部コンテンツのため」と出すと、開いていないレッスンの話になってしまう。
@@ -277,6 +380,9 @@ export function AiCoachPane({
           )}
 
           {ai.messages.map((message) => {
+            // 待機中の一時表示は出さない。待っていることと経過は AiThinkingBubble が出す（A-6）。
+            // 以前の版で保存された会話に残っていても出さない
+            if (message.transient) return null;
             // ── 経過の説明（モードの切り替わり） ──
             if (message.role === 'system') {
               return (
@@ -391,7 +497,7 @@ export function AiCoachPane({
                     <>
                       {/* 教材の文脈がある会話でだけ「教材だけでは判断できません」を出す。
                           教材と無関係な相談で出すと、何も約束していないことを謝る形になる。 */}
-                      {!message.answer.groundedInMaterial && !!ai.context.lessonTitle && (
+                      {!message.answer.groundedInMaterial && structuredInLesson(message.answer) && (
                         <div
                           className="flex items-start"
                           style={{
@@ -412,9 +518,9 @@ export function AiCoachPane({
                       )}
 
                       {/* 教材準拠の回答は「結論」見出し付きの構造で読ませる。
-                          教材の文脈が無い一般相談は普通の会話なので見出しを付けず、
-                          汎用AIが返すMarkdownをそのまま整形して出す。 */}
-                      {ai.context.lessonTitle ? (
+                          教材の文脈が無い一般相談と、教材を開いたままの専門モード（Dify）は
+                          普通の会話なので見出しを付けず、Markdown と Dify のボタン・フォームで出す。 */}
+                      {structuredInLesson(message.answer) ? (
                         <>
                           <strong
                             style={{ display: 'block', marginBottom: 6, ...font.label, fontWeight: 800, color: color.text }}
@@ -426,9 +532,29 @@ export function AiCoachPane({
                           </p>
                         </>
                       ) : (
-                        <div style={{ fontSize: 11.5, lineHeight: 1.75, color: color.textBody }}>
-                          <MarkdownRenderer content={message.answer.conclusion} compact />
-                        </div>
+                        (() => {
+                          const { text, buttons, forms } = parseDifyMessage(message.answer.conclusion);
+                          return (
+                            <div style={{ fontSize: 11.5, lineHeight: 1.75, color: color.textBody }}>
+                              <MarkdownRenderer content={text} compact />
+                              {forms.map((form, i) => (
+                                <DifyFormCard
+                                  key={i}
+                                  form={form}
+                                  disabled={ai.loading}
+                                  stale={message.id !== lastSettled?.id}
+                                  onSubmit={(msg) => void ai.send(msg)}
+                                />
+                              ))}
+                              <DifyChoiceButtons
+                                buttons={buttons}
+                                disabled={ai.loading}
+                                stale={message.id !== lastSettled?.id}
+                                onPick={(value) => void ai.send(value)}
+                              />
+                            </div>
+                          );
+                        })()
                       )}
 
                       <AnswerSection label="教材の根拠" body={message.answer.basis} />
@@ -486,12 +612,14 @@ export function AiCoachPane({
                     />
                   )}
 
-                  {/* 回答ごとに3つ並ぶと本文が読みにくいので、ホバー／フォーカスで出す。
+                  {/* 回答ごとに並ぶと本文が読みにくいので、ホバー／フォーカスで出す。
                       ホバーできない端末では常に出る（index.css の @media (hover: none)）。
 
-                      🔴 行き先が違うので言葉も分ける。
-                        ・マイノートに残す … ピッカーでノートを選んで保存（＝/notes に入る）
-                        ・下書きに追加     … マイノート欄の下書き（まだノートではない）に足す */}
+                      🔴 以前あった「下書きに追加」は撤去した。保存先の lesson-notes API が
+                         BFF に無く（MSW モックだけ）、下書き欄も未ルーティングの教材画面にしか
+                         無かったため、成功トーストが出るだけで何も残らなかった。 */}
+                  {/* エラーの定型文はコピー・保存しても意味が無いので出さない（A-4） */}
+                  {message.answer?.conclusion !== AI_ERROR_CONCLUSION && (
                   <div
                     className="wc-ai-answer-actions flex flex-wrap"
                     style={{ gap: 5, marginTop: 9 }}
@@ -514,19 +642,56 @@ export function AiCoachPane({
                     >
                       <Star size={11} /> マイノートに残す
                     </button>
-                    <button
-                      type="button"
-                      onClick={() => onAppendToMemo(message)}
-                      className="wc-ai-chip inline-flex items-center focus-visible:ring-2 focus-visible:ring-[#F6B9BD]"
-                      style={actionButtonStyle}
-                    >
-                      <StickyNote size={11} /> 下書きに追加
-                    </button>
                   </div>
+                  )}
                 </div>
               </div>
             );
           })}
+
+          {restartQuestion && !ai.loading && (
+            <div
+              className="flex items-center flex-wrap"
+              style={{
+                gap: 8,
+                margin: '-4px 0 14px',
+                padding: '8px 10px',
+                borderRadius: 8,
+                background: color.hoverBgTint,
+                border: `1px solid ${color.primaryBorder}`,
+                fontSize: 10.5,
+                lineHeight: 1.7,
+                color: color.textBody,
+              }}
+            >
+              <span style={{ flex: '1 1 200px' }}>
+                {onRestartInNewChat
+                  ? 'もう一度送るか、うまくいかないときは新しいチャットで同じ質問を送り直せます。'
+                  : '同じ質問をもう一度送れます。'}
+              </span>
+              {/* 送り直しはどの画面でも出す（A-5）。新しいチャットは器が対応しているときだけ */}
+              <button
+                type="button"
+                onClick={() => void ai.retry()}
+                className="flex items-center wc-ai-chip focus-visible:ring-2 focus-visible:ring-[#F6B9BD]"
+                style={restartButtonStyle}
+              >
+                <RotateCcw size={13} />
+                もう一度送る
+              </button>
+              {onRestartInNewChat && (
+                <button
+                  type="button"
+                  onClick={() => onRestartInNewChat(restartQuestion)}
+                  className="flex items-center wc-ai-chip focus-visible:ring-2 focus-visible:ring-[#F6B9BD]"
+                  style={restartButtonStyle}
+                >
+                  <MessageSquarePlus size={13} />
+                  新しいチャットで続ける
+                </button>
+              )}
+            </div>
+          )}
 
           {ai.loading && <AiThinkingBubble skillId={ai.skillId} />}
           <div ref={ai.scrollAnchorRef} />
@@ -553,7 +718,7 @@ export function AiCoachPane({
               margin: wide ? '0 auto' : undefined,
             }}
           >
-            {(quickPrompts ?? (ai.image ? IMAGE_PROMPTS : QUICK_PROMPTS)).map((prompt) => (
+            {(quickPrompts ?? pickQuickPrompts(ai)).map((prompt) => (
               <button
                 key={prompt}
                 type="button"
@@ -678,6 +843,15 @@ export function AiCoachPane({
               上の確認に答えると続けられます。
             </p>
           )}
+          {awaitingTypedReply && (
+            <p
+              className="flex items-start"
+              style={{ gap: 5, margin: '0 0 6px', fontSize: 10.5, lineHeight: 1.5, fontWeight: 700, color: color.primary }}
+            >
+              <PencilLine size={12} style={{ flexShrink: 0, marginTop: 2 }} />
+              <span>{TYPED_REPLY_HINT}</span>
+            </p>
+          )}
           {/* 🔴 overflow:hidden を付けない。＋メニューが absolute で上へ開くので切れる
                 （AiCoachHome の入力欄にも同じ注意書きがある）。
                 textarea の角は自前で丸めているので、はみ出しの心配はない。 */}
@@ -701,7 +875,9 @@ export function AiCoachPane({
               }}
               placeholder={
                 placeholder ??
-                (ai.quote
+                (awaitingTypedReply
+                  ? TYPED_REPLY_PLACEHOLDER
+                  : ai.quote
                   ? '選択した文章について質問する…'
                   : ai.context.lessonTitle
                     ? 'このレッスンについて質問する…'
@@ -765,9 +941,56 @@ export function AiCoachPane({
               >
                 <ImagePlus size={15} />
               </button>
-              <span style={{ fontSize: 9, color: color.textFaint }}>
-                画像貼り付けにも対応 / Ctrl+Enter で送信
+              {/* 音声入力（B-006）。対応していないブラウザ（Firefox）では出さない */}
+              {speech.supported && (
+                <button
+                  type="button"
+                  onClick={speech.toggle}
+                  disabled={ai.loading}
+                  aria-pressed={speech.listening}
+                  aria-label={speech.listening ? '音声入力を止める' : '音声で入力'}
+                  title={speech.listening ? '音声入力を止める' : '音声で入力'}
+                  className="wc-ai-icon-btn grid place-items-center focus-visible:ring-2 focus-visible:ring-[#F6B9BD] disabled:opacity-50"
+                  style={{
+                    width: 30,
+                    height: 30,
+                    border: 0,
+                    borderRadius: 8,
+                    background: speech.listening ? color.primary : color.hoverBg,
+                    color: speech.listening ? color.textOnPrimary : color.iconMuted,
+                    cursor: ai.loading ? 'default' : 'pointer',
+                  }}
+                >
+                  {speech.listening ? <MicOff size={15} /> : <Mic size={15} />}
+                </button>
+              )}
+              <span style={{ fontSize: 9, color: speech.error ? color.primary : color.textFaint }} role={speech.error ? 'alert' : undefined}>
+                {speech.error ?? (speech.listening ? '聞き取っています…もう一度押すと止まります' : '画像貼り付けにも対応 / Ctrl+Enter で送信')}
               </span>
+              {ai.loading ? (
+                // 生成中は送信の代わりに中止（B-009）。サーバー側の生成も止まる
+                <button
+                  type="button"
+                  onClick={ai.stop}
+                  className="inline-flex items-center focus-visible:ring-2 focus-visible:ring-[#F6B9BD]"
+                  style={{
+                    marginLeft: 'auto',
+                    gap: 5,
+                    height: 30,
+                    padding: '0 12px',
+                    border: `1px solid ${color.primaryBorder}`,
+                    borderRadius: 8,
+                    background: color.surface,
+                    color: color.primary,
+                    fontFamily: 'inherit',
+                    fontSize: 11.5,
+                    fontWeight: 700,
+                    cursor: 'pointer',
+                  }}
+                >
+                  <Square size={10} fill="currentColor" /> 生成を中止
+                </button>
+              ) : (
               <button
                 type="button"
                 onClick={() => void ai.send()}
@@ -790,6 +1013,7 @@ export function AiCoachPane({
               >
                 <Send size={12} /> 送信
               </button>
+              )}
             </div>
           </div>
         </div>

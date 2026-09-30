@@ -70,6 +70,15 @@ function deriveTitle(messages: AiCoachMessage[]): string | null {
   return text.length > 22 ? `${text.slice(0, 22)}…` : text;
 }
 
+/** api-server へ送る会話の鍵（AiCoachSession.serverKey）。タブや端末をまたいでも重ならない値にする */
+export function newServerKey(): string {
+  const rand =
+    typeof crypto !== 'undefined' && typeof crypto.randomUUID === 'function'
+      ? crypto.randomUUID()
+      : `${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 10)}`;
+  return `c:${rand}`;
+}
+
 function newSession(id: string, context?: Partial<AiCoachContext>): AiCoachSession {
   const now = new Date().toISOString();
   return {
@@ -83,6 +92,7 @@ function newSession(id: string, context?: Partial<AiCoachContext>): AiCoachSessi
     quote: null,
     image: null,
     imageDropped: false,
+    serverKey: newServerKey(),
     createdAt: now,
     updatedAt: now,
   };
@@ -116,6 +126,8 @@ interface AiCoachState {
   setImage: (id: string, image: string | null) => void;
   appendMessage: (id: string, message: AiCoachMessage) => void;
   patchMessage: (id: string, messageId: string, patch: Partial<AiCoachMessage>) => void;
+  /** 発言を1件取り除く（エラーの回答を「もう一度送る」で置き換えるとき） */
+  removeMessage: (id: string, messageId: string) => void;
   resetSession: (id: string) => void;
   /** AI専用ページで新しい相談を始める。作ったセッションIDを返す */
   createPageSession: () => string;
@@ -208,7 +220,12 @@ export const useAiCoachStore = create<AiCoachState>()(
           };
         }),
 
-      setSkill: (id, skillId) => get().patchSession(id, { skillId }),
+      // モードが変わる＝呼ぶ Dify アプリが変わるので、サーバー側の会話も新しく始める（B-007）
+      setSkill: (id, skillId) => {
+        const current = get().sessions[id];
+        if (current && current.skillId === skillId) return;
+        get().patchSession(id, { skillId, serverKey: newServerKey() });
+      },
       setInput: (id, input) => get().patchSession(id, { input }),
       setQuote: (id, quote) => get().patchSession(id, { quote }),
       setImage: (id, image) => get().patchSession(id, { image, imageDropped: false }),
@@ -217,7 +234,10 @@ export const useAiCoachStore = create<AiCoachState>()(
         set((state) => {
           const session = state.sessions[id];
           if (!session) return state;
-          const messages = [...session.messages, message];
+          // 待機中の一時表示（transient）は、次の発言（回答・エラー・中止）が来たら役目を終える。
+          // 残すと回答の上に「回答を作成しています…」が居座り、コピー・保存の対象にもなる（A-2）
+          const kept = message.transient ? session.messages : session.messages.filter((m) => !m.transient);
+          const messages = [...kept, message];
           return {
             sessions: {
               ...state.sessions,
@@ -231,6 +251,18 @@ export const useAiCoachStore = create<AiCoachState>()(
             // 発言があった会話を一覧の先頭へ。AI専用ページを ?session= 無しで開いたときの
             // 初期表示（order[0]）が「直前まで話していた相談」になる。
             order: touch(state.order, id),
+          };
+        }),
+
+      removeMessage: (id, messageId) =>
+        set((state) => {
+          const session = state.sessions[id];
+          if (!session) return state;
+          return {
+            sessions: {
+              ...state.sessions,
+              [id]: { ...session, messages: session.messages.filter((m) => m.id !== messageId) },
+            },
           };
         }),
 

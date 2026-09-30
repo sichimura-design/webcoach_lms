@@ -2,15 +2,14 @@ import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { useLocation, useNavigate, useSearchParams } from 'react-router-dom';
 import { ArrowUpDown, ChevronDown, Plus, Search } from 'lucide-react';
 import { AppFooter, AppHeader } from '../shared';
-import { MOCKS_ENABLED } from '../../mocks/config';
 import { useAuth } from '../../contexts/AuthContext';
 import { useToast } from '../../contexts/ToastContext';
 import { useDismissable } from '../../hooks/useDismissable';
 import { useNote } from '../../hooks/useNote';
 import { useNoteFolders } from '../../hooks/useNoteFolders';
+import { pageTitleStyle } from '../../theme/pageTitle';
 import { useNoteList } from '../../hooks/useNoteList';
 import { BackTo } from '../../hooks/useNoteCapture';
-import { pageTitleStyle } from '../../theme/pageTitle';
 import { QuickMemoButton, useQuickMemoWindow } from '../quickMemo/QuickMemoLauncher';
 import {
   NOTE_ORIGIN_LABEL,
@@ -38,9 +37,8 @@ import { countByFolder, folderNameOf } from './folderRows';
  *   一覧 … 見出し・検索 ／ フォルダのバー（NoteFolderBar）／ 種類チップ・並び替え ／
  *          カードグリッド
  *   ノート面 … 上部バー＋紙（?note=<id> のとき。フォルダのバーは出さない）
- * 以前は左に 248px のフォルダ列（NoteFolderColumn）を立てていたが、フォルダを
- * 上部のバー＋パネルに集約して本文にその幅を返した。フォルダの数が増えても
- * バーが押し出されないよう、フォルダ自体はパネルの中に置いてある。
+ * 以前は左に 248px のフォルダ列（NoteFolderColumn）を立てていたが、完成版デザイン
+ * （dev/miyabe 760de4a）に合わせてフォルダを上部のバー＋パネルに集約した。
  * フォルダと「種類」（出どころ）は別の軸として掛け合わさる。種類は自動で付くラベル、
  * フォルダは手で選ぶ置き場所。未整理は「とりあえず保存」の行き先で、取り込んだものは
  * まずそこに入る。
@@ -58,14 +56,7 @@ import { countByFolder, folderNameOf } from './folderRows';
 /** 1ページの件数。3列 × 8行 */
 const PAGE_SIZE = 24;
 
-/**
- * デモデータの件数を差し替える開発用パネル（モック時のみ）。
- * ページ送りの操作性は件数を変えないと確かめられないため。
- * 本番ビルドでは MOCKS_ENABLED が false なので読み込まれない。
- */
-const NotesDevPanel = React.lazy(() => import('../dev/NotesDevPanel'));
-
-const SORTS: NoteSort[] = ['updated', 'updatedAsc', 'title'];
+const SORTS: NoteSort[] = ['updated', 'updatedAsc', 'created', 'createdAsc', 'title'];
 
 /** 種類チップの並び。「すべて」を先頭に置く */
 const ORIGIN_CHIPS: NoteOrigin[] = ['self', 'material', 'ai', 'coaching'];
@@ -93,6 +84,7 @@ export function MyNotesPage() {
   // /notes?note=<id> で直接開けるようにするため（ルート定義は増やさない）。
   const [searchParams, setSearchParams] = useSearchParams();
   const selectedId = searchParams.get('note');
+  const detail = useNote(selectedId);
   const rawFilter = useMemo(() => parseFolderParam(searchParams.get('folder')), [searchParams]);
 
   // 消えたフォルダを指す ?folder= は「すべて」として扱う（読み込み中は判定しない）
@@ -114,9 +106,10 @@ export function MyNotesPage() {
     const next = new URLSearchParams(searchParams);
     if (id) next.set('note', id);
     else next.delete('note');
-    setSearchParams(next, { replace: id === null });
     // ノート面で本文を書くと updatedAt と書き出しが変わる。一覧へ戻るときに取り直して並びを合わせる
-    if (id === null && selectedId) void list.reload();
+    // 🔴 未保存の本文を送り終えてから取り直す。先に取ると一覧の書き出しが古いまま残る
+    if (id === null && selectedId) void detail.saveBody().then(() => list.reload());
+    setSearchParams(next, { replace: id === null });
   };
 
   const [page, setPage] = useState(1);
@@ -135,7 +128,6 @@ export function MyNotesPage() {
     [searchParams, setSearchParams]
   );
 
-  const detail = useNote(selectedId);
 
   // 絞り込みとページ送りは、取得済みの一覧に対してその場でかける。
   // チップごとに再取得しないので、押した瞬間に切り替わる。
@@ -203,8 +195,7 @@ export function MyNotesPage() {
   /**
    * 元のレッスンを **教材ページで** 開く。上部バーの「『◯◯』に戻る」だけが使う。
    * ノート本文の出どころ行と「教材から引用」は、遷移ではなく引用モーダルを開く
-   * （NoteEditor / QuoteFromLessonModal）。ここは「教材を読みに行く」という
-   * はっきりした意思表示なので遷移のままにしてある。
+   * （NoteEditor / QuoteFromLessonModal）。
    */
   const openSource = (source: NoteSourceRef, blockId: string | null) => {
     const params = new URLSearchParams({ module: String(source.lessonId) });
@@ -233,10 +224,7 @@ export function MyNotesPage() {
   };
 
   const handleDeleteFolder = async (folder: NoteFolder) => {
-    /*
-     * 🔴 件数は検索語でスコープされている（countByFolder は検索済みの items を数える）。
-     *    検索中に「中のノート 2件」と出しても実際は15件動くので、そのときは数を言わない。
-     */
+    // 件数は検索語でスコープされているので、検索中は数を言わない（実際に動く件数と食い違う）
     const n = counts.byFolder[folder.id] ?? 0;
     const searching = list.query.trim() !== '';
     const body = searching
@@ -273,11 +261,7 @@ export function MyNotesPage() {
     }
   };
 
-  /**
-   * 一覧のカードの★。開かずに付け外しできるようにした唯一の操作。
-   * 成功時はトーストを出さない。★の見た目とバーの「重要」の件数がその場で
-   * 動くので結果は見えており、連打すると重なって邪魔になる。
-   */
+  /** 一覧のカードの★。★の見た目とバーの件数がその場で動くので成功時のトーストは出さない */
   const toggleFavoriteInList = async (id: string, favorite: boolean) => {
     try {
       await list.toggleFavorite(id, favorite);
@@ -318,20 +302,21 @@ export function MyNotesPage() {
    * 🔴 小窓を持つのはこのページで、ボタンだけを上部バーに置く。
    *    バーは detail.note が消えると一緒に消えるので、そこに小窓を持たせると
    *    再描画のたびに小窓が落ちる。
-   * 🔴 本文の state は detail（useNote）と**共有する**。小窓に別のテキスト状態を
-   *    持たせない。持たせると紙と小窓で別々の本文ができて、あとから保存した方が
-   *    相手を潰す。同じ state なので、小窓で打った文字はそのまま紙にも出る。
-   * 🔴 ノートを閉じたら小窓も閉じる。開いているノートの本文を出す窓なので、
-   *    一覧に戻ったあとも残っていると、どこに書いているのか分からなくなる。
+   * 🔴 本文の state は detail（useNote）と**共有する**。小窓に別のテキスト状態を持たせない。
+   * 🔴 小窓には保存ボタンが無いので、小窓から抜けたとき（onFlush）に保存する。
+   * 🔴 ノートを閉じたら小窓も閉じる。
    */
   const memoWindow = useQuickMemoWindow({
     targetLabel: detail.note ? `→ ${detail.note.title || '無題のノート'}` : '',
     windowTitle: 'ノート — WEBCOACH',
     text: detail.note?.body ?? '',
     onChangeText: detail.setBody,
-    onFlush: detail.flushBody,
+    onFlush: () => void detail.saveBody(),
     status: detail.saveState.saving ? 'saving' : detail.saveState.lastSavedAt ? 'saved' : 'idle',
     error: detail.saveState.error,
+    // 小窓からも本画面と同じ経路で改名する（一覧のカードも同時に変わる）
+    title: detail.note?.title ?? '',
+    onRename: renameInEditor,
   });
 
   const { isOpen: memoIsOpen, close: closeMemo } = memoWindow;
@@ -361,6 +346,7 @@ export function MyNotesPage() {
                     onMoveToFolder={(folderId) => void moveNote(detail.note!.id, folderId, true)}
                     onToggleFavorite={() => void toggleFavoriteInEditor()}
                     onDelete={() => void handleDelete(detail.note!.id, detail.note!.title)}
+                    onSave={() => void detail.saveBody()}
                     quickMemo={
                       memoWindow.supported ? (
                         <QuickMemoButton
@@ -376,7 +362,7 @@ export function MyNotesPage() {
                       note={detail.note}
                       onRename={renameInEditor}
                       onBodyChange={detail.setBody}
-                      onBodyFlush={detail.flushBody}
+                      onSave={() => void detail.saveBody()}
                       onAddBlock={detail.addBlock}
                       onPatchBlock={detail.patchBlock}
                       onRemoveBlock={detail.removeBlock}
@@ -430,9 +416,7 @@ export function MyNotesPage() {
               {/* ── 見出し、検索、新規作成 ── */}
               <div style={{ display: 'flex', alignItems: 'center', gap: 12, flexWrap: 'wrap' }}>
                 <div style={{ flex: '1 1 200px', minWidth: 0 }}>
-                  {/* 🔴 パンくずは置かない。階層が「すべて／フォルダ」の一段しか無く、
-                         いまどこを見ているかはフォルダのバー（選択中のボタン）が言っている。
-                         見出しは画面名に固定する（以前は見出し自体をフォルダ名にしていた）。 */}
+                  {/* いまどこを見ているかはフォルダのバー（選択中のボタン）が言うので、パンくずは置かない */}
                   <h1 style={pageTitleStyle}>マイノート</h1>
                 </div>
 
@@ -495,7 +479,7 @@ export function MyNotesPage() {
                 </button>
               </div>
 
-              {/* ── フォルダ（自分で決める入れ物）。以前の左フォルダ列の置き換え ── */}
+              {/* ── フォルダ（すべて／重要／未整理＋「フォルダを開く」）。以前の左フォルダ列の置き換え ── */}
               <NoteFolderBar
                 folders={folders}
                 counts={counts}
@@ -528,11 +512,27 @@ export function MyNotesPage() {
                     aria-haspopup="menu"
                     aria-expanded={sortOpen}
                     onClick={() => setSortOpen((v) => !v)}
-                    className={`notes-sort-trigger focus-visible:ring-2 focus-visible:ring-[#F6B9BD] ${sortOpen ? 'is-open' : ''}`}
+                    className="focus-visible:ring-2 focus-visible:ring-[#F6B9BD]"
+                    style={{
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      gap: 6,
+                      height: 30,
+                      padding: '0 12px',
+                      border: '1px solid var(--dc-border-strong)',
+                      borderRadius: 9999,
+                      background: sortOpen ? 'var(--dc-sunken)' : 'var(--dc-surface)',
+                      color: 'var(--dc-text-body)',
+                      fontFamily: 'inherit',
+                      fontSize: 12,
+                      fontWeight: 700,
+                      cursor: 'pointer',
+                      whiteSpace: 'nowrap',
+                    }}
                   >
-                    <ArrowUpDown size={13} />
+                    <ArrowUpDown size={13} style={{ color: 'var(--dc-text-muted)' }} />
                     {NOTE_SORT_LABEL[list.sort]}
-                    <ChevronDown size={13} />
+                    <ChevronDown size={13} style={{ color: 'var(--dc-text-muted)' }} />
                   </button>
 
                   {sortOpen && (
@@ -603,23 +603,9 @@ export function MyNotesPage() {
         </main>
 
         {/* 🔴 ノート面ではフッターを出さない。紙を画面の底まで伸ばしているので、
-               その下にさらに 56px のフッターが付くと「まだ下がある」空白になる。 */}
+               その下にさらにフッターが付くと「まだ下がある」空白になる。 */}
         {!selectedId && <AppFooter style={{ padding: '32px 0 24px' }} />}
       </div>
-
-      {MOCKS_ENABLED && (
-        <React.Suspense fallback={null}>
-          <NotesDevPanel
-            pageSize={PAGE_SIZE}
-            total={list.items.length}
-            onDone={async () => {
-              setPage(1);
-              select(null);
-              await Promise.all([list.reload(), folderApi.reload()]);
-            }}
-          />
-        </React.Suspense>
-      )}
 
       {/* 小窓の中身。バーの再描画で落ちないよう、ページの直下で描く */}
       {memoWindow.portal}

@@ -1,5 +1,6 @@
 import type { Course } from '../../types/mypage';
 import type { GalleryCourse } from './courseVisuals';
+import { usableCourseImage } from '../../utils/courseImage';
 
 /**
  * BFF の生コース（/moodle/courses）を一覧タイルの表現に直す。
@@ -30,9 +31,10 @@ export function toCatalogCourse(
     duration: raw.duration,
     purposes: Array.isArray(raw.purposes) ? raw.purposes : undefined,
     tags: Array.isArray(raw.tags) ? raw.tags : undefined,
-    thumbnailUrl: raw.courseimage,
+    thumbnailUrl: usableCourseImage(raw.courseimage),
     progress: enrolled?.progress ?? 0,
     isCurrent,
+    enrolled: !!enrolled,
   };
 }
 
@@ -43,7 +45,9 @@ export function buildCatalog(
   resumableCourse: Course | null | undefined
 ): CatalogCourse[] {
   const list = Array.isArray(raw) ? raw : [];
-  return list.map((c) => {
+  // BFF は管理者トークンで Moodle を引くので、非表示（visible=0）のコースも返ってくる。
+  // 受講生の一覧には出さない（Moodle の「コースの可視性」を効かせる）。
+  return list.filter((c) => c?.visible !== 0 && c?.visible !== '0').map((c) => {
     const enrolled =
       activeCourses.find((ac) => ac.id === c.id) ??
       (resumableCourse?.id === c.id ? resumableCourse : undefined);

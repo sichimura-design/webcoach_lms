@@ -45,25 +45,19 @@ export interface AiSkillMockConfig {
   latencyMs: number;
 }
 
-/** 案件抽出メーカー3件で共有する観点。媒体が違っても見るところは同じ */
+/** 案件さがし（媒体違いの3スキル）で共通の観点 */
 const JOB_SEARCH_ASPECTS: SkillAspect[] = [
   {
-    label: 'できること',
-    terms: ['得意', 'できる', 'スキル'],
+    label: '得意な作業',
+    terms: [],
     fallbackVerdict: 'improve',
-    comment: '完成まで一人で運べる作業だけを挙げます。学習中のものは分けて考えます。',
+    comment: 'いま納品まで持っていける作業を1つに絞ると、探す範囲が決まります。',
   },
   {
-    label: '使える時間',
-    terms: ['時間', '週', '納期'],
+    label: '使える時間と単価',
+    terms: [],
     fallbackVerdict: 'improve',
-    comment: '週に確実に取れる時間で考えます。ここを多めに見積もると納期で苦しくなります。',
-  },
-  {
-    label: '単価の目安',
-    terms: ['単価', '報酬', '価格'],
-    fallbackVerdict: 'good',
-    comment: '最初の数件は実績づくりを優先しても構いませんが、下限は決めておきます。',
+    comment: '週に使える時間と最低限ほしい単価を決めておくと、受けられる案件だけが残ります。',
   },
 ];
 
@@ -126,71 +120,97 @@ export const AI_SKILL_MOCK: Record<ConcreteAiSkillId, AiSkillMockConfig> = {
     latencyMs: 950,
   },
 
-  /** 動画編集フィードバックPro。観点が「見る人の体感」なので静止画の添削とは別立て */
   'video-review': {
     internalApp: 'webcoach-video-review',
     summaryTemplate: (heading) =>
-      `教材「${heading}」の基準で見ると、必要な情報は入っています。見る人がどこで離れるかに絞って直すと良くなります。`,
+      `教材「${heading}」の基準で見ると、伝えたい内容は伝わる流れになっています。テンポとテロップの読みやすさを整えると、もう一段見やすくなります。`,
     aspects: [
       {
-        label: '冒頭3秒',
-        terms: ['冒頭', '3秒', 'つかみ', '離脱'],
+        label: 'カット割りとテンポ',
+        terms: ['カット', 'テンポ', '間', '尺', 'ジャンプ'],
         fallbackVerdict: 'improve',
-        comment: '最初の3秒で「何の動画か」が分かるかを確かめてください。説明から入ると見てもらえません。',
+        comment: '説明が止まる「間」を詰め、1カットに1つの情報になっているかを確認してください。',
       },
       {
-        label: 'テンポ（間の長さ）',
-        terms: ['テンポ', 'カット', '間', '尺'],
+        label: 'テロップの読みやすさ',
+        terms: ['テロップ', '字幕', '文字', 'フォント'],
         fallbackVerdict: 'improve',
-        comment: '話し終わりの余白を詰めるだけでテンポは上がります。まず無音の間を削ります。',
+        comment: '表示時間が読み切れる長さか、背景に埋もれていないかを見てください。',
       },
       {
-        label: 'テロップ',
-        terms: ['テロップ', '字幕', '文字'],
-        fallbackVerdict: 'improve',
-        comment: '音を出さずに見る人でも追えるかを基準にします。読み切れない速さの文字は減らします。',
-      },
-      {
-        label: '音（BGM・音量）',
-        terms: ['BGM', '音量', '音', 'ノイズ'],
+        label: '音（BGM・効果音・声）',
+        terms: ['BGM', '音量', '効果音', 'ナレーション', '声'],
         fallbackVerdict: 'good',
-        comment: '声とBGMの音量差が一定なら、あとは仕上げの調整で足ります。',
+        comment: '声が BGM に負けていないか、音量の上下が急でないかを確認してください。',
+      },
+      {
+        label: '構成（冒頭・締め）',
+        terms: ['冒頭', 'つかみ', '構成', '締め', 'CTA'],
+        fallbackVerdict: 'improve',
+        comment: '最初の数秒で何の動画かが伝わるか、最後に次の行動が示されているかを見てください。',
       },
     ],
     producesRevision: false,
     latencyMs: 950,
   },
 
-  /** デザインスプリントチャレンジャー。出すのは講評ではなく「今日の課題」 */
-  'daily-design-sprint': {
-    internalApp: 'webcoach-daily-design-sprint',
-    summaryTemplate: () =>
-      '今日の条件から課題を組みました。仕上げたら画像を送ってください。そのままフィードバックします。',
+  writing: {
+    internalApp: 'webcoach-writing',
+    summaryTemplate: (heading) =>
+      `教材「${heading}」の考え方に沿って、読み手が判断しやすい順序に整えました。`,
     aspects: [
       {
-        label: '今日の条件',
-        terms: ['時間', '分野', 'テイスト'],
-        fallbackVerdict: 'good',
-        comment: '使える時間と分野が決まっていれば、課題はこちらで用意します。',
+        label: '結論の位置',
+        terms: ['結論', '要点', '最初に'],
+        fallbackVerdict: 'improve',
+        comment: '読み手が最初の1文で全体を把握できるように、結論を先に置きます。',
       },
       {
-        label: '技術的フォーカス',
-        terms: ['配色', 'レイアウト', '文字組', '余白'],
+        label: '一文の長さ',
+        terms: ['一文', '短く', '読みやすさ'],
         fallbackVerdict: 'improve',
-        comment: '1回の課題で意識するのは1つに絞ります。全部を良くしようとすると何も残りません。',
+        comment: '一文に2つ以上の主張が入っている箇所を分けました。',
       },
       {
-        label: '制作の時間配分',
-        terms: ['ラフ', '仕上げ', '時間配分'],
+        label: '具体性',
+        terms: ['具体', '例', '数字'],
         fallbackVerdict: 'improve',
-        comment: 'アイデア・ラフ・仕上げに時間を割り当ててから始めます。仕上げに寄せすぎると終わりません。',
+        comment: '「頑張りました」のような主観を、何をどれだけやったかに置き換えます。',
       },
     ],
-    producesRevision: false,
+    producesRevision: true,
     latencyMs: 900,
   },
 
-  // 専門用語AIアシスタント
+  idea: {
+    internalApp: 'webcoach-idea',
+    summaryTemplate: (heading) =>
+      `「${heading}」を起点に、いま決められることと後回しにできることを分けました。`,
+    aspects: [
+      {
+        label: 'いま決めること',
+        terms: ['目的', 'ターゲット', '決める'],
+        fallbackVerdict: 'improve',
+        comment: '誰に何を伝えたいかを一言で書き出すところから始めます。ここが決まらないと後の判断がすべて揺れます。',
+      },
+      {
+        label: '後回しにできること',
+        terms: ['装飾', '仕上げ', '細部'],
+        fallbackVerdict: 'good',
+        comment: '見た目の作り込みは、構成が決まってからで間に合います。',
+      },
+      {
+        label: '次の一歩',
+        terms: ['次', '手順', '進め方'],
+        fallbackVerdict: 'improve',
+        comment: '今日のうちに終わる大きさまで分解します。15分で終わる作業に切ると着手できます。',
+      },
+    ],
+    producesRevision: false,
+    latencyMs: 800,
+  },
+
+  // 旧「専門用語AIアシスタント」。UIでは「用語・文章をわかりやすくする」。
   glossary: {
     internalApp: 'webcoach-glossary',
     summaryTemplate: (heading) =>
@@ -232,7 +252,35 @@ export const AI_SKILL_MOCK: Record<ConcreteAiSkillId, AiSkillMockConfig> = {
     latencyMs: 750,
   },
 
-  // キャッチコピーアイデアメーカー
+  quiz: {
+    internalApp: 'webcoach-quiz',
+    summaryTemplate: (heading) =>
+      `「${heading}」の範囲から確認します。答えを口に出して説明できれば身についています。`,
+    aspects: [
+      {
+        label: '用語を説明できるか',
+        terms: ['とは', '意味', '定義'],
+        fallbackVerdict: 'improve',
+        comment: '教材の言葉をそのまま覚えるのではなく、自分の言葉で言い直せるかを確かめます。',
+      },
+      {
+        label: '判断の理由を言えるか',
+        terms: ['なぜ', '理由', '目的'],
+        fallbackVerdict: 'improve',
+        comment: '「そうする理由」を1文で言えるかどうかが、次の制作で使えるかの分かれ目になります。',
+      },
+      {
+        label: '自分の制作物に当てられるか',
+        terms: ['当てはめ', '実際に', '自分の'],
+        fallbackVerdict: 'improve',
+        comment: 'いま作っているものの中から、この考え方を使った箇所を1つ挙げてください。',
+      },
+    ],
+    producesRevision: false,
+    latencyMs: 800,
+  },
+
+  // 旧「キャッチコピーアイデアメーカー」。UIでは「キャッチコピーを考える」。
   copy: {
     internalApp: 'webcoach-copy',
     summaryTemplate: (heading) =>
@@ -313,7 +361,7 @@ export const AI_SKILL_MOCK: Record<ConcreteAiSkillId, AiSkillMockConfig> = {
     latencyMs: 900,
   },
 
-  // AI面接シュミレーター
+  // 旧「AI面接シミュレーター」。UIでは「AIと面接練習をする」。
   interview: {
     internalApp: 'webcoach-interview',
     summaryTemplate: () =>
@@ -342,37 +390,76 @@ export const AI_SKILL_MOCK: Record<ConcreteAiSkillId, AiSkillMockConfig> = {
     latencyMs: 850,
   },
 
-  /*
-   * 案件抽出メーカー（媒体ごとに別アプリ）。
-   * 🔴 観点は3つとも同じで、違うのは媒体名と internalApp だけ。
-   *    共通化して回すより、対応表として3件並べておくほうが
-   *    「どのアプリがどのDifyアプリに解決されるか」を1行で確認できる。
-   */
-  'job-search-crowdworks': {
-    internalApp: 'webcoach-job-search-crowdworks',
+  tooling: {
+    internalApp: 'webcoach-tooling',
     summaryTemplate: () =>
-      'いま受けられる条件から整理しました。クラウドワークスの案件を広く見るより、受けられる形を先に決めるほうが進みます。',
-    aspects: JOB_SEARCH_ASPECTS,
+      '手元の環境で起きている問題なので、教材の内容ではなく切り分けの順序で見ていきます。',
+    aspects: [
+      {
+        label: '再現条件',
+        terms: [],
+        fallbackVerdict: 'improve',
+        comment: 'どの操作をしたときに起きるかを固定します。毎回起きるのか、特定の手順だけかで原因が変わります。',
+      },
+      {
+        label: '直前の変更',
+        terms: [],
+        fallbackVerdict: 'improve',
+        comment: '直前に変えた設定やファイルを1つずつ戻して、どれが引き金かを確かめます。',
+      },
+      {
+        label: 'メッセージの確認',
+        terms: [],
+        fallbackVerdict: 'improve',
+        comment: '画面に出ている文言をそのまま読み取ります。原因の大半はそこに書かれています。',
+      },
+    ],
+    producesRevision: false,
+    latencyMs: 750,
+  },
+
+  // ── 以下は実DBのDifyアプリ（webcoach_ai_application）に合わせて追加したスキル ──
+  'design-sprint': {
+    internalApp: 'design-sprint-challenger',
+    summaryTemplate: () =>
+      '今日使える時間と分野から、手を動かせる大きさの課題を1つ決めます。仕上げたら画像を送ってください。',
+    aspects: [
+      {
+        label: '課題の大きさ',
+        terms: [],
+        fallbackVerdict: 'good',
+        comment: '使える時間の中で最後まで仕上げられる大きさに絞ります。',
+      },
+    ],
     producesRevision: false,
     latencyMs: 800,
   },
 
-  'job-search-coconala': {
-    internalApp: 'webcoach-job-search-coconala',
+  'job-search-crowdworks': {
+    internalApp: 'project-extractor-crowdworks',
     summaryTemplate: () =>
-      'いま受けられる条件から整理しました。ココナラは出品の形で決まるので、受けられる形を先に決めます。',
+      'クラウドワークスで受けられる案件を探すために、得意な作業と希望の条件から整理します。',
     aspects: JOB_SEARCH_ASPECTS,
     producesRevision: false,
-    latencyMs: 800,
+    latencyMs: 900,
   },
 
   'job-search-lancers': {
-    internalApp: 'webcoach-job-search-lancers',
+    internalApp: 'project-extractor-lancers-lite-hardgate',
     summaryTemplate: () =>
-      'いま受けられる条件から整理しました。ランサーズの案件を広く見るより、受けられる形を先に決めるほうが進みます。',
+      'ランサーズで受けられる案件を探すために、得意な作業と希望の条件から整理します。',
     aspects: JOB_SEARCH_ASPECTS,
     producesRevision: false,
-    latencyMs: 800,
+    latencyMs: 900,
+  },
+
+  'job-search-coconala': {
+    internalApp: 'project-extractor-coconala',
+    summaryTemplate: () =>
+      'ココナラで受けられる案件を探すために、得意な作業と希望の条件から整理します。',
+    aspects: JOB_SEARCH_ASPECTS,
+    producesRevision: false,
+    latencyMs: 900,
   },
 };
 

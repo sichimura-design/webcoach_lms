@@ -3,15 +3,10 @@ import {
   Box,
   Typography,
   Button,
-  Paper,
-  Alert,
-  Accordion,
-  AccordionSummary,
-  AccordionDetails
+  Paper
 } from '@mui/material';
 import {
   Error as ErrorIcon,
-  ExpandMore,
   Refresh
 } from '@mui/icons-material';
 
@@ -57,39 +52,11 @@ class ErrorBoundary extends Component<Props, State> {
           <Paper sx={{ p: 4, textAlign: 'center' }}>
             <ErrorIcon sx={{ fontSize: 64, color: 'error.main', mb: 2 }} />
             <Typography variant="h4" component="h2" gutterBottom>
-              Something went wrong
+              エラーが発生しました
             </Typography>
             <Typography variant="body1" color="text.secondary" sx={{ mb: 3 }}>
-              An error occurred while rendering this component.
+              しばらくしてから再度お試しください。改善しない場合は管理者にお問い合わせください。
             </Typography>
-
-            {this.state.error && (
-              <Accordion sx={{ mb: 3, textAlign: 'left' }}>
-                <AccordionSummary
-                  expandIcon={<ExpandMore />}
-                  aria-controls="error-details-content"
-                  id="error-details-header"
-                >
-                  <Typography variant="subtitle1">Error Details</Typography>
-                </AccordionSummary>
-                <AccordionDetails>
-                  <Alert severity="error">
-                    <Box
-                      component="pre"
-                      sx={{
-                        whiteSpace: 'pre-wrap',
-                        fontFamily: 'monospace',
-                        fontSize: '0.875rem',
-                        m: 0,
-                        overflow: 'auto'
-                      }}
-                    >
-                      {this.state.error.toString()}
-                    </Box>
-                  </Alert>
-                </AccordionDetails>
-              </Accordion>
-            )}
 
             <Button
               onClick={() => this.setState({ hasError: false, error: undefined })}
@@ -97,7 +64,7 @@ class ErrorBoundary extends Component<Props, State> {
               startIcon={<Refresh />}
               size="large"
             >
-              Try Again
+              再試行
             </Button>
           </Paper>
         </Box>

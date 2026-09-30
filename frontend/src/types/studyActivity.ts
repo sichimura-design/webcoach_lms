@@ -12,8 +12,16 @@
  * 常にこの配列から utils/studyStats.ts の純関数で導出する。
  * 理由は utils/studyStats.ts のヘッダに記載。
  *
- * これらのAPIは実BFF（FastAPI）に存在しない。バックエンドは変更禁止のため、
- * すべて MSW（mocks/studyActivityHandlers.ts）で提供している。
+ * dev/kanegae統合メモ:
+ *   このファイルの下半分（ActiveStudySession より上・「実API」セクション）は
+ *   dev/kanegae由来で、実BFF（api-server/routers/study.py, bff-server/routes/studySession.js）
+ *   が返す集計値をそのまま受け取る契約になっている。自前テーブルは無く、Moodleログ
+ *   (mdl_logstore_standard_log) から都度計算したものを返す。
+ *   一方 StudyActivity 系（このファイル上半分）は dev/miyabe 由来で、
+ *   これらのAPIは実BFFに存在せずMSW（mocks/studyActivityHandlers.ts）でのみ提供している。
+ *   TODO(backend未実装): StudyActivity系のカテゴリ別内訳・タイムライン・応援リアクション等は
+ *     実バックエンドに対応するテーブル/APIが無い。ActiveStudySession/useStudySession の
+ *     開始・終了・時間修正だけは実API（startStudySession等）に接続済み（hooks/useStudySession.ts）。
  * ============================================================
  */
 import { StudySessionMode } from './studyRoom';
@@ -23,7 +31,7 @@ export type StudyActivityKind = 'study_session';
 
 /**
  * 達成度。★1〜5 や % にはしない。
- * docs/design-token-spec.md の「理解度%等の学習効果を数値化した指標は表示しない」に触れるため。
+ * デザイン規約の「理解度%等の学習効果を数値化した指標は表示しない」に触れるため。
  * 数値尺度にすると後から平均やグラフにされる余地が生まれる。3語のラベルなら自己申告の感覚だと伝わる。
  */
 export type Achievement = 'low' | 'mid' | 'high';
@@ -272,9 +280,13 @@ export interface StudyFinishDraft {
   };
 }
 
-// ---- 集計値の型 ------------------------------------------------------------
+// ---- 集計値の型（dev/miyabe・元モック） -------------------------------------
 // APIのレスポンス形。実BFFにロールアップテーブルを置いてもフロントが変わらないよう、
 // 「集計済みを受け取る」契約にしてある（実装は都度導出）。
+// StudyStatsSummary(GET /api/study/stats-summary/{userId})のみ実バックエンドに配線済み
+// (api-server crud.get_study_stats_summary)。byCategory/recentは実データの取得元が無く
+// 常に空配列を返す。それ以外(このファイル上半分のStudyActivity CRUD系)は引き続き
+// mocks/studyActivityHandlers.ts のみが応答する。
 
 export interface StudyDayTotal {
   /** YYYY-MM-DD */
@@ -328,7 +340,7 @@ export interface StudyMonthTotal {
   studyDays: number;
 }
 
-/** GET /webcoach/study-stats/{userId} */
+/** GET /api/study/stats-summary/{userId} */
 export interface StudyStatsSummary {
   today: StudyPeriodTotal;
   /** 月曜始まり */
@@ -411,4 +423,121 @@ export interface ManualStudyEntryInput {
   contentNote?: string | null;
   memo?: string | null;
   achievement?: Achievement | null;
+}
+
+// ============================================================
+// ここから dev/kanegae 由来。実BFF（api-server/routers/study.py,
+// bff-server/routes/studySession.js）のレスポンス形そのまま。
+// 学習時間・ストリーク・カレンダー・ランキング・コースアクセスの集計値は、
+// すべてMoodleのログ(mdl_logstore_standard_log)からapi-server側で計算済みのものを
+// bff-server経由でそのまま受け取る契約にしている。自前テーブルは無い。
+// ============================================================
+
+/** GET /api/study/sessions/{userid}/recent の1件(started/endedイベントのペアリング結果) */
+export interface StudySession {
+  courseid: number | null;
+  started_at: string;
+  ended_at: string;
+  duration_minutes: number;
+}
+
+/** GET /api/study/sessions/{userid}/active */
+export interface ActiveStudySessionInfo {
+  courseid: number | null;
+  started_at: string;
+}
+
+/** GET /api/study/stats/{userid} */
+export interface StudyStats {
+  userid: number;
+  today_minutes: number;
+  week_minutes: number;
+  total_minutes: number;
+}
+
+/**
+ * GET /api/study/streak/{userid}
+ * 🔴 上の StudyStreak（dev/miyabeのモック集計、currentDays等の形）とは別物。
+ *    ストリークの定義（学習を要求する条件・しきい値）が2系統で食い違ったまま
+ *    未決着（memory: project_dev-miyabe-ai-app-gap.md 参照）。名前を分けて共存させている。
+ */
+export interface StudyStreakInfo {
+  userid: number;
+  current_streak: number;
+  last_active_date: string | null;
+}
+
+export interface StudyCalendarDay {
+  date: string;
+  total_minutes: number;
+  session_count: number;
+}
+
+/** GET /api/study/calendar/{userid}?year=&month= */
+export interface StudyCalendarData {
+  userid: number;
+  year: number;
+  month: number;
+  days: StudyCalendarDay[];
+}
+
+/** GET /api/study/ranking?period=&limit= の1件 */
+export interface StudyRankingEntry {
+  rank: number;
+  userid: number;
+  total_minutes: number;
+}
+
+/** GET /api/study/ranking?period=&limit= */
+export interface StudyRanking {
+  period: 'week' | 'month' | 'all';
+  entries: StudyRankingEntry[];
+}
+
+/** GET /api/study/course-access/{userid} の1件 */
+export interface CourseAccessSummary {
+  courseid: number;
+  access_count: number;
+  last_accessed: string;
+}
+
+/** GET /api/study/course-access/{userid} */
+export interface CourseAccess {
+  userid: number;
+  courses: CourseAccessSummary[];
+}
+
+/** GET /api/study/course-access/{userid}/{courseid}/materials の1件 */
+export interface CourseMaterialAccessSummary {
+  cmid: number;
+  access_count: number;
+  last_accessed: string;
+}
+
+/** GET /api/study/course-access/{userid}/{courseid}/materials */
+export interface CourseMaterialAccess {
+  userid: number;
+  courseid: number;
+  materials: CourseMaterialAccessSummary[];
+}
+
+/**
+ * 学習の日別振り返り（1ユーザー1日につき1件）。
+ * 学習時間・教材・区間はMoodleログ由来（StudySession）を正とし、ここには持たない。
+ * ここが持つのは本人にしか分からない自己申告（達成度・メモ）だけ。
+ * GET/PUT/DELETE /api/webcoach/study-reflection/{userid}/{date}
+ */
+export interface StudyReflection {
+  mdl_user_id: number;
+  /** YYYY-MM-DD */
+  local_date: string;
+  achievement: Achievement | null;
+  memo: string | null;
+  updated_at: string | null;
+}
+
+/** PUT /api/webcoach/study-reflection/{userid}/{date} のbody */
+export interface StudyReflectionPatch {
+  achievement: Achievement | null;
+  memo: string | null;
 }

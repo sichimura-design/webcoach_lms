@@ -1,8 +1,10 @@
 import React, { useState, useRef } from 'react';
+import { Link } from 'react-router-dom';
 import { UploadResult as UploadResultType } from '../../types/admin';
 import { UploadResult } from './UploadResult';
 import { bffClient } from '../../services/bffClient';
 import { Button } from '../../components/ui/button';
+import { getUserMessage } from '../../utils/errorMessage';
 
 function escapeCsvValue(val: unknown): string {
   if (val === null || val === undefined) return '';
@@ -86,11 +88,12 @@ export const AdminCognitoUsersPage: React.FC = () => {
         errors: result.errors,
       });
     } catch (error) {
+      console.error('Cognito user upload failed:', error);
       setUploadResult({
         success: false,
         recordsProcessed: 0,
         recordsFailed: 0,
-        message: error instanceof Error ? error.message : 'エラーが発生しました',
+        message: getUserMessage(error, 'エラーが発生しました'),
       });
     } finally {
       setIsUploading(false);
@@ -144,14 +147,56 @@ export const AdminCognitoUsersPage: React.FC = () => {
   return (
     <div>
       <div className="mb-8">
+        {/* 見出しはメニュー名（AdminLayout の「ユーザー管理」）にそろえる（M-4） */}
         <h1
           className="text-2xl font-bold mb-2 text-brand-text"
         >
-          Cognitoユーザー登録
+          ユーザー管理
         </h1>
         <p className="text-sm text-brand-muted">
-          CSVファイルからCognitoユーザーを一括作成・削除します。作成時は仮パスワードがメールで送信されます。
+          CSVファイルからログイン用のアカウントを一括で作成・削除します。作成すると仮パスワードがメールで届きます。
         </p>
+      </div>
+
+      {/*
+        運用のしかた（M-4）。2026-09-29 にエンジニアと確認した「今の作りでできること」をそのまま書く。
+        仮パスワードの再送・退会の専用機能は作らず、削除と再登録で回す方針。
+        🔴 作りが変わったら（再送機能ができた、退会でデータを消す等）ここも直す。
+      */}
+      <div
+        className="mb-6 p-4 sm:p-5 rounded-2xl"
+        style={{ backgroundColor: '#FFFFFF', boxShadow: '0 2px 8px rgba(0,0,0,0.06)' }}
+      >
+        <h2 className="text-sm font-bold mb-3 text-brand-text">運用のしかた</h2>
+        <dl className="text-xs text-brand-muted space-y-3 leading-relaxed">
+          <div>
+            <dt className="font-bold text-brand-text">仮パスワードを送り直したいとき</dt>
+            <dd>
+              そのユーザーを削除（deleteFlag=1）してから、同じメールアドレスで登録し直します。新しい仮パスワードのメールが届き、学習記録やノートはそのまま引き継がれます。
+            </dd>
+          </div>
+          <div>
+            <dt className="font-bold text-brand-text">退会・休会のとき</dt>
+            <dd>
+              ユーザーを削除するとログインできなくなります。学習記録・ノート・コース登録は残り、同じメールアドレスで登録し直すと元に戻ります（休会と退会の区別はありません）。
+              コーチが付いている受講生は、
+              <Link to="/admin/coach-mapping" className="font-bold underline" style={{ color: '#E86D78' }}>
+                コーチ割り当て
+              </Link>
+              で担当からも外してください。外さないと、コーチの受講生一覧に出続けます。
+            </dd>
+          </div>
+          <div>
+            <dt className="font-bold text-brand-text">気をつけること</dt>
+            <dd>
+              <ul className="list-disc pl-4 space-y-1">
+                <li>削除と再登録は、CSVを2回に分けてアップロードしてください（削除のCSV → 登録のCSV）。</li>
+                <li>メールアドレスを変えて登録すると別の人として扱われ、これまでのデータとはつながりません。</li>
+                <li>登録し直しで役割（受講生・コーチ）を変えても、学習システム側の役割は変わりません。</li>
+              </ul>
+            </dd>
+          </div>
+        </dl>
       </div>
 
       <div
@@ -184,7 +229,7 @@ export const AdminCognitoUsersPage: React.FC = () => {
                 <tr className="border-b border-[#E8E0DA]">
                   <td className="py-1 pr-4 font-mono">group</td>
                   <td className="py-1 pr-4">任意</td>
-                  <td className="py-1">Cognitoグループ（例: admin）</td>
+                  <td className="py-1">役割。受講生は student、コーチは coach、運営は admin（受講生は必ず student を入れる）</td>
                 </tr>
                 <tr className="border-b border-[#E8E0DA]">
                   <td className="py-1 pr-4 font-mono">updateFlag</td>

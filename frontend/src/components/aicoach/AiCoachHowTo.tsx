@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import { X } from 'lucide-react';
 import { AI_SKILL_META, FEATURED_AI_SKILLS } from '../../types/aiSkill';
 import { AI_SKILL_ICON } from './aiSkillIcons';
+import { useAiApplications } from '../../hooks/useAiApplications';
 
 /**
  * AIコーチの使い方（ホーム右上「ヘルプ・使い方」から開く）。
@@ -45,6 +46,8 @@ const STEPS = [
 ];
 
 export function AiCoachHowTo({ onClose }: AiCoachHowToProps) {
+  // 「こんなときに使う」はDBに登録のあるAIアプリだけにする（一覧に無いものを案内しない）
+  const { listedSkills } = useAiApplications();
   // Esc で閉じる。閉じ方が「×」1つだけだと、何かに隠れた瞬間に出られなくなる
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
@@ -184,7 +187,7 @@ export function AiCoachHowTo({ onClose }: AiCoachHowToProps) {
             こんなときに使う
           </h3>
           <ul style={{ margin: '10px 0 0', padding: 0, listStyle: 'none' }}>
-            {FEATURED_AI_SKILLS.map((id) => {
+            {FEATURED_AI_SKILLS.filter((id) => listedSkills.includes(id)).map((id) => {
               const meta = AI_SKILL_META[id];
               const Icon = AI_SKILL_ICON[meta.icon];
               return (

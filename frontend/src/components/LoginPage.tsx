@@ -92,7 +92,8 @@ function LoginPage() {
       } else if (code === 'UserNotConfirmedException') {
         setError('メールアドレスの確認が完了していません');
       } else {
-        setError(err.message || 'ログインに失敗しました');
+        console.error('Login failed:', err);
+        setError('ログインに失敗しました');
       }
     } finally {
       setLoading(false);
@@ -123,7 +124,8 @@ function LoginPage() {
       if (code === 'InvalidPasswordException') {
         setError('パスワードは大文字・小文字・数字を含む8文字以上にしてください');
       } else {
-        setError(err.message || 'パスワードの変更に失敗しました');
+        console.error('Password change failed:', err);
+        setError('パスワードの変更に失敗しました');
       }
     } finally {
       setLoading(false);

@@ -1,14 +1,23 @@
 import React, { useState, useRef, useEffect, useLayoutEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { Bell, Home, BookOpen, Sparkles, Settings, ShieldCheck, BookMarked, HelpCircle, FileText, Mail, CalendarDays, ChevronDown, ChevronRight, ChevronsLeft, PanelLeftOpen, MessagesSquare, NotebookPen, UserRound, MoreHorizontal } from 'lucide-react';
+import { Bell, Home, BookOpen, Sparkles, Settings, ShieldCheck, BookMarked, HelpCircle, FileText, Mail, CalendarDays, ChevronDown, ChevronRight, ChevronsLeft, PanelLeftOpen, MessagesSquare, NotebookPen, UserRound, Send, Square, X, User, Paperclip, ImageOff, MoreHorizontal, PencilLine, RotateCcw } from 'lucide-react';
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
 import { useAuth } from '../../contexts/AuthContext';
 import { useNotificationStore } from '../../store/notificationStore';
 import { useNewContentNotification } from '../../hooks/useNewContentNotification';
+import { useAiChat } from '../../hooks/useAiChat';
+import { useChatStore } from '../../store/chatStore';
 import { AccountSettingsDropdown } from './AccountSettingsDropdown';
 import GlobalAiCoachDrawer from '../aicoach/GlobalAiCoachDrawer';
 import SidebarStudyTimer from './SidebarStudyTimer';
 import { withCfToken } from '../profile/AvatarPicker';
 import { color, radius } from '../../theme/webcoachTheme';
+import { parseDifyMessage } from '../../utils/difyButtons';
+import { needsTypedReply, TYPED_REPLY_HINT, TYPED_REPLY_PLACEHOLDER } from '../../utils/aiAwaitingReply';
+import DifyFormCard from './DifyFormCard';
+import DifyChoiceButtons from './DifyChoiceButtons';
+import AiWaitLabel from './AiWaitLabel';
 
 interface AppHeaderProps {
   userName?: string;
@@ -17,20 +26,36 @@ interface AppHeaderProps {
 
 /** ナビの開閉をタブ内で持ち回すキー（ページ遷移で AppHeader が再マウントされるため） */
 const SIDEBAR_KEY = 'wc-sidebar-expanded';
+/** アカウントのポップオーバーを、ホバーが外れてから閉じるまでの猶予。トリガー→ポップへ移る途中で消さないため */
+const ACCOUNT_CLOSE_DELAY_MS = 250;
 
 export function AppHeader({ userName, avatarUrl }: AppHeaderProps) {
   const navigate = useNavigate();
   const location = useLocation();
   const { user, avatarUrl: ctxAvatarUrl, nickName: ctxNickName, contentToken } = useAuth();
   const isStudentsPage = location.pathname.startsWith('/coach/students') || location.pathname.startsWith('/coach/schedule');
-  const isCoachSettings = location.pathname.startsWith('/coach/settings');
 
   const resolvedUserName = userName ?? ctxNickName ?? user?.username ?? 'User';
   // avatarUrl は呼び出し元が既にcf_token付与済みの前提。ctxAvatarUrlはcontextの生URLなのでここで付与する
   const resolvedAvatarUrl = avatarUrl ?? (ctxAvatarUrl ? withCfToken(ctxAvatarUrl, contentToken) : undefined);
 
-  // AIコーチ本体とその開閉は GlobalAiCoachDrawer が持つ。
-  // （なぞって解説の撤去に伴い、AppHeader からドロワーを開く経路は無くなった）
+  // 常駐の「AIコーチに相談」ボタン(右上)が開く、dev/kanegae由来の実チャットドロワー。
+  // GlobalAiCoachDrawer / /ai-coach (AiCoachPage) は miyabe 由来の教材ブロック連携AIで、
+  // 裏の構造化教材API(LessonDoc)がモックのままのため今は非稼働(TODO)。
+  // こちらは実際にDify動的ツール連携のバックエンド(ai_langgraph.py)へ繋がっている、
+  // 現状唯一の実働AIチャットなので、統合時に消さず残した。
+  // TODO(backend未実装): /ai-coach 側のAIコーチ機能を実バックエンドに繋ぎ、
+  //   このドロワーとの重複を解消する（教材表示アーキテクチャの決定待ち）。
+  const { chatOpen, setChatOpen } = useChatStore();
+  const {
+    messages, input, setInput, loading, messagesEndRef, sendMessage, stop: stopMessage, retry: retryMessage, handleKeyPress,
+    pendingImage, imageError, handleImageSelect, clearPendingImage,
+  } = useAiChat();
+  const chatImageInputRef = useRef<HTMLInputElement>(null);
+  // 最新の発言が AI の問いかけで、Dify のボタンも無いときは「文章で答える」ことを案内する（B-015）
+  const lastChatMessage = messages[messages.length - 1];
+  const awaitingTypedReply =
+    !loading && lastChatMessage?.role === 'assistant' && !lastChatMessage.kind && needsTypedReply(lastChatMessage.content);
 
   const { items: notificationItems, markAllRead } = useNotificationStore();
   const [notifOpen, setNotifOpen] = useState(false);
@@ -41,11 +66,13 @@ export function AppHeader({ userName, avatarUrl }: AppHeaderProps) {
 
   /*
    * アカウントのポップオーバー。
-   * 🔴 レールの丸アバターは、行き先が見えないまま画面が変わるのが唐突なので
-   *    クリックでもポップオーバーの開閉に留める（直行させない）。
-   * 🔴 一方、パネル（開いた224px）のアカウント行は名前と › が見えているので、
-   *    クリックで /account-settings へ直行する。行き先の一覧はホバー／フォーカスで
-   *    出るポップオーバーが引き続き担う。
+   * 🔴 レールの丸アバターもパネルのアカウント行も、クリック（Enter／タップ）で
+   *    /account-settings へ直行する（B-013）。以前レール側はクリックでも開閉だけに
+   *    していたが、ホバーのポップオーバーが選びにくく、1回で設定に行けないと指摘された。
+   *    行き先の一覧（アカウント設定／プロフィール）はホバー／フォーカスで出る
+   *    ポップオーバーが引き続き担う。
+   * 🔴 ポップオーバーは離れてすぐには閉じない（ACCOUNT_CLOSE_DELAY_MS）。トリガーと
+   *    ポップの間には隙間があり、斜めに移動する途中で一瞬外れただけで消えていた。
    * 🔴 ログアウトはここには置かない。アカウント設定画面が持っている
    *    （SCREEN-013 でそう決めた）。ホバーで開く面に破壊的操作を混ぜない。
    */
@@ -54,6 +81,20 @@ export function AppHeader({ userName, avatarUrl }: AppHeaderProps) {
   // アカウント行だけ消えるのを避けるため）なので、外側クリック判定は両方見る。
   const accountRailRef = useRef<HTMLDivElement>(null);
   const accountPanelRef = useRef<HTMLDivElement>(null);
+  const accountCloseTimer = useRef<number | null>(null);
+  const cancelAccountClose = () => {
+    if (accountCloseTimer.current !== null) {
+      window.clearTimeout(accountCloseTimer.current);
+      accountCloseTimer.current = null;
+    }
+  };
+  const openAccount = () => { cancelAccountClose(); setAccountOpen(true); };
+  const closeAccountSoon = () => {
+    cancelAccountClose();
+    accountCloseTimer.current = window.setTimeout(() => setAccountOpen(false), ACCOUNT_CLOSE_DELAY_MS);
+  };
+  const goAccountSettings = () => { cancelAccountClose(); setAccountOpen(false); navigate('/account-settings'); };
+  useEffect(() => cancelAccountClose, []);
 
   /*
    * SP下部バーの「その他」シート。
@@ -295,11 +336,20 @@ export function AppHeader({ userName, avatarUrl }: AppHeaderProps) {
    * 🔴 項目数はサイドバーの高さ予算にも効く（下の SZ のコメント参照）。
    * ============================================================
    */
+  /*
+   * 🔴 コーチには「コーチング」（受講生が自分の記録を見る /coaching）を出さず、
+   *    同じ枠に「受講生一覧」を置く。コーチ自身はコーチングを受けないので、
+   *    /coaching を開いても「まだ記録がありません。」しか出ない（2026-09-29 決定）。
+   *    ルートは残してあるので URL 直打ちでは開ける。
+   */
+  const coachingItem = user?.isCoach
+    ? { label: '受講生一覧', icon: UserRound, path: '/coach/students', active: isStudentsPage }
+    : { label: 'コーチング', icon: MessagesSquare, path: '/coaching', active: isCoaching };
   const navItems = [
     { label: 'トップ', icon: Home, path: '/mypage', active: isTop },
     { label: '学習する', icon: BookOpen, path: '/courses', active: isCoursesPage },
     { label: 'AIコーチ', icon: Sparkles, path: '/ai-coach', active: isAiCoach },
-    { label: 'コーチング', icon: MessagesSquare, path: '/coaching', active: isCoaching },
+    coachingItem,
     { label: 'マイノート', icon: NotebookPen, path: '/notes', active: isNotes },
     // 「蓄積を見る」の末尾。アイコンはページの主役がカレンダーなので CalendarDays
     { label: '記録', icon: CalendarDays, path: '/study-log', active: isStudyLog },
@@ -310,15 +360,13 @@ export function AppHeader({ userName, avatarUrl }: AppHeaderProps) {
    * 🔴 admin と coach を排他にしない。以前は isAdmin を先に見て早期に返していたため、
    *    admin かつ coach の人（運営がコーチも持つ運用、モックの擬似ユーザーもこれ）には
    *    コーチ画面への導線が1本も出なかった。両方持っているなら両方出す。
+   * 🔴 コーチの「連携設定」(/coach/settings, CoachSettingsPage.tsx)はナビから外してある。
+   *    ルート自体は残しているので、URL直打ちでは開ける。
+   * 🔴 コーチの「受講生一覧」は navItems の「コーチング」の枠に移した（coachingItem）。
+   *    ここに残すと同じ項目が2本並ぶ。
    */
   const manageItems = [
     ...(user?.isAdmin ? [{ label: '管理', icon: ShieldCheck, path: '/admin', active: isAdmin }] : []),
-    ...(user?.isCoach
-      ? [
-          { label: '受講生一覧', icon: UserRound, path: '/coach/students', active: isStudentsPage },
-          { label: '連携設定', icon: Settings, path: '/coach/settings', active: isCoachSettings },
-        ]
-      : []),
   ];
 
   /*
@@ -335,7 +383,8 @@ export function AppHeader({ userName, avatarUrl }: AppHeaderProps) {
    *    できると、SPからその画面へ到達できなくなる。
    * ============================================================
    */
-  const BOTTOM_BAR_PATHS = ['/mypage', '/courses', '/ai-coach', '/coaching', '/study-log'];
+  // '/coach/students' はコーチのときに「コーチング」の枠へ入る（coachingItem）
+  const BOTTOM_BAR_PATHS = ['/mypage', '/courses', '/ai-coach', '/coaching', '/coach/students', '/study-log'];
   const bottomBarItems = navItems.filter((i) => BOTTOM_BAR_PATHS.includes(i.path));
   const sheetNavItems = [...navItems.filter((i) => !BOTTOM_BAR_PATHS.includes(i.path)), ...manageItems];
   /*
@@ -445,7 +494,7 @@ export function AppHeader({ userName, avatarUrl }: AppHeaderProps) {
      * 🔴 レールの10pxより1px大きい。レールは幅72pxの中に全角5文字を収める都合で
      *    10pxだが、下部バーは1枠62.5px（375px÷6枠）あるので11pxが収まる。
      *    ui-review CL-A12 が「ラベル11px・枠を固定」を指しているのに合わせた値で、
-     *    typography.md の「12px未満を作らない」に対するこの枠限定の例外。
+     *    タイポグラフィ規約の「12px未満を作らない」に対するこの枠限定の例外。
      *    36 + 2 + 13 = 51px なので、バーの高さ64pxには収まる。
      */
     bottomLabelFont: 11,
@@ -575,6 +624,8 @@ export function AppHeader({ userName, avatarUrl }: AppHeaderProps) {
    * どちらも画面左下が起点なので、右上に向かって開く（left-full / bottom-0）。
    * 🔴 常時マウントして opacity で出し入れする。条件レンダリングだと
    *    マウスがトリガーからポップへ移る一瞬で消えて選べないことがある。
+   * 🔴 トリガーとの 10px の隙間は margin ではなく外枠の透明な padding で取る。
+   *    margin だとその隙間がどちらの要素でもなく、通過中に mouseleave が起きる。
    */
   const accountItems = [
     { label: 'アカウント設定', icon: Settings, path: '/account-settings' },
@@ -583,17 +634,22 @@ export function AppHeader({ userName, avatarUrl }: AppHeaderProps) {
 
   const renderAccountPopover = () => (
     <div
+      aria-hidden={!accountOpen}
+      className="absolute left-full bottom-0 pl-2.5 z-50 transition-opacity duration-150 motion-reduce:transition-none"
+      style={{
+        opacity: accountOpen ? 1 : 0,
+        pointerEvents: accountOpen ? 'auto' : 'none',
+      }}
+    >
+    <div
       role="menu"
       aria-label="アカウント"
-      aria-hidden={!accountOpen}
-      className="absolute left-full bottom-0 ml-2.5 bg-white overflow-hidden z-50 transition-opacity duration-150 motion-reduce:transition-none"
+      className="bg-white overflow-hidden"
       style={{
         width: 232,
         borderRadius: 14,
         border: '1px solid #EBE7E5',
         boxShadow: '0 16px 38px rgba(96,70,65,.16)',
-        opacity: accountOpen ? 1 : 0,
-        pointerEvents: accountOpen ? 'auto' : 'none',
       }}
     >
       <div className="flex items-center gap-2.5 px-3.5 py-3" style={{ borderBottom: '1px solid #F3EFEE' }}>
@@ -613,7 +669,7 @@ export function AppHeader({ userName, avatarUrl }: AppHeaderProps) {
           key={path}
           role="menuitem"
           tabIndex={accountOpen ? undefined : -1}
-          onClick={() => { navigate(path); setAccountOpen(false); }}
+          onClick={() => { cancelAccountClose(); setAccountOpen(false); navigate(path); }}
           className={`flex items-center w-full appearance-none border-0 bg-transparent cursor-pointer text-left transition-colors hover:bg-[#FAF7F7] motion-reduce:transition-none ${focusRing}`}
           style={{ gap: 10, padding: '10px 14px', fontSize: 13, color: '#3D3D3D' }}
         >
@@ -621,6 +677,7 @@ export function AppHeader({ userName, avatarUrl }: AppHeaderProps) {
           <span className="truncate">{label}</span>
         </button>
       ))}
+    </div>
     </div>
   );
 
@@ -630,7 +687,7 @@ export function AppHeader({ userName, avatarUrl }: AppHeaderProps) {
    *    開いたまま本文を操作できるのが要件）だが、シートは本文を覆うオーバーレイなので
    *    逆。ここをパネルに揃えて閉じないようにすると、行き先に着いても幕が残る。
    * 🔴 ラベルは14px。バーのラベル（11px）と違い、こちらは一覧行なので
-   *    typography.md の「UIの下限は14px」をそのまま守れる。
+   *    タイポグラフィ規約の「UIの下限は14px」をそのまま守れる。
    */
   const renderSheetRow = (label: string, Icon: any, path: string, active: boolean) => (
     <button
@@ -761,20 +818,20 @@ export function AppHeader({ userName, avatarUrl }: AppHeaderProps) {
                入口が要るようになったらここにベルを戻すのではなく、
                どの面に置くかを決めてから追加すること。 */}
 
-        {/* アカウント。ホバー（＋クリック／フォーカス）でポップオーバーを出す。
+        {/* アカウント。ホバー／フォーカスでポップオーバーを出し、クリックはアカウント設定へ直行する。
             🔴 円形の切り抜きは button ではなく内側の span に持たせる。button 側に
                overflow:hidden があるとポップオーバーやツールチップが切られる。 */}
         <div
           ref={accountRailRef}
           className="relative"
           style={{ marginTop: 10, flex: 'none' }}
-          onMouseEnter={() => setAccountOpen(true)}
-          onMouseLeave={() => setAccountOpen(false)}
+          onMouseEnter={openAccount}
+          onMouseLeave={closeAccountSoon}
         >
           <button
-            onClick={() => setAccountOpen(v => !v)}
-            onFocus={() => setAccountOpen(true)}
-            aria-label={`アカウント: ${resolvedUserName}`}
+            onClick={goAccountSettings}
+            onFocus={openAccount}
+            aria-label={`アカウント設定: ${resolvedUserName}`}
             aria-haspopup="menu"
             aria-expanded={accountOpen}
             tabIndex={expanded ? -1 : undefined}
@@ -873,22 +930,19 @@ export function AppHeader({ userName, avatarUrl }: AppHeaderProps) {
         </div>
 
         {/*
-          アカウント。ホバー／フォーカスではレール側と同じポップオーバーを出すが、
-          クリックはアカウント設定へ直行する（› は「まだ先がある」の意）。
-          🔴 レール（閉じた72px）の方はクリックでもポップオーバーの開閉のままにしている。
-             あちらは丸アイコンだけで名前も › も無いので、押した瞬間に画面が変わると
-             どこへ飛んだのか分からない。名前と › が見えているこのパネル側だけ直行させる。
+          アカウント。ホバー／フォーカスではレール側と同じポップオーバーを出し、
+          クリックはアカウント設定へ直行する（› は「まだ先がある」の意）。レール側も同じ。
         */}
         <div
           ref={accountPanelRef}
           className="relative"
           style={{ flex: 'none' }}
-          onMouseEnter={() => setAccountOpen(true)}
-          onMouseLeave={() => setAccountOpen(false)}
+          onMouseEnter={openAccount}
+          onMouseLeave={closeAccountSoon}
         >
           <button
-            onClick={() => { setAccountOpen(false); navigate('/account-settings'); }}
-            onFocus={() => setAccountOpen(true)}
+            onClick={goAccountSettings}
+            onFocus={openAccount}
             aria-label={`アカウント設定: ${resolvedUserName}`}
             aria-haspopup="menu"
             aria-expanded={accountOpen}
@@ -1087,9 +1141,9 @@ export function AppHeader({ userName, avatarUrl }: AppHeaderProps) {
 
           {/* Right: AI Chat, Divider, Notifications, Avatar */}
           <div className="flex items-center gap-2 sm:gap-5">
-            {/* AI Coach Button */}
+            {/* AI Coach Button: dev/kanegaeの実チャットドロワーを開く（上のコメント参照） */}
             <button
-              onClick={() => navigate('/ai-coach')}
+              onClick={() => setChatOpen(true)}
               className="flex items-center gap-1.5 bg-brand-bg hover:bg-[#F0EAE6] rounded-full text-brand-muted border border-brand-subtle transition-colors"
               style={{ height: '34px', padding: '0 10px', fontSize: '12px' }}
             >
@@ -1236,6 +1290,256 @@ export function AppHeader({ userName, avatarUrl }: AppHeaderProps) {
           両方出すと入口が二重になり、どちらで話したか分からなくなる。 */}
       {!hasOwnAiSurface && <GlobalAiCoachDrawer />}
 
+      {/* AI Chat Drawer: dev/kanegaeの実チャット（右上「AIコーチに相談」ボタンから開く） */}
+      {chatOpen && (
+        <div className="fixed right-0 top-0 h-full w-full sm:w-[400px] bg-white z-50 flex flex-col shadow-xl">
+          {/* Header */}
+          <div className="p-4 bg-gradient-to-r from-[#E86D78] to-[#FA9262] text-white flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <img src={`${process.env.PUBLIC_URL}/teleoperation-icon.png`} alt="AIコーチ" className="w-5 h-5 object-contain" />
+              <span className="font-bold text-lg">AIコーチに相談</span>
+            </div>
+            <button
+              onClick={() => setChatOpen(false)}
+              className="p-1 hover:bg-white/20 rounded"
+            >
+              <X className="w-5 h-5" />
+            </button>
+          </div>
+
+          {/* Messages Area */}
+          <div className="flex-1 overflow-y-auto p-4 bg-gray-50 space-y-4">
+            {/* 会話が空のときの案内。以前は固定の挨拶を1件目の発言として積んでいた（A-8、chatStore の注記） */}
+            {messages.length === 0 && !loading && (
+              <div className="flex gap-3">
+                <div className="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 bg-brand">
+                  <img src={`${process.env.PUBLIC_URL}/teleoperation-icon.png`} alt="AIコーチ" className="w-4 h-4 object-contain" />
+                </div>
+                <div className="max-w-[85%] sm:max-w-[75%] p-3 rounded-lg bg-white shadow-sm text-sm text-gray-700 leading-relaxed">
+                  学習に関する質問や、コースのおすすめ、キャリアの相談など、お気軽にどうぞ。
+                </div>
+              </div>
+            )}
+            {messages.map((message, index) =>
+              // 画面が出した定型文は吹き出しにしない（A-4）。中止は区切り線、エラーは送り直しボタン付き
+              message.kind === 'notice' ? (
+                <div key={message.id} className="flex items-center gap-2 text-xs text-gray-400">
+                  <span aria-hidden className="flex-1 h-px bg-gray-200" />
+                  <span>{message.content}</span>
+                  <span aria-hidden className="flex-1 h-px bg-gray-200" />
+                </div>
+              ) : message.kind === 'error' ? (
+                <div key={message.id} className="rounded-lg border border-amber-200 bg-amber-50 p-3 text-sm text-amber-900">
+                  <p>{message.content}</p>
+                  {index === messages.length - 1 && (
+                    <button
+                      type="button"
+                      onClick={() => void retryMessage()}
+                      disabled={loading}
+                      className="mt-2 inline-flex items-center gap-1 rounded-lg border border-brand bg-white px-3 py-1.5 text-xs font-bold text-brand hover:bg-gray-50 disabled:opacity-50 focus-visible:ring-2 focus-visible:ring-brand"
+                    >
+                      <RotateCcw className="w-3.5 h-3.5" />
+                      もう一度送る
+                    </button>
+                  )}
+                </div>
+              ) : (
+              <div
+                key={message.id}
+                className={`flex gap-3 ${message.role === 'user' ? 'flex-row-reverse' : ''}`}
+              >
+                <div
+                  className={`w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 ${
+                    message.role === 'user' ? 'bg-blue-500' : 'bg-brand'
+                  }`}
+                >
+                  {message.role === 'user' ? (
+                    <User className="w-4 h-4 text-white" />
+                  ) : (
+                    <img src={`${process.env.PUBLIC_URL}/teleoperation-icon.png`} alt="AIコーチ" className="w-4 h-4 object-contain" />
+                  )}
+                </div>
+                <div className="max-w-[85%] sm:max-w-[75%] flex flex-col gap-1">
+                  <div
+                    className={`p-3 rounded-lg ${
+                      message.role === 'user' ? 'bg-blue-100' : 'bg-white'
+                    } shadow-sm`}
+                  >
+                    {message.imageDataUrl && (
+                      <img
+                        src={message.imageDataUrl}
+                        alt="添付画像"
+                        className="max-w-full max-h-48 rounded-lg mb-2 object-contain"
+                      />
+                    )}
+                    {message.role === 'assistant' ? (
+                      (() => {
+                        const { text, buttons, forms } = parseDifyMessage(message.content);
+                        return (
+                          <>
+                            <ReactMarkdown
+                              remarkPlugins={[remarkGfm]}
+                              children={text.replace(/^(✅[^\n-]*?) - (.+)$/gm, '$1\n$2')}
+                              components={{
+                                h1: ({ children }) => <p className="text-base font-bold text-brand-text mt-3 mb-2">{children}</p>,
+                                h2: ({ children }) => <p className="text-sm font-bold text-brand-text mt-3 mb-2">{children}</p>,
+                                h3: ({ children }) => <p className="text-sm font-semibold text-brand-text mt-2 mb-1">{children}</p>,
+                                p: ({ children }) => <p className="text-sm leading-relaxed mb-2 last:mb-0" style={{ whiteSpace: 'pre-line' }}>{children}</p>,
+                                strong: ({ children }) => <strong className="font-bold text-brand-text">{children}</strong>,
+                                em: ({ children }) => <em className="italic">{children}</em>,
+                                ul: ({ children }) => <ul style={{ listStyleType: 'disc', paddingLeft: '1.25rem', margin: '0.25rem 0' }} className="text-sm">{children}</ul>,
+                                ol: ({ children }) => <ol style={{ listStyleType: 'decimal', paddingLeft: '1.25rem', margin: '0.25rem 0' }} className="text-sm">{children}</ol>,
+                                li: ({ children }) => <li style={{ listStyleType: 'inherit' }} className="text-sm leading-relaxed mb-0.5">{children}</li>,
+                                code: ({ children, className }) => className ? (
+                                  <code className="block bg-gray-100 rounded p-2 text-xs font-mono my-1 overflow-x-auto">{children}</code>
+                                ) : (
+                                  <code className="bg-gray-100 rounded px-1 text-xs font-mono">{children}</code>
+                                ),
+                                hr: () => <hr className="my-2 border-gray-200" />,
+                              }}
+                            />
+                            {forms.map((form, i) => (
+                              <DifyFormCard key={i} form={form} disabled={loading} stale={message !== lastChatMessage} onSubmit={(m) => void sendMessage(m)} />
+                            ))}
+                            <DifyChoiceButtons
+                              buttons={buttons}
+                              disabled={loading}
+                              stale={message !== lastChatMessage}
+                              onPick={(value) => void sendMessage(value)}
+                            />
+                          </>
+                        );
+                      })()
+                    ) : (
+                      <p className="text-sm whitespace-pre-wrap">{message.content}</p>
+                    )}
+                    <p className="text-xs text-gray-400 mt-2">
+                      {message.timestamp.toLocaleTimeString('ja-JP', {
+                        hour: '2-digit',
+                        minute: '2-digit',
+                      })}
+                    </p>
+                  </div>
+
+                  {/* 参照元情報 */}
+                  {message.sources && message.sources.length > 0 && (
+                    <div className="pl-1">
+                      <p className="text-xs text-gray-500 font-bold mb-1">参照元</p>
+                      <div className="space-y-1">
+                        {message.sources.map((source, index) => (
+                          <div
+                            key={index}
+                            className="p-2 bg-gray-100 border border-gray-200 rounded text-xs"
+                          >
+                            <p className="font-bold">
+                              {source.module_name}
+                              {source.filename && ` - ${source.filename}`}
+                            </p>
+                            <p className="text-gray-500">
+                              {source.section_name} | 類似度: {(source.similarity * 100).toFixed(1)}%
+                            </p>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </div>
+            ))}
+            {loading && (
+              <div className="flex gap-3">
+                <div className="w-8 h-8 rounded-full bg-brand flex items-center justify-center">
+                  <img src={`${process.env.PUBLIC_URL}/teleoperation-icon.png`} alt="AIコーチ" className="w-4 h-4 object-contain" />
+                </div>
+                <div className="p-3 bg-white rounded-lg shadow-sm">
+                  <div className="flex items-center gap-2">
+                    <div className="w-4 h-4 border-2 border-brand border-t-transparent rounded-full animate-spin" />
+                    <AiWaitLabel className="text-sm text-gray-500" />
+                  </div>
+                </div>
+              </div>
+            )}
+            <div ref={messagesEndRef} />
+          </div>
+
+          {/* Input Area */}
+          <div className="p-4 bg-white border-t">
+            {pendingImage && (
+              <div className="mb-2 flex items-center gap-2">
+                <img src={pendingImage.dataUrl} alt="添付予定の画像" className="w-14 h-14 rounded-lg object-cover border border-gray-200" />
+                <button
+                  onClick={clearPendingImage}
+                  className="p-1 text-gray-400 hover:text-gray-600"
+                  title="画像を取り消す"
+                >
+                  <ImageOff className="w-4 h-4" />
+                </button>
+              </div>
+            )}
+            {imageError && (
+              <p className="text-xs text-red-500 mb-2">{imageError}</p>
+            )}
+            {awaitingTypedReply && (
+              <p className="mb-2 flex items-start gap-1.5 text-xs font-bold leading-relaxed text-brand">
+                <PencilLine className="w-3.5 h-3.5 flex-shrink-0 mt-0.5" />
+                <span>{TYPED_REPLY_HINT}</span>
+              </p>
+            )}
+            <div className="flex gap-2">
+              <input
+                ref={chatImageInputRef}
+                type="file"
+                accept="image/jpeg,image/png,image/webp,image/gif"
+                className="hidden"
+                onChange={(e) => {
+                  const file = e.target.files?.[0];
+                  if (file) handleImageSelect(file);
+                  e.target.value = '';
+                }}
+              />
+              <button
+                onClick={() => chatImageInputRef.current?.click()}
+                disabled={loading}
+                className="p-2 text-gray-500 hover:text-brand hover:bg-gray-100 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex-shrink-0"
+                title="画像を添付"
+              >
+                <Paperclip className="w-5 h-5" />
+              </button>
+              <textarea
+                value={input}
+                onChange={(e) => setInput(e.target.value)}
+                onKeyPress={handleKeyPress}
+                placeholder={awaitingTypedReply ? TYPED_REPLY_PLACEHOLDER : '質問を入力してください...'}
+                // 生成中も次の質問は打てるようにする（送信は回答が届くまで止まる）。
+                // レッスン画面の AI・AIコーチ画面と同じ扱い（A-7）
+                rows={1}
+                className="flex-1 px-3 py-2 border border-gray-300 rounded-lg resize-none focus:outline-none focus:ring-2 focus:ring-brand focus:border-transparent disabled:bg-gray-100"
+              />
+              {loading ? (
+                // 生成中は送信の代わりに中止（B-009）
+                <button
+                  type="button"
+                  onClick={stopMessage}
+                  aria-label="生成を中止"
+                  title="生成を中止"
+                  className="p-2 rounded-lg border transition-colors"
+                  style={{ borderColor: color.primaryBorder, background: color.surface, color: color.primary }}
+                >
+                  <Square className="w-5 h-5" fill="currentColor" />
+                </button>
+              ) : (
+              <button
+                onClick={() => void sendMessage()}
+                disabled={(!input.trim() && !pendingImage) || loading}
+                className="p-2 bg-brand text-white rounded-lg hover:bg-brand/90 disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors"
+              >
+                <Send className="w-5 h-5" />
+              </button>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
       {/* ──────────────────────────────────────────────────────────
           SP版「その他」シート（sm未満）。
           🔴 下部バーの <nav> の外に置く。nav は z-40 の positioned 要素なので

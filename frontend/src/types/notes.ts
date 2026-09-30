@@ -8,8 +8,9 @@
  * その中に文章・クリップ・AI回答を自由に追加して、自分なりの学習ノートを
  * 育てていけるものにする」。器（Note）と中身（NoteBlock）に分けたのはそのため。
  *
- * 実BFFには存在せず、MSW（mocks/noteHandlers.ts）が localStorage を裏に置いて
- * 永続化している。実API化するときはハンドラを削除するだけで済むようにしてある。
+ * 実API `/api/my-note/*`（webcoach_my_note）に載っている。実APIは本文と素材を
+ * Markdownの1列で持つため、この型との相互変換は services/bffClient.ts が
+ * utils/noteMarkdown.ts を通して行う。MSWのモックは廃止した。
  */
 
 /**
@@ -17,13 +18,12 @@
  * clip   … 教材本文を選択して取り込んだもの。元の位置へ戻れる
  * answer … AIコーチの回答。質問とセットで持つ
  */
-export type NoteBlockKind = 'text' | 'clip' | 'answer' | 'image';
+export type NoteBlockKind = 'text' | 'clip' | 'answer';
 
 export const NOTE_BLOCK_LABEL: Record<NoteBlockKind, string> = {
   text: '本文',
   clip: 'クリップ',
   answer: 'AI回答',
-  image: '画像',
 };
 
 /**
@@ -34,13 +34,13 @@ export const NOTE_BLOCK_LABEL: Record<NoteBlockKind, string> = {
  * self     … 「新しいノートを作成」から自分で作った
  * material … 教材（レッスン）から作られた
  * ai       … AIコーチの回答を残すために作られた
- * coaching … コーチングのまとめ。coachingSessionId でどの回のものかが分かる
+ * coaching … 面談のまとめ。coachingSessionId でどの回のものかが分かる
  *             （ノート作成の導線自体はまだ無く、シードで入っているだけ）
  */
 export type NoteOrigin = 'self' | 'material' | 'ai' | 'coaching';
 
 export const NOTE_ORIGIN_LABEL: Record<NoteOrigin, string> = {
-  self: '自分のノート',
+  self: '自分のメモ',
   material: '教材',
   ai: 'AIコーチ',
   coaching: 'コーチング',
@@ -80,14 +80,6 @@ interface NoteBlockBase {
   updatedAt: string;
 }
 
-/**
- * 🔴 v5 以前の本文ブロック。**もう作られない**（本文は Note.body）。
- *    移行（mocks/noteMigration.ts の foldToV6）が読むためだけに型を残す。
- */
-export interface NoteTextBlock extends NoteBlockBase {
-  kind: 'text';
-  text: string;
-}
 
 export interface NoteClipBlock extends NoteBlockBase {
   kind: 'clip';
@@ -101,57 +93,27 @@ export interface NoteAnswerBlock extends NoteBlockBase {
   answer: string;
   /** 質問したときに引用していた教材文 */
   selectedText: string | null;
-  /**
-   * 添付していた画像（dataURL）。
-   * 🔴 新しく入ることはない（NoteBlockInput から落とした）。禁止より前に
-   *    保存された回答のために、表示できる形だけ残してある。
-   */
+  /** 添付していた画像（dataURL） */
   image: string | null;
   source: NoteSourceRef | null;
 }
 
 /**
- * 自分で貼った画像。
- * 🔴 **新しく作られることはない。** ノートに画像を貼る入口は撤去した
- *    （セキュリティ方針。utils/noteImageStore.ts の冒頭に理由がある）。
- *    禁止より前に貼られた画像を表示し続けるために型だけ残してある。
- * 🔴 画像の中身はここに持たない。`imageId` は IndexedDB
- *    （utils/noteImageStore.ts）の参照キーで、ノート本体は localStorage に
- *    入るため、dataURL を持たせると数枚で容量上限を超える
- *    （store/aiCoachStore.ts:27 で同じ失敗をしている）。
- *    実APIになったら imageId をサーバのURLに置き換える。
+ * 🔴 NoteBlock に text は**入らない**。本文は Note.body の1本（dev/miyabe の v6）。
+ *    ブロックとして残るのは、本文の下に並ぶ「素材」（クリップ / AI回答）だけ。
  */
-export interface NoteImageBlock extends NoteBlockBase {
-  kind: 'image';
-  imageId: string;
-  /** 読み上げ用。ファイル名を既定にする */
-  alt: string;
-  /** 画像の下に出す説明。未入力は null */
-  caption: string | null;
-}
-
-/**
- * 🔴 NoteBlock に text は**入らない**（v6）。本文は Note.body の1本。
- *    NoteTextBlock 型は v5 以前のデータを読むための移行用として
- *    mocks/noteMigration.ts が持っている（LegacyTextBlock）。
- */
-export type NoteBlock = NoteClipBlock | NoteAnswerBlock | NoteImageBlock;
+export type NoteBlock = NoteClipBlock | NoteAnswerBlock;
 
 export interface Note {
   id: string;
   title: string;
   /**
-   * 本文。1枚の紙に書いた1本の長いテキスト（記法は utils の noteText.tsx が解釈する）。
-   * 🔴 ここを段落ごとのブロックに割り戻さないこと。v5 までは本文も
-   *    1段落＝1ブロックで、書くたびに「保存する」を押して次のブロックが生える作りだった。
-   *    段落を跨いだカーソル移動も Backspace での結合もできず、
-   *    「一行書くのにこんな保存方法が要るのか」という指摘で1本化した。
+   * 本文。1枚の紙に書いた1本の長いテキスト（記法は noteText.tsx が解釈する）。
+   * 🔴 ここを段落ごとのブロックに割り戻さないこと。以前は1段落＝1ブロックで、
+   *    段落を跨いだカーソル移動も Backspace での結合もできなかった。
    */
   body: string;
-  /**
-   * 素材。教材からの引用クリップと AI回答（と、禁止前に貼られた画像）。
-   * 本文の下にまとめて並ぶ。本文の途中に差し込む座標は持たない。
-   */
+  /** 素材。教材からの引用クリップと AI回答。本文の下に追加順で並ぶ */
   blocks: NoteBlock[];
   /**
    * 一覧のラベル「重要」。手で付けるラベルはこれ1種だけ。
@@ -169,7 +131,7 @@ export interface Note {
   source: NoteSourceRef | null;
   /**
    * このノートを取ったコーチング回（CoachingSessionDetail.id）。
-   * コーチング記録の「マイノート」欄がこれで自分の回のノートを引く。
+   * コーチング記録の「自分のメモ」がこれで自分の回のノートを引く。
    * source は教材（courseId / lessonId）専用なので、そちらには相乗りできない。
    */
   coachingSessionId?: number | null;
@@ -187,15 +149,6 @@ export interface NoteSummary {
   blockCount: number;
   /** 一覧カードに出す本文の書き出し */
   excerpt: string;
-  /**
-   * 一覧カードのサムネイル。中にある最初の画像ブロックの imageId（無ければ null）。
-   * 制作物を貼ったノートを一覧で見分けるために持つ。
-   *
-   * 🔴 answer ブロックの添付画像（NoteAnswerBlock.image）は載せない。あれは dataURL で、
-   *    一覧レスポンスに入れると1件で数百KBになり listNotes が重くなる。
-   *    実APIになったら imageId をサーバのURLに置き換える（NoteImageBlock と同じ扱い）。
-   */
-  thumbnailImageId?: string | null;
   source: NoteSourceRef | null;
   coachingSessionId?: number | null;
   createdAt: string;
@@ -205,14 +158,15 @@ export interface NoteSummary {
 /**
  * 一覧の並び順。
  * 🔴 昇順（古い順）を必ず持たせる。「最初に書いたノートから読み返す」は
- *    振り返りの基本動作で、新しい順だけでは辿れない。
- *    作成日時の並びは更新日時とほぼ同じ結果になり選択肢を増やすだけなので持たない。
+ *    振り返りの基本動作で、降順3種だけでは辿れない。
  */
-export type NoteSort = 'updated' | 'updatedAsc' | 'title';
+export type NoteSort = 'updated' | 'updatedAsc' | 'created' | 'createdAsc' | 'title';
 
 export const NOTE_SORT_LABEL: Record<NoteSort, string> = {
   updated: '更新が新しい順',
   updatedAsc: '更新が古い順',
+  created: '作成が新しい順',
+  createdAsc: '作成が古い順',
   title: 'タイトル順',
 };
 
@@ -223,7 +177,7 @@ export interface NoteListQuery {
   favorite?: boolean;
   /** そのレッスンから触ったノートだけを引く（教材画面のメモ欄が使う） */
   lessonId?: number;
-  /** そのコーチング回のノートだけを引く（コーチング記録の「マイノート」欄が使う） */
+  /** そのコーチング回のノートだけを引く（コーチング記録の「自分のメモ」が使う） */
   coachingSessionId?: number;
 }
 
@@ -242,10 +196,7 @@ export interface NoteCreateInput {
 export interface NoteUpdateInput {
   title?: string;
   favorite?: boolean;
-  /**
-   * 本文の全文。ノート面の textarea が自動保存で丸ごと送る。
-   * 🔴 差分ではなく全文。本文は1本のテキストで、部分更新の単位が無い。
-   */
+  /** 本文の全文。差分ではなく全文（本文は1本のテキストで、部分更新の単位が無い） */
   body?: string;
   /** フォルダの移動。null で未整理へ。移動だけなら updatedAt は上がらない */
   folderId?: string | null;
@@ -299,13 +250,7 @@ export function matchesFolderFilter(
 
 /**
  * POST /webcoach/notes/:id/blocks — kind ごとに必要なものだけ渡す。
- * 🔴 `{ kind: 'text' }` は削除した。本文は Note.body の1本で、
- *    PATCH /webcoach/notes/:id（NoteUpdateInput.body）が受け持つ。
- * 🔴 `{ kind: 'image' }` と、answer の `image`（添付画像の dataURL）は削除した。
- *    受講生が任意の画像をノートに持ち込める口を持たない、というセキュリティ方針。
- *    AIコーチに画像を添えて質問すること自体は従来どおりできる（送るだけで残さない）。
- *    **足し直さないこと。** 詳しい理由は utils/noteImageStore.ts の冒頭。
- *    既存データの表示のために NoteImageBlock / NoteAnswerBlock.image は残してある。
+ * 🔴 `{ kind: 'text' }` は無い。本文は NoteUpdateInput.body が受け持つ。
  */
 export type NoteBlockInput =
   | { kind: 'clip'; text: string; source: NoteSourceRef }
@@ -314,6 +259,7 @@ export type NoteBlockInput =
       question: string;
       answer: string;
       selectedText?: string | null;
+      image?: string | null;
       source?: NoteSourceRef | null;
     };
 
@@ -321,22 +267,16 @@ export type NoteBlockInput =
  * 教材・AIコーチからノートへ取り込むもの（hooks/useNoteCapture.ts）。
  * 素材として足すか、本文の末尾に書き足すかの2通り。
  * 🔴 `{ kind:'text' }` はブロックではなく **Note.body への追記**。
- *    v5 までは text ブロックとして足していたが、本文が1本になったので
- *    ノートを取り直して body を組み直す（useNoteCapture の append を見ること）。
  */
 export type NoteCaptureInput = NoteBlockInput | { kind: 'text'; text: string };
 
 /**
  * PATCH /webcoach/notes/:id/blocks/:blockId
- * 🔴 並べ替えの `index` は無い。素材は追加順に並ぶだけで、動かせない
- *    （本文が1本になり、素材を本文のどこに挟むかという座標が無くなったため）。
+ * 🔴 並べ替えの `index` は無い。素材は追加順に並ぶだけで、動かせない。
  */
 export interface NoteBlockPatch {
-  /** クリップの本文 */
   text?: string;
   answer?: string;
-  /** 画像ブロックの説明文 */
-  caption?: string | null;
 }
 
 /**

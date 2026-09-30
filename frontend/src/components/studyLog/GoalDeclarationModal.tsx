@@ -27,7 +27,7 @@ import { toLocalDateKey } from '../../utils/studyStats';
  *    学習効果を数値化した指標は出さない規約があるため、新しい尺度を作らない。
  * ============================================================
  */
-type Mode = 'create' | 'edit' | 'review' | 'view';
+type Mode = 'create' | 'edit' | 'review';
 
 interface GoalDeclarationModalProps {
   mode: Mode;
@@ -121,19 +121,16 @@ export function GoalDeclarationModal({
     declaration?.reflectionAchievement ?? null
   );
 
-  const readOnly = mode === 'view';
   const title =
     mode === 'create'
       ? '新しい目標を設定する'
       : mode === 'review'
         ? '振り返りを書く'
-        : mode === 'view'
-          ? 'あなたの目標'
-          : '目標を編集する';
+        : '目標を編集する';
 
   const submit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (saving || readOnly) return;
+    if (saving) return;
 
     if (mode === 'create') {
       await onSave({ text, periodFrom, periodTo });
@@ -220,7 +217,6 @@ export function GoalDeclarationModal({
           <span style={labelStyle}>目標</span>
           <textarea
             required
-            readOnly={readOnly}
             value={text}
             maxLength={DECLARATION_TEXT_MAX}
             rows={2}
@@ -239,7 +235,6 @@ export function GoalDeclarationModal({
             <input
               type="date"
               required
-              readOnly={readOnly}
               value={periodFrom}
               onChange={(e) => setPeriodFrom(e.target.value)}
               style={inputStyle}
@@ -250,7 +245,6 @@ export function GoalDeclarationModal({
             <input
               type="date"
               required
-              readOnly={readOnly}
               value={periodTo}
               min={periodFrom}
               onChange={(e) => setPeriodTo(e.target.value)}
@@ -271,7 +265,7 @@ export function GoalDeclarationModal({
                     key={s}
                     active={status === s}
                     label={GOAL_DECLARATION_STATUS_LABEL[s]}
-                    onClick={() => !readOnly && setStatus(s)}
+                    onClick={() => setStatus(s)}
                   />
                 ))}
               </div>
@@ -280,7 +274,6 @@ export function GoalDeclarationModal({
             <label style={{ display: 'block', marginBottom: 14 }}>
               <span style={labelStyle}>振り返り（任意）</span>
               <textarea
-                readOnly={readOnly}
                 value={reflection}
                 maxLength={DECLARATION_REFLECTION_MAX}
                 rows={4}
@@ -299,7 +292,7 @@ export function GoalDeclarationModal({
                     active={reflectionAchievement === a}
                     label={ACHIEVEMENT_LABEL[a]}
                     // もう一度押すと解除
-                    onClick={() => !readOnly && setReflectionAchievement(reflectionAchievement === a ? null : a)}
+                    onClick={() => setReflectionAchievement(reflectionAchievement === a ? null : a)}
                   />
                 ))}
               </div>
@@ -322,7 +315,7 @@ export function GoalDeclarationModal({
         )}
 
         <div style={{ display: 'flex', gap: 9, justifyContent: 'flex-end', alignItems: 'center' }}>
-          {mode !== 'create' && declaration && onDelete && !readOnly && (
+          {mode !== 'create' && declaration && onDelete && (
             <button
               type="button"
               onClick={() => onDelete(declaration)}
@@ -351,24 +344,22 @@ export function GoalDeclarationModal({
               color: 'var(--dc-text-body)', cursor: saving ? 'default' : 'pointer',
             }}
           >
-            {readOnly ? '閉じる' : 'やめる'}
+            やめる
           </button>
 
-          {!readOnly && (
-            <button
-              type="submit"
-              disabled={saving}
-              className="dc-cta-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#F6B9BD]"
-              style={{
-                background: 'var(--dc-primary)', border: '1px solid var(--dc-primary)',
-                borderRadius: 9, padding: '9px 18px',
-                fontFamily: 'inherit', fontSize: 'var(--dc-fs-body)', fontWeight: 700,
-                color: '#fff', cursor: saving ? 'default' : 'pointer', opacity: saving ? 0.6 : 1,
-              }}
-            >
-              {saving ? '保存中…' : mode === 'create' ? '設定する' : '保存する'}
-            </button>
-          )}
+          <button
+            type="submit"
+            disabled={saving}
+            className="dc-cta-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#F6B9BD]"
+            style={{
+              background: 'var(--dc-primary)', border: '1px solid var(--dc-primary)',
+              borderRadius: 9, padding: '9px 18px',
+              fontFamily: 'inherit', fontSize: 'var(--dc-fs-body)', fontWeight: 700,
+              color: '#fff', cursor: saving ? 'default' : 'pointer', opacity: saving ? 0.6 : 1,
+            }}
+          >
+            {saving ? '保存中…' : mode === 'create' ? '設定する' : '保存する'}
+          </button>
         </div>
       </form>
     </div>

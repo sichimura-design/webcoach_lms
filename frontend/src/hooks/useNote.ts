@@ -1,7 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import bffClient from '../services/bffClient';
 import { Note, NoteBlockInput, NoteBlockPatch } from '../types/notes';
-import { deleteNoteImage } from '../utils/noteImageStore';
 
 /**
  * ノート面の上部バーに出す保存状態（デザイン『マイノート 改善案』③）。
@@ -14,6 +13,8 @@ export interface NoteSaveState {
   lastSavedAt: string | null;
   /** 直近の保存が失敗したときの文言。次に成功したら消える */
   error: string | null;
+  /** 本文にまだ保存していない変更があるか */
+  dirty: boolean;
 }
 
 /**
@@ -29,6 +30,8 @@ export function useNote(noteId: string | null) {
   const [error, setError] = useState<string | null>(null);
 
   const reqRef = useRef(0);
+  /** まだ送っていない本文。null なら送るものが無い（保存の説明は saveBody） */
+  const pendingBodyRef = useRef<string | null>(null);
 
   // 保存状態。同時に走る保存があるので件数で持つ（boolean だと先に終わった方が消してしまう）
   const [savingCount, setSavingCount] = useState(0);
@@ -61,7 +64,9 @@ export function useNote(noteId: string | null) {
     try {
       const data = await bffClient.getNote(noteId);
       if (seq !== reqRef.current) return;
-      setNote(data);
+      // 失敗からの巻き戻しでも、未保存の本文は画面に残す
+      const pending = pendingBodyRef.current;
+      setNote(pending !== null ? { ...data, body: pending } : data);
       setError(null);
     } catch {
       if (seq !== reqRef.current) return;
@@ -83,65 +88,81 @@ export function useNote(noteId: string | null) {
   }, [noteId]);
 
   /*
-   * ────────── 本文の自動保存 ──────────
-   * 🔴 「保存する」ボタンは無い。打った手が止まったら勝手に送る。
-   *    v5 までは1段落ごとに「保存する」を押してブロックを確定させる作りで、
-   *    「一行書くのにこんな保存方法が要るのか」という指摘で撤去した。
+   * ────────── 本文の保存 ──────────
+   * 🔴 自動保存（打つのを止めたら送る）はしない。「保存」ボタンか Ctrl+S で送る。
+   *    contents は本文と素材の1列を丸ごと書き戻すので、打つたびに送ると
+   *    別の画面（教材・AIコーチ）から足された素材との書き込みがぶつかりやすい。
+   * 🔴 ただし書いたものは失わせない。別のノートへ切り替える・画面を離れるときに
+   *    未保存の本文があれば、その場で送る（下の useEffect）。
    * 🔴 本文は全文で送る。部分更新の単位が無いので差分は作れない。
    */
-  const bodyTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
-  /** まだ送っていない本文。null なら送るものが無い */
-  const pendingBodyRef = useRef<string | null>(null);
+  const [dirty, setDirty] = useState(false);
 
-  const sendBody = useCallback(async () => {
+  /**
+   * サーバが返したノートを取り込む。未保存の本文があるときは、
+   * 画面の本文を返ってきた本文で巻き戻さない（タイトル変更などの往復で書いたものが消えるため）。
+   */
+  const adopt = useCallback((saved: Note) => {
+    const pending = pendingBodyRef.current;
+    setNote(pending !== null ? { ...saved, body: pending } : saved);
+  }, []);
+
+  /** 本文を打った。画面だけ変えて、保存はしない */
+  const setBody = useCallback((next: string) => {
+    setNote((prev) => (prev ? { ...prev, body: next } : prev));
+    pendingBodyRef.current = next;
+    setDirty(true);
+  }, []);
+
+  /** いま送っている本文。一覧へ戻る操作と画面を離れる後始末が同じ本文を二重に送らないため */
+  const inFlightRef = useRef<string | null>(null);
+
+  /** 未保存の本文を送る */
+  const saveBody = useCallback(async () => {
     const text = pendingBodyRef.current;
-    if (!noteId || text === null) return;
-    pendingBodyRef.current = null;
+    if (!noteId || text === null || inFlightRef.current === text) return;
+    inFlightRef.current = text;
     try {
       const saved = await track(() => bffClient.updateNote(noteId, { body: text }));
+      // 往復の間にさらに打っていたら、その分はまだ未保存のまま残す
+      if (pendingBodyRef.current === text) {
+        pendingBodyRef.current = null;
+        setDirty(false);
+      }
       /*
-       * 🔴 返ってきたノートで setNote しない。保存中も打ち続けているので、
-       *    往復の間に打った文字がレスポンスで巻き戻る。更新日だけ取り込む。
+       * 🔴 返ってきたノートで本文を上書きしない。往復の間に打った文字が巻き戻る。
+       *    素材（別の画面から足されたものを含む）と更新日だけ取り込む。
        */
-      setNote((prev) => (prev ? { ...prev, updatedAt: saved.updatedAt } : prev));
+      setNote((prev) =>
+        prev && prev.id === saved.id ? { ...prev, blocks: saved.blocks, updatedAt: saved.updatedAt } : prev
+      );
     } catch {
-      /*
-       * 🔴 ここで reload() しない。他の操作と違い、巻き戻すと「いま打った本文」が
-       *    そのまま消える。画面の文字は残したまま保存状態だけエラーにして、
-       *    次の入力でもう一度送る（保存状態は上部バーが出す）。
-       */
-      pendingBodyRef.current = text;
+      // 🔴 reload() しない。巻き戻すと未保存の本文がそのまま消える。保存状態だけエラーにする
+    } finally {
+      inFlightRef.current = null;
     }
   }, [noteId, track]);
 
-  /** 本文を打った。画面は即時、保存は 800ms 後 */
-  const setBody = useCallback(
-    (next: string) => {
-      setNote((prev) => (prev ? { ...prev, body: next } : prev));
-      pendingBodyRef.current = next;
-      if (bodyTimer.current) clearTimeout(bodyTimer.current);
-      bodyTimer.current = setTimeout(() => void sendBody(), 800);
-    },
-    [sendBody]
-  );
-
-  /** 待たずに送る（textarea から抜けたとき） */
-  const flushBody = useCallback(() => {
-    if (bodyTimer.current) {
-      clearTimeout(bodyTimer.current);
-      bodyTimer.current = null;
-    }
-    void sendBody();
-  }, [sendBody]);
-
-  // ノートを切り替える・画面を離れるときは、待ち時間を待たずに送る
+  // ノートを切り替える・画面を離れるときは、未保存の本文を送ってから離れる
   useEffect(
     () => () => {
-      if (bodyTimer.current) clearTimeout(bodyTimer.current);
-      void sendBody();
+      void saveBody();
+      pendingBodyRef.current = null;
+      setDirty(false);
     },
-    [sendBody]
+    [saveBody]
   );
+
+  // タブを閉じる・再読み込みするときは、未保存があれば確認を出す
+  useEffect(() => {
+    if (!dirty) return undefined;
+    const warn = (e: BeforeUnloadEvent) => {
+      e.preventDefault();
+      e.returnValue = '';
+    };
+    window.addEventListener('beforeunload', warn);
+    return () => window.removeEventListener('beforeunload', warn);
+  }, [dirty]);
 
   /** タイトルは打つたびに保存せず、確定（blur / Enter）で送る */
   const renameNote = useCallback(
@@ -149,12 +170,12 @@ export function useNote(noteId: string | null) {
       if (!noteId || !note || title === note.title) return;
       setNote({ ...note, title });
       try {
-        setNote(await track(() => bffClient.updateNote(noteId, { title })));
+        adopt(await track(() => bffClient.updateNote(noteId, { title })));
       } catch {
         void reload();
       }
     },
-    [noteId, note, reload, track]
+    [noteId, note, reload, track, adopt]
   );
 
   const toggleFavorite = useCallback(async () => {
@@ -162,11 +183,11 @@ export function useNote(noteId: string | null) {
     const next = !note.favorite;
     setNote({ ...note, favorite: next });
     try {
-      setNote(await track(() => bffClient.updateNote(noteId, { favorite: next })));
+      adopt(await track(() => bffClient.updateNote(noteId, { favorite: next })));
     } catch {
       void reload();
     }
-  }, [noteId, note, reload, track]);
+  }, [noteId, note, reload, track, adopt]);
 
   /** フォルダを移す（上部バーのフォルダピル）。null で未整理へ */
   const moveToFolder = useCallback(
@@ -174,12 +195,12 @@ export function useNote(noteId: string | null) {
       if (!noteId || !note || folderId === note.folderId) return;
       setNote({ ...note, folderId });
       try {
-        setNote(await track(() => bffClient.updateNote(noteId, { folderId })));
+        adopt(await track(() => bffClient.updateNote(noteId, { folderId })));
       } catch {
         void reload();
       }
     },
-    [noteId, note, reload, track]
+    [noteId, note, reload, track, adopt]
   );
 
   /** 素材（クリップ / AI回答）を末尾に足す。本文は saveBody が受け持つ */
@@ -209,9 +230,6 @@ export function useNote(noteId: string | null) {
               blocks: prev.blocks.map((b) => {
                 if (b.id !== blockId) return b;
                 if (b.kind === 'answer') return { ...b, answer: patch.answer ?? b.answer };
-                if (b.kind === 'image') {
-                  return { ...b, caption: patch.caption !== undefined ? patch.caption : b.caption };
-                }
                 return { ...b, text: patch.text ?? b.text };
               }),
             }
@@ -229,20 +247,17 @@ export function useNote(noteId: string | null) {
   const removeBlock = useCallback(
     async (blockId: string) => {
       if (!noteId) return;
-      // 画像ブロックなら IndexedDB の実体も落とす（消したのに容量が残るのを防ぐ）
-      const target = note?.blocks.find((b) => b.id === blockId);
       setNote((prev) => (prev ? { ...prev, blocks: prev.blocks.filter((b) => b.id !== blockId) } : prev));
       try {
         await track(() => bffClient.deleteNoteBlock(noteId, blockId));
-        if (target?.kind === 'image') void deleteNoteImage(target.imageId);
       } catch {
         void reload();
       }
     },
-    [noteId, note, reload, track]
+    [noteId, reload, track]
   );
 
-  const saveState: NoteSaveState = { saving: savingCount > 0, lastSavedAt, error: saveError };
+  const saveState: NoteSaveState = { saving: savingCount > 0, lastSavedAt, error: saveError, dirty };
 
   return {
     note,
@@ -252,7 +267,7 @@ export function useNote(noteId: string | null) {
     reload,
     renameNote,
     setBody,
-    flushBody,
+    saveBody,
     toggleFavorite,
     moveToFolder,
     addBlock,

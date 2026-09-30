@@ -1,44 +1,34 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import { useLocation, useNavigate, useSearchParams } from 'react-router-dom';
-import { differenceInCalendarDays } from 'date-fns';
-import { GraduationCap, Plus } from 'lucide-react';
+import { useNavigate, useSearchParams } from 'react-router-dom';
+import { Clock, Flame } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
-import { useToast } from '../../contexts/ToastContext';
-import { AppFooter, AppHeader, ConfirmDialog } from '../shared';
+import { AppFooter, AppHeader } from '../shared';
 import { useStudyStats } from '../../hooks/useStudyStats';
-import { useStudyActivityEditor } from '../../hooks/useStudyActivityEditor';
-import { useMonthActivities } from '../../hooks/useMonthActivities';
+import { useDayDetail } from '../../hooks/useDayDetail';
 import { useGoalDeclaration } from '../../hooks/useGoalDeclaration';
-import { useEnrollment } from '../../hooks/useEnrollment';
-import {
-  ManualStudyEntryInput,
-  StudyActivity,
-  StudyActivityPatch,
-  StudyDayTotal,
-} from '../../types/studyActivity';
+import { useStreakRanking, useStudyRanking } from '../../hooks/useRankings';
+import { StreakRankingPeriod, StudyRankingPeriod } from '../../types/focusBooth';
+import { StudyDayTotal } from '../../types/studyActivity';
 import { GoalDeclarationInput, GoalDeclarationPatch } from '../../types/goalDeclaration';
 import { formatMinutesHM, toLocalDateKey } from '../../utils/studyStats';
-import { createNoteFromStudyRecord } from '../../utils/studyRecordNote';
+import { RankingRowItem } from '../shared/RankingRow';
+import { withCfToken } from '../profile/AvatarPicker';
 import bffClient from '../../services/bffClient';
-import { pageTitleStyle } from '../../theme/pageTitle';
-import SessionReview from '../coaching/SessionReview';
-import type { CoachingSessionDetail, CoachingSessionSummary } from '../../types/coaching';
-import { formatDayLabel, formatTime } from '../focus/focusFormat';
+import type { CoachingSessionSummary } from '../../types/coaching';
+import { toSessionSummary } from '../../utils/coachingScheduleAdapter';
 import StudyRecordPanel from './StudyRecordPanel';
 import StudySummaryStrip from './StudySummaryStrip';
 import StudyCalendarCard from './StudyCalendarCard';
 import DayDetailPanel from './DayDetailPanel';
-import StudyRecordEditModal from './StudyRecordEditModal';
-import GoalDeclarationBar from './GoalDeclarationBar';
-import GoalDeclarationCard, { GoalJump } from './GoalDeclarationCard';
+import GoalDeclarationCard from './GoalDeclarationCard';
 import GoalDeclarationModal from './GoalDeclarationModal';
-import GraduationNudge from './GraduationNudge';
+import RankingListCard from './RankingListCard';
 import CoachingRecordsCard from './CoachingRecordsCard';
 
 /**
- * 学習記録（/study-log）。
+ * 学習記録・ランキング（/study-log）。
  *
- * マイページのストリークカード・学習記録カードの
+ * マイページのストリークカード・学習記録カード・みんなのランキングの
  * 「詳しく見る／もっと見る」がすべてここに着地する。
  *
  * 【レイアウト方式】
@@ -50,190 +40,87 @@ import CoachingRecordsCard from './CoachingRecordsCard';
  * 🔴 学習記録は useStudyStats(userId, 'all') の1本だけ。期間タブ（1週間〜月別）も
  *    カレンダーの月送りも、この受講開始日〜今日ぶんの dailyTotals から切り出す。
  *    タブごとに days を変えて叩くと、切り替えのたびに画面が読み込み中へ戻る。
- *    日別パネルだけは記録の実体（教材名・メモ）が要るので、見ている月のぶんを
- *    useMonthActivities が別に取る（月内の日送りでは再取得しない）。
+ *    日別パネルは、選んだ日に完了した実セッション（Moodleログ由来、
+ *    useDayDetail経由でGET /api/study/sessions/:userid/by-date）と、その日の
+ *    振り返り（達成度・メモ、同じくuseDayDetail経由）を選択のたびに取る。
  *
  * 【構成】
- *   ヘッダー（見出し ＋ 卒業予定 ＋ 記録を追加）
- *   ① あなたの目標（横長バー1本・表示専用）
- *   ② 学習カレンダー ｜ その日の記録
- *   ③ 学習時間の推移（期間タブ／棒グラフ）
- *   ④ 累計の KPI 4枚
- *   ⑤ あなたの目標（いま／期間が終わった／これまで。編集はここだけ）
- *   ⑥ コーチング記録（過去のコーチングはここにためる）
- *
- * 🔴 この並び順に意味がある。「いつ・何を学習したか」に一番早く答えるのが
- *    ①＋② なので、開いた瞬間にそこが見えるようにする。累計の KPI（④）を
- *    先頭に置くと、休んでいた人に数字を突きつけてから中身を見せることになる。
- *
- * 🔴 時間の計上単位は「日ごとの合計」だけ。教材ごと・コースごとの学習時間は
- *    どこにも出さない（日別パネルの各行も分数を出さない＝StudyLogRow の hideMinutes、
- *    KPI 帯にあった「教材別の累計」も削除済み）。教材については名前と
- *    学習した内容だけを出す。
- *    ただし stats.byCourse の集計自体は残っていて、記録の編集モーダルの
- *    教材セレクト（courseOptions）が選択肢として使っている。
+ *   ① 総まとめ（KPI×4 ＋ 教材別の累計）
+ *   ② 学習カレンダー ｜ その日の詳細
+ *   ③ 学習の推移（期間タブ／棒グラフ）
+ *   ④ 目標宣言と振り返り
+ *   ⑤ コーチング記録（過去のコーチングはここにためる）
+ *   ⑥ 学習時間ランキング ｜ ストリークランキング
  *
  * 🔴 全期間の記録を縦に並べる「学習履歴」セクションは廃止した。同じ記録を
  *    ② のカレンダー＋日別パネルが日単位で見せており、下に同じ行を全期間ぶん
- *    並べ直しているだけだった。記録の編集・削除・手動追加はすべて日別パネルが持つ。
+ *    並べ直しているだけだった。セッション自体は自動記録の読み取り専用データなので
+ *    日別パネルに編集・削除・手動追加は無く、書けるのはその日の振り返りだけ。
  *
- * 【卒業予定日】
- * 🔴 実BFFに無い。mocks/handlers.ts の MSW モックだけが返すので、
- *    本番（モックOFF）では null になる。null のときはピルごと描かない。
- *    卒業45日前の相談リボン（GraduationNudge）も条件付きで、既定では出ない。
- *
- * 🔴 最下段にあった「学習時間ランキング」「ストリークランキング」（他人との比較）は
- *    受講生の画面から外した。このページは自分の記録だけを扱う。
- *    順位を返す API（getStudyRanking / getStreakRanking）とそのモックは残してある。
+ * 🔴 ランキング（他人との比較）を最下段に置いている。カレンダーを主役にした結果、
+ *    上から「自分の記録」を掘っていく並びになったので、その途中を他人の話で
+ *    割らないようにするため。
  *
  * 【コーチング記録】
- * 🔴 /coaching は「次の1回」の画面で、残すのは前回分だけ。過去の積み上がりはここが持つ。
- *    1件開くときはルートを増やさず /study-log?session=<id> にする
- *    （マイノートの ?note= と同じ作法）。
+ * 🔴 実データはコーチが登録するコーチング予約（/api/coaching/schedule）。実施日が今日以前の回を
+ *    カレンダーと一覧に出す。以前は実BFFに存在しないモック専用API（/webcoach/coaching-sessions）を
+ *    呼んでいて、実環境では常に0件＝コーチングの日付がどこにも出ていなかった。
+ *    1件開くと /coaching?schedule=<id> へ移り、AIノートはそちら（MyCoachingPage）で読む。
  *
  * 【クエリの優先順位】
- * 🔴 session > date。?session= が付いているときは日別パネルを出さない。
+ * 🔴 goal > date。2つ同時に付いていても、この順で1つだけが効く。
  *    ここが唯一の判断場所で、各カードは自分のクエリだけを見ない。
- *
- * 🔴 ?goal= は「⑤ の編集モーダルを開く」だけの意味で、背後のレイアウトを変えない。
- *    （かつては goal でも selectedDate を落としていたが、モーダルの開閉のたびに
- *      日別パネルの高さと表示月が変わり、背後の⑤がガタついていた）
- *    語彙は new / edit / review-<id> / <id> の4つ。
- *    🔴 振り返りは review 単体にしない。⑤ は振り返り待ちを全件並べるので、
- *       「先頭の1件」に決め打ちすると2件目を押しても1件目が開く。どれを開くかは
- *       押した側が id で名指しする。
- *
- * 🔴 ハッシュ #goal / #goal-reflect / #goal-new は直交した別の仕組みで、
- *    「⑤ のどこへスクロールして着地するか」だけを指す。/mypage と ① のバーが使う。
- *    モーダルは開かない。消費したら必ず消す（同じハッシュへの再遷移は発火しないため）。
  */
-
-/**
- * 'YYYY-MM-DD' → '2026年12月31日'。
- * focusFormat の formatDayLabel は曜日まで付くので、卒業予定日には長い。
- */
-function formatJpDate(key: string): string {
-  return `${key.slice(0, 4)}年${Number(key.slice(5, 7))}月${Number(key.slice(8, 10))}日`;
-}
-
-/** 学習アクティビティ1件を、削除確認の一覧に出す1行にする */
-function describeActivity(a: StudyActivity): string {
-  const where = a.course?.courseTitle ?? '教材を指定しない';
-  return `${formatDayLabel(`${a.localDate}T00:00:00`)} ${formatTime(a.startedAt)} ${where} ${formatMinutesHM(a.session.durationMinutes)}`;
-}
-
-type EditTarget =
-  | { mode: 'edit'; activity: StudyActivity }
-  | { mode: 'create'; date: string }
-  | null;
-
-/**
- * ⑤「あなたの目標」のどのブロックへ着地するか。
- * 🔴 アンカー（id="goal"）にはしない。id を付けるとブラウザ標準の fragment スクロールが
- *    データ読み込み前の位置へ飛び、こちらの scrollIntoView と二重に走る。
- */
-const HASH_TO_JUMP: Record<string, Exclude<GoalJump, null>> = {
-  '#goal': 'current',
-  '#goal-reflect': 'pending',
-  '#goal-new': 'new',
-};
 
 function StudyLogPage() {
-  const { user } = useAuth();
+  const { user, contentToken } = useAuth();
   const userId = user?.userid;
-  const { showToast } = useToast();
-  const navigate = useNavigate();
 
   // 受講開始日〜今日。カレンダーの月送りと期間タブが同じ配列を使う
   const { stats, loading: statsLoading, unavailable } = useStudyStats(userId, 'all');
 
-  const editor = useStudyActivityEditor(userId);
+  const [timePeriod, setTimePeriod] = useState<StudyRankingPeriod>('week');
+  const [streakPeriod, setStreakPeriod] = useState<StreakRankingPeriod>('month');
+  const time = useStudyRanking(user?.isAdmin ? userId : undefined, timePeriod);
+  const streak = useStreakRanking(user?.isAdmin ? userId : undefined, streakPeriod);
   const goals = useGoalDeclaration(userId);
-  // 卒業予定日。取れなければ（本番＝モックOFF）ヘッダーのピルを出さないだけ
-  const { enrollment } = useEnrollment(userId);
 
   const [searchParams, setSearchParams] = useSearchParams();
-  const openSessionId = searchParams.get('session');
-  const goalParam = openSessionId ? null : searchParams.get('goal');
+  const navigate = useNavigate();
+  const goalParam = searchParams.get('goal');
+  const selectedDate = goalParam ? null : searchParams.get('date');
 
   const todayKey = toLocalDateKey(new Date());
   const [monthOverride, setMonthOverride] = useState<string | null>(null);
-
-  /**
-   * 選択を明示的に外したか。
-   * 🔴 ?date= が無いときの既定を「今日」にするために要る。既定を今日にしないと、
-   *    ページを開いた時点では右の列が案内文だけになり、左のカレンダーだけが背の高い
-   *    2カラムになる（この画面は「今日のぶんを見に来る」のが一番多い動線）。
-   *    ただし × で閉じられるようにもしたいので、URL から date が消えただけの状態と
-   *    「本人が閉じた」状態を区別する。月送りも閉じた側に寄せる（表示していない月の
-   *    日が選ばれたままになると、右の詳細だけ別の月を指すことになる）。
-   */
-  const [deselected, setDeselected] = useState(false);
-  const dateParam = searchParams.get('date');
-  // 🔴 goalParam を混ぜない。目標モーダルは重なるだけで、背後の日別パネルと
-  //    表示月を変える理由がない（開閉のたびに下部カードの位置がガタついていた）
-  const selectedDate = openSessionId ? null : (dateParam ?? (deselected ? null : todayKey));
   // 日を選んでいればその月。選んでいなければ月送りの状態、既定は今月
   const monthKey = selectedDate ? selectedDate.slice(0, 7) : (monthOverride ?? todayKey.slice(0, 7));
 
-  const month = useMonthActivities(userId, monthKey);
-
-  // --- 卒業予定日 -----------------------------------------------------------
-
-  const graduationDate = enrollment?.graduationDate ?? null;
-  const daysToGraduation = useMemo(() => {
-    if (!graduationDate) return null;
-    const days = differenceInCalendarDays(new Date(`${graduationDate}T00:00:00`), new Date(`${todayKey}T00:00:00`));
-    // 過ぎている（卒業済み）なら出さない
-    return days >= 0 ? days : null;
-  }, [graduationDate, todayKey]);
-
-  /**
-   * 卒業45日前の相談リボンを出すか。
-   * 🔴 既定では出ない。基本の画面に警告カードを常設しないための条件分岐で、
-   *    将来ここに「学習ペース」などの条件を足す想定。
-   *    ペースから卒業の可否を推定して断定しないこと（GraduationNudge の注記を参照）。
-   */
-  const showGraduationNudge = daysToGraduation !== null && daysToGraduation <= 45;
-
-  const [editTarget, setEditTarget] = useState<EditTarget>(null);
-  const [deleteTarget, setDeleteTarget] = useState<StudyActivity | null>(null);
+  const dayDetail = useDayDetail(userId, selectedDate);
 
   // --- コーチング記録 -------------------------------------------------------
 
   const [pastSessions, setPastSessions] = useState<CoachingSessionSummary[]>([]);
   const [coachingLoading, setCoachingLoading] = useState(true);
-  const [openSession, setOpenSession] = useState<CoachingSessionDetail | null>(null);
 
   useEffect(() => {
     if (!userId) return;
     let alive = true;
     setCoachingLoading(true);
     bffClient
-      .getCoachingSessions(userId)
-      .then((res) => { if (alive) setPastSessions(res.past ?? []); })
-      // コーチングを使っていない受講生・実BFF未対応でも学習記録側は出す
+      .getCoachingSchedules(userId)
+      .then((schedules) => {
+        if (!alive) return;
+        // 実施済みの回だけ。未来の予約とリスケで流れた回は「記録」ではないので出さない
+        const done = schedules.filter((s) => s.coaching_date <= todayKey && s.status !== 'rescheduled');
+        setPastSessions(done.map(toSessionSummary));
+      })
+      // コーチングを使っていない受講生でも学習記録側は出す
       .catch(() => { if (alive) setPastSessions([]); })
       .finally(() => { if (alive) setCoachingLoading(false); });
     return () => { alive = false; };
-  }, [userId]);
+  }, [userId, todayKey]);
 
-  // ?session= の中身が唯一の入口。ブラウザバックと直リンクもここが受ける
-  useEffect(() => {
-    if (!openSessionId) {
-      setOpenSession(null);
-      return;
-    }
-    let alive = true;
-    setOpenSession(null);
-    bffClient
-      .getCoachingSession(Number(openSessionId))
-      .then((d) => { if (alive) setOpenSession(d); })
-      .catch(() => { if (alive) setOpenSession(null); });
-    return () => { alive = false; };
-  }, [openSessionId]);
-
-  /** クエリを1つ足す／消す。?date= を残したまま ?session= を足せるようにする */
+  /** クエリを1つ足す／消す。?date= を残したまま ?goal= を足せるようにする */
   const patchParams = useCallback(
     (changes: Record<string, string | null>, replace = false) => {
       const params = new URLSearchParams(searchParams);
@@ -246,8 +133,7 @@ function StudyLogPage() {
     [searchParams, setSearchParams]
   );
 
-  const showSession = (sessionId: number) => patchParams({ session: String(sessionId) });
-  const backToList = () => patchParams({ session: null }, true);
+  const showSession = (scheduleId: number) => navigate(`/coaching?schedule=${scheduleId}`);
 
   // --- カレンダー -----------------------------------------------------------
 
@@ -263,10 +149,6 @@ function StudyLogPage() {
     [pastSessions]
   );
 
-  const dayActivities = useMemo(
-    () => (selectedDate ? month.activities.filter((a) => a.localDate === selectedDate) : []),
-    [month.activities, selectedDate]
-  );
   const daySessions = useMemo(
     () => (selectedDate ? pastSessions.filter((s) => s.date === selectedDate) : []),
     [pastSessions, selectedDate]
@@ -281,57 +163,11 @@ function StudyLogPage() {
     [stats]
   );
 
-  // --- 記録の編集 -----------------------------------------------------------
-
-  const saveRecord = async (
-    value: StudyActivityPatch | Omit<ManualStudyEntryInput, 'id'>,
-    options?: { keepInMyNotes?: boolean }
-  ) => {
-    if (!editTarget) return;
-    try {
-      if (editTarget.mode === 'edit') {
-        await editor.update(editTarget.activity, value as StudyActivityPatch);
-      } else {
-        await editor.addManual(value as Omit<ManualStudyEntryInput, 'id'>);
-      }
-      setEditTarget(null);
-    } catch {
-      // 文言は editor.error に入っている。モーダルは開いたままにして直させる
-      return;
-    }
-
-    // 🔴 記録が残ったあとに作る。ここが失敗しても記録は成立しているので、
-    //    保存自体を失敗扱いにしない（StudySessionFinishHost と同じ作法）。
-    if (!options?.keepInMyNotes) return;
-    const input = value as Omit<ManualStudyEntryInput, 'id'>;
-    try {
-      const noteId = await createNoteFromStudyRecord({
-        localDate: input.localDate,
-        minutes: input.durationMinutes,
-        course: input.course,
-        // 手動追加にはその回の学習目標が無い（集中ブースで立てるもの）
-        goalText: '',
-        contentNote: input.contentNote ?? '',
-        memo: input.memo ?? '',
-        achievement: input.achievement ?? null,
-      });
-      showToast('マイノートに残しました', 'success', {
-        action: { label: 'マイノートを見る', onClick: () => navigate(`/notes?note=${noteId}`) },
-      });
-    } catch {
-      showToast('学習記録は残りましたが、マイノートに残せませんでした', 'error');
-    }
-  };
-
-  const confirmDelete = async () => {
-    if (!deleteTarget) return;
-    try {
-      await editor.remove(deleteTarget);
-      setDeleteTarget(null);
-    } catch {
-      setDeleteTarget(null);
-    }
-  };
+  /** courseid → 教材名。日別詳細パネルのセッション行が使う */
+  const courseTitleOf = useCallback(
+    (courseid: number | null) => courseOptions.find((c) => c.id === courseid)?.title ?? null,
+    [courseOptions]
+  );
 
   // --- 目標宣言 -------------------------------------------------------------
 
@@ -341,67 +177,17 @@ function StudyLogPage() {
     if (goalParam === 'edit') {
       return goals.active ? { mode: 'edit' as const, declaration: goals.active } : null;
     }
-    if (goalParam.startsWith('review-')) {
-      const d = goals.items.find((x) => x.id === goalParam.slice('review-'.length));
+    if (goalParam === 'review') {
+      const d = goals.pendingReflection[0];
       return d ? { mode: 'review' as const, declaration: d } : null;
     }
+    // 「これまでの宣言」の行からも状態・振り返り・手応えを直せるよう編集で開く
+    // （以前は閲覧専用で、状態や手応えのピルが押しても何も起きなかった）
     const found = goals.items.find((d) => d.id === goalParam);
-    return found ? { mode: 'view' as const, declaration: found } : null;
-  }, [goalParam, goals.active, goals.items]);
+    return found ? { mode: 'edit' as const, declaration: found } : null;
+  }, [goalParam, goals.active, goals.pendingReflection, goals.items]);
 
   const closeGoal = () => patchParams({ goal: null }, true);
-
-  /**
-   * 迷子の ?goal= を掃除する。
-   * 🔴 該当なし（古いブックマークの ?goal=review だが振り返り待ちが無い等）のとき、
-   *    モーダルも開かずクエリだけ残ると、次に ?goal= を付けても同じ URL で発火しない。
-   */
-  useEffect(() => {
-    if (!goals.loading && goalParam && !goalTarget) patchParams({ goal: null }, true);
-  }, [goals.loading, goalParam, goalTarget, patchParams]);
-
-  // --- ⑤ へのスクロール着地 --------------------------------------------------
-
-  /**
-   * ① のバーと /mypage からの「編集する」は、ここでモーダルを開かず ⑤ へ送る。
-   * 🔴 編集の入口は ⑤ の1枚だけ。どこから来ても同じ場所に着地させる。
-   *    ページをまたぐ（/mypage → /study-log）ぶんはハッシュで運ぶ。
-   */
-  const [goalJump, setGoalJump] = useState<GoalJump>(null);
-  const hash = useLocation().hash;
-
-  useEffect(() => {
-    const target = HASH_TO_JUMP[hash];
-    if (!target) return;
-
-    // 🔴 ハッシュは必ず消す。同じハッシュへもう一度遷移しても location が変わらず
-    //    発火しないため、飛べなかったときも消す。
-    //    🔴 navigate({hash:''}) は partial path なので ?date= や ?session= まで
-    //       巻き添えで消える。クエリを保つ patchParams({}, true) で消すこと。
-    const clear = () => patchParams({}, true);
-
-    if (openSessionId || unavailable) {
-      clear();
-      return;
-    }
-    // 🔴 goals.loading だけを待たない。⑤ より上のカレンダー・推移グラフが
-    //    後から伸びて着地点が上へズレる。
-    if (goals.loading || statsLoading || month.loading) return;
-
-    const timer = window.setTimeout(() => {
-      setGoalJump(target);
-      clear();
-    }, 250);
-    return () => window.clearTimeout(timer);
-  }, [
-    hash,
-    openSessionId,
-    unavailable,
-    goals.loading,
-    statsLoading,
-    month.loading,
-    patchParams,
-  ]);
 
   const saveGoal = async (value: Omit<GoalDeclarationInput, 'id'> | GoalDeclarationPatch) => {
     if (!goalTarget) return;
@@ -416,6 +202,26 @@ function StudyLogPage() {
       // 文言は goals.error。モーダルは開いたままにする
     }
   };
+
+  // --- ランキング -----------------------------------------------------------
+
+  const timeItems: RankingRowItem[] = (time.ranking?.entries ?? []).map((e) => ({
+    rank: e.rank,
+    nickname: e.isMe ? 'あなた' : e.nickname,
+    avatarEmoji: e.avatarEmoji,
+    avatarUrl: e.avatarUrl ? withCfToken(e.avatarUrl, contentToken) : undefined,
+    value: formatMinutesHM(e.minutes),
+    isMe: e.isMe,
+  }));
+
+  const streakItems: RankingRowItem[] = (streak.ranking?.entries ?? []).map((e) => ({
+    rank: e.rank,
+    nickname: e.isMe ? 'あなた' : e.nickname,
+    avatarEmoji: e.avatarEmoji,
+    avatarUrl: e.avatarUrl ? withCfToken(e.avatarUrl, contentToken) : undefined,
+    value: `${e.days}日`,
+    isMe: e.isMe,
+  }));
 
   const cardStyle: React.CSSProperties = {
     background: 'var(--dc-surface)',
@@ -433,142 +239,34 @@ function StudyLogPage() {
         className="dc-page-main flex flex-col"
         style={{ flex: 1, padding: 'var(--dc-sp-page-y) var(--dc-sp-page-x) calc(var(--dc-sp-page-y) * 0.8)', color: 'var(--dc-text)' }}
       >
-        {/* 記録を1件開いているときは、その記録が見出しを持つのでページの見出しは出さない */}
-        {openSessionId ? (
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 18, marginBottom: 22 }}>
-            <button
-              type="button"
-              onClick={backToList}
-              style={{
-                alignSelf: 'flex-start',
-                background: 'none',
-                border: 'none',
-                padding: 0,
-                fontFamily: 'inherit',
-                fontSize: 'var(--dc-fs-body)',
-                color: 'var(--dc-text-muted)',
-                cursor: 'pointer',
-              }}
-            >
-              ← 学習の記録に戻る
-            </button>
-            {openSession ? (
-              <SessionReview session={openSession} onDeleted={backToList} />
-            ) : (
-              <p style={{ margin: 0, fontSize: 'var(--dc-fs-body)', color: 'var(--dc-text-muted)' }}>読み込み中…</p>
-            )}
-          </div>
-        ) : (
-          <div
+        <div style={{ marginBottom: 22 }}>
+          <h1
             style={{
-              display: 'flex',
-              alignItems: 'flex-end',
-              gap: 14,
-              flexWrap: 'wrap',
-              marginBottom: 22,
+              margin: '0 0 8px',
+              fontSize: 'var(--dc-fs-display)',
+              lineHeight: 'var(--dc-lh-heading)',
+              fontWeight: 700,
+              letterSpacing: '-0.01em',
+              color: 'var(--dc-text)',
             }}
           >
-            <div style={{ flex: 1, minWidth: 240 }}>
-              <h1 style={{ ...pageTitleStyle, color: 'var(--dc-text)' }}>学習の記録</h1>
-              <p
-                style={{
-                  margin: '4px 0 0',
-                  fontSize: 'var(--dc-fs-body)',
-                  color: 'var(--dc-text-muted)',
-                  lineHeight: 'var(--dc-lh-ui)',
-                }}
-              >
-                いつ・何を学習したかを、見やすく整理できます
-              </p>
-            </div>
+            学習記録・ランキング
+          </h1>
+          <p style={{ margin: 0, fontSize: 'var(--dc-fs-body)', color: 'var(--dc-text-body)' }}>
+            いつ何をどれだけ学習したかと、これまでの積み上がりを確認できます。
+          </p>
+        </div>
 
-            <div style={{ display: 'flex', alignItems: 'center', gap: 10, flexWrap: 'wrap' }}>
-              {/*
-               * 卒業予定。
-               * 🔴 取れないとき（本番＝モックOFF）はピルごと出さない。
-               *    「卒業予定 —」のような空表示にすると、設定漏れに見える。
-               * 🔴 右隣の赤い CTA より目立たせない。地は白、太字は「あと N 日」だけ。
-               */}
-              {graduationDate && daysToGraduation !== null && (
-                <span
-                  style={{
-                    display: 'inline-flex',
-                    alignItems: 'center',
-                    gap: 7,
-                    minHeight: 40,
-                    padding: '0 14px',
-                    borderRadius: 9999,
-                    border: '1px solid var(--dc-border)',
-                    background: 'var(--dc-surface)',
-                    fontSize: 'var(--dc-fs-body)',
-                    color: 'var(--dc-text-body)',
-                    whiteSpace: 'nowrap',
-                  }}
-                >
-                  <GraduationCap size={15} strokeWidth={1.75} color="var(--dc-gold)" aria-hidden="true" />
-                  卒業予定
-                  <span className="dc-num">{formatJpDate(graduationDate)}</span>
-                  <span className="dc-num" style={{ fontWeight: 700, color: 'var(--dc-primary)' }}>
-                    （あと{daysToGraduation}日）
-                  </span>
-                </span>
-              )}
-
-              {/*
-               * 記録を追加。既定は今日。
-               * 日を選んでからその日に足したいときは日別パネルの下部ボタンが受ける
-               * （同じ操作で既定の日付だけが違う）。
-               */}
-              <button
-                type="button"
-                onClick={() => setEditTarget({ mode: 'create', date: todayKey })}
-                disabled={editor.saving}
-                className="dc-cta-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#F6B9BD]"
-                style={{
-                  display: 'inline-flex',
-                  alignItems: 'center',
-                  gap: 6,
-                  minHeight: 40,
-                  padding: '0 18px',
-                  borderRadius: 9999,
-                  border: 'none',
-                  background: 'var(--dc-primary)',
-                  fontFamily: 'inherit',
-                  fontSize: 'var(--dc-fs-body)',
-                  fontWeight: 700,
-                  color: '#fff',
-                  whiteSpace: 'nowrap',
-                  cursor: editor.saving ? 'default' : 'pointer',
-                  opacity: editor.saving ? 0.6 : 1,
-                }}
-              >
-                <Plus size={15} strokeWidth={2.25} aria-hidden="true" />
-                記録を追加
-              </button>
-            </div>
-          </div>
-        )}
-
-        {openSessionId ? null : unavailable ? (
+        {unavailable ? (
           <div style={{ ...cardStyle, fontSize: 'var(--dc-fs-body)', color: 'var(--dc-text-muted)', lineHeight: 'var(--dc-lh-prose)' }}>
-            学習記録を表示できませんでした。この機能はモック環境でのみ利用できます。
+            学習記録を表示できませんでした。しばらくしてからもう一度お試しください。
           </div>
         ) : (
           <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--dc-sp-gap)' }}>
-            {/* 卒業が近いときだけの相談導線。既定では出ない */}
-            {showGraduationNudge && daysToGraduation !== null && (
-              <GraduationNudge daysLeft={daysToGraduation} />
-            )}
+            {/* ① 総まとめ */}
+            <StudySummaryStrip stats={stats} loading={statsLoading} />
 
-            {/* ① あなたの目標（横長バー1本・表示専用。押すと ⑤ へ送る） */}
-            <GoalDeclarationBar
-              active={goals.active}
-              pending={goals.pendingReflection}
-              loading={goals.loading}
-              onJump={setGoalJump}
-            />
-
-            {/* ② カレンダー ｜ その日の記録（1023px以下で1カラムに落ちる） */}
+            {/* ② カレンダー ｜ その日の詳細（1023px以下で1カラムに落ちる） */}
             <div className="studylog-calendar-grid">
               <StudyCalendarCard
                 monthKey={monthKey}
@@ -581,112 +279,104 @@ function StudyLogPage() {
                   setMonthOverride(next);
                   // 月を動かしたら選択は解除する。表示していない月の日が選ばれたままになると、
                   // 右の詳細だけ別の月を指すことになる
-                  setDeselected(true);
-                  if (dateParam) patchParams({ date: null }, true);
+                  if (selectedDate) patchParams({ date: null }, true);
                 }}
-                onSelectDate={(date) => {
-                  setDeselected(!date);
-                  patchParams({ date }, !date);
-                }}
+                onSelectDate={(date) => patchParams({ date }, !date)}
                 onSelectToday={() => {
-                  setMonthOverride(todayKey.slice(0, 7));
-                  setDeselected(false);
-                  patchParams({ date: todayKey });
+                  setMonthOverride(null);
+                  patchParams({ date: todayKey }, false);
                 }}
               />
               <DayDetailPanel
                 date={selectedDate}
-                todayKey={todayKey}
-                minDate={stats?.firstStudyDate ?? null}
-                activities={dayActivities}
+                sessions={dayDetail.sessions}
+                courseTitleOf={courseTitleOf}
+                reflection={dayDetail.reflection}
                 coachingSessions={daySessions}
-                loading={month.loading}
-                busy={editor.saving}
+                loading={dayDetail.loading}
+                saving={dayDetail.saving}
+                saveError={dayDetail.error}
                 onOpenSession={showSession}
-                onEdit={(activity) => setEditTarget({ mode: 'edit', activity })}
-                onDelete={setDeleteTarget}
-                onAdd={(date) => setEditTarget({ mode: 'create', date })}
-                /*
-                 * 前日・翌日。monthKey が selectedDate に追従するのでカレンダーの表示月も動く。
-                 * 🔴 monthOverride も一緒に更新する。ここを省くと、矢印で月をまたいだあとに
-                 *    選択を解除（×）した瞬間、カレンダーだけ前の月へ戻ってしまう
-                 *    （monthKey の既定値が monthOverride なので）。
-                 */
-                onSelectDate={(date) => {
-                  setMonthOverride(date.slice(0, 7));
-                  setDeselected(false);
-                  patchParams({ date });
-                }}
-                onClose={() => {
-                  setDeselected(true);
-                  patchParams({ date: null }, true);
-                }}
+                onSaveReflection={dayDetail.saveReflection}
+                onClose={() => patchParams({ date: null }, true)}
               />
             </div>
 
             {/* ③ 推移 */}
             <StudyRecordPanel stats={stats} loading={statsLoading} />
 
-            {/* ④ 累計の KPI */}
-            <StudySummaryStrip stats={stats} loading={statsLoading} />
-
-            {/* ⑤ あなたの目標（編集の入口はここだけ。① のバーは表示専用） */}
+            {/* ④ 目標宣言 */}
             <GoalDeclarationCard
               items={goals.items}
               active={goals.active}
               pendingReflection={goals.pendingReflection}
               daily={stats?.dailyTotals ?? []}
               loading={goals.loading}
-              jump={goalJump}
-              onJumpDone={() => setGoalJump(null)}
               onCreate={() => patchParams({ goal: 'new' })}
-              onEditActive={() => patchParams({ goal: 'edit' })}
-              onReview={(d) => patchParams({ goal: `review-${d.id}` })}
-              onView={(d) => patchParams({ goal: d.id })}
+              onEdit={(d) => patchParams({ goal: d.id === goals.active?.id ? 'edit' : d.id })}
+              onReview={() => patchParams({ goal: 'review' })}
+              onOpen={(d) => patchParams({ goal: d.id })}
             />
 
-            {/* ⑥ コーチング記録 */}
+            {/* ⑤ コーチング記録 */}
             <CoachingRecordsCard
               sessions={pastSessions}
               loading={coachingLoading}
               onOpen={showSession}
             />
+
+            {/* ⑥ ランキング（管理者のみ表示） */}
+            {user?.isAdmin && (
+            <div className="studylog-rank-grid">
+              <RankingListCard
+                title="学習時間ランキング"
+                icon={<Clock size={16} strokeWidth={1.75} />}
+                iconBackground="var(--dc-soft-100)"
+                iconColor="var(--dc-primary)"
+                periods={[
+                  { key: 'week', label: '週間' },
+                  { key: 'month', label: '月間' },
+                ]}
+                activePeriod={timePeriod}
+                onPeriodChange={(k) => setTimePeriod(k as StudyRankingPeriod)}
+                items={timeItems}
+                footer={
+                  time.ranking
+                    ? `${time.ranking.periodLabel}・${time.ranking.participantCount}人中 ${time.ranking.me.rank}位`
+                    : undefined
+                }
+                loading={time.loading}
+                failed={time.failed}
+              />
+
+              <RankingListCard
+                title="ストリークランキング"
+                icon={<Flame size={16} strokeWidth={1.75} />}
+                iconBackground="var(--dc-gold-surface)"
+                iconColor="var(--dc-gold)"
+                periods={[
+                  { key: 'month', label: '月間' },
+                  { key: 'total', label: '累計' },
+                ]}
+                activePeriod={streakPeriod}
+                onPeriodChange={(k) => setStreakPeriod(k as StreakRankingPeriod)}
+                items={streakItems}
+                footer={
+                  streak.ranking
+                    ? `${streak.ranking.periodLabel}の学習日数・${streak.ranking.participantCount}人中 ${streak.ranking.me.rank}位`
+                    : undefined
+                }
+                loading={streak.loading}
+                failed={streak.failed}
+              />
+            </div>
+            )}
           </div>
         )}
 
-        {editTarget && (
-          <StudyRecordEditModal
-            mode={editTarget.mode}
-            activity={editTarget.mode === 'edit' ? editTarget.activity : undefined}
-            defaultDate={editTarget.mode === 'create' ? editTarget.date : undefined}
-            courses={courseOptions}
-            saving={editor.saving}
-            error={editor.error}
-            onSave={saveRecord}
-            onClose={() => {
-              editor.clearError();
-              setEditTarget(null);
-            }}
-          />
-        )}
-
-        {deleteTarget && (
-          <ConfirmDialog
-            title="この学習記録を削除しますか？"
-            description="削除すると、学習時間の合計・ストリーク・カレンダーからも取り除かれます。元に戻せません。"
-            items={[describeActivity(deleteTarget)]}
-            confirmLabel="削除する"
-            busy={editor.saving}
-            onConfirm={confirmDelete}
-            onCancel={() => setDeleteTarget(null)}
-          />
-        )}
 
         {goalTarget && (
-          /* 🔴 key。GoalDeclarationModal は props から useState を初期化するので、
-                 同じ位置で別の目標に差し替えると前の内容が残る */
           <GoalDeclarationModal
-            key={goalTarget.declaration?.id ?? goalTarget.mode}
             mode={goalTarget.mode}
             declaration={goalTarget.declaration}
             saving={goals.saving}

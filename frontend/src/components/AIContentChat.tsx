@@ -18,6 +18,7 @@ import {
 } from '@mui/icons-material';
 import MarkdownRenderer from './MarkdownRenderer';
 import { bffClient } from '../services/bffClient';
+import { toConversationHistory } from '../utils/aiChatHistory';
 
 interface Message {
   id: string;
@@ -95,7 +96,8 @@ function AIContentChat({
         context: {
           contentTitle,
           contentHtml
-        }
+        },
+        conversation_history: toConversationHistory(messages)
       });
 
       const assistantMessage: Message = {

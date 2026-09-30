@@ -4,7 +4,7 @@
  *
  * 実BFF（FastAPI）には以下のエンドポイントが存在しない。バックエンドは変更禁止のため、
  * ここで MSW を使って「あるべきAPI」を再現している。実装が固まったら
- * frontend/docs/learning-workspace-design.md の I/F をバックエンドチームへ渡す。
+ * このファイルの I/F をバックエンドチームへ渡す。
  *
  *   GET    /api/webcoach/courses/:courseId/outline
  *   GET    /api/webcoach/courses/:courseId/lessons/:lessonId
@@ -988,7 +988,6 @@ export const lessonHandlers = [
     return HttpResponse.json({ text, updatedAt });
   }),
 
-  // マイノート（/webcoach/notes 系）は mocks/noteHandlers.ts に分離した。
-  // このファイルは既に36KBあり、ノートは器＋ブロックのCRUDで独立した関心事のため。
+  // マイノートは実API（/api/my-note/*）へ移行したため、モックは廃止した。
   // レッスン単位の下書き（lesson-notes）は教材本文と対なのでここに残す。
 ];

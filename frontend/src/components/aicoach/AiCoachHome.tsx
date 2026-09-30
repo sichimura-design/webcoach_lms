@@ -1,17 +1,14 @@
 import { useRef, useState, type CSSProperties } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { ArrowUp, HelpCircle, History, ImagePlus, Sparkles, X } from 'lucide-react';
 import {
   AiSkillId,
-  AI_SKILL_CATEGORY_LABEL,
-  AI_SKILL_CATEGORY_ORDER,
   AI_SKILL_META,
   ConcreteAiSkillId,
-  skillsInCategory,
 } from '../../types/aiSkill';
 import SkillPlusMenu from '../learning/SkillPlusMenu';
 import { AI_SKILL_ICON } from './aiSkillIcons';
 import { useAutoGrowTextarea } from '../../hooks/useAutoGrowTextarea';
+import { useAiApplications } from '../../hooks/useAiApplications';
 
 /**
  * AI専用ページのホーム状態（要件§「画面は3つの状態に分ける」1）。
@@ -24,8 +21,8 @@ import { useAutoGrowTextarea } from '../../hooks/useAutoGrowTextarea';
  *   ・機能を見て選びたい人         → 下のグリッドから直接選ぶ
  * どちらから入っても同じAIワークスペースの中で続くので、
  * カードを押しても別ページ・別タブへは飛ばさない（要件§「AIアプリを選択した後の画面」）。
- * 🔴 これは「起動の導線」の話。カード下の「詳しく見る」だけは説明を読むための
- *    別導線で、子ページ /ai-coach/apps/:appId へ飛ぶ（起動はしない）。
+ * カード下の「使ってみる」も本体ボタンと同じくその場で起動する（B-006: 説明ページではなく
+ * 機能を使うボタンであることを明確にする）。
  *
  * 1a に合わせて外したもの:
  *   ・「続きから」チップ … 履歴と役割が重なる。右上の「履歴」に寄せた
@@ -69,7 +66,8 @@ export function AiCoachHome({
   const [skillId, setSkillId] = useState<AiSkillId>('auto');
   const fileInputRef = useRef<HTMLInputElement>(null);
   const textareaRef = useAutoGrowTextarea(text);
-  const navigate = useNavigate();
+  // 一覧の顔ぶれ・表示名・説明はDB（webcoach_ai_application）が決める
+  const catalog = useAiApplications();
 
   const attachImage = (file: File) => {
     if (!file.type.startsWith('image/')) return;
@@ -317,7 +315,7 @@ export function AiCoachHome({
                ゼロ状態の文字量を増やすだけになっていた。 */}
 
         {/* ── AIコーチでできること ──
-            機能を見て選びたい人の入口。並びは AI_SKILL_META の宣言順（固定）で、
+            機能を見て選びたい人の入口。並びはDBの sort_order（固定）で、
             「最近使った順」に並べ替えない。毎回場所が変わると覚えられないため。
             🔴 見出しは「AIコーチ」。カードの1枚1枚はアプリ名で呼ぶが、
                この一覧が何なのかは「AIコーチでできること」と言い切る。 */}
@@ -325,14 +323,16 @@ export function AiCoachHome({
           AIコーチでできること
         </h3>
 
-        {/* 🔴 0件のカテゴリは見出しごと出さない。アプリの顔ぶれは実在のアプリに
-               合わせてあるので、カテゴリが空になることがある（いまは「そのほか」）。
-               見出しだけが並ぶと、読み込みに失敗したように見える。 */}
-        {AI_SKILL_CATEGORY_ORDER.map((category) => {
-          const skills = skillsInCategory(category);
-          if (skills.length === 0) return null;
+        {/* 🔴 分類の見出し・並びはDB（display_category / sort_order）で決まる。
+               行のある分類しかできないので、見出しだけが並ぶことはない。 */}
+        {catalog.failed && (
+          <p style={{ margin: '16px 0 0', fontSize: 13, color: 'var(--dc-text-muted)' }}>
+            AIアプリの一覧を読み込めませんでした。時間をおいて再読み込みしてください。
+          </p>
+        )}
+        {catalog.groups.map(({ label, skills }) => {
           return (
-            <section key={category} style={{ marginTop: 24 }}>
+            <section key={label} style={{ marginTop: 24 }}>
               <h4
                 style={{
                   margin: '0 0 12px',
@@ -342,7 +342,7 @@ export function AiCoachHome({
                   color: 'var(--dc-text-muted)',
                 }}
               >
-                {AI_SKILL_CATEGORY_LABEL[category]}
+                {label}
               </h4>
               <div className="ai-home-apps">{skills.map(renderCard)}</div>
             </section>
@@ -353,12 +353,11 @@ export function AiCoachHome({
   );
 
   /**
-   * アプリ1枚。サムネイル → 名前 → 短い説明 → 「詳しく見る」の縦組み。
+   * アプリ1枚。サムネイル → 名前 → 短い説明 → 「使ってみる」の縦組み。
    *
-   * 🔴 器は <div>。カード全体を <button> にすると、中に置く「詳しく見る」が
+   * 🔴 器は <div>。カード全体を <button> にすると、中に置く「使ってみる」が
    *    button の入れ子（不正なHTML／キーボード操作が壊れる）になる。
-   *    代わりに「本体ボタン（押すと始まる）」と「詳しく見る」の2つを並べ、
-   *    押した先が違うことをホバーの地色で見せる。
+   *    代わりに「本体ボタン」と「使ってみる」の2つを並べる（どちらも押すと始まる）。
    * 🔴 本体ボタンは1クリックでそのモードに入る。ここを2クリック（説明を読んでから始める）に
    *    しないこと。アプリを選ぶ人はカードの絵と名前だけで選んでいる。
    * 🔴 長い手順や対話例はここに載せない。カードに収まらないので子ページ
@@ -367,6 +366,8 @@ export function AiCoachHome({
   function renderCard(id: ConcreteAiSkillId) {
     const meta = AI_SKILL_META[id];
     const Icon = AI_SKILL_ICON[meta.icon];
+    // 表示名・説明と同じくDB（icon_url）が優先。無ければコード側の thumbnail、それも無ければアイコン
+    const thumbnail = catalog.thumbnailOf(id);
 
     return (
       <div
@@ -397,8 +398,8 @@ export function AiCoachHome({
           }}
         >
           <span className="ai-home-app-thumb">
-            {meta.thumbnail ? (
-              <img src={`${process.env.PUBLIC_URL}/${meta.thumbnail}`} alt="" />
+            {thumbnail ? (
+              <img src={thumbnail} alt="" loading="lazy" />
             ) : (
               // 画像が未登録のアプリ。枠を空けずにアイコンで埋める
               <span
@@ -412,9 +413,8 @@ export function AiCoachHome({
           </span>
 
           <span style={{ display: 'block', padding: '12px 16px 14px' }}>
-            {/* 🔴 カードにはアプリ名（label）をそのまま出す。shortLabel（「専門用語」など）は
-                   提案チップやモードヘッダーのような幅の無い場所だけのもので、
-                   一覧でそれを出すと実際のアプリ名と違う名前で覚えることになる。
+            {/* 🔴 カードには表示名（DBの display_name、無ければ label）を出す。shortLabel は
+                   提案チップやモードヘッダーのような幅の無い場所だけのもの。
                    長い名前は truncate で切らず2行まで許す。 */}
             <span
               style={{
@@ -428,7 +428,7 @@ export function AiCoachHome({
                 color: 'var(--dc-text)',
               }}
             >
-              {meta.label}
+              {catalog.labelOf(id)}
             </span>
             <span
               style={{
@@ -442,14 +442,14 @@ export function AiCoachHome({
                 color: 'var(--dc-text-muted)',
               }}
             >
-              {meta.description}
+              {catalog.descriptionOf(id)}
             </span>
           </span>
         </button>
 
         <button
           type="button"
-          onClick={() => navigate(`/ai-coach/apps/${id}`)}
+          onClick={() => onSelectSkill(id)}
           className="ai-home-app-doc text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#F6B9BD]"
           style={{
             border: 0,
@@ -463,7 +463,7 @@ export function AiCoachHome({
             cursor: 'pointer',
           }}
         >
-          詳しく見る →
+          使ってみる →
         </button>
       </div>
     );

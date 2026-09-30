@@ -2,6 +2,7 @@ import { ArrowLeft, BookOpen, ImagePlus, PanelRight } from 'lucide-react';
 import { color } from '../../theme/webcoachTheme';
 import { AI_SKILL_META, ConcreteAiSkillId } from '../../types/aiSkill';
 import { AI_SKILL_ICON } from './aiSkillIcons';
+import { useAiApplications } from '../../hooks/useAiApplications';
 
 /**
  * 専門モード状態のヘッダー（要件§「AIアプリを選択した後の画面」）。
@@ -43,6 +44,7 @@ export function SkillModeHeader({
   const meta = AI_SKILL_META[skillId];
   const Icon = AI_SKILL_ICON[meta.icon];
   const needsImage = meta.needsImage && !image;
+  const { labelOf } = useAiApplications();
 
   return (
     <div>
@@ -77,7 +79,7 @@ export function SkillModeHeader({
           <Icon size={14} />
         </span>
         <strong style={{ fontSize: 13, fontWeight: 900, color: color.text, whiteSpace: 'nowrap' }}>
-          {meta.label}
+          {labelOf(skillId)}
         </strong>
 
         <div style={{ flex: 1 }} />

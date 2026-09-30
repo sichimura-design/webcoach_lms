@@ -2,6 +2,8 @@ import { useEffect, useState } from 'react';
 import { color } from '../../theme/webcoachTheme';
 import { AiSkillId, AI_SKILL_META, isSpecialistSkill } from '../../types/aiSkill';
 import AiCoachFace from '../shared/AiCoachFace';
+import { useSecondsSinceMount } from '../../hooks/useSecondsSinceMount';
+import { formatWaitElapsed, WAIT_SLOW_FROM_SEC, WAIT_SLOW_MESSAGE } from '../../utils/aiWait';
 
 /**
  * AIが考えているあいだの表示。
@@ -39,9 +41,18 @@ const specialistSteps = (shortLabel: string) => [
   '講評をまとめています',
 ];
 
+/**
+ * AIアプリ（Dify）で動くモード。案件検索・応募文・面接など中身がさまざまなので、
+ * 添削向けの「講評をまとめています」は出さず、どれにも当てはまる言い方にする（A-6）
+ */
+const APP_STEPS = ['依頼内容を確認しています', 'AIアプリで作業しています', '結果をまとめています'];
+
 export function AiThinkingBubble({ skillId }: AiThinkingBubbleProps) {
   const specialist = isSpecialistSkill(skillId) ? AI_SKILL_META[skillId] : null;
-  const steps = specialist ? specialistSteps(specialist.shortLabel) : GENERAL_STEPS;
+  const steps = !specialist ? GENERAL_STEPS : specialist.appKey ? APP_STEPS : specialistSteps(specialist.shortLabel);
+  // 長い待ち（案件検索は1〜2分）で止まったように見えないよう、経過を出す
+  const seconds = useSecondsSinceMount();
+  const elapsed = formatWaitElapsed(seconds);
 
   const [step, setStep] = useState(0);
   useEffect(() => {
@@ -73,8 +84,13 @@ export function AiThinkingBubble({ skillId }: AiThinkingBubbleProps) {
             <span className="wc-think-dot" />
           </span>
           <span role="status" aria-live="polite" style={{ fontSize: 11, color: color.textMuted }}>
-            {steps[step]}
+            {seconds >= WAIT_SLOW_FROM_SEC ? WAIT_SLOW_MESSAGE : steps[step]}
           </span>
+          {elapsed && (
+            <span style={{ marginLeft: 'auto', fontSize: 10, color: color.textFaint, fontVariantNumeric: 'tabular-nums' }}>
+              {elapsed}
+            </span>
+          )}
         </div>
 
         {/* 回答の形（結論の見出し＋本文2行＋根拠のブロック）をなぞる */}

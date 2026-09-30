@@ -4,6 +4,7 @@
  */
 
 import { bffClient } from './bffClient';
+import { usableCourseImage } from '../utils/courseImage';
 import { Profile } from '../types/api';
 import {
   Course,
@@ -42,33 +43,38 @@ export const fetchUserProfile = async (userId: number): Promise<Profile> => {
 };
 
 /**
- * 再開可能なコース取得
+ * 再開可能なコースの候補（新しい順、最大 limit 件）。
+ * 🔴 resumecourse は削除・非表示にしたコースも返してくる（名前が引けず「Course 75」になり、
+ *    開くとエラーになる）。先頭をそのまま使わず、呼び出し側で受講中のコースと突き合わせること
+ *    （useMypageData の pickResumableCourse）。受講中で決まらないときだけコース一覧で確かめる。
+ *    （コース一覧は応答が数秒かかるので、先に受講中と突き合わせる）
  */
-export const fetchResumeCourse = async (userId: number): Promise<Course | null> => {
-  const response = await bffClient.getResumeCourses(userId, 1);
-
-  if (Array.isArray(response) && response.length > 0) {
-    const course = response[0];
-    return {
-      id: course.courseid,
-      title: course.fullname || '',
-      description: course.summary || '',
-      progress: course.progress || 0,
-      thumbnailUrl: course.image_url,
-      roadmapName: 'ロードマップ',
-      categoryName: 'カテゴリ',
-      categoryColor: '#F3A7A7',
-      currentLesson: course.currentlesson,
-      currentChapter: course.currentchapter,
-      remainingMinutes: course.remainingminutes,
-      lastAccessDate: course.lastaccess ? new Date(course.lastaccess * 1000).toISOString() : undefined,
-      durationMinutes: course.durationminutes,
-      totalLessons: course.totallessons,
-    };
-  }
-
-  return null;
+export const fetchResumeCourses = async (userId: number, limit = 5): Promise<Course[]> => {
+  const response = await bffClient.getResumeCourses(userId, limit);
+  if (!Array.isArray(response)) return [];
+  return response.map((course) => ({
+    id: course.courseid,
+    title: course.fullname || '',
+    description: course.summary || '',
+    progress: course.progress || 0,
+    thumbnailUrl: course.image_url,
+    roadmapName: 'ロードマップ',
+    categoryName: 'カテゴリ',
+    categoryColor: '#F3A7A7',
+    currentLesson: course.currentlesson,
+    currentChapter: course.currentchapter,
+    remainingMinutes: course.remainingminutes,
+    lastAccessDate: course.lastaccess ? new Date(course.lastaccess * 1000).toISOString() : undefined,
+    durationMinutes: course.durationminutes,
+    totalLessons: course.totallessons,
+  }));
 };
+
+/**
+ * 再開可能なコース取得（先頭1件）。存在確認はしないので、マイページは fetchResumeCourses を使う
+ */
+export const fetchResumeCourse = async (userId: number): Promise<Course | null> =>
+  (await fetchResumeCourses(userId, 1))[0] ?? null;
 
 /**
  * ユーザーのロードマップ（進行中のコース）取得
@@ -107,7 +113,7 @@ export const fetchUserCourses = async (userId: number): Promise<Course[]> => {
       title: course.fullname || course.displayname || '',
       description: course.summary || '',
       progress: course.progress || 0,
-      thumbnailUrl: course.courseimage || course.overviewfiles?.[0]?.fileurl,
+      thumbnailUrl: usableCourseImage(course.courseimage || course.overviewfiles?.[0]?.fileurl),
       categoryName: course.categoryname || 'カテゴリ',
       categoryColor: '#60A5FA',
       lastAccessDate: course.lastaccess ? new Date(course.lastaccess * 1000).toISOString() : undefined,
@@ -203,7 +209,7 @@ const mapRecommendedCourse = (course: any): Course => ({
   title: course.fullname || course.displayname || '',
   description: course.summary || '',
   categoryName: course.categoryname || 'カテゴリ',
-  thumbnailUrl: course.courseimage,
+  thumbnailUrl: usableCourseImage(course.courseimage),
   difficulty: course.difficulty,
   duration: course.duration,
   totalLessons: course.lessoncount ?? course.totallessons,

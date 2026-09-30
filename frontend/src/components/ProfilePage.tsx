@@ -8,6 +8,7 @@ import { useAuth } from '../contexts/AuthContext';
 import { AppFooter, AppHeader } from './shared';
 import { AvatarPicker, resolveAvatarUrl, withCfToken } from './profile/AvatarPicker';
 import SettingsAvatar from './profile/SettingsAvatar';
+import { getUserMessage } from '../utils/errorMessage';
 import {
   CONTENT_MAX_WIDTH,
   dcCard,
@@ -33,12 +34,10 @@ import {
  *
  * 【構成】アイコン / ニックネーム の2行だけ。
  *
- * 🔴 アイコンはプリセット（AvatarPicker → /admin/avatars が登録したもの）から選ぶ
- *    1経路だけ。任意画像のアップロードは**置かないこと**。
- *    ・受講生が任意の画像を置ける口を持たない方針
- *    ・実装面でも、実BFFに受講生向けのアップロードAPIは無く、以前あったボタンは
- *      モック専用で本番(master)では必ず失敗していた
- *      （/api/admin/s3-upload は管理者用・任意キー受け取りなので流用できない）
+ * 🔴 アイコンは管理画面（/admin/avatars）が登録したプリセットから選ぶだけ。
+ *    受講生が任意画像を自分のアイコンにアップロードする経路は無い（実BFFにAPIが無く、
+ *    フロントのモックだけで完結していたため撤去した。任意画像を扱うなら、S3キーを
+ *    サーバ側で決める専用エンドポイントをBFFに立てるところからになる）。
  * 🔴 メールアドレスはこの画面に置かない。表示だけの行を置いていた時期があるが、
  *    編集できない値を編集画面に並べても意味が無く、変更（Cognito の確認コード往復）は
  *    アカウント設定の「ログイン情報」が1箇所で持っている。
@@ -100,7 +99,7 @@ function ProfilePage() {
       });
     } catch (err: any) {
       console.error('Failed to load profile:', err);
-      setError(err.message || 'プロフィールの取得に失敗しました');
+      setError(getUserMessage(err, 'プロフィールの取得に失敗しました'));
     } finally {
       setIsLoading(false);
     }
@@ -121,14 +120,14 @@ function ProfilePage() {
         //    省略すると保存のたびに既存値が消える。
         ideal_career: formData.idealCareer || null,
         today_small_step: formData.todaySmallStep || null,
-        avatar_url: formData.avatar_url || null,
+        // avatar_url は実APIに列が無く無視されるだけなので送らない（avatar_id のみが実データ）
         avatar_id: formData.avatar_id || null,
       });
       setToastMessage('プロフィールを保存しました！');
       await Promise.all([loadProfileData(user.userid), refreshProfile()]);
     } catch (err: any) {
       console.error('Failed to save profile:', err);
-      setError(err.message || 'プロフィールの保存に失敗しました');
+      setError(getUserMessage(err, 'プロフィールの保存に失敗しました'));
     } finally {
       setSaving(false);
     }

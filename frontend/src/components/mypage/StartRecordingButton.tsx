@@ -9,6 +9,7 @@ import { categoryOfPath } from '../../utils/studyCategory';
 import { color, radius } from '../../theme/webcoachTheme';
 import { formatMMSS } from '../../utils/studyStats';
 import StudySessionPrompt from '../shared/StudySessionPrompt';
+import StudyCourseSelect, { StudyCourseChoice } from '../shared/StudyCourseSelect';
 
 /**
  * マイページの「学習時間を記録する」と、記録中の操作。
@@ -53,6 +54,7 @@ function StartRecordingButton() {
   const session = useStudyTimerStore((s) => s.session);
   const s = useStudySession(user?.userid);
   const [confirming, setConfirming] = useState(false);
+  const [course, setCourse] = useState<StudyCourseChoice | null>(null);
 
   // 記録中はその場で止められるようにする（上の🔴参照）
   if (session) {
@@ -152,7 +154,10 @@ function StartRecordingButton() {
     <>
       <button
         type="button"
-        onClick={() => setConfirming(true)}
+        onClick={() => {
+          setCourse(null);
+          setConfirming(true);
+        }}
         className="dc-cta-outline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#F6B9BD]"
         style={{
           display: 'inline-flex',
@@ -187,10 +192,17 @@ function StartRecordingButton() {
             secondaryEmphasis="normal"
             onPrimary={() => {
               setConfirming(false);
-              s.start({ mode: 'freeform', category: categoryOfPath(location.pathname) });
+              s.start({
+                mode: 'freeform',
+                category: categoryOfPath(location.pathname),
+                courseId: course?.id,
+                courseTitle: course?.title,
+              });
             }}
             onSecondary={() => setConfirming(false)}
-          />,
+          >
+            <StudyCourseSelect userId={user?.userid} value={course} onChange={setCourse} />
+          </StudySessionPrompt>,
           document.body
         )}
     </>

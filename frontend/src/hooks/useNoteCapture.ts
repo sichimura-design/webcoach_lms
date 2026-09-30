@@ -98,13 +98,11 @@ export function useNoteCapture() {
         if (input.block.kind === 'text') {
           /*
            * 本文への追記。ノートを取り直してから末尾に足す。
-           * 🔴 PATCH は本文の全文で上書きするので、取り直さずに送ると
+           * 🔴 本文は全文で上書きするので、取り直さずに送ると
            *    このタブが知らない編集（別タブ・小窓で書いたぶん）を消してしまう。
            */
           const current = await bffClient.getNote(noteId);
-          const merged = [current.body.trim(), input.block.text.trim()]
-            .filter(Boolean)
-            .join('\n\n');
+          const merged = [current.body.trim(), input.block.text.trim()].filter(Boolean).join('\n\n');
           await bffClient.updateNote(noteId, { body: merged });
         } else {
           await bffClient.appendNoteBlock(noteId, input.block);
@@ -115,12 +113,12 @@ export function useNoteCapture() {
         // 🔴 ここで遷移しない。保存しても教材のページはそのままにして、
         //    見たい人だけがトーストから移動する。
         showToast(`「${note.title}」に追加しました`, 'success', {
-          action: { label: 'マイノートを見る', onClick: () => openNotes(noteId, backTo) },
+          action: { label: 'ノートを見る', onClick: () => openNotes(noteId, backTo) },
         });
         return noteId;
       } catch {
         forget(noteId);
-        showToast('マイノートに追加できませんでした', 'error');
+        showToast('ノートに追加できませんでした', 'error');
         return null;
       }
     },
