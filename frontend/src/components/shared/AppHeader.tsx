@@ -1510,7 +1510,8 @@ export function AppHeader({ userName, avatarUrl }: AppHeaderProps) {
                 onChange={(e) => setInput(e.target.value)}
                 onKeyPress={handleKeyPress}
                 placeholder={awaitingTypedReply ? TYPED_REPLY_PLACEHOLDER : '質問を入力してください...'}
-                disabled={loading}
+                // 生成中も次の質問は打てるようにする（送信は回答が届くまで止まる）。
+                // レッスン画面の AI・AIコーチ画面と同じ扱い（A-7）
                 rows={1}
                 className="flex-1 px-3 py-2 border border-gray-300 rounded-lg resize-none focus:outline-none focus:ring-2 focus:ring-brand focus:border-transparent disabled:bg-gray-100"
               />
