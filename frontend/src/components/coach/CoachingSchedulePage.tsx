@@ -416,7 +416,7 @@ export function CoachingSchedulePage({ studentId }: CoachingSchedulePageProps) {
       setRescheduleTarget(null);
     } catch (err) {
       setRescheduleTarget(null);
-      setError(errorMessageFor(err, 'リスケにしましたが、振替日の登録に失敗しました。「新しいセッションを記録」から登録してください'));
+      setError(errorMessageFor(err, 'リスケにしましたが、振替日の登録に失敗しました。「コーチングを追加」から登録してください'));
     } finally {
       setSaving(false);
       loadSchedules();
@@ -470,7 +470,7 @@ export function CoachingSchedulePage({ studentId }: CoachingSchedulePageProps) {
           </h1>
           <button type="button" style={smallPrimaryButton} onClick={() => { setAddForm(newEmptyForm()); setShowAddForm(v => !v); }}>
             <Plus className="w-4 h-4" />
-            新しいセッションを記録
+            コーチングを追加
           </button>
         </div>
 

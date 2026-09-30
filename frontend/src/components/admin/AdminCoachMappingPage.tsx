@@ -588,7 +588,7 @@ export const AdminCoachMappingPage: React.FC = () => {
                 <button
                   type="button"
                   onClick={() => openCurrentCoach(registerError.currentCoach!)}
-                  className="mt-2 text-xs font-bold underline"
+                  className="mt-2 p-0 text-xs font-bold underline bg-transparent border-0 cursor-pointer"
                   style={{ color: '#E86D78' }}
                 >
                   今のコーチ（{registerError.currentCoach.username}）の担当一覧を開いて外す
