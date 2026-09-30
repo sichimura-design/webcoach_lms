@@ -16,6 +16,7 @@ import { color, radius } from '../../theme/webcoachTheme';
 import { parseDifyMessage } from '../../utils/difyButtons';
 import { needsTypedReply, TYPED_REPLY_HINT, TYPED_REPLY_PLACEHOLDER } from '../../utils/aiAwaitingReply';
 import DifyFormCard from './DifyFormCard';
+import DifyChoiceButtons from './DifyChoiceButtons';
 
 interface AppHeaderProps {
   userName?: string;
@@ -1363,30 +1364,14 @@ export function AppHeader({ userName, avatarUrl }: AppHeaderProps) {
                               }}
                             />
                             {forms.map((form, i) => (
-                              <DifyFormCard key={i} form={form} disabled={loading} onSubmit={(m) => void sendMessage(m)} />
+                              <DifyFormCard key={i} form={form} disabled={loading} stale={message !== lastChatMessage} onSubmit={(m) => void sendMessage(m)} />
                             ))}
-                            {buttons.length > 0 && (
-                              <div className="flex flex-wrap gap-1.5 mt-1">
-                                {buttons.map((btn, i) => (
-                                  <button
-                                    key={`${btn.value}-${i}`}
-                                    type="button"
-                                    disabled={loading}
-                                    onClick={() => void sendMessage(btn.value)}
-                                    className="text-xs font-bold rounded-lg px-3 py-2"
-                                    style={{
-                                      border: `1px solid ${color.primaryBorder}`,
-                                      background: color.hoverBgTint,
-                                      color: color.primary,
-                                      cursor: loading ? 'default' : 'pointer',
-                                      opacity: loading ? 0.6 : 1,
-                                    }}
-                                  >
-                                    {btn.label}
-                                  </button>
-                                ))}
-                              </div>
-                            )}
+                            <DifyChoiceButtons
+                              buttons={buttons}
+                              disabled={loading}
+                              stale={message !== lastChatMessage}
+                              onPick={(value) => void sendMessage(value)}
+                            />
                           </>
                         );
                       })()

@@ -11,6 +11,7 @@ import MarkdownRenderer from '../MarkdownRenderer';
 import { parseDifyMessage } from '../../utils/difyButtons';
 import { needsTypedReply, TYPED_REPLY_HINT, TYPED_REPLY_PLACEHOLDER } from '../../utils/aiAwaitingReply';
 import DifyFormCard from '../shared/DifyFormCard';
+import DifyChoiceButtons from '../shared/DifyChoiceButtons';
 import { stripHtmlForNote } from '../../utils/stripHtmlForNote';
 import AiCoachFace from '../shared/AiCoachFace';
 import SkillPlusMenu from './SkillPlusMenu';
@@ -526,36 +527,16 @@ export function AiCoachPane({
                                   key={i}
                                   form={form}
                                   disabled={ai.loading}
+                                  stale={message.id !== lastSettled?.id}
                                   onSubmit={(msg) => void ai.send(msg)}
                                 />
                               ))}
-                              {buttons.length > 0 && (
-                                <div className="flex flex-wrap" style={{ gap: 6, marginTop: 6 }}>
-                                  {buttons.map((btn, i) => (
-                                    <button
-                                      key={`${btn.value}-${i}`}
-                                      type="button"
-                                      disabled={ai.loading}
-                                      onClick={() => void ai.send(btn.value)}
-                                      className="wc-ai-chip focus-visible:ring-2 focus-visible:ring-[#F6B9BD]"
-                                      style={{
-                                        border: `1px solid ${color.primaryBorder}`,
-                                        borderRadius: 8,
-                                        background: color.hoverBgTint,
-                                        color: color.primary,
-                                        padding: '8px 12px',
-                                        fontFamily: 'inherit',
-                                        fontSize: 11.5,
-                                        fontWeight: 700,
-                                        cursor: ai.loading ? 'default' : 'pointer',
-                                        opacity: ai.loading ? 0.6 : 1,
-                                      }}
-                                    >
-                                      {btn.label}
-                                    </button>
-                                  ))}
-                                </div>
-                              )}
+                              <DifyChoiceButtons
+                                buttons={buttons}
+                                disabled={ai.loading}
+                                stale={message.id !== lastSettled?.id}
+                                onPick={(value) => void ai.send(value)}
+                              />
                             </div>
                           );
                         })()

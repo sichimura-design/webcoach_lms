@@ -5,6 +5,8 @@
  *    Dify アプリ側のフローはこの形で届く前提で次のステップへ進むため、
  *    見出しを付け足したり言い換えたりしない。
  * 🔴 1度送ったフォームは閉じる。同じ内容の二重送信で Dify の会話が1ターン余分に進むのを防ぐ。
+ *    送信済みの印はこのコンポーネントの state なので、開き直すと消える。そのため呼び出し側が
+ *    「最新の回答のフォームか」を stale で渡し、過去のフォームは送れなくする（A-3）。
  */
 import { FormEvent, useState } from 'react';
 import { color, radius } from '../../theme/webcoachTheme';
@@ -13,6 +15,8 @@ import { DifyForm, serializeDifyForm } from '../../utils/difyButtons';
 interface DifyFormCardProps {
   form: DifyForm;
   disabled?: boolean;
+  /** 最新の回答ではない（この入力は終わっている） */
+  stale?: boolean;
   onSubmit: (message: string) => void;
 }
 
@@ -29,7 +33,7 @@ const fieldStyle = {
   color: color.text,
 };
 
-export default function DifyFormCard({ form, disabled = false, onSubmit }: DifyFormCardProps) {
+export default function DifyFormCard({ form, disabled = false, stale = false, onSubmit }: DifyFormCardProps) {
   const [values, setValues] = useState<Record<string, string | boolean>>(() =>
     Object.fromEntries(
       form.fields.map((f) => [f.name, f.kind === 'checkbox' ? f.defaultValue === 'true' : f.defaultValue]),
@@ -41,12 +45,12 @@ export default function DifyFormCard({ form, disabled = false, onSubmit }: DifyF
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
-    if (disabled || sent) return;
+    if (disabled || stale || sent) return;
     setSent(true);
     onSubmit(serializeDifyForm(form, values));
   };
 
-  const locked = disabled || sent;
+  const locked = disabled || stale || sent;
 
   return (
     <form
@@ -141,7 +145,7 @@ export default function DifyFormCard({ form, disabled = false, onSubmit }: DifyF
             opacity: locked ? 0.6 : 1,
           }}
         >
-          {sent ? '送信しました' : form.submitLabel}
+          {sent ? '送信しました' : stale ? 'この入力は終わっています' : form.submitLabel}
         </button>
       </div>
     </form>

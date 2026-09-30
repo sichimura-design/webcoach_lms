@@ -35,6 +35,7 @@ import MarkdownRenderer from './MarkdownRenderer';
 import { parseDifyMessage } from '../utils/difyButtons';
 import { needsTypedReply, TYPED_REPLY_HINT, TYPED_REPLY_PLACEHOLDER } from '../utils/aiAwaitingReply';
 import DifyFormCard from './shared/DifyFormCard';
+import DifyChoiceButtons from './shared/DifyChoiceButtons';
 import { getUserMessage } from '../utils/errorMessage';
 import { announcementModuleIds } from '../utils/courseAnnouncement';
 import { color, font, radius, shadow } from '../theme/webcoachTheme';
@@ -1315,28 +1316,14 @@ function AiCoachPanel({
                         <>
                           <MarkdownRenderer content={text} compact />
                           {forms.map((form, i) => (
-                            <DifyFormCard key={i} form={form} disabled={aiLoading} onSubmit={(m) => onSend(m)} />
+                            <DifyFormCard key={i} form={form} disabled={aiLoading} stale={index !== aiMessages.length - 1} onSubmit={(m) => onSend(m)} />
                           ))}
-                          {buttons.length > 0 && (
-                            <div className="flex flex-wrap" style={{ gap: 6, marginTop: 4 }}>
-                              {buttons.map((btn, i) => (
-                                <button
-                                  key={`${btn.value}-${i}`}
-                                  type="button"
-                                  disabled={aiLoading}
-                                  onClick={() => onSend(btn.value)}
-                                  style={{
-                                    fontSize: 11.5, fontWeight: 700, borderRadius: radius.md,
-                                    padding: '7px 11px', border: `1px solid ${color.border}`,
-                                    background: color.pageBg, color: color.primary,
-                                    cursor: 'pointer', opacity: aiLoading ? 0.5 : 1,
-                                  }}
-                                >
-                                  {btn.label}
-                                </button>
-                              ))}
-                            </div>
-                          )}
+                          <DifyChoiceButtons
+                            buttons={buttons}
+                            disabled={aiLoading}
+                            stale={index !== aiMessages.length - 1}
+                            onPick={(value) => onSend(value)}
+                          />
                         </>
                       );
                     })()
