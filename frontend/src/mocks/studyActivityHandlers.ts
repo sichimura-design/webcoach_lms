@@ -147,7 +147,8 @@ function userIdOf(params: Record<string, unknown>): number {
   return Number.isFinite(n) && n > 0 ? n : DEFAULT_USER_ID;
 }
 
-function activitiesOf(userId: number): StudyActivity[] {
+/** 実BFF形の学習セッションAPI（realApiHandlers.ts）も、ここを唯一の集計元にする */
+export function activitiesOf(userId: number): StudyActivity[] {
   // シードは DEFAULT_USER_ID で作られるので、モックでは userId 一致を厳密には見ない。
   // 実BFF移行時はサーバ側で認証ユーザーに絞られる。
   return readStore(userId).activities;

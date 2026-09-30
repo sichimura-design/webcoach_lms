@@ -32,6 +32,7 @@ import { MIGRATED_COURSE_IDS, isMigratedCourse } from './migratedMaterials';
 import { learningPlanHandlers } from './learningPlanHandlers';
 import { aiSkillHandlers } from './aiSkillHandlers';
 import { currentStreakInfo, studyActivityHandlers } from './studyActivityHandlers';
+import { realApiHandlers } from './realApiHandlers';
 import { goalDeclarationHandlers } from './goalDeclarationHandlers';
 import { STUDY_PEERS } from './studyPeers';
 import { listGoals, replaceGoals } from './coachingGoalsStore';
@@ -564,6 +565,15 @@ export const handlers = [
     const q = new URL(request.url).searchParams.get('q') ?? '';
     return HttpResponse.json(searchInCourse(Number(params.courseId), q));
   }),
+  // コース内の全アクティビティの完了状態（dev/kanegae のレッスン画面が1回でまとめて取る）。
+  // 1件ずつの口（下）と同じ isLessonDone を正にする
+  http.get('*/api/moodle/courses/:courseid/activities/completion', ({ params }) => {
+    const sections = buildSections(Number(params.courseid)) as Array<{ modules?: Array<{ id: number }> }>;
+    const statuses = sections
+      .flatMap((s) => s.modules ?? [])
+      .map((m) => ({ cmid: m.id, state: isLessonDone(m.id) ? 1 : 0, tracking: 1 }));
+    return HttpResponse.json({ statuses });
+  }),
   // アクティビティ完了状態（既定は cmid が偶数なら完了済み。トグル結果はそれを上書きする）
   http.get('*/api/moodle/activities/:cmid/completion', ({ params }) =>
     HttpResponse.json({ state: isLessonDone(Number(params.cmid)) ? 1 : 0 })
@@ -903,6 +913,11 @@ export const handlers = [
   // タイマー記録・統計・ストリーク。localStorage永続化のため studyActivityHandlers.ts に分離している。
   // 🔴 GET /webcoach/streak/:userid もこちらが持つ（上の固定モックは削除済み）。
   ...studyActivityHandlers,
+
+  // ==================== dev/kanegae から移した画面の実BFF形 API ====================
+  // 学習セッション（/study/*）・マイノート（/my-note/*）・ロードマップ（/roadmap/*）など。
+  // 学習時間の数字は上の studyActivityHandlers を集計元にする。realApiHandlers.ts に分離している。
+  ...realApiHandlers,
 
   // ==================== 目標宣言 ====================
   // 受講生が自分の言葉で書く、期間つきの意思表明と振り返り（学習管理シートの目標宣言欄）。
