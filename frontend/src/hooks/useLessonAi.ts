@@ -115,6 +115,18 @@ const skillModeInstruction = (skillId: ConcreteAiSkillId): string => {
   );
 };
 
+/**
+ * 制作物添削モード（裏はデザインフィードバックメンターPro）の進め方。
+ * アプリは「デザインの種類・目的・ターゲット → クライアントとターゲットを選ぶ → 最後に画像」の順で
+ * 進み、最初に画像や「添削して」だけを送ると「プロジェクトの情報と異なる内容」と弾かれる。
+ * 画像はサーバー側が同じ会話のあいだ送り続けるので、最初に付けたままでも最後の講評に使われる。
+ */
+const DESIGN_REVIEW_FIRST_STEP =
+  '制作物添削は、①デザインの種類・目的・ターゲットを送る → ②クライアントとターゲットを選ぶ → ' +
+  '③最後に「完成しました」と送る、の順で進みます。まずは①を書いて送ってください' +
+  '（例：カフェの新メニュー告知バナー。目的は来店数アップ、ターゲットは20代女性）。' +
+  '画像は付けたままで大丈夫です。③でその画像を講評します。';
+
 // エラー時の結論文は履歴から外す判定でも使うので aiCoachText 側に置いた。ここからも使えるよう再エクスポートする
 export { AI_ERROR_CONCLUSION };
 
@@ -513,9 +525,27 @@ export function useLessonAi(doc: LessonDoc | null, sessionIdOverride?: string): 
       // 未回答の確認カードがあるうちは送らせない。UI側でもボタンを無効化しているが、
       // Ctrl+Enter のような別経路があるのでここでも止める。
       if (pendingProposal) return;
+      const typed = (overrideQuestion ?? session.input).trim();
+      const isDesignReview = skillId === 'design-review';
+      // モードに入ると serverKey が作り直されるので、「この鍵でまだアプリへ送っていない」＝モード最初の発言
+      if (isDesignReview && !typed && session.image && session.appForcedFor !== session.serverKey) {
+        // 画像だけでは制作物添削のアプリが進まないので送らず、先にデザインの説明を書いてもらう（画像は残す）
+        appendMessage(sessionId, {
+          id: nextId('s'),
+          role: 'system',
+          content: DESIGN_REVIEW_FIRST_STEP,
+          createdAt: new Date().toISOString(),
+        });
+        return;
+      }
       const question =
-        (overrideQuestion ?? session.input).trim() ||
-        (session.image ? '添付した画像について、この教材の基準で添削してください' : '') ||
+        typed ||
+        (session.image
+          ? // 制作物添削のアプリは画像を「完成しました」と一緒に受け取る
+            isDesignReview
+            ? '完成しました'
+            : '添付した画像について、この教材の基準で添削してください'
+          : '') ||
         (session.quote ? 'この文章を教材に沿って説明してください' : '');
       if (!question) return;
 
@@ -607,6 +637,19 @@ export function useLessonAi(doc: LessonDoc | null, sessionIdOverride?: string): 
       const image = lastUserMessage?.image ?? null;
       const quote = session?.quote ?? null;
 
+      if (suggestion.skillId === 'design-review') {
+        // 直前の発言（画像＋「添削して」等）をそのまま送り直すと、アプリの最初の段階
+        // （デザインの説明）と合わず弾かれる。画像は入力欄に戻し、説明から始めてもらう。
+        if (image) setImageInStore(sessionId, image);
+        appendMessage(sessionId, {
+          id: nextId('s'),
+          role: 'system',
+          content: DESIGN_REVIEW_FIRST_STEP,
+          createdAt: new Date().toISOString(),
+        });
+        return;
+      }
+
       const run = beginRun();
       try {
         await runSkill(suggestion.skillId, question, quote, image);
@@ -625,6 +668,7 @@ export function useLessonAi(doc: LessonDoc | null, sessionIdOverride?: string): 
       sessionId,
       beginRun,
       endRun,
+      setImageInStore,
       setSkillInStore,
     ]
   );

@@ -701,7 +701,8 @@ export function AiCoachPane({
       {/* ── きっかけチップ ──
           🔴 会話が始まる前だけ。書き出しに困っている人を助けるためのもので、
              回答が並び始めたあとも出し続けると、ただ押せるものが増えるだけになる。 */}
-      {beforeFirstMessage && (
+      {/* チップが無いモード（制作物添削）では空の行を出さない */}
+      {beforeFirstMessage && (quickPrompts ?? pickQuickPrompts(ai)).length > 0 && (
         <div
           style={{
             padding: wide ? '8px 20px 4px' : '8px 12px 4px',
