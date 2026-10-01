@@ -690,6 +690,7 @@ def create_ai_application_tools(
     session_id: Optional[str] = None,
     image: Optional[Dict[str, str]] = None,
     run_id: Optional[str] = None,
+    in_app_mode: bool = False,
 ) -> "tuple[List[BaseTool], Optional[str], Optional[str]]":
     """
     DBに登録済みのAIアプリケーション（webcoach_ai_application.secret_keyが設定されているもの）を
@@ -810,7 +811,11 @@ def create_ai_application_tools(
                 other_tags |= {t.strip() for t in (other.tags or "").split(",")}
             # 汎用タグ（AI/案件など複数アプリで共通のもの）は切り替え判定から除外する
             distinctive_other_tags = {t for t in (other_tags - sticky_tags) if t}
-            switched = any(tag in raw_user_message for tag in distinctive_other_tags)
+            # アプリのモード中（利用者が自分でアプリを選んだ状態）はタグで切り替えない。
+            # 答えの中にたまたま他アプリのタグ（「案件で作ったバナー」の「案件」等）が入るだけで
+            # 切り替わり、フィードバックメンターのプロジェクト情報がDifyに届かずチャットのAIが
+            # 答えていた。モードを抜けるのは画面側の操作に任せる。
+            switched = not in_app_mode and any(tag in raw_user_message for tag in distinctive_other_tags)
             if switched:
                 pass
             elif _dify_idle_turns_cache.get((userid, session_id), 0) == 0:

@@ -416,6 +416,8 @@ def _execute_chat_inner(
         # 添付画像はDify側アプリにも渡す（制作物添削アプリ等が画像を見て答えられるように）
         image=request.image.model_dump() if request.image else None,
         run_id=run.run_id if run else None,
+        # mode_instruction はAIコーチでアプリ（専門モード）を選んでいる間だけ送られてくる
+        in_app_mode=bool(request.mode_instruction),
     )
     # アプリのモードに入った直後の最初の発言は、指定されたアプリへ必ず送る
     # （ボタン値の継続より優先する。モードを選び直した＝そのアプリを使うという明示の操作のため）

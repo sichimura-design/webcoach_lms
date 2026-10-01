@@ -123,6 +123,19 @@ def test_other_app_tag_drops_hint():
     assert _decide("面接の練習がしたい") == (None, None)
 
 
+def test_other_app_tag_inside_an_answer_is_ignored_in_app_mode():
+    """アプリのモード中（利用者が自分でアプリを選んだ状態）は、答えの中にたまたま他アプリの
+    タグ（案件・学習など）が入っていても切り替えない。フィードバックメンターでプロジェクト情報に
+    「案件で作ったバナー」と書くと、Difyに届かずチャットのAIが答えてしまっていた"""
+    _talk_to_sprint_app()
+    with patch.object(tools_langchain, "_get_dify_api_key", return_value="key"), \
+         patch.object(tools_langchain, "_get_dify_parameters", return_value={}):
+        _, forced, continuing = create_ai_application_tools(
+            _db(), "面接対策の学習で作ったバナーです", 7, session_id="s", in_app_mode=True
+        )
+    assert (forced, continuing) == ("ask_ai_application_14", None)
+
+
 def test_no_previous_app_means_no_force_or_hint():
     assert _decide("3時間（スピードを意識したい人向け）") == (None, None)
 
