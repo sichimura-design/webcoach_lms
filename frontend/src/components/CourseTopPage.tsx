@@ -10,6 +10,7 @@ import { useAuth } from '../contexts/AuthContext';
 import { formatMinutesHM } from '../utils/studyStats';
 import { lessonProgressOf } from '../utils/lessonProgress';
 import { LEARNING_HIERARCHY, LearningType } from '../constants/learningTaxonomy';
+import Loading from './shared/Loading';
 
 interface Module {
   id: number;
@@ -44,7 +45,7 @@ interface Course {
 const totalMinutes = (modules: Module[]) =>
   modules.reduce((sum, m) => sum + (m.durationminutes ?? 0), 0);
 
-/** 数字は2桁ゼロ埋め（CHAPTER 01 / 01 の丸） */
+/** 数字は2桁ゼロ埋め（チャプター 01） */
 const pad2 = (n: number) => String(n).padStart(2, '0');
 
 type LessonState = 'done' | 'current' | 'idle';
@@ -246,10 +247,7 @@ export default function CourseTopPage() {
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center" style={{ background: 'var(--dc-bg)' }}>
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-brand mx-auto" />
-          <p className="mt-4 text-sm text-brand-muted">読み込み中...</p>
-        </div>
+        <Loading variant="page" />
       </div>
     );
   }
@@ -326,7 +324,8 @@ export default function CourseTopPage() {
             {sections.length > 0 && (
               <div style={{ display: 'flex', gap: 18, marginTop: 12, fontSize: 12.5, color: 'var(--dc-text-subtle)', flexWrap: 'wrap' }}>
                 <span>
-                  全{sections.length}チャプター・{modules.length}
+                  全{sections.length}
+                  {LEARNING_HIERARCHY.unit}・{modules.length}
                   {LEARNING_HIERARCHY.lesson}
                 </span>
                 {courseMinutes > 0 && <span>目安 約{formatMinutesHM(courseMinutes)}</span>}
@@ -397,7 +396,8 @@ export default function CourseTopPage() {
               <div style={{ flex: '1 1 240px', minWidth: 0 }}>
                 {sections[heroSectionIndex] && (
                   <div style={{ fontSize: 13, fontWeight: 700, color: 'var(--dc-primary)' }}>
-                    チャプター{heroSectionIndex + 1}｜{sections[heroSectionIndex].name}
+                    {LEARNING_HIERARCHY.unit}
+                    {heroSectionIndex + 1}｜{sections[heroSectionIndex].name}
                   </div>
                 )}
                 <div style={{ fontSize: 20, fontWeight: 700, marginTop: 2 }}>{heroModule.name}</div>
@@ -444,7 +444,7 @@ export default function CourseTopPage() {
                 <button
                   type="button"
                   onClick={() => setSearchOpen(true)}
-                  className={`inline-flex items-center ${FOCUS_RING}`}
+                  className={`wc-fx-outline inline-flex items-center ${FOCUS_RING}`}
                   style={{
                     gap: 6, flex: 'none',
                     border: '1px solid var(--dc-border-strong)', borderRadius: 9999,
@@ -510,30 +510,17 @@ export default function CourseTopPage() {
                         : { background: 'var(--dc-bg)' }),
                     }}
                   >
-                    <span
-                      className="dc-num"
-                      style={{
-                        width: 38, height: 38, flex: 'none', borderRadius: 9999,
-                        background: 'var(--dc-surface)',
-                        border: `1px solid ${isCurrent ? 'var(--dc-soft-200)' : 'var(--dc-border-strong)'}`,
-                        boxSizing: 'border-box',
-                        color: 'var(--dc-primary)',
-                        fontSize: 14, fontWeight: 800,
-                        display: 'flex', alignItems: 'center', justifyContent: 'center',
-                      }}
-                    >
-                      {pad2(sectionIndex + 1)}
-                    </span>
-
+                    {/* 🔴 左にあった丸い「01」は外した。すぐ右の「チャプター 01」と番号を
+                           二重に出していて、見出しがうるさかった */}
                     <div style={{ flex: '1 1 200px', minWidth: 0 }}>
                       <div
                         className="dc-num"
                         style={{
-                          fontSize: 11, fontWeight: 700, letterSpacing: '.1em',
+                          fontSize: 11, fontWeight: 700, letterSpacing: '.06em',
                           color: isCurrent ? 'var(--dc-primary)' : 'var(--dc-label-warm)',
                         }}
                       >
-                        CHAPTER {pad2(sectionIndex + 1)}
+                        {LEARNING_HIERARCHY.unit} {pad2(sectionIndex + 1)}
                       </div>
                       <div style={{ fontSize: 16, fontWeight: 700, marginTop: 1 }}>{section.name}</div>
                     </div>

@@ -124,7 +124,7 @@ export function ResumeStudyCard({ course, known, lessonLoading, onOpenLesson, on
                 style={{
                   display: 'block',
                   width: 'min(180px, 42vw)',
-                  aspectRatio: '5 / 3',
+                  aspectRatio: '16 / 9',
                   flexShrink: 0,
                   borderRadius: t.radius.inner,
                   background: 'var(--dc-soft-100)',

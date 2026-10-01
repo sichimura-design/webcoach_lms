@@ -2,6 +2,7 @@ import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { Search, X } from 'lucide-react';
 import { bffClient } from '../../services/bffClient';
 import type { LessonSearchGroup, LessonSearchResponse } from '../../types/lessonSearch';
+import { LEARNING_HIERARCHY } from '../../constants/learningTaxonomy';
 
 /**
  * コース内の教材本文をキーワードで探すパネル。
@@ -328,11 +329,11 @@ export function CourseSearchPanel({
                         padding: '12px 20px 4px',
                         fontSize: 11,
                         fontWeight: 700,
-                        letterSpacing: '.1em',
+                        letterSpacing: '.06em',
                         color: 'var(--dc-label-warm)',
                       }}
                     >
-                      CHAPTER {String(group.sectionIndex).padStart(2, '0')}｜{group.sectionName}
+                      {LEARNING_HIERARCHY.unit} {String(group.sectionIndex).padStart(2, '0')}｜{group.sectionName}
                     </div>
                   )}
 

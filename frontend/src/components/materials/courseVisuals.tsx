@@ -105,8 +105,17 @@ export function CourseThumb({
   categoryName,
   thumbnailUrl,
   size = 64,
+  width,
   radius,
-}: { categoryName: string; thumbnailUrl?: string; size?: number; radius?: number }) {
+}: {
+  categoryName: string;
+  thumbnailUrl?: string;
+  /** 高さ。width を省くと正方形 */
+  size?: number;
+  /** 横長にしたいときだけ渡す（「ほかに学習中」の行は 16:9） */
+  width?: number;
+  radius?: number;
+}) {
   const color = categoryColor(categoryName);
   const inner = (() => {
     switch (familyOf(categoryName)) {
@@ -154,7 +163,7 @@ export function CourseThumb({
   return (
     <span
       className="flex items-center justify-center flex-shrink-0"
-      style={{ width: size, height: size, borderRadius: radius ?? '50%', background: categoryTint(categoryName), overflow: 'hidden' }}
+      style={{ width: width ?? size, height: size, borderRadius: radius ?? '50%', background: categoryTint(categoryName), overflow: 'hidden' }}
       aria-hidden
     >
       {thumbnailUrl ? (
@@ -177,7 +186,7 @@ export function statusBadge(course: Pick<GalleryCourse, 'isCurrent' | 'progress'
   if (course.enrolled || course.progress > 0) {
     return { label: '受講中', style: { background: t.color.primarySoft, color: t.color.primary } };
   }
-  // subtle(#A29A9C) は白地でコントラストが足りない。バッジの文字なので一段濃い方を使う
+  // バッジの文字なので secondary を使う
   return { label: '未受講', style: { background: '#F4F1F1', color: t.color.text.secondary } };
 }
 
@@ -250,6 +259,8 @@ export function CourseArt({
  *
  * 🔴 幅は min(180px, 42vw)。375px で固定pxにすると右の「1 / 7 レッスン」を
  *    押し出してページが横スクロールする（c853a18 で直した崩れ）。
+ * 🔴 比率はコース画像と同じ 16:9。以前は 5:3 で、16:9 の画像が object-fit:cover で
+ *    左右を削られ、画像の端に入っている文字（「WEB BUILDING BASICS」など）が欠けていた。
  */
 export function ResumeArt({
   course,
@@ -264,7 +275,7 @@ export function ResumeArt({
       titleSize="var(--dc-fs-body)"
       style={{
         width: 'min(180px, 42vw)',
-        aspectRatio: '5 / 3',
+        aspectRatio: '16 / 9',
         flexShrink: 0,
         borderRadius: t.radius.inner,
         ...style,

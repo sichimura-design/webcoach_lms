@@ -28,6 +28,7 @@ import {
   isCompleted,
   selectStyle,
 } from './materials/courseFilters';
+import Loading from './shared/Loading';
 
 /**
  * ページの最大幅。デザインは 1440px キャンバスで描かれている。
@@ -444,7 +445,7 @@ function MaterialsTopPage() {
                       🔴 中身は共通の飾り絵（hero-art.png）ではなくコース自身の絵柄にした。
                          文字組みサムネがコース名を持つので、本文側からコース名の行を落とせる。 */}
                   <div style={{ display: 'flex', gap: 18, alignItems: 'center', flexWrap: 'wrap' }}>
-                    {/* 寸法（min(180px, 42vw) / 5:3）とその理由は ResumeArt 側にまとめた。
+                    {/* 寸法（min(180px, 42vw) / 16:9）とその理由は ResumeArt 側にまとめた。
                         マイページの「続きから学習」と同じ大きさに保つため、数字を
                         2画面に散らさず courseVisuals.tsx の1か所で持つ。 */}
                     <ResumeArt course={resumeArt} />
@@ -513,14 +514,14 @@ function MaterialsTopPage() {
                   <div style={{ display: 'flex', alignItems: 'center', gap: 12, flexWrap: 'wrap' }}>
                     <button
                       onClick={goToContinue}
-                      className="appearance-none border-0 outline-none focus-visible:ring-2 focus-visible:ring-[#F6B9BD]"
+                      className="wc-fx-primary appearance-none border-0 outline-none focus-visible:ring-2 focus-visible:ring-[#F6B9BD]"
                       style={{ background: t.color.primary, color: '#fff', borderRadius: t.radius.button, padding: '11px 24px', fontSize: 'var(--dc-fs-lead)', fontWeight: t.font.weight.bold, fontFamily: 'inherit', whiteSpace: 'nowrap', cursor: 'pointer' }}
                     >
                       続きから学ぶ
                     </button>
                     <button
                       onClick={() => navigate(`/course/${resumableCourse.id}/curriculum`)}
-                      className="appearance-none outline-none focus-visible:ring-2 focus-visible:ring-[#F6B9BD]"
+                      className="wc-fx-outline appearance-none outline-none focus-visible:ring-2 focus-visible:ring-[#F6B9BD]"
                       style={{ background: t.color.bg.card, color: t.color.primary, border: `1px solid ${t.color.primaryBorder}`, borderRadius: t.radius.button, padding: '10px 20px', fontSize: 'var(--dc-fs-body)', fontWeight: t.font.weight.semibold, fontFamily: 'inherit', whiteSpace: 'nowrap', cursor: 'pointer' }}
                     >
                       コース目次を見る
@@ -571,7 +572,7 @@ function MaterialsTopPage() {
                         onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); navigate(`/course/${c.id}/curriculum`); } }}
                         role="button"
                         tabIndex={0}
-                        className="cursor-pointer focus-visible:ring-2 focus-visible:ring-[#F6B9BD]"
+                        className="wc-fx-row cursor-pointer focus-visible:ring-2 focus-visible:ring-[#F6B9BD]"
                         style={{
                           display: 'flex', alignItems: 'center', gap: 12, padding: '8px 16px',
                           // 行の区切りは枠線1本。カードを並べるより境目が静かで、高さも食わない
@@ -579,7 +580,8 @@ function MaterialsTopPage() {
                         }}
                       >
                         {/* コース名の左のサムネ。画像を持つコースは画像、無ければ領域の図形 */}
-                        <CourseThumb categoryName={area} thumbnailUrl={art.thumbnailUrl} size={40} radius={12} />
+                        {/* 画像は 16:9 なので枠も 16:9（高さ40は据え置き＝行の高さを増やさない） */}
+                        <CourseThumb categoryName={area} thumbnailUrl={art.thumbnailUrl} size={40} width={71} radius={10} />
 
                         <div style={{ display: 'flex', alignItems: 'baseline', gap: 8, flex: 1, minWidth: 0 }}>
                           <span style={{ fontSize: 'var(--dc-fs-body)', fontWeight: t.font.weight.semibold, lineHeight: 'var(--dc-lh-ui)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
@@ -617,7 +619,7 @@ function MaterialsTopPage() {
                       type="button"
                       onClick={() => setShowAllActive((v) => !v)}
                       aria-expanded={showAllActive}
-                      className="appearance-none outline-none focus-visible:ring-2 focus-visible:ring-[#F6B9BD]"
+                      className="wc-fx-row appearance-none outline-none focus-visible:ring-2 focus-visible:ring-[#F6B9BD]"
                       style={{
                         display: 'block', width: '100%', background: 'transparent', border: 0,
                         borderTop: `1px solid ${t.color.border.card}`, padding: '11px 16px', textAlign: 'center',
@@ -663,7 +665,7 @@ function MaterialsTopPage() {
               <button
                 type="submit"
                 disabled={searchLoading || !searchQuery.trim()}
-                className="appearance-none border-0 outline-none focus-visible:ring-2 focus-visible:ring-[#F6B9BD]"
+                className="wc-fx-primary appearance-none border-0 outline-none focus-visible:ring-2 focus-visible:ring-[#F6B9BD]"
                 style={{ position: 'absolute', right: 4, top: 4, height: 32, borderRadius: t.radius.pill, background: searchQuery.trim() ? t.color.primary : t.color.text.subtle, padding: '0 14px', color: '#fff', fontSize: 'var(--dc-fs-body)', fontWeight: t.font.weight.semibold, fontFamily: 'inherit', cursor: searchQuery.trim() ? 'pointer' : 'default' }}
               >
                 {searchLoading ? 'さがし中…' : 'さがす'}
@@ -725,7 +727,7 @@ function MaterialsTopPage() {
                   key={ex}
                   onMouseDown={(e) => e.preventDefault()}
                   onClick={() => { setSearchQuery(ex); runSearch(ex); }}
-                  className="appearance-none outline-none cursor-pointer focus-visible:ring-2 focus-visible:ring-[#F6B9BD]"
+                  className="wc-fx-outline appearance-none outline-none cursor-pointer focus-visible:ring-2 focus-visible:ring-[#F6B9BD]"
                   style={{ background: t.color.bg.card, border: `1px solid ${t.color.primaryBorder}`, borderRadius: t.radius.pill, padding: '4px 12px', fontSize: 'var(--dc-fs-caption)', fontFamily: 'inherit', color: t.color.text.body }}
                 >
                   {ex}
@@ -748,7 +750,7 @@ function MaterialsTopPage() {
                   出ていないときも場所を取る */}
               <button
                 onClick={clearSearch}
-                className="appearance-none border-0 outline-none cursor-pointer focus-visible:ring-2 focus-visible:ring-[#F6B9BD]"
+                className="wc-fx-text appearance-none border-0 outline-none cursor-pointer focus-visible:ring-2 focus-visible:ring-[#F6B9BD]"
                 style={{ background: 'transparent', padding: '2px 4px', flexShrink: 0, fontSize: 'var(--dc-fs-body)', fontFamily: 'inherit', color: t.color.text.muted, textDecoration: 'underline' }}
               >
                 結果を閉じる
@@ -798,7 +800,7 @@ function MaterialsTopPage() {
                 <button
                   type="button"
                   onClick={resetFilters}
-                  className="appearance-none border-0 outline-none cursor-pointer focus-visible:ring-2 focus-visible:ring-[#F6B9BD]"
+                  className="wc-fx-text appearance-none border-0 outline-none cursor-pointer focus-visible:ring-2 focus-visible:ring-[#F6B9BD]"
                   style={{ background: 'transparent', padding: '2px 4px', fontFamily: 'inherit', fontSize: 'var(--dc-fs-body)', fontWeight: t.font.weight.semibold, color: t.color.primary }}
                 >
                   絞り込みをリセット
@@ -808,9 +810,7 @@ function MaterialsTopPage() {
           </div>
 
           {sortedAreas.length === 0 ? (
-            <p style={{ fontSize: 'var(--dc-fs-body)', color: t.color.text.muted, margin: 0 }}>
-              コースを読み込んでいます…
-            </p>
+            <Loading label="コースを読み込み中…" />
           ) : visibleAreas.length === 0 ? (
             <div className="flex flex-col items-center" style={{ padding: '48px 0', gap: 12 }}>
               <p style={{ fontSize: 'var(--dc-fs-body)', color: t.color.text.muted, margin: 0 }}>
@@ -818,7 +818,7 @@ function MaterialsTopPage() {
               </p>
               <button
                 onClick={resetFilters}
-                className="appearance-none outline-none cursor-pointer focus-visible:ring-2 focus-visible:ring-[#F6B9BD]"
+                className="wc-fx-outline appearance-none outline-none cursor-pointer focus-visible:ring-2 focus-visible:ring-[#F6B9BD]"
                 style={{
                   background: t.color.bg.card,
                   color: t.color.primary,
@@ -908,7 +908,7 @@ function MaterialsTopPage() {
                         type="button"
                         onClick={() => toggleArea(a.name)}
                         aria-expanded={expanded}
-                        className="appearance-none outline-none cursor-pointer focus-visible:ring-2 focus-visible:ring-[#F6B9BD]"
+                        className="wc-fx-row appearance-none outline-none cursor-pointer focus-visible:ring-2 focus-visible:ring-[#F6B9BD]"
                         style={{
                           display: 'flex',
                           alignItems: 'center',

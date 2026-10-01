@@ -5,7 +5,11 @@
  * 画面ごとに「ステップ」「セクション」「チャプター」「カテゴリ」と呼び方が散っていたため、
  * 受講生に見せる階層名はすべてここを通す。階層は次の5段階だけ。
  *
- *   学習領域 ＞ コース ＞ 単元 ＞ レッスン ＞ 教材
+ *   学習領域 ＞ コース ＞ チャプター ＞ レッスン ＞ 教材
+ *
+ * 🔴 コースの中の区切り（Moodle のセクション）は「チャプター」と呼ぶ。以前の定義は「単元」
+ *    だったが誰も使っておらず、画面には「チャプター」と英字の「CHAPTER」が混在していた。
+ *    実際の画面に合わせて「チャプター」に統一した（2026-10）。英字の CHAPTER は使わない。
  *
  * 重要な前提: 「基礎知識」「実践課題」「座学」などは階層ではない。
  * 何を学ぶか（階層）と、どう学ぶか（分類）を混ぜると、同じテーマの学習が
@@ -17,20 +21,20 @@
  * UI上は5階層すべてを毎回出さない（要件）。
  *   学習領域 … 学習コンテンツ一覧の絞り込みでのみ見せる
  *   教材    … レッスン本文の中に自然に並べる
- * 受講生が普段たどるのは「コース ＞ 単元 ＞ レッスン」の3階層。
+ * 受講生が普段たどるのは「コース ＞ チャプター ＞ レッスン」の3階層。
  */
 
 export const LEARNING_HIERARCHY = {
   area: '学習領域',
   course: 'コース',
-  unit: '単元',
+  unit: 'チャプター',
   lesson: 'レッスン',
   material: '教材',
 } as const;
 
 export type LearningHierarchyLevel = keyof typeof LEARNING_HIERARCHY;
 
-/** 「単元1」「レッスン3」のような序数付きラベル。index は1始まり。 */
+/** 「チャプター1」「レッスン3」のような序数付きラベル。index は1始まり。 */
 export const unitLabel = (index: number): string => `${LEARNING_HIERARCHY.unit}${index}`;
 export const lessonLabel = (index: number): string => `${LEARNING_HIERARCHY.lesson}${index}`;
 
