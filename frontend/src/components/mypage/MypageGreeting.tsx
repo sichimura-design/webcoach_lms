@@ -39,17 +39,33 @@ function formatTodayJa(d: Date): string {
   return `${d.getFullYear()}年${d.getMonth() + 1}月${d.getDate()}日（${WEEKDAY_JA[d.getDay()]}）`;
 }
 
+/**
+ * 時間帯の挨拶。端末の時刻で決める（夜でも「こんにちは」と出ていた）。
+ * 5〜9時台は朝、10〜17時台は昼、それ以外（18時〜翌4時台）は夜。
+ */
+export function greetingFor(d: Date): string {
+  const h = d.getHours();
+  if (h >= 5 && h < 10) return 'おはようございます';
+  if (h >= 10 && h < 18) return 'こんにちは';
+  return 'こんばんは';
+}
+
 function MypageGreeting({ name }: MypageGreetingProps) {
+  const now = new Date();
   return (
     <div>
       {/* 日付は「読めなくても操作に影響しない」補足なので caption(12px) */}
       <div style={{ fontSize: 'var(--dc-fs-caption)', color: 'var(--dc-text-muted)', marginBottom: 6 }}>
-        {formatTodayJa(new Date())}
+        {formatTodayJa(now)}
       </div>
       {/* 🔴 見出しの隣に装飾（8a のきらめき）を置いていたが撤去した。意味を持たない
              飾りなので、戻さないこと。囲みの flex も星のためだけにあったので畳んである。 */}
-      <h1 style={{ ...pageTitleStyle, color: 'var(--dc-text)' }}>
-        {name || 'ゲスト'}さん、こんにちは
+      {/* 🔴 「〇〇さん、」と挨拶を別々の塊にして、折り返すなら塊の境目で折る。
+             スマホ幅（375px）では28pxで1行に約12文字しか入らず、「こんにちは」の
+             「は」だけが次の行に落ちていた。長い英字の名前ははみ出さずに折る（anywhere）。 */}
+      <h1 style={{ ...pageTitleStyle, color: 'var(--dc-text)', overflowWrap: 'anywhere' }}>
+        <span style={{ display: 'inline-block', maxWidth: '100%' }}>{name || 'ゲスト'}さん、</span>
+        <span style={{ display: 'inline-block' }}>{greetingFor(now)}</span>
       </h1>
       {/* 🔴 挨拶の下の空きはこれで埋める。右の目標カードのほうが背が高く、
              align-items:stretch のぶんここに40〜50pxの白が残っていた。

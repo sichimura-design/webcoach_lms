@@ -2,7 +2,11 @@ import { useEffect, useRef, useState, type CSSProperties } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Check } from 'lucide-react';
 import { PlanItem, useNextCoachingPlan } from '../../hooks/useNextCoachingPlan';
-import { formatMinutesHM } from '../../utils/studyStats';
+import { formatMinutesHM, toLocalDateKey } from '../../utils/studyStats';
+import bffClient from '../../services/bffClient';
+import type { CoachingSchedule } from '../../types/api';
+import { formatSessionDate, pickNextSchedule, untilLabel } from '../../utils/coachingSchedule';
+import Loading from '../shared/Loading';
 
 /**
  * 次回コーチングまでの目標（マイページ右上）。
@@ -130,6 +134,27 @@ function undoneFirst(list: PlanItem[]): PlanItem[] {
 export function CoachingTaskCard({ userId }: CoachingTaskCardProps) {
   const navigate = useNavigate();
   const { items, loading, saving, save } = useNextCoachingPlan(userId);
+  /*
+   * 次回コーチングの日付（見出しの下に小さく出す）。
+   * 🔴 出せるのは日付まで。coaching_date は DB が Date 型で時刻を持っていない。
+   *    取れないとき・予定が無いときは行ごと出さない（TODO の表示は止めない）。
+   */
+  const [nextSchedule, setNextSchedule] = useState<CoachingSchedule | null>(null);
+  useEffect(() => {
+    if (!userId) return;
+    let alive = true;
+    bffClient
+      .getCoachingSchedules(userId)
+      .then((list) => {
+        if (alive) setNextSchedule(pickNextSchedule(list ?? [], toLocalDateKey(new Date())));
+      })
+      .catch(() => {
+        if (alive) setNextSchedule(null);
+      });
+    return () => {
+      alive = false;
+    };
+  }, [userId]);
   // 連打で複数の保存が飛ぶのを防ぐ。どの行を押したかはボタンの見た目に出さない
   const [pending, setPending] = useState(false);
   // 画面に出す並び。チェックの結果は保存の返りを待たずに反映する
@@ -170,7 +195,7 @@ export function CoachingTaskCard({ userId }: CoachingTaskCardProps) {
 
   return (
     <section style={CARD_STYLE}>
-      <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 16 }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: nextSchedule ? 4 : 16 }}>
         <h2
           style={{
             margin: 0,
@@ -202,15 +227,19 @@ export function CoachingTaskCard({ userId }: CoachingTaskCardProps) {
           編集する ›
         </button>
       </div>
+      {nextSchedule && (
+        <div style={{ fontSize: 'var(--dc-fs-caption)', color: 'var(--dc-text-muted)', marginBottom: 14 }}>
+          次回 {formatSessionDate(nextSchedule.coaching_date)}
+          {untilLabel(nextSchedule.coaching_date) && `・${untilLabel(nextSchedule.coaching_date)}`}
+        </div>
+      )}
 
       {/* 外枠は高さを決めるだけ。中身（.mypage-task-list）は浮かせてあるので、
           何件あってもカードの丈は変わらない（LIST_MIN_H の 🔴 を読むこと） */}
       <div className="mypage-task-listbox">
         <div className="mypage-task-list">
           {loading ? (
-            <div style={{ fontSize: 'var(--dc-fs-body)', color: 'var(--dc-text-subtle)', padding: '8px 0' }}>
-              読み込んでいます…
-            </div>
+            <Loading />
           ) : rows.length === 0 ? (
             <div
               style={{

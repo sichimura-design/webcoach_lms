@@ -139,7 +139,8 @@ export function NoteCard({
         </button>
       </div>
 
-      {/* 長いタイトルで一覧のカード高さが揃わなくなるので2行で切る。全文は title 属性で見られる（B-018） */}
+      {/* 長いタイトルは1行で「…」にする。全文は title 属性で見られる（B-018）。
+          🔴 以前は2行まで出していたが、2行目まで読ませる必要は無く、本文の抜粋が下に押し出されていた */}
       <h3
         title={note.title}
         style={{
@@ -148,11 +149,10 @@ export function NoteCard({
           fontWeight: 700,
           lineHeight: 1.5,
           color: 'var(--dc-text)',
-          display: '-webkit-box',
-          WebkitLineClamp: 2,
-          WebkitBoxOrient: 'vertical',
+          whiteSpace: 'nowrap',
           overflow: 'hidden',
-          overflowWrap: 'anywhere',
+          textOverflow: 'ellipsis',
+          minWidth: 0,
         }}
       >
         {note.title}

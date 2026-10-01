@@ -27,6 +27,8 @@ import { C } from './coaching/design1c';
 import type { CoachingGoalUpdateItem } from '../types/mypage';
 import { toSessionDetail, toSessionSummary } from '../utils/coachingScheduleAdapter';
 import { toLocalDateKey } from '../utils/studyStats';
+import { pickNextSchedule } from '../utils/coachingSchedule';
+import Loading from './shared/Loading';
 
 const NOTE_FIELD_LABELS: { key: keyof CoachingNote; label: string }[] = [
   { key: 'session_summary', label: 'セッション概要' },
@@ -136,14 +138,13 @@ export function MyCoachingPage() {
   );
 
   /**
-   * 次回コーチング: 実施結果が未記録かつ実施日が本日以降のうち、最も日付が近い回。
+   * 次回コーチング（選び方は utils/coachingSchedule の pickNextSchedule。マイページの TODO カードと共通）。
    * 無ければヒーローカードは出さない
    */
-  const nextSchedule = useMemo(() => {
-    const today = toLocalDateKey(new Date());
-    const upcoming = schedulesByDateDesc.filter(s => s.status === null && s.coaching_date >= today);
-    return upcoming.length > 0 ? upcoming[upcoming.length - 1] : null;
-  }, [schedulesByDateDesc]);
+  const nextSchedule = useMemo(
+    () => pickNextSchedule(schedules, toLocalDateKey(new Date())),
+    [schedules],
+  );
 
   /** 直近の実施済みセッション（「前回の振り返り」用） */
   const lastSchedule = pastSchedules[0] ?? null;
@@ -274,7 +275,7 @@ export function MyCoachingPage() {
         )}
 
         {loading ? (
-          <p style={{ ...font.meta, color: color.textMuted, textAlign: 'center', padding: '48px 0' }}>読み込み中…</p>
+          <Loading style={{ padding: '48px 0' }} />
         ) : (
           <>
             {nextSchedule && (

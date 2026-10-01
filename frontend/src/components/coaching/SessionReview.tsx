@@ -365,11 +365,11 @@ export function SessionReview({ session, onDeleted }: SessionReviewProps) {
                     style={{
                       ...font.rowTitle,
                       color: color.textStrong,
-                      display: '-webkit-box',
-                      WebkitLineClamp: 2,
-                      WebkitBoxOrient: 'vertical',
+                      display: 'block',
+                      whiteSpace: 'nowrap',
                       overflow: 'hidden',
-                      overflowWrap: 'anywhere',
+                      textOverflow: 'ellipsis',
+                      minWidth: 0,
                     }}
                   >
                     {note.title}

@@ -458,7 +458,7 @@ export function FinishSessionModal({
               </label>
 
               <div style={{ marginBottom: 6 }}>
-                {/* 「達成度」ではなく「手応え」。ラベルが もう少し／できた／バッチリ という
+                {/* 「達成度」ではなく「手応え」。ラベルが もう少し／まあまあ／よくできた という
                     自己申告の感覚で、達成率ではない（StudyRecordEditModal と同じ語に揃えてある） */}
                 <span style={{ ...font.label, color: color.textSubtle }}>手応え（任意）</span>
                 <div style={{ display: 'flex', gap: 8, marginTop: 8 }}>

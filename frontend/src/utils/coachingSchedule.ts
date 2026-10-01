@@ -39,3 +39,19 @@ export function formatSessionDate(date: string): string {
   if (Number.isNaN(d.getTime())) return date;
   return `${d.getMonth() + 1}月${d.getDate()}日（${WEEKDAY[d.getDay()]}）`;
 }
+
+/**
+ * 次回のコーチング: 実施結果が未記録（status が null）で、実施日が今日以降のうち最も近い回。
+ * 同じ日に2回あれば回数の小さいほう。無ければ null。
+ * 🔴 /coaching のヒーロー（MyCoachingPage）とマイページの TODO カードが同じ規則で選ぶ。
+ *    片方だけ条件を変えると「次回」が画面ごとに違う日になるので、ここ1本で持つ。
+ */
+export function pickNextSchedule<T extends { coaching_date: string; coaching_no: number; status: unknown }>(
+  schedules: readonly T[],
+  today: string,
+): T | null {
+  const upcoming = schedules
+    .filter((s) => s.status === null && s.coaching_date >= today)
+    .sort((a, b) => a.coaching_date.localeCompare(b.coaching_date) || a.coaching_no - b.coaching_no);
+  return upcoming[0] ?? null;
+}

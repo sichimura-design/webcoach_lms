@@ -36,10 +36,15 @@ export type StudyActivityKind = 'study_session';
  */
 export type Achievement = 'low' | 'mid' | 'high';
 
+/**
+ * 🔴 保存されるのはコード（low/mid/high）だけなので、ここを変えれば過去の記録も新しい言葉で出る。
+ *    以前は「もう少し／できた／バッチリ」で、「できた」と「バッチリ」の差が分かりにくかった（2026-10）。
+ *    ただしマイノートに書き出した本文（utils/studyRecordNote.ts）は文字列のまま残る。
+ */
 export const ACHIEVEMENT_LABEL: Record<Achievement, string> = {
   low: 'もう少し',
-  mid: 'できた',
-  high: 'バッチリ',
+  mid: 'まあまあ',
+  high: 'よくできた',
 };
 
 /** 将来のタイムライン公開範囲。今回はすべて 'private' で入る */

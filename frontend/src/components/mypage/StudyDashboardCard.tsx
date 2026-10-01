@@ -494,7 +494,7 @@ export function StudyDashboardCard({
           <div style={{ flex: 1, minWidth: 0, display: 'flex', flexDirection: 'column' }}>
             <div style={{ ...BLOCK_LABEL_STYLE, ...RIGHT_LABEL_ROW_STYLE }}>
               <span style={{ width: 9, height: 9, borderRadius: 9999, background: '#3B82F6' }} />
-              今週の目標
+              今週の目標学習時間
               <span style={{ flex: 1 }} />
               <button
                 type="button"
@@ -516,7 +516,7 @@ export function StudyDashboardCard({
                   whiteSpace: 'nowrap',
                 }}
               >
-                目標を変更
+                目標時間を変更
               </button>
             </div>
 
