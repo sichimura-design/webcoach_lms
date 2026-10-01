@@ -49,6 +49,7 @@ import { useAiCoachExpandOriginCleanup } from '../hooks/useAiCoachExpandOriginCl
 import { useNavigationStore } from '../store/navigationStore';
 import { ErrorBoundary } from '../components/shared';
 import { MOCKS_ENABLED } from '../mocks/config';
+import Loading from '../components/shared/Loading';
 
 /**
  * トークン・部品カタログ（/dev/catalog）。UI/UXレビューの「横串」用の比較台で、
@@ -72,10 +73,7 @@ interface ProtectedRouteProps {
 function RouteLoading() {
   return (
     <div className="wc-warm min-h-screen flex items-center justify-center" style={{ background: 'var(--dc-bg)' }}>
-      <span
-        className="w-8 h-8 rounded-full animate-spin"
-        style={{ border: '3px solid var(--dc-primary)', borderTopColor: 'transparent' }}
-      />
+      <Loading variant="page" />
     </div>
   );
 }

@@ -18,6 +18,7 @@ import {
   courseKindOf,
 } from '../../constants/courseTaxonomy';
 import { ALL, selectStyle } from './courseFilters';
+import Loading from '../shared/Loading';
 
 /**
  * 学習領域のコース一覧（/courses/category/:categoryId）。
@@ -226,7 +227,7 @@ function AreaCoursesPage() {
             </div>
 
             {loading ? (
-              <p style={{ fontSize: 'var(--dc-fs-body)', color: t.color.text.muted }}>読み込んでいます…</p>
+              <Loading />
             ) : filtered.length === 0 ? (
               <div className="flex flex-col items-center" style={{ padding: '48px 0', gap: 12 }}>
                 <p style={{ fontSize: 'var(--dc-fs-body)', color: t.color.text.muted, margin: 0 }}>

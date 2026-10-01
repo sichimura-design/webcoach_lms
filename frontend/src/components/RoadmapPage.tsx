@@ -5,6 +5,7 @@ import { useAuth } from '../contexts/AuthContext';
 import bffClient from '../services/bffClient';
 import { RoadmapSkill, UserRoadmap } from '../types/api';
 import { color, font, shadow, t } from '../theme/webcoachTheme';
+import Loading from './shared/Loading';
 
 function formatDate(dateStr: string | null): string {
   if (!dateStr) return '未設定';
@@ -92,7 +93,7 @@ export function RoadmapPage() {
         )}
 
         {loading ? (
-          <p style={{ ...font.meta, color: color.textMuted, textAlign: 'center', padding: '48px 0' }}>読み込み中…</p>
+          <Loading style={{ padding: '48px 0' }} />
         ) : roadmap ? (
           <>
             {/* 最終ゴール・目標期限 */}

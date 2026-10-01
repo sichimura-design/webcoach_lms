@@ -16,6 +16,7 @@ import bffClient from '../services/bffClient';
 import { color, font, radius, t } from '../theme/webcoachTheme';
 import { CONNECTION_STATUS_LABEL } from '../types/coaching';
 import type { ConnectionInvite, MeetingConnection, MeetingProviderId } from '../types/coaching';
+import Loading from './shared/Loading';
 
 type Phase = 'loading' | 'ready' | 'connecting' | 'done' | 'expired' | 'notfound' | 'failed';
 
@@ -107,7 +108,7 @@ export default function ConnectCoachPage() {
   if (phase === 'loading') {
     return shell(
       <div style={{ ...t.card, padding: 28 }}>
-        <p style={{ ...font.meta, color: color.textMuted, margin: 0 }}>読み込み中…</p>
+        <Loading />
       </div>,
     );
   }

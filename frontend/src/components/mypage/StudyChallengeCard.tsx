@@ -6,6 +6,7 @@ import { Course } from '../../types/mypage';
 import { formatMinutesHM } from '../../utils/studyStats';
 import { lessonProgressFromPercent } from '../../utils/lessonProgress';
 import { LEARNING_HIERARCHY } from '../../constants/learningTaxonomy';
+import Loading from '../shared/Loading';
 
 function splitLesson(currentLesson: string | undefined): { no: string | null; name: string | null } {
   if (!currentLesson) return { no: null, name: null };
@@ -161,9 +162,7 @@ export function StudyChallengeCard({
           ランキングを取得できませんでした。
         </div>
       ) : loading || !me ? (
-        <div style={{ fontSize: 'var(--dc-fs-body)', color: 'var(--dc-text-subtle)', padding: '28px 0 40px', textAlign: 'center' }}>
-          読み込んでいます…
-        </div>
+        <Loading style={{ padding: '28px 0 40px' }} />
       ) : (
         <>
           {/* 見出し。数字だけ特大にして「あと少し」であることを一目で読ませる */}

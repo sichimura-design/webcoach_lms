@@ -144,8 +144,11 @@ h1, h2, h3 {
   --dc-sunken: #F9F5F0;
   --dc-text: #141414;
   --dc-text-body: #3D3D3D;
-  --dc-text-muted: #6B6B6B;
-  --dc-text-subtle: #9E9E9E;
+  /* 🔴 補助テキストは白地で #595959（7:1）以上の濃さにする（2026-10）。
+        以前の subtle(#9E9E9E) は 2.7:1 で、日付・キャプションが読めなかった。
+        muted と subtle の濃淡はほぼ同じになったので、差は文字の大きさ・太さで付ける。 */
+  --dc-text-muted: #545454;
+  --dc-text-subtle: #595959;
   --dc-border: #EFE9E0;
   --dc-border-strong: #E2DBD0;
   --dc-rule: #ECECEE;
@@ -158,10 +161,10 @@ h1, h2, h3 {
   --dc-success-surface: #E8F8F1;
   --dc-idle-surface: #FBFBFB;
   --dc-idle-border: #E9E9EC;
-  --dc-idle-text: #B5B4B5;
+  --dc-idle-text: #595959;
   /* 暖色側の「未着手」表現（コーストップ 2a で追加）。
      上の --dc-idle-* は寒色グレーで別用途なので、そこには寄せない。 */
-  --dc-label-warm: #A08F72;      /* CHAPTER 01 のアイブロウ */
+  --dc-label-warm: #5C5040;      /* CHAPTER 01 のアイブロウ */
   --dc-idle-dash: #C9BFAF;       /* 未着手レッスンの破線丸 */
   --dc-neutral-surface: #F0EDE8; /* 「未着手」ピルの地 */
   /* 設定画面（2a / 2b）で足したもの。
@@ -710,7 +713,42 @@ h1, h2, h3 {
 }
 
 /* .dc-cta-* はコーストップ以外（マイページ 5a・学習記録 4a）も使う共通名。
-   中身は同じなのでセレクタだけ足している。 */
+   中身は同じなのでセレクタだけ足している。
+   🔴 transition が無く、ホバーの色がパッと切り替わるだけで安っぽく見えていた。
+      塗りボタンは少し浮かせる（.wc-fx-primary と同じ動き）。 */
+.ct-btn-primary,
+.ct-btn-outline,
+.ct-btn-ghost,
+.dc-cta-primary,
+.dc-cta-outline {
+  transition:
+    background-color 160ms var(--dc-ease, cubic-bezier(0.2, 0.8, 0.2, 1)),
+    border-color 160ms var(--dc-ease, cubic-bezier(0.2, 0.8, 0.2, 1)),
+    color 160ms var(--dc-ease, cubic-bezier(0.2, 0.8, 0.2, 1)),
+    box-shadow 160ms var(--dc-ease, cubic-bezier(0.2, 0.8, 0.2, 1)),
+    transform 160ms var(--dc-ease, cubic-bezier(0.2, 0.8, 0.2, 1));
+}
+
+.ct-btn-primary:hover,
+.dc-cta-primary:hover {
+  transform: translateY(-1px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ct-btn-primary,
+  .ct-btn-outline,
+  .ct-btn-ghost,
+  .dc-cta-primary,
+  .dc-cta-outline {
+    transition: none;
+  }
+
+  .ct-btn-primary:hover,
+  .dc-cta-primary:hover {
+    transform: none;
+  }
+}
+
 .ct-btn-primary:hover,
 .dc-cta-primary:hover {
   background: var(--dc-primary-hover);
@@ -790,8 +828,8 @@ h1, h2, h3 {
       ホバーの起点もタイル側に置く。既定は無彩色、ホバーで初めて赤に寄る
       （.ct-btn-ghost と同じ作法）。 */
 .course-tile-more {
-  /* t.color.text.secondary。muted(#8A8082) は白地 3.8:1 で小さい文字には足りない */
-  color: #6b6365;
+  /* t.color.text.secondary と同じ値 */
+  color: #544d50;
   transition: color 120ms var(--dc-ease);
 }
 
@@ -849,6 +887,93 @@ h1, h2, h3 {
   .course-tile.is-done,
   .course-tile.is-done > :first-child {
     transition: none;
+  }
+}
+
+/* ─── ボタン・カードのホバー（学習トップ／コース目次／レッスン画面）──────
+   「押せるのに、カーソルを乗せても何も変わらない」ボタンが多く、画面が平板に見えていた。
+   色・影・わずかな浮き上がりで「押せる」を返す。
+
+   🔴 これらの画面は色をインライン style で当てていて、インライン style は class より強い。
+      ホバーで変える背景・影・枠は !important で上書きする（変えるのはホバー中だけ）。
+   🔴 --dc-ease は .mypage-3d / .wc-warm の中でしか定義されていない。レッスン画面は
+      その外なので、フォールバック付きで書く。
+   使い分け:
+     .wc-fx-primary … 赤い塗りボタン   .wc-fx-outline … 白地・枠ありのボタン、チップ
+     .wc-fx-text    … 文字だけのボタン  .wc-fx-row     … 一覧の行・幅いっぱいの開閉ボタン
+     .wc-fx-card    … カード（コースのタイル） */
+.wc-fx-primary,
+.wc-fx-outline,
+.wc-fx-card {
+  transition:
+    transform 160ms var(--dc-ease, cubic-bezier(0.2, 0.8, 0.2, 1)),
+    box-shadow 160ms var(--dc-ease, cubic-bezier(0.2, 0.8, 0.2, 1)),
+    background-color 160ms var(--dc-ease, cubic-bezier(0.2, 0.8, 0.2, 1)),
+    border-color 160ms var(--dc-ease, cubic-bezier(0.2, 0.8, 0.2, 1)),
+    filter 160ms var(--dc-ease, cubic-bezier(0.2, 0.8, 0.2, 1));
+}
+
+.wc-fx-text,
+.wc-fx-row {
+  transition:
+    color 140ms var(--dc-ease, cubic-bezier(0.2, 0.8, 0.2, 1)),
+    background-color 140ms var(--dc-ease, cubic-bezier(0.2, 0.8, 0.2, 1));
+}
+
+.wc-fx-primary:not(:disabled):hover {
+  transform: translateY(-1px);
+  filter: brightness(0.94);
+  box-shadow: 0 10px 22px rgba(214, 9, 52, 0.26) !important;
+}
+
+.wc-fx-primary:not(:disabled):active {
+  transform: translateY(0);
+  filter: brightness(0.88);
+  box-shadow: 0 3px 8px rgba(214, 9, 52, 0.22) !important;
+}
+
+.wc-fx-outline:not(:disabled):hover {
+  transform: translateY(-1px);
+  background-color: #fff1f2 !important;
+  border-color: #f0a8b1 !important;
+  box-shadow: 0 6px 16px rgba(190, 60, 70, 0.1) !important;
+}
+
+.wc-fx-outline:not(:disabled):active {
+  transform: translateY(0);
+  box-shadow: none !important;
+}
+
+.wc-fx-text:not(:disabled):hover {
+  color: #b50829 !important;
+  text-decoration: underline;
+}
+
+.wc-fx-row:hover {
+  background-color: #fff6f7 !important;
+}
+
+.wc-fx-card:hover,
+.wc-fx-card:focus-visible {
+  transform: translateY(-3px);
+  box-shadow: 0 16px 34px rgba(190, 60, 70, 0.13) !important;
+  border-color: #f6d9dd !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wc-fx-primary,
+  .wc-fx-outline,
+  .wc-fx-card,
+  .wc-fx-text,
+  .wc-fx-row {
+    transition: none;
+  }
+
+  .wc-fx-primary:not(:disabled):hover,
+  .wc-fx-outline:not(:disabled):hover,
+  .wc-fx-card:hover,
+  .wc-fx-card:focus-visible {
+    transform: none;
   }
 }
 
@@ -1007,6 +1132,29 @@ body.learning-immersive {
 @media (max-width: 600px) {
   .wc-lesson-backlabel { display: none; }
   .wc-lesson-progress-label { display: none; }
+  /* 「学習時間を記録」はアイコンだけにする（aria-label は残っている） */
+  .wc-lesson-timer-start-label { display: none; }
+
+  /* 🔴 以下 !important は必須（どれもインライン style の値を上書きするため）。
+     375px で左右の余白が トップバー24px／本文の外 16px＋カードの内 20px と二重・三重にかかり、
+     教材の幅が 300px 前後まで痩せていた。外側は詰めて、余白はカードの内側だけに持たせる。 */
+  .wc-lesson-topbar {
+    padding: 0 12px !important;
+    gap: 10px !important;
+  }
+  .wc-lesson-scroll {
+    padding: 0 8px !important;
+  }
+  .wc-lesson-article {
+    margin: 12px auto 96px !important;
+  }
+  .wc-lesson-card {
+    padding: 18px 14px !important;
+  }
+  /* URL だけのページの iframe。85vh 固定だとスマホでは本文とページの二重スクロールになる */
+  .wc-lesson-url-iframe {
+    height: calc(100dvh - 140px) !important;
+  }
 }
 
 /* 教材ヘッダー（LessonArticle）。既定は左にカバー画像・右にテキストの2カラム。

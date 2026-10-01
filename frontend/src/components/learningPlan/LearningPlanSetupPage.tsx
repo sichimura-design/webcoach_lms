@@ -20,6 +20,7 @@ import { color, font, radius, t } from '../../theme/webcoachTheme';
 import ChoiceQuestionField from './ChoiceQuestionField';
 import PhaseTimeline, { PhaseRangeChip } from './PhaseTimeline';
 import MilestoneRow from './MilestoneRow';
+import Loading from '../shared/Loading';
 
 type Value = string | number | boolean;
 
@@ -115,7 +116,7 @@ export default function LearningPlanSetupPage() {
 
   if (loading) {
     return shell(
-      <p style={{ ...font.meta, color: color.textMuted, textAlign: 'center', padding: '48px 0' }}>読み込み中…</p>,
+      <Loading style={{ padding: '48px 0' }} />,
     );
   }
 

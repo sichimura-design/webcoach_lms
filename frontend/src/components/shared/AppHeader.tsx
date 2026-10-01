@@ -659,7 +659,7 @@ export function AppHeader({ userName, avatarUrl }: AppHeaderProps) {
         <span className="min-w-0">
           <span className="block truncate" style={{ fontSize: 13, fontWeight: 700, color: '#2B2629' }}>{resolvedUserName}</span>
           {user?.username && (
-            <span className="block truncate" style={{ fontSize: 11, color: '#8B8386', marginTop: 1 }}>{user.username}</span>
+            <span className="block truncate" style={{ fontSize: 11, color: '#5A5356', marginTop: 1 }}>{user.username}</span>
           )}
         </span>
       </div>

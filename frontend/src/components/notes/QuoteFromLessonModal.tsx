@@ -10,6 +10,7 @@ import { useRecentCourseStore } from '../../store/recentCourseStore';
 import { ClipAnchor } from '../learning/clipHighlight';
 import SelectionToolbar from '../learning/SelectionToolbar';
 import LessonQuoteReader from './LessonQuoteReader';
+import Loading from '../shared/Loading';
 
 /**
  * ノート面から教材を引くためのモーダル。
@@ -517,9 +518,7 @@ function QuoteLessonPane({
         style={{ flex: 1, overflowY: 'auto', padding: '20px 24px 40px', position: 'relative' }}
       >
         {loading && (
-          <p style={{ ...font.caption, color: color.textMuted, textAlign: 'center', padding: '40px 0' }}>
-            教材を読み込んでいます…
-          </p>
+          <Loading label="教材を読み込み中…" style={{ padding: '40px 0' }} />
         )}
 
         {!loading && error && (

@@ -2,6 +2,7 @@ import { color, font, radius, shadow, t } from '../../theme/webcoachTheme';
 import { StudyRanking } from '../../types/studyActivity';
 import { formatMinutesHM } from './focusFormat';
 import { EmptySessions } from './StudySessionRow';
+import Loading from '../shared/Loading';
 
 /**
  * 週間学習時間ランキング。ユーザー表示名の解決は別途必要なため、現時点ではユーザーIDで表示する。
@@ -28,7 +29,7 @@ export function RankingCard({ ranking, currentUserId, loading }: RankingCardProp
       <h2 style={{ ...font.cardTitle, color: color.text, margin: 0 }}>今週のランキング</h2>
 
       {loading ? (
-        <div style={{ ...font.caption, color: color.textSubtle }}>読み込んでいます…</div>
+        <Loading />
       ) : !ranking || ranking.entries.length === 0 ? (
         <EmptySessions message="まだランキングはありません。学習を記録すると表示されます。" />
       ) : (

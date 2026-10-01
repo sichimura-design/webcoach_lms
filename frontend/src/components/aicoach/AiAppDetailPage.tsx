@@ -22,6 +22,7 @@ import { AI_SKILL_META, type ConcreteAiSkillId } from '../../types/aiSkill';
 import MarkdownRenderer from '../MarkdownRenderer';
 import { AI_SKILL_ICON } from './aiSkillIcons';
 import { useAiApplications } from '../../hooks/useAiApplications';
+import Loading from '../shared/Loading';
 
 type DocState = { kind: 'loading' } | { kind: 'ready'; body: string } | { kind: 'missing' };
 
@@ -178,7 +179,7 @@ export function AiAppDetailPage() {
         {/* 詳しい解説（原稿） */}
         <section style={cardStyle}>
           {doc.kind === 'loading' ? (
-            <p style={{ margin: 0, fontSize: 13, color: 'var(--dc-text-muted)' }}>読み込み中…</p>
+            <Loading />
           ) : doc.kind === 'missing' ? (
             <p style={{ margin: 0, fontSize: 13, color: 'var(--dc-text-muted)', lineHeight: 1.9 }}>
               このアプリの詳しい解説は準備中です。上の「{meta.cta}」からそのまま使い始められます。

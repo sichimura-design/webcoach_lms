@@ -1,4 +1,5 @@
 import { RankingRow, RankingRowItem } from '../shared/RankingRow';
+import Loading from '../shared/Loading';
 
 /**
  * ランキング1枚ぶんのカード（/study-log の③）。
@@ -113,7 +114,7 @@ export function RankingListCard({
           ランキングを取得できませんでした。
         </div>
       ) : loading || items.length === 0 ? (
-        <div style={{ fontSize: 'var(--dc-fs-body)', color: 'var(--dc-text-subtle)', padding: '20px 0' }}>読み込んでいます…</div>
+        <Loading />
       ) : (
         <>
           <div style={{ border: '1px solid var(--dc-border)', borderRadius: 14, padding: '6px 16px' }}>

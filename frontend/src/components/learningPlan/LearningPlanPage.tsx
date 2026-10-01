@@ -33,6 +33,7 @@ import PhaseJourney from './PhaseJourney';
 import PlanEditor from './PlanEditor';
 import PlanSummaryStrip from './PlanSummaryStrip';
 import ReviewDuePrompt from './ReviewDuePrompt';
+import Loading from '../shared/Loading';
 
 type Mode =
   | { kind: 'view' }
@@ -224,7 +225,7 @@ export default function LearningPlanPage() {
 
   if (loading) {
     return shell(
-      <p style={{ ...font.meta, color: color.textMuted, textAlign: 'center', padding: '48px 0' }}>読み込み中…</p>,
+      <Loading style={{ padding: '48px 0' }} />,
     );
   }
 

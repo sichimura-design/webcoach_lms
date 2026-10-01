@@ -62,10 +62,11 @@ export const color = {
   text: '#1F1D1E',
   textStrong: '#2B2629',
   textBody: '#4A4245',
-  textSecondary: '#5C5559',
-  textMuted: '#6B6467',
-  textSubtle: '#8B8386',
-  textFaint: '#9A9295',
+  // 🔴 補助テキストは白地で #595959（7:1）以上の濃さにそろえた（2026-10）。濃淡の差は大きさ・太さで付ける
+  textSecondary: '#544D50',
+  textMuted: '#585153',
+  textSubtle: '#5A5356',
+  textFaint: '#5A5356',
   textOnPrimary: '#FFFFFF',
   iconMuted: '#7A7276',
 

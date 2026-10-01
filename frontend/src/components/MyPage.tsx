@@ -19,6 +19,7 @@ import MypageGoalDeclarationCard from './mypage/GoalDeclarationCard';
 import StudyDashboardCard from './mypage/StudyDashboardCard';
 import WeeklyGoalModal from './mypage/WeeklyGoalModal';
 import { Course } from '../types/mypage';
+import Loading from './shared/Loading';
 
 /**
  * マイページ（ダッシュボード）。claude.ai/design『トップページ 3案』8a 準拠。
@@ -147,10 +148,7 @@ function MyPage() {
   if (authLoading || isLoading) {
     return (
       <div className="mypage-3d min-h-screen flex items-center justify-center" style={{ background: 'var(--dc-bg)' }}>
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 mx-auto mb-4" style={{ borderColor: 'var(--dc-primary)' }}></div>
-          <p style={{ color: 'var(--dc-text-muted)' }}>読み込み中...</p>
-        </div>
+        <Loading variant="page" />
       </div>
     );
   }

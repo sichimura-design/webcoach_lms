@@ -5,6 +5,7 @@ import type { CoachingSessionSummary } from '../../types/coaching';
 import { STUDY_DAY_MIN_MINUTES, formatMinutesHM } from '../../utils/studyStats';
 import { formatDayLabel } from '../focus/focusFormat';
 import StudyLogRow, { EmptyStudyLog } from './StudyLogRow';
+import Loading from '../shared/Loading';
 
 /**
  * カレンダーで選んだ日の中身。
@@ -254,9 +255,7 @@ export function DayDetailPanel({
 
       <div style={{ display: 'flex', flexDirection: 'column', gap: 8, marginTop: 14 }}>
         {loading ? (
-          <p style={{ margin: 0, fontSize: 'var(--dc-fs-caption)', color: 'var(--dc-text-subtle)' }}>
-            読み込んでいます…
-          </p>
+          <Loading />
         ) : sessions.length === 0 ? (
           <EmptyStudyLog message="この日の学習記録はありません。" />
         ) : (

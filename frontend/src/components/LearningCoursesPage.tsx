@@ -7,6 +7,7 @@ import { CourseImage } from './shared/CourseImage';
 import { useAuth } from '../contexts/AuthContext';
 import { useAsyncData } from '../hooks/useAsyncData';
 import { lessonProgressFromPercent } from '../utils/lessonProgress';
+import Loading from './shared/Loading';
 
 function LearningCoursesPage() {
   const { user } = useAuth();
@@ -38,10 +39,7 @@ function LearningCoursesPage() {
   if (loading) {
     return (
       <div className="min-h-screen bg-brand-bg flex items-center justify-center">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-brand mx-auto mb-4"></div>
-          <p className="text-brand-muted">読み込み中...</p>
-        </div>
+        <Loading variant="page" />
       </div>
     );
   }

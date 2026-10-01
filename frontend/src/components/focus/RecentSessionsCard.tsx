@@ -2,6 +2,7 @@ import { ArrowRight } from 'lucide-react';
 import { color, font, radius, shadow, t } from '../../theme/webcoachTheme';
 import { StudySession } from '../../types/studyActivity';
 import StudySessionRow, { EmptySessions } from './StudySessionRow';
+import Loading from '../shared/Loading';
 
 interface RecentSessionsCardProps {
   sessions: StudySession[];
@@ -25,7 +26,7 @@ export function RecentSessionsCard({ sessions, loading, onSeeAll }: RecentSessio
       <h2 style={{ ...font.cardTitle, color: color.text, margin: 0 }}>最近の学習記録</h2>
 
       {loading ? (
-        <div style={{ ...font.caption, color: color.textSubtle }}>読み込んでいます…</div>
+        <Loading />
       ) : sessions.length === 0 ? (
         <EmptySessions />
       ) : (

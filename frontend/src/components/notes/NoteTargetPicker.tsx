@@ -5,6 +5,7 @@ import { useNoteList } from '../../hooks/useNoteList';
 import { PendingCapture, previewOf } from '../../hooks/useNoteCapture';
 import { useNoteTargetStore } from '../../store/noteTargetStore';
 import { NOTE_BLOCK_LABEL, NoteSummary } from '../../types/notes';
+import Loading from '../shared/Loading';
 
 /**
  * 「どのノートに入れるか」を毎回聞くピッカー。
@@ -381,7 +382,7 @@ export function NoteTargetPicker({
         </div>
 
         {list.loading && rows.length === 0 && (
-          <p style={{ ...font.caption, color: color.textSubtle, margin: '10px 0 0' }}>読み込んでいます…</p>
+          <Loading style={{ padding: '14px 0 4px' }} />
         )}
         {!list.loading && rows.length === 0 && searching && (
           <p style={{ ...font.caption, color: color.textSubtle, margin: '10px 0 0' }}>

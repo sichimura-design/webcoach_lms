@@ -11,6 +11,7 @@ import {
   declarationStudyDays,
 } from '../../utils/goalDeclaration';
 import { formatMinutesHM, toLocalDateKey } from '../../utils/studyStats';
+import Loading from '../shared/Loading';
 
 /**
  * 目標宣言と振り返りの積み上がり（/study-log）。
@@ -126,7 +127,7 @@ export function GoalDeclarationCard({
       </div>
 
       {loading ? (
-        <p style={{ margin: 0, fontSize: 'var(--dc-fs-body)', color: 'var(--dc-text-muted)' }}>読み込み中…</p>
+        <Loading />
       ) : items.length === 0 ? (
         <p style={{ margin: 0, fontSize: 'var(--dc-fs-body)', color: 'var(--dc-text-muted)', lineHeight: 'var(--dc-lh-prose)' }}>
           目標が設定されていません

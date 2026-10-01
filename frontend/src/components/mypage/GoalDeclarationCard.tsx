@@ -4,6 +4,7 @@ import { Flag } from 'lucide-react';
 import { GoalDeclaration } from '../../types/goalDeclaration';
 import { daysLeft } from '../../utils/goalDeclaration';
 import { toLocalDateKey } from '../../utils/studyStats';
+import Loading from '../shared/Loading';
 
 /**
  * トップページの「あなたの目標」カード（表示専用）。
@@ -83,9 +84,7 @@ export function MypageGoalDeclarationCard({
   if (loading) {
     return (
       <section style={CARD_STYLE} aria-busy="true">
-        <p style={{ margin: 0, fontSize: 'var(--dc-fs-body)', color: 'var(--dc-text-muted)' }}>
-          読み込み中…
-        </p>
+        <Loading />
       </section>
     );
   }

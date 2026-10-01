@@ -8,6 +8,7 @@ import {
   buildSrcdoc,
   extractSoleUrl,
 } from './moodleContent';
+import Loading from '../shared/Loading';
 
 /**
  * モックOFF時の縮退モード。
@@ -106,9 +107,7 @@ export function MoodleFallbackBlock({
   if (soleUrl) {
     if (contentToken === null) {
       return (
-        <div className="flex justify-center" style={{ padding: 32 }}>
-          <span className="animate-spin rounded-full" style={{ width: 32, height: 32, borderBottom: `2px solid ${color.primary}` }} />
-        </div>
+        <Loading style={{ padding: 32 }} />
       );
     }
     if (iframeError) {

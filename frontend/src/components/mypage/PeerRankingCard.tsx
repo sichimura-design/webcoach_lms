@@ -5,6 +5,7 @@ import { useStreakRanking, useStudyRanking } from '../../hooks/useRankings';
 import { StreakRankingPeriod, StudyRankingPeriod } from '../../types/focusBooth';
 import { formatMinutesHM } from '../../utils/studyStats';
 import { RankingRow, RankingRowItem } from '../shared/RankingRow';
+import Loading from '../shared/Loading';
 
 /**
  * みんなのランキング（マイページ右下）。claude.ai/design『トップページ 3案』5a 準拠。
@@ -247,9 +248,7 @@ export function PeerRankingCard({ userId }: PeerRankingCardProps) {
           ランキングを取得できませんでした。
         </div>
       ) : active.loading || items.length === 0 ? (
-        <div style={{ fontSize: 'var(--dc-fs-body)', color: 'var(--dc-text-subtle)', padding: '20px 0' }}>
-          読み込んでいます…
-        </div>
+        <Loading />
       ) : (
         <div className="mypage-rank-split">
           <div>

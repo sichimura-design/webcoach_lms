@@ -29,6 +29,7 @@ import NoteFolderBar from './NoteFolderBar';
 import NoteGrid from './NoteGrid';
 import NotesPagination from './NotesPagination';
 import { countByFolder, folderNameOf } from './folderRows';
+import Loading from '../shared/Loading';
 
 /**
  * マイノート（/notes）。デザイン『マイノート 改善案』を実装したもの。
@@ -405,7 +406,7 @@ export function MyNotesPage() {
                     }}
                   >
                     {detail.loading
-                      ? '読み込んでいます…'
+                      ? <Loading style={{ padding: 0 }} />
                       : 'このノートは見つかりませんでした。一覧から選び直してください。'}
                   </div>
                 </>

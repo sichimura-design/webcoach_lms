@@ -9,6 +9,7 @@
  */
 import { formatSessionDate } from '../../utils/coachingSchedule';
 import type { CoachingSessionSummary } from '../../types/coaching';
+import Loading from '../shared/Loading';
 
 interface CoachingRecordsCardProps {
   sessions: CoachingSessionSummary[];
@@ -37,7 +38,7 @@ export function CoachingRecordsCard({ sessions, loading, onOpen }: CoachingRecor
       </h2>
 
       {loading ? (
-        <p style={{ margin: '14px 0 0', fontSize: 'var(--dc-fs-body)', color: 'var(--dc-text-muted)' }}>読み込み中…</p>
+        <Loading style={{ padding: '18px 0 4px' }} />
       ) : sessions.length === 0 ? (
         <p style={{ margin: '14px 0 0', fontSize: 'var(--dc-fs-body)', color: 'var(--dc-text-muted)', lineHeight: 'var(--dc-lh-prose)' }}>
           まだ記録がありません。コーチングが終わると、話した内容と決めたことがここに残ります。

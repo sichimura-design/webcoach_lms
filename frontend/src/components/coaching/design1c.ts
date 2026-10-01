@@ -35,8 +35,9 @@ export const C = {
 
   ink: '#141414',
   body: '#3D3D3D',
-  muted: '#6B6B6B',
-  faint: '#9E9E9E',
+  // 🔴 補助テキストは白地で #595959（7:1）以上（2026-10。index.css の --dc-text-muted/subtle と同じ値）
+  muted: '#545454',
+  faint: '#595959',
   pencil: '#C9C2B8',
 
   ok: '#0E9F6E',
