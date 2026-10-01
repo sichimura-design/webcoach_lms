@@ -80,7 +80,7 @@ export function LessonFloatingActions({ hidden, onOpenAi, onOpenMemo, onOpenSear
             onClick={onOpenSearch}
             aria-label="教材の中を検索（Ctrl+K）"
             title="教材の中を検索（Ctrl+K）"
-            className="focus-visible:ring-2 focus-visible:ring-[#F6B9BD]"
+            className="wc-fx-row focus-visible:ring-2 focus-visible:ring-[#F6B9BD]"
             style={ICON_BUTTON_STYLE}
           >
             <Search size={17} style={{ color: color.primary }} />
@@ -92,7 +92,7 @@ export function LessonFloatingActions({ hidden, onOpenAi, onOpenMemo, onOpenSear
       <button
         type="button"
         onClick={onOpenAi}
-        className="focus-visible:ring-2 focus-visible:ring-[#F6B9BD]"
+        className="wc-fx-row focus-visible:ring-2 focus-visible:ring-[#F6B9BD]"
         style={BUTTON_STYLE}
       >
         <Sparkles size={16} style={{ color: color.primary }} />
@@ -104,7 +104,7 @@ export function LessonFloatingActions({ hidden, onOpenAi, onOpenMemo, onOpenSear
       <button
         type="button"
         onClick={onOpenMemo}
-        className="focus-visible:ring-2 focus-visible:ring-[#F6B9BD]"
+        className="wc-fx-row focus-visible:ring-2 focus-visible:ring-[#F6B9BD]"
         style={BUTTON_STYLE}
       >
         <NotebookPen size={16} style={{ color: color.primary }} />

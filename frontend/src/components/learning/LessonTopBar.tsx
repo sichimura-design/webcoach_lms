@@ -45,7 +45,7 @@ export function LessonTopBar({
 
   return (
     <header
-      className="flex items-center"
+      className="wc-lesson-topbar flex items-center"
       style={{
         position: 'relative',
         // 🔴 親の .wc-lesson-main はグリッドで、子の最小幅は既定で中身の幅（min-width: auto）。
@@ -68,7 +68,7 @@ export function LessonTopBar({
       <button
         type="button"
         onClick={onBackToCourse}
-        className="inline-flex items-center focus-visible:ring-2 focus-visible:ring-[#F6B9BD]"
+        className="wc-fx-text inline-flex items-center focus-visible:ring-2 focus-visible:ring-[#F6B9BD]"
         style={{
           gap: 7,
           border: 0,

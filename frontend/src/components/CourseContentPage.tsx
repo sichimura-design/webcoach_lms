@@ -54,6 +54,8 @@ import {
 import NoteTargetPicker from './notes/NoteTargetPicker';
 import type { NoteSourceRef } from '../types/notes';
 import { useRecentCourseStore } from '../store/recentCourseStore';
+import CourseCompleteModal, { hasShownCourseComplete, markCourseCompleteShown } from './learning/CourseCompleteModal';
+import Loading from './shared/Loading';
 
 interface CourseContentPageProps {
   courseId: number;
@@ -230,6 +232,8 @@ function CourseContentPage({ courseId, initialModuleId, onBack }: CourseContentP
 
   // レッスン完了コンフェッティ
   const [showConfetti, setShowConfetti] = useState(false);
+  // コース修了（全レッスン完了）のお祝い
+  const [showCourseComplete, setShowCourseComplete] = useState(false);
 
   // AI コーチ
   const {
@@ -358,19 +362,37 @@ function CourseContentPage({ courseId, initialModuleId, onBack }: CourseContentP
           progress_percent,
         }).catch(e => console.error('[ResumeCourse] Update failed:', e?.response?.data?.message ?? e));
 
-        // 完了時のみ次のモジュールへ遷移
-        if (markAsComplete) {
-          const nextModule = allModules[allModules.findIndex(m => m.id === selectedModule.id) + 1];
-          if (nextModule) {
-            dispatch({ type: 'SELECT_MODULE', module: nextModule });
-          }
-        }
+      }
+
+      // 🔴 完了したあとに次のレッスンへ自動で切り替えない。「完了にしたいだけなのに
+      //    別のページへ飛ぶ」と驚かれた。進むのは下の「次のレッスンへ」を押したときだけ。
+      if (markAsComplete && user?.userid) {
+        void checkCourseComplete(user.userid);
       }
     } catch (e: any) {
       console.error('[Complete] Failed:', e?.response?.data?.message ?? e);
       showToast(markAsComplete ? '完了の記録に失敗しました。再度お試しください。' : '完了の取り消しに失敗しました。再度お試しください。', 'error');
     } finally {
       setCompleting(false);
+    }
+  };
+
+  /**
+   * 最後の1本を完了したらコース修了のお祝いを出す。
+   * 🔴 completedIds は開いたレッスンの分しか持っていないので、判定はコース単位の一括取得でやる。
+   *    目次（getCourseContent）の completiondata は管理トークン側の値が残ることがあるので使わない
+   *    （hooks/useResumeLesson.ts と同じ注意）。
+   */
+  const checkCourseComplete = async (uid: number) => {
+    if (hasShownCourseComplete(uid, courseId)) return;
+    try {
+      const { statuses = [] } = await bffClient.getCourseActivitiesCompletion(courseId);
+      const tracked = statuses.filter(s => s.tracking >= 1);
+      if (tracked.length === 0 || tracked.some(s => s.state < 1)) return;
+      markCourseCompleteShown(uid, courseId);
+      setShowCourseComplete(true);
+    } catch {
+      // 判定に失敗しても完了の記録そのものは済んでいる。祝いを出さないだけ
     }
   };
 
@@ -436,6 +458,24 @@ function CourseContentPage({ courseId, initialModuleId, onBack }: CourseContentP
         dispatch({ type: 'FETCH_ERROR', error: getUserMessage(err, 'コースコンテンツの読み込みに失敗しました。') });
       });
   }, [courseId]);
+
+  // 🔴 同じコース内のレッスンへのリンク（教材内のリンク・「続きから」など）は ?module だけが
+  //    変わり、courseId は同じなので上の読み込みが走らない。URL だけ変わって画面が前の
+  //    レッスンのままになっていたので、?module の変化をここで拾って切り替える。
+  useEffect(() => {
+    if (!initialModuleId || sections.length === 0) return;
+    if (selectedModule?.id === initialModuleId) return;
+    const target = sections.flatMap(s => s.modules).find(m => m.id === initialModuleId);
+    if (target) dispatch({ type: 'SELECT_MODULE', module: target });
+    // selectedModule は依存に入れない（レッスン内で前後に移ったとき、古い ?module へ引き戻さないため）
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [initialModuleId, sections]);
+
+  // レッスンを切り替えたら本文の先頭から読めるようにする
+  const mainRef = useRef<HTMLElement>(null);
+  useEffect(() => {
+    mainRef.current?.scrollTo({ top: 0 });
+  }, [selectedModule?.id]);
 
   // ─── モジュール選択時の完了状態取得 ──────
   useEffect(() => {
@@ -746,9 +786,7 @@ function CourseContentPage({ courseId, initialModuleId, onBack }: CourseContentP
         if (extractedUrl) {
           if (contentToken === null) {
             return (
-              <div className="flex justify-center" style={{ padding: 32 }}>
-                <span className="animate-spin rounded-full" style={{ width: 32, height: 32, borderBottom: `2px solid ${color.primary}` }} />
-              </div>
+              <Loading style={{ padding: 32 }} />
             );
           }
           if (iframeError) {
@@ -769,6 +807,7 @@ function CourseContentPage({ courseId, initialModuleId, onBack }: CourseContentP
               src={srcUrl}
               onLoad={handleIframeLoad}
               title={selectedModule.name}
+              className="wc-lesson-url-iframe"
               style={{ width: '100%', border: 'none', minHeight: '200px', height: '85vh' }}
             />
           );
@@ -823,9 +862,7 @@ function CourseContentPage({ courseId, initialModuleId, onBack }: CourseContentP
       case 'resource-markdown':
         if (loadingMarkdown) {
           return (
-            <div className="flex justify-center" style={{ padding: 32 }}>
-              <span className="animate-spin rounded-full" style={{ width: 32, height: 32, borderBottom: `2px solid ${color.primary}` }} />
-            </div>
+            <Loading style={{ padding: 32 }} />
           );
         }
         return markdownContent
@@ -916,11 +953,9 @@ function CourseContentPage({ courseId, initialModuleId, onBack }: CourseContentP
             onBackToCourse={onBack}
           />
 
-          <main style={{ flex: 1, overflowY: 'auto', minWidth: 0, padding: '0 clamp(16px, 3vw, 32px)', scrollBehavior: 'smooth' }}>
+          <main ref={mainRef} className="wc-lesson-scroll" style={{ flex: 1, overflowY: 'auto', minWidth: 0, padding: '0 clamp(16px, 3vw, 32px)', scrollBehavior: 'smooth' }}>
             {loading && (
-              <div className="flex items-center justify-center" style={{ height: '100%' }}>
-                <span className="animate-spin rounded-full" style={{ width: 34, height: 34, borderBottom: `2px solid ${color.primary}` }} />
-              </div>
+              <Loading variant="page" />
             )}
 
             {!loading && error && (
@@ -940,8 +975,9 @@ function CourseContentPage({ courseId, initialModuleId, onBack }: CourseContentP
             )}
 
             {!loading && !error && (
-              <article style={{ width: 'min(100%, var(--wc-reading-max, 900px))', margin: '32px auto 100px' }}>
+              <article className="wc-lesson-article" style={{ width: 'min(100%, var(--wc-reading-max, 900px))', margin: '32px auto 100px' }}>
                 <div
+                  className="wc-lesson-card"
                   style={{
                     background: color.surface,
                     border: `1px solid ${color.border}`,
@@ -963,7 +999,7 @@ function CourseContentPage({ courseId, initialModuleId, onBack }: CourseContentP
                       <button
                         type="button"
                         onClick={() => setTocOpen(v => !v)}
-                        className="inline-flex items-center"
+                        className="wc-fx-outline inline-flex items-center"
                         style={{
                           gap: 6, padding: '6px 12px', borderRadius: 999,
                           border: `1px solid ${color.borderStrong}`, background: tocOpen ? color.hoverBgTint : color.surface,
@@ -1022,7 +1058,7 @@ function CourseContentPage({ courseId, initialModuleId, onBack }: CourseContentP
                           type="button"
                           onClick={() => handleToggleComplete(true)}
                           disabled={completing}
-                          className="inline-flex items-center disabled:opacity-60"
+                          className="wc-fx-primary inline-flex items-center disabled:opacity-60"
                           style={{
                             gap: 8, minHeight: 44, padding: '0 26px', border: 'none', borderRadius: radius.nav,
                             background: color.primary, color: color.textOnPrimary, fontFamily: 'inherit',
@@ -1072,7 +1108,7 @@ function CourseContentPage({ courseId, initialModuleId, onBack }: CourseContentP
                         <button
                           type="button"
                           onClick={() => handleModuleSelect(prevModule)}
-                          className="inline-flex items-center"
+                          className="wc-fx-outline inline-flex items-center"
                           style={{
                             gap: 8, minHeight: 40, padding: '0 16px', border: `1px solid ${color.borderNeutral}`,
                             borderRadius: radius.nav, background: color.surface, color: color.textStrong,
@@ -1087,7 +1123,7 @@ function CourseContentPage({ courseId, initialModuleId, onBack }: CourseContentP
                         <button
                           type="button"
                           onClick={() => handleModuleSelect(nextModule)}
-                          className="inline-flex items-center"
+                          className="wc-fx-primary inline-flex items-center"
                           style={{
                             gap: 8, minHeight: 40, padding: '0 20px', border: 'none',
                             borderRadius: radius.nav, background: color.primary, color: color.textOnPrimary,
@@ -1101,7 +1137,7 @@ function CourseContentPage({ courseId, initialModuleId, onBack }: CourseContentP
                         <button
                           type="button"
                           onClick={onBack}
-                          className="inline-flex items-center"
+                          className="wc-fx-primary inline-flex items-center"
                           style={{
                             gap: 8, minHeight: 40, padding: '0 20px', border: 'none',
                             borderRadius: radius.nav, background: color.primary, color: color.textOnPrimary,
@@ -1167,6 +1203,15 @@ function CourseContentPage({ courseId, initialModuleId, onBack }: CourseContentP
 
       {/* レッスン完了コンフェッティ */}
       {showConfetti && <LessonCompletionConfetti onDone={() => setShowConfetti(false)} />}
+
+      {/* コース修了のお祝い（コースごとに1回だけ） */}
+      {showCourseComplete && (
+        <CourseCompleteModal
+          courseName={courseName}
+          onBackToCourse={onBack}
+          onClose={() => setShowCourseComplete(false)}
+        />
+      )}
     </div>
   );
 }

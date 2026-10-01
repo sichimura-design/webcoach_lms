@@ -202,8 +202,9 @@ function StudySessionHost() {
    *    そもそも開始の入口を2つにしていた（LessonMiniTimer.tsx のコメント参照）。
    *    浮かぶピルを戻さないこと。
    *    断り切ったあと（PROMPT_DECLINE_LIMIT に達してその日もう打診されない状態）の
-   *    復帰は、マイページの挨拶の下に置いた定位置のボタンが受け持つ
-   *    （mypage/StartRecordingButton.tsx）。
+   *    復帰は、定位置のボタンが受け持つ。マイページは挨拶の下
+   *    （mypage/StartRecordingButton.tsx）、教材ページはトップバーのタイマー欄
+   *    （learning/LessonMiniTimer.tsx、B-004）。
    */
   return (
     <>

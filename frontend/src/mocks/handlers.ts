@@ -580,6 +580,15 @@ export const handlers = [
     setLessonDone(Number(params.cmid), completed);
     return HttpResponse.json({ status: true, state: completed ? 1 : 0 });
   }),
+  // コース内の全アクティビティの完了状態（実BFFの GET /moodle/courses/:courseid/activities/completion と同じ形）。
+  // レッスンを完了したときのコース修了判定（CourseCompleteModal）が読む。
+  // これが無いと実BFFへ抜けて失敗し、モックではお祝いが一度も出ない。
+  http.get('*/api/moodle/courses/:courseid/activities/completion', ({ params }) => {
+    const modules = buildSections(Number(params.courseid)).flatMap((s: any) => s.modules ?? []);
+    return HttpResponse.json({
+      statuses: modules.map((m: any) => ({ cmid: m.id, state: isLessonDone(m.id) ? 1 : 0, tracking: 1 })),
+    });
+  }),
   // カテゴリ内のコース一覧（?field=category&value=<id>）
   http.get('*/api/moodle/getcoursebyfield', ({ request }) => {
     const value = new URL(request.url).searchParams.get('value');

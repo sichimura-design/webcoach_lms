@@ -88,6 +88,9 @@ const IFRAME_FIXUP_CSS = `<style>
   /* コンテンツ内蔵のサイドバー・プログレスバーはiframe内では不要 */
   .toc-sidebar { display: none !important; }
   #progressBar { display: none !important; }
+  /* 旧 Clipkit のページ送り（「次の章に進む」など）。行き先が旧サイトで、
+     LMS 側の「完了する／次のレッスンへ」と並ぶと導線が3つになって迷う */
+  .pagenation-buttons { display: none !important; }
   /*
    * .quiz-options は display:flex。
    * Moodleが &nbsp; テキストノードをブロック要素間に挿入するため、

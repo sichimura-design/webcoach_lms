@@ -4,6 +4,7 @@ import { useStudyTimerStore } from '../../store/studyTimerStore';
 import { useStudySession } from '../../hooks/useStudySession';
 import { useAuth } from '../../contexts/AuthContext';
 import { formatMMSS } from '../../utils/studyStats';
+import { useRecentCourseStore } from '../../store/recentCourseStore';
 
 /**
  * レッスンページのトップバーに置く、記録中の表示。
@@ -12,9 +13,13 @@ import { formatMMSS } from '../../utils/studyStats';
  * 既存の props がすべてフラットな値型なので、スロットにすると
  * LearningWorkspacePage（500行超）にタイマーの状態を持ち込むことになるため。
  *
- * 🔴 表示専用。開始は StudySessionHost の打診ポップに一本化した。
- *    この画面は AppHeader（サイドバー）を描かない＝サイドバーの
- *    SidebarStudyTimer が出ないので、計測中であることを見せる役はここが担う。
+ * 計測中であることを見せる役。この画面は AppHeader（サイドバー）を描かない＝サイドバーの
+ * SidebarStudyTimer が出ないので、ここが担う。
+ *
+ * 🔴 未計測のときは「学習時間を記録」の小さなボタンを出す（B-004）。
+ *    以前は開始を StudySessionHost の打診ポップに一本化していたが、打診を3回断ると
+ *    その日は教材を開いても一度も記録できず、レッスンを読んでいるのに学習時間がゼロになった。
+ *    浮かぶピルではなくトップバーの定位置に置くので、断った人の邪魔にはならない。
  *
  * 終了はカードを開くだけ（App直下の StudySessionFinishHost が描く）。
  */
@@ -39,17 +44,55 @@ const miniIconButton: React.CSSProperties = {
 export function LessonMiniTimer({ courseId }: LessonMiniTimerProps) {
   const { user } = useAuth();
   const session = useStudyTimerStore((s) => s.session);
-  const { elapsedSeconds, running, reachedTarget, pause, resume, prepareFinish } =
+  const { elapsedSeconds, running, reachedTarget, pause, resume, prepareFinish, start } =
     useStudySession(user?.userid);
+  const recentEntries = useRecentCourseStore((s) => s.entries);
 
-  /*
-   * 未開始のときは何も描かない。
-   * 🔴 ここに「集中して学習する」CTA は置かない。開始の入口は
-   *    StudySessionHost の打診ポップ1つに集約した。入口が2つあると
-   *    「押していないのに記録が始まった／押したのに始まらない」が混ざる。
-   *    教材画面のトップバーは「出口と現在地だけ」に絞る方針でもある。
-   */
-  if (!session) return null;
+  // ---- 未計測 ----
+  if (!session) {
+    const startHere = () => {
+      // いま開いているレッスンの名前は、CourseContentPage が開くたびに touch している履歴から拾う
+      // （StudySessionHost の打診と同じ取り方）
+      const lesson = recentEntries.find((e) => e.courseId === courseId);
+      start({
+        mode: 'freeform',
+        category: 'material',
+        courseId,
+        courseTitle: lesson?.courseTitle,
+        lessonId: lesson?.lessonId,
+        lessonTitle: lesson?.lessonTitle,
+        progressPercentAtStart: lesson?.progressPercent,
+      });
+    };
+    return (
+      <button
+        type="button"
+        onClick={startHere}
+        title="このレッスンの学習時間を記録します"
+        aria-label="学習時間を記録"
+        className="wc-lesson-timer-start focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#F6B9BD]"
+        style={{
+          display: 'inline-flex',
+          alignItems: 'center',
+          gap: 6,
+          minHeight: 38,
+          padding: '0 13px',
+          border: `1px solid ${color.primaryBorder}`,
+          borderRadius: radius.nav,
+          background: color.surface,
+          color: color.primary,
+          fontFamily: 'inherit',
+          ...font.buttonSm,
+          cursor: 'pointer',
+          flex: '0 0 auto',
+          whiteSpace: 'nowrap',
+        }}
+      >
+        <Timer size={14} />
+        <span className="wc-lesson-timer-start-label">学習時間を記録</span>
+      </button>
+    );
+  }
 
   // ---- 稼働中 ----
   const otherMaterial = session.courseId !== undefined && session.courseId !== courseId;
