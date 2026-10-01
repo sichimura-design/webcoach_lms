@@ -237,7 +237,7 @@ export default function LearningPlanPage() {
       <div style={cardStyle()}>
         <div style={{ ...font.cardTitle, color: color.text }}>まだロードマップがありません</div>
         <p style={{ ...font.meta, color: color.textMuted, margin: '10px 0 20px', lineHeight: 1.8 }}>
-          8つの質問に答えると、目標から逆算した学習計画をLMSが作成します。作成後、コーチと一緒に調整できます。
+          8つの質問に答えると、目標から逆算した学習計画をWEBCOACH学習システムが作成します。作成後、コーチと一緒に調整できます。
         </p>
         <button type="button" onClick={() => navigate('/learning-plan/setup')} style={{ ...t.primaryButton }}>
           ロードマップをつくる（約3分）

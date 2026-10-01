@@ -134,7 +134,7 @@ export function AdminCoachIntegrationsPage() {
       )
       .join('\n');
     void copy(
-      `WEBCOACH コーチング録画連携のご案内\n\n下記リンクを開いて、Zoom または Google アカウントとの接続をお願いします。\n接続は1回のみで、LMSへのログインは不要です。\n\n${body}`,
+      `WEBCOACH コーチング録画連携のご案内\n\n下記リンクを開いて、Zoom または Google アカウントとの接続をお願いします。\n接続は1回のみで、WEBCOACH学習システムへのログインは不要です。\n\n${body}`,
       `${list.length}件のリンクをまとめてコピーしました`,
     );
   };

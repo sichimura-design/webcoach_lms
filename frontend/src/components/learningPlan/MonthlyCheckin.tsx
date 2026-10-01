@@ -52,7 +52,7 @@ function MonthlyCheckin({ prompt, busy, onSubmit, onCancel }: MonthlyCheckinProp
       <div style={{ ...font.cardTitle, color: color.text }}>今月のふりかえり（約1分）</div>
       <p style={{ ...font.meta, color: color.textMuted, margin: '8px 0 0', lineHeight: 1.8 }}>
         {formatJpDate(prompt.dueDate)}の見直しに向けて、4つだけ教えてください。
-        回答をもとにLMSが更新案を作り、次回のコーチングで一緒に確認できるようにします。
+        回答をもとにWEBCOACH学習システムが更新案を作り、次回のコーチングで一緒に確認できるようにします。
       </p>
 
       <div style={{ display: 'flex', flexDirection: 'column', gap: 24, marginTop: 24 }}>

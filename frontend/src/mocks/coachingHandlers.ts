@@ -180,7 +180,7 @@ function buildSummary(segments: TranscriptSegment[], sessionId: number): Coachin
     {
       id: `task_${sessionId}_1`,
       title: 'バナーを1案、完成の形まで作る',
-      successCriteria: 'LMSから提出する',
+      successCriteria: 'WEBCOACH学習システムから提出する',
       dueDate: '2026-08-09',
       estimatedMinutes: 120,
       priority: 'high',

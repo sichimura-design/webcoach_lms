@@ -152,7 +152,7 @@ export type PlanStatus =
   | 'archived';
 
 export const PLAN_STATUS_LABEL: Record<PlanStatus, string> = {
-  lms_generated: 'LMSが作成した案',
+  lms_generated: 'WEBCOACH学習システムが作成した案',
   student_reviewed: '自分で調整済み（コーチ未確認）',
   confirmed_with_coach: 'コーチと確認済み',
   archived: '過去のロードマップ',

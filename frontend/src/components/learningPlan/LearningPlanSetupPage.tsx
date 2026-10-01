@@ -129,7 +129,7 @@ export default function LearningPlanSetupPage() {
         <div>
           <h1 style={{ ...font.pageTitle, color: color.text, margin: 0 }}>ロードマップができました</h1>
           <p style={{ ...font.meta, color: color.textMuted, margin: '8px 0 0', lineHeight: 1.8 }}>
-            回答をもとにLMSが作成した案です。次回のコーチングでこの画面を一緒に見ながら、期間やマイルストーンを調整できます。
+            回答をもとにWEBCOACH学習システムが作成した案です。次回のコーチングでこの画面を一緒に見ながら、期間やマイルストーンを調整できます。
           </p>
         </div>
 
@@ -203,7 +203,7 @@ export default function LearningPlanSetupPage() {
       <div>
         <h1 style={{ ...font.pageTitle, color: color.text, margin: 0 }}>学習ロードマップをつくる</h1>
         <p style={{ ...font.meta, color: color.textMuted, margin: '8px 0 0', lineHeight: 1.8 }}>
-          {questions.length}つの質問に答えると、目標から逆算した学習計画をLMSが作成します。あとから何度でも変更できます。
+          {questions.length}つの質問に答えると、目標から逆算した学習計画をWEBCOACH学習システムが作成します。あとから何度でも変更できます。
         </p>
       </div>
 
