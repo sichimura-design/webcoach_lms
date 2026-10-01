@@ -131,30 +131,35 @@ class CourseService {
     // Enrich with custom image URLs from WebCoach database
     const enrichedCourses = await this.enrichCoursesWithImageUrls(filteredCourses, 1);
 
-    // Add tag information to each course
-    try {
-      console.log('[Get All Courses] Fetching tags for each course...');
-
-      // Fetch tags for each course in parallel
-      await Promise.all(
-        enrichedCourses.map(async (course) => {
-          try {
-            const tagsResult = await moodleAdapter.getCourseTags(course.id);
-
-            // Add tag information (as array)
-            course.tags = tagsResult.tags || [];
-
-            console.log(`[Get All Courses] Added ${course.tags.length} tags to course ${course.id}`);
-          } catch (tagError) {
-            // Set empty array if tag fetch fails
-            console.warn(`[Get All Courses] Failed to fetch tags for course ${course.id}:`, tagError.message);
-            course.tags = [];
-          }
-        })
-      );
-    } catch (error) {
-      console.warn('[Get All Courses] Failed to fetch tags:', error.message);
-    }
+    // TODO(2026-10-01): コースごとのタグ取得を停止中。全コース(約70件)分の core_tag 呼び出しを
+    //   1件ずつ投げており、/api/moodle/courses が遅い主因になっていたため。
+    //   フロントでタグを使うのは courseKindOf(種類の判定。コース名「実践課題：」でも判定できる)と
+    //   MaterialsTopPage の検索補助だけで、dev のMoodleで「実践課題」タグは0件・タグ付きは非表示コースのみだった。
+    //   タグで分類・検索したくなったら、1件ずつではなく一括取得(＋キャッシュ)で戻すこと。
+    // // Add tag information to each course
+    // try {
+    //   console.log('[Get All Courses] Fetching tags for each course...');
+    //
+    //   // Fetch tags for each course in parallel
+    //   await Promise.all(
+    //     enrichedCourses.map(async (course) => {
+    //       try {
+    //         const tagsResult = await moodleAdapter.getCourseTags(course.id);
+    //
+    //         // Add tag information (as array)
+    //         course.tags = tagsResult.tags || [];
+    //
+    //         console.log(`[Get All Courses] Added ${course.tags.length} tags to course ${course.id}`);
+    //       } catch (tagError) {
+    //         // Set empty array if tag fetch fails
+    //         console.warn(`[Get All Courses] Failed to fetch tags for course ${course.id}:`, tagError.message);
+    //         course.tags = [];
+    //       }
+    //     })
+    //   );
+    // } catch (error) {
+    //   console.warn('[Get All Courses] Failed to fetch tags:', error.message);
+    // }
 
     return enrichedCourses;
   }
