@@ -50,6 +50,7 @@ export const COURSE_THUMBNAILS: Record<string, string> = {
   'line-ads': 'line-ads.webp',
   'maria-short-video': 'maria-short-video.webp',
   'marketing-overview': 'marketing-overview.webp',
+  'lms-guide': 'lms-guide.webp',
   'meo': 'meo.webp',
   'meta-ads': 'meta-ads.webp',
   'mindset': 'mindset.webp',

@@ -34,6 +34,7 @@ export const COURSE_ID = COURSE_ID_BY_SLUG;
 /** モック固有の肉付け。キーは courseTaxonomy の slug */
 const DETAILS: Record<string, { summary: string; duration: string; purposes: string[] }> = {
   // 学習ガイド
+  'lms-guide': { summary: 'ログインから学習・AIコーチ・コーチング・記録まで、画面ごとの使い方を動画で', duration: '40分', purposes: ['未経験向け', '最初におすすめ'] },
   tutorial: { summary: 'このサービスの使い方を一通り。学習の進め方とコーチングの受け方まで', duration: '20分', purposes: ['未経験向け', '最初におすすめ'] },
   mindset: { summary: '何をどの順で学ぶか、続けるために何を決めておくかを整理します', duration: '40分', purposes: ['未経験向け', '最初におすすめ'] },
   // 案件獲得・キャリア

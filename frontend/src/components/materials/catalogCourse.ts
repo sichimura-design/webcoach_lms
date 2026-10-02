@@ -1,6 +1,7 @@
 import type { Course } from '../../types/mypage';
 import type { GalleryCourse } from './courseVisuals';
 import { usableCourseImage } from '../../utils/courseImage';
+import { taxonomyOrderOf } from '../../constants/courseTaxonomy';
 
 /**
  * BFF の生コース（/moodle/courses）を一覧タイルの表現に直す。
@@ -47,7 +48,15 @@ export function buildCatalog(
   const list = Array.isArray(raw) ? raw : [];
   // BFF は管理者トークンで Moodle を引くので、非表示（visible=0）のコースも返ってくる。
   // 受講生の一覧には出さない（Moodle の「コースの可視性」を効かせる）。
-  return list.filter((c) => c?.visible !== 0 && c?.visible !== '0').map((c) => {
+  // 並びは courseTaxonomy の宣言順（領域内のカリキュラム順）。正典に無いコースは元の順のまま後ろへ。
+  // Moodle の返す順（作成順）のままだと、あとから足したコースが領域の末尾に来る。
+  const visible = list.filter((c) => c?.visible !== 0 && c?.visible !== '0');
+  const rank = (c: any, i: number) => taxonomyOrderOf(c?.shortname) ?? 100000 + i;
+  const ordered = visible
+    .map((c, i) => ({ c, r: rank(c, i) }))
+    .sort((a, b) => a.r - b.r)
+    .map(({ c }) => c);
+  return ordered.map((c) => {
     const enrolled =
       activeCourses.find((ac) => ac.id === c.id) ??
       (resumableCourse?.id === c.id ? resumableCourse : undefined);

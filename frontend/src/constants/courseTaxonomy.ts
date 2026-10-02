@@ -60,6 +60,8 @@ export const AREA_COURSES: ReadonlyArray<AreaDef & { courses: readonly CourseDef
     family: 'career',
     description: 'はじめの使い方と、学ぶ前に知っておきたい心得',
     courses: [
+      // 学習システムそのものの使い方。チュートリアルより前に読む（2026-10 追加、Moodle は shortname lms-guide）
+      { name: 'WEBCOACH学習システムの使い方', slug: 'lms-guide' },
       { name: 'チュートリアル', slug: 'tutorial' },
       { name: '学習に必要な心得集', slug: 'mindset' },
     ],
@@ -249,6 +251,15 @@ export const COURSE_ID_BY_SLUG: Readonly<Record<string, number>> = Object.fromEn
 );
 
 export const courseIdOf = (slug: string): number | undefined => COURSE_BY_SLUG.get(slug)?.id;
+
+const ORDER_BY_SLUG = new Map(COURSES.map((c, i) => [c.slug, i]));
+/**
+ * 一覧での並び順（COURSES の何番目か）。Moodle の shortname = slug で引く。正典に無いコースは undefined。
+ * 🔴 Moodle は作成順（id 順）で返すので、あとから足したコースは領域の末尾に来てしまう。
+ *    一覧の並びはここで決める（catalogCourse.ts の buildCatalog）。
+ */
+export const taxonomyOrderOf = (slug?: string | null): number | undefined =>
+  slug ? ORDER_BY_SLUG.get(slug) : undefined;
 export const courseBySlug = (slug: string): TaxonomyCourse | undefined => COURSE_BY_SLUG.get(slug);
 export const courseById = (id: number): TaxonomyCourse | undefined => COURSE_BY_ID.get(id);
 export const areaByName = (name?: string | null): AreaDef | undefined =>
