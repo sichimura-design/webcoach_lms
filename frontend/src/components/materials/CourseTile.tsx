@@ -7,7 +7,9 @@ import { isCompleted } from './courseFilters';
  *
  * 一覧は絞り込みよりも「並んだ絵柄を眺めて選ぶ」を優先するので、
  * カード1枚の情報は 16:9のサムネ・受講状況・所要時間・コース名・レッスン数・進捗に絞る。
- * 🔴 進捗は手を付けたコース（progress > 0）だけに細いバーと％で出す。以前は
+ * 🔴 進捗は受講中のコース（enrolled）と手を付けたコース（progress > 0）に細いバーと％で出す。
+ *    受講中でまだ 0% のコースも「0%」で出す（以前は progress > 0 だけで、受講中なのに
+ *    何も出ないコースがあった）。未受講のコースは出さない。以前は
  *    「ヒーローと『ほかに学習中』で見せる」として出していなかったが、一覧では
  *    コース名しか分からず、どこまで進んだかを探しに行く必要があった。
  *
@@ -96,7 +98,7 @@ export function CourseTile({ course, onClick }: { course: GalleryCourse; onClick
             </svg>
           </span>
         </div>
-        {course.progress > 0 && (
+        {(course.enrolled || course.progress > 0) && (
           <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginTop: 8 }} aria-label={`進捗 ${Math.round(course.progress)}%`}>
             <div style={{ flex: 1, height: 5, borderRadius: t.radius.pill, background: t.color.progressTrack, overflow: 'hidden' }}>
               <div style={{ width: `${Math.min(100, course.progress)}%`, height: '100%', borderRadius: t.radius.pill, background: t.color.primary }} />
