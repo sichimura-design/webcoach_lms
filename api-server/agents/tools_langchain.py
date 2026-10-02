@@ -367,6 +367,38 @@ def _extract_button_values(answer: str) -> set:
 # 一度渡された値をサーバー側で覚えておき、以降の呼び出しで自動的に補完する。
 _dify_extra_inputs_cache: Dict[tuple, Dict[str, str]] = {}
 
+# 必須入力変数が空のまま新しい会話を始めようとしたときの、保留中の最初の発言
+# （(userid, app_id, session_id) -> 発言）。AI面接シミュレーターの job_posting（求人URL）は
+# Dify標準画面では会話前のフォームで入れる項目で、会話の中では尋ねられない。空のまま送ると
+# 求人なしで面接が始まってしまうため、Difyへ送る前にURLを1回だけ尋ね、その間この発言を預かる。
+_dify_pending_first_message: Dict[tuple, str] = {}
+
+# 「URLなしで始める」を選んだ会話（(userid, app_id, session_id)）。以降は尋ねない
+_dify_inputs_skipped: set = set()
+
+_SKIP_REQUIRED_INPUTS_MESSAGE = "URLなしで始める"
+_URL_RE = re.compile(r"https?://[^\s<>\"'）」、。]+")
+
+
+def _required_input_fields(api_key: str) -> List[Dict[str, Any]]:
+    """Dify側でrequired: trueな入力変数の定義（variable/label等）"""
+    return [
+        field
+        for form_item in (_get_dify_parameters(api_key).get("user_input_form") or [])
+        for _, field in form_item.items()
+        if field.get("required")
+    ]
+
+
+def _ask_required_inputs_html(fields: List[Dict[str, Any]]) -> str:
+    """必須入力変数（求人URL等）を尋ねる文面と「URLなしで始める」ボタン"""
+    label = fields[0].get("label") or fields[0].get("variable") or "参考情報"
+    target = label if "URL" in label.upper() else f"{label}のURL"
+    return (
+        f"はじめに、{target}を貼ってください。\n\n"
+        f'<div>\n  <button data-message="{_SKIP_REQUIRED_INPUTS_MESSAGE}">{_SKIP_REQUIRED_INPUTS_MESSAGE}</button>\n</div>'
+    )
+
 
 # Difyへアップロード済みの画像ID（(userid, app_id, session_id) -> upload_file_id）。
 # 「デザインフィードバックメンターPro」等の添削アプリは、画像を受け取っても最初に
@@ -549,22 +581,41 @@ def _call_dify_chat(
     # 覚えておき、今回省略されていてもマージして補う（新しい値が来れば上書きする）。
     if reset:
         _dify_extra_inputs_cache.pop(cache_key, None)
+        _dify_pending_first_message.pop(cache_key, None)
+        _dify_inputs_skipped.discard(cache_key)
     stored_inputs = {} if reset else _dify_extra_inputs_cache.get(cache_key, {})
-    merged_inputs = {**stored_inputs, **(inputs or {})}
+    merged_inputs = {**stored_inputs, **{k: v for k, v in (inputs or {}).items() if v}}
+
+    # 発言にURLがあれば、まだ値の無い必須変数（求人URL等）に入れる。LLMがextra_inputsに
+    # 設定するかどうかに頼らない（ボタン押下等でLLMを通らないターンもある）
+    required_fields = _required_input_fields(api_key)
+    missing_fields = [f for f in required_fields if not merged_inputs.get(f["variable"])]
+    url_match = _URL_RE.search(query or "")
+    if url_match and missing_fields:
+        merged_inputs[missing_fields[0]["variable"]] = url_match.group(0)
+        missing_fields = missing_fields[1:]
     if merged_inputs:
         _dify_extra_inputs_cache[cache_key] = merged_inputs
 
+    # 必須変数が空のまま新しい会話を始めるときは、Difyへ送る前に1回だけ尋ねる。
+    # 答え（URL／「URLなしで始める」／それ以外の発言）が来たら、預かった最初の発言で始める。
+    # 2回目は尋ねない（以前、聞き取りが終わるまで呼ばない作りで同じ質問を繰り返していた）
+    pending = _dify_pending_first_message.pop(cache_key, None)
+    if not conversation_id and missing_fields and cache_key not in _dify_inputs_skipped:
+        if pending is None:
+            _dify_pending_first_message[cache_key] = query
+            answer = _ask_required_inputs_html(missing_fields)
+            _dify_last_buttons_cache[(userid, session_id)] = _extract_button_values(answer)
+            return answer
+        _dify_inputs_skipped.add(cache_key)
+    if pending is not None and (url_match or query.strip() == _SKIP_REQUIRED_INPUTS_MESSAGE):
+        query = pending
+
     # Dify側でrequired: trueな入力変数は、キー自体が送信データに存在しないと
-    # （値が空文字であっても）400 invalid_paramで弾かれる。LLMがまだ聞き取れて
-    # いない状態でもツールをためらわず呼び出せるよう（Dify自身のopening_statementに
-    # 聞いてもらう設計にするため）、未取得の必須変数は空文字で埋めて送信する。
+    # （値が空文字であっても）400 invalid_paramで弾かれる。「URLなしで始める」を選んだ場合等、
+    # 未取得の必須変数は空文字で埋めて送信する。
     # ここではキャッシュ(_dify_extra_inputs_cache)には反映せず、実送信データのみ補う。
-    required_vars = [
-        field["variable"]
-        for form_item in (_get_dify_parameters(api_key).get("user_input_form") or [])
-        for _, field in form_item.items()
-        if field.get("required")
-    ]
+    required_vars = [field["variable"] for field in required_fields]
     request_inputs = dict(merged_inputs)
     for var in required_vars:
         request_inputs.setdefault(var, "")
