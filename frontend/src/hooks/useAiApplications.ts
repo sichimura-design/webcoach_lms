@@ -17,7 +17,7 @@
  */
 import { useEffect, useMemo, useState } from 'react';
 import { bffClient } from '../services/bffClient';
-import type { AiApplication } from '../types/aiApplication';
+import type { AiApplication, AiApplicationIntro } from '../types/aiApplication';
 import { AI_SKILL_META, CONCRETE_AI_SKILLS, ConcreteAiSkillId } from '../types/aiSkill';
 
 /** display_category が空の行を束ねる見出し */
@@ -61,6 +61,28 @@ const warnUnmappedApps = (apps: AiApplication[]) => {
       unmapped.map((a) => `${a.name} (app_key=${a.app_key})`)
     );
   }
+};
+
+/** 一覧を読み込む（読み込み済みならそれを返す）。フックの外から待つため */
+export const loadAiApplications = (): Promise<AiApplication[]> => (loaded ? Promise.resolve(loaded) : load());
+
+const intros = new Map<string, Promise<AiApplicationIntro | null>>();
+
+/**
+ * アプリの挨拶文と最初の選択肢。アプリごとに1回だけ取りに行く。
+ * 取れなかったときは null（挨拶文を出さず、従来どおり最初の発言をそのまま送る）。
+ */
+export const getAiApplicationIntro = (appKey: string): Promise<AiApplicationIntro | null> => {
+  let p = intros.get(appKey);
+  if (!p) {
+    p = bffClient.getAIApplicationIntro(appKey).catch(() => {
+      // 失敗は覚えない（次にモードへ入ったときに取り直す）
+      intros.delete(appKey);
+      return null;
+    });
+    intros.set(appKey, p);
+  }
+  return p;
 };
 
 /** 読み込み済みのAIアプリ。フックの外（送信処理など）から同期的に参照するため */

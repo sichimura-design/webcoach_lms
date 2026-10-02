@@ -17,7 +17,12 @@ import {
   isSpecialistSkill,
   SkillSuggestion,
 } from '../types/aiSkill';
-import { findAiApplication, getLoadedAiApplications } from './useAiApplications';
+import {
+  findAiApplication,
+  getAiApplicationIntro,
+  getLoadedAiApplications,
+  loadAiApplications,
+} from './useAiApplications';
 import { detectSkill } from '../utils/aiSkillRouting';
 import { AI_ERROR_CONCLUSION, toHistory } from '../utils/aiCoachText';
 import { newServerKey, useAiCoachStore } from '../store/aiCoachStore';
@@ -201,6 +206,7 @@ export function useLessonAi(doc: LessonDoc | null, sessionIdOverride?: string): 
   const appendMessage = useAiCoachStore((s) => s.appendMessage);
   const patchMessage = useAiCoachStore((s) => s.patchMessage);
   const removeMessage = useAiCoachStore((s) => s.removeMessage);
+  const patchSession = useAiCoachStore((s) => s.patchSession);
   const setSkillInStore = useAiCoachStore((s) => s.setSkill);
   const setInputInStore = useAiCoachStore((s) => s.setInput);
   const setQuoteInStore = useAiCoachStore((s) => s.setQuote);
@@ -237,6 +243,56 @@ export function useLessonAi(doc: LessonDoc | null, sessionIdOverride?: string): 
   const messages = session?.messages ?? EMPTY_MESSAGES;
   const context = session?.context ?? EMPTY_AI_COACH_CONTEXT;
   const skillId = session?.skillId ?? 'auto';
+
+  /*
+   * ── 流れに沿って進むAIアプリの入口（挨拶文と最初の選択肢）──
+   * 応募文メーカー等は、最初の発言が選択肢（「応募文作成」等）と一致しないと分岐が決まらず、
+   * その会話では以後ずっと空応答になる。Dify標準UIと同じく、モードに入った時点で
+   * Difyには何も送らずに挨拶文と選択肢を出し、選んだ文言を最初の発言として送らせる。
+   * 選択肢の無いアプリ（キャッチコピー等）は従来どおり（最初の応答に挨拶文が付く）。
+   * 出すのは「このモードに入ってから、まだアプリへ何も送っていない」あいだの1回だけ。
+   */
+  const introPendingKey =
+    isSpecialistSkill(skillId) &&
+    session?.serverKey &&
+    session.introShownFor !== session.serverKey &&
+    session.appForcedFor !== session.serverKey
+      ? session.serverKey
+      : null;
+  useEffect(() => {
+    if (!introPendingKey || !isSpecialistSkill(skillId)) return undefined;
+    let alive = true;
+    (async () => {
+      const apps = await loadAiApplications().catch(() => null);
+      const appKey = findAiApplication(apps, skillId)?.app_key;
+      if (!appKey) return;
+      const intro = await getAiApplicationIntro(appKey);
+      if (!alive || !intro?.has_choices) return;
+      // 待っているあいだに送信が始まった・モードが変わった場合は出さない
+      const current = useAiCoachStore.getState().sessions[sessionId];
+      if (loadingRef.current || !current || current.serverKey !== introPendingKey) return;
+      if (current.introShownFor === introPendingKey || current.appForcedFor === introPendingKey) return;
+      patchSession(sessionId, { introShownFor: introPendingKey });
+      appendMessage(sessionId, {
+        id: nextId('a'),
+        role: 'assistant',
+        content: '',
+        answer: {
+          conclusion: intro.message,
+          basis: '',
+          apply: '',
+          next: '',
+          sources: [],
+          groundedInMaterial: false,
+          generalNote: null,
+        },
+        createdAt: new Date().toISOString(),
+      });
+    })();
+    return () => {
+      alive = false;
+    };
+  }, [appendMessage, introPendingKey, patchSession, sessionId, skillId]);
 
   const setContextHeading = useCallback(
     (heading: string | null) => patchContext(sessionId, { heading }),
@@ -348,6 +404,10 @@ export function useLessonAi(doc: LessonDoc | null, sessionIdOverride?: string): 
             message: requestMessage ?? question,
             ...(modeInstruction ? { mode_instruction: modeInstruction } : {}),
             ...(forceAppKey ? { force_app_key: forceAppKey } : {}),
+            // 挨拶文と選択肢を画面に出し済みなら、最初の応答に挨拶文を付け直させない
+            ...(forceAppKey && store.sessions[sessionId]?.introShownFor === serverKey
+              ? { opening_shown: true }
+              : {}),
             // 会話履歴を渡さないと、DBに登録したAIアプリ(Dify)へ問い合わせ中の
             // 2ターン目以降でLLMが文脈を見失い、別のツールを呼んでしまう
             // (例: ボタン選択の「WEBデザイン」だけ送ると学習相談ツールに逸れる)。
@@ -647,6 +707,17 @@ export function useLessonAi(doc: LessonDoc | null, sessionIdOverride?: string): 
           content: DESIGN_REVIEW_FIRST_STEP,
           createdAt: new Date().toISOString(),
         });
+        return;
+      }
+
+      // 流れに沿って進むアプリは、直前の発言をそのまま送ると最初の分岐に当たらず進まなくなる。
+      // 送らずに、挨拶文と選択肢（上の introPendingKey の effect が出す）から選んでもらう。
+      const appKey = findAiApplication(
+        await loadAiApplications().catch(() => null),
+        suggestion.skillId
+      )?.app_key;
+      if (appKey && (await getAiApplicationIntro(appKey))?.has_choices) {
+        if (image) setImageInStore(sessionId, image);
         return;
       }
 

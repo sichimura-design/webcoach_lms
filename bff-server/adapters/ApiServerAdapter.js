@@ -287,6 +287,20 @@ class ApiServerAdapter {
   }
 
   /**
+   * Get the greeting and first choices of an AI application (no Dify conversation is created)
+   */
+  async getAIApplicationIntro(appKey) {
+    const response = await axios.get(
+      `${this.apiServerUrl}/api/ai-applications/${encodeURIComponent(appKey)}/intro`,
+      {
+        headers: { 'Content-Type': 'application/json' },
+        timeout: 15000
+      }
+    );
+    return response.data;
+  }
+
+  /**
    * Send AI chat request (LangGraph version)
    */
   async sendAIChat(chatRequest) {

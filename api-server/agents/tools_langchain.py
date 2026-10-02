@@ -110,6 +110,35 @@ def _with_opening_statement(answer: str, api_key: str) -> str:
     return f"{opening}\n\n{answer}"
 
 
+def build_dify_intro(secret_key: str) -> Optional[Dict[str, Any]]:
+    """アプリのモードに入ったとき画面に出す、挨拶文と最初の選択肢（Difyには何も送らない）。
+
+    Dify標準UIと同じく、会話の最初は挨拶文と選択肢(suggested_questions)を見せ、利用者が
+    選んだ文言を最初の発言として送らせる。流れに沿って進むアプリ（応募文メーカー等）は
+    最初の発言が選択肢と一致しないと分岐が決まらず、その会話では以後ずっと空応答になる。
+    has_choices は選択肢（suggested_questions、または挨拶文の中のボタン）があるか。
+    APIキーが無いアプリは None。
+    """
+    api_key = _get_dify_api_key(secret_key) if secret_key else None
+    if not api_key:
+        return None
+    params = _get_dify_parameters(api_key)
+    opening = (params.get("opening_statement") or "").strip()
+    questions = [q for q in (params.get("suggested_questions") or []) if q and q.strip()]
+    has_buttons_in_opening = "data-message=" in opening
+    message = opening
+    if questions and not has_buttons_in_opening:
+        buttons = "\n".join(f'  <button data-message="{html.escape(q, quote=True)}">{html.escape(q)}</button>' for q in questions)
+        message = f"{opening}\n\n<div>\n{buttons}\n</div>".strip()
+    return {
+        "app_key": secret_key,
+        "opening_statement": opening,
+        "suggested_questions": questions,
+        "has_choices": bool(questions) or has_buttons_in_opening,
+        "message": message,
+    }
+
+
 def _render_suggested_questions_html(questions: List[str]) -> str:
     """suggested_questionsを、フロントエンドが解釈できる<button data-message>形式で描画する"""
     buttons = "\n".join(
@@ -557,6 +586,7 @@ def _call_dify_chat(
     session_id: Optional[str] = None,
     image: Optional[Dict[str, str]] = None,
     run_id: Optional[str] = None,
+    opening_shown: bool = False,
 ) -> str:
     """Dify上に構築されたAIアプリに問い合わせる（同一ユーザー・同一アプリ・同一セッションの
     会話はプロセス内で継続する）
@@ -709,7 +739,8 @@ def _call_dify_chat(
             else:
                 answer = "回答を生成できませんでした。別の言い方で試すか、少し時間をおいてから聞いてみてください。"
 
-        if not conversation_id:
+        # 画面が挨拶文と選択肢を先に出している（build_dify_intro）ときは付け直さない
+        if not conversation_id and not opening_shown:
             answer = _with_opening_statement(answer, api_key)
 
         _dify_last_buttons_cache[(userid, session_id)] = _extract_button_values(answer)
@@ -747,6 +778,7 @@ def create_ai_application_tools(
     image: Optional[Dict[str, str]] = None,
     run_id: Optional[str] = None,
     in_app_mode: bool = False,
+    opening_shown: bool = False,
 ) -> "tuple[List[BaseTool], Optional[str], Optional[str]]":
     """
     DBに登録済みのAIアプリケーション（webcoach_ai_application.secret_keyが設定されているもの）を
@@ -793,6 +825,7 @@ def create_ai_application_tools(
             session_id: Optional[str] = session_id,
             image: Optional[Dict[str, str]] = image,
             run_id: Optional[str] = run_id,
+            opening_shown: bool = opening_shown,
         ):
             def _call(
                 query: str,
@@ -810,6 +843,7 @@ def create_ai_application_tools(
                     session_id=session_id,
                     image=image,
                     run_id=run_id,
+                    opening_shown=opening_shown,
                 )
             return _call
 

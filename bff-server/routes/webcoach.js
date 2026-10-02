@@ -164,6 +164,26 @@ router.get('/ai-applications', requireAuth, async (req, res) => {
   }
 });
 
+// Get the greeting and first choices of an AI application.
+// AIコーチでアプリのモードに入ったとき、Difyに何も送らずに挨拶文と選択肢を画面に出すため
+router.get('/ai-applications/:appKey/intro', requireAuth, async (req, res) => {
+  try {
+    const result = await webCoachService.getAIApplicationIntro(req.params.appKey);
+    res.json(result);
+  } catch (error) {
+    console.error('[WebCoach AI Application Intro] Error:', error.message);
+
+    if (error.response) {
+      return res.status(error.response.status).json(error.response.data);
+    }
+
+    res.status(500).json({
+      error: 'Failed to get AI application intro',
+      detail: error.message
+    });
+  }
+});
+
 // Send AI chat request
 router.post('/ai', requireAuth, async (req, res) => {
   try {

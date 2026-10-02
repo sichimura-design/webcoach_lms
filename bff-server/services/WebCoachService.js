@@ -71,6 +71,13 @@ class WebCoachService {
   }
 
   /**
+   * Get the greeting and first choices of an AI application
+   */
+  async getAIApplicationIntro(appKey) {
+    return await apiServerAdapter.getAIApplicationIntro(appKey);
+  }
+
+  /**
    * Send AI chat request
    */
   async sendAIChat(chatRequest) {

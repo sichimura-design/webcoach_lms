@@ -434,6 +434,11 @@ export interface AIRequest {
    */
   force_app_key?: string;
   /**
+   * 画面がこのアプリの挨拶文と選択肢をすでに出している（AiCoachSession.introShownFor）。
+   * 最初の応答に挨拶文を付け直させない。
+   */
+  opening_shown?: boolean;
+  /**
    * このターンの実行ID。「生成を中止」で POST /webcoach/ai/cancel に同じ値を送り、
    * サーバー側（LLM・Dify）の生成も止める。bffClient.sendAIMessage が採番するので呼び出し側は付けなくてよい
    */

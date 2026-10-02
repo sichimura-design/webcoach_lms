@@ -24,3 +24,17 @@ export interface AiApplication {
   created_at: string;
   updated_at: string;
 }
+
+/**
+ * アプリのモードに入ったとき画面に出す挨拶文と最初の選択肢（GET /webcoach/ai-applications/:appKey/intro）。
+ * Difyには何も送らずに、アプリの設定を読んだだけのもの。
+ */
+export interface AiApplicationIntro {
+  app_key: string;
+  opening_statement: string;
+  suggested_questions: string[];
+  /** 選択肢がある＝流れに沿って進むアプリ。最初の発言は選択肢のどれかでないと進まない */
+  has_choices: boolean;
+  /** 挨拶文＋選択肢ボタン（data-message）の HTML。AIの回答と同じく parseDifyMessage で描画できる */
+  message: string;
+}

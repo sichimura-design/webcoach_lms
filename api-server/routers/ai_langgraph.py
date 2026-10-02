@@ -123,6 +123,13 @@ class ChatRequest(BaseModel):
             "POST /chat/cancel に同じ値を送ると、実行中のLLM・Difyの生成を止める"
         ),
     )
+    opening_shown: bool = Field(
+        False,
+        description=(
+            "画面がこのアプリの挨拶文と選択肢（GET /api/ai-applications/{app_key}/intro）を"
+            "すでに表示している。新しい会話の最初の応答に挨拶文を付け直さない"
+        ),
+    )
     force_app_key: Optional[str] = Field(
         None,
         max_length=128,
@@ -418,6 +425,7 @@ def _execute_chat_inner(
         run_id=run.run_id if run else None,
         # mode_instruction はAIコーチでアプリ（専門モード）を選んでいる間だけ送られてくる
         in_app_mode=bool(request.mode_instruction),
+        opening_shown=request.opening_shown,
     )
     # アプリのモードに入った直後の最初の発言は、指定されたアプリへ必ず送る
     # （ボタン値の継続より優先する。モードを選び直した＝そのアプリを使うという明示の操作のため）

@@ -1,5 +1,5 @@
 import axios, { AxiosInstance } from 'axios';
-import type { AiApplication } from '../types/aiApplication';
+import type { AiApplication, AiApplicationIntro } from '../types/aiApplication';
 import {
   UserInfo,
   Category,
@@ -1631,6 +1631,15 @@ class BFFClient {
     const response = await this.api.get('/webcoach/ai-applications', { params: { limit: 100 } });
     const data = response.data;
     return Array.isArray(data) ? data : (data?.applications ?? []);
+  }
+
+  /**
+   * AIアプリの挨拶文と最初の選択肢（Difyには何も送らない）
+   * GET /api/webcoach/ai-applications/:appKey/intro
+   */
+  async getAIApplicationIntro(appKey: string): Promise<AiApplicationIntro> {
+    const response = await this.api.get(`/webcoach/ai-applications/${encodeURIComponent(appKey)}/intro`);
+    return response.data;
   }
 
   /**

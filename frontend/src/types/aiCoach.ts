@@ -152,6 +152,11 @@ export interface AiCoachSession {
    * モードに入る（＝serverKey が作り直される）たびに、最初の1回だけ force_app_key を付けるための印。
    */
   appForcedFor?: string;
+  /**
+   * AIアプリの挨拶文と選択肢（流れに沿って進むアプリ）を画面に出した serverKey。
+   * モードに入るたびに1回だけ出し、そのあとの最初の発言では opening_shown を送る。
+   */
+  introShownFor?: string;
   createdAt: string;
   updatedAt: string;
 }
