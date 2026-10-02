@@ -10,6 +10,7 @@ import {
   captureSelectionContext,
   extractLessonText,
   extractLessonTextFromHtml,
+  LESSON_TEXT_MAX_CHARS,
   SelectionContext,
 } from '../utils/lessonSelectionContext';
 import { useNoteCapture } from '../hooks/useNoteCapture';
@@ -43,7 +44,7 @@ import { announcementModuleIds } from '../utils/courseAnnouncement';
 import { color, font, radius, shadow } from '../theme/webcoachTheme';
 import LessonTopBar from './learning/LessonTopBar';
 import LessonFloatingActions from './learning/LessonFloatingActions';
-import EmbeddedLessonFrame from './learning/EmbeddedLessonFrame';
+import EmbeddedLessonFrame, { type EmbeddedLessonFrameHandle } from './learning/EmbeddedLessonFrame';
 import SupportPanel, { SupportTab } from './learning/SupportPanel';
 import {
   getContentType as getModuleContentType,
@@ -226,6 +227,9 @@ function CourseContentPage({ courseId, initialModuleId, onBack }: CourseContentP
 
   // 選択テキストのマイノート引用／AIへの質問
   const [quoteSelection, setQuoteSelection] = useState<(SelectionContext & { rect: DOMRect }) | null>(null);
+  // URL 型レッスン（別オリジンの iframe）の本文。lms-embed.js が送ってきたときだけ入る（null = 届いていない）
+  const [embeddedLessonText, setEmbeddedLessonText] = useState<string | null>(null);
+  const embeddedFrameRef = useRef<EmbeddedLessonFrameHandle>(null);
   // 「AIに聞く」で質問対象として固定した選択箇所。次の1回の質問に添えて送り、送ったら外す
   const [aiSelection, setAiSelection] = useState<SelectionContext | null>(null);
   const noteCapture = useNoteCapture();
@@ -437,6 +441,7 @@ function CourseContentPage({ courseId, initialModuleId, onBack }: CourseContentP
     setZoomTarget(null);
     setQuoteSelection(null);
     setAiSelection(null);
+    setEmbeddedLessonText(null);
     setTocOpen(false);
   }, [selectedModule?.id]);
 
@@ -654,6 +659,8 @@ function CourseContentPage({ courseId, initialModuleId, onBack }: CourseContentP
     if (type === 'label' || type === 'resource-other' || type === 'unknown') {
       return extractLessonText(contentAreaRef.current);
     }
+    // URL 型は別オリジンで中を読めないので、lms-embed.js が送ってきた本文を使う
+    if (type === 'url') return (embeddedLessonText ?? '').slice(0, LESSON_TEXT_MAX_CHARS);
     return '';
   };
 
@@ -695,6 +702,7 @@ function CourseContentPage({ courseId, initialModuleId, onBack }: CourseContentP
   const handleAskAiAboutSelection = (selection: SelectionContext) => {
     setAiSelection({ text: selection.text, heading: selection.heading, before: selection.before, after: selection.after });
     setQuoteSelection(null);
+    embeddedFrameRef.current?.clearSelection();
     openSupport('ai');
   };
 
@@ -731,6 +739,7 @@ function CourseContentPage({ courseId, initialModuleId, onBack }: CourseContentP
       lessonId: selectedModule.id,
     });
     setQuoteSelection(null);
+    embeddedFrameRef.current?.clearSelection();
   };
 
   // AIコーチの回答をマイノートへ保存する。直前のユーザー発言を質問として添える。
@@ -842,7 +851,15 @@ function CourseContentPage({ courseId, initialModuleId, onBack }: CourseContentP
         if (!externalUrl) {
           return <EmptyPlaceholder />;
         }
-        return <EmbeddedLessonFrame src={externalUrl} title={selectedModule.name} />;
+        return (
+          <EmbeddedLessonFrame
+            ref={embeddedFrameRef}
+            src={externalUrl}
+            title={selectedModule.name}
+            onLessonText={setEmbeddedLessonText}
+            onSelection={setQuoteSelection}
+          />
+        );
       }
 
       // ── mod/resource（動画）─────────────────
@@ -903,9 +920,10 @@ function CourseContentPage({ courseId, initialModuleId, onBack }: CourseContentP
   const nextModule  = currentIdx < allModules.length - 1 ? allModules[currentIdx + 1] : null;
   const isCompleted = !!selectedModule && completedIds.has(selectedModule.id);
 
-  // 選択テキストのマイノート引用が使える種別（iframe内は同一オリジンのsrcdocのみ）
+  // 選択テキストのマイノート引用が使える種別（iframe内は同一オリジンのsrcdocか、本文を送ってくる lms-embed.js 入りの URL 型）
   const selectionCapableType = selectedModule
     ? ['page', 'label', 'resource-other', 'unknown'].includes(getModuleContentType(selectedModule))
+      || (getModuleContentType(selectedModule) === 'url' && embeddedLessonText !== null)
     : false;
 
   const aiPane = (
