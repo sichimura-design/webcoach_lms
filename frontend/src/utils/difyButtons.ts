@@ -11,6 +11,8 @@
  * 再構成できるようにする。
  */
 
+import { domToChatMarkdown, htmlToChatMarkdown } from './htmlToChatMarkdown';
+
 export interface DifyMessageButton {
   label: string;
   value: string;
@@ -55,7 +57,8 @@ const FORM_RE = /<form\b/i;
 
 export function parseDifyMessage(content: string): ParsedDifyMessage {
   const parsed = extractDifyParts(content);
-  return { ...parsed, text: normalizeChatMarkdown(parsed.text) };
+  // ボタン・フォーム以外の HTML（見出し・表など）も Markdown に直す（タグが文字で見えないように）
+  return { ...parsed, text: normalizeChatMarkdown(htmlToChatMarkdown(parsed.text)) };
 }
 
 // 罫線だけの行（--- / *** / ___ / ===）
@@ -168,9 +171,8 @@ function extractDifyParts(content: string): ParsedDifyMessage {
 
   topLevelNodesToRemove.forEach((node) => node.remove());
 
-  const text = (doc.body.textContent || '')
-    .replace(/\n{3,}/g, '\n\n')
-    .trim();
+  // 残りの本文は見出し・表などの構造を保ったまま Markdown にする（textContent だと潰れる）
+  const text = domToChatMarkdown(doc.body);
 
   return { text, buttons, forms };
 }
