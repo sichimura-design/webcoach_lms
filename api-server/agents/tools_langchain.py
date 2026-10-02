@@ -648,6 +648,11 @@ def _call_dify_chat(
             # 「応募文作成」という完全一致の文言なら正しく応答する）。空応答をそのまま
             # ユーザーに見せず、選べる選択肢がある場合はボタンとして提示する。
             suggested_questions = _get_dify_parameters(api_key).get("suggested_questions") or []
+            # 最初の発言が選択肢に当たらず空になった会話は、その後に選択肢そのもの（「応募文作成」）を
+            # 送っても空のまま進まない（Dify側の分岐が会話の最初の発言で決まるため）。空で終わった
+            # 新しい会話は覚えず、次の発言（ボタン）を新しい会話の最初の発言として送らせる。
+            if not conversation_id:
+                _dify_conversation_cache.pop(cache_key, None)
             if suggested_questions:
                 answer = _render_suggested_questions_html(suggested_questions)
             else:

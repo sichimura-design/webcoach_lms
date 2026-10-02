@@ -210,7 +210,11 @@ const none = (currentSkillId: AiSkillId): SkillSuggestion => ({
  */
 export function detectSkill(input: DetectSkillInput): SkillSuggestion {
   const text = `${input.question} ${input.quote ?? ''}`;
-  const raw = detectRaw(input, text);
+  // モードの中で書いた長い文章は、そのアプリの質問への答え（面接の自己紹介など）。
+  // 「貼り付けた文章を直したい／募集内容から応募文を」の合図とはみなさない。
+  // これが無いと、面接の答えに「応募」が入っただけで応募文モードへの切り替えカードが出て、
+  // 受け入れると答えが応募文メーカーへ送られていた。
+  const raw = detectRaw(input, text, input.currentSkillId === 'auto');
 
   // ── 追従（仕様§4）──
   // すでに専門モードにいるなら、同じスキルの再提案はしない。
@@ -222,7 +226,7 @@ export function detectSkill(input: DetectSkillInput): SkillSuggestion {
   return raw;
 }
 
-function detectRaw(input: DetectSkillInput, text: string): SkillSuggestion {
+function detectRaw(input: DetectSkillInput, text: string, usePasteSignal: boolean): SkillSuggestion {
   const reviewWord = hit(text, REVIEW_WORDS);
   const designWord = hit(text, DESIGN_WORDS);
 
@@ -269,7 +273,7 @@ function detectRaw(input: DetectSkillInput, text: string): SkillSuggestion {
 
   // ── 文章改善 ──
   // 長い文章を貼り付けている＝直してほしい対象が本文そのもの、という前提で拾う。
-  const pasted = input.question.length >= PASTED_TEXT_MIN;
+  const pasted = usePasteSignal && input.question.length >= PASTED_TEXT_MIN;
   const writingAction = hit(text, WRITING_ACTION_WORDS);
   const writingTarget = hit(text, WRITING_TARGET_WORDS);
 
