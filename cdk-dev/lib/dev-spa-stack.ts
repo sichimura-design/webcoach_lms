@@ -21,6 +21,7 @@ export class DevSpaStack extends cdk.Stack {
     });
 
     // /branches/{slug}/* のパスに拡張子がなければ {slug}/index.html に書き換え
+    // それ以外のルート直下（/materials/ を除く）は dev/kanegae をルート配信しているので /index.html に書き換え
     const spaRoutingFn = new cloudfront.Function(this, 'SpaRoutingFn', {
       functionName: `${envName}-dev-spa-routing`,
       runtime: cloudfront.FunctionRuntime.JS_2_0,
@@ -33,6 +34,8 @@ function handler(event) {
     if (!/\\.[^\\/]+$/.test(rest)) {
       event.request.uri = match[1] + '/index.html';
     }
+  } else if (!/^\\/materials\\//.test(uri) && !/\\.[^\\/]+$/.test(uri)) {
+    event.request.uri = '/index.html';
   }
   return event.request;
 }
