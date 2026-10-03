@@ -192,6 +192,47 @@ def test_rebuild_for_specific_courses_keeps_other_courses(tmp_path, monkeypatch)
     assert response.success is True
 
 
+def test_added_today_appends_without_dropping_existing(tmp_path, monkeypatch):
+    """当日分は書き足し。他の教材は残し、同じモジュールの古いチャンクだけ入れ替える"""
+    existing = {
+        "documents": ["コース50の教材", "cmid7の古い版"],
+        "metadatas": [{"course_id": 50, "cmid": 3}, {"course_id": 23, "cmid": 7}],
+    }
+    modules = [_module(7, 23, "https://x/materials/new.html", "新レッスン")]
+    pages = {"https://x/materials/new.html": "今日追加した教材"}
+
+    response, saved = _rebuild(tmp_path, monkeypatch, existing, modules, pages, added_today=True)
+
+    assert saved["documents"] == ["コース50の教材", "今日追加した教材"]
+    assert saved["metadatas"][1]["course_id"] == 23
+    assert response.documents_added == 1
+    assert response.message.startswith("Added")
+
+
+def test_added_today_with_no_new_modules_leaves_index_untouched(monkeypatch):
+    import routers.faiss_ingest as ingest
+
+    manager = MagicMock()
+    manager.get_stats.return_value = {"total_vectors": 0, "total_documents": 16}
+    with patch.object(ingest, "fetch_moodle_material_modules", return_value=[]) as fetch_modules, \
+            patch.object(ingest, "get_faiss_manager", return_value=manager):
+        response = ingest.rebuild_from_moodle_materials(ingest.MoodleMaterialsRebuildRequest(added_today=True))
+
+    assert fetch_modules.call_args.args[2] == ingest._today_start_epoch()
+    assert response.success is True
+    assert response.files_processed == 0
+    assert response.faiss_total_vectors == 16
+    manager.save_and_upload.assert_not_called()
+
+
+def test_today_start_is_midnight_in_japan():
+    import routers.faiss_ingest as ingest
+    from datetime import datetime, timezone, timedelta
+
+    start = datetime.fromtimestamp(ingest._today_start_epoch(), timezone(timedelta(hours=9)))
+    assert (start.hour, start.minute, start.second) == (0, 0, 0)
+
+
 def test_keyword_search_filters_by_course_after_rebuild():
     index = KeywordIndex(
         ["Canvaのアカウントを作成する", "Canvaでバナーを作る"],

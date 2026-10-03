@@ -727,9 +727,19 @@ class MoodleMaterialsRebuildRequest(BaseModel):
     chunk_size: int = Field(1000, description="テキストのチャンクサイズ", ge=100, le=5000)
     chunk_overlap: int = Field(200, description="チャンクのオーバーラップサイズ", ge=0, le=1000)
     max_workers: int = Field(8, description="教材HTMLの同時取得数", ge=1, le=16)
+    added_today: bool = Field(False, description="当日(日本時間)にコースへ追加された教材だけを、既存の索引に書き足す")
 
 
-def fetch_moodle_material_modules(url_pattern: str, course_ids: Optional[List[int]] = None) -> List[Dict[str, Any]]:
+def _today_start_epoch() -> int:
+    """日本時間の当日0時（Moodleのcourse_modules.addedと同じUNIX秒）"""
+    from datetime import timezone, timedelta
+    jst = timezone(timedelta(hours=9))
+    return int(datetime.now(jst).replace(hour=0, minute=0, second=0, microsecond=0).timestamp())
+
+
+def fetch_moodle_material_modules(
+    url_pattern: str, course_ids: Optional[List[int]] = None, added_since: Optional[int] = None
+) -> List[Dict[str, Any]]:
     """Moodleのコースに登録された教材(URLモジュール)を、コース・セクション・レッスン名つきで返す。
 
     1つの教材HTMLが複数コースに登録されていることがあるので、行は(コース, モジュール)単位。
@@ -753,6 +763,9 @@ def fetch_moodle_material_modules(url_pattern: str, course_ids: Optional[List[in
     if course_ids:
         stmt_extra = " AND c.id IN :course_ids"
         params["course_ids"] = list(course_ids)
+    if added_since is not None:
+        stmt_extra += " AND cm.added >= :added_since"
+        params["added_since"] = added_since
     stmt = text(sql + stmt_extra + " ORDER BY c.id, cs.section, cm.id")
     if course_ids:
         stmt = stmt.bindparams(bindparam("course_ids", expanding=True))
@@ -776,8 +789,20 @@ def _rebuild_from_moodle_materials(request: MoodleMaterialsRebuildRequest, progr
     from concurrent.futures import ThreadPoolExecutor
 
     progress['phase'] = 'listing'
-    modules = fetch_moodle_material_modules(request.url_pattern, request.course_ids)
+    added_since = _today_start_epoch() if request.added_today else None
+    modules = fetch_moodle_material_modules(request.url_pattern, request.course_ids, added_since)
     logger.info(f"Moodle material modules: {len(modules)}")
+    if not modules and request.added_today:
+        # 当日分が無いのは正常。索引は触らない
+        stats = get_faiss_manager().get_stats()
+        return IngestResponse(
+            success=True,
+            message="No Moodle material modules were added today",
+            files_processed=0,
+            documents_added=0,
+            faiss_total_vectors=stats['total_vectors'] or stats['total_documents'],
+            errors=None,
+        )
     if not modules:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
@@ -842,7 +867,11 @@ def _rebuild_from_moodle_materials(request: MoodleMaterialsRebuildRequest, progr
         )
 
     manager = get_faiss_manager()
-    if request.course_ids:
+    if request.added_today:
+        # 書き足し。同じモジュールを2回取り込んだときに重複しないよう、そのモジュールの古いチャンクだけ外す
+        cmids = {m["cmid"] for m in modules}
+        kept = [(d, m) for d, m in zip(manager.documents, manager.metadatas) if m.get('cmid') not in cmids]
+    elif request.course_ids:
         targets = set(request.course_ids)
         kept = [(d, m) for d, m in zip(manager.documents, manager.metadatas) if m.get('course_id') not in targets]
     else:
@@ -867,8 +896,8 @@ def _rebuild_from_moodle_materials(request: MoodleMaterialsRebuildRequest, progr
     return IngestResponse(
         success=len(errors) == 0,
         message=(
-            f"Rebuilt index from {files_processed} Moodle modules ({len(texts)} unique pages), "
-            f"{len(documents)} chunks" + (f", kept {len(kept)} chunks of other courses" if kept else "")
+            ("Added" if request.added_today else "Rebuilt index from") + f" {files_processed} Moodle modules ({len(texts)} unique pages), "
+            f"{len(documents)} chunks" + (f", kept {len(kept)} existing chunks" if kept else "")
         ),
         files_processed=files_processed,
         documents_added=len(documents),
@@ -889,6 +918,7 @@ def rebuild_from_moodle_materials(request: MoodleMaterialsRebuildRequest):
     コースで絞ると0件になる。既存の索引（metadata.json）はすべて置き換える。
 
     course_idsを指定した場合は、そのコースのチャンクだけを入れ替え、他コースのチャンクは残す。
+    added_today=trueなら、当日(日本時間)にコースへ追加された教材だけを既存の索引に書き足す。
     完了まで待つ版。管理画面からは時間制限(CloudFront 60秒)があるので /start と /status を使う。
     """
     try:
@@ -933,7 +963,10 @@ def start_rebuild_from_moodle_materials(request: MoodleMaterialsRebuildRequest):
         if _rebuild_job.get('status') == 'running':
             raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="Rebuild is already running")
         _rebuild_job.clear()
-        _rebuild_job.update(status='running', phase='starting', started_at=datetime.now().isoformat())
+        _rebuild_job.update(
+            status='running', phase='starting', mode='today' if request.added_today else 'all',
+            started_at=datetime.now().isoformat(),
+        )
     threading.Thread(target=_run_rebuild_job, args=(request,), daemon=True).start()
     return dict(_rebuild_job)
 

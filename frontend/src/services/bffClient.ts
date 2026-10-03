@@ -1598,6 +1598,15 @@ class BFFClient {
   }
 
   /**
+   * 当日コースに追加された教材だけを索引に書き足す（開始だけしてすぐ返る）
+   * POST /api/faiss/ingest/today
+   */
+  async faissIngestToday(): Promise<MaterialIndexRebuildStatus> {
+    const response = await this.api.post('/faiss/ingest/today');
+    return response.data;
+  }
+
+  /**
    * 索引作り直しの進み具合
    * GET /api/faiss/ingest/status
    */

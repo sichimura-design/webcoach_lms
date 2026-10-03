@@ -48,9 +48,14 @@ function describeRunning(job: MaterialIndexRebuildStatus): string {
   return phase;
 }
 
+type Mode = 'all' | 'today';
+
 function describeResult(job: MaterialIndexRebuildStatus): string {
   const r = job.result;
   if (!r) return '完了しました';
+  if (job.mode === 'today' && r.files_processed === 0 && !r.errors?.length) {
+    return '完了しました（今日コースに追加された教材はありませんでした）';
+  }
   const lines = [
     `完了しました（登録した教材: ${r.files_processed}件 / 検索用の区切り: ${r.documents_added}件）`,
   ];
@@ -62,13 +67,33 @@ function describeResult(job: MaterialIndexRebuildStatus): string {
   return lines.join('\n');
 }
 
+const SECTIONS: { mode: Mode; title: string; description: string }[] = [
+  {
+    mode: 'all',
+    title: '全教材を登録',
+    description:
+      'Moodleの各コースに登録されている教材を読み込み、コースごとに検索できるよう登録し直します。' +
+      '今の登録内容はすべて置き換わります。数分かかることがあり、この画面を閉じても処理は続きます。',
+  },
+  {
+    mode: 'today',
+    title: '当日追加した教材を登録',
+    description:
+      '今日（日本時間）Moodleのコースに追加された教材だけを、今の登録内容に追加します。' +
+      'S3に教材ファイルを置いただけでコースに追加していない教材は対象になりません。',
+  },
+];
+
 /**
- * AIコーチの教材検索用の索引を、Moodleの各コースに登録された教材から作り直す。
+ * AIコーチの教材検索用の索引を、Moodleの各コースに登録された教材から作る。
+ * 全教材の作り直しと当日追加分の書き足しがあり、同時に実行できるのは1つだけ。
  * 時間がかかるので開始だけして、完了までは進み具合を問い合わせて表示する。
  */
 export const VectorDataSection: React.FC = () => {
   const [job, setJob] = useState<MaterialIndexRebuildStatus | null>(null);
   const [requestError, setRequestError] = useState('');
+  // 開始に失敗したときにエラーを出す場所（成功時はjob.modeで決まる）
+  const [requestedMode, setRequestedMode] = useState<Mode>('all');
   const timerRef = useRef<number | null>(null);
 
   const stopPolling = () => {
@@ -100,11 +125,12 @@ export const VectorDataSection: React.FC = () => {
 
   const running = job?.status === 'running';
 
-  const handleStart = async () => {
+  const handleStart = async (mode: Mode) => {
     setRequestError('');
+    setRequestedMode(mode);
     stopPolling();
     try {
-      setJob(await bffClient.faissIngestAll());
+      setJob(await (mode === 'today' ? bffClient.faissIngestToday() : bffClient.faissIngestAll()));
       timerRef.current = window.setTimeout(poll, POLL_INTERVAL_MS);
     } catch (err) {
       console.error('Failed to start material index rebuild:', err);
@@ -113,6 +139,7 @@ export const VectorDataSection: React.FC = () => {
     }
   };
 
+  const statusMode: Mode = requestError ? requestedMode : job?.mode ?? 'all';
   let statusBox: React.ReactNode = null;
   if (requestError) {
     statusBox = <div style={statusBoxStyle('error')}>{requestError}</div>;
@@ -125,16 +152,17 @@ export const VectorDataSection: React.FC = () => {
   }
 
   return (
-    <div style={{ fontFamily: font.family }}>
-      <div style={{ ...font.rowTitle, color: color.textStrong, marginBottom: 8 }}>全教材を登録</div>
-      <p style={{ ...font.meta, color: color.textSecondary, margin: '0 0 16px' }}>
-        Moodleの各コースに登録されている教材を読み込み、コースごとに検索できるよう登録し直します。
-        今の登録内容はすべて置き換わります。数分かかることがあり、この画面を閉じても処理は続きます。
-      </p>
-      <button style={buttonStyle(running)} onClick={handleStart} disabled={running}>
-        {running ? '登録中...' : '全教材を登録'}
-      </button>
-      {statusBox}
+    <div style={{ fontFamily: font.family, display: 'flex', flexDirection: 'column', gap: 32 }}>
+      {SECTIONS.map(({ mode, title, description }) => (
+        <div key={mode}>
+          <div style={{ ...font.rowTitle, color: color.textStrong, marginBottom: 8 }}>{title}</div>
+          <p style={{ ...font.meta, color: color.textSecondary, margin: '0 0 16px' }}>{description}</p>
+          <button style={buttonStyle(running)} onClick={() => handleStart(mode)} disabled={running}>
+            {running && statusMode === mode ? '登録中...' : title}
+          </button>
+          {statusMode === mode && statusBox}
+        </div>
+      ))}
     </div>
   );
 };

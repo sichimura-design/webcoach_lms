@@ -3,6 +3,8 @@ export interface MaterialIndexRebuildStatus {
   status: 'idle' | 'running' | 'succeeded' | 'failed';
   /** listing: 教材一覧の取得 / fetching: 教材ページの取得 / indexing: 索引の保存 */
   phase?: 'starting' | 'listing' | 'fetching' | 'indexing';
+  /** all: 全教材の作り直し / today: 当日追加分の書き足し */
+  mode?: 'all' | 'today';
   total_pages?: number;
   fetched_pages?: number;
   started_at?: string;

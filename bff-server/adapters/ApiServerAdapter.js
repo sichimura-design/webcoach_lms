@@ -437,11 +437,12 @@ class ApiServerAdapter {
 
   /**
    * Moodleの教材から教材検索の索引を作り直す（バックグラウンドで開始してすぐ返る）
+   * addedToday=trueなら当日コースに追加された教材だけを既存の索引に書き足す
    */
-  async startMoodleMaterialsRebuild() {
+  async startMoodleMaterialsRebuild({ addedToday = false } = {}) {
     const response = await axios.post(
       `${this.apiServerUrl}/api/faiss/ingest/moodle-materials/start`,
-      {},
+      { added_today: addedToday },
       { headers: { 'Content-Type': 'application/json' }, timeout: 30000 }
     );
     return response.data;
