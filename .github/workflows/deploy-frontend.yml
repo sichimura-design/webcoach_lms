@@ -49,6 +49,7 @@ jobs:
             --delete \
             --exclude "html-content/*" \
             --exclude "course-images/*" \
+            --exclude "materials/*" \
             --exclude "vector_db/*"
 
       - name: Invalidate CloudFront
