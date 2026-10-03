@@ -1,82 +1,50 @@
 const express = require('express');
 const router = express.Router();
+const requireAuth = require('../middleware/auth');
+const requireAdmin = require('../middleware/admin');
 const { createErrorResponse } = require('../utils/errorHandler');
 const apiServerAdapter = require('../adapters/ApiServerAdapter');
 
+// 教材索引の作り直しは管理者だけ（以前は未ログインでも呼べた）
+router.use(requireAuth, requireAdmin);
+
 /**
- * FAISS Ingestion - Ingest today's HTML files
+ * AIコーチの教材検索用の索引を作り直す（管理画面「全教材を登録」）
  *
- * パラメータなしで当日追加されたHTMLファイルをFAISSに取り込む
+ * Moodleの各コースに登録された教材をコースIDつきで取り込み、既存の索引を置き換える。
+ * 約670ページの取得に時間がかかりCloudFrontの60秒制限を超えうるので、開始だけしてすぐ返し、
+ * 進み具合は GET /ingest/status で確認する。
  */
-router.post('/ingest/today', async (req, res) => {
+router.post('/ingest/all', async (req, res) => {
   try {
-    const s3Bucket = process.env.S3_BUCKET_NAME;
-    const s3Prefix = process.env.S3_PREFIX || '';
-    const chunkSize = 1000;
-    const chunkOverlap = 200;
-
-    if (!s3Bucket) {
-      return res.status(500).json({
-        error: 'Configuration Error',
-        detail: 'S3_BUCKET_NAME environment variable is not set'
-      });
-    }
-
-    console.log(`[FAISS Ingest] Ingesting today's HTML files from s3://${s3Bucket}/${s3Prefix}`);
-
-    const result = await apiServerAdapter.ingestS3Today({
-      s3_bucket: s3Bucket,
-      s3_prefix: s3Prefix,
-      chunk_size: chunkSize,
-      chunk_overlap: chunkOverlap
-    });
-
-    res.json(result);
+    console.log(`[FAISS Ingest] Rebuild from Moodle materials requested by ${req.user?.email}`);
+    const result = await apiServerAdapter.startMoodleMaterialsRebuild();
+    res.status(202).json(result);
   } catch (error) {
-    console.error('[FAISS Ingest Today] Error:', error.message);
+    if (error.response?.status === 409) {
+      return res.status(409).json({ error: 'すでに登録処理が実行中です。完了までお待ちください' });
+    }
+    console.error('[FAISS Ingest All] Error:', error.message);
     const errorResponse = createErrorResponse(error, 'general', 500);
     res.status(500).json({
       ...errorResponse,
-      error: 'FAISS取り込み（当日分）に失敗しました'
+      error: '教材の登録を開始できませんでした'
     });
   }
 });
 
 /**
- * FAISS Ingestion - Ingest all HTML files
- *
- * パラメータなしで全HTMLファイルをFAISSに取り込む
+ * 索引作り直しの進み具合（status: idle | running | succeeded | failed）
  */
-router.post('/ingest/all', async (req, res) => {
+router.get('/ingest/status', async (req, res) => {
   try {
-    const s3Bucket = process.env.S3_BUCKET_NAME;
-    const s3Prefix = process.env.S3_PREFIX || '';
-    const chunkSize = 1000;
-    const chunkOverlap = 200;
-
-    if (!s3Bucket) {
-      return res.status(500).json({
-        error: 'Configuration Error',
-        detail: 'S3_BUCKET_NAME environment variable is not set'
-      });
-    }
-
-    console.log(`[FAISS Ingest] Ingesting all HTML files from s3://${s3Bucket}/${s3Prefix}`);
-
-    const result = await apiServerAdapter.ingestS3All({
-      s3_bucket: s3Bucket,
-      s3_prefix: s3Prefix,
-      chunk_size: chunkSize,
-      chunk_overlap: chunkOverlap
-    });
-
-    res.json(result);
+    res.json(await apiServerAdapter.getMoodleMaterialsRebuildStatus());
   } catch (error) {
-    console.error('[FAISS Ingest All] Error:', error.message);
+    console.error('[FAISS Ingest Status] Error:', error.message);
     const errorResponse = createErrorResponse(error, 'general', 500);
     res.status(500).json({
       ...errorResponse,
-      error: 'FAISS取り込み（全量）に失敗しました'
+      error: '教材の登録状況を取得できませんでした'
     });
   }
 });

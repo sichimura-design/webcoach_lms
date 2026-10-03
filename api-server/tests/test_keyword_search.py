@@ -199,3 +199,37 @@ def test_keyword_search_filters_by_course_after_rebuild():
     )
     result = index.search("Canvaのアカウント", course_id=69)
     assert result["documents"][0] == ["Canvaでバナーを作る"]
+
+
+def test_rebuild_job_runs_in_background_and_reports_progress(monkeypatch):
+    """管理画面用: 開始はすぐ返り、statusで進み具合と結果が見える。実行中の二重開始は409"""
+    import threading as _threading
+    import routers.faiss_ingest as ingest
+    from fastapi import HTTPException
+
+    release = _threading.Event()
+
+    def fake_rebuild(request, progress):
+        progress.update(phase='fetching', total_pages=2, fetched_pages=1)
+        release.wait(5)
+        return ingest.IngestResponse(success=True, message="ok", files_processed=2,
+                                     documents_added=3, faiss_total_vectors=3)
+
+    monkeypatch.setattr(ingest, "_rebuild_job", {'status': 'idle'})
+    monkeypatch.setattr(ingest, "_rebuild_from_moodle_materials", fake_rebuild)
+
+    started = ingest.start_rebuild_from_moodle_materials(ingest.MoodleMaterialsRebuildRequest())
+    assert started["status"] == "running"
+    with pytest.raises(HTTPException) as exc:
+        ingest.start_rebuild_from_moodle_materials(ingest.MoodleMaterialsRebuildRequest())
+    assert exc.value.status_code == 409
+
+    release.set()
+    for _ in range(100):
+        if ingest.get_rebuild_from_moodle_materials_status()["status"] != "running":
+            break
+        _threading.Event().wait(0.02)
+    done = ingest.get_rebuild_from_moodle_materials_status()
+    assert done["status"] == "succeeded"
+    assert done["fetched_pages"] == 1
+    assert done["result"]["documents_added"] == 3

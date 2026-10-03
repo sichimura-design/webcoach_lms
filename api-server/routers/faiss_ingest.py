@@ -5,6 +5,7 @@ This router provides endpoints to ingest HTML content from S3 into FAISS vector 
 """
 import os
 import logging
+import threading
 from typing import List, Dict, Any, Optional
 from datetime import datetime, timedelta
 from pathlib import Path
@@ -770,6 +771,112 @@ def _fetch_material_text(url: str) -> str:
     return TextProcessor.clean_html(response.content)
 
 
+def _rebuild_from_moodle_materials(request: MoodleMaterialsRebuildRequest, progress: Dict[str, Any]) -> IngestResponse:
+    """Moodleの教材HTMLを取得して索引を置き換える本体。進み具合をprogressに書く"""
+    from concurrent.futures import ThreadPoolExecutor
+
+    progress['phase'] = 'listing'
+    modules = fetch_moodle_material_modules(request.url_pattern, request.course_ids)
+    logger.info(f"Moodle material modules: {len(modules)}")
+    if not modules:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"No Moodle URL modules match {request.url_pattern}",
+        )
+
+    # 同じHTMLが複数コースにあるので、取得はURL単位で1回
+    urls = list(dict.fromkeys(m["url"] for m in modules))
+    texts: Dict[str, str] = {}
+    errors: List[str] = []
+    progress.update(phase='fetching', total_pages=len(urls), fetched_pages=0)
+
+    def fetch(url: str):
+        try:
+            return url, _fetch_material_text(url), None
+        except Exception as e:
+            return url, "", f"Failed to fetch {url}: {e}"
+
+    with ThreadPoolExecutor(max_workers=request.max_workers) as pool:
+        for url, text_content, error in pool.map(fetch, urls):
+            if error:
+                errors.append(error)
+            elif not text_content:
+                errors.append(f"No text content in {url}")
+            else:
+                texts[url] = text_content
+            progress['fetched_pages'] += 1
+
+    progress['phase'] = 'indexing'
+    processor = TextProcessor()
+    indexed_at = datetime.now().isoformat()
+    documents: List[str] = []
+    metadatas: List[Dict[str, Any]] = []
+    files_processed = 0
+    for module in modules:
+        text_content = texts.get(module["url"])
+        if not text_content:
+            continue
+        chunks = processor.chunk_text(text_content, request.chunk_size, request.chunk_overlap)
+        base_metadata = {
+            'source': 'moodle_url',
+            'course_id': module["course_id"],
+            'course_name': module["course_name"],
+            'section_name': module["section_name"] or '',
+            'section_no': module["section_no"],
+            # retrieve_nodeは参照元表示にmodule_nameを使う
+            'module_name': module["lesson_name"],
+            'cmid': module["cmid"],
+            'url': module["url"],
+            'filename': Path(module["url"]).name,
+            'indexed_at': indexed_at,
+        }
+        for i, chunk in enumerate(chunks):
+            documents.append(chunk)
+            metadatas.append({**base_metadata, 'chunk_index': i, 'total_chunks': len(chunks)})
+        files_processed += 1
+
+    if not documents:
+        raise HTTPException(
+            status_code=status.HTTP_502_BAD_GATEWAY,
+            detail=f"No material text could be fetched. errors={errors[:5]}",
+        )
+
+    manager = get_faiss_manager()
+    if request.course_ids:
+        targets = set(request.course_ids)
+        kept = [(d, m) for d, m in zip(manager.documents, manager.metadatas) if m.get('course_id') not in targets]
+    else:
+        kept = []
+    manager.documents = []
+    manager.metadatas = []
+    manager.index = None  # 埋め込みモードでも作り直す
+    if kept:
+        manager.add_documents([d for d, _ in kept], [m for _, m in kept])
+    manager.add_documents(documents, metadatas)
+    manager.save_and_upload()
+
+    global _faiss_manager
+    _faiss_manager = None
+    manager = get_faiss_manager()
+    stats = manager.get_stats()
+
+    # AIチャット側の検索(learning_coach_agent.vector_db)も読み直す
+    from agents.learning_coach_agent import reload_vector_db
+    reload_vector_db()
+
+    return IngestResponse(
+        success=len(errors) == 0,
+        message=(
+            f"Rebuilt index from {files_processed} Moodle modules ({len(texts)} unique pages), "
+            f"{len(documents)} chunks" + (f", kept {len(kept)} chunks of other courses" if kept else "")
+        ),
+        files_processed=files_processed,
+        documents_added=len(documents),
+        faiss_total_vectors=stats['total_vectors'] or stats['total_documents'],
+        errors=errors if errors else None,
+    )
+
+
 @router.post(
     "/ingest/moodle-materials",
     response_model=IngestResponse,
@@ -782,107 +889,10 @@ def rebuild_from_moodle_materials(request: MoodleMaterialsRebuildRequest):
     コースで絞ると0件になる。既存の索引（metadata.json）はすべて置き換える。
 
     course_idsを指定した場合は、そのコースのチャンクだけを入れ替え、他コースのチャンクは残す。
+    完了まで待つ版。管理画面からは時間制限(CloudFront 60秒)があるので /start と /status を使う。
     """
-    from concurrent.futures import ThreadPoolExecutor
-
     try:
-        modules = fetch_moodle_material_modules(request.url_pattern, request.course_ids)
-        logger.info(f"Moodle material modules: {len(modules)}")
-        if not modules:
-            raise HTTPException(
-                status_code=status.HTTP_404_NOT_FOUND,
-                detail=f"No Moodle URL modules match {request.url_pattern}",
-            )
-
-        # 同じHTMLが複数コースにあるので、取得はURL単位で1回
-        urls = list(dict.fromkeys(m["url"] for m in modules))
-        texts: Dict[str, str] = {}
-        errors: List[str] = []
-
-        def fetch(url: str):
-            try:
-                return url, _fetch_material_text(url), None
-            except Exception as e:
-                return url, "", f"Failed to fetch {url}: {e}"
-
-        with ThreadPoolExecutor(max_workers=request.max_workers) as pool:
-            for url, text_content, error in pool.map(fetch, urls):
-                if error:
-                    errors.append(error)
-                elif not text_content:
-                    errors.append(f"No text content in {url}")
-                else:
-                    texts[url] = text_content
-
-        processor = TextProcessor()
-        indexed_at = datetime.now().isoformat()
-        documents: List[str] = []
-        metadatas: List[Dict[str, Any]] = []
-        files_processed = 0
-        for module in modules:
-            text_content = texts.get(module["url"])
-            if not text_content:
-                continue
-            chunks = processor.chunk_text(text_content, request.chunk_size, request.chunk_overlap)
-            base_metadata = {
-                'source': 'moodle_url',
-                'course_id': module["course_id"],
-                'course_name': module["course_name"],
-                'section_name': module["section_name"] or '',
-                'section_no': module["section_no"],
-                # retrieve_nodeは参照元表示にmodule_nameを使う
-                'module_name': module["lesson_name"],
-                'cmid': module["cmid"],
-                'url': module["url"],
-                'filename': Path(module["url"]).name,
-                'indexed_at': indexed_at,
-            }
-            for i, chunk in enumerate(chunks):
-                documents.append(chunk)
-                metadatas.append({**base_metadata, 'chunk_index': i, 'total_chunks': len(chunks)})
-            files_processed += 1
-
-        if not documents:
-            raise HTTPException(
-                status_code=status.HTTP_502_BAD_GATEWAY,
-                detail=f"No material text could be fetched. errors={errors[:5]}",
-            )
-
-        manager = get_faiss_manager()
-        if request.course_ids:
-            targets = set(request.course_ids)
-            kept = [(d, m) for d, m in zip(manager.documents, manager.metadatas) if m.get('course_id') not in targets]
-        else:
-            kept = []
-        manager.documents = []
-        manager.metadatas = []
-        manager.index = None  # 埋め込みモードでも作り直す
-        if kept:
-            manager.add_documents([d for d, _ in kept], [m for _, m in kept])
-        manager.add_documents(documents, metadatas)
-        manager.save_and_upload()
-
-        global _faiss_manager
-        _faiss_manager = None
-        manager = get_faiss_manager()
-        stats = manager.get_stats()
-
-        # AIチャット側の検索(learning_coach_agent.vector_db)も読み直す
-        from agents.learning_coach_agent import reload_vector_db
-        reload_vector_db()
-
-        return IngestResponse(
-            success=len(errors) == 0,
-            message=(
-                f"Rebuilt index from {files_processed} Moodle modules ({len(texts)} unique pages), "
-                f"{len(documents)} chunks" + (f", kept {len(kept)} chunks of other courses" if kept else "")
-            ),
-            files_processed=files_processed,
-            documents_added=len(documents),
-            faiss_total_vectors=stats['total_vectors'] or stats['total_documents'],
-            errors=errors if errors else None,
-        )
-
+        return _rebuild_from_moodle_materials(request, {})
     except HTTPException:
         raise
     except Exception as e:
@@ -891,6 +901,49 @@ def rebuild_from_moodle_materials(request: MoodleMaterialsRebuildRequest):
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail=f"Failed to rebuild index from Moodle materials: {str(e)}"
         )
+
+
+# 管理画面からの再構築ジョブ（同時に1つだけ）。プロセス内の状態なので、複数プロセス化したら
+# 共有ストアへ移す（project_dify-redis-migration-todoと同じ課題）
+_rebuild_job: Dict[str, Any] = {'status': 'idle'}
+_rebuild_job_lock = threading.Lock()
+
+
+def _run_rebuild_job(request: MoodleMaterialsRebuildRequest) -> None:
+    try:
+        result = _rebuild_from_moodle_materials(request, _rebuild_job)
+        _rebuild_job.update(status='succeeded', result=result.model_dump())
+    except HTTPException as e:
+        _rebuild_job.update(status='failed', error=str(e.detail))
+    except Exception as e:
+        logger.error(f"Moodle materials rebuild job failed: {e}", exc_info=True)
+        _rebuild_job.update(status='failed', error=str(e))
+    finally:
+        _rebuild_job['finished_at'] = datetime.now().isoformat()
+
+
+@router.post(
+    "/ingest/moodle-materials/start",
+    status_code=status.HTTP_202_ACCEPTED,
+    summary="Moodle教材からの索引再構築をバックグラウンドで開始する"
+)
+def start_rebuild_from_moodle_materials(request: MoodleMaterialsRebuildRequest):
+    """再構築を別スレッドで始めてすぐ返す。進み具合は /ingest/moodle-materials/status で見る"""
+    with _rebuild_job_lock:
+        if _rebuild_job.get('status') == 'running':
+            raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="Rebuild is already running")
+        _rebuild_job.clear()
+        _rebuild_job.update(status='running', phase='starting', started_at=datetime.now().isoformat())
+    threading.Thread(target=_run_rebuild_job, args=(request,), daemon=True).start()
+    return dict(_rebuild_job)
+
+
+@router.get(
+    "/ingest/moodle-materials/status",
+    summary="Moodle教材からの索引再構築の進み具合"
+)
+def get_rebuild_from_moodle_materials_status():
+    return dict(_rebuild_job)
 
 
 @router.get(

@@ -425,31 +425,24 @@ class ApiServerAdapter {
   }
 
   /**
-   * Ingest today's HTML files from S3 to FAISS (simplified)
+   * Moodleの教材から教材検索の索引を作り直す（バックグラウンドで開始してすぐ返る）
    */
-  async ingestS3Today(params) {
+  async startMoodleMaterialsRebuild() {
     const response = await axios.post(
-      `${this.apiServerUrl}/api/faiss/ingest/s3-today`,
-      params,
-      {
-        headers: { 'Content-Type': 'application/json' },
-        timeout: 300000 // 5 minutes for ingestion operations
-      }
+      `${this.apiServerUrl}/api/faiss/ingest/moodle-materials/start`,
+      {},
+      { headers: { 'Content-Type': 'application/json' }, timeout: 30000 }
     );
     return response.data;
   }
 
   /**
-   * Ingest all HTML files from S3 to FAISS
+   * 索引作り直しの進み具合
    */
-  async ingestS3All(params) {
-    const response = await axios.post(
-      `${this.apiServerUrl}/api/faiss/ingest/s3-all`,
-      params,
-      {
-        headers: { 'Content-Type': 'application/json' },
-        timeout: 600000 // 10 minutes for full ingestion operations
-      }
+  async getMoodleMaterialsRebuildStatus() {
+    const response = await axios.get(
+      `${this.apiServerUrl}/api/faiss/ingest/moodle-materials/status`,
+      { timeout: 10000 }
     );
     return response.data;
   }

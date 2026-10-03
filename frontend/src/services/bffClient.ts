@@ -1,5 +1,6 @@
 import axios, { AxiosInstance } from 'axios';
 import type { AiApplication, AiApplicationIntro } from '../types/aiApplication';
+import type { MaterialIndexRebuildStatus } from '../types/materialIndex';
 import {
   UserInfo,
   Category,
@@ -1565,20 +1566,20 @@ class BFFClient {
   }
 
   /**
-   * 当日追加した教材をFAISSベクターDBに登録
-   * POST /api/faiss/ingest/today
+   * 教材検索の索引を、Moodleの各コースの教材から作り直す（開始だけしてすぐ返る）
+   * POST /api/faiss/ingest/all
    */
-  async faissIngestToday(): Promise<any> {
-    const response = await this.api.post('/faiss/ingest/today');
+  async faissIngestAll(): Promise<MaterialIndexRebuildStatus> {
+    const response = await this.api.post('/faiss/ingest/all');
     return response.data;
   }
 
   /**
-   * 全教材をFAISSベクターDBに登録
-   * POST /api/faiss/ingest/all
+   * 索引作り直しの進み具合
+   * GET /api/faiss/ingest/status
    */
-  async faissIngestAll(): Promise<any> {
-    const response = await this.api.post('/faiss/ingest/all');
+  async getFaissIngestStatus(): Promise<MaterialIndexRebuildStatus> {
+    const response = await this.api.get('/faiss/ingest/status');
     return response.data;
   }
 
