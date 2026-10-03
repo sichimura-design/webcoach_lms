@@ -870,6 +870,43 @@ export function AiCoachPane({
               <span>{TYPED_REPLY_HINT}</span>
             </p>
           )}
+          {/* モード中は発言がすべてそのアプリへ送られる（関係ない質問もアプリが答えてしまう）。
+              抜け道が＋メニューの「おまかせ」だけで気付かれなかったので、入力欄の上に終了を置く。
+              おまかせに戻すと serverKey も作り直され、サーバー側のアプリ固定も切れる。 */}
+          {specialistMeta && isSpecialistSkill(ai.skillId) && (
+            <div
+              className="flex items-center"
+              style={{ gap: 6, margin: '0 0 6px', fontSize: 10.5, color: color.textMuted }}
+            >
+              <span style={{ flex: 1, minWidth: 0 }}>
+                <strong style={{ color: color.primary }}>{catalog.labelOf(ai.skillId)}</strong>
+                に送っています
+              </span>
+              <button
+                type="button"
+                onClick={() => (onPickSkill ?? ai.selectSkill)('auto')}
+                disabled={ai.loading}
+                className="wc-ai-chip inline-flex items-center focus-visible:ring-2 focus-visible:ring-[#F6B9BD]"
+                style={{
+                  gap: 3,
+                  height: 24,
+                  padding: '0 9px 0 7px',
+                  border: `1px solid ${color.border}`,
+                  borderRadius: 8,
+                  background: color.surface,
+                  color: color.textMuted,
+                  fontFamily: 'inherit',
+                  fontSize: 10.5,
+                  fontWeight: 700,
+                  cursor: ai.loading ? 'default' : 'pointer',
+                  opacity: ai.loading ? 0.5 : 1,
+                  flexShrink: 0,
+                }}
+              >
+                <X size={11} /> モードを終了
+              </button>
+            </div>
+          )}
           {/* 🔴 overflow:hidden を付けない。＋メニューが absolute で上へ開くので切れる
                 （AiCoachHome の入力欄にも同じ注意書きがある）。
                 textarea の角は自前で丸めているので、はみ出しの心配はない。 */}

@@ -11,6 +11,7 @@
  */
 import { act, createElement } from 'react';
 import { createRoot } from 'react-dom/client';
+import { introNeedsDisplay } from '../types/aiApplication';
 import type { AiApplication, AiApplicationIntro } from '../types/aiApplication';
 import { useAiCoachStore } from '../store/aiCoachStore';
 import { appInputsReady, useLessonAi, UseLessonAi } from './useLessonAi';
@@ -138,17 +139,28 @@ test('選択肢のあるアプリのモードに入ると、Difyに送らずに�
   expect(intros).toHaveLength(1);
 });
 
-test('選択肢の無いアプリは挨拶文を出さず、opening_shown も付けない', async () => {
+test('選択肢の無いアプリも挨拶文を先に出し、最初の応答に挨拶文を付け直させない', async () => {
+  // 先に出さないと、サーバーが最初の応答の頭に挨拶文（「〜を教えてください」）を付け、
+  // 同じ吹き出しでアプリの「ありがとうございます」が続いて、入力を待たずに進んだように見えた
   const id = useAiCoachStore.getState().createSkillSession({ skillId: 'copy' });
   const ai = await render(id);
-  expect(ai.current.messages.filter((m) => m.role === 'assistant')).toHaveLength(0);
+  const assistants = ai.current.messages.filter((m) => m.role === 'assistant');
+  expect(assistants).toHaveLength(1);
+  expect(assistants[0].answer?.conclusion).toBe('商品を入力してください');
+  expect(api.sendAIMessage).not.toHaveBeenCalled();
 
   await act(async () => {
     await ai.current.send('オンライン英会話');
   });
   const req = api.sendAIMessage.mock.calls[0][0];
   expect(req.force_app_key).toBe('catchcopy-idea-maker');
-  expect(req.opening_shown).toBeUndefined();
+  expect(req.opening_shown).toBe(true);
+});
+
+test('挨拶文も選択肢も入力欄も無いアプリは入口を出さない', () => {
+  expect(
+    introNeedsDisplay({ app_key: 'x', opening_statement: '  ', suggested_questions: [], has_choices: false, message: '' })
+  ).toBe(false);
 });
 
 test('提案カードを受け入れても、直前の発言を流れのあるアプリへ送らず、選択肢を出す', async () => {

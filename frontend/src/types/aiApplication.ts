@@ -56,6 +56,10 @@ export interface AiApplicationInputField {
   max_length?: number | null;
 }
 
-/** 選択肢か開始前の入力欄があるアプリは、モードに入った時点で入口（挨拶文・選択肢・入力欄）を出す */
+/**
+ * 挨拶文・選択肢・開始前の入力欄のどれかがあるアプリは、モードに入った時点で入口を出す。
+ * 選択肢の無いアプリも挨拶文は先に出す。出さないとサーバーが最初の応答の頭に挨拶文を付け、
+ * 「〜を教えてください」の直後に同じ吹き出しでアプリの「ありがとうございます」が続いてしまう。
+ */
 export const introNeedsDisplay = (intro: AiApplicationIntro | null | undefined): boolean =>
-  !!intro && (intro.has_choices || (intro.inputs?.length ?? 0) > 0);
+  !!intro && (!!intro.opening_statement?.trim() || intro.has_choices || (intro.inputs?.length ?? 0) > 0);
