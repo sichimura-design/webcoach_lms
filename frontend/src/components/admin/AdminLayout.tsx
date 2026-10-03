@@ -54,7 +54,7 @@ export const AdminLayout: React.FC = () => {
         </aside>
 
         {/* Main content */}
-        <main className="flex-1 p-6 sm:p-8">
+        <main className="flex-1 min-w-0 p-6 sm:p-8">
           <Outlet />
         </main>
       </div>
