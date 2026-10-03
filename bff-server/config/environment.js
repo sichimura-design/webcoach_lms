@@ -50,6 +50,8 @@ const config = {
   // to verified addresses; see memory/ses-sandbox-release.md), so this should
   // stay off there until that's resolved.
   reminderEnabled: process.env.REMINDER_ENABLED === 'true',
+  // タスクが複数あるとき(本番)、定期処理をapi-serverが決めた担当の1台だけで動かす
+  schedulerLeaderElection: process.env.SCHEDULER_LEADER_ELECTION === 'true',
   reminderIntervalMinutes: parseInt(process.env.REMINDER_INTERVAL_MINUTES || '60', 10),
   reminderSenderEmail: process.env.REMINDER_SENDER_EMAIL || 'noreply@webcoach.jp',
 

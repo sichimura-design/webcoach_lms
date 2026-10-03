@@ -20,6 +20,7 @@ const logger = require('./utils/logger');
 const authService = require('./services/AuthService');
 const transcriptSyncService = require('./services/TranscriptSyncService');
 const reminderService = require('./services/ReminderService');
+const apiServerAdapter = require('./adapters/ApiServerAdapter');
 
 // Middleware
 const { cookieLogging, auditLogging, rawBodyLogging } = require('./middleware/logging');
@@ -146,7 +147,6 @@ app.get('/health', async (req, res) => {
   }
 
   // Check API Server connection
-  const apiServerAdapter = require('./adapters/ApiServerAdapter');
   try {
     await apiServerAdapter.healthCheck();
     health.checks.apiServer = { status: 'ok' };
@@ -225,6 +225,21 @@ app.use((req, res) => {
 
 // ==================== SERVER STARTUP ====================
 
+/**
+ * 定期処理を1回実行する。タスクが複数ある本番では、api-serverが担当と決めたタスクだけが実行する
+ * (両方で走ると議事録の重複登録やリマインドメールの二重送信になる)。
+ */
+async function runIfSchedulerLeader(label, job) {
+  try {
+    if (config.schedulerLeaderElection && !(await apiServerAdapter.claimSchedulerLeader())) {
+      return;
+    }
+    await job();
+  } catch (err) {
+    logger.error(`[${label}] Periodic run failed:`, err.message);
+  }
+}
+
 if (require.main === module) {
   // Initialize service account and start server
   loadGoogleOAuthClientCredentials()
@@ -237,9 +252,7 @@ if (require.main === module) {
       if (config.transcriptSyncEnabled) {
         const intervalMs = config.transcriptSyncIntervalMinutes * 60 * 1000;
         setInterval(() => {
-          transcriptSyncService.syncPendingTranscripts().catch(err => {
-            logger.error('[TranscriptSync] Periodic sync failed:', err.message);
-          });
+          runIfSchedulerLeader('TranscriptSync', () => transcriptSyncService.syncPendingTranscripts());
         }, intervalMs);
         logger.log(`Transcript sync: enabled (every ${config.transcriptSyncIntervalMinutes} min)`);
       }
@@ -248,9 +261,7 @@ if (require.main === module) {
       if (config.reminderEnabled) {
         const intervalMs = config.reminderIntervalMinutes * 60 * 1000;
         setInterval(() => {
-          reminderService.sendPendingReminders().catch(err => {
-            logger.error('[Reminder] Periodic send failed:', err.message);
-          });
+          runIfSchedulerLeader('Reminder', () => reminderService.sendPendingReminders());
         }, intervalMs);
         logger.log(`Coaching reminders: enabled (every ${config.reminderIntervalMinutes} min)`);
       }

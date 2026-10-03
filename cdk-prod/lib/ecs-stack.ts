@@ -317,6 +317,8 @@ export class ProdEcsStack extends cdk.Stack {
         API_PARAMETER_STORE_PREFIX: apiParamPrefix,
         ECS_CLUSTER_NAME: `${envName}-lms-cluster`,
         ECS_SERVICE_NAME: lmsServiceName,
+        // タスクが2台あるので、議事録の取得・リマインドメールはapi-serverが決めた1台だけで動かす
+        SCHEDULER_LEADER_ELECTION: 'true',
         MOODLE_SERVICE_NAME: moodleServiceName ?? 'moodle-api-service',
         MOODLE_SERVICE_USERNAME: moodleServiceUsername ?? 'admin',
         ALLOWED_ORIGINS: allowedOrigins ?? '',

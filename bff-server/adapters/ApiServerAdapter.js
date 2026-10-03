@@ -12,6 +12,18 @@ class ApiServerAdapter {
   }
 
   /**
+   * このタスクが定期処理の担当か（担当がいなければ担当になる）
+   */
+  async claimSchedulerLeader() {
+    const response = await axios.post(
+      `${this.apiServerUrl}/api/scheduler/leader`,
+      {},
+      { timeout: 10000 }
+    );
+    return response.data.leader === true;
+  }
+
+  /**
    * api-serverが今使っている動作設定の値（管理画面の「動作設定」用）
    */
   async getRuntimeSettings() {
