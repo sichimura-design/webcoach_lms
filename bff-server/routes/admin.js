@@ -12,6 +12,7 @@ const cognitoAdapter = require('../adapters/CognitoAdapter');
 const s3Adapter = require('../adapters/S3Adapter');
 const moodleAdapter = require('../adapters/MoodleAdapter');
 const apiServerAdapter = require('../adapters/ApiServerAdapter');
+const runtimeSettingsService = require('../services/RuntimeSettingsService');
 const { createErrorResponse } = require('../utils/errorHandler');
 const { formatLastAccess } = require('../utils/timeCalculator');
 
@@ -383,6 +384,67 @@ router.get('/students', requireAuth, async (req, res) => {
     console.error('[Admin/Coach] Error stack:', error.stack);
     const errorResponse = createErrorResponse(error, 'moodle', 500);
     res.status(500).json(errorResponse);
+  }
+});
+
+// ==================== RUNTIME SETTINGS ====================
+
+function sendRuntimeSettingsError(res, error, context) {
+  if (error.statusCode) {
+    return res.status(error.statusCode).json({ success: false, message: error.message });
+  }
+  console.error(`[RuntimeSettings] ${context}:`, error);
+  return res.status(500).json(createErrorResponse(error, 'runtime-settings'));
+}
+
+/**
+ * GET /api/admin/runtime-settings
+ * 動作設定の一覧(今の値・保存値・再起動待ちか)
+ */
+router.get('/runtime-settings', requireAuth, requireAdmin, async (req, res) => {
+  try {
+    res.json(await runtimeSettingsService.list());
+  } catch (error) {
+    sendRuntimeSettingsError(res, error, 'list');
+  }
+});
+
+/**
+ * PUT /api/admin/runtime-settings/:name
+ * Parameter Storeに保存する(本番のみ)。反映には再起動が要る
+ */
+router.put('/runtime-settings/:name', requireAuth, requireAdmin, async (req, res) => {
+  try {
+    await runtimeSettingsService.update(req.params.name, req.body?.value, req.user?.email);
+    res.json({ success: true });
+  } catch (error) {
+    sendRuntimeSettingsError(res, error, 'update');
+  }
+});
+
+/**
+ * DELETE /api/admin/runtime-settings/:name
+ * 保存値を消して既定値に戻す(本番のみ)
+ */
+router.delete('/runtime-settings/:name', requireAuth, requireAdmin, async (req, res) => {
+  try {
+    await runtimeSettingsService.reset(req.params.name, req.user?.email);
+    res.json({ success: true });
+  } catch (error) {
+    sendRuntimeSettingsError(res, error, 'reset');
+  }
+});
+
+/**
+ * POST /api/admin/runtime-settings/restart
+ * ECSサービスを入れ替え起動して保存値を反映する(本番のみ)
+ */
+router.post('/runtime-settings/restart', requireAuth, requireAdmin, async (req, res) => {
+  try {
+    await runtimeSettingsService.restart(req.user?.email);
+    res.status(202).json({ success: true });
+  } catch (error) {
+    sendRuntimeSettingsError(res, error, 'restart');
   }
 });
 

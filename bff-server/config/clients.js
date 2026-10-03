@@ -8,6 +8,8 @@ const { CognitoIdentityProviderClient } = require('@aws-sdk/client-cognito-ident
 const { S3Client } = require('@aws-sdk/client-s3');
 const { SecretsManagerClient } = require('@aws-sdk/client-secrets-manager');
 const { SESClient } = require('@aws-sdk/client-ses');
+const { SSMClient } = require('@aws-sdk/client-ssm');
+const { ECSClient } = require('@aws-sdk/client-ecs');
 const { config } = require('./environment');
 
 let jwtVerifierInstance = null;
@@ -15,6 +17,8 @@ let cognitoClientInstance = null;
 let s3ClientInstance = null;
 let secretsManagerClientInstance = null;
 let sesClientInstance = null;
+let ssmClientInstance = null;
+let ecsClientInstance = null;
 
 /**
  * Get or create Cognito JWT Verifier instance (singleton)
@@ -78,10 +82,36 @@ function getSesClient() {
   return sesClientInstance;
 }
 
+/**
+ * Get or create SSM (Parameter Store) Client instance (singleton)
+ */
+function getSsmClient() {
+  if (!ssmClientInstance) {
+    ssmClientInstance = new SSMClient({
+      region: config.cognitoRegion
+    });
+  }
+  return ssmClientInstance;
+}
+
+/**
+ * Get or create ECS Client instance (singleton)
+ */
+function getEcsClient() {
+  if (!ecsClientInstance) {
+    ecsClientInstance = new ECSClient({
+      region: config.cognitoRegion
+    });
+  }
+  return ecsClientInstance;
+}
+
 module.exports = {
   getCognitoJwtVerifier,
   getCognitoClient,
   getS3Client,
   getSecretsManagerClient,
-  getSesClient
+  getSesClient,
+  getSsmClient,
+  getEcsClient
 };

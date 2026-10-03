@@ -16,9 +16,11 @@
   "license": "ISC",
   "dependencies": {
     "@aws-sdk/client-cognito-identity-provider": "^3.997.0",
+    "@aws-sdk/client-ecs": "^3.1146.0",
     "@aws-sdk/client-s3": "^3.997.0",
     "@aws-sdk/client-secrets-manager": "^3.1124.0",
     "@aws-sdk/client-ses": "^3.997.0",
+    "@aws-sdk/client-ssm": "^3.1146.0",
     "aws-jwt-verify": "^4.0.1",
     "axios": "^1.6.0",
     "cors": "^2.8.5",

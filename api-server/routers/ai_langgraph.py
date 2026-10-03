@@ -22,6 +22,7 @@ from agents.learning_coach_agent import get_learning_coach_graph
 from agents.state import LearningCoachState
 from agents.run_control import ChatCancelled, ChatRun, cancel_run, finish_run, start_run
 from agents.usage_log import log_ai_usage
+import runtime_settings
 
 # ログ設定
 logging.basicConfig(level=logging.INFO)
@@ -247,9 +248,9 @@ def _run_chat_job(job_id: str, request: ChatRequest, run: ChatRun) -> None:
 
 
 # 1リクエストあたりの入力（今回の発言+会話履歴）の推定トークン上限
-MAX_INPUT_TOKENS = int(os.getenv("AI_CHAT_MAX_INPUT_TOKENS", "5000"))
+MAX_INPUT_TOKENS = runtime_settings.get_int("AI_CHAT_MAX_INPUT_TOKENS")
 # 会話履歴の1件あたりの上限文字数。案件一覧のような長い回答は先頭だけ残す
-MAX_HISTORY_MESSAGE_CHARS = int(os.getenv("AI_CHAT_MAX_HISTORY_MESSAGE_CHARS", "1200"))
+MAX_HISTORY_MESSAGE_CHARS = runtime_settings.get_int("AI_CHAT_MAX_HISTORY_MESSAGE_CHARS")
 
 
 def _fit_history(history: List[dict], budget: int) -> "tuple[List[dict], int]":

@@ -39,6 +39,7 @@ import { AdminCoachMappingPage } from '../components/admin/AdminCoachMappingPage
 // /webcoach/meeting-connections* がBFFに未実装(モックのみ)でいったん没。
 // TODO(バックエンド未実装): 実装され次第 /admin/coach-integrations ルートへ再接続する。
 import { AdminSettingsPage } from '../components/admin/AdminSettingsPage';
+import { AdminRuntimeSettingsPage } from '../components/admin/AdminRuntimeSettingsPage';
 import { CoachStudentsPage } from '../components/coach/CoachStudentsPage';
 import { CoachingSchedulePage } from '../components/coach/CoachingSchedulePage';
 import { CoachSettingsPage } from '../components/coach/CoachSettingsPage';
@@ -531,6 +532,7 @@ function AppRoutes() {
         <Route path="vector-data" element={<AdminVectorPage />} />
         <Route path="coach-mapping" element={<AdminCoachMappingPage />} />
         <Route path="settings" element={<AdminSettingsPage />} />
+        <Route path="runtime-settings" element={<AdminRuntimeSettingsPage />} />
       </Route>
 
       <Route

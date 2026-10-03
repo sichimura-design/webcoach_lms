@@ -246,6 +246,29 @@ function newRunId(): string {
     : `${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 12)}`;
 }
 
+
+export interface RuntimeSetting {
+  name: string;
+  service: 'api-server' | 'bff-server';
+  group: string;
+  label: string;
+  description: string;
+  defaultValue: number;
+  min: number;
+  max: number;
+  /** このプロセスで使っている値。api-serverに届かないときはnull */
+  current: number | null;
+  /** Parameter Storeの保存値。無ければnull(既定値) */
+  saved: number | null;
+  pendingRestart: boolean;
+}
+
+export interface RuntimeSettingsResponse {
+  editable: boolean;
+  restart: { available: boolean; inProgress?: boolean; runningCount?: number; desiredCount?: number };
+  settings: RuntimeSetting[];
+}
+
 class BFFClient {
   private api: AxiosInstance;
 
@@ -1810,6 +1833,29 @@ class BFFClient {
   async getMeetingIntegrationAuthorizeUrl(provider: 'zoom' | 'google'): Promise<{ authorizeUrl: string }> {
     const response = await this.api.get(`/integrations/${provider}/authorize`);
     return response.data;
+  }
+
+  /**
+   * 動作設定の一覧（管理者のみ）。editable=falseの環境(dev/uat)では今の値を見るだけ
+   */
+  async getRuntimeSettings(): Promise<RuntimeSettingsResponse> {
+    const response = await this.api.get('/admin/runtime-settings');
+    return response.data;
+  }
+
+  /** 動作設定をParameter Storeに保存する（本番のみ・反映には再起動が要る） */
+  async updateRuntimeSetting(name: string, value: number): Promise<void> {
+    await this.api.put(`/admin/runtime-settings/${encodeURIComponent(name)}`, { value: String(value) });
+  }
+
+  /** 動作設定の保存値を消して既定値に戻す（本番のみ） */
+  async resetRuntimeSetting(name: string): Promise<void> {
+    await this.api.delete(`/admin/runtime-settings/${encodeURIComponent(name)}`);
+  }
+
+  /** ECSサービスを再起動して保存した動作設定を反映する（本番のみ） */
+  async restartForRuntimeSettings(): Promise<void> {
+    await this.api.post('/admin/runtime-settings/restart');
   }
 
   /**

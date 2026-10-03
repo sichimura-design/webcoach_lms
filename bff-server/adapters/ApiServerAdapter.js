@@ -12,6 +12,17 @@ class ApiServerAdapter {
   }
 
   /**
+   * api-serverが今使っている動作設定の値（管理画面の「動作設定」用）
+   */
+  async getRuntimeSettings() {
+    const response = await axios.get(
+      `${this.apiServerUrl}/api/runtime-settings`,
+      { timeout: 5000 }
+    );
+    return response.data.values;
+  }
+
+  /**
    * Get profile
    */
   async getProfile(userid) {

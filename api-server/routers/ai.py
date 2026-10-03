@@ -18,6 +18,7 @@ from dto.request.ai import AIRequest
 from dto.response.ai import AIResponse, AISource, ToolCallResult
 from vector_db import get_vector_db_retriever, VectorDBRetriever
 from tools import get_tools_description, execute_tool_call
+import runtime_settings
 
 # ログ設定
 logging.basicConfig(level=logging.INFO)
@@ -47,7 +48,7 @@ def initialize_ai_components():
                     model=model_name,
                     anthropic_api_key=anthropic_api_key,
                     temperature=0.3,
-                    max_tokens=int(os.getenv('AI_LEGACY_CHAT_MAX_OUTPUT_TOKENS', '2048'))
+                    max_tokens=runtime_settings.get_int("AI_LEGACY_CHAT_MAX_OUTPUT_TOKENS")
                 )
                 logger.info(f"Claude LLM initialized successfully with model: {model_name}")
             except Exception as e:

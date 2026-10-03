@@ -236,6 +236,21 @@ export class ProdEcsStack extends cdk.Stack {
       ]),
     }));
 
+    // 管理画面の「動作設定」(BFFのRuntimeSettingsService)から、config/配下の保存・削除と、
+    // 反映のためのサービス再起動(forceNewDeployment)を行う。触れるのはこのサービスとconfig/配下だけ
+    const lmsServiceName = `${envName}-lms-service`;
+    taskDef.addToTaskRolePolicy(new iam.PolicyStatement({
+      actions: ['ssm:PutParameter', 'ssm:DeleteParameter'],
+      resources: [apiParamPrefix, bffParamPrefix].map(
+        (prefix) => `arn:aws:ssm:${this.region}:${this.account}:parameter${prefix}/config/*`,
+      ),
+    }));
+    taskDef.addToTaskRolePolicy(new iam.PolicyStatement({
+      actions: ['ecs:DescribeServices', 'ecs:UpdateService'],
+      // serviceを直接参照するとタスク定義との循環参照になるので、ARNを名前から組み立てる
+      resources: [`arn:aws:ecs:${this.region}:${this.account}:service/${envName}-lms-cluster/${lmsServiceName}`],
+    }));
+
     // ----------------------------------------
     // 各コンテナイメージ: webcoach-lms リポジトリのタグで区別
     // ----------------------------------------
@@ -278,6 +293,10 @@ export class ProdEcsStack extends cdk.Stack {
         API_SERVER_URL: 'http://localhost:8001',
         USE_PARAMETER_STORE: 'true',
         PARAMETER_STORE_PREFIX: bffParamPrefix,
+        // 動作設定の画面がapi-server側の設定も保存し、再起動するため
+        API_PARAMETER_STORE_PREFIX: apiParamPrefix,
+        ECS_CLUSTER_NAME: `${envName}-lms-cluster`,
+        ECS_SERVICE_NAME: lmsServiceName,
         MOODLE_SERVICE_NAME: moodleServiceName ?? 'moodle-api-service',
         MOODLE_SERVICE_USERNAME: moodleServiceUsername ?? 'admin',
         ALLOWED_ORIGINS: allowedOrigins ?? '',
@@ -487,7 +506,7 @@ export class ProdEcsStack extends cdk.Stack {
     const service = new ecs.Ec2Service(this, 'Service', {
       cluster,
       taskDefinition: taskDef,
-      serviceName: `${envName}-lms-service`,
+      serviceName: lmsServiceName,
       desiredCount,
       minHealthyPercent: 50,
       maxHealthyPercent: 100,

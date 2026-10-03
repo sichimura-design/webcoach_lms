@@ -14,6 +14,8 @@ from typing import Any, Dict, List, Optional
 from langchain_anthropic import ChatAnthropic
 from langchain_core.messages import HumanMessage, SystemMessage
 
+import runtime_settings
+
 logger = logging.getLogger(__name__)
 
 NOTE_FIELDS = [
@@ -66,7 +68,7 @@ def _get_llm() -> ChatAnthropic:
             # 8項目を日本語JSONで一度に返すため長めにとる。途中で切れるとJSONが閉じず
             # 全体がパース失敗になる。ただし大きくしすぎると、BFFの待ち時間(30秒)を超えて
             # タイムアウトする（生成を待つ時間は出力の長さにほぼ比例する）
-            max_tokens=int(os.getenv("COACHING_NOTE_MAX_OUTPUT_TOKENS", "4096")),
+            max_tokens=runtime_settings.get_int("COACHING_NOTE_MAX_OUTPUT_TOKENS"),
         )
         logger.info(f"Coaching note generator LLM initialized with model: {model_name}")
     return _llm

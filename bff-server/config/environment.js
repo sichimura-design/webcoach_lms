@@ -51,6 +51,14 @@ const config = {
   reminderIntervalMinutes: parseInt(process.env.REMINDER_INTERVAL_MINUTES || '60', 10),
   reminderSenderEmail: process.env.REMINDER_SENDER_EMAIL || 'noreply@webcoach.jp',
 
+  // 管理画面の「動作設定」(RuntimeSettingsService)。本番だけParameter Storeに保存でき、
+  // 反映はECSサービスの再起動で行う。dev/uatは.envの値を読み取り専用で表示する
+  useParameterStore: process.env.USE_PARAMETER_STORE === 'true',
+  bffParameterStorePrefix: process.env.PARAMETER_STORE_PREFIX || '',
+  apiParameterStorePrefix: process.env.API_PARAMETER_STORE_PREFIX || '',
+  ecsClusterName: process.env.ECS_CLUSTER_NAME || '',
+  ecsServiceName: process.env.ECS_SERVICE_NAME || '',
+
   // Content Token
   contentTokenSecret: process.env.CONTENT_TOKEN_SECRET,
 

@@ -15,6 +15,7 @@ from agents.run_control import ChatCancelled, check_cancelled, get_run
 from agents.state import LearningCoachState
 from agents.tools_langchain import create_bff_tools
 from vector_db import get_vector_db_retriever, VectorDBRetriever
+import runtime_settings
 
 logger = logging.getLogger(__name__)
 
@@ -128,7 +129,7 @@ def initialize_components():
             anthropic_api_key=anthropic_api_key,
             temperature=0.3,
             # 回答の最大出力トークン数（応答速度のため既定は1024）
-            max_tokens=int(os.getenv('AI_CHAT_MAX_OUTPUT_TOKENS', '1024'))
+            max_tokens=runtime_settings.get_int("AI_CHAT_MAX_OUTPUT_TOKENS")
         )
         logger.info(f"Claude LLM initialized with model: {model_name}")
 
