@@ -87,8 +87,8 @@ async def startup_event():
         logger.warning("ANTHROPIC_API_KEY not set. API will not work.")
     else:
         try:
-            # モデル名を環境変数から取得（デフォルト: claude-3-5-haiku-20241022）
-            model_name = os.getenv('ANTHROPIC_MODEL', 'claude-3-5-haiku-20241022')
+            # モデル名を環境変数から取得（デフォルト: claude-haiku-4-5-20251001）
+            model_name = os.getenv('ANTHROPIC_MODEL', 'claude-haiku-4-5-20251001')
             llm = ChatAnthropic(
                 model=model_name,
                 anthropic_api_key=anthropic_api_key,

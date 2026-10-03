@@ -120,14 +120,15 @@ def initialize_components():
         if not anthropic_api_key:
             raise ValueError("ANTHROPIC_API_KEY not set")
 
-        # モデル名を環境変数から取得（デフォルト: claude-3-5-haiku-20241022）
-        model_name = os.getenv('ANTHROPIC_MODEL', 'claude-3-5-haiku-20241022')
+        # モデル名を環境変数から取得（デフォルト: claude-haiku-4-5-20251001）
+        model_name = os.getenv('ANTHROPIC_MODEL', 'claude-haiku-4-5-20251001')
 
         llm = ChatAnthropic(
             model=model_name,
             anthropic_api_key=anthropic_api_key,
             temperature=0.3,
-            max_tokens=1024  # 応答速度向上のため削減
+            # 回答の最大出力トークン数（応答速度のため既定は1024）
+            max_tokens=int(os.getenv('AI_CHAT_MAX_OUTPUT_TOKENS', '1024'))
         )
         logger.info(f"Claude LLM initialized with model: {model_name}")
 

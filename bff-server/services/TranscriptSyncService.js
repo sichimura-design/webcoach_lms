@@ -13,10 +13,17 @@
  * Each schedule already maps 1:1 to its own Meeting Space (see
  * GoogleMeetSpaceService), so there is no ambiguous-matching step here —
  * the Space name alone identifies which schedule a transcript belongs to.
+ *
+ * Note generation runs in the background on api-server (POST .../generate
+ * returns 202), so a failure there is not seen here. Instead, every poll looks
+ * for schedules whose transcript was fetched but which still have no note,
+ * re-reads the transcript from S3 and asks again — up to
+ * NOTE_GENERATION_MAX_ATTEMPTS times per schedule. Attempts are counted in
+ * memory only, so a BFF restart starts the count over.
  */
 
 const axios = require('axios');
-const { PutObjectCommand } = require('@aws-sdk/client-s3');
+const { PutObjectCommand, GetObjectCommand } = require('@aws-sdk/client-s3');
 const { getS3Client } = require('../config/clients');
 const { config } = require('../config/environment');
 const integrationService = require('./IntegrationService');
@@ -27,7 +34,20 @@ const logger = require('../utils/logger');
 const MEET_API_BASE = 'https://meet.googleapis.com/v2';
 
 class TranscriptSyncService {
+  constructor() {
+    // coaching_schedule_id -> number of note generation requests api-server accepted
+    this.noteGenerationAttempts = new Map();
+  }
+
   async syncPendingTranscripts() {
+    // Retry first: a note requested later in this same run (by _syncOne) would
+    // otherwise show up as "no note yet" while it is still being generated.
+    try {
+      await this.retryPendingNoteGenerations();
+    } catch (err) {
+      logger.error('[TranscriptSync] Failed to retry note generation:', err.response?.data || err.message);
+    }
+
     const schedules = await apiServerAdapter.getPendingGoogleMeetSchedules();
     if (schedules.length === 0) {
       return;
@@ -94,8 +114,74 @@ class TranscriptSyncService {
       status: 'completed',
     });
 
-    await apiServerAdapter.generateCoachingNote(schedule.id, transcriptEntries);
-    logger.log(`[TranscriptSync] Synced transcript and generated note for schedule ${schedule.id}`);
+    await this._requestNoteGeneration(schedule.id, transcriptEntries);
+    logger.log(`[TranscriptSync] Synced transcript and requested note generation for schedule ${schedule.id}`);
+  }
+
+  /**
+   * Ask api-server again for notes that are still missing (generation failed,
+   * or api-server restarted mid-generation), re-reading the saved transcript
+   * from S3 so Google Meet doesn't need to be queried again.
+   */
+  async retryPendingNoteGenerations() {
+    const pending = await apiServerAdapter.getPendingNoteGenerations();
+    const pendingIds = new Set(pending.map(p => p.coaching_schedule_id));
+
+    // Forget schedules that now have a note, so the map doesn't grow forever
+    for (const id of this.noteGenerationAttempts.keys()) {
+      if (!pendingIds.has(id)) {
+        this.noteGenerationAttempts.delete(id);
+      }
+    }
+
+    const maxAttempts = config.noteGenerationMaxAttempts;
+    for (const item of pending) {
+      const scheduleId = item.coaching_schedule_id;
+      if ((this.noteGenerationAttempts.get(scheduleId) || 0) >= maxAttempts) {
+        continue; // gave up (already logged when the limit was reached)
+      }
+      try {
+        const res = await getS3Client().send(new GetObjectCommand({ Bucket: item.s3_bucket, Key: item.s3_key }));
+        const { entries } = JSON.parse(await res.Body.transformToString());
+        logger.log(`[TranscriptSync] Retrying note generation for schedule ${scheduleId}`);
+        await this._requestNoteGeneration(scheduleId, entries);
+      } catch (err) {
+        logger.error(
+          `[TranscriptSync] Failed to retry note generation for schedule ${scheduleId}:`,
+          err.response?.data || err.message
+        );
+      }
+    }
+  }
+
+  /**
+   * Request note generation and count the attempt. 'already_running' (the same
+   * schedule is still being generated) is not counted. A rejected request
+   * (e.g. 400 for an empty transcript) is counted, so it isn't retried forever.
+   */
+  async _requestNoteGeneration(scheduleId, transcriptEntries) {
+    let result;
+    try {
+      result = await apiServerAdapter.generateCoachingNote(scheduleId, transcriptEntries);
+    } catch (err) {
+      this._countNoteGenerationAttempt(scheduleId);
+      throw err;
+    }
+    if (result?.status !== 'already_running') {
+      this._countNoteGenerationAttempt(scheduleId);
+    }
+    return result;
+  }
+
+  _countNoteGenerationAttempt(scheduleId) {
+    const attempts = (this.noteGenerationAttempts.get(scheduleId) || 0) + 1;
+    this.noteGenerationAttempts.set(scheduleId, attempts);
+    if (attempts >= config.noteGenerationMaxAttempts) {
+      logger.error(
+        `[TranscriptSync] Note generation for schedule ${scheduleId} reached ${attempts} attempt(s); ` +
+        'giving up until the BFF restarts (raise NOTE_GENERATION_MAX_ATTEMPTS or regenerate manually)'
+      );
+    }
   }
 
   async _fetchAllEntries(transcriptName, authHeader) {

@@ -60,6 +60,13 @@ if [ "$USE_PARAMETER_STORE" = "true" ]; then
                 SITE_NAME) env_name="MOODLE_SITE_NAME" ;;
             esac
 
+            # 環境変数名にならないもの（config/・secrets/の外に置かれたパラメータ等）は飛ばす。
+            # そのままexportすると set -e で起動スクリプトごと止まり、コンテナが起動しなくなる
+            if ! [[ "$env_name" =~ ^[A-Z_][A-Z0-9_]*$ ]]; then
+                echo "Warning: 環境変数名に変換できないため無視します: $name"
+                continue
+            fi
+
             # 環境変数に設定
             export "$env_name=$value"
             echo "✓ $env_name"

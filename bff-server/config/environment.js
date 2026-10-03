@@ -39,6 +39,9 @@ const config = {
   // by default so local dev / tests don't need Organizer credentials configured.
   transcriptSyncEnabled: process.env.TRANSCRIPT_SYNC_ENABLED === 'true',
   transcriptSyncIntervalMinutes: parseInt(process.env.TRANSCRIPT_SYNC_INTERVAL_MINUTES || '15', 10),
+  // AIコーチングノートの生成に失敗した回を、同期のたびに作り直す回数の上限（1回あたり）。
+  // 回数はBFFのメモリで数えるので、BFFを再起動すると数え直しになる。
+  noteGenerationMaxAttempts: parseInt(process.env.NOTE_GENERATION_MAX_ATTEMPTS || '3', 10),
 
   // Periodic coaching schedule reminder emails (see ReminderService). Disabled
   // by default — dev/UAT's SES account is still in sandbox mode (can only send

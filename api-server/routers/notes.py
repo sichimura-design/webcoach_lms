@@ -6,18 +6,21 @@ AI生成した下書きの保存（PUT /draft、システム/AI処理からの�
 """
 import json
 import logging
+import threading
+from typing import List, Set
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 
-from database import get_db
+from database import get_db, SessionLocal
 from dto.request import CoachingNoteUpsert, CoachingNoteUpdate, CoachingNoteGenerateRequest
-from dto.response import CoachingNoteResponse
+from dto.response import CoachingNoteResponse, CoachingNoteGenerateAcceptedResponse, PendingNoteGenerationResponse
 from crud import (
     upsert_ai_coaching_note_draft,
     get_coaching_note,
     update_coaching_note,
     get_coaching_schedule_by_id,
     sync_next_coaching_goals_from_note,
+    get_schedules_pending_note_generation,
 )
 from coaching_note_generator import generate_coaching_note_draft
 
@@ -44,61 +47,105 @@ def _split_next_actions(text: str) -> list:
     return [s.strip() for s in text.replace('。', '。\n').splitlines() if s.strip()]
 
 
+# 生成中のコーチング回（プロセス内のみ）。同じ回の生成依頼が重なっても二重に生成しない。
+# api-serverが再起動すると消えるが、そのときは生成も止まっているので、定期同期処理の作り直しに任せてよい。
+_generating_schedule_ids: Set[int] = set()
+_generating_lock = threading.Lock()
+
+
+def _generate_and_save_note(coaching_schedule_id: int, entries: List[dict]) -> None:
+    """ノートを生成して保存する（バックグラウンドスレッドで実行）。
+
+    失敗してもノートは保存されないので、定期同期処理(bff-server TranscriptSyncService)が
+    「議事録はあるのにノートが無い回」として拾い、回数上限まで作り直す。
+    """
+    db = SessionLocal()
+    try:
+        draft = generate_coaching_note_draft(entries)
+        upsert_ai_coaching_note_draft(db=db, coaching_schedule_id=coaching_schedule_id, **draft)
+        logger.info(f"Generated coaching note for schedule {coaching_schedule_id}")
+    except json.JSONDecodeError:
+        logger.error(f"Failed to generate coaching note for schedule {coaching_schedule_id}: AI response was not valid JSON")
+    except Exception as e:
+        logger.error(f"Failed to generate coaching note for schedule {coaching_schedule_id}: {e}")
+    finally:
+        db.close()
+        with _generating_lock:
+            _generating_schedule_ids.discard(coaching_schedule_id)
+
+
+def _start_background(target, *args) -> None:
+    threading.Thread(target=target, args=args, daemon=True).start()
+
+
+@router.get(
+    "/pending-generation",
+    response_model=List[PendingNoteGenerationResponse],
+    summary="議事録取得済みでノートがまだ無いコーチング回の一覧（定期同期処理の作り直し用）"
+)
+def get_pending_note_generation(db: Session = Depends(get_db)):
+    """
+    ノート生成に失敗した（または生成中の）回を返す。bff-serverの定期同期処理専用の内部エンドポイント。
+
+    NOTE: GET /{coaching_schedule_id} より前に置くこと（後ろだと "pending-generation" が
+    {coaching_schedule_id} にマッチしてint変換失敗の422になる）。
+    """
+    try:
+        return get_schedules_pending_note_generation(db)
+    except Exception as e:
+        logger.error(f"Failed to get schedules pending note generation: {e}")
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="Failed to get schedules pending note generation"
+        )
+
+
 @router.post(
     "/{coaching_schedule_id}/generate",
-    response_model=CoachingNoteResponse,
-    summary="文字起こしからAIコーチングノート下書きを生成・保存"
+    response_model=CoachingNoteGenerateAcceptedResponse,
+    status_code=status.HTTP_202_ACCEPTED,
+    summary="文字起こしからAIコーチングノート下書きの生成を開始（バックグラウンドで生成・保存）"
 )
 def generate_note(
     coaching_schedule_id: int,
     request: CoachingNoteGenerateRequest,
-    db: Session = Depends(get_db)
 ):
     """
     文字起こし（発言単位のリスト）からAIがコーチングノート下書きを生成し、
     status=ai_suggested として保存します。AIの出力は自動確定されません。
 
+    生成は数十秒かかり、呼び出し元(bff-server)の待ち時間を超えることがあるため、
+    受け付けたらすぐ202を返してバックグラウンドで生成する。結果はノートの有無で分かる
+    （GET /{coaching_schedule_id}、失敗した回は GET /pending-generation に残る）。
+
     Args:
         coaching_schedule_id: 対象のコーチング回（webcoach_coaching_schedule.id）
         request: 発言単位の文字起こし一覧
-        db: Database session
 
     Returns:
-        保存されたコーチングノート下書き
+        受付結果（started / already_running）
 
     Raises:
-        HTTPException: ANTHROPIC_API_KEY未設定など生成に失敗した場合（500）
+        HTTPException: 文字起こしが空の場合（400）
     """
-    try:
-        entries = [entry.model_dump() for entry in request.transcript_entries]
-        draft = generate_coaching_note_draft(entries)
-    except ValueError as e:
-        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(e))
-    except json.JSONDecodeError:
-        raise HTTPException(
-            status_code=status.HTTP_502_BAD_GATEWAY,
-            detail="AI response was not valid JSON"
-        )
-    except Exception as e:
-        logger.error(f"Failed to generate coaching note: {e}")
-        raise HTTPException(
-            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail="Failed to generate coaching note"
-        )
+    entries = [entry.model_dump() for entry in request.transcript_entries]
+    if not entries:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="transcript_entries must not be empty")
+
+    with _generating_lock:
+        if coaching_schedule_id in _generating_schedule_ids:
+            return CoachingNoteGenerateAcceptedResponse(
+                coaching_schedule_id=coaching_schedule_id, status="already_running"
+            )
+        _generating_schedule_ids.add(coaching_schedule_id)
 
     try:
-        note = upsert_ai_coaching_note_draft(
-            db=db,
-            coaching_schedule_id=coaching_schedule_id,
-            **draft,
-        )
-        return note
-    except Exception as e:
-        logger.error(f"Failed to save generated coaching note: {e}")
-        raise HTTPException(
-            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail="Failed to save generated coaching note"
-        )
+        _start_background(_generate_and_save_note, coaching_schedule_id, entries)
+    except Exception:
+        with _generating_lock:
+            _generating_schedule_ids.discard(coaching_schedule_id)
+        raise
+    return CoachingNoteGenerateAcceptedResponse(coaching_schedule_id=coaching_schedule_id, status="started")
 
 
 @router.put(

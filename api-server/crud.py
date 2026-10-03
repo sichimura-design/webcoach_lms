@@ -2381,6 +2381,38 @@ def get_pending_google_meet_schedules(
     ).order_by(WebCoachCoachingSchedule.coaching_date).all()
 
 
+def get_schedules_pending_note_generation(
+    db: Session,
+    lookback_days: int = 30,
+) -> List[WebCoachCoachingRecording]:
+    """
+    議事録(transcript)は取得済みなのに、AIコーチングノートがまだ無いコーチング回の
+    議事録レコードを取得します(ノート生成に失敗した回を定期同期処理で作り直すため)。
+
+    Args:
+        db: Database session
+        lookback_days: 何日前までのコーチング回を対象にするか
+
+    Returns:
+        List[WebCoachCoachingRecording]: 対象回のtranscriptレコード(s3_bucket/s3_keyから議事録を読み直せる)
+    """
+    since = date.today() - timedelta(days=lookback_days)
+
+    note_exists = db.query(WebCoachCoachingNote.id).filter(
+        WebCoachCoachingNote.coaching_schedule_id == WebCoachCoachingRecording.coaching_schedule_id,
+    ).exists()
+
+    return db.query(WebCoachCoachingRecording).join(
+        WebCoachCoachingSchedule,
+        WebCoachCoachingSchedule.id == WebCoachCoachingRecording.coaching_schedule_id,
+    ).filter(
+        WebCoachCoachingRecording.recording_type == 'transcript',
+        WebCoachCoachingRecording.status == 'completed',
+        WebCoachCoachingSchedule.coaching_date >= since,
+        ~note_exists,
+    ).order_by(WebCoachCoachingSchedule.coaching_date).all()
+
+
 def get_pending_coaching_reminders(db: Session) -> List[WebCoachCoachingSchedule]:
     """
     翌日(JST)に実施予定で、まだリマインドメールを送っていない予約を全ユーザー

@@ -41,13 +41,13 @@ def initialize_ai_components():
             logger.warning("ANTHROPIC_API_KEY not set. AI endpoint will not work.")
         else:
             try:
-                # モデル名を環境変数から取得（デフォルト: claude-3-5-haiku-20241022）
-                model_name = os.getenv('ANTHROPIC_MODEL', 'claude-3-5-haiku-20241022')
+                # モデル名を環境変数から取得（デフォルト: claude-haiku-4-5-20251001）
+                model_name = os.getenv('ANTHROPIC_MODEL', 'claude-haiku-4-5-20251001')
                 llm = ChatAnthropic(
                     model=model_name,
                     anthropic_api_key=anthropic_api_key,
                     temperature=0.3,
-                    max_tokens=2048
+                    max_tokens=int(os.getenv('AI_LEGACY_CHAT_MAX_OUTPUT_TOKENS', '2048'))
                 )
                 logger.info(f"Claude LLM initialized successfully with model: {model_name}")
             except Exception as e:

@@ -120,6 +120,21 @@ class CoachingNoteResponse(BaseModel):
     model_config = ConfigDict(from_attributes=True)
 
 
+class CoachingNoteGenerateAcceptedResponse(BaseModel):
+    """AIコーチングノート生成の受付結果（生成はバックグラウンドで行う）"""
+    coaching_schedule_id: int
+    status: str = Field(..., description="started: 生成を開始した / already_running: 同じ回を生成中のため何もしていない")
+
+
+class PendingNoteGenerationResponse(BaseModel):
+    """議事録取得済みでノートがまだ無いコーチング回（ノート生成の作り直し対象）"""
+    coaching_schedule_id: int
+    s3_bucket: str
+    s3_key: str
+
+    model_config = ConfigDict(from_attributes=True)
+
+
 class CoachStudentMappingResponse(BaseModel):
     """コーチと受講生のマッピングレスポンス"""
     coach_user_id: int

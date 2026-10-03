@@ -220,6 +220,22 @@ export class ProdEcsStack extends cdk.Stack {
     // よってexecution roleではなくtask roleにgrantReadする(dev/uatのcdk/lib/ecs-stack.tsと同じ設計)。
     difySecret.grantRead(taskDef.taskRole);
 
+    // 調整用の設定値（AIのトークン上限・ポーリング間隔等）はParameter Storeに置き、
+    // 起動スクリプト(start-with-parameter-store.sh)が {prefix}/config/xxx-yyy を XXX_YYY として
+    // exportする。デプロイせずにタスク再起動だけで値を変えられるようにするため。
+    // 起動スクリプトはプレフィックス配下を全部exportし、secrets/もSecrets Manager注入値を上書きしうるので、
+    // 機密を置いたことのない専用プレフィックスにし、読める範囲もそこだけに絞る。
+    // 値はString型で置く（SecureStringにするとkms:Decryptも要る）。
+    const apiParamPrefix = `/lms/${envName}/api-server`;
+    const bffParamPrefix = `/lms/${envName}/bff-server`;
+    taskDef.addToTaskRolePolicy(new iam.PolicyStatement({
+      actions: ['ssm:GetParametersByPath'],
+      resources: [apiParamPrefix, bffParamPrefix].flatMap((prefix) => [
+        `arn:aws:ssm:${this.region}:${this.account}:parameter${prefix}`,
+        `arn:aws:ssm:${this.region}:${this.account}:parameter${prefix}/*`,
+      ]),
+    }));
+
     // ----------------------------------------
     // 各コンテナイメージ: webcoach-lms リポジトリのタグで区別
     // ----------------------------------------
@@ -260,6 +276,8 @@ export class ProdEcsStack extends cdk.Stack {
         NODE_ENV: 'production',
         MOODLE_URL: 'http://localhost:8080',
         API_SERVER_URL: 'http://localhost:8001',
+        USE_PARAMETER_STORE: 'true',
+        PARAMETER_STORE_PREFIX: bffParamPrefix,
         MOODLE_SERVICE_NAME: moodleServiceName ?? 'moodle-api-service',
         MOODLE_SERVICE_USERNAME: moodleServiceUsername ?? 'admin',
         ALLOWED_ORIGINS: allowedOrigins ?? '',
@@ -291,6 +309,8 @@ export class ProdEcsStack extends cdk.Stack {
         MOODLE_DB_NAME: 'moodle',
         MOODLE_URL: 'http://localhost:8080',
         ALLOWED_ORIGINS: allowedOrigins ?? '',
+        USE_PARAMETER_STORE: 'true',
+        PARAMETER_STORE_PREFIX: apiParamPrefix,
         VECTOR_DB_ENV: vectorDbEnv ?? 'keyword',
         COGNITO_REGION: this.region,
         DIFY_API_BASE_URL: 'https://api.dify.ai/v1',

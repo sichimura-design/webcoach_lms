@@ -58,12 +58,15 @@ def _get_llm() -> ChatAnthropic:
         if not anthropic_api_key:
             raise ValueError("ANTHROPIC_API_KEY not set")
 
-        model_name = os.getenv("ANTHROPIC_MODEL", "claude-3-5-haiku-20241022")
+        model_name = os.getenv("ANTHROPIC_MODEL", "claude-haiku-4-5-20251001")
         _llm = ChatAnthropic(
             model=model_name,
             anthropic_api_key=anthropic_api_key,
             temperature=0.2,
-            max_tokens=2048,
+            # 8項目を日本語JSONで一度に返すため長めにとる。途中で切れるとJSONが閉じず
+            # 全体がパース失敗になる。ただし大きくしすぎると、BFFの待ち時間(30秒)を超えて
+            # タイムアウトする（生成を待つ時間は出力の長さにほぼ比例する）
+            max_tokens=int(os.getenv("COACHING_NOTE_MAX_OUTPUT_TOKENS", "4096")),
         )
         logger.info(f"Coaching note generator LLM initialized with model: {model_name}")
     return _llm
@@ -133,6 +136,11 @@ def generate_coaching_note_draft(transcript_entries: List[Dict[str, Any]]) -> Di
 
     response = llm.invoke(messages)
     raw_text = response.content if isinstance(response.content, str) else str(response.content)
+    if (response.response_metadata or {}).get("stop_reason") == "max_tokens":
+        logger.error(
+            "Coaching note generation hit max_tokens; output is truncated. "
+            "Raise COACHING_NOTE_MAX_OUTPUT_TOKENS"
+        )
 
     try:
         return _parse_note_json(raw_text)
