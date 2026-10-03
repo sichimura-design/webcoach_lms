@@ -239,14 +239,16 @@ const ecsStack = new ProdEcsStack(app, `${envName}-EcsStack`, {
   // ※ 元の値は UAT (uat.webcoach.jp) のものだったため、config 値のみ流用し、
   //   S3/CloudFront/DBホストなど cdk-prod 自身が新規作成するリソースの識別子は流用していない。
   allowedOrigins: app.node.tryGetContext('allowedOrigins')
-    ?? 'https://52.194.117.196,https://15.152.220.38,http://localhost:3000,https://localhost:3000,https://d3ljs7ii9tnofg.cloudfront.net,https://d1zs9qsimyg41i.cloudfront.net,https://uat.webcoach.jp,https://study.webcoach.jp,https://api.webcoach.jp',
+    // 本番のドメインだけ許可する(以前はUATの値を流用しておりlocalhostやdev/uatまで許可していた)
+    ?? 'https://study.webcoach.jp,https://api.webcoach.jp',
   moodleServiceName: app.node.tryGetContext('moodleServiceName') ?? 'moodle-api-service',
   moodleServiceUsername: app.node.tryGetContext('moodleServiceUsername') ?? 'admin',
   moodleLang: app.node.tryGetContext('moodleLang') ?? 'ja',
   vectorDbEnv: app.node.tryGetContext('vectorDbEnv') ?? 'keyword',
-  // prod-SpaStack デプロイ後に出力される値を渡す (未指定なら未設定のまま)
-  cloudfrontDomain: app.node.tryGetContext('cloudfrontDomain'),
-  s3BucketName: app.node.tryGetContext('s3BucketName'),
+  // prod-SpaStack(us-east-1)の出力値。管理画面「コンテンツUP」の保存先と公開URLに使う
+  cloudfrontDomain: app.node.tryGetContext('cloudfrontDomain') ?? 'study.webcoach.jp',
+  s3BucketName: app.node.tryGetContext('s3BucketName') ?? 'prod-spastack-spabucket48e1059f-bvsjyjbr65bg',
+  s3Region: app.node.tryGetContext('s3Region') ?? 'us-east-1',
 });
 ecsStack.addDependency(backendStack);
 ecsStack.addDependency(albStack);

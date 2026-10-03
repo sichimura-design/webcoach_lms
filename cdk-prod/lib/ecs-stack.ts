@@ -58,6 +58,8 @@ export interface ProdEcsStackProps extends cdk.StackProps {
   readonly cloudfrontDomain?: string;
   /** prod-SpaStack デプロイ後に出力される S3 バケット名。先にSpaStackをデプロイしてから渡す。 */
   readonly s3BucketName?: string;
+  /** s3BucketName のリージョン。SpaStackはus-east-1にあるので、BFFのS3クライアントにはこちらを使わせる */
+  readonly s3Region?: string;
 }
 
 /**
@@ -102,6 +104,7 @@ export class ProdEcsStack extends cdk.Stack {
       vectorDbEnv,
       cloudfrontDomain,
       s3BucketName,
+      s3Region,
     } = props;
 
     // 既存 prod-RdsStack のシークレットを ARN からインポート
@@ -239,6 +242,23 @@ export class ProdEcsStack extends cdk.Stack {
     // 管理画面の「動作設定」(BFFのRuntimeSettingsService)から、config/配下の保存・削除と、
     // 反映のためのサービス再起動(forceNewDeployment)を行う。触れるのはこのサービスとconfig/配下だけ
     const lmsServiceName = `${envName}-lms-service`;
+
+    // コンテンツUP(BFF)と教材索引(api-server)が使うS3バケット
+    if (s3BucketName) {
+      taskDef.addToTaskRolePolicy(new iam.PolicyStatement({
+        actions: ['s3:ListBucket'],
+        resources: [`arn:aws:s3:::${s3BucketName}`],
+      }));
+      taskDef.addToTaskRolePolicy(new iam.PolicyStatement({
+        actions: ['s3:GetObject', 's3:PutObject'],
+        resources: [`arn:aws:s3:::${s3BucketName}/*`],
+      }));
+    }
+    // リマインドメール(BFFのReminderService)をSESのwebcoach.jpから送る
+    taskDef.addToTaskRolePolicy(new iam.PolicyStatement({
+      actions: ['ses:SendEmail', 'ses:SendRawEmail'],
+      resources: [`arn:aws:ses:${this.region}:${this.account}:identity/webcoach.jp`],
+    }));
     taskDef.addToTaskRolePolicy(new iam.PolicyStatement({
       actions: ['ssm:PutParameter', 'ssm:DeleteParameter'],
       resources: [apiParamPrefix, bffParamPrefix].map(
@@ -303,6 +323,7 @@ export class ProdEcsStack extends cdk.Stack {
         COGNITO_REGION: this.region,
         ...(cloudfrontDomain ? { CLOUDFRONT_DOMAIN: cloudfrontDomain } : {}),
         ...(s3BucketName ? { S3_BUCKET_NAME: s3BucketName } : {}),
+        ...(s3Region ? { S3_REGION: s3Region } : {}),
       },
       secrets: {
         COGNITO_USER_POOL_ID: ecs.Secret.fromSecretsManager(cognitoSecret, 'userPoolId'),
@@ -334,6 +355,8 @@ export class ProdEcsStack extends cdk.Stack {
         COGNITO_REGION: this.region,
         DIFY_API_BASE_URL: 'https://api.dify.ai/v1',
         DIFY_CREDENTIALS_SECRET_ID: difySecret.secretName,
+        // AIチャットのツールがBFFを呼ぶ先。既定のhttp://bff-server:3001はHOSTネットワークでは解決できない
+        BFF_SERVER_URL: 'http://localhost:3001',
         ...(cognitoUserPoolId ? { COGNITO_USER_POOL_ID: cognitoUserPoolId } : {}),
         ...(cognitoClientId ? { COGNITO_CLIENT_ID: cognitoClientId } : {}),
         ...(s3BucketName ? { S3_BUCKET_NAME: s3BucketName } : {}),
@@ -342,6 +365,8 @@ export class ProdEcsStack extends cdk.Stack {
         MOODLE_DB_USER: ecs.Secret.fromSecretsManager(dbSecret, 'username'),
         MOODLE_DB_PASSWORD: ecs.Secret.fromSecretsManager(dbSecret, 'password'),
         ANTHROPIC_API_KEY: ecs.Secret.fromSecretsManager(anthropicSecret),
+        // BFFへの内部呼び出し用。無いと既定値のままになりBFFで401になる
+        INTERNAL_API_KEY: ecs.Secret.fromSecretsManager(appSecrets, 'internalApiKey'),
       },
     });
 

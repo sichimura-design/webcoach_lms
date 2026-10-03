@@ -52,7 +52,9 @@ function getCognitoClient() {
 function getS3Client() {
   if (!s3ClientInstance) {
     s3ClientInstance = new S3Client({
-      region: config.cognitoRegion
+      region: config.s3Region,
+      // 議事録バケット等が別リージョンにあっても読み書きできるようにする
+      followRegionRedirects: true,
     });
   }
   return s3ClientInstance;

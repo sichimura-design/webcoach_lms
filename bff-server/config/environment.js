@@ -29,6 +29,8 @@ const config = {
 
   // S3 & CloudFront
   s3BucketName: process.env.S3_BUCKET_NAME || '',
+  // バケットのリージョン。本番のSPAバケットはus-east-1にある
+  s3Region: process.env.S3_REGION || process.env.COGNITO_REGION || 'ap-northeast-1',
   cloudFrontDomain: process.env.CLOUDFRONT_DOMAIN || '',
 
   // Coaching recordings (video/audio/transcript files; metadata in
