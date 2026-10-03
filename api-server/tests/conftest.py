@@ -31,6 +31,19 @@ database.engine = test_engine  # Override the MySQL engine with SQLite
 from database import Base, get_db
 from main import app
 
+# 起動中のBFF/api-serverへ実際にリクエストを送るテスト(schemathesis等)。
+# CIではサーバーを立てないので、RUN_LIVE_SERVER_TESTS=1 のときだけ集める
+if not os.getenv("RUN_LIVE_SERVER_TESTS"):
+    collect_ignore = [
+        "test_api_schemathesis.py",
+        "test_api_schemathesis_simplified.py",
+        "test_bff_authenticated.py",
+        "test_bff_docker.py",
+        "test_bff_schemathesis.py",
+        "test_bff_simple.py",
+        "test_schema_examples.py",
+    ]
+
 # Test database URL - using SQLite in-memory for tests
 SQLALCHEMY_TEST_DATABASE_URL = "sqlite:///:memory:"
 
