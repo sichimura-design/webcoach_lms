@@ -400,7 +400,8 @@ _dify_extra_inputs_cache: Dict[tuple, Dict[str, str]] = {}
 # （(userid, app_id, session_id) -> 発言）。AI面接シミュレーターの job_posting（求人URL）は
 # Dify標準画面では会話前のフォームで入れる項目で、会話の中では尋ねられない。空のまま送ると
 # 求人なしで面接が始まってしまうため、Difyへ送る前にURLを1回だけ尋ね、その間この発言を預かる。
-_dify_pending_first_message: Dict[tuple, str] = {}
+# 値は (発言, opening_shown)。画面が挨拶文を出したかは尋ねたターンの情報なので一緒に預かる
+_dify_pending_first_message: Dict[tuple, "tuple[str, bool]"] = {}
 
 # 「URLなしで始める」を選んだ会話（(userid, app_id, session_id)）。以降は尋ねない
 _dify_inputs_skipped: set = set()
@@ -421,10 +422,18 @@ def _required_input_fields(api_key: str) -> List[Dict[str, Any]]:
 
 def _ask_required_inputs_html(fields: List[Dict[str, Any]]) -> str:
     """必須入力変数（求人URL等）を尋ねる文面と「URLなしで始める」ボタン"""
-    label = fields[0].get("label") or fields[0].get("variable") or "参考情報"
-    target = label if "URL" in label.upper() else f"{label}のURL"
+    # ラベルは「求人情報のURL」のような名前のことも、「求人情報のURLを入力してください 【必須】」の
+    # ような文のこともある（AI面接シミュレーターは後者）
+    label = re.sub(r"[【\[(（]\s*必須\s*[】\])）]", "", fields[0].get("label") or "").strip()
+    if not label:
+        label = "参考情報"
+    if label.endswith("ください"):
+        ask = re.sub(r"(を)?入力してください$", "を貼ってください", label)
+    else:
+        target = label if "URL" in label.upper() else f"{label}のURL"
+        ask = f"{target}を貼ってください"
     return (
-        f"はじめに、{target}を貼ってください。\n\n"
+        f"はじめに、{ask}。\n\n"
         f'<div>\n  <button data-message="{_SKIP_REQUIRED_INPUTS_MESSAGE}">{_SKIP_REQUIRED_INPUTS_MESSAGE}</button>\n</div>'
     )
 
@@ -633,13 +642,15 @@ def _call_dify_chat(
     pending = _dify_pending_first_message.pop(cache_key, None)
     if not conversation_id and missing_fields and cache_key not in _dify_inputs_skipped:
         if pending is None:
-            _dify_pending_first_message[cache_key] = query
+            _dify_pending_first_message[cache_key] = (query, opening_shown)
             answer = _ask_required_inputs_html(missing_fields)
             _dify_last_buttons_cache[(userid, session_id)] = _extract_button_values(answer)
             return answer
         _dify_inputs_skipped.add(cache_key)
-    if pending is not None and (url_match or query.strip() == _SKIP_REQUIRED_INPUTS_MESSAGE):
-        query = pending
+    if pending is not None:
+        opening_shown = opening_shown or pending[1]
+        if url_match or query.strip() == _SKIP_REQUIRED_INPUTS_MESSAGE:
+            query = pending[0]
 
     # Dify側でrequired: trueな入力変数は、キー自体が送信データに存在しないと
     # （値が空文字であっても）400 invalid_paramで弾かれる。「URLなしで始める」を選んだ場合等、

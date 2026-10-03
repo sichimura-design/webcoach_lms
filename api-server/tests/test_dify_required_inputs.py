@@ -13,7 +13,7 @@ from agents.tools_langchain import _call_dify_chat
 from tests.dify_stream_mock import dify_response
 
 PARAMS = {
-    "opening_statement": "",
+    "opening_statement": "はじめまして、AI面接官です！",
     "suggested_questions": ["クライアントとの業務委託面談", "企業の採用面接"],
     "user_input_form": [{"text-input": {"variable": "job_posting", "label": "求人情報のURL", "required": True}}],
 }
@@ -35,7 +35,7 @@ def _reset_caches():
     yield
 
 
-def _run(messages, replies=None):
+def _run(messages, replies=None, opening_shown=False):
     """Difyへ送った (query, inputs) の列と、各ターンの応答を返す"""
     it = iter(replies or [])
     sent = []
@@ -46,7 +46,8 @@ def _run(messages, replies=None):
 
     with patch.object(tools_langchain, "_get_dify_parameters", return_value=PARAMS), \
          patch.object(tools_langchain.requests, "post", MagicMock(side_effect=post)):
-        answers = [_call_dify_chat(m, 7, "key", 15, session_id="s1") for m in messages]
+        answers = [_call_dify_chat(m, 7, "key", 15, session_id="s1", opening_shown=opening_shown and i == 0)
+                   for i, m in enumerate(messages)]
     return answers, sent
 
 
@@ -57,6 +58,12 @@ def test_asks_for_url_before_sending_to_dify():
     assert 'data-message="URLなしで始める"' in answers[0]
     # ボタンを押したらこのアプリへ固定されるように
     assert "URLなしで始める" in tools_langchain._dify_last_buttons_cache[(7, "s1")]
+
+
+def test_sentence_label_is_used_as_is():
+    # 実際のAI面接シミュレーターのラベルは文になっている
+    fields = [{"variable": "job_posting", "label": "求人情報のURLを入力してください 【必須】", "required": True}]
+    assert tools_langchain._ask_required_inputs_html(fields).startswith("はじめに、求人情報のURLを貼ってください。")
 
 
 def test_url_reply_starts_with_the_held_first_message():
@@ -95,3 +102,14 @@ def test_restart_asks_again():
         answer = _call_dify_chat("最初からやり直したい", 7, "key", 15, reset=True, session_id="s1")
     post.assert_not_called()
     assert "URLを貼ってください" in answer
+
+
+def test_opening_shown_on_the_asking_turn_is_kept():
+    # 画面が挨拶文を出してから選択肢を押した → URLを貼ったターンの応答に挨拶文を付け直さない
+    answers, _ = _run(["クライアントとの業務委託面談", URL], opening_shown=True)
+    assert answers[1] == "面接を始めます"
+
+
+def test_opening_is_added_when_screen_did_not_show_it():
+    answers, _ = _run(["クライアントとの業務委託面談", URL])
+    assert answers[1].startswith("はじめまして、AI面接官です！")
