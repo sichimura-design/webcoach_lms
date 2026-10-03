@@ -2,7 +2,7 @@ import { useRef } from 'react';
 import { AlertTriangle, Copy, ImagePlus, MessageSquarePlus, Mic, MicOff, PencilLine, RotateCcw, Send, Square, Star, X } from 'lucide-react';
 import { useSpeechInput } from '../../hooks/useSpeechInput';
 import { color, font } from '../../theme/webcoachTheme';
-import { AI_ERROR_CONCLUSION, LessonAiMessage, UseLessonAi } from '../../hooks/useLessonAi';
+import { AI_ERROR_CONCLUSION, appInputsReady, LessonAiMessage, UseLessonAi } from '../../hooks/useLessonAi';
 import { LessonAiResponse } from '../../types/lesson';
 import { AiSkillId, AI_SKILL_META, isSpecialistSkill } from '../../types/aiSkill';
 import { useAutoGrowTextarea } from '../../hooks/useAutoGrowTextarea';
@@ -12,6 +12,7 @@ import { parseDifyMessage } from '../../utils/difyButtons';
 import { needsTypedReply, TYPED_REPLY_HINT, TYPED_REPLY_PLACEHOLDER } from '../../utils/aiAwaitingReply';
 import DifyFormCard from '../shared/DifyFormCard';
 import DifyChoiceButtons from '../shared/DifyChoiceButtons';
+import DifyAppInputsCard from '../shared/DifyAppInputsCard';
 import { stripHtmlForNote } from '../../utils/stripHtmlForNote';
 import AiCoachFace from '../shared/AiCoachFace';
 import SkillPlusMenu from './SkillPlusMenu';
@@ -534,6 +535,11 @@ export function AiCoachPane({
                       ) : (
                         (() => {
                           const { text, buttons, forms } = parseDifyMessage(message.answer.conclusion);
+                          const stale = message.id !== lastSettled?.id;
+                          // アプリの入口の入力欄（求人URL等）。必須を埋めるか「URLなしで始める」を選ぶまで選択肢は押せない
+                          const inputFields = message.appInputFields ?? [];
+                          const waitingInputs =
+                            inputFields.length > 0 && !stale && !appInputsReady(ai.appInputs);
                           return (
                             <div style={{ fontSize: 11.5, lineHeight: 1.75, color: color.textBody }}>
                               <MarkdownRenderer content={text} compact />
@@ -546,10 +552,21 @@ export function AiCoachPane({
                                   onSubmit={(msg) => void ai.send(msg)}
                                 />
                               ))}
+                              {inputFields.length > 0 && (
+                                <DifyAppInputsCard
+                                  fields={inputFields}
+                                  values={ai.appInputs?.values ?? {}}
+                                  skipped={ai.appInputs?.skipped ?? false}
+                                  locked={ai.loading || stale}
+                                  showHint={buttons.length > 0}
+                                  onChange={ai.setAppInput}
+                                  onSkip={ai.setAppInputsSkipped}
+                                />
+                              )}
                               <DifyChoiceButtons
                                 buttons={buttons}
-                                disabled={ai.loading}
-                                stale={message.id !== lastSettled?.id}
+                                disabled={ai.loading || waitingInputs}
+                                stale={stale}
                                 onPick={(value) => void ai.send(value)}
                               />
                             </div>

@@ -130,6 +130,14 @@ class ChatRequest(BaseModel):
             "すでに表示している。新しい会話の最初の応答に挨拶文を付け直さない"
         ),
     )
+    app_inputs: Optional[Dict[str, str]] = Field(
+        None,
+        description=(
+            "force_app_key のアプリを始める前に画面の入力欄で受け取った入力（Difyのinputs。"
+            "例: AI面接シミュレーターの job_posting=求人URL）。空欄のまま始めることを選んだ項目は空文字。"
+            "送られてきた場合、チャットの中では改めて尋ねない（モードに入った最初の発言だけ）"
+        ),
+    )
     force_app_key: Optional[str] = Field(
         None,
         max_length=128,
@@ -426,6 +434,8 @@ def _execute_chat_inner(
         # mode_instruction はAIコーチでアプリ（専門モード）を選んでいる間だけ送られてくる
         in_app_mode=bool(request.mode_instruction),
         opening_shown=request.opening_shown,
+        app_inputs=request.app_inputs,
+        app_inputs_key=request.force_app_key,
     )
     # アプリのモードに入った直後の最初の発言は、指定されたアプリへ必ず送る
     # （ボタン値の継続より優先する。モードを選び直した＝そのアプリを使うという明示の操作のため）

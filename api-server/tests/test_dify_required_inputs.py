@@ -113,3 +113,78 @@ def test_opening_shown_on_the_asking_turn_is_kept():
 def test_opening_is_added_when_screen_did_not_show_it():
     answers, _ = _run(["クライアントとの業務委託面談", URL])
     assert answers[1].startswith("はじめまして、AI面接官です！")
+
+
+# ── AIコーチのモードから入った場合: 画面の入力欄（app_inputs）で受け取る ──
+
+
+def test_intro_lists_input_fields_with_plain_label():
+    params = {**PARAMS, "user_input_form": [
+        {"text-input": {"variable": "job_posting", "label": "求人情報のURLを入力してください 【必須】", "required": True}},
+        {"file": {"variable": "resume", "label": "履歴書", "required": False}},
+    ]}
+    with patch.object(tools_langchain, "_get_dify_api_key", return_value="key"), \
+         patch.object(tools_langchain, "_get_dify_parameters", return_value=params):
+        intro = tools_langchain.build_dify_intro("ai-interview")
+    # 画面で扱えない種類（file）は出さない。必須の印はラベルから外す
+    assert intro["inputs"] == [{
+        "variable": "job_posting",
+        "label": "求人情報のURLを入力してください",
+        "type": "text-input",
+        "required": True,
+        "options": [],
+        "max_length": None,
+    }]
+
+
+def _call_confirmed(messages, inputs):
+    sent = []
+
+    def post(url, **kw):
+        sent.append((kw["json"]["query"], kw["json"]["inputs"]))
+        return dify_response({"answer": "面接を始めます", "conversation_id": "conv-1"})
+
+    with patch.object(tools_langchain, "_get_dify_parameters", return_value=PARAMS), \
+         patch.object(tools_langchain.requests, "post", MagicMock(side_effect=post)):
+        answers = [
+            # モードの入口で画面が挨拶文を出しているので opening_shown も付く
+            _call_dify_chat(m, 7, "key", 15, session_id="s1", inputs=inputs if i == 0 else None,
+                            inputs_confirmed=i == 0, opening_shown=i == 0)
+            for i, m in enumerate(messages)
+        ]
+    return answers, sent
+
+
+def test_confirmed_inputs_are_sent_without_asking():
+    answers, sent = _call_confirmed(["クライアントとの業務委託面談", "よろしくお願いします"], {"job_posting": URL})
+    assert answers[0] == "面接を始めます"
+    assert sent == [
+        ("クライアントとの業務委託面談", {"job_posting": URL}),
+        ("よろしくお願いします", {"job_posting": URL}),
+    ]
+
+
+def test_confirmed_blank_input_starts_without_asking():
+    # 画面で「URLなしで始める」を選んだ
+    _, sent = _call_confirmed(["企業の採用面接"], {"job_posting": ""})
+    assert sent == [("企業の採用面接", {"job_posting": ""})]
+
+
+def test_app_inputs_go_only_to_the_mode_app():
+    app = MagicMock(id=15, secret_key="ai-interview", tags="", category="案件獲得", description="面接練習")
+    other = MagicMock(id=19, secret_key="writer", tags="", category="案件獲得", description="応募文")
+    db = MagicMock()
+    db.query.return_value.filter.return_value.order_by.return_value.all.return_value = [app, other]
+    calls = []
+    with patch.object(tools_langchain, "_get_dify_api_key", return_value="key"), \
+         patch.object(tools_langchain, "_get_dify_parameters", return_value=PARAMS), \
+         patch.object(tools_langchain, "_call_dify_chat", side_effect=lambda *a, **kw: calls.append(kw) or "ok"):
+        tools, _, _ = tools_langchain.create_ai_application_tools(
+            db, "企業の採用面接", 7, session_id="s1",
+            app_inputs={"job_posting": URL}, app_inputs_key="ai-interview",
+        )
+        by_name = {t.name: t for t in tools}
+        by_name["ask_ai_application_15"].func(query="x", userid=7)
+        by_name["ask_ai_application_19"].func(query="x", userid=7)
+    assert calls[0]["inputs"] == {"job_posting": URL} and calls[0]["inputs_confirmed"] is True
+    assert calls[1]["inputs"] == {} and calls[1]["inputs_confirmed"] is False

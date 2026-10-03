@@ -37,4 +37,25 @@ export interface AiApplicationIntro {
   has_choices: boolean;
   /** 挨拶文＋選択肢ボタン（data-message）の HTML。AIの回答と同じく parseDifyMessage で描画できる */
   message: string;
+  /**
+   * 会話を始める前に入れてもらう項目（AI面接シミュレーターの求人URL等）。Dify標準画面の開始前フォームと同じもの。
+   * Difyでは会話の中では尋ねられないので、画面の入力欄で受け取り、最初の発言と一緒に app_inputs で送る。
+   */
+  inputs?: AiApplicationInputField[];
 }
+
+/** 開始前フォームの1項目（Difyの user_input_form） */
+export interface AiApplicationInputField {
+  /** Difyの変数名（app_inputs のキー） */
+  variable: string;
+  /** 入力欄に添える文（「求人情報のURLを入力してください」等。必須の印は外してある） */
+  label: string;
+  type: 'text-input' | 'paragraph' | 'select' | 'number';
+  required: boolean;
+  options: string[];
+  max_length?: number | null;
+}
+
+/** 選択肢か開始前の入力欄があるアプリは、モードに入った時点で入口（挨拶文・選択肢・入力欄）を出す */
+export const introNeedsDisplay = (intro: AiApplicationIntro | null | undefined): boolean =>
+  !!intro && (intro.has_choices || (intro.inputs?.length ?? 0) > 0);

@@ -136,7 +136,35 @@ def build_dify_intro(secret_key: str) -> Optional[Dict[str, Any]]:
         "suggested_questions": questions,
         "has_choices": bool(questions) or has_buttons_in_opening,
         "message": message,
+        "inputs": _intro_input_fields(params),
     }
+
+
+# 画面の入力欄で受け取れる種類（Difyのuser_input_formのキー）。file等はここでは扱わない
+_INTRO_INPUT_TYPES = ("text-input", "paragraph", "select", "number")
+_REQUIRED_MARK_RE = re.compile(r"\s*[【\[(（]\s*必須\s*[】\])）]\s*")
+
+
+def _intro_input_fields(params: Dict[str, Any]) -> List[Dict[str, Any]]:
+    """会話を始める前に入れてもらう項目（求人URL等）。Dify標準画面の開始前フォームと同じもの。
+
+    Difyのラベルは入力欄に添える前提の文（「求人情報のURLを入力してください 【必須】」）なので、
+    必須の印だけ外してそのまま見せる（必須かどうかは required で画面が示す）。
+    """
+    fields = []
+    for form_item in params.get("user_input_form") or []:
+        for field_type, field in form_item.items():
+            if field_type not in _INTRO_INPUT_TYPES or not field.get("variable"):
+                continue
+            fields.append({
+                "variable": field["variable"],
+                "label": _REQUIRED_MARK_RE.sub("", field.get("label") or "").strip() or field["variable"],
+                "type": field_type,
+                "required": bool(field.get("required")),
+                "options": field.get("options") or [],
+                "max_length": field.get("max_length"),
+            })
+    return fields
 
 
 def _render_suggested_questions_html(questions: List[str]) -> str:
@@ -403,7 +431,8 @@ _dify_extra_inputs_cache: Dict[tuple, Dict[str, str]] = {}
 # 値は (発言, opening_shown)。画面が挨拶文を出したかは尋ねたターンの情報なので一緒に預かる
 _dify_pending_first_message: Dict[tuple, "tuple[str, bool]"] = {}
 
-# 「URLなしで始める」を選んだ会話（(userid, app_id, session_id)）。以降は尋ねない
+# 必須入力について決着済みの会話（(userid, app_id, session_id)）。以降は尋ねない。
+# 「URLなしで始める」を選んだ／一度尋ねた／画面の入力欄（app_inputs）で受け取った、のいずれか
 _dify_inputs_skipped: set = set()
 
 _SKIP_REQUIRED_INPUTS_MESSAGE = "URLなしで始める"
@@ -596,6 +625,7 @@ def _call_dify_chat(
     image: Optional[Dict[str, str]] = None,
     run_id: Optional[str] = None,
     opening_shown: bool = False,
+    inputs_confirmed: bool = False,
 ) -> str:
     """Dify上に構築されたAIアプリに問い合わせる（同一ユーザー・同一アプリ・同一セッションの
     会話はプロセス内で継続する）
@@ -610,6 +640,9 @@ def _call_dify_chat(
     run_id（agents/run_control）で「生成を中止」されたら、Difyの停止APIを呼んで
     ChatCancelled を送出する。途中までの会話はDify側に残るので、conversation_idは
     受け取った時点で覚え、次の発言はその続きとして送る。
+
+    inputs_confirmed=True は、inputs を画面の入力欄（モードに入ったときの開始前フォーム）で
+    受け取ったことを表す。空欄のまま始めることを選んだ場合も含め、チャットの中では尋ねない。
     """
     cache_key = (userid, app_id, session_id)
     conversation_id = "" if reset else _dify_conversation_cache.get(cache_key, "")
@@ -622,6 +655,9 @@ def _call_dify_chat(
         _dify_extra_inputs_cache.pop(cache_key, None)
         _dify_pending_first_message.pop(cache_key, None)
         _dify_inputs_skipped.discard(cache_key)
+    if inputs_confirmed:
+        _dify_inputs_skipped.add(cache_key)
+        _dify_pending_first_message.pop(cache_key, None)
     stored_inputs = {} if reset else _dify_extra_inputs_cache.get(cache_key, {})
     merged_inputs = {**stored_inputs, **{k: v for k, v in (inputs or {}).items() if v}}
 
@@ -637,6 +673,8 @@ def _call_dify_chat(
         _dify_extra_inputs_cache[cache_key] = merged_inputs
 
     # 必須変数が空のまま新しい会話を始めるときは、Difyへ送る前に1回だけ尋ねる。
+    # AIコーチのモードから入った場合は画面の入力欄で受け取る（inputs_confirmed）ので、
+    # ここで尋ねるのはモードを使わず普通のチャットからアプリに来た場合だけ。
     # 答え（URL／「URLなしで始める」／それ以外の発言）が来たら、預かった最初の発言で始める。
     # 2回目は尋ねない（以前、聞き取りが終わるまで呼ばない作りで同じ質問を繰り返していた）
     pending = _dify_pending_first_message.pop(cache_key, None)
@@ -790,6 +828,8 @@ def create_ai_application_tools(
     run_id: Optional[str] = None,
     in_app_mode: bool = False,
     opening_shown: bool = False,
+    app_inputs: Optional[Dict[str, str]] = None,
+    app_inputs_key: Optional[str] = None,
 ) -> "tuple[List[BaseTool], Optional[str], Optional[str]]":
     """
     DBに登録済みのAIアプリケーション（webcoach_ai_application.secret_keyが設定されているもの）を
@@ -814,6 +854,9 @@ def create_ai_application_tools(
     みなし、ボタン値の一致以外ではどちらもNoneを返す。タグに当たらない別用途の依頼
     （コースの質問等）は、Difyの途中では前ターンのアプリへ送られる。抜けたいときは
     「新しいチャットで続ける」で別セッションにする前提。
+
+    app_inputs は、AIコーチでアプリのモードに入ったとき画面の入力欄で受け取った開始前の入力
+    （求人URL等。build_dify_intro の inputs）。secret_key が app_inputs_key のアプリにだけ渡す。
     """
     from entities.webcoach import WebCoachAIApplication
 
@@ -837,6 +880,10 @@ def create_ai_application_tools(
             image: Optional[Dict[str, str]] = image,
             run_id: Optional[str] = run_id,
             opening_shown: bool = opening_shown,
+            # 画面の入力欄で受け取った開始前の入力（モードに入ったこのアプリの分だけ）
+            preset_inputs: Optional[Dict[str, str]] = (
+                app_inputs if app_inputs is not None and app.secret_key == app_inputs_key else None
+            ),
         ):
             def _call(
                 query: str,
@@ -850,11 +897,12 @@ def create_ai_application_tools(
                     api_key,
                     app_id,
                     reset=_should_reset_dify_conversation(message, start_new_conversation),
-                    inputs=extra_inputs,
+                    inputs={**(preset_inputs or {}), **(extra_inputs or {})},
                     session_id=session_id,
                     image=image,
                     run_id=run_id,
                     opening_shown=opening_shown,
+                    inputs_confirmed=preset_inputs is not None,
                 )
             return _call
 

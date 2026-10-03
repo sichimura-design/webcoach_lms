@@ -14,6 +14,7 @@
 
 import type { AiSkillResponse, AiSkillId, SkillSuggestion } from './aiSkill';
 import type { LessonAiResponse } from './lesson';
+import type { AiApplicationInputField } from './aiApplication';
 
 /** 教材本文から引用した箇所。AIへ渡す前後文脈まで含む */
 export interface AiCoachQuote {
@@ -65,6 +66,11 @@ export interface AiCoachMessage {
   /** proposal のとき: 確認カードの内容と決着 */
   proposal?: SkillSuggestion;
   resolution?: ProposalResolution;
+  /**
+   * assistant のとき: アプリの入口（挨拶文と選択肢）に添える開始前の入力欄（求人URL等）。
+   * 入力値はセッションの appInputs に持つ。
+   */
+  appInputFields?: AiApplicationInputField[];
   /**
    * assistant のとき: 「回答を作成しています…」のような待機中の一時表示。
    * 🔴 AI の発言ではないので会話履歴（toHistory）に入れない。入れると Dify 側から見て
@@ -157,6 +163,16 @@ export interface AiCoachSession {
    * モードに入るたびに1回だけ出し、そのあとの最初の発言では opening_shown を送る。
    */
   introShownFor?: string;
+  /**
+   * 入口の入力欄（求人URL等）に入れた値。serverKey はその入口を出したモード。
+   * モードに入った最初の発言で app_inputs として送る。skipped は「URLなしで始める」を選んだ印。
+   */
+  appInputs?: {
+    serverKey: string;
+    fields: AiApplicationInputField[];
+    values: Record<string, string>;
+    skipped: boolean;
+  };
   createdAt: string;
   updatedAt: string;
 }

@@ -439,6 +439,11 @@ export interface AIRequest {
    */
   opening_shown?: boolean;
   /**
+   * 入口の入力欄で受け取った開始前の入力（求人URL等。AiCoachSession.appInputs）。
+   * force_app_key と一緒に最初の発言だけに付ける。送るとチャットの中では尋ねられない。
+   */
+  app_inputs?: Record<string, string>;
+  /**
    * このターンの実行ID。「生成を中止」で POST /webcoach/ai/cancel に同じ値を送り、
    * サーバー側（LLM・Dify）の生成も止める。bffClient.sendAIMessage が採番するので呼び出し側は付けなくてよい
    */

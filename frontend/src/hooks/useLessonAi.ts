@@ -23,6 +23,7 @@ import {
   getLoadedAiApplications,
   loadAiApplications,
 } from './useAiApplications';
+import { introNeedsDisplay } from '../types/aiApplication';
 import { detectSkill } from '../utils/aiSkillRouting';
 import { AI_ERROR_CONCLUSION, toHistory } from '../utils/aiCoachText';
 import { newServerKey, useAiCoachStore } from '../store/aiCoachStore';
@@ -73,6 +74,11 @@ export interface UseLessonAi {
   skillId: AiSkillId;
   /** セレクタからの手動指定。ユーザーが明確な目的を持っているとき用 */
   selectSkill: (skillId: AiSkillId) => void;
+  /** アプリの入口の入力欄（求人URL等）。入口に入力欄が無ければ null */
+  appInputs: AiCoachSession['appInputs'] | null;
+  setAppInput: (variable: string, value: string) => void;
+  /** 「URLなしで始める」 */
+  setAppInputsSkipped: (skipped: boolean) => void;
   /** 未回答の確認カード。あるときは送信を止めてユーザーの選択を待っている */
   pendingProposal: { messageId: string; suggestion: SkillSuggestion } | null;
   /** 確認カードを受け入れて専門モードを実行する */
@@ -163,6 +169,24 @@ const waitingAnswer = (): LessonAiResponse => ({
  * @param doc 教材本文。null なら教材の文脈を持たない単独の会話
  * @param sessionIdOverride AI専用ページのように、外からセッションを指定する場合
  */
+/** 入口の入力欄が送れる状態か（必須がすべて埋まっている、または「URLなしで始める」を選んだ） */
+export const appInputsReady = (appInputs: AiCoachSession['appInputs'] | null | undefined): boolean =>
+  !!appInputs &&
+  (appInputs.skipped || appInputs.fields.every((f) => !f.required || (appInputs.values[f.variable] ?? '').trim() !== ''));
+
+/** 最初の発言に付ける app_inputs（そのモードの入口のもので、送れる状態のときだけ） */
+const appInputsToSend = (
+  appInputs: AiCoachSession['appInputs'] | undefined,
+  serverKey: string
+): { app_inputs?: Record<string, string> } => {
+  if (!appInputs || appInputs.serverKey !== serverKey || !appInputsReady(appInputs)) return {};
+  return {
+    app_inputs: Object.fromEntries(
+      appInputs.fields.map((f) => [f.variable, (appInputs.values[f.variable] ?? '').trim()])
+    ),
+  };
+};
+
 export function useLessonAi(doc: LessonDoc | null, sessionIdOverride?: string): UseLessonAi {
   const sessionId = sessionIdOverride ?? lessonSessionId(doc?.lessonId);
   const scrollAnchorRef = useRef<HTMLDivElement>(null);
@@ -251,6 +275,9 @@ export function useLessonAi(doc: LessonDoc | null, sessionIdOverride?: string): 
    * Difyには何も送らずに挨拶文と選択肢を出し、選んだ文言を最初の発言として送らせる。
    * 選択肢の無いアプリ（キャッチコピー等）は従来どおり（最初の応答に挨拶文が付く）。
    * 出すのは「このモードに入ってから、まだアプリへ何も送っていない」あいだの1回だけ。
+   *
+   * 開始前の入力項目（AI面接シミュレーターの求人URL等）があるアプリは、入口に入力欄も添える。
+   * Difyでは会話の前にフォームで入れる項目で、会話の中では尋ねられないため（ID 22）。
    */
   const introPendingKey =
     isSpecialistSkill(skillId) &&
@@ -267,12 +294,18 @@ export function useLessonAi(doc: LessonDoc | null, sessionIdOverride?: string): 
       const appKey = findAiApplication(apps, skillId)?.app_key;
       if (!appKey) return;
       const intro = await getAiApplicationIntro(appKey);
-      if (!alive || !intro?.has_choices) return;
+      if (!alive || !intro || !introNeedsDisplay(intro)) return;
       // 待っているあいだに送信が始まった・モードが変わった場合は出さない
       const current = useAiCoachStore.getState().sessions[sessionId];
       if (loadingRef.current || !current || current.serverKey !== introPendingKey) return;
       if (current.introShownFor === introPendingKey || current.appForcedFor === introPendingKey) return;
-      patchSession(sessionId, { introShownFor: introPendingKey });
+      const fields = intro.inputs ?? [];
+      patchSession(sessionId, {
+        introShownFor: introPendingKey,
+        appInputs: fields.length
+          ? { serverKey: introPendingKey, fields, values: {}, skipped: false }
+          : undefined,
+      });
       appendMessage(sessionId, {
         id: nextId('a'),
         role: 'assistant',
@@ -286,6 +319,7 @@ export function useLessonAi(doc: LessonDoc | null, sessionIdOverride?: string): 
           groundedInMaterial: false,
           generalNote: null,
         },
+        ...(fields.length ? { appInputFields: fields } : {}),
         createdAt: new Date().toISOString(),
       });
     })();
@@ -293,6 +327,26 @@ export function useLessonAi(doc: LessonDoc | null, sessionIdOverride?: string): 
       alive = false;
     };
   }, [appendMessage, introPendingKey, patchSession, sessionId, skillId]);
+
+  /** 入口の入力欄（求人URL等）の値を変える */
+  const setAppInput = useCallback(
+    (variable: string, value: string) => {
+      const current = useAiCoachStore.getState().sessions[sessionId]?.appInputs;
+      if (!current) return;
+      patchSession(sessionId, { appInputs: { ...current, values: { ...current.values, [variable]: value } } });
+    },
+    [patchSession, sessionId]
+  );
+
+  /** 「URLなしで始める」 */
+  const setAppInputsSkipped = useCallback(
+    (skipped: boolean) => {
+      const current = useAiCoachStore.getState().sessions[sessionId]?.appInputs;
+      if (!current) return;
+      patchSession(sessionId, { appInputs: { ...current, skipped } });
+    },
+    [patchSession, sessionId]
+  );
 
   const setContextHeading = useCallback(
     (heading: string | null) => patchContext(sessionId, { heading }),
@@ -408,6 +462,9 @@ export function useLessonAi(doc: LessonDoc | null, sessionIdOverride?: string): 
             ...(forceAppKey && store.sessions[sessionId]?.introShownFor === serverKey
               ? { opening_shown: true }
               : {}),
+            // 入口の入力欄（求人URL等）。必須が埋まっていない（かつ「URLなしで始める」も選んでいない）
+            // ときは送らず、サーバーがチャットの中で1回だけ尋ねる
+            ...(forceAppKey ? appInputsToSend(store.sessions[sessionId]?.appInputs, serverKey) : {}),
             // 会話履歴を渡さないと、DBに登録したAIアプリ(Dify)へ問い合わせ中の
             // 2ターン目以降でLLMが文脈を見失い、別のツールを呼んでしまう
             // (例: ボタン選択の「WEBデザイン」だけ送ると学習相談ツールに逸れる)。
@@ -716,7 +773,7 @@ export function useLessonAi(doc: LessonDoc | null, sessionIdOverride?: string): 
         await loadAiApplications().catch(() => null),
         suggestion.skillId
       )?.app_key;
-      if (appKey && (await getAiApplicationIntro(appKey))?.has_choices) {
+      if (appKey && introNeedsDisplay(await getAiApplicationIntro(appKey))) {
         if (image) setImageInStore(sessionId, image);
         return;
       }
@@ -867,6 +924,9 @@ export function useLessonAi(doc: LessonDoc | null, sessionIdOverride?: string): 
     explain,
     skillId,
     selectSkill,
+    appInputs: session?.appInputs ?? null,
+    setAppInput,
+    setAppInputsSkipped,
     pendingProposal,
     acceptProposal,
     dismissProposal,

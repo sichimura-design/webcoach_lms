@@ -7,12 +7,13 @@
  *    - 選んだ文言を最初の発言としてアプリへ送り、挨拶文は付け直させない（opening_shown）
  *    - 選択肢の無いアプリは何も出さない（従来どおり）
  *    - 提案カードを受け入れても、直前の発言をアプリへ送らない（最初の分岐に当たらず進まなくなる）
+ *    - 開始前の入力項目（求人URL等）があるアプリは入口に入力欄を添え、最初の発言と一緒に app_inputs で送る（ID 22）
  */
 import { act, createElement } from 'react';
 import { createRoot } from 'react-dom/client';
 import type { AiApplication, AiApplicationIntro } from '../types/aiApplication';
 import { useAiCoachStore } from '../store/aiCoachStore';
-import { useLessonAi, UseLessonAi } from './useLessonAi';
+import { appInputsReady, useLessonAi, UseLessonAi } from './useLessonAi';
 
 const api: Record<string, jest.Mock> = {};
 jest.mock('../services/bffClient', () => ({
@@ -60,10 +61,33 @@ const INTROS: Record<string, AiApplicationIntro> = {
   },
 };
 
+INTROS['ai-interview-simulator'] = {
+  app_key: 'ai-interview-simulator',
+  opening_statement: 'はじめまして、AI面接官です！',
+  suggested_questions: ['クライアントとの業務委託面談', '企業の採用面接'],
+  has_choices: true,
+  message:
+    'はじめまして、AI面接官です！\n\n<div>\n  <button data-message="クライアントとの業務委託面談">クライアントとの業務委託面談</button>\n</div>',
+  inputs: [
+    {
+      variable: 'job_posting',
+      label: '求人情報のURLを入力してください',
+      type: 'text-input',
+      required: true,
+      options: [],
+      max_length: null,
+    },
+  ],
+};
+
 beforeEach(() => {
   api.getAIApplications = jest
     .fn()
-    .mockResolvedValue([app(19, 'project-application-writer'), app(16, 'catchcopy-idea-maker')]);
+    .mockResolvedValue([
+      app(19, 'project-application-writer'),
+      app(16, 'catchcopy-idea-maker'),
+      app(15, 'ai-interview-simulator'),
+    ]);
   api.getAIApplicationIntro = jest.fn((key: string) => Promise.resolve(INTROS[key]));
   api.sendAIMessage = jest.fn().mockResolvedValue({ message: '<form>URL</form>' });
 });
@@ -150,4 +174,52 @@ test('提案カードを受け入れても、直前の発言を流れのある�
   expect(api.sendAIMessage).not.toHaveBeenCalled();
   const last = ai.current.messages[ai.current.messages.length - 1];
   expect(last.answer?.conclusion).toContain('data-message="応募文添削"');
+});
+
+describe('開始前の入力項目（求人URL）があるアプリ', () => {
+  const URL = 'https://crowdworks.jp/public/jobs/123';
+
+  test('入口に入力欄を添え、入れたURLを最初の発言と一緒に app_inputs で送る', async () => {
+    const id = useAiCoachStore.getState().createSkillSession({ skillId: 'interview' });
+    const ai = await render(id);
+
+    const intro = ai.current.messages[ai.current.messages.length - 1];
+    expect(intro.appInputFields?.map((f) => f.variable)).toEqual(['job_posting']);
+    expect(appInputsReady(ai.current.appInputs)).toBe(false);
+
+    await act(async () => ai.current.setAppInput('job_posting', ` ${URL} `));
+    expect(appInputsReady(ai.current.appInputs)).toBe(true);
+
+    await act(async () => {
+      await ai.current.send('クライアントとの業務委託面談');
+    });
+    const req = api.sendAIMessage.mock.calls[0][0];
+    expect(req.force_app_key).toBe('ai-interview-simulator');
+    expect(req.app_inputs).toEqual({ job_posting: URL });
+
+    // 2回目以降は送らない（サーバーが覚えている）
+    await act(async () => {
+      await ai.current.send('よろしくお願いします');
+    });
+    expect(api.sendAIMessage.mock.calls[1][0].app_inputs).toBeUndefined();
+  });
+
+  test('「URLなしで始める」を選ぶと空欄で送る', async () => {
+    const id = useAiCoachStore.getState().createSkillSession({ skillId: 'interview' });
+    const ai = await render(id);
+    await act(async () => ai.current.setAppInputsSkipped(true));
+    await act(async () => {
+      await ai.current.send('企業の採用面接');
+    });
+    expect(api.sendAIMessage.mock.calls[0][0].app_inputs).toEqual({ job_posting: '' });
+  });
+
+  test('何も選ばずに入力欄から送ったときは app_inputs を付けない（サーバーがチャットの中で尋ねる）', async () => {
+    const id = useAiCoachStore.getState().createSkillSession({ skillId: 'interview' });
+    const ai = await render(id);
+    await act(async () => {
+      await ai.current.send('面接の練習をしたい');
+    });
+    expect(api.sendAIMessage.mock.calls[0][0].app_inputs).toBeUndefined();
+  });
 });
