@@ -112,3 +112,90 @@ def test_ingest_in_keyword_mode_uploads_only_metadata(tmp_path, monkeypatch):
     assert saved["documents"] == ["既存", "新しい教材"]
     assert saved["embedding_model"] is None
     assert stats["total_documents"] == 2
+
+
+def _rebuild(tmp_path, monkeypatch, existing, modules, pages, **request_kwargs):
+    """Moodle教材からの再構築を、DB・HTTP・S3をモックして実行し、保存されたmetadata.jsonを返す"""
+    import routers.faiss_ingest as ingest
+
+    monkeypatch.setenv("VECTOR_DB_ENV", "keyword")
+    monkeypatch.setenv("S3_BUCKET_NAME", "bucket")
+    monkeypatch.setenv("FAISS_CACHE_DIR", str(tmp_path))
+    monkeypatch.setattr(ingest, "_faiss_manager", None)
+
+    def download(bucket, key, path):
+        with open(path, "w", encoding="utf-8") as f:
+            json.dump(existing, f)
+
+    def fetch(url):
+        if url not in pages:
+            raise RuntimeError("404")
+        return pages[url]
+
+    uploaded = {}
+
+    def upload(path, bucket, key):
+        with open(path, encoding="utf-8") as f:
+            uploaded[key] = json.load(f)
+
+    s3 = MagicMock()
+    s3.download_file.side_effect = download
+    s3.upload_file.side_effect = upload
+    with patch.object(ingest.boto3, "client", return_value=s3), \
+            patch.object(ingest, "fetch_moodle_material_modules", return_value=modules), \
+            patch.object(ingest, "_fetch_material_text", side_effect=fetch), \
+            patch.object(agent, "reload_vector_db") as reload_chat:
+        response = ingest.rebuild_from_moodle_materials(ingest.MoodleMaterialsRebuildRequest(**request_kwargs))
+
+    reload_chat.assert_called_once()
+    return response, uploaded["vector_db/metadata.json"]
+
+
+def _module(cmid, course_id, url, lesson="レッスン"):
+    return {"cmid": cmid, "course_id": course_id, "course_name": f"コース{course_id}",
+            "section_no": 1, "section_name": "章1", "lesson_name": lesson, "url": url}
+
+
+def test_rebuild_from_moodle_replaces_index_with_course_ids(tmp_path, monkeypatch):
+    """古い索引(course_id無し)は捨て、Moodleのコース単位でcourse_idつきのチャンクを作る。
+    同じHTMLが2コースにあれば取得は1回、チャンクはコースごとに作る"""
+    existing = {"documents": ["古いCanva"], "metadatas": [{"filename": "old.html"}]}
+    modules = [
+        _module(1, 23, "https://x/materials/a.html", "Canvaの登録"),
+        _module(2, 69, "https://x/materials/a.html", "Canvaの登録"),
+        _module(3, 69, "https://x/materials/missing.html"),
+    ]
+    pages = {"https://x/materials/a.html": "Canvaのアカウントを作成する"}
+
+    response, saved = _rebuild(tmp_path, monkeypatch, existing, modules, pages)
+
+    assert saved["documents"] == ["Canvaのアカウントを作成する"] * 2
+    assert [m["course_id"] for m in saved["metadatas"]] == [23, 69]
+    assert saved["metadatas"][0]["module_name"] == "Canvaの登録"
+    assert saved["metadatas"][0]["cmid"] == 1
+    assert response.documents_added == 2
+    assert response.success is False  # 取得できなかった教材はerrorsに出す
+    assert any("missing.html" in e for e in response.errors)
+
+
+def test_rebuild_for_specific_courses_keeps_other_courses(tmp_path, monkeypatch):
+    existing = {
+        "documents": ["コース23の古い教材", "コース50の教材"],
+        "metadatas": [{"course_id": 23}, {"course_id": 50}],
+    }
+    modules = [_module(1, 23, "https://x/materials/a.html")]
+    pages = {"https://x/materials/a.html": "コース23の新しい教材"}
+
+    response, saved = _rebuild(tmp_path, monkeypatch, existing, modules, pages, course_ids=[23])
+
+    assert saved["documents"] == ["コース50の教材", "コース23の新しい教材"]
+    assert response.success is True
+
+
+def test_keyword_search_filters_by_course_after_rebuild():
+    index = KeywordIndex(
+        ["Canvaのアカウントを作成する", "Canvaでバナーを作る"],
+        [{"course_id": 23}, {"course_id": 69}],
+    )
+    result = index.search("Canvaのアカウント", course_id=69)
+    assert result["documents"][0] == ["Canvaでバナーを作る"]

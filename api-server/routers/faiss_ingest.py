@@ -715,6 +715,184 @@ def ingest_s3_all(request: S3AllIngestRequest):
         )
 
 
+# ==========================================
+# Moodleの教材リンクから索引を作り直す
+# ==========================================
+
+class MoodleMaterialsRebuildRequest(BaseModel):
+    """Moodle教材からの索引再構築リクエスト"""
+    url_pattern: str = Field("%/materials/%", description="対象にするURLモジュール(mdl_url.externalurl)のLIKEパターン")
+    course_ids: Optional[List[int]] = Field(None, description="対象コースを絞る場合のコースID（省略時は全コース）")
+    chunk_size: int = Field(1000, description="テキストのチャンクサイズ", ge=100, le=5000)
+    chunk_overlap: int = Field(200, description="チャンクのオーバーラップサイズ", ge=0, le=1000)
+    max_workers: int = Field(8, description="教材HTMLの同時取得数", ge=1, le=16)
+
+
+def fetch_moodle_material_modules(url_pattern: str, course_ids: Optional[List[int]] = None) -> List[Dict[str, Any]]:
+    """Moodleのコースに登録された教材(URLモジュール)を、コース・セクション・レッスン名つきで返す。
+
+    1つの教材HTMLが複数コースに登録されていることがあるので、行は(コース, モジュール)単位。
+    """
+    from sqlalchemy import text, bindparam
+    from database import engine
+
+    sql = """
+        SELECT cm.id AS cmid, c.id AS course_id, c.fullname AS course_name,
+               cs.section AS section_no, cs.name AS section_name,
+               u.name AS lesson_name, u.externalurl AS url
+        FROM mdl_url u
+        JOIN mdl_course_modules cm ON cm.instance = u.id
+        JOIN mdl_modules m ON m.id = cm.module AND m.name = 'url'
+        JOIN mdl_course c ON c.id = cm.course
+        LEFT JOIN mdl_course_sections cs ON cs.id = cm.section
+        WHERE u.externalurl LIKE :pattern AND cm.deletioninprogress = 0
+    """
+    params: Dict[str, Any] = {"pattern": url_pattern}
+    stmt_extra = ""
+    if course_ids:
+        stmt_extra = " AND c.id IN :course_ids"
+        params["course_ids"] = list(course_ids)
+    stmt = text(sql + stmt_extra + " ORDER BY c.id, cs.section, cm.id")
+    if course_ids:
+        stmt = stmt.bindparams(bindparam("course_ids", expanding=True))
+
+    with engine.connect() as conn:
+        return [dict(row._mapping) for row in conn.execute(stmt, params)]
+
+
+def _fetch_material_text(url: str) -> str:
+    import requests
+
+    response = requests.get(url, timeout=(10, 30))
+    response.raise_for_status()
+    # Content-Typeにcharsetが無いとrequestsはISO-8859-1扱いにするので、bytesのまま渡して
+    # BeautifulSoupにHTML内のmeta charsetで判定させる
+    return TextProcessor.clean_html(response.content)
+
+
+@router.post(
+    "/ingest/moodle-materials",
+    response_model=IngestResponse,
+    summary="Moodleの教材リンクから索引を作り直す（既存の索引は置き換える）"
+)
+def rebuild_from_moodle_materials(request: MoodleMaterialsRebuildRequest):
+    """
+    Moodleのコースに登録された教材(URLモジュール)のHTMLを取得し、コースID・レッスン名つきで
+    索引を作り直します。AIチャットのRAGはcourse_idで教材を絞るので、course_idの無い索引は
+    コースで絞ると0件になる。既存の索引（metadata.json）はすべて置き換える。
+
+    course_idsを指定した場合は、そのコースのチャンクだけを入れ替え、他コースのチャンクは残す。
+    """
+    from concurrent.futures import ThreadPoolExecutor
+
+    try:
+        modules = fetch_moodle_material_modules(request.url_pattern, request.course_ids)
+        logger.info(f"Moodle material modules: {len(modules)}")
+        if not modules:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail=f"No Moodle URL modules match {request.url_pattern}",
+            )
+
+        # 同じHTMLが複数コースにあるので、取得はURL単位で1回
+        urls = list(dict.fromkeys(m["url"] for m in modules))
+        texts: Dict[str, str] = {}
+        errors: List[str] = []
+
+        def fetch(url: str):
+            try:
+                return url, _fetch_material_text(url), None
+            except Exception as e:
+                return url, "", f"Failed to fetch {url}: {e}"
+
+        with ThreadPoolExecutor(max_workers=request.max_workers) as pool:
+            for url, text_content, error in pool.map(fetch, urls):
+                if error:
+                    errors.append(error)
+                elif not text_content:
+                    errors.append(f"No text content in {url}")
+                else:
+                    texts[url] = text_content
+
+        processor = TextProcessor()
+        indexed_at = datetime.now().isoformat()
+        documents: List[str] = []
+        metadatas: List[Dict[str, Any]] = []
+        files_processed = 0
+        for module in modules:
+            text_content = texts.get(module["url"])
+            if not text_content:
+                continue
+            chunks = processor.chunk_text(text_content, request.chunk_size, request.chunk_overlap)
+            base_metadata = {
+                'source': 'moodle_url',
+                'course_id': module["course_id"],
+                'course_name': module["course_name"],
+                'section_name': module["section_name"] or '',
+                'section_no': module["section_no"],
+                # retrieve_nodeは参照元表示にmodule_nameを使う
+                'module_name': module["lesson_name"],
+                'cmid': module["cmid"],
+                'url': module["url"],
+                'filename': Path(module["url"]).name,
+                'indexed_at': indexed_at,
+            }
+            for i, chunk in enumerate(chunks):
+                documents.append(chunk)
+                metadatas.append({**base_metadata, 'chunk_index': i, 'total_chunks': len(chunks)})
+            files_processed += 1
+
+        if not documents:
+            raise HTTPException(
+                status_code=status.HTTP_502_BAD_GATEWAY,
+                detail=f"No material text could be fetched. errors={errors[:5]}",
+            )
+
+        manager = get_faiss_manager()
+        if request.course_ids:
+            targets = set(request.course_ids)
+            kept = [(d, m) for d, m in zip(manager.documents, manager.metadatas) if m.get('course_id') not in targets]
+        else:
+            kept = []
+        manager.documents = []
+        manager.metadatas = []
+        manager.index = None  # 埋め込みモードでも作り直す
+        if kept:
+            manager.add_documents([d for d, _ in kept], [m for _, m in kept])
+        manager.add_documents(documents, metadatas)
+        manager.save_and_upload()
+
+        global _faiss_manager
+        _faiss_manager = None
+        manager = get_faiss_manager()
+        stats = manager.get_stats()
+
+        # AIチャット側の検索(learning_coach_agent.vector_db)も読み直す
+        from agents.learning_coach_agent import reload_vector_db
+        reload_vector_db()
+
+        return IngestResponse(
+            success=len(errors) == 0,
+            message=(
+                f"Rebuilt index from {files_processed} Moodle modules ({len(texts)} unique pages), "
+                f"{len(documents)} chunks" + (f", kept {len(kept)} chunks of other courses" if kept else "")
+            ),
+            files_processed=files_processed,
+            documents_added=len(documents),
+            faiss_total_vectors=stats['total_vectors'] or stats['total_documents'],
+            errors=errors if errors else None,
+        )
+
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Moodle materials rebuild failed: {e}", exc_info=True)
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Failed to rebuild index from Moodle materials: {str(e)}"
+        )
+
+
 @router.get(
     "/stats",
     response_model=FAISSStatsResponse,
