@@ -3,6 +3,8 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import { Bell, Home, BookOpen, Sparkles, Settings, ShieldCheck, BookMarked, HelpCircle, FileText, Mail, CalendarDays, ChevronDown, ChevronRight, ChevronsLeft, PanelLeftOpen, MessagesSquare, NotebookPen, UserRound, Send, Square, X, User, Paperclip, ImageOff, MoreHorizontal, PencilLine, RotateCcw } from 'lucide-react';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
+// 日本語の約物（「」等）に接した **太字** が CommonMark の規則で閉じず、** がそのまま出るのを防ぐ
+import remarkCjkFriendly from 'remark-cjk-friendly';
 import { useAuth } from '../../contexts/AuthContext';
 import { useNotificationStore } from '../../store/notificationStore';
 import { useNewContentNotification } from '../../hooks/useNewContentNotification';
@@ -1378,7 +1380,7 @@ export function AppHeader({ userName, avatarUrl }: AppHeaderProps) {
                         return (
                           <>
                             <ReactMarkdown
-                              remarkPlugins={[remarkGfm]}
+                              remarkPlugins={[remarkGfm, remarkCjkFriendly]}
                               children={text.replace(/^(✅[^\n-]*?) - (.+)$/gm, '$1\n$2')}
                               components={{
                                 h1: ({ children }) => <p className="text-base font-bold text-brand-text mt-3 mb-2">{children}</p>,

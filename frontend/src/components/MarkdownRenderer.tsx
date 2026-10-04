@@ -1,6 +1,8 @@
 import React from 'react';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
+// 日本語の約物（「」等）に接した **太字** が CommonMark の規則で閉じず、** がそのまま出るのを防ぐ
+import remarkCjkFriendly from 'remark-cjk-friendly';
 import remarkMath from 'remark-math';
 import rehypeKatex from 'rehype-katex';
 import rehypeHighlight from 'rehype-highlight';
@@ -305,7 +307,7 @@ function MarkdownRenderer({ content, className, compact = false }: MarkdownRende
   return (
     <Box className={className}>
       <ReactMarkdown
-        remarkPlugins={[remarkGfm, remarkMath]}
+        remarkPlugins={[remarkGfm, remarkCjkFriendly, remarkMath]}
         rehypePlugins={[
           rehypeKatex,
           rehypeHighlight,
