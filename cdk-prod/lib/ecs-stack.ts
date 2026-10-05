@@ -262,6 +262,23 @@ export class ProdEcsStack extends cdk.Stack {
         resources: [`arn:aws:s3:::${s3BucketName}/*`],
       }));
     }
+    // 管理画面のユーザー登録・削除・グループ変更(BFFのCognitoAdapter)
+    if (cognitoUserPoolId) {
+      taskDef.addToTaskRolePolicy(new iam.PolicyStatement({
+        actions: [
+          'cognito-idp:AdminCreateUser',
+          'cognito-idp:AdminDeleteUser',
+          'cognito-idp:AdminUpdateUserAttributes',
+          'cognito-idp:AdminAddUserToGroup',
+          'cognito-idp:AdminRemoveUserFromGroup',
+          'cognito-idp:AdminListGroupsForUser',
+          'cognito-idp:ListUsers',
+          'cognito-idp:ListGroups',
+          'cognito-idp:ListUsersInGroup',
+        ],
+        resources: [`arn:aws:cognito-idp:${this.region}:${this.account}:userpool/${cognitoUserPoolId}`],
+      }));
+    }
     // リマインドメール(BFFのReminderService)をSESのwebcoach.jpから送る
     taskDef.addToTaskRolePolicy(new iam.PolicyStatement({
       actions: ['ses:SendEmail', 'ses:SendRawEmail'],

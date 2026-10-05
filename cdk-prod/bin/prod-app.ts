@@ -184,10 +184,11 @@ const backendStack = new ProdBackendStack(app, `${envName}-BackendStack`, {
   env, tags, envName,
   vpc: vpcStack.vpc,
   albSecurityGroup: albStack.albSecurityGroup,
-  // 既存 Cognito User Pool (822824391912 の /moodle/prod/config/* で確認した値) を既定値に使う。
+  // 本番アカウントの prod-lms-user-pool (prod-CognitoStack) と prod-lms-spa-client を既定値に使う。
+  // 2026-10-05まではdevアカウントのdev-moodle-user-poolを流用していた。
   // 別プールを使う場合は --context cognitoUserPoolId=... 等で上書きする。
-  cognitoUserPoolId: app.node.tryGetContext('cognitoUserPoolId') ?? 'ap-northeast-1_aAPBRNL7D',
-  cognitoClientId: app.node.tryGetContext('cognitoClientId') ?? '23jacbr6nk4baiftjueddmr4kb',
+  cognitoUserPoolId: app.node.tryGetContext('cognitoUserPoolId') ?? 'ap-northeast-1_egAV2FlqQ',
+  cognitoClientId: app.node.tryGetContext('cognitoClientId') ?? '4njvvf0fhujgn3l2igi85ftoa5',
   cognitoClientSecret: app.node.tryGetContext('cognitoClientSecret'),
   anthropicApiKey: app.node.tryGetContext('anthropicApiKey'),
   // secrets は空 ('REPLACE_ME') のまま作成し、デプロイ後に手動で
@@ -230,8 +231,8 @@ const ecsStack = new ProdEcsStack(app, `${envName}-EcsStack`, {
   anthropicSecret: backendStack.anthropicSecret,
   difySecret: backendStack.difySecret,
   appSecrets: backendStack.appSecrets,
-  cognitoUserPoolId: app.node.tryGetContext('cognitoUserPoolId') ?? 'ap-northeast-1_aAPBRNL7D',
-  cognitoClientId: app.node.tryGetContext('cognitoClientId') ?? '23jacbr6nk4baiftjueddmr4kb',
+  cognitoUserPoolId: app.node.tryGetContext('cognitoUserPoolId') ?? 'ap-northeast-1_egAV2FlqQ',
+  cognitoClientId: app.node.tryGetContext('cognitoClientId') ?? '4njvvf0fhujgn3l2igi85ftoa5',
   moodleSiteUrl: app.node.tryGetContext('moodleSiteUrl'),
   // 初回デプロイ: ECR にイメージがない場合は 0 にする
   desiredCount: Number(app.node.tryGetContext('desiredCount') ?? '2'),
