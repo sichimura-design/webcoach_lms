@@ -249,6 +249,8 @@ const ecsStack = new ProdEcsStack(app, `${envName}-EcsStack`, {
   cloudfrontDomain: app.node.tryGetContext('cloudfrontDomain') ?? 'study.webcoach.jp',
   s3BucketName: app.node.tryGetContext('s3BucketName') ?? 'prod-spastack-spabucket48e1059f-bvsjyjbr65bg',
   s3Region: app.node.tryGetContext('s3Region') ?? 'us-east-1',
+  // CIでビルド済みのイメージを使う: --context imageTag=$(git rev-parse origin/master)
+  imageTag: app.node.tryGetContext('imageTag'),
 });
 ecsStack.addDependency(backendStack);
 ecsStack.addDependency(albStack);

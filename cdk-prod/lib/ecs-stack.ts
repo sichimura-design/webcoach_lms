@@ -60,6 +60,12 @@ export interface ProdEcsStackProps extends cdk.StackProps {
   readonly s3BucketName?: string;
   /** s3BucketName のリージョン。SpaStackはus-east-1にあるので、BFFのS3クライアントにはこちらを使わせる */
   readonly s3Region?: string;
+  /**
+   * deploy-backend.yml がpushした git SHA。指定すると4コンテナとも `moodle-xxx-<SHA>` を使う
+   * (CIと同じ固定タグ。-latest だとECSホストが古いdigestを使い続けることがあるため)。
+   * 未指定なら従来どおり nginx/bff/api は -latest、moodle-app は dbfix タグ。
+   */
+  readonly imageTag?: string;
 }
 
 /**
@@ -105,7 +111,9 @@ export class ProdEcsStack extends cdk.Stack {
       cloudfrontDomain,
       s3BucketName,
       s3Region,
+      imageTag,
     } = props;
+    const tagOr = (prefix: string, fallback: string) => (imageTag ? `${prefix}-${imageTag}` : fallback);
 
     // 既存 prod-RdsStack のシークレットを ARN からインポート
     const dbSecret = secretsmanager.Secret.fromSecretCompleteArn(this, 'DbSecret', dbSecretArn);
@@ -281,7 +289,7 @@ export class ProdEcsStack extends cdk.Stack {
     // Moodle(Apache+PHP)は1リクエスト数十〜100MB使うため、旧値2GiBでは同時処理
     // 20〜40件程度でOOMになる見込みだった。
     const nginxContainer = taskDef.addContainer('nginx', {
-      image: ecs.ContainerImage.fromEcrRepository(repository, 'moodle-nginx-latest'),
+      image: ecs.ContainerImage.fromEcrRepository(repository, tagOr('moodle-nginx', 'moodle-nginx-latest')),
       memoryLimitMiB: 256,
       cpu: 256,
       logging: ecs.LogDrivers.awsLogs({ streamPrefix: 'nginx', logGroup }),
@@ -301,7 +309,7 @@ export class ProdEcsStack extends cdk.Stack {
     });
 
     const bffContainer = taskDef.addContainer('bff-server', {
-      image: ecs.ContainerImage.fromEcrRepository(repository, 'moodle-bff-latest'),
+      image: ecs.ContainerImage.fromEcrRepository(repository, tagOr('moodle-bff', 'moodle-bff-latest')),
       memoryLimitMiB: 1024,
       cpu: 512,
       logging: ecs.LogDrivers.awsLogs({ streamPrefix: 'bff', logGroup }),
@@ -339,7 +347,7 @@ export class ProdEcsStack extends cdk.Stack {
     });
 
     const apiContainer = taskDef.addContainer('api-server', {
-      image: ecs.ContainerImage.fromEcrRepository(repository, 'moodle-api-latest'),
+      image: ecs.ContainerImage.fromEcrRepository(repository, tagOr('moodle-api', 'moodle-api-latest')),
       memoryLimitMiB: 2048,
       cpu: 1024,
       logging: ecs.LogDrivers.awsLogs({ streamPrefix: 'api', logGroup }),
@@ -382,7 +390,7 @@ export class ProdEcsStack extends cdk.Stack {
       // 2026-08-02: 根本原因(config.phpのdbpassがgetenv()式でmoodle_conf_get()に
       // 誤読されていた問題)を特定・修正済み。デバッグ用の平文パスワードログを
       // 削除したクリーン版タグに戻す。
-      image: ecs.ContainerImage.fromEcrRepository(repository, 'moodle-app-dbfix-20260802-clean'),
+      image: ecs.ContainerImage.fromEcrRepository(repository, tagOr('moodle-app', 'moodle-app-dbfix-20260802-clean')),
       memoryLimitMiB: 8192,
       cpu: 2048,
       logging: ecs.LogDrivers.awsLogs({ streamPrefix: 'lms', logGroup }),
