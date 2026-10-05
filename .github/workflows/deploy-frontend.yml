@@ -43,10 +43,21 @@ jobs:
           role-to-assume: ${{ secrets.AWS_FRONTEND_DEPLOY_ROLE_ARN }}
           aws-region: us-east-1  # SPA バケット / CloudFront は us-east-1
 
+      # 🔴 Cache-Control を明示する（dev-preview.yml と同じ）。付けないとブラウザが index.html を
+      #    独自判断でキャッシュし、デプロイ後も削除済みの古い main.*.js/css を読みに行って修正前の
+      #    画面が出続ける（CloudFront の無効化はブラウザのキャッシュには効かない）。
+      #    - static/ はファイル名にハッシュが入るので長期キャッシュ
+      #    - それ以外（index.html 等）は毎回サーバーに確認させる
+      #    static/ を先に上げ、新しい index.html が参照するファイルが揃ってから index.html を差し替える。
       - name: Deploy to S3
         run: |
+          aws s3 sync frontend/build/static s3://${{ secrets.S3_BUCKET_NAME }}/static/ \
+            --delete \
+            --cache-control "public, max-age=31536000, immutable"
           aws s3 sync frontend/build s3://${{ secrets.S3_BUCKET_NAME }} \
             --delete \
+            --cache-control "no-cache, no-store, must-revalidate" \
+            --exclude "static/*" \
             --exclude "html-content/*" \
             --exclude "course-images/*" \
             --exclude "materials/*" \
