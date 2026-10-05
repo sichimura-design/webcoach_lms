@@ -33,7 +33,7 @@ def test_model_and_docs_use_their_types(monkeypatch):
 
     values = runtime_settings.current_values()
 
-    assert values["ANTHROPIC_MODEL"] == "claude-haiku-4-5-20251001"
+    assert values["ANTHROPIC_MODEL"] == "claude-sonnet-5-5"
     assert values["ENABLE_DOCS"] is False
     assert values["DB_POOL_SIZE"] == 15
 
@@ -43,4 +43,4 @@ def test_blank_bool_and_str_fall_back_to_default(monkeypatch):
     monkeypatch.setenv("ANTHROPIC_MODEL", "")
 
     assert runtime_settings.get_bool("ENABLE_DOCS") is True
-    assert runtime_settings.get_str("ANTHROPIC_MODEL") == "claude-haiku-4-5-20251001"
+    assert runtime_settings.get_str("ANTHROPIC_MODEL") == "claude-sonnet-5-5"

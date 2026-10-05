@@ -4,6 +4,7 @@ Learning Coach Agent
 """
 import os
 import re
+import uuid
 import logging
 from typing import Dict, Any, List, Literal, Optional, Tuple
 from langchain_core.messages import HumanMessage, AIMessage, SystemMessage, ToolMessage, message_chunk_to_message
@@ -14,25 +15,15 @@ from langgraph.prebuilt import ToolNode
 from agents.run_control import ChatCancelled, check_cancelled, get_run
 from agents.state import LearningCoachState
 from agents.tools_langchain import create_bff_tools
+from llm_factory import create_chat_model, log_if_refused, message_text
 from vector_db import get_vector_db_retriever, VectorDBRetriever
 import runtime_settings
 
 logger = logging.getLogger(__name__)
 
 
-def _extract_text(content) -> str:
-    """メッセージのcontentからテキスト部分のみを抽出（画像添付時はlist形式になるため）"""
-    if isinstance(content, str):
-        return content
-    if isinstance(content, list):
-        text_parts = []
-        for block in content:
-            if isinstance(block, dict) and block.get('type') == 'text':
-                text_parts.append(block.get('text', ''))
-            elif isinstance(block, str):
-                text_parts.append(block)
-        return ''.join(text_parts)
-    return ''
+# メッセージのcontentからテキスト部分のみを抽出（画像添付時やthinkingブロック付きの応答はlist形式になるため）
+_extract_text = message_text
 
 
 # 教材ページでの回答の根拠区分マーカー。LLMに回答末尾へ出力させ、respond_nodeで
@@ -117,21 +108,8 @@ def initialize_components():
     global llm, vector_db, tools_list
 
     if llm is None:
-        anthropic_api_key = os.getenv('ANTHROPIC_API_KEY')
-        if not anthropic_api_key:
-            raise ValueError("ANTHROPIC_API_KEY not set")
-
-        # モデル名を環境変数から取得（デフォルト: claude-haiku-4-5-20251001）
-        model_name = runtime_settings.get_str("ANTHROPIC_MODEL")
-
-        llm = ChatAnthropic(
-            model=model_name,
-            anthropic_api_key=anthropic_api_key,
-            temperature=0.3,
-            # 回答の最大出力トークン数（応答速度のため既定は1024）
-            max_tokens=runtime_settings.get_int("AI_CHAT_MAX_OUTPUT_TOKENS")
-        )
-        logger.info(f"Claude LLM initialized with model: {model_name}")
+        # 回答の最大出力トークン数（応答速度のため既定は1024）
+        llm = create_chat_model(max_tokens=runtime_settings.get_int("AI_CHAT_MAX_OUTPUT_TOKENS"))
 
     if vector_db is None:
         try:
@@ -299,6 +277,26 @@ def _invoke_llm(llm_runnable, messages, run_id: Optional[str]):
     return message_chunk_to_message(merged) if merged is not None else AIMessage(content="")
 
 
+def _forced_tool_call(tool_name: str, state: LearningCoachState) -> AIMessage:
+    """LLMが呼ばなかったときに、Difyツールの呼び出しをこちらで作る。
+    Difyへはユーザーの発言をそのまま送るので(queryは使われない)、引数は最小限でよい。
+    この応答はDify応答をそのまま返す経路(after_tools→respond)に進み、Claudeへは送り返さない"""
+    user_message = ""
+    for msg in reversed(state["messages"]):
+        if isinstance(msg, HumanMessage):
+            user_message = _extract_text(msg.content)
+            break
+    return AIMessage(
+        content="",
+        tool_calls=[{
+            "name": tool_name,
+            "args": {"query": user_message, "userid": state.get("user_id") or 0},
+            "id": f"forced_{uuid.uuid4().hex}",
+            "type": "tool_call",
+        }],
+    )
+
+
 def agent_node(state: LearningCoachState) -> LearningCoachState:
     """
     エージェント推論ノード
@@ -379,14 +377,18 @@ def agent_node(state: LearningCoachState) -> LearningCoachState:
     # 持つ複数の案件抽出アプリ間でLLMが毎ターン選び直し、Dify側の会話が
     # 意図せずリセットされてしまう問題を防ぐ（sticky_dify_tool_nameの算出元は
     # tools_langchain.create_ai_application_tools参照）。
+    # Claude Sonnet 5.5以降はtool_choiceでのツール強制が400になるため、そのツールだけを渡して
+    # 呼ぶよう指示し、それでも呼ばなかったときはこちらで呼び出しを作る(_forced_tool_call)。
     sticky_tool_name = state.get("sticky_dify_tool_name")
     if sticky_tool_name and any(t.name == sticky_tool_name for t in combined_tools):
         logger.info(f"Forcing continuation of sticky Dify tool: {sticky_tool_name}")
-        llm_with_tools = llm.bind_tools(
-            combined_tools,
-            tool_choice={"type": "tool", "name": sticky_tool_name}
-        )
+        llm_with_tools = llm.bind_tools([t for t in combined_tools if t.name == sticky_tool_name])
+        messages[0] = SystemMessage(content=system_content + [{
+            "type": "text",
+            "text": f"# 必ず行うこと:\n- 今回のユーザーの発言は、そのまま {sticky_tool_name} を呼び出して送ってください。あなた自身では回答しないでください",
+        }])
     else:
+        sticky_tool_name = None
         llm_with_tools = llm.bind_tools(combined_tools)
 
     # デバッグ: メッセージ構造をログ出力
@@ -398,6 +400,10 @@ def agent_node(state: LearningCoachState) -> LearningCoachState:
             logger.info(f"    -> Has {len(msg.tool_calls)} tool_calls")
 
     response = _invoke_llm(llm_with_tools, messages, state.get("run_id"))
+    log_if_refused(response, "agent_node")
+    if sticky_tool_name and not any(c.get("name") == sticky_tool_name for c in (response.tool_calls or [])):
+        logger.warning(f"LLM did not call the sticky Dify tool {sticky_tool_name}; calling it directly")
+        response = _forced_tool_call(sticky_tool_name, state)
 
     logger.info(f"agent_node - Output: adding 1 new AIMessage")
     # 新しいメッセージのみを返す（operator.addで既存のmessagesに追加される）

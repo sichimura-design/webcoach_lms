@@ -19,6 +19,7 @@ from dto.response.ai import AIResponse, AISource, ToolCallResult
 from vector_db import get_vector_db_retriever, VectorDBRetriever
 from tools import get_tools_description, execute_tool_call
 import runtime_settings
+from llm_factory import create_chat_model, log_if_refused, message_text
 
 # ログ設定
 logging.basicConfig(level=logging.INFO)
@@ -37,22 +38,10 @@ def initialize_ai_components():
 
     if llm is None:
         # Claude LLM初期化
-        anthropic_api_key = os.getenv('ANTHROPIC_API_KEY')
-        if not anthropic_api_key:
-            logger.warning("ANTHROPIC_API_KEY not set. AI endpoint will not work.")
-        else:
-            try:
-                # モデル名を環境変数から取得（デフォルト: claude-haiku-4-5-20251001）
-                model_name = runtime_settings.get_str("ANTHROPIC_MODEL")
-                llm = ChatAnthropic(
-                    model=model_name,
-                    anthropic_api_key=anthropic_api_key,
-                    temperature=0.3,
-                    max_tokens=runtime_settings.get_int("AI_LEGACY_CHAT_MAX_OUTPUT_TOKENS")
-                )
-                logger.info(f"Claude LLM initialized successfully with model: {model_name}")
-            except Exception as e:
-                logger.error(f"Failed to initialize Claude LLM: {e}")
+        try:
+            llm = create_chat_model(max_tokens=runtime_settings.get_int("AI_LEGACY_CHAT_MAX_OUTPUT_TOKENS"))
+        except Exception as e:
+            logger.error(f"Failed to initialize Claude LLM: {e}")
 
     if vector_db is None:
         # Vector DB初期化
@@ -272,7 +261,8 @@ def ai_chat(
         })
 
         # AI出力をフィルタリング（機密情報の除去）
-        ai_message = filter_ai_output(response.content)
+        log_if_refused(response, "legacy_ai_chat")
+        ai_message = filter_ai_output(message_text(response.content))
 
         # 4. ツール呼び出しの処理（use_tools=Trueの場合）
         tool_results: List[ToolCallResult] = []

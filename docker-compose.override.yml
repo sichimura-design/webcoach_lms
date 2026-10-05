@@ -21,7 +21,7 @@ services:
       - "8001:8001"
     environment:
       # Claude API モデル名（本番運用時に環境変数で上書き可能）
-      ANTHROPIC_MODEL: "claude-haiku-4-5-20251001"
+      ANTHROPIC_MODEL: "claude-sonnet-5-5"
     volumes:
       - ./api-server:/app  # Mount for development
       - /app/__pycache__  # Preserve Python cache

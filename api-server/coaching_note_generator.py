@@ -15,6 +15,7 @@ from langchain_anthropic import ChatAnthropic
 from langchain_core.messages import HumanMessage, SystemMessage
 
 import runtime_settings
+from llm_factory import create_chat_model, log_if_refused, message_text
 
 logger = logging.getLogger(__name__)
 
@@ -56,21 +57,10 @@ _llm: Optional[ChatAnthropic] = None
 def _get_llm() -> ChatAnthropic:
     global _llm
     if _llm is None:
-        anthropic_api_key = os.getenv("ANTHROPIC_API_KEY")
-        if not anthropic_api_key:
-            raise ValueError("ANTHROPIC_API_KEY not set")
-
-        model_name = runtime_settings.get_str("ANTHROPIC_MODEL")
-        _llm = ChatAnthropic(
-            model=model_name,
-            anthropic_api_key=anthropic_api_key,
-            temperature=0.2,
-            # 8項目を日本語JSONで一度に返すため長めにとる。途中で切れるとJSONが閉じず
-            # 全体がパース失敗になる。ただし大きくしすぎると、BFFの待ち時間(30秒)を超えて
-            # タイムアウトする（生成を待つ時間は出力の長さにほぼ比例する）
-            max_tokens=runtime_settings.get_int("COACHING_NOTE_MAX_OUTPUT_TOKENS"),
-        )
-        logger.info(f"Coaching note generator LLM initialized with model: {model_name}")
+        # 8項目を日本語JSONで一度に返すため長めにとる。途中で切れるとJSONが閉じず
+        # 全体がパース失敗になる。ただし大きくしすぎると、BFFの待ち時間(30秒)を超えて
+        # タイムアウトする（生成を待つ時間は出力の長さにほぼ比例する）
+        _llm = create_chat_model(max_tokens=runtime_settings.get_int("COACHING_NOTE_MAX_OUTPUT_TOKENS"))
     return _llm
 
 
@@ -137,7 +127,8 @@ def generate_coaching_note_draft(transcript_entries: List[Dict[str, Any]]) -> Di
     ]
 
     response = llm.invoke(messages)
-    raw_text = response.content if isinstance(response.content, str) else str(response.content)
+    log_if_refused(response, "coaching_note")
+    raw_text = message_text(response.content)
     if (response.response_metadata or {}).get("stop_reason") == "max_tokens":
         logger.error(
             "Coaching note generation hit max_tokens; output is truncated. "

@@ -14,6 +14,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, Field
 
 import runtime_settings
+from llm_factory import create_chat_model, message_text
 
 import chromadb
 from langchain_anthropic import ChatAnthropic
@@ -89,15 +90,7 @@ async def startup_event():
         logger.warning("ANTHROPIC_API_KEY not set. API will not work.")
     else:
         try:
-            # モデル名を環境変数から取得（デフォルト: claude-haiku-4-5-20251001）
-            model_name = runtime_settings.get_str("ANTHROPIC_MODEL")
-            llm = ChatAnthropic(
-                model=model_name,
-                anthropic_api_key=anthropic_api_key,
-                temperature=0.3,
-                max_tokens=2048
-            )
-            logger.info(f"Claude LLM initialized with model: {model_name}")
+            llm = create_chat_model(max_tokens=2048)
         except Exception as e:
             logger.error(f"Failed to initialize Claude LLM: {e}")
             raise
@@ -244,7 +237,7 @@ async def summarize_content(request: SummarizeRequest):
             chain = prompt_template | llm
             response = chain.invoke({"context": context})
 
-        summary = response.content
+        summary = message_text(response.content)
 
         logger.info(f"Generated {mode} response: {len(summary)} characters")
 
