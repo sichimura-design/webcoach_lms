@@ -34,6 +34,15 @@ class ApiServerAdapter {
     return response.data.values;
   }
 
+  /** このAPIキーで使えるClaudeのモデル一覧 [{ id, display_name }] (Anthropic Models API) */
+  async getAnthropicModels() {
+    const response = await axios.get(
+      `${this.apiServerUrl}/api/runtime-settings/anthropic-models`,
+      { timeout: 10000 }
+    );
+    return response.data.models;
+  }
+
   /**
    * Get profile
    */

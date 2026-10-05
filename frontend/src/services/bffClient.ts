@@ -260,7 +260,8 @@ export interface RuntimeSetting {
   defaultValue: RuntimeSettingValue;
   min?: number;
   max?: number;
-  options?: { value: string; label: string }[];
+  /** selectの選択肢。disabledは一覧に出すだけで選べない(noteに理由) */
+  options?: { value: string; label: string; disabled?: boolean; note?: string }[];
   /** このプロセスで使っている値。api-serverに届かないときはnull */
   current: RuntimeSettingValue | null;
   /** Parameter Storeの保存値。無ければnull(既定値) */

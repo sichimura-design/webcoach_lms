@@ -2,6 +2,7 @@
  * 管理画面の「動作設定」で変えられる設定値の一覧。
  *
  * ここに無い値は画面から触れない。type は int(既定)・boolean・select(optionsから選ぶ)・url。
+ * optionsSource があるselectは、選択肢をその都度取りに行く(取れなければ options を使う)。
  * 本番ではParameter Store
  * `{prefix}/config/xxx-yyy` に保存し、起動スクリプトが環境変数XXX_YYYとして読み込む。
  * 既定値はapi-server側がruntime_settings.py、BFF側がconfig/environment.jsに持つ。
@@ -9,12 +10,18 @@
 
 const { config } = require('./environment');
 
-// ANTHROPIC_MODELで選べるモデル。ここに無いモデル名は保存できない
-const ANTHROPIC_MODEL_OPTIONS = [
+// ANTHROPIC_MODELの選択肢は、api-server経由でAnthropicのModels APIから取る。
+// これは取れなかったときの代わり(下のANTHROPIC_MODEL_COMPATIBLEに当てはまるものだけ)
+const ANTHROPIC_MODEL_FALLBACK_OPTIONS = [
   { value: 'claude-haiku-4-5-20251001', label: 'Claude Haiku 4.5(速い・安い)' },
-  { value: 'claude-sonnet-5-5', label: 'Claude Sonnet 5.5' },
-  { value: 'claude-opus-5-5', label: 'Claude Opus 5.5(高性能・高い)' },
+  { value: 'claude-sonnet-4-6', label: 'Claude Sonnet 4.6' },
+  { value: 'claude-opus-4-6', label: 'Claude Opus 4.6(高性能・高い)' },
 ];
+
+// api-serverはtemperatureを付けてClaudeを呼んでいる(langchain-anthropic 0.3.0)。
+// Opus 4.7以降・Sonnet 5以降・Fableはtemperatureを付けると400になるので、
+// Models APIの一覧に出ても選べなくする。ここに当てはまるものだけ選べる
+const ANTHROPIC_MODEL_COMPATIBLE = /^claude-(haiku-4-5|sonnet-4-5|sonnet-4-6|opus-4-1|opus-4-5|opus-4-6|sonnet-4|opus-4)(-\d{8})?$/;
 
 const RUNTIME_SETTINGS = [
   {
@@ -23,9 +30,10 @@ const RUNTIME_SETTINGS = [
     type: 'select',
     group: 'AIチャット',
     label: '使うAIモデル',
-    description: 'AIチャット・ノート生成で使うClaudeのモデルです。上位のモデルほど回答の質は上がりますが、料金が高く応答も遅くなります。',
+    description: 'AIチャット・ノート生成で使うClaudeのモデルです。選択肢はAnthropicから取得した、このAPIキーで使えるモデルの一覧です。上位のモデルほど回答の質は上がりますが、料金が高く応答も遅くなります。「未対応」のモデルは今のプログラムの呼び方では動かないため選べません。',
     defaultValue: 'claude-haiku-4-5-20251001',
-    options: ANTHROPIC_MODEL_OPTIONS,
+    optionsSource: 'anthropic-models',
+    options: ANTHROPIC_MODEL_FALLBACK_OPTIONS,
   },
   {
     name: 'AI_CHAT_MAX_OUTPUT_TOKENS',
@@ -166,4 +174,4 @@ function toParameterKey(name) {
   return name.toLowerCase().replace(/_/g, '-');
 }
 
-module.exports = { RUNTIME_SETTINGS, toParameterKey };
+module.exports = { RUNTIME_SETTINGS, ANTHROPIC_MODEL_COMPATIBLE, toParameterKey };

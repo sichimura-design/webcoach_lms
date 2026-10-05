@@ -44,3 +44,28 @@ def test_blank_bool_and_str_fall_back_to_default(monkeypatch):
 
     assert runtime_settings.get_bool("ENABLE_DOCS") is True
     assert runtime_settings.get_str("ANTHROPIC_MODEL") == "claude-haiku-4-5-20251001"
+
+
+def test_anthropic_models_are_listed_and_cached(client, monkeypatch):
+    from types import SimpleNamespace
+    from routers import runtime_settings as router_module
+
+    calls = []
+
+    class FakeClient:
+        def __init__(self):
+            self.models = SimpleNamespace(list=self._list)
+
+        def _list(self, limit):
+            calls.append(limit)
+            return [SimpleNamespace(id="claude-opus-5-5", display_name="Claude Opus 5.5")]
+
+    monkeypatch.setattr(router_module.anthropic, "Anthropic", FakeClient)
+    monkeypatch.setitem(router_module._models_cache, "models", None)
+
+    first = client.get("/api/runtime-settings/anthropic-models")
+    second = client.get("/api/runtime-settings/anthropic-models")
+
+    assert first.json() == {"models": [{"id": "claude-opus-5-5", "display_name": "Claude Opus 5.5"}]}
+    assert second.json() == first.json()
+    assert len(calls) == 1

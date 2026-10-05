@@ -126,12 +126,18 @@ function SettingRow({
               style={{ ...inputStyle, width: 'auto', background: color.surface }}
               aria-label={setting.label}
             >
-              {(setting.type === 'boolean'
-                ? [{ value: 'true', label: '有効' }, { value: 'false', label: '無効' }]
-                : setting.options ?? []
-              ).map((o) => (
-                <option key={o.value} value={o.value}>{o.label}</option>
-              ))}
+              {setting.type === 'boolean' ? (
+                <>
+                  <option value="true">有効</option>
+                  <option value="false">無効</option>
+                </>
+              ) : (
+                (setting.options ?? []).map((o) => (
+                  <option key={o.value} value={o.value} disabled={o.disabled}>
+                    {o.note ? `${o.label} - ${o.note}` : o.label}
+                  </option>
+                ))
+              )}
             </select>
           ) : setting.type === 'url' ? (
             <input

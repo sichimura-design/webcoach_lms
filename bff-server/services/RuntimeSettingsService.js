@@ -10,7 +10,7 @@ const { GetParametersByPathCommand, PutParameterCommand, DeleteParameterCommand 
 const { DescribeServicesCommand, UpdateServiceCommand } = require('@aws-sdk/client-ecs');
 const { getSsmClient, getEcsClient } = require('../config/clients');
 const { config } = require('../config/environment');
-const { RUNTIME_SETTINGS, toParameterKey } = require('../config/runtimeSettings');
+const { RUNTIME_SETTINGS, ANTHROPIC_MODEL_COMPATIBLE, toParameterKey } = require('../config/runtimeSettings');
 const apiServerAdapter = require('../adapters/ApiServerAdapter');
 const logger = require('../utils/logger');
 
@@ -28,7 +28,7 @@ function parseValue(setting, raw) {
 }
 
 /** 画面から送られた値を確かめて、保存する文字列にする。だめなら400 */
-function normalizeValue(setting, rawValue) {
+function normalizeValue(setting, rawValue, options) {
   const text = String(rawValue ?? '').trim();
   const invalid = (message) => Object.assign(new Error(message), { statusCode: 400 });
   switch (setting.type) {
@@ -36,7 +36,9 @@ function normalizeValue(setting, rawValue) {
       if (text !== 'true' && text !== 'false') throw invalid('有効か無効かを選んでください');
       return text;
     case 'select':
-      if (!setting.options.some((o) => o.value === text)) throw invalid('一覧にある値を選んでください');
+      if (text !== setting.defaultValue && !options.some((o) => o.value === text && !o.disabled)) {
+        throw invalid('一覧にある値を選んでください');
+      }
       return text;
     case 'url':
       if (!/^https?:\/\/[^\s/?#]+(\/[^\s?#]*[^\s?#/])?$/.test(text)) {
@@ -88,6 +90,25 @@ class RuntimeSettingsService {
     return saved;
   }
 
+  /** selectの選択肢。Models APIから取れなければ設定に書いた固定の一覧 */
+  async _options(setting) {
+    if (setting.optionsSource !== 'anthropic-models') return setting.options;
+    try {
+      const models = await apiServerAdapter.getAnthropicModels();
+      if (models.length > 0) {
+        return models.map((m) => ({
+          value: m.id,
+          label: `${m.display_name}(${m.id})`,
+          // 今のapi-serverの呼び方では動かないモデルは表示だけして選べなくする
+          ...(ANTHROPIC_MODEL_COMPATIBLE.test(m.id) ? {} : { disabled: true, note: 'このアプリでは未対応' }),
+        }));
+      }
+    } catch (error) {
+      logger.error('[RuntimeSettings] Claudeのモデル一覧を取得できませんでした:', error.message);
+    }
+    return setting.options;
+  }
+
   async _restartStatus() {
     if (!this.isRestartAvailable()) return { available: false };
     const res = await getEcsClient().send(new DescribeServicesCommand({
@@ -118,6 +139,11 @@ class RuntimeSettingsService {
     const saved = editable ? await this._savedValues() : {};
     const restart = await this._restartStatus();
 
+    const optionsByName = {};
+    for (const setting of RUNTIME_SETTINGS) {
+      if (setting.type === 'select') optionsByName[setting.name] = await this._options(setting);
+    }
+
     const settings = RUNTIME_SETTINGS.map((setting) => {
       const current = setting.service === 'api-server'
         ? (apiValues && apiValues[setting.name] !== undefined ? apiValues[setting.name] : null)
@@ -126,6 +152,15 @@ class RuntimeSettingsService {
       const savedValue = savedRaw === undefined ? null : parseValue(setting, savedRaw);
       // 再起動したあとに使われる値。本番のタスク定義ではこれらを設定していないので、保存値か既定値になる
       const nextValue = savedValue === null ? setting.defaultValue : savedValue;
+      let options = optionsByName[setting.name];
+      if (options) {
+        // 一覧から消えたモデルでも、今使っている値・保存値・既定値は選べる形で残す
+        const known = new Set(options.map((o) => o.value));
+        const extra = [...new Set([current, savedValue, setting.defaultValue])]
+          .filter((v) => v !== null && v !== undefined && !known.has(v))
+          .map((v) => ({ value: v, label: v }));
+        options = [...options, ...extra];
+      }
       return {
         name: setting.name,
         service: setting.service,
@@ -136,7 +171,7 @@ class RuntimeSettingsService {
         defaultValue: setting.defaultValue,
         min: setting.min,
         max: setting.max,
-        options: setting.options,
+        options,
         current,
         saved: savedValue,
         pendingRestart: editable && current !== null && current !== nextValue,
@@ -163,7 +198,8 @@ class RuntimeSettingsService {
   async update(name, rawValue, actor) {
     this._assertEditable();
     const setting = this._find(name);
-    const value = normalizeValue(setting, rawValue);
+    const options = setting.type === 'select' ? await this._options(setting) : undefined;
+    const value = normalizeValue(setting, rawValue, options);
     await getSsmClient().send(new PutParameterCommand({
       Name: this._parameterName(setting),
       Value: value,
