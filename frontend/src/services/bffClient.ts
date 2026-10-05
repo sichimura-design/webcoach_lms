@@ -252,16 +252,14 @@ export type RuntimeSettingValue = number | boolean | string;
 export interface RuntimeSetting {
   name: string;
   service: 'api-server' | 'bff-server';
-  /** int=整数(min〜max)、boolean=有効/無効、select=optionsから選ぶ、url=URL */
-  type: 'int' | 'boolean' | 'select' | 'url';
+  /** int=整数(min〜max)、boolean=有効/無効、url=URL */
+  type: 'int' | 'boolean' | 'url';
   group: string;
   label: string;
   description: string;
   defaultValue: RuntimeSettingValue;
   min?: number;
   max?: number;
-  /** selectの選択肢。disabledは一覧に出すだけで選べない(noteに理由) */
-  options?: { value: string; label: string; disabled?: boolean; note?: string }[];
   /** このプロセスで使っている値。api-serverに届かないときはnull */
   current: RuntimeSettingValue | null;
   /** Parameter Storeの保存値。無ければnull(既定値) */
@@ -269,8 +267,28 @@ export interface RuntimeSetting {
   pendingRestart: boolean;
 }
 
+export interface AiModelInfo {
+  /** api-serverが使っているモデル。api-serverに届かないときはnull */
+  id: string | null;
+  /** Anthropicの「Model deprecations」ページ */
+  sourceUrl: string;
+  /** 提供状況。ページを読めない・載っていないときはnull */
+  lifecycle: {
+    state: string;
+    stateLabel: string;
+    deprecatedOn: string | null;
+    retirementOn: string | null;
+    /** trueなら retirementOn は「この日より前には引退しない」という目安 */
+    retirementNotSoonerThan: boolean;
+    retirementText: string;
+    daysUntilRetirement: number | null;
+    warning: boolean;
+  } | null;
+}
+
 export interface RuntimeSettingsResponse {
   editable: boolean;
+  aiModel: AiModelInfo;
   restart: { available: boolean; inProgress?: boolean; runningCount?: number; desiredCount?: number };
   settings: RuntimeSetting[];
 }

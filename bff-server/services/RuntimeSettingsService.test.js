@@ -43,9 +43,11 @@ clients.getEcsClient = () => ({
 
 const { config } = require('../config/environment');
 const apiServerAdapter = require('../adapters/ApiServerAdapter');
+const modelLifecycleService = require('./ModelLifecycleService');
 const logger = require('../utils/logger');
 const service = require('./RuntimeSettingsService');
 
+modelLifecycleService.describe = async (id) => ({ id, sourceUrl: 'https://example.com', lifecycle: null });
 logger.log = () => {};
 logger.error = () => {};
 
@@ -77,10 +79,6 @@ function setup({ prod }) {
       ecsServiceName: '',
     });
   apiServerAdapter.getRuntimeSettings = async () => ({ ...API_VALUES });
-  apiServerAdapter.getAnthropicModels = async () => [
-    { id: 'claude-sonnet-4-6', display_name: 'Claude Sonnet 4.6' },
-    { id: 'claude-opus-5-5', display_name: 'Claude Opus 5.5' },
-  ];
 }
 
 test('dev: shows current values read-only without touching AWS', async () => {
@@ -180,7 +178,7 @@ test('still lists bff values when api-server is unreachable', async () => {
   assert.strictEqual(settings.find((s) => s.name === 'REMINDER_INTERVAL_MINUTES').current, config.reminderIntervalMinutes);
 });
 
-test('prod: on/off, model and URL settings are saved as text and read back typed', async () => {
+test('prod: on/off and URL settings are saved as text and read back typed', async () => {
   setup({ prod: true });
   ssmParameters = {
     '/lms/prod/bff-server/config/reminder-enabled': 'true',
@@ -200,18 +198,16 @@ test('prod: on/off, model and URL settings are saved as text and read back typed
   assert.strictEqual(settings.find((s) => s.name === 'FRONTEND_BASE_URL').saved, 'https://study.webcoach.jp');
   assert.strictEqual(settings.find((s) => s.name === 'DB_POOL_SIZE').type, 'int');
 
-  await service.update('ANTHROPIC_MODEL', 'claude-sonnet-4-6', 'admin');
-  assert.strictEqual(ssmCalls.pop().input.Value, 'claude-sonnet-4-6');
   await service.update('TRANSCRIPT_SYNC_ENABLED', 'true', 'admin');
   assert.strictEqual(ssmCalls.pop().input.Value, 'true');
   await service.update('FRONTEND_BASE_URL', ' https://study.webcoach.jp ', 'admin');
   assert.strictEqual(ssmCalls.pop().input.Value, 'https://study.webcoach.jp');
 });
 
-test('rejects unknown models, non-boolean values and bad URLs', async () => {
+test('rejects non-boolean values and bad URLs', async () => {
   setup({ prod: true });
 
-  await assert.rejects(service.update('ANTHROPIC_MODEL', 'gpt-4o', 'admin'), { statusCode: 400 });
+  await assert.rejects(service.update('ANTHROPIC_MODEL', 'claude-opus-5-5', 'admin'), { statusCode: 404 });
   for (const value of ['yes', '1', '']) {
     await assert.rejects(service.update('REMINDER_ENABLED', value, 'admin'), { statusCode: 400 });
   }
@@ -224,39 +220,12 @@ test('rejects unknown models, non-boolean values and bad URLs', async () => {
   assert.strictEqual(ssmCalls.length, 0);
 });
 
-test('model choices come from the Models API, keeping values that are no longer listed', async () => {
+test('shows which AI model is in use, but it is not an editable setting', async () => {
   setup({ prod: true });
-  ssmParameters = { '/lms/prod/api-server/config/anthropic-model': 'claude-sonnet-4-6' };
-  apiServerAdapter.getRuntimeSettings = async () => ({ ...API_VALUES, ANTHROPIC_MODEL: 'claude-old-1' });
+  apiServerAdapter.getRuntimeSettings = async () => ({ ...API_VALUES, ANTHROPIC_MODEL: 'claude-haiku-4-5-20251001' });
 
-  const { settings } = await service.list();
+  const { settings, aiModel } = await service.list();
 
-  const model = settings.find((s) => s.name === 'ANTHROPIC_MODEL');
-  assert.deepStrictEqual(model.options.map((o) => o.value), [
-    'claude-sonnet-4-6', 'claude-opus-5-5', 'claude-old-1', 'claude-haiku-4-5-20251001',
-  ]);
-  assert.strictEqual(model.options[0].label, 'Claude Sonnet 4.6(claude-sonnet-4-6)');
-  assert.strictEqual(model.options[0].disabled, undefined);
-  assert.strictEqual(model.options[1].disabled, true);
-
-  await service.update('ANTHROPIC_MODEL', 'claude-sonnet-4-6', 'admin');
-  assert.strictEqual(ssmCalls.pop().input.Value, 'claude-sonnet-4-6');
-  // 既定値は一覧に無くても戻せる
-  await service.update('ANTHROPIC_MODEL', 'claude-haiku-4-5-20251001', 'admin');
-  assert.strictEqual(ssmCalls.pop().input.Value, 'claude-haiku-4-5-20251001');
-  // temperatureを受け付けないモデルと一覧に無いモデルは保存できない
-  await assert.rejects(service.update('ANTHROPIC_MODEL', 'claude-opus-5-5', 'admin'), { statusCode: 400 });
-  await assert.rejects(service.update('ANTHROPIC_MODEL', 'claude-old-1', 'admin'), { statusCode: 400 });
-});
-
-test('falls back to the fixed model list when the Models API is unreachable', async () => {
-  setup({ prod: true });
-  apiServerAdapter.getAnthropicModels = async () => { throw new Error('down'); };
-
-  const { settings } = await service.list();
-
-  const values = settings.find((s) => s.name === 'ANTHROPIC_MODEL').options.map((o) => o.value);
-  assert.ok(values.includes('claude-haiku-4-5-20251001'));
-  await service.update('ANTHROPIC_MODEL', 'claude-haiku-4-5-20251001', 'admin');
-  assert.strictEqual(ssmCalls.pop().input.Value, 'claude-haiku-4-5-20251001');
+  assert.strictEqual(aiModel.id, 'claude-haiku-4-5-20251001');
+  assert.ok(!settings.some((s) => s.name === 'ANTHROPIC_MODEL'));
 });

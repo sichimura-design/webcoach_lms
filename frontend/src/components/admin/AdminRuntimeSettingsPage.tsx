@@ -1,6 +1,11 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { RefreshCw, RotateCcw } from 'lucide-react';
-import bffClient, { RuntimeSetting, RuntimeSettingsResponse, RuntimeSettingValue } from '../../services/bffClient';
+import bffClient, {
+  AiModelInfo,
+  RuntimeSetting,
+  RuntimeSettingsResponse,
+  RuntimeSettingValue,
+} from '../../services/bffClient';
 import { color, font, radius, t } from '../../theme/webcoachTheme';
 import { getUserMessage } from '../../utils/errorMessage';
 
@@ -36,10 +41,9 @@ function Notice({ tone, children }: { tone: 'info' | 'error' | 'success'; childr
   );
 }
 
-/** 画面に出す値の書き方(有効/無効・モデル名の表示名) */
+/** 画面に出す値の書き方(有効/無効) */
 function formatValue(setting: RuntimeSetting, value: RuntimeSettingValue): string {
   if (setting.type === 'boolean') return value ? '有効' : '無効';
-  if (setting.type === 'select') return setting.options?.find((o) => o.value === value)?.label ?? String(value);
   return String(value);
 }
 
@@ -48,7 +52,6 @@ function validationError(setting: RuntimeSetting, text: string): string | null {
   const v = text.trim();
   switch (setting.type) {
     case 'boolean':
-    case 'select':
       return null;
     case 'url':
       return /^https?:\/\/[^\s/?#]+(\/[^\s?#]*[^\s?#/])?$/.test(v)
@@ -61,6 +64,54 @@ function validationError(setting: RuntimeSetting, text: string): string | null {
         : `${setting.min}〜${setting.max}の整数で入力してください`;
     }
   }
+}
+
+/** "2026-10-15" → "2026年10月15日" */
+function formatDate(iso: string): string {
+  const [y, m, d] = iso.split('-').map(Number);
+  return `${y}年${m}月${d}日`;
+}
+
+/** 使っているAIモデルと、その提供期限(画面からは変えない) */
+function AiModelCard({ model }: { model: AiModelInfo }) {
+  const life = model.lifecycle;
+  return (
+    <div style={{ ...t.card, padding: '18px 20px', marginBottom: 20 }}>
+      <div style={{ ...font.cardHeading, color: color.text }}>AIモデル</div>
+      <p style={{ ...font.meta, color: color.textSecondary, margin: '4px 0 12px' }}>
+        AIチャット・ノート生成で使っているClaudeのモデルです。答え方や料金が変わるため、ここからは変更できません(コードの既定値を変え、devで確かめてから切り替えます)。
+      </p>
+      <div style={{ display: 'flex', gap: 16, flexWrap: 'wrap', ...font.meta, color: color.textBody }}>
+        <span>
+          使用中: <strong>{model.id ?? '取得できません'}</strong>
+        </span>
+        {life && <span>状態: {life.stateLabel}</span>}
+        {life?.deprecatedOn && <span>非推奨になった日: {formatDate(life.deprecatedOn)}</span>}
+        {life?.retirementOn && (
+          <span>
+            使える期限: <strong>{formatDate(life.retirementOn)}</strong>
+            {life.retirementNotSoonerThan ? '以降(目安。この日より前には終了しない)' : 'に提供終了'}
+          </span>
+        )}
+      </div>
+      {life?.warning && (
+        <div style={{ marginTop: 12 }}>
+          <Notice tone="error">
+            {life.state === 'active'
+              ? `提供終了の目安の日まであと${life.daysUntilRetirement}日です。終了が決まるとAnthropicから60日以上前にメールで通知されます。次のモデルへの切り替えを計画してください。`
+              : 'このモデルは非推奨または提供終了です。期限までに次のモデルへ切り替えてください。'}
+          </Notice>
+        </div>
+      )}
+      <p style={{ ...font.label, color: color.textMuted, margin: '8px 0 0' }}>
+        {life ? '出典: ' : '提供状況を取得できませんでした。こちらで確認してください: '}
+        <a href={model.sourceUrl} target="_blank" rel="noreferrer" style={{ color: color.textSecondary }}>
+          Anthropic「Model deprecations」
+        </a>
+        (1日1回取得)
+      </p>
+    </div>
+  );
 }
 
 function SettingRow({
@@ -119,25 +170,15 @@ function SettingRow({
 
       {editable && (
         <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginTop: 12, flexWrap: 'wrap' }}>
-          {setting.type === 'boolean' || setting.type === 'select' ? (
+          {setting.type === 'boolean' ? (
             <select
               value={value}
               onChange={(e) => setValue(e.target.value)}
               style={{ ...inputStyle, width: 'auto', background: color.surface }}
               aria-label={setting.label}
             >
-              {setting.type === 'boolean' ? (
-                <>
-                  <option value="true">有効</option>
-                  <option value="false">無効</option>
-                </>
-              ) : (
-                (setting.options ?? []).map((o) => (
-                  <option key={o.value} value={o.value} disabled={o.disabled}>
-                    {o.note ? `${o.label} - ${o.note}` : o.label}
-                  </option>
-                ))
-              )}
+              <option value="true">有効</option>
+              <option value="false">無効</option>
             </select>
           ) : setting.type === 'url' ? (
             <input
@@ -246,7 +287,7 @@ export function AdminRuntimeSettingsPage() {
     <div style={{ fontFamily: font.family, maxWidth: 820 }}>
       <h1 style={{ ...font.sectionTitle, fontSize: 22, color: color.text, margin: '0 0 6px' }}>動作設定</h1>
       <p style={{ ...font.meta, color: color.textSecondary, margin: '0 0 20px' }}>
-        AIのモデル・トークン上限、定期処理のオン/オフと間隔、接続まわりの設定を変更します。保存した値は、サービスを再起動したときに反映されます。
+        AIのトークン上限、定期処理のオン/オフと間隔、接続まわりの設定を変更します。保存した値は、サービスを再起動したときに反映されます。
       </p>
 
       {loading ? (
@@ -308,6 +349,8 @@ export function AdminRuntimeSettingsPage() {
               </div>
             </div>
           )}
+
+          {data?.aiModel && <AiModelCard model={data.aiModel} />}
 
           {Object.entries(groups).map(([group, settings]) => (
             <div key={group} style={{ ...t.card, overflow: 'hidden', marginBottom: 20 }}>
