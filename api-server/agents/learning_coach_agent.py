@@ -122,7 +122,7 @@ def initialize_components():
             raise ValueError("ANTHROPIC_API_KEY not set")
 
         # モデル名を環境変数から取得（デフォルト: claude-haiku-4-5-20251001）
-        model_name = os.getenv('ANTHROPIC_MODEL', 'claude-haiku-4-5-20251001')
+        model_name = runtime_settings.get_str("ANTHROPIC_MODEL")
 
         llm = ChatAnthropic(
             model=model_name,

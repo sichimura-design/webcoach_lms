@@ -11,6 +11,7 @@ from slowapi.util import get_remote_address
 from slowapi.errors import RateLimitExceeded
 
 from database import engine, Base
+import runtime_settings
 
 # Import routers
 from routers import health, courses, profiles, webcoach, badges, roadmaps, roadmap, ai, ai_langgraph, admin, tags, faiss_ingest, coaching, integrations, recordings, study, notes, my_note, runtime_settings as runtime_settings_router, scheduler as scheduler_router
@@ -26,8 +27,8 @@ app = FastAPI(
     title="Moodle User Tracking API",
     description="API for tracking user course access and managing profile settings",
     version="1.0.0",
-    docs_url="/docs" if os.getenv("ENABLE_DOCS", "true").lower() == "true" else None,
-    redoc_url="/redoc" if os.getenv("ENABLE_DOCS", "true").lower() == "true" else None,
+    docs_url="/docs" if runtime_settings.get_bool("ENABLE_DOCS") else None,
+    redoc_url="/redoc" if runtime_settings.get_bool("ENABLE_DOCS") else None,
 )
 
 # Register rate limiter

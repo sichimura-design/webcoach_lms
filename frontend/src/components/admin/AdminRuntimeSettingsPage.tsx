@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { RefreshCw, RotateCcw } from 'lucide-react';
-import bffClient, { RuntimeSetting, RuntimeSettingsResponse } from '../../services/bffClient';
+import bffClient, { RuntimeSetting, RuntimeSettingsResponse, RuntimeSettingValue } from '../../services/bffClient';
 import { color, font, radius, t } from '../../theme/webcoachTheme';
 import { getUserMessage } from '../../utils/errorMessage';
 
@@ -36,6 +36,33 @@ function Notice({ tone, children }: { tone: 'info' | 'error' | 'success'; childr
   );
 }
 
+/** 画面に出す値の書き方(有効/無効・モデル名の表示名) */
+function formatValue(setting: RuntimeSetting, value: RuntimeSettingValue): string {
+  if (setting.type === 'boolean') return value ? '有効' : '無効';
+  if (setting.type === 'select') return setting.options?.find((o) => o.value === value)?.label ?? String(value);
+  return String(value);
+}
+
+/** 入力欄の文字列が保存できる値か(BFFの確かめ方と同じ) */
+function validationError(setting: RuntimeSetting, text: string): string | null {
+  const v = text.trim();
+  switch (setting.type) {
+    case 'boolean':
+    case 'select':
+      return null;
+    case 'url':
+      return /^https?:\/\/[^\s/?#]+(\/[^\s?#]*[^\s?#/])?$/.test(v)
+        ? null
+        : 'http(s)://で始まるURLを、末尾の/なしで入力してください';
+    default: {
+      const n = Number(v);
+      return /^\d+$/.test(v) && n >= (setting.min ?? 0) && n <= (setting.max ?? Infinity)
+        ? null
+        : `${setting.min}〜${setting.max}の整数で入力してください`;
+    }
+  }
+}
+
 function SettingRow({
   setting,
   editable,
@@ -53,9 +80,9 @@ function SettingRow({
     setValue(String(setting.saved ?? setting.defaultValue));
   }, [setting.saved, setting.defaultValue]);
 
-  const numeric = Number(value);
-  const valid = /^\d+$/.test(value.trim()) && numeric >= setting.min && numeric <= setting.max;
-  const unchanged = numeric === (setting.saved ?? setting.defaultValue);
+  const invalidMessage = validationError(setting, value);
+  const valid = invalidMessage === null;
+  const unchanged = value.trim() === String(setting.saved ?? setting.defaultValue);
 
   const run = async (action: () => Promise<void>, message: string) => {
     setSaving(true);
@@ -80,32 +107,57 @@ function SettingRow({
 
       <div style={{ display: 'flex', alignItems: 'center', gap: 16, flexWrap: 'wrap', ...font.meta, color: color.textBody }}>
         <span>
-          今の値: <strong>{setting.current ?? '取得できません'}</strong>
+          今の値: <strong>{setting.current === null ? '取得できません' : formatValue(setting, setting.current)}</strong>
         </span>
-        <span>既定値: {setting.defaultValue}</span>
-        {editable && <span>保存値: {setting.saved ?? 'なし(既定値)'}</span>}
+        <span>既定値: {formatValue(setting, setting.defaultValue)}</span>
+        {editable && <span>保存値: {setting.saved === null ? 'なし(既定値)' : formatValue(setting, setting.saved)}</span>}
         <span style={{ color: color.textMuted }}>
-          {setting.min}〜{setting.max} / {setting.service}
+          {setting.type === 'int' && `${setting.min}〜${setting.max} / `}
+          {setting.service}
         </span>
       </div>
 
       {editable && (
         <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginTop: 12, flexWrap: 'wrap' }}>
-          <input
-            type="number"
-            inputMode="numeric"
-            min={setting.min}
-            max={setting.max}
-            value={value}
-            onChange={(e) => setValue(e.target.value)}
-            style={inputStyle}
-            aria-label={setting.label}
-          />
+          {setting.type === 'boolean' || setting.type === 'select' ? (
+            <select
+              value={value}
+              onChange={(e) => setValue(e.target.value)}
+              style={{ ...inputStyle, width: 'auto', background: color.surface }}
+              aria-label={setting.label}
+            >
+              {(setting.type === 'boolean'
+                ? [{ value: 'true', label: '有効' }, { value: 'false', label: '無効' }]
+                : setting.options ?? []
+              ).map((o) => (
+                <option key={o.value} value={o.value}>{o.label}</option>
+              ))}
+            </select>
+          ) : setting.type === 'url' ? (
+            <input
+              type="url"
+              value={value}
+              onChange={(e) => setValue(e.target.value)}
+              style={{ ...inputStyle, width: 320, maxWidth: '100%' }}
+              aria-label={setting.label}
+            />
+          ) : (
+            <input
+              type="number"
+              inputMode="numeric"
+              min={setting.min}
+              max={setting.max}
+              value={value}
+              onChange={(e) => setValue(e.target.value)}
+              style={inputStyle}
+              aria-label={setting.label}
+            />
+          )}
           <button
             type="button"
             style={{ ...smallButton, opacity: !valid || unchanged || saving ? 0.5 : 1 }}
             disabled={!valid || unchanged || saving}
-            onClick={() => run(() => bffClient.updateRuntimeSetting(setting.name, numeric), `「${setting.label}」を保存しました`)}
+            onClick={() => run(() => bffClient.updateRuntimeSetting(setting.name, value.trim()), `「${setting.label}」を保存しました`)}
           >
             保存
           </button>
@@ -120,11 +172,7 @@ function SettingRow({
               既定値に戻す
             </button>
           )}
-          {!valid && (
-            <span style={{ ...font.label, color: color.primary }}>
-              {setting.min}〜{setting.max}の整数で入力してください
-            </span>
-          )}
+          {!valid && <span style={{ ...font.label, color: color.primary }}>{invalidMessage}</span>}
         </div>
       )}
       {error && <p style={{ ...font.label, color: color.primary, margin: '8px 0 0' }}>{error}</p>}
@@ -192,7 +240,7 @@ export function AdminRuntimeSettingsPage() {
     <div style={{ fontFamily: font.family, maxWidth: 820 }}>
       <h1 style={{ ...font.sectionTitle, fontSize: 22, color: color.text, margin: '0 0 6px' }}>動作設定</h1>
       <p style={{ ...font.meta, color: color.textSecondary, margin: '0 0 20px' }}>
-        AIのトークン上限や定期処理の間隔を変更します。保存した値は、サービスを再起動したときに反映されます。
+        AIのモデル・トークン上限、定期処理のオン/オフと間隔、接続まわりの設定を変更します。保存した値は、サービスを再起動したときに反映されます。
       </p>
 
       {loading ? (

@@ -175,3 +175,47 @@ test('still lists bff values when api-server is unreachable', async () => {
   assert.strictEqual(settings.find((s) => s.name === 'AI_CHAT_MAX_OUTPUT_TOKENS').current, null);
   assert.strictEqual(settings.find((s) => s.name === 'REMINDER_INTERVAL_MINUTES').current, config.reminderIntervalMinutes);
 });
+
+test('prod: on/off, model and URL settings are saved as text and read back typed', async () => {
+  setup({ prod: true });
+  ssmParameters = {
+    '/lms/prod/bff-server/config/reminder-enabled': 'true',
+    '/lms/prod/api-server/config/enable-docs': 'false',
+    '/lms/prod/bff-server/config/frontend-base-url': 'https://study.webcoach.jp',
+  };
+  apiServerAdapter.getRuntimeSettings = async () => ({ ...API_VALUES, ENABLE_DOCS: true });
+
+  const { settings } = await service.list();
+
+  const reminder = settings.find((s) => s.name === 'REMINDER_ENABLED');
+  assert.strictEqual(reminder.type, 'boolean');
+  assert.strictEqual(reminder.saved, true);
+  const docs = settings.find((s) => s.name === 'ENABLE_DOCS');
+  assert.strictEqual(docs.saved, false);
+  assert.strictEqual(docs.pendingRestart, true);
+  assert.strictEqual(settings.find((s) => s.name === 'FRONTEND_BASE_URL').saved, 'https://study.webcoach.jp');
+  assert.strictEqual(settings.find((s) => s.name === 'DB_POOL_SIZE').type, 'int');
+
+  await service.update('ANTHROPIC_MODEL', 'claude-sonnet-5-5', 'admin');
+  assert.strictEqual(ssmCalls.pop().input.Value, 'claude-sonnet-5-5');
+  await service.update('TRANSCRIPT_SYNC_ENABLED', 'true', 'admin');
+  assert.strictEqual(ssmCalls.pop().input.Value, 'true');
+  await service.update('FRONTEND_BASE_URL', ' https://study.webcoach.jp ', 'admin');
+  assert.strictEqual(ssmCalls.pop().input.Value, 'https://study.webcoach.jp');
+});
+
+test('rejects unknown models, non-boolean values and bad URLs', async () => {
+  setup({ prod: true });
+
+  await assert.rejects(service.update('ANTHROPIC_MODEL', 'gpt-4o', 'admin'), { statusCode: 400 });
+  for (const value of ['yes', '1', '']) {
+    await assert.rejects(service.update('REMINDER_ENABLED', value, 'admin'), { statusCode: 400 });
+  }
+  for (const value of ['study.webcoach.jp', 'https://study.webcoach.jp/', 'ftp://x', 'https://a b']) {
+    await assert.rejects(service.update('FRONTEND_BASE_URL', value, 'admin'), { statusCode: 400 });
+  }
+  for (const value of ['0', '31']) {
+    await assert.rejects(service.update('DB_POOL_SIZE', value, 'admin'), { statusCode: 400 });
+  }
+  assert.strictEqual(ssmCalls.length, 0);
+});

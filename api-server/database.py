@@ -7,6 +7,8 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 from dotenv import load_dotenv
 
+import runtime_settings
+
 load_dotenv()
 
 # Database connection settings
@@ -28,7 +30,7 @@ engine = create_engine(
     # 既定(常時5+追加10=15本)ではFastAPIの同期スレッドプール(40)に対して少なく、
     # 同時アクセスが増えると接続待ちで詰まる。RDSのmax_connectionsは
     # Moodle側の接続とタスク数ぶんを合算して超えないよう環境変数で調整する。
-    pool_size=int(os.getenv("DB_POOL_SIZE", "10")),
+    pool_size=runtime_settings.get_int("DB_POOL_SIZE"),
     max_overflow=int(os.getenv("DB_MAX_OVERFLOW", "20")),
 )
 

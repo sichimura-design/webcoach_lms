@@ -16,6 +16,9 @@ DEFAULTS = {
     "AI_CHAT_MAX_HISTORY_MESSAGE_CHARS": 1200,
     "AI_LEGACY_CHAT_MAX_OUTPUT_TOKENS": 2048,
     "COACHING_NOTE_MAX_OUTPUT_TOKENS": 4096,
+    "ANTHROPIC_MODEL": "claude-haiku-4-5-20251001",
+    "DB_POOL_SIZE": 10,
+    "ENABLE_DOCS": True,
 }
 
 
@@ -32,5 +35,22 @@ def get_int(name: str) -> int:
         return default
 
 
+def get_str(name: str) -> str:
+    """環境変数の値を返す。未設定・空のときは既定値"""
+    raw = os.getenv(name)
+    if raw is None or raw.strip() == "":
+        return DEFAULTS[name]
+    return raw.strip()
+
+
+def get_bool(name: str) -> bool:
+    """"true"(大文字小文字は問わない)だけを有効とみなす。未設定・空のときは既定値"""
+    raw = os.getenv(name)
+    if raw is None or raw.strip() == "":
+        return DEFAULTS[name]
+    return raw.strip().lower() == "true"
+
+
 def current_values() -> dict:
-    return {name: get_int(name) for name in DEFAULTS}
+    getters = {bool: get_bool, str: get_str, int: get_int}
+    return {name: getters[type(default)](name) for name, default in DEFAULTS.items()}

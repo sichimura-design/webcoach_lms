@@ -247,19 +247,24 @@ function newRunId(): string {
 }
 
 
+export type RuntimeSettingValue = number | boolean | string;
+
 export interface RuntimeSetting {
   name: string;
   service: 'api-server' | 'bff-server';
+  /** int=整数(min〜max)、boolean=有効/無効、select=optionsから選ぶ、url=URL */
+  type: 'int' | 'boolean' | 'select' | 'url';
   group: string;
   label: string;
   description: string;
-  defaultValue: number;
-  min: number;
-  max: number;
+  defaultValue: RuntimeSettingValue;
+  min?: number;
+  max?: number;
+  options?: { value: string; label: string }[];
   /** このプロセスで使っている値。api-serverに届かないときはnull */
-  current: number | null;
+  current: RuntimeSettingValue | null;
   /** Parameter Storeの保存値。無ければnull(既定値) */
-  saved: number | null;
+  saved: RuntimeSettingValue | null;
   pendingRestart: boolean;
 }
 
@@ -1853,7 +1858,7 @@ class BFFClient {
   }
 
   /** 動作設定をParameter Storeに保存する（本番のみ・反映には再起動が要る） */
-  async updateRuntimeSetting(name: string, value: number): Promise<void> {
+  async updateRuntimeSetting(name: string, value: RuntimeSettingValue): Promise<void> {
     await this.api.put(`/admin/runtime-settings/${encodeURIComponent(name)}`, { value: String(value) });
   }
 

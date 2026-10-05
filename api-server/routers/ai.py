@@ -43,7 +43,7 @@ def initialize_ai_components():
         else:
             try:
                 # モデル名を環境変数から取得（デフォルト: claude-haiku-4-5-20251001）
-                model_name = os.getenv('ANTHROPIC_MODEL', 'claude-haiku-4-5-20251001')
+                model_name = runtime_settings.get_str("ANTHROPIC_MODEL")
                 llm = ChatAnthropic(
                     model=model_name,
                     anthropic_api_key=anthropic_api_key,

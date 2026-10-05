@@ -60,7 +60,7 @@ def _get_llm() -> ChatAnthropic:
         if not anthropic_api_key:
             raise ValueError("ANTHROPIC_API_KEY not set")
 
-        model_name = os.getenv("ANTHROPIC_MODEL", "claude-haiku-4-5-20251001")
+        model_name = runtime_settings.get_str("ANTHROPIC_MODEL")
         _llm = ChatAnthropic(
             model=model_name,
             anthropic_api_key=anthropic_api_key,

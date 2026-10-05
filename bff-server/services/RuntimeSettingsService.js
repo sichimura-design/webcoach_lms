@@ -14,6 +14,45 @@ const { RUNTIME_SETTINGS, toParameterKey } = require('../config/runtimeSettings'
 const apiServerAdapter = require('../adapters/ApiServerAdapter');
 const logger = require('../utils/logger');
 
+/** Parameter Storeの文字列を設定の型の値にする(起動時のコードの読み方に合わせる) */
+function parseValue(setting, raw) {
+  switch (setting.type) {
+    case 'boolean':
+      return raw.trim().toLowerCase() === 'true';
+    case 'select':
+    case 'url':
+      return raw.trim();
+    default:
+      return Number(raw);
+  }
+}
+
+/** 画面から送られた値を確かめて、保存する文字列にする。だめなら400 */
+function normalizeValue(setting, rawValue) {
+  const text = String(rawValue ?? '').trim();
+  const invalid = (message) => Object.assign(new Error(message), { statusCode: 400 });
+  switch (setting.type) {
+    case 'boolean':
+      if (text !== 'true' && text !== 'false') throw invalid('有効か無効かを選んでください');
+      return text;
+    case 'select':
+      if (!setting.options.some((o) => o.value === text)) throw invalid('一覧にある値を選んでください');
+      return text;
+    case 'url':
+      if (!/^https?:\/\/[^\s/?#]+(\/[^\s?#]*[^\s?#/])?$/.test(text)) {
+        throw invalid('http(s)://で始まるURLを、末尾の/なしで入力してください');
+      }
+      return text;
+    default: {
+      const value = Number(text);
+      if (!/^\d+$/.test(text) || value < setting.min || value > setting.max) {
+        throw invalid(`${setting.min}〜${setting.max}の整数で入力してください`);
+      }
+      return String(value);
+    }
+  }
+}
+
 class RuntimeSettingsService {
   isEditable() {
     return config.useParameterStore && !!config.bffParameterStorePrefix && !!config.apiParameterStorePrefix;
@@ -84,7 +123,7 @@ class RuntimeSettingsService {
         ? (apiValues && apiValues[setting.name] !== undefined ? apiValues[setting.name] : null)
         : setting.current();
       const savedRaw = editable ? saved[this._parameterName(setting)] : undefined;
-      const savedValue = savedRaw === undefined ? null : Number(savedRaw);
+      const savedValue = savedRaw === undefined ? null : parseValue(setting, savedRaw);
       // 再起動したあとに使われる値。本番のタスク定義ではこれらを設定していないので、保存値か既定値になる
       const nextValue = savedValue === null ? setting.defaultValue : savedValue;
       return {
@@ -93,9 +132,11 @@ class RuntimeSettingsService {
         group: setting.group,
         label: setting.label,
         description: setting.description,
+        type: setting.type || 'int',
         defaultValue: setting.defaultValue,
         min: setting.min,
         max: setting.max,
+        options: setting.options,
         current,
         saved: savedValue,
         pendingRestart: editable && current !== null && current !== nextValue,
@@ -122,17 +163,10 @@ class RuntimeSettingsService {
   async update(name, rawValue, actor) {
     this._assertEditable();
     const setting = this._find(name);
-    const text = String(rawValue ?? '').trim();
-    const value = Number(text);
-    if (!/^\d+$/.test(text) || value < setting.min || value > setting.max) {
-      throw Object.assign(
-        new Error(`${setting.min}〜${setting.max}の整数で入力してください`),
-        { statusCode: 400 }
-      );
-    }
+    const value = normalizeValue(setting, rawValue);
     await getSsmClient().send(new PutParameterCommand({
       Name: this._parameterName(setting),
-      Value: String(value),
+      Value: value,
       Type: 'String',
       Overwrite: true,
     }));

@@ -13,6 +13,8 @@ from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, Field
 
+import runtime_settings
+
 import chromadb
 from langchain_anthropic import ChatAnthropic
 from langchain.prompts import ChatPromptTemplate
@@ -88,7 +90,7 @@ async def startup_event():
     else:
         try:
             # モデル名を環境変数から取得（デフォルト: claude-haiku-4-5-20251001）
-            model_name = os.getenv('ANTHROPIC_MODEL', 'claude-haiku-4-5-20251001')
+            model_name = runtime_settings.get_str("ANTHROPIC_MODEL")
             llm = ChatAnthropic(
                 model=model_name,
                 anthropic_api_key=anthropic_api_key,

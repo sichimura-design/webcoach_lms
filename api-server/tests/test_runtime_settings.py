@@ -24,3 +24,23 @@ def test_invalid_value_falls_back_to_default(monkeypatch):
     monkeypatch.setenv("AI_CHAT_MAX_OUTPUT_TOKENS", "abc")
 
     assert runtime_settings.get_int("AI_CHAT_MAX_OUTPUT_TOKENS") == 1024
+
+
+def test_model_and_docs_use_their_types(monkeypatch):
+    monkeypatch.delenv("ANTHROPIC_MODEL", raising=False)
+    monkeypatch.setenv("ENABLE_DOCS", "False")
+    monkeypatch.setenv("DB_POOL_SIZE", "15")
+
+    values = runtime_settings.current_values()
+
+    assert values["ANTHROPIC_MODEL"] == "claude-haiku-4-5-20251001"
+    assert values["ENABLE_DOCS"] is False
+    assert values["DB_POOL_SIZE"] == 15
+
+
+def test_blank_bool_and_str_fall_back_to_default(monkeypatch):
+    monkeypatch.setenv("ENABLE_DOCS", " ")
+    monkeypatch.setenv("ANTHROPIC_MODEL", "")
+
+    assert runtime_settings.get_bool("ENABLE_DOCS") is True
+    assert runtime_settings.get_str("ANTHROPIC_MODEL") == "claude-haiku-4-5-20251001"

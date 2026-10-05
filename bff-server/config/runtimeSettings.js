@@ -1,14 +1,32 @@
 /**
  * 管理画面の「動作設定」で変えられる設定値の一覧。
  *
- * ここに無い値は画面から触れない。本番ではParameter Store
+ * ここに無い値は画面から触れない。type は int(既定)・boolean・select(optionsから選ぶ)・url。
+ * 本番ではParameter Store
  * `{prefix}/config/xxx-yyy` に保存し、起動スクリプトが環境変数XXX_YYYとして読み込む。
  * 既定値はapi-server側がruntime_settings.py、BFF側がconfig/environment.jsに持つ。
  */
 
 const { config } = require('./environment');
 
+// ANTHROPIC_MODELで選べるモデル。ここに無いモデル名は保存できない
+const ANTHROPIC_MODEL_OPTIONS = [
+  { value: 'claude-haiku-4-5-20251001', label: 'Claude Haiku 4.5(速い・安い)' },
+  { value: 'claude-sonnet-5-5', label: 'Claude Sonnet 5.5' },
+  { value: 'claude-opus-5-5', label: 'Claude Opus 5.5(高性能・高い)' },
+];
+
 const RUNTIME_SETTINGS = [
+  {
+    name: 'ANTHROPIC_MODEL',
+    service: 'api-server',
+    type: 'select',
+    group: 'AIチャット',
+    label: '使うAIモデル',
+    description: 'AIチャット・ノート生成で使うClaudeのモデルです。上位のモデルほど回答の質は上がりますが、料金が高く応答も遅くなります。',
+    defaultValue: 'claude-haiku-4-5-20251001',
+    options: ANTHROPIC_MODEL_OPTIONS,
+  },
   {
     name: 'AI_CHAT_MAX_OUTPUT_TOKENS',
     service: 'api-server',
@@ -40,6 +58,16 @@ const RUNTIME_SETTINGS = [
     max: 10000,
   },
   {
+    name: 'AI_LEGACY_CHAT_MAX_OUTPUT_TOKENS',
+    service: 'api-server',
+    group: 'AIチャット',
+    label: '旧AIチャットの回答の最大トークン数',
+    description: '以前からある簡易版のAIチャット(/api/ai/chat)の回答の長さの上限です。',
+    defaultValue: 2048,
+    min: 256,
+    max: 8192,
+  },
+  {
     name: 'COACHING_NOTE_MAX_OUTPUT_TOKENS',
     service: 'api-server',
     group: 'AIコーチングノート',
@@ -61,6 +89,16 @@ const RUNTIME_SETTINGS = [
     current: () => config.noteGenerationMaxAttempts,
   },
   {
+    name: 'TRANSCRIPT_SYNC_ENABLED',
+    service: 'bff-server',
+    type: 'boolean',
+    group: '定期処理',
+    label: '議事録の同期',
+    description: 'Google Meetの議事録を定期的に取得し、AIコーチングノートの下書きを作ります。Organizer(会社のGoogleアカウント)の連携が済んでいる必要があります。',
+    defaultValue: false,
+    current: () => config.transcriptSyncEnabled,
+  },
+  {
     name: 'TRANSCRIPT_SYNC_INTERVAL_MINUTES',
     service: 'bff-server',
     group: '定期処理',
@@ -72,6 +110,16 @@ const RUNTIME_SETTINGS = [
     current: () => config.transcriptSyncIntervalMinutes,
   },
   {
+    name: 'REMINDER_ENABLED',
+    service: 'bff-server',
+    type: 'boolean',
+    group: '定期処理',
+    label: 'リマインドメール',
+    description: 'コーチング予定のリマインドメールを送ります。メール内のリンクには「画面のURL」を使うので、先にそちらを設定してください。',
+    defaultValue: false,
+    current: () => config.reminderEnabled,
+  },
+  {
     name: 'REMINDER_INTERVAL_MINUTES',
     service: 'bff-server',
     group: '定期処理',
@@ -81,6 +129,35 @@ const RUNTIME_SETTINGS = [
     min: 5,
     max: 1440,
     current: () => config.reminderIntervalMinutes,
+  },
+  {
+    name: 'FRONTEND_BASE_URL',
+    service: 'bff-server',
+    type: 'url',
+    group: '接続',
+    label: '画面のURL',
+    description: 'リマインドメールのリンクと、外部サービス連携のあとに戻る先に使います。本番は https://study.webcoach.jp にしてください(末尾の / は付けない)。',
+    defaultValue: 'http://localhost:3000',
+    current: () => config.frontendBaseUrl,
+  },
+  {
+    name: 'DB_POOL_SIZE',
+    service: 'api-server',
+    group: '接続',
+    label: 'DB接続の常時確保数',
+    description: 'api-server 1台が常に確保しておくDB接続の数です(混雑時はさらに最大20本まで増えます)。台数×(この値+20)とMoodleの接続の合計が、RDSの上限(200)を超えないようにしてください。',
+    defaultValue: 10,
+    min: 1,
+    max: 30,
+  },
+  {
+    name: 'ENABLE_DOCS',
+    service: 'api-server',
+    type: 'boolean',
+    group: '接続',
+    label: 'APIの説明ページ(/docs)を公開',
+    description: 'api-serverのAPI一覧ページ(/docs・/redoc)を公開します。開発用のため、本番では無効にしてください。',
+    defaultValue: true,
   },
 ];
 
