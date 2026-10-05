@@ -57,10 +57,14 @@ export class ProdRdsStack extends cdk.Stack {
     // ========================================
     this.database = new rds.DatabaseInstance(this, 'Database', {
       engine: rds.DatabaseInstanceEngine.mysql({
-        version: rds.MysqlEngineVersion.VER_8_4_7,
+        // 実体(prod-lms-db)は自動マイナーアップグレードで 8.4.8。8.4.7 を指定すると
+        // ダウングレード扱いでデプロイが失敗する。
+        version: rds.MysqlEngineVersion.VER_8_4_8,
       }),
       allowMajorVersionUpgrade: true,
-      instanceIdentifier: `${envName}-moodle-db`,
+      // 2026-10-06: 2026-07-25 にスナップショット復元で作った prod-lms-db を cdk import で
+      // 管理下に戻した(旧 prod-moodle-db は削除済み)。
+      instanceIdentifier: `${envName}-lms-db`,
       instanceType: ec2.InstanceType.of(ec2.InstanceClass.T3, ec2.InstanceSize.SMALL),
       vpc,
       vpcSubnets: { subnetType: ec2.SubnetType.PRIVATE_ISOLATED },

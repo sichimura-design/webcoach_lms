@@ -125,7 +125,7 @@ if (envName === 'prod') {
   const vpcId = app.node.tryGetContext('vpcId');
   if (!rdsInstanceIdentifier) {
     throw new Error(
-      'Context "rdsInstanceIdentifier" is required for prod (e.g. --context rdsInstanceIdentifier=prod-moodle-db)'
+      'Context "rdsInstanceIdentifier" is required for prod (e.g. --context rdsInstanceIdentifier=prod-lms-db)'
     );
   }
   if (!vpcId) {

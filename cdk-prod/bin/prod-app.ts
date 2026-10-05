@@ -212,14 +212,11 @@ const ecsStack = new ProdEcsStack(app, `${envName}-EcsStack`, {
   repository: ecrStack.repository,
   targetGroupArn: albStack.targetGroup.targetGroupArn,
   ec2SecurityGroup: backendStack.ec2SecurityGroup,
-  // 2026-07-25: prod-moodle-db は不完全な移行データ(context/user/course等のブートストラップ
-  // データ欠落)だったため、スナップショット復元で prod-lms-db を新規作成し、UATから
-  // エクスポートした正規シードデータを投入して置き換えた(prod-RdsStack の CDK 管理下には
-  // まだ入っていない — instanceIdentifier は prod-moodle-db のまま)。
-  // マスター認証情報(ユーザー名/パスワード)はスナップショット復元のため prod-moodle-db と同一で、
-  // prod-DbSecretArn は引き続き有効。エンドポイントのみ暫定的にハードコードする。
-  // TODO: rds-stack.ts の instanceIdentifier を prod-lms-db に合わせて CDK 管理下に戻す
-  // (または旧 prod-moodle-db を削除し、prod-lms-db を正式にインポート/adopt する)。
+  // 2026-07-25: prod-moodle-db は不完全な移行データだったため、スナップショット復元で
+  // prod-lms-db を作り直した。2026-10-06 に prod-lms-db を cdk import で prod-RdsStack の
+  // 管理下に戻し、旧 prod-moodle-db はスタックから外した(実体は削除済み)。
+  // エンドポイントは prod-DbEndpoint Export でも取れるが、EcsStack の再デプロイを伴うため
+  // 当面はハードコードのまま。
   databaseEndpointAddress: app.node.tryGetContext('databaseEndpointAddress')
     ?? 'prod-lms-db.c3uc0k4wiwug.ap-northeast-1.rds.amazonaws.com',
   databaseEndpointPort: cdk.Fn.importValue(`${envName}-DbPort`),

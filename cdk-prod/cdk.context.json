@@ -3,5 +3,67 @@
     "ap-northeast-1a",
     "ap-northeast-1c",
     "ap-northeast-1d"
-  ]
+  ],
+  "vpc-provider:account=840513866884:filter.vpc-id=vpc-06ae1bdbdaa5e3c5d:region=ap-northeast-1:returnAsymmetricSubnets=true": {
+    "vpcId": "vpc-06ae1bdbdaa5e3c5d",
+    "vpcCidrBlock": "10.2.0.0/16",
+    "ownerAccountId": "840513866884",
+    "availabilityZones": [],
+    "subnetGroups": [
+      {
+        "name": "Database",
+        "type": "Isolated",
+        "subnets": [
+          {
+            "subnetId": "subnet-062181ef11dd76cfb",
+            "cidr": "10.2.4.0/24",
+            "availabilityZone": "ap-northeast-1a",
+            "routeTableId": "rtb-0630467cdd8dfc904"
+          },
+          {
+            "subnetId": "subnet-0d4737abadf0885ff",
+            "cidr": "10.2.5.0/24",
+            "availabilityZone": "ap-northeast-1c",
+            "routeTableId": "rtb-01510da712d48a432"
+          }
+        ]
+      },
+      {
+        "name": "Public",
+        "type": "Public",
+        "subnets": [
+          {
+            "subnetId": "subnet-074a8fe85554a99d8",
+            "cidr": "10.2.0.0/24",
+            "availabilityZone": "ap-northeast-1a",
+            "routeTableId": "rtb-047a6501ff820d9f3"
+          },
+          {
+            "subnetId": "subnet-064c11ad3fe20beb2",
+            "cidr": "10.2.1.0/24",
+            "availabilityZone": "ap-northeast-1c",
+            "routeTableId": "rtb-0f0144c6851c3b5e6"
+          }
+        ]
+      },
+      {
+        "name": "Private",
+        "type": "Private",
+        "subnets": [
+          {
+            "subnetId": "subnet-0dcab2ad59f6fa806",
+            "cidr": "10.2.2.0/24",
+            "availabilityZone": "ap-northeast-1a",
+            "routeTableId": "rtb-01a80fee249613984"
+          },
+          {
+            "subnetId": "subnet-034e30b5ac74d7de2",
+            "cidr": "10.2.3.0/24",
+            "availabilityZone": "ap-northeast-1c",
+            "routeTableId": "rtb-0fe8a33f90bf49beb"
+          }
+        ]
+      }
+    ]
+  }
 }
