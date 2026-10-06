@@ -3,8 +3,9 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
 import { useToast } from '../../contexts/ToastContext';
 import { useStudyTimerStore } from '../../store/studyTimerStore';
-import { useStudySession } from '../../hooks/useStudySession';
+import { useStudySession, waitForPendingEnd } from '../../hooks/useStudySession';
 import { useStudyStats } from '../../hooks/useStudyStats';
+import { bffClient } from '../../services/bffClient';
 import { StudyFinishDraft } from '../../types/studyActivity';
 import { createNoteFromStudyRecord } from '../../utils/studyRecordNote';
 import FinishSessionModal from '../focus/FinishSessionModal';
@@ -40,24 +41,39 @@ function FinishCard({
   const { showToast } = useToast();
   const navigate = useNavigate();
 
-  // 🔴 記録前の今週累計をマウント時に固定する。
-  //    記録すると再取得が走って今週の値に今回分が含まれるため、
-  //    そのまま足すと「今週の累計」が二重計上される。
-  const [baseWeekMinutes, setBaseWeekMinutes] = useState<number | null>(null);
-  const [recordedMinutes, setRecordedMinutes] = useState<number | null>(null);
+  /*
+   * 今週の累計のうち、この回を除いた分。カードは「これ + 入力中の学習時間」を出す。
+   * 🔴 サーバーの今週の値は study_session_ended が届いた時点でこの回を（訂正前の
+   *    実測で）含む。一時停止してから終了した回は確実に、そうでなくても end の送信と
+   *    取得の順番しだいで含まれるので、そのまま足すと二重計上になる。end を待ってから
+   *    取り直し、この回の実測分を引く（サーバーは区間ごとに分へ丸めるので±1分程度ずれうる）。
+   * 🔴 マウント時に1回だけ決める。記録すると再取得が走り、訂正後のこの回が含まれるため。
+   */
+  const [weekBaseMinutes, setWeekBaseMinutes] = useState<number | null>(null);
 
   useEffect(() => {
-    if (baseWeekMinutes !== null || !stats) return;
-    setBaseWeekMinutes(stats.week.minutes);
-  }, [stats, baseWeekMinutes]);
+    if (!userId) return;
+    let cancelled = false;
+    const measuredMinutes = Math.round(draft.measuredSeconds / 60);
+    waitForPendingEnd()
+      .then(() => bffClient.getStudyStatsSummary(userId, 7))
+      .then((summary) => {
+        if (!cancelled) setWeekBaseMinutes(Math.max(0, summary.week.minutes - measuredMinutes));
+      })
+      .catch(() => {});
+    return () => {
+      cancelled = true;
+    };
+    // 下書きが変わったとき（＝別の回）だけ取り直す
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [userId, draft.activityId]);
 
   return (
     <FinishSessionModal
       draft={draft}
-      weekTotalMinutes={(baseWeekMinutes ?? 0) + (recordedMinutes ?? draft.actualMinutes)}
+      weekBaseMinutes={weekBaseMinutes ?? 0}
       streakDays={stats?.streak.currentDays}
       onRecord={async (patch, options) => {
-        setRecordedMinutes(patch.actualMinutes ?? draft.actualMinutes);
         await commitFinish(patch);
 
         // 🔴 記録の保存が済んだあとに作る。ここで失敗しても学習記録は成立して

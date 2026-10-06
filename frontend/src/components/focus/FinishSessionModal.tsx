@@ -21,8 +21,11 @@ import { formatDayLabel, formatSessionRange } from './focusFormat';
  */
 interface FinishSessionModalProps {
   draft: StudyFinishDraft;
-  /** 今週の累計（この記録を含む見込み）。記録カードに出す自動記録項目 */
-  weekTotalMinutes: number;
+  /**
+   * 今週の累計のうち、この回を除いた分。カードには「これ + 入力中の学習時間」を出す
+   * （学習時間を書き換えたら今週の累計も一緒に動くように）。
+   */
+  weekBaseMinutes: number;
   /** 記録後のストリーク日数。分かる場合だけ完了画面に出す */
   streakDays?: number;
   /**
@@ -104,7 +107,7 @@ function Value({ children, muted }: { children: React.ReactNode; muted?: boolean
 
 export function FinishSessionModal({
   draft,
-  weekTotalMinutes,
+  weekBaseMinutes,
   streakDays,
   onRecord,
   onDismiss,
@@ -136,6 +139,7 @@ export function FinishSessionModal({
    * displaySegments は分に丸めたうえで、合計が minutes と一致するよう端数を配り、
    * 1行しか残らないときは空を返す（学習時間と同じことを2回言わないため）。
    */
+  const weekTotalMinutes = weekBaseMinutes + minutes;
   const breakdown = displaySegments(adjustSegments(snapshot.segments ?? [], minutes * 60), minutes);
 
   const stepMinutes = (delta: number) =>

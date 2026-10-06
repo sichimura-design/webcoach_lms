@@ -61,6 +61,11 @@ export interface StartParams {
  */
 let pendingEnd: Promise<void> = Promise.resolve();
 
+/** 送信中の study_session_ended を待つ。サーバーの集計にこの回が入ったことを前提にしたい側が使う */
+export function waitForPendingEnd(): Promise<void> {
+  return pendingEnd;
+}
+
 function sendEnd(userId: number, courseId: number | undefined) {
   pendingEnd = bffClient.endStudySession(userId, courseId).catch(() => {});
 }

@@ -155,7 +155,7 @@ function FocusBoothPage() {
       {finishDraft && (
         <FinishSessionModal
           draft={finishDraft}
-          weekTotalMinutes={stats?.week_minutes ?? 0}
+          weekBaseMinutes={stats?.week_minutes ?? 0}
           streakDays={streak?.current_streak}
           onRecord={handleCommit}
           onDismiss={cancelFinish}
