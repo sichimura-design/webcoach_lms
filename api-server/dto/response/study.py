@@ -23,11 +23,18 @@ class ActiveStudySessionResponse(BaseModel):
     started_at: datetime
 
 
+class RecordedSegment(BaseModel):
+    """学習1回ぶんを構成する区間(補正先の指定に使う)"""
+    ended_log_id: int
+    duration_minutes: int
+
+
 class RecordedSessionMinutesResponse(BaseModel):
     """直近の学習1回ぶんが、いまサーバーで何分として集計されているか(学習時間の修正の基準)"""
     recorded_minutes: int
     last_segment_minutes: int
     segment_count: int
+    segments: list[RecordedSegment] = []
 
 
 class StudyStatsResponse(BaseModel):

@@ -16,9 +16,10 @@ defined('MOODLE_INTERNAL') || die();
  *      Extra information about event.
  *
  *      - int deltaminutes: 直前のstudy_session_endedに対する補正値(分、符号付き)
+ *      - int endedlogid: (任意)補正先のstudy_session_endedのログID。無ければ直前の区間
  * }
  *
- * 集計時は直前の(同一ユーザーの)study_session_endedセグメントにこの値を加算する。
+ * 集計時はendedlogidの区間、無ければ直前の(同一ユーザーの)study_session_endedセグメントにこの値を加算する。
  * 発火するのはユーザーが実際に時間を修正した場合のみで頻度は低いため、
  * 集計クエリでこのイベントに限りotherのJSONパースを許容する。
  */

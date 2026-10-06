@@ -336,6 +336,8 @@ class local_webcoach_utils_external extends external_api {
             'userid' => new external_value(PARAM_INT, 'User ID'),
             'deltaminutes' => new external_value(PARAM_INT, 'Signed correction in minutes, applied to the segment just ended'),
             'courseid' => new external_value(PARAM_INT, 'Course ID (0 if not tied to a specific course)', VALUE_DEFAULT, 0),
+            'endedlogid' => new external_value(PARAM_INT,
+                'Log id of the study_session_ended event to correct (0 = the segment just ended)', VALUE_DEFAULT, 0),
         ]);
     }
 
@@ -347,18 +349,31 @@ class local_webcoach_utils_external extends external_api {
      * @param int $userid
      * @param int $deltaminutes
      * @param int $courseid
+     * @param int $endedlogid 補正先の区間(study_session_endedのログID)。0なら直前に終わった区間。
+     *            一時停止をはさんだ回を減らすとき、最後の区間だけでは0分より下げられないため
+     *            前の区間を名指しで補正するのに使う。
      * @return array
      */
-    public static function correct_study_session($userid, $deltaminutes, $courseid = 0) {
+    public static function correct_study_session($userid, $deltaminutes, $courseid = 0, $endedlogid = 0) {
         global $DB;
 
         $params = self::validate_parameters(self::correct_study_session_parameters(), [
             'userid' => $userid,
             'deltaminutes' => $deltaminutes,
             'courseid' => $courseid,
+            'endedlogid' => $endedlogid,
         ]);
 
         $DB->get_record('user', ['id' => $params['userid']], '*', MUST_EXIST);
+
+        if (!empty($params['endedlogid'])) {
+            // 他人の区間や、ended以外のログを補正先にさせない
+            $DB->get_record('logstore_standard_log', [
+                'id' => $params['endedlogid'],
+                'userid' => $params['userid'],
+                'eventname' => '\\local_webcoach_utils\\event\\study_session_ended',
+            ], 'id', MUST_EXIST);
+        }
 
         $context = context_system::instance();
         self::validate_context($context);
@@ -369,6 +384,9 @@ class local_webcoach_utils_external extends external_api {
                 'deltaminutes' => $params['deltaminutes'],
             ],
         ];
+        if (!empty($params['endedlogid'])) {
+            $eventdata['other']['endedlogid'] = $params['endedlogid'];
+        }
         if (!empty($params['courseid'])) {
             $eventdata['courseid'] = $params['courseid'];
         }

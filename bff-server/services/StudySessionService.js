@@ -15,6 +15,35 @@
 const apiServerAdapter = require('../adapters/ApiServerAdapter');
 const moodleAdapter = require('../adapters/MoodleAdapter');
 
+/**
+ * 差分(分)を、この回の区間ごとの補正に割り振る。
+ *
+ * 区間ごとに0分未満は0に切り上げて集計されるため、最後の区間だけに大きなマイナスを
+ * 入れても前の区間ぶんは減らない(一時停止をはさんだ30分+5分の回を20分に直すと30分のまま)。
+ * 減らすときは最後の区間から順に、各区間の分数を上限に前の区間へ割り振る。
+ *
+ * 最後の区間への補正はendedLogIdを付けない(=直前の区間に加算される従来の形)。
+ * 前の区間まで割り振るときだけ区間を名指しする。
+ *
+ * @param {Array<{ended_log_id:number, duration_minutes:number}>} segments - 終了が古い順
+ * @param {number} deltaMinutes
+ * @returns {Array<{endedLogId: number|undefined, delta: number}>}
+ */
+function planSegmentCorrections(segments, deltaMinutes) {
+  if (deltaMinutes >= 0 || !segments || segments.length === 0) {
+    return deltaMinutes === 0 ? [] : [{ endedLogId: undefined, delta: deltaMinutes }];
+  }
+  const plan = [];
+  let remaining = -deltaMinutes;
+  for (let i = segments.length - 1; i >= 0 && remaining > 0; i -= 1) {
+    const take = Math.min(remaining, Math.max(0, segments[i].duration_minutes));
+    if (take === 0) continue;
+    plan.push({ endedLogId: i === segments.length - 1 ? undefined : segments[i].ended_log_id, delta: -take });
+    remaining -= take;
+  }
+  return plan;
+}
+
 class StudySessionService {
   /**
    * Start (or resume after a pause) a study session segment
@@ -52,21 +81,14 @@ class StudySessionService {
   async correctSessionToTarget(userid, targetMinutes, sinceSeconds, courseid) {
     const recorded = await apiServerAdapter.getRecordedSessionMinutes(userid, sinceSeconds);
     const target = Math.max(0, Math.round(targetMinutes));
-    let deltaMinutes = target - recorded.recorded_minutes;
-    // 補正は最後の区間にだけ加算され、区間ごとに0未満は0に切り上げられる。
-    // それより大きく減らすと超過ぶんは捨てられる(前の区間までは減らせない)ので、明示的に打ち止める。
-    if (deltaMinutes < -recorded.last_segment_minutes) {
-      console.warn(
-        `[StudySession] user ${userid}: target ${target}min is below what the last segment can absorb ` +
-        `(recorded ${recorded.recorded_minutes}min, last segment ${recorded.last_segment_minutes}min)`
-      );
-      deltaMinutes = -recorded.last_segment_minutes;
-    }
+    const deltaMinutes = target - recorded.recorded_minutes;
     if (deltaMinutes === 0 || recorded.segment_count === 0) {
       return { success: true, deltaMinutes: 0, recordedMinutes: recorded.recorded_minutes };
     }
     console.log(`[StudySession] Correcting session for user ${userid} to ${target}min (recorded ${recorded.recorded_minutes}min, delta ${deltaMinutes})`);
-    await moodleAdapter.correctStudySession(userid, deltaMinutes, courseid);
+    for (const { endedLogId, delta } of planSegmentCorrections(recorded.segments, deltaMinutes)) {
+      await moodleAdapter.correctStudySession(userid, delta, courseid, endedLogId);
+    }
     return { success: true, deltaMinutes, recordedMinutes: recorded.recorded_minutes };
   }
 
@@ -157,3 +179,4 @@ class StudySessionService {
 const studySessionService = new StudySessionService();
 
 module.exports = studySessionService;
+module.exports.planSegmentCorrections = planSegmentCorrections;

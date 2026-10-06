@@ -409,15 +409,19 @@ class MoodleAdapter {
    * @param {number} userid - Moodle user ID
    * @param {number} deltaMinutes - Signed correction in minutes
    * @param {number} [courseid] - Moodle course ID (optional)
+   * @param {number} [endedLogId] - 補正先の区間(study_session_endedのログID)。省略時は直前の区間
    * @returns {Promise<any>} API response
    */
-  async correctStudySession(userid, deltaMinutes, courseid) {
+  async correctStudySession(userid, deltaMinutes, courseid, endedLogId) {
     const params = {
       userid: parseInt(userid, 10),
       deltaminutes: parseInt(deltaMinutes, 10)
     };
     if (courseid) {
       params.courseid = parseInt(courseid, 10);
+    }
+    if (endedLogId) {
+      params.endedlogid = parseInt(endedLogId, 10);
     }
     return this.callAPI('local_webcoach_utils_correct_study_session', params);
   }

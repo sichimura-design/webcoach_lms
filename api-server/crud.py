@@ -3349,7 +3349,7 @@ _COURSE_MATERIAL_VIEWED_EVENT = "\\local_webcoach_utils\\event\\course_material_
 def _segment_totals_cte(user_scoped: bool) -> str:
     """
     started/endedイベントをペアリングして1区間ごとの学習時間(分)を算出するCTE。
-    補正イベント(study_session_corrected)があれば直前のendedセグメントに加算する。
+    補正イベント(study_session_corrected)があればother.endedlogidの区間、無ければ直前のendedセグメントに加算する。
 
     Args:
         user_scoped: Trueなら:useridで絞り込む(個人集計用)。Falseなら全ユーザー対象(ランキング用)
@@ -3379,7 +3379,9 @@ def _segment_totals_cte(user_scoped: bool) -> str:
                 c.userid,
                 c.timecreated,
                 CAST(JSON_UNQUOTE(JSON_EXTRACT(c.other, '$.deltaminutes')) AS SIGNED) AS delta_minutes,
-                (
+                -- endedlogid付きの補正は名指しされた区間へ(一時停止をはさんだ回を減らすとき、
+                -- 最後の区間は0分より下げられないので前の区間も補正する)。無ければ直前の区間へ。
+                COALESCE(NULLIF(CAST(JSON_UNQUOTE(JSON_EXTRACT(c.other, '$.endedlogid')) AS SIGNED), 0), (
                     -- 🔴 raw な mdl_logstore_standard_log ではなく segments (started/endedの
                     --    ペアリングが成立した行) から選ぶ。複数タブでの操作が重なると、
                     --    ペアにならなかった孤立したendedイベントが紛れ込むことがある。
@@ -3388,13 +3390,13 @@ def _segment_totals_cte(user_scoped: bool) -> str:
                     --    補正がどこにもJOINされず消える(discard等が効かなくなる)。
                     SELECT MAX(seg.ended_log_id) FROM segments seg
                     WHERE seg.userid = c.userid AND seg.ended_at <= c.timecreated
-                ) AS target_ended_log_id
+                )) AS target_ended_log_id
             FROM mdl_logstore_standard_log c
             WHERE c.eventname = :corrected_event
               {user_filter}
         )
         SELECT
-            s.userid, s.courseid, s.started_at, s.ended_at,
+            s.userid, s.courseid, s.started_at, s.ended_at, s.ended_log_id,
             GREATEST(0, ROUND(s.duration_seconds / 60) + COALESCE(SUM(cor.delta_minutes), 0)) AS duration_minutes
         FROM segments s
         LEFT JOIN corrections cor ON cor.target_ended_log_id = s.ended_log_id
@@ -3500,8 +3502,9 @@ def get_recorded_session_minutes(db: Session, mdl_user_id: int, since_seconds: i
 
     Returns:
         recorded_minutes: 窓内の区間の合計分数(既存の補正込み)
-        last_segment_minutes: 窓内の最後の区間の分数(補正はこの区間に加算される)
+        last_segment_minutes: 窓内の最後の区間の分数
         segment_count: 窓内の区間数
+        segments: 窓内の区間(終了が古い順)。ended_log_idは補正先の指定に使う
     """
     since = int(time.time()) - max(0, since_seconds) - _SESSION_WINDOW_SLACK_SECONDS
     query = text(
@@ -3514,11 +3517,16 @@ def get_recorded_session_minutes(db: Session, mdl_user_id: int, since_seconds: i
     params = _segment_params(mdl_user_id)
     params["since"] = since
     rows = db.execute(query, params).fetchall()
-    minutes = [int(row.duration_minutes) for row in rows]
+    segments = [
+        {"ended_log_id": int(row.ended_log_id), "duration_minutes": int(row.duration_minutes)}
+        for row in rows
+    ]
+    minutes = [seg["duration_minutes"] for seg in segments]
     return {
         "recorded_minutes": sum(minutes),
         "last_segment_minutes": minutes[-1] if minutes else 0,
         "segment_count": len(minutes),
+        "segments": segments,
     }
 
 
