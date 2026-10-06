@@ -808,11 +808,18 @@ class BFFClient {
   }
 
   /**
-   * 直前に終了した区間の学習時間を手動で補正(低頻度)
+   * 直前に終えた学習1回ぶんを、サーバー上で合計 targetMinutes 分になるよう補正する。
+   * 差分はBFFがサーバーの集計値から作る(区間ごとに丸める集計とフロントの計測はずれるため)。
    * POST /api/study/sessions/{userid}/correct
+   * @param sinceSeconds この回の最初の開始から今までの秒数(一時停止も含む)。どの区間がこの回かを決める
    */
-  async correctStudySession(userId: number, deltaMinutes: number, courseId?: number): Promise<void> {
-    await this.api.post(`/study/sessions/${userId}/correct`, { deltaMinutes, courseid: courseId });
+  async correctStudySessionToTarget(
+    userId: number,
+    targetMinutes: number,
+    sinceSeconds: number,
+    courseId?: number
+  ): Promise<void> {
+    await this.api.post(`/study/sessions/${userId}/correct`, { targetMinutes, sinceSeconds, courseid: courseId });
   }
 
   /**

@@ -159,6 +159,22 @@ class ApiServerAdapter {
   }
 
   /**
+   * Get how many minutes the latest study session (segments started within sinceSeconds) is
+   * currently recorded as on the server (corrections included). Used as the base for corrections.
+   */
+  async getRecordedSessionMinutes(userid, sinceSeconds) {
+    const response = await axios.get(
+      `${this.apiServerUrl}/api/study/sessions/${userid}/recorded-minutes`,
+      {
+        params: { since_seconds: sinceSeconds },
+        headers: { 'Content-Type': 'application/json' },
+        timeout: 10000
+      }
+    );
+    return response.data;
+  }
+
+  /**
    * Get recently completed study sessions
    */
   async getRecentStudySessions(userid, limit = 10) {

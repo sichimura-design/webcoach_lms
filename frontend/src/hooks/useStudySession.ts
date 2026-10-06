@@ -54,11 +54,21 @@ export interface StartParams {
 }
 
 /**
- * 記録を破棄する際、直前に閉じたMoodleログ上のセグメントを実質ゼロ分に補正するための
- * 十分大きな負の補正値。GREATEST(0, 実測分 + delta)で必ず0にクランプされる
- * (1回のセグメントがこれを上回る分数になることは無い)。
+ * 最後に送った study_session_ended の送信。
+ * 🔴 補正は「サーバーがいま何分と集計しているか」を基準に差分を作るので、endが届く前に
+ *    補正すると最後の区間が未完了のまま数えられ、差分が丸ごとずれる。補正の前に必ず待つ。
+ *    useStudySession は画面ごとに別インスタンスなので、モジュール単位で1つだけ持つ。
  */
-const DISCARD_DELTA_MINUTES = -100000;
+let pendingEnd: Promise<void> = Promise.resolve();
+
+function sendEnd(userId: number, courseId: number | undefined) {
+  pendingEnd = bffClient.endStudySession(userId, courseId).catch(() => {});
+}
+
+/** この回の最初の開始(一時停止でずらす前)から今までの秒数。サーバーがこの回の区間を拾う窓になる */
+function secondsSinceSessionStart(shiftedStartedAtMs: number, pausedTotalMs: number): number {
+  return Math.max(0, Math.ceil((Date.now() - (shiftedStartedAtMs - pausedTotalMs)) / 1000));
+}
 
 export interface UseStudySession {
   session: ActiveStudySession | null;
@@ -108,7 +118,7 @@ export function useStudySession(userId: number | undefined): UseStudySession {
   const markTargetReached = useStudyTimerStore((s) => s.markTargetReached);
   const updateGoalInStore = useStudyTimerStore((s) => s.updateGoal);
   const switchCategory = useStudyTimerStore((s) => s.switchCategory);
-  const trimToLastActive = useStudyTimerStore((s) => s.trimToLastActive);
+  const trimToLastActiveInStore = useStudyTimerStore((s) => s.trimToLastActive);
   const setFinishDraft = useStudyTimerStore((s) => s.setFinishDraft);
   const bumpActivityRevision = useStudyTimerStore((s) => s.bumpActivityRevision);
   const awardExp = useProgressionStore((s) => s.awardExp);
@@ -151,10 +161,21 @@ export function useStudySession(userId: number | undefined): UseStudySession {
   const pauseSession = useCallback(() => {
     const current = useStudyTimerStore.getState().session;
     pauseSessionInStore();
-    if (userId) {
-      bffClient.endStudySession(userId, current?.courseId).catch(() => {});
+    if (userId && current && current.pausedAt === null) {
+      sendEnd(userId, current.courseId);
     }
   }, [userId, pauseSessionInStore]);
+
+  // 放置検知で計測を止めたときも、サーバー側の区間を閉じる。
+  // 🔴 ここで end を送らないと、そのあと「ここで終了する」を押しても(すでに一時停止扱いなので)
+  //    end が一度も送られず、サーバーではこの回の区間が開いたままになる。
+  //    end の時刻は「今」なので放置ぶんがサーバーに乗るが、記録時の補正(合計N分に)で落ちる。
+  const trimToLastActive = useCallback(() => {
+    const current = useStudyTimerStore.getState().session;
+    if (!current || current.pausedAt !== null) return;
+    trimToLastActiveInStore();
+    if (userId) sendEnd(userId, current.courseId);
+  }, [userId, trimToLastActiveInStore]);
 
   const resumeSession = useCallback(() => {
     const current = useStudyTimerStore.getState().session;
@@ -204,11 +225,17 @@ export function useStudySession(userId: number | undefined): UseStudySession {
     [userId, startSession]
   );
 
-  /** 直前に閉じたセグメントを実質ゼロ分に補正する(discard・極端に短い記録の破棄で共用。dev/kanegae) */
-  const zeroOutLastSegment = useCallback(
-    (courseId: number | undefined) => {
+  /**
+   * この回をサーバー上で合計 targetMinutes 分にそろえる(記録・破棄・極端に短い記録で共用。dev/kanegae)。
+   * 失敗しても記録の流れは止めない。
+   */
+  const correctToTarget = useCallback(
+    async (targetMinutes: number, sinceSeconds: number, courseId: number | undefined) => {
       if (!userId) return;
-      bffClient.correctStudySession(userId, DISCARD_DELTA_MINUTES, courseId).catch(() => {});
+      await pendingEnd;
+      await bffClient
+        .correctStudySessionToTarget(userId, targetMinutes, sinceSeconds, courseId)
+        .catch(() => {});
     },
     [userId]
   );
@@ -220,10 +247,14 @@ export function useStudySession(userId: number | undefined): UseStudySession {
     if (!current) return;
     // 稼働中のまま破棄する場合は先にセグメントを閉じる(一時停止中なら既に閉じている)
     if (current.pausedAt === null && userId) {
-      bffClient.endStudySession(userId, current.courseId).catch(() => {});
+      sendEnd(userId, current.courseId);
     }
-    zeroOutLastSegment(current.courseId);
-  }, [session, userId, clearSession, setFinishDraft, zeroOutLastSegment]);
+    void correctToTarget(
+      0,
+      secondsSinceSessionStart(current.startedAt, current.pausedTotalMs),
+      current.courseId
+    );
+  }, [session, userId, clearSession, setFinishDraft, correctToTarget]);
 
   const prepareFinish = useCallback(() => {
     if (!session) return;
@@ -249,22 +280,25 @@ export function useStudySession(userId: number | undefined): UseStudySession {
       // 数秒の誤操作を記録しない。1分丸めを積むと「学習した日」が誤って成立してしまう。
       const naturalMinutes = Math.max(1, Math.round(draft.measuredSeconds / 60));
       const untouched = draft.actualMinutes === naturalMinutes;
+      const sinceSeconds = secondsSinceSessionStart(
+        Date.parse(draft.snapshot.startedAt),
+        draft.snapshot.pausedSeconds * 1000
+      );
       setFinishDraft(null);
       clearSession();
 
       if (draft.measuredSeconds < MIN_RECORDABLE_SECONDS && untouched) {
-        // ended事件は既にprepareFinish/pauseSessionで送信済みなので、実質ゼロ分に補正する(dev/kanegae)。
-        zeroOutLastSegment(draft.snapshot.course?.courseId);
+        // ended事件は既にprepareFinish/pauseSessionで送信済みなので、この回を0分に補正する(dev/kanegae)。
+        await correctToTarget(0, sinceSeconds, draft.snapshot.course?.courseId);
         bumpActivityRevision();
         return null;
       }
 
-      // ユーザーが分数を修正していたら、その差分だけ実際の記録(Moodleログ)を補正する(dev/kanegae)。
-      // 「そのまま記録」（未修正）のときは、リアルタイムのstart/endで既に正しく積まれている。
-      if (!untouched) {
-        const deltaMinutes = Math.max(0, draft.actualMinutes) - naturalMinutes;
-        bffClient.correctStudySession(userId, deltaMinutes, draft.snapshot.course?.courseId).catch(() => {});
-      }
+      // 🔴 未修正(「そのまま記録」)でも、画面に出した分数どおりにサーバーの記録をそろえる。
+      //    サーバーは区間ごとに分へ丸め、時刻もMoodleが受けた時刻で測るので、start/endだけでは
+      //    画面の分数と1分前後ずれる。差分はBFFがサーバーの集計値から作る(dev/kanegae)。
+      //    再取得(bumpActivityRevision)の前に補正を終わらせ、古い値が出ないようにする。
+      await correctToTarget(Math.max(1, draft.actualMinutes), sinceSeconds, draft.snapshot.course?.courseId);
 
       // 教材の進捗（要件の自動記録項目）は終了時点の値を取り直す。失敗しても記録は続行する。
       let progressPercentAtEnd: number | undefined;
@@ -301,7 +335,7 @@ export function useStudySession(userId: number | undefined): UseStudySession {
       };
       return activity;
     },
-    [userId, clearSession, setFinishDraft, zeroOutLastSegment, bumpActivityRevision, awardExp]
+    [userId, clearSession, setFinishDraft, correctToTarget, bumpActivityRevision, awardExp]
   );
 
   const remainingSeconds = useMemo(

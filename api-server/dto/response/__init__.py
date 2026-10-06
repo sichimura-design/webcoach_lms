@@ -27,6 +27,7 @@ from .ai_application import AIApplicationResponse, AIApplicationListResponse
 from .study import (
     StudySessionResponse,
     ActiveStudySessionResponse,
+    RecordedSessionMinutesResponse,
     StudyStatsResponse,
     StudyStreakResponse,
     StudyCalendarDayResponse,
@@ -121,6 +122,7 @@ __all__ = [
     # Study Activity (集中ブース)
     "StudySessionResponse",
     "ActiveStudySessionResponse",
+    "RecordedSessionMinutesResponse",
     "StudyStatsResponse",
     "StudyStreakResponse",
     "StudyCalendarDayResponse",

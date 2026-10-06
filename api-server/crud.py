@@ -3484,6 +3484,44 @@ def get_study_sessions_by_date(db: Session, mdl_user_id: int, local_date: date) 
     ]
 
 
+# 学習1回ぶんの区間を「今からN秒前以降に始まった区間」で拾うときの余裕。
+# ブラウザの計測開始とMoodleがstartedを記録した時刻は通信ぶんずれるため。
+_SESSION_WINDOW_SLACK_SECONDS = 30
+
+
+def get_recorded_session_minutes(db: Session, mdl_user_id: int, since_seconds: int) -> Dict[str, Any]:
+    """
+    直近の学習1回ぶん(今からsince_seconds秒前以降に始まった区間)が、いまサーバーで何分として
+    集計されているかを返す。学習時間の修正を「差分」ではなく「この回を合計N分に」で記録するために使う。
+
+    🔴 区間ごとにROUNDしてから合計する集計(_segment_totals_cte)と、ブラウザが全体の秒数を
+       まとめて丸めた値は一致しない(7分20秒×2 = 画面15分/記録14分)。フロントの計測値から
+       差分を作ると1分ずれるので、必ずこの値を基準に差分を作ること。
+
+    Returns:
+        recorded_minutes: 窓内の区間の合計分数(既存の補正込み)
+        last_segment_minutes: 窓内の最後の区間の分数(補正はこの区間に加算される)
+        segment_count: 窓内の区間数
+    """
+    since = int(time.time()) - max(0, since_seconds) - _SESSION_WINDOW_SLACK_SECONDS
+    query = text(
+        f"""
+        SELECT * FROM ({_segment_totals_cte(user_scoped=True)}) segment_totals
+        WHERE started_at >= :since
+        ORDER BY ended_at, started_at
+        """
+    )
+    params = _segment_params(mdl_user_id)
+    params["since"] = since
+    rows = db.execute(query, params).fetchall()
+    minutes = [int(row.duration_minutes) for row in rows]
+    return {
+        "recorded_minutes": sum(minutes),
+        "last_segment_minutes": minutes[-1] if minutes else 0,
+        "segment_count": len(minutes),
+    }
+
+
 def get_study_stats(db: Session, mdl_user_id: int) -> Dict[str, Any]:
     """
     今日・今週(月曜始まり、JST)・累計の学習時間(分)を集計する。

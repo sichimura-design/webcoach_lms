@@ -67,16 +67,33 @@ router.post('/sessions/:userid/end', requireAuth, async (req, res) => {
 
 /**
  * POST /api/study/sessions/:userid/correct
- * Manually correct the duration of the segment just ended (低頻度)
+ * Manually correct the duration of the session just finished (低頻度)
+ * body: { targetMinutes, sinceSeconds, courseid } … この回を合計targetMinutes分にする(推奨)
+ *       { deltaMinutes, courseid }               … 直前の区間に差分を足す(旧形式)
  */
 router.post('/sessions/:userid/correct', requireAuth, async (req, res) => {
   try {
     const { userid } = req.params;
-    const { deltaMinutes, courseid } = req.body || {};
+    const { deltaMinutes, targetMinutes, sinceSeconds, courseid } = req.body || {};
 
     if (!(await isSelfOrAdminOrAssignedCoach(req, userid))) {
       return forbid(res, req.user?.email, `correct a study session for user ${userid}`);
     }
+
+    // 「この回を合計N分に」(targetMinutes+sinceSeconds)。差分はサーバーの集計値から作る
+    if (targetMinutes !== undefined) {
+      if (typeof targetMinutes !== 'number' || !Number.isFinite(targetMinutes) || targetMinutes < 0) {
+        return res.status(400).json({ error: 'Bad Request', detail: 'targetMinutes must be a non-negative number' });
+      }
+      if (typeof sinceSeconds !== 'number' || !Number.isFinite(sinceSeconds) || sinceSeconds < 0) {
+        return res.status(400).json({ error: 'Bad Request', detail: 'sinceSeconds must be a non-negative number' });
+      }
+      const result = await studySessionService.correctSessionToTarget(
+        parseInt(userid, 10), targetMinutes, Math.round(sinceSeconds), courseid
+      );
+      return res.json(result);
+    }
+
     if (typeof deltaMinutes !== 'number' || !Number.isFinite(deltaMinutes)) {
       return res.status(400).json({ error: 'Bad Request', detail: 'deltaMinutes must be a number' });
     }

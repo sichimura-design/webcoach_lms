@@ -23,6 +23,13 @@ class ActiveStudySessionResponse(BaseModel):
     started_at: datetime
 
 
+class RecordedSessionMinutesResponse(BaseModel):
+    """直近の学習1回ぶんが、いまサーバーで何分として集計されているか(学習時間の修正の基準)"""
+    recorded_minutes: int
+    last_segment_minutes: int
+    segment_count: int
+
+
 class StudyStatsResponse(BaseModel):
     """今日・今週・累計の学習時間(分)"""
     userid: int

@@ -15,6 +15,7 @@ from database import get_db
 from dto.response import (
     StudySessionResponse,
     ActiveStudySessionResponse,
+    RecordedSessionMinutesResponse,
     StudyStatsResponse,
     StudyStreakResponse,
     StudyCalendarResponse,
@@ -25,6 +26,7 @@ from dto.response import (
 )
 from crud import (
     get_active_study_session,
+    get_recorded_session_minutes,
     get_recent_study_sessions,
     get_study_sessions_by_date,
     get_study_stats,
@@ -58,6 +60,19 @@ def get_active_session(userid: int, db: Session = Depends(get_db)):
             detail=f"No active study session for user {userid}"
         )
     return session
+
+
+@router.get(
+    "/sessions/{userid}/recorded-minutes",
+    response_model=RecordedSessionMinutesResponse,
+    summary="直近の学習1回ぶんの記録分数取得"
+)
+def get_recorded_minutes(userid: int, since_seconds: int, db: Session = Depends(get_db)):
+    """
+    今からsince_seconds秒前以降に始まった区間の合計分数(補正込み)を返します。
+    bff-serverが学習時間の修正を「この回を合計N分に」で記録する際、差分の基準に使います。
+    """
+    return get_recorded_session_minutes(db, userid, since_seconds)
 
 
 @router.get(

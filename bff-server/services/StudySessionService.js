@@ -42,6 +42,35 @@ class StudySessionService {
   }
 
   /**
+   * Correct the latest session so that it totals targetMinutes on the server.
+   *
+   * 🔴 差分はフロントの計測値ではなく、サーバーがいま集計している分数から作る。
+   *    サーバーは区間ごとに分へ丸めて合計し、時刻もMoodleが受けた時刻で測るため、
+   *    フロントの「全体の秒数を丸めた値」とは1分前後ずれる(15分に直したのに14分になった不具合)。
+   * @param {number} sinceSeconds - この回の最初の開始から今までの秒数(一時停止も含む壁時計)
+   */
+  async correctSessionToTarget(userid, targetMinutes, sinceSeconds, courseid) {
+    const recorded = await apiServerAdapter.getRecordedSessionMinutes(userid, sinceSeconds);
+    const target = Math.max(0, Math.round(targetMinutes));
+    let deltaMinutes = target - recorded.recorded_minutes;
+    // 補正は最後の区間にだけ加算され、区間ごとに0未満は0に切り上げられる。
+    // それより大きく減らすと超過ぶんは捨てられる(前の区間までは減らせない)ので、明示的に打ち止める。
+    if (deltaMinutes < -recorded.last_segment_minutes) {
+      console.warn(
+        `[StudySession] user ${userid}: target ${target}min is below what the last segment can absorb ` +
+        `(recorded ${recorded.recorded_minutes}min, last segment ${recorded.last_segment_minutes}min)`
+      );
+      deltaMinutes = -recorded.last_segment_minutes;
+    }
+    if (deltaMinutes === 0 || recorded.segment_count === 0) {
+      return { success: true, deltaMinutes: 0, recordedMinutes: recorded.recorded_minutes };
+    }
+    console.log(`[StudySession] Correcting session for user ${userid} to ${target}min (recorded ${recorded.recorded_minutes}min, delta ${deltaMinutes})`);
+    await moodleAdapter.correctStudySession(userid, deltaMinutes, courseid);
+    return { success: true, deltaMinutes, recordedMinutes: recorded.recorded_minutes };
+  }
+
+  /**
    * Get the currently in-progress session, if any
    */
   async getActiveSession(userid) {
