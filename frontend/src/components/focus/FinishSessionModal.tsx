@@ -8,7 +8,7 @@ import {
   STUDY_CATEGORY_LABEL,
   StudyFinishDraft,
 } from '../../types/studyActivity';
-import { MAX_ADJUST_EXTRA_MINUTES, displaySegments, formatMinutesHM } from '../../utils/studyStats';
+import { MAX_ADJUST_EXTRA_MINUTES, adjustSegments, displaySegments, formatMinutesHM } from '../../utils/studyStats';
 import { formatDayLabel, formatSessionRange } from './focusFormat';
 
 /**
@@ -130,12 +130,13 @@ export function FinishSessionModal({
   const maxMinutes = measuredMinutes + MAX_ADJUST_EXTRA_MINUTES;
 
   /*
-   * 表示する内訳。minutes（ユーザーが修正できる値）に合わせて配分し直す。
-   * 保存されるのも同じ比率（buildActivityInput が rescaleSegments を通す）。
+   * 表示する内訳。minutes（ユーザーが修正できる値）に合わせる。比例配分はせず、
+   * 減らした分は最後の区間から削り、増やした分は「その他」に足す（adjustSegments）。
+   * 保存されるのも同じ内訳（buildActivityInput も adjustSegments を通す）。
    * displaySegments は分に丸めたうえで、合計が minutes と一致するよう端数を配り、
    * 1行しか残らないときは空を返す（学習時間と同じことを2回言わないため）。
    */
-  const breakdown = displaySegments(snapshot.segments ?? [], minutes);
+  const breakdown = displaySegments(adjustSegments(snapshot.segments ?? [], minutes * 60), minutes);
 
   const stepMinutes = (delta: number) =>
     setMinutes((v) => Math.min(maxMinutes, Math.max(1, v + delta)));

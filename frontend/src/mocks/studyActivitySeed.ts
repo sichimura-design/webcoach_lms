@@ -78,7 +78,7 @@ const CONTENT_NOTES = [
  * カテゴリ配分のパターン。
  * 「教材だけの日」「教材＋AI相談」「コーチングの日」「ノートで復習した日」を混ぜて、
  * トップと終了カードの内訳表示が空にならないようにする。
- * 数字は比率で、合計を durationMinutes に配分する（rescaleSegments と同じ考え方）。
+ * 数字は比率で、合計を durationMinutes に配分する（シード専用の作り方）。
  */
 const CATEGORY_MIXES: { category: StudyCategory; weight: number }[][] = [
   [{ category: 'material', weight: 1 }],

@@ -182,25 +182,75 @@ export function sessionSegmentTotals(
 }
 
 /**
- * 内訳の合計を目標秒ぴったりに合わせ直す。
+ * 実行中セッションの区間を時系列のまま返す（実測秒）。終了カード・記録に残す内訳の元。
  *
- * 終了カードでユーザーが分数を修正できるため、実測の内訳をそのまま残すと
- * 「学習時間 42分／内訳の合計 37分」という嘘が出る。durationMinutes を権威として
- * 比例配分し、端数は最大の区間に寄せて必ず一致させる。
+ * 🔴 sessionSegmentTotals と違いカテゴリでまとめない。時間を減らす訂正は
+ *    「最後から削る」ので、どのカテゴリが最後だったかが要る。
+ *    隣り合う同じカテゴリだけはつなげる（教材→教材 は1本）。
  */
-export function rescaleSegments(segments: StudySegmentTotal[], targetSeconds: number): StudySegmentTotal[] {
-  const total = segments.reduce((sum, s) => sum + s.seconds, 0);
-  if (segments.length === 0 || targetSeconds <= 0) return [];
-  if (total <= 0) return [{ category: segments[0].category, seconds: targetSeconds }];
-
-  const scaled = segments.map((s) => ({ ...s, seconds: Math.round((s.seconds / total) * targetSeconds) }));
-  const diff = targetSeconds - scaled.reduce((sum, s) => sum + s.seconds, 0);
-  if (diff !== 0) {
-    let largest = 0;
-    for (let i = 1; i < scaled.length; i += 1) if (scaled[i].seconds > scaled[largest].seconds) largest = i;
-    scaled[largest] = { ...scaled[largest], seconds: Math.max(0, scaled[largest].seconds + diff) };
+export function sessionSegmentTimeline(
+  s: ActiveStudySession,
+  now: number = Date.now()
+): StudySegmentTotal[] {
+  const end = s.pausedAt ?? now;
+  const out: StudySegmentTotal[] = [];
+  for (const seg of s.segments ?? []) {
+    const segEnd = seg.endedAt ?? end;
+    const seconds = Math.max(0, Math.floor((segEnd - seg.startedAt) / 1000));
+    if (seconds <= 0) continue;
+    const last = out[out.length - 1];
+    if (last && last.category === seg.category) out[out.length - 1] = { ...last, seconds: last.seconds + seconds };
+    else out.push({ category: seg.category, seconds });
   }
-  return scaled.filter((s) => s.seconds > 0);
+  return out;
+}
+
+/** 同じカテゴリをまとめて STUDY_CATEGORY_ORDER の順に並べる（表示・集計用） */
+export function mergeSegmentTotals(segments: StudySegmentTotal[]): StudySegmentTotal[] {
+  const acc = new Map<StudyCategory, number>();
+  for (const seg of segments) {
+    if (seg.seconds <= 0) continue;
+    acc.set(seg.category, (acc.get(seg.category) ?? 0) + seg.seconds);
+  }
+  return STUDY_CATEGORY_ORDER.filter((c) => acc.has(c)).map((category) => ({
+    category,
+    seconds: acc.get(category) as number,
+  }));
+}
+
+/**
+ * 時間の訂正に合わせて内訳（時系列）の合計を目標秒ぴったりにする。
+ *
+ * 訂正の理由はほぼ「タイマーの止め忘れ／付け忘れ」で、増減した時間は
+ * 学習内容の比率とは関係がない。比例配分すると、放置していた時間を減らしたのに
+ * 教材の時間まで縮む（逆に増やすと、やっていない教材の時間が水増しされる）。
+ * - 減らす: 最後の区間から削る（止め忘れの放置は最後に付く。BFFの
+ *   planSegmentCorrections がサーバー側の区間を削る順とも同じ）
+ * - 増やす: 実測の内訳は触らず、差分を「その他」として最後に足す
+ * 返り値は時系列のまま（あとでもう一度訂正しても最後から削れるように）。
+ * 表示・集計は mergeSegmentTotals を通す。
+ */
+export function adjustSegments(segments: StudySegmentTotal[], targetSeconds: number): StudySegmentTotal[] {
+  if (targetSeconds <= 0) return [];
+  const list = segments.filter((s) => s.seconds > 0);
+  const total = list.reduce((sum, s) => sum + s.seconds, 0);
+
+  if (targetSeconds >= total) {
+    const extra = targetSeconds - total;
+    if (extra === 0) return list;
+    const last = list[list.length - 1];
+    if (last && last.category === 'other') return [...list.slice(0, -1), { ...last, seconds: last.seconds + extra }];
+    return [...list, { category: 'other', seconds: extra }];
+  }
+
+  let remove = total - targetSeconds;
+  const out = [...list];
+  for (let i = out.length - 1; i >= 0 && remove > 0; i -= 1) {
+    const take = Math.min(out[i].seconds, remove);
+    out[i] = { ...out[i], seconds: out[i].seconds - take };
+    remove -= take;
+  }
+  return out.filter((s) => s.seconds > 0);
 }
 
 /**
@@ -210,7 +260,7 @@ export function rescaleSegments(segments: StudySegmentTotal[], targetSeconds: nu
  */
 export function activitySegments(a: StudyActivity): StudySegmentTotal[] {
   const seconds = a.session.durationMinutes * 60;
-  if (a.session.segments && a.session.segments.length > 0) return a.session.segments;
+  if (a.session.segments && a.session.segments.length > 0) return mergeSegmentTotals(a.session.segments);
   return [{ category: a.course ? 'material' : 'other', seconds }];
 }
 
@@ -254,7 +304,7 @@ export function displaySegments(
   segments: StudySegmentTotal[],
   totalMinutes: number
 ): { category: StudyCategory; minutes: number }[] {
-  const rows = segmentMinutes(segments, totalMinutes).filter((r) => r.minutes > 0);
+  const rows = segmentMinutes(mergeSegmentTotals(segments), totalMinutes).filter((r) => r.minutes > 0);
   return rows.length > 1 ? rows : [];
 }
 
@@ -615,9 +665,9 @@ export function buildActivityInput(
       contentNote: clampText(draft.contentNote),
       memo: clampText(draft.memo),
       achievement: draft.achievement,
-      // 🔴 実測の内訳をそのまま残さず、確定した durationMinutes に合わせ直す。
-      //    そうしないと「学習時間 42分／内訳の合計 37分」という嘘が記録に残る。
-      segments: rescaleSegments(snapshot.segments, Math.max(1, draft.actualMinutes) * 60),
+      // 🔴 実測の内訳をそのまま残さず、確定した durationMinutes に合わせる（比例配分ではない。
+      //    adjustSegments 参照）。そうしないと「学習時間 42分／内訳の合計 37分」という嘘が記録に残る。
+      segments: adjustSegments(snapshot.segments, Math.max(1, draft.actualMinutes) * 60),
     },
     visibility: 'private',
   };
@@ -661,9 +711,9 @@ export function buildFinishDraft(
       pausedCount: session.pausedCount,
       pausedSeconds: Math.round(session.pausedTotalMs / 1000),
       completedTarget: session.targetReachedAt !== null,
-      // 実測のまま持つ。durationMinutes への配分は buildActivityInput が行う
-      // （終了カードで分数を変えるたびに配分をやり直せるよう、元の比率を残しておく）
-      segments: sessionSegmentTotals(session, end),
+      // 実測の時系列のまま持つ。durationMinutes への合わせ込みは buildActivityInput が行う
+      // （終了カードで分数を変えるたびにやり直せるよう、実測を残しておく）
+      segments: sessionSegmentTimeline(session, end),
     },
   };
 }
@@ -770,7 +820,7 @@ export function validateActivityPatch(
 /**
  * パッチを当てた新しい記録を返す（元は変更しない）。
  *
- * 🔴 durationMinutes が変わったら必ず segments を配分し直す。そうしないと
+ * 🔴 durationMinutes が変わったら必ず segments を合わせ直す（adjustSegments: 減らす分は最後から削り、増やす分は「その他」）。そうしないと
  *    「学習時間 42分／内訳の合計 37分」という嘘が残る（buildActivityInput と同じ理由）。
  *    segments を持たない古い行は activitySegments が course から1本合成するので、
  *    そちらも「内訳の合計 = durationMinutes*60」を満たしたまま移行できる。
@@ -813,7 +863,7 @@ export function applyActivityPatch(
       contentNote: p.contentNote !== undefined ? clampText(p.contentNote) : cur.session.contentNote,
       memo: p.memo !== undefined ? clampText(p.memo) : cur.session.memo,
       achievement: p.achievement !== undefined ? p.achievement : cur.session.achievement,
-      segments: rescaleSegments(baseSegments, durationMinutes * 60),
+      segments: adjustSegments(baseSegments, durationMinutes * 60),
     },
     // 編集済みの印はこれ（isEditedEntry）。専用フィールドを増やさない
     updatedAt: now.toISOString(),
@@ -824,7 +874,7 @@ export function applyActivityPatch(
  * 手動追加 → POST body。
  *
  * 🔴 StudyActivityInput をここで直接組み立てず buildActivityInput に委譲する。
- *    組み立てが2箇所に増えると clampText の適用漏れ・rescaleSegments の呼び忘れが
+ *    組み立てが2箇所に増えると clampText の適用漏れ・adjustSegments の呼び忘れが
  *    起きる場所ができる。
  *
  * 時刻の決め方（決定的にしないと日別の一覧の並びが記録するたびに変わる）:
@@ -862,7 +912,7 @@ export function buildManualActivityInput(
       pausedCount: 0,
       pausedSeconds: 0,
       completedTarget: false,
-      // 内訳は course の有無から1本だけ。rescaleSegments が分数に合わせる
+      // 内訳は course の有無から1本だけ。adjustSegments が分数に合わせる
       segments: [{ category: v.course ? 'material' : 'other', seconds: minutes * 60 }],
     },
   });

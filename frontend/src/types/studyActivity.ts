@@ -103,7 +103,7 @@ export interface StudySegment {
   endedAt: number | null;
 }
 
-/** 記録に残すカテゴリ別の内訳。合計は必ず durationMinutes*60 に一致させる（比例配分） */
+/** 記録に残すカテゴリ別の内訳。合計は必ず durationMinutes*60 に一致させる（adjustSegments） */
 export interface StudySegmentTotal {
   category: StudyCategory;
   seconds: number;
@@ -138,8 +138,9 @@ export interface StudySessionPayload {
    * カテゴリ別の内訳。
    * 🔴 optional。この仕組みより前に記録された行には無い。集計側（categoryTotals）は
    *    無い行を course の有無から material / other に寄せて扱う。
-   * 🔴 合計は durationMinutes*60 に一致する。ユーザーが終了カードで分数を修正したら
-   *    比例配分し直すので、実測秒そのものではない。
+   * 🔴 合計は durationMinutes*60 に一致する。ユーザーが分数を修正したら、減らした分は
+   *    最後の区間から削り、増やした分は「その他」として足す（adjustSegments）。比例配分はしない。
+   * 🔴 時系列順で、同じカテゴリが複数回出ることがある。表示・集計は mergeSegmentTotals を通す。
    */
   segments?: StudySegmentTotal[];
 
@@ -280,7 +281,7 @@ export interface StudyFinishDraft {
     pausedCount: number;
     pausedSeconds: number;
     completedTarget: boolean;
-    /** 実測のカテゴリ別内訳。記録時に durationMinutes へ比例配分し直す元になる */
+    /** 実測の内訳（時系列順）。記録時に adjustSegments で durationMinutes に合わせる元になる */
     segments: StudySegmentTotal[];
   };
 }
@@ -395,8 +396,8 @@ export interface StudyActivityPage {
  * 🔴 ここに無いフィールドは編集できない。特に measuredSeconds / mode / targetMinutes /
  *    pausedCount / pausedSeconds / completedTarget / social / weeklyTotalMinutesAtEnd は
  *    「そのとき実際に起きたこと」の記録なので、後から書き換えると記録の意味が消える。
- * 🔴 segments は直接受け取らない。durationMinutes から比例配分し直す
- *    （applyActivityPatch が rescaleSegments を通す）。
+ * 🔴 segments は直接受け取らない。durationMinutes に合わせて最後から削る／「その他」を足す
+ *    （applyActivityPatch が adjustSegments を通す）。
  */
 export interface StudyActivityPatch {
   durationMinutes?: number;
