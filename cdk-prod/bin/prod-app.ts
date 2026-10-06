@@ -226,7 +226,6 @@ const ecsStack = new ProdEcsStack(app, `${envName}-EcsStack`, {
   moodleAppAccessPoint: backendStack.moodleAppAccessPoint,
   cognitoSecret: backendStack.cognitoSecret,
   anthropicSecret: backendStack.anthropicSecret,
-  difySecret: backendStack.difySecret,
   appSecrets: backendStack.appSecrets,
   cognitoUserPoolId: app.node.tryGetContext('cognitoUserPoolId') ?? 'ap-northeast-1_egAV2FlqQ',
   cognitoClientId: app.node.tryGetContext('cognitoClientId') ?? '4njvvf0fhujgn3l2igi85ftoa5',

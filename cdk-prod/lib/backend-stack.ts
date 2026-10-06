@@ -115,8 +115,10 @@ export class ProdBackendStack extends cdk.Stack {
     // Dify APIキー(webcoach_ai_application.secret_key -> APIキー のJSONマップ)。
     // 外部発行のため値はデプロイ後に手動でSecrets Manager側を更新し、AIアプリ追加のたびに
     // JSONへキーを追加する運用(CDK再デプロイ不要)。dev/uat(cdk/lib/ecs-stack.ts)と同じ設計。
-    const difySecret = new secretsmanager.Secret(this, 'DifySecret', {
-      secretName: `${envName}/moodle/dify-credentials`,
+    // 2026-10-06: 旧名 prod/moodle/dify-credentials(論理ID DifySecret)から改名。
+    // 旧シークレットは RETAIN のためスタックから外れた後に手動削除する。
+    const difySecret = new secretsmanager.Secret(this, 'DifyCredentials', {
+      secretName: `${envName}/lms/dify-credentials`,
       description: 'Dify API keys used by the WEBCOACH AI chat, keyed by webcoach_ai_application.secret_key',
       secretObjectValue: {
         CHANGE_ME_SECRET_KEY: cdk.SecretValue.unsafePlainText('CHANGE_ME_API_KEY'),

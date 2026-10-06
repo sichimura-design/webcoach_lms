@@ -34,8 +34,6 @@ export interface ProdEcsStackProps extends cdk.StackProps {
   readonly cognitoSecret: secretsmanager.ISecret;
   readonly anthropicSecret: secretsmanager.ISecret;
   readonly appSecrets: secretsmanager.ISecret;
-  /** Dify APIキー(webcoach_ai_application.secret_key -> APIキー のJSONマップ)。api-serverがboto3で実行時に直接読む(task roleにgrantRead)。 */
-  readonly difySecret: secretsmanager.ISecret;
   readonly cognitoUserPoolId?: string;
   readonly cognitoClientId?: string;
   /** Moodle の wwwroot URL。ALB DNS 名または独自ドメイン。*/
@@ -98,7 +96,7 @@ export class ProdEcsStack extends cdk.Stack {
       ec2SecurityGroup,
       databaseEndpointAddress, databaseEndpointPort, dbSecretArn,
       fileSystem, moodledataAccessPoint, moodleAppAccessPoint,
-      cognitoSecret, anthropicSecret, appSecrets, difySecret,
+      cognitoSecret, anthropicSecret, appSecrets,
       cognitoUserPoolId, cognitoClientId,
       moodleSiteUrl,
       desiredCount = 2,
@@ -229,6 +227,10 @@ export class ProdEcsStack extends cdk.Stack {
     // Dify APIキーはコンテナ起動時のsecrets注入ではなく、api-serverがリクエストごとに
     // boto3で直接GetSecretValueする(DB側のsecret_key列でどのキーを読むか動的に決まるため)。
     // よってexecution roleではなくtask roleにgrantReadする(dev/uatのcdk/lib/ecs-stack.tsと同じ設計)。
+    // Dify APIキー(webcoach_ai_application.secret_key -> APIキー のJSONマップ)。
+    // backend-stack が作るシークレットを名前で参照する(構造体を直接渡すとクロススタック
+    // Export になり、シークレットを作り直す時に「Export使用中」で更新できなくなるため)。
+    const difySecret = secretsmanager.Secret.fromSecretNameV2(this, 'DifySecret', `${envName}/lms/dify-credentials`);
     difySecret.grantRead(taskDef.taskRole);
 
     // 調整用の設定値（AIのトークン上限・ポーリング間隔等）はParameter Storeに置き、
