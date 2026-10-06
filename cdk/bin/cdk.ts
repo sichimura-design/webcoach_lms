@@ -123,6 +123,8 @@ ecsStack.addDependency(auroraStack);
 if (envName === 'prod') {
   const rdsInstanceIdentifier = app.node.tryGetContext('rdsInstanceIdentifier');
   const vpcId = app.node.tryGetContext('vpcId');
+  // 停止/起動スケジュールは既定で無効。有効にする時だけ --context schedulesEnabled=true
+  const schedulesEnabled = String(app.node.tryGetContext('schedulesEnabled')) === 'true';
   if (!rdsInstanceIdentifier) {
     throw new Error(
       'Context "rdsInstanceIdentifier" is required for prod (e.g. --context rdsInstanceIdentifier=prod-lms-db)'
@@ -136,6 +138,7 @@ if (envName === 'prod') {
     ...commonProps,
     envName,
     dbInstanceIdentifier: rdsInstanceIdentifier,
+    schedulesEnabled,
   });
 
   new Ec2MaintenanceStack(app, `${envName}-Ec2MaintenanceStack`, {
@@ -156,6 +159,7 @@ if (envName === 'prod') {
     clusterName: ecsClusterName,
     serviceName: ecsServiceName,
     asgStackName: ecsAsgStackName,
+    schedulesEnabled,
   });
 }
 
