@@ -6,6 +6,8 @@ const app = new cdk.App();
 
 const envName = app.node.tryGetContext('env') || 'dev';
 const moodleDomain = app.node.tryGetContext('moodleDomain') || 'localhost';
+const loginUrl = app.node.tryGetContext('loginUrl') || 'http://localhost:5173/login';
+const contactUrl = app.node.tryGetContext('contactUrl') || 'https://o4dqp.channel.io/workflows/783132';
 
 const env = process.env.CDK_DEFAULT_ACCOUNT
   ? {
@@ -23,6 +25,8 @@ new CognitoStack(app, `${envName}-CognitoStack`, {
   },
   envName,
   moodleDomain,
+  loginUrl,
+  contactUrl,
 });
 
 app.synth();

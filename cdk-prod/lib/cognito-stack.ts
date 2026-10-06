@@ -1,7 +1,9 @@
 import * as cdk from 'aws-cdk-lib';
 import * as cognito from 'aws-cdk-lib/aws-cognito';
+import * as lambda from 'aws-cdk-lib/aws-lambda';
 import * as ses from 'aws-cdk-lib/aws-ses';
 import { Construct } from 'constructs';
+import * as path from 'path';
 
 export interface ProdCognitoStackProps extends cdk.StackProps {
   readonly envName: string;
@@ -16,6 +18,20 @@ export interface ProdCognitoStackProps extends cdk.StackProps {
    * sesFromEmail と合わせて指定するとドメイン検証済みアドレスとして扱われる
    */
   readonly sesFromDomain?: string;
+  /**
+   * true の場合、CDK が ses.EmailIdentity リソースを作成・管理する。
+   * webcoach.jp は AWS CLI で手動作成・検証済みのため、デフォルト false のまま
+   * (CDK に取り込むと将来のスタック変更で誤って本番の検証済みIDが削除されるリスクがある)。
+   */
+  readonly manageSesIdentity?: boolean;
+  /**
+   * アカウント発行メール内に表示するSPAログインURL(例: https://study.webcoach.jp/login)
+   */
+  readonly loginUrl: string;
+  /**
+   * アカウント発行・パスワード再設定メール内のお問い合わせ先URL(Channel Talk)
+   */
+  readonly contactUrl: string;
 }
 
 export class ProdCognitoStack extends cdk.Stack {
@@ -27,14 +43,14 @@ export class ProdCognitoStack extends cdk.Stack {
   constructor(scope: Construct, id: string, props: ProdCognitoStackProps) {
     super(scope, id, props);
 
-    const { envName, moodleDomain, sesFromEmail, sesFromDomain } = props;
+    const { envName, moodleDomain, sesFromEmail, sesFromDomain, manageSesIdentity, loginUrl, contactUrl } = props;
 
     // ========================================
     // SES メールアドレス検証
-    // sesFromEmail が指定された場合のみ作成する。
-    // デプロイ後に AWS コンソール or CLI で検証メールを確認すること。
+    // manageSesIdentity=true の場合のみ CDK でリソースを作成する。
+    // webcoach.jp は手動検証済みのため、通常はここをスキップして既存IDをそのまま使う。
     // ========================================
-    if (sesFromEmail) {
+    if (sesFromEmail && manageSesIdentity) {
       new ses.EmailIdentity(this, 'SesEmailIdentity', {
         identity: sesFromDomain
           ? ses.Identity.domain(sesFromDomain)
@@ -43,13 +59,32 @@ export class ProdCognitoStack extends cdk.Stack {
     }
 
     // ========================================
+    // Custom Message Lambda (invite / forgot-password email copy)
+    // ========================================
+    // Cognito's built-in email templates only support {username}/{####} placeholders
+    // (and username here is an opaque UUID, not human-readable), so the invite/reset
+    // copy is built here instead where the full user attributes are available.
+    const customMessageFunction = new lambda.Function(this, 'CustomMessageFunction', {
+      functionName: `${envName}-cognito-custom-message`,
+      description: 'Builds WEBCOACH account-invite / password-reset email copy for Cognito',
+      runtime: lambda.Runtime.NODEJS_20_X,
+      handler: 'index.handler',
+      code: lambda.Code.fromAsset(path.join(__dirname, '../lambda/cognito-custom-message')),
+      timeout: cdk.Duration.seconds(10),
+      environment: {
+        LOGIN_URL: loginUrl,
+        CONTACT_URL: contactUrl,
+      },
+    });
+
+    // ========================================
     // Cognito User Pool
     // ========================================
     const emailConfig = sesFromEmail
       ? cognito.UserPoolEmail.withSES({
           sesRegion: this.region,
           fromEmail: sesFromEmail,
-          fromName: 'WEBCOACH',
+          fromName: 'WEBCOACHカスタマーサポート',
           // ドメイン指定時は SES でドメイン検証済みとして扱う
           ...(sesFromDomain ? { sesVerifiedDomain: sesFromDomain } : {}),
         })
@@ -69,19 +104,9 @@ export class ProdCognitoStack extends cdk.Stack {
         emailBody: '確認コードは {####} です。',
         emailStyle: cognito.VerificationEmailStyle.CODE,
       },
-      // 管理者がユーザー作成時に送る招待メール
-      userInvitation: {
-        emailSubject: '[WEBCOACH] アカウントが作成されました',
-        emailBody: `
-<p>{username} 様</p>
-<p>WEBCOACHへようこそ。アカウントが作成されました。</p>
-<p>以下の情報でログインしてください。</p>
-<ul>
-  <li>ユーザー名: <strong>{username}</strong></li>
-  <li>仮パスワード: <strong>{####}</strong></li>
-</ul>
-<p>初回ログイン時にパスワードの変更が必要です。</p>
-        `.trim(),
+      // 招待メール・パスワード再設定メールの文面は CustomMessage Lambda で上書きする
+      lambdaTriggers: {
+        customMessage: customMessageFunction,
       },
       email: emailConfig,
       accountRecovery: cognito.AccountRecovery.EMAIL_ONLY,

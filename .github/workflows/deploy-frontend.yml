@@ -54,8 +54,12 @@ jobs:
           aws s3 sync frontend/build/static s3://${{ secrets.S3_BUCKET_NAME }}/static/ \
             --delete \
             --cache-control "public, max-age=31536000, immutable"
+          # static/ 以外は --delete しない。バケット直下には教材 HTML(materials/)や管理画面
+          # 「コンテンツUP」で上げた画像(S3パスは自由入力のため images/ 等にも置ける)など
+          # ビルドに無いファイルが同居しており、--delete だと除外し忘れた場所の画像が消える。
+          # ビルドから消えたファイルは S3 に残るが、参照されないだけで害はない。
+          # materials/ 等の exclude は「ビルド内の古い版で S3 側の原本を上書きしない」ために残す。
           aws s3 sync frontend/build s3://${{ secrets.S3_BUCKET_NAME }} \
-            --delete \
             --cache-control "no-cache, no-store, must-revalidate" \
             --exclude "static/*" \
             --exclude "html-content/*" \

@@ -1,10 +1,16 @@
 import * as cdk from 'aws-cdk-lib';
 import * as cognito from 'aws-cdk-lib/aws-cognito';
+import * as lambda from 'aws-cdk-lib/aws-lambda';
 import { Construct } from 'constructs';
+import * as path from 'path';
 
 export interface CognitoStackProps extends cdk.StackProps {
   readonly envName: string;
   readonly moodleDomain: string;
+  // SPA login page shown in the account-creation invite email
+  readonly loginUrl: string;
+  // Support contact link shown in invite / password-reset emails (Channel Talk)
+  readonly contactUrl: string;
 }
 
 export class CognitoStack extends cdk.Stack {
@@ -16,7 +22,26 @@ export class CognitoStack extends cdk.Stack {
   constructor(scope: Construct, id: string, props: CognitoStackProps) {
     super(scope, id, props);
 
-    const { envName, moodleDomain } = props;
+    const { envName, moodleDomain, loginUrl, contactUrl } = props;
+
+    // ========================================
+    // Custom Message Lambda (invite / forgot-password email copy)
+    // ========================================
+    // Cognito's built-in email templates only support {username}/{####} placeholders,
+    // but the invite email needs to show the user's actual email address, so the copy
+    // is built here instead where the full user attributes are available.
+    const customMessageFunction = new lambda.Function(this, 'CustomMessageFunction', {
+      functionName: `${envName}-cognito-custom-message`,
+      description: 'Builds WEBCOACH account-invite / password-reset email copy for Cognito',
+      runtime: lambda.Runtime.NODEJS_20_X,
+      handler: 'index.handler',
+      code: lambda.Code.fromAsset(path.join(__dirname, '../lambda/cognito-custom-message')),
+      timeout: cdk.Duration.seconds(10),
+      environment: {
+        LOGIN_URL: loginUrl,
+        CONTACT_URL: contactUrl,
+      },
+    });
 
     // ========================================
     // User Pool
@@ -44,6 +69,11 @@ export class CognitoStack extends cdk.Stack {
 
       // Account recovery
       accountRecovery: cognito.AccountRecovery.EMAIL_ONLY,
+
+      // Overrides the invite / forgot-password email copy above with WEBCOACH's own text
+      lambdaTriggers: {
+        customMessage: customMessageFunction,
+      },
 
       // Password policy
       passwordPolicy: {

@@ -5,3 +5,6 @@ node_modules
 # CDK asset staging directory
 .cdk.staging
 cdk.out
+
+# Lambda のソース(手書きJS)は管理対象にする
+!lambda/**/*.js

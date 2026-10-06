@@ -9,18 +9,6 @@ export interface ProdBackendStackProps extends cdk.StackProps {
   readonly vpc: ec2.Vpc;
   /** alb-stack で作成した ALB の SG。ECS EC2 SG のインバウンド許可元として使う。 */
   readonly albSecurityGroup: ec2.ISecurityGroup;
-  readonly cognitoUserPoolId?: string;
-  readonly cognitoClientId?: string;
-  readonly cognitoClientSecret?: string;
-  readonly anthropicApiKey?: string;
-  /** BFF の署名付きコンテンツURL用シークレット (SpaStack の contentTokenSecret と同じ値を使う) */
-  readonly contentTokenSecret?: string;
-  /** api-server ⇔ bff-server 間の内部API認証キー */
-  readonly internalApiKey?: string;
-  /** BFF セッション用シークレット */
-  readonly sessionSecret?: string;
-  /** Moodle Web Service アカウントのパスワード */
-  readonly moodleServicePassword?: string;
 }
 
 /**
@@ -59,15 +47,7 @@ export class ProdBackendStack extends cdk.Stack {
   constructor(scope: Construct, id: string, props: ProdBackendStackProps) {
     super(scope, id, props);
 
-    const {
-      envName, vpc,
-      albSecurityGroup,
-      cognitoUserPoolId, cognitoClientId, cognitoClientSecret, anthropicApiKey,
-      contentTokenSecret,
-      internalApiKey,
-      sessionSecret,
-      moodleServicePassword,
-    } = props;
+    const { envName, vpc, albSecurityGroup } = props;
 
     // ========================================
     // Security Groups
@@ -94,12 +74,20 @@ export class ProdBackendStack extends cdk.Stack {
     // ========================================
     // Secrets Manager
     // ========================================
+    // 実際の値は Secrets Manager 側で手動管理する(put-secret-value)。
+    // テンプレートの SecretString が変わると CloudFormation がシークレットの中身を
+    // テンプレートの値で上書きするため、ここの値は初回作成時の文字列のまま固定し、
+    // --context では変えられないようにしている。
+    // (2026-10-06 まではcontextの値を入れており、デプロイ時のcontext次第で本番の
+    //  clientSecret などが REPLACE_ME に戻る状態だった。cognito の userPoolId/clientId は
+    //  初回作成時に渡した dev プールの値がテンプレートに残っているだけで、実際の値は
+    //  本番プール prod-lms-user-pool のもの。)
     const cognitoSecret = new secretsmanager.Secret(this, 'CognitoSecret', {
       secretName: `${envName}/lms/cognito-credentials`,
       secretObjectValue: {
-        userPoolId: cdk.SecretValue.unsafePlainText(cognitoUserPoolId ?? 'REPLACE_ME'),
-        clientId: cdk.SecretValue.unsafePlainText(cognitoClientId ?? 'REPLACE_ME'),
-        clientSecret: cdk.SecretValue.unsafePlainText(cognitoClientSecret ?? 'REPLACE_ME'),
+        userPoolId: cdk.SecretValue.unsafePlainText('ap-northeast-1_aAPBRNL7D'),
+        clientId: cdk.SecretValue.unsafePlainText('23jacbr6nk4baiftjueddmr4kb'),
+        clientSecret: cdk.SecretValue.unsafePlainText('REPLACE_ME'),
       },
       removalPolicy: cdk.RemovalPolicy.RETAIN,
     });
@@ -107,7 +95,7 @@ export class ProdBackendStack extends cdk.Stack {
 
     const anthropicSecret = new secretsmanager.Secret(this, 'AnthropicSecret', {
       secretName: `${envName}/lms/anthropic-api-key`,
-      secretStringValue: cdk.SecretValue.unsafePlainText(anthropicApiKey ?? 'REPLACE_ME'),
+      secretStringValue: cdk.SecretValue.unsafePlainText('REPLACE_ME'),
       removalPolicy: cdk.RemovalPolicy.RETAIN,
     });
     this.anthropicSecret = anthropicSecret;
@@ -128,14 +116,14 @@ export class ProdBackendStack extends cdk.Stack {
     this.difySecret = difySecret;
 
     // アプリ側シークレット (content-token / internal-api-key / session / moodle-service-password)
-    // すべて未指定時は 'REPLACE_ME' で作成し、デプロイ後に手動で put-secret-value する。
+    // 'REPLACE_ME' で作成し、デプロイ後に手動で put-secret-value する。
     const appSecrets = new secretsmanager.Secret(this, 'AppSecrets', {
       secretName: `${envName}/lms/app-secrets`,
       secretObjectValue: {
-        contentTokenSecret: cdk.SecretValue.unsafePlainText(contentTokenSecret ?? 'REPLACE_ME'),
-        internalApiKey: cdk.SecretValue.unsafePlainText(internalApiKey ?? 'REPLACE_ME'),
-        sessionSecret: cdk.SecretValue.unsafePlainText(sessionSecret ?? 'REPLACE_ME'),
-        moodleServicePassword: cdk.SecretValue.unsafePlainText(moodleServicePassword ?? 'REPLACE_ME'),
+        contentTokenSecret: cdk.SecretValue.unsafePlainText('REPLACE_ME'),
+        internalApiKey: cdk.SecretValue.unsafePlainText('REPLACE_ME'),
+        sessionSecret: cdk.SecretValue.unsafePlainText('REPLACE_ME'),
+        moodleServicePassword: cdk.SecretValue.unsafePlainText('REPLACE_ME'),
       },
       removalPolicy: cdk.RemovalPolicy.RETAIN,
     });

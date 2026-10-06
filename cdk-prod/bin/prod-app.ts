@@ -26,11 +26,7 @@
  *
  *   npm install
  *   ./node_modules/.bin/cdk deploy --all \
- *     --context contentTokenSecret=$(openssl rand -hex 32) \
- *     --context cognitoUserPoolId=ap-northeast-1_xxxx \
- *     --context cognitoClientId=xxxx \
- *     --context cognitoClientSecret=xxxx \
- *     --context anthropicApiKey=sk-ant-xxxx \
+ *     --context contentTokenSecret=<prod/lms/app-secrets の contentTokenSecret> \
  *     --context moodleSiteUrl=https://webcoach.jp \
  *     --require-approval never
  *
@@ -42,10 +38,9 @@
  *   本番用の正式な値が決まったら --context で上書きすること。
  *   ※ vectorDbEnv は 2026-09-27 に faiss → keyword へ変更（埋め込みモデル/torchを使わないキーワード検索。
  *     api-server/keyword_search.py 参照）。Parameter Store側の値とは異なる。
- *   secrets 系 (contentTokenSecret / internalApiKey / sessionSecret /
- *   moodleServicePassword / cognitoClientSecret / anthropicApiKey) はデフォルト値を
- *   設定していない。未指定の場合 'REPLACE_ME' で Secrets Manager に作成されるため、
- *   デプロイ後に必ず手動更新すること:
+ *   secrets 系 (Cognito / Anthropic / App) は context では渡さない。prod-BackendStack は
+ *   'REPLACE_ME' 等の固定値で作成するだけなので、値は Secrets Manager で手動管理する
+ *   (2026-10-06 以前は context で渡しており、渡す値次第で本番の値が上書きされた):
  *     aws secretsmanager put-secret-value --secret-id prod/lms/app-secrets \
  *       --secret-string '{"contentTokenSecret":"...","internalApiKey":"...","sessionSecret":"...","moodleServicePassword":"..."}'
  *
@@ -56,6 +51,7 @@
  *     --context certificateArn=arn:aws:acm:us-east-1:840513866884:certificate/xxxx
  *
  * ─── ALB に HTTPS を追加する場合 ─────────────────────────────────
+ *   既定で api.webcoach.jp の証明書を使う。別の証明書にする場合だけ
  *   --context albCertificateArn=arn:aws:acm:ap-northeast-1:840513866884:certificate/xxxx
  *
  * ─── 差分確認（デプロイ前に必ず実施）───────────────────────────────
@@ -144,12 +140,16 @@ const tags = {
 // ============================================================
 const cognitoStack = new ProdCognitoStack(app, `${envName}-CognitoStack`, {
   env, tags, envName,
-  moodleDomain: app.node.tryGetContext('moodleDomain') ?? 'webcoach.jp',
+  // Moodle の OAuth2 コールバック先。本番の Moodle は api.webcoach.jp(ALB)で公開している。
+  moodleDomain: app.node.tryGetContext('moodleDomain') ?? 'api.webcoach.jp',
   // SES 送信元アドレス。指定するとCognitoがSES経由でメールを送信する。
-  // --context sesFromEmail=noreply@webcoach.jp
-  // --context sesFromDomain=webcoach.jp  (ドメイン検証する場合)
-  sesFromEmail: app.node.tryGetContext('sesFromEmail'),
-  sesFromDomain: app.node.tryGetContext('sesFromDomain'),
+  // 2026-08-22 から noreply@webcoach.jp(SES 本番アクセス承認済み)で送っているため既定値にする。
+  // 未指定だと Cognito 既定の送信元に戻す差分になるので外さないこと。
+  // SES の送信元 ID はドメイン webcoach.jp(手動で検証済み)を使う。
+  sesFromEmail: app.node.tryGetContext('sesFromEmail') ?? 'noreply@webcoach.jp',
+  sesFromDomain: app.node.tryGetContext('sesFromDomain') ?? 'webcoach.jp',
+  loginUrl: app.node.tryGetContext('loginUrl') ?? 'https://study.webcoach.jp/login',
+  contactUrl: app.node.tryGetContext('contactUrl') ?? 'https://o4dqp.channel.io/workflows/783132',
 });
 
 // ============================================================
@@ -173,7 +173,10 @@ const albStack = new ProdAlbStack(app, `${envName}-AlbStack`, {
   env, tags, envName,
   vpc: vpcStack.vpc,
   // HTTPS 対応: ap-northeast-1 の証明書 ARN を渡す
-  albCertificateArn: app.node.tryGetContext('albCertificateArn'),
+  // api.webcoach.jp の証明書(2026-10 時点で HTTPS:443 リスナーに設定済み)を既定値にする。
+  // 未指定だと HTTPS リスナーを削除して HTTP のみにする差分になるため、既定値を外さないこと。
+  albCertificateArn: app.node.tryGetContext('albCertificateArn')
+    ?? 'arn:aws:acm:ap-northeast-1:840513866884:certificate/c4487c0f-7ff7-4b3b-9453-7e1030f2eb89',
 });
 albStack.addDependency(vpcStack);
 
@@ -184,19 +187,8 @@ const backendStack = new ProdBackendStack(app, `${envName}-BackendStack`, {
   env, tags, envName,
   vpc: vpcStack.vpc,
   albSecurityGroup: albStack.albSecurityGroup,
-  // 本番アカウントの prod-lms-user-pool (prod-CognitoStack) と prod-lms-spa-client を既定値に使う。
-  // 2026-10-05まではdevアカウントのdev-moodle-user-poolを流用していた。
-  // 別プールを使う場合は --context cognitoUserPoolId=... 等で上書きする。
-  cognitoUserPoolId: app.node.tryGetContext('cognitoUserPoolId') ?? 'ap-northeast-1_egAV2FlqQ',
-  cognitoClientId: app.node.tryGetContext('cognitoClientId') ?? '4njvvf0fhujgn3l2igi85ftoa5',
-  cognitoClientSecret: app.node.tryGetContext('cognitoClientSecret'),
-  anthropicApiKey: app.node.tryGetContext('anthropicApiKey'),
-  // secrets は空 ('REPLACE_ME') のまま作成し、デプロイ後に手動で
-  // aws secretsmanager put-secret-value --secret-id prod/lms/app-secrets ... を実行する。
-  contentTokenSecret: app.node.tryGetContext('contentTokenSecret'),
-  internalApiKey: app.node.tryGetContext('internalApiKey'),
-  sessionSecret: app.node.tryGetContext('sessionSecret'),
-  moodleServicePassword: app.node.tryGetContext('moodleServicePassword'),
+  // シークレット(Cognito/Anthropic/App)の値は context では渡さない。Secrets Manager 側で
+  // put-secret-value により手動管理する(backend-stack.ts の Secrets Manager 節を参照)。
 });
 backendStack.addDependency(albStack);
 
@@ -260,9 +252,11 @@ new ProdSpaStack(app, `${envName}-SpaStack`, {
   env: { account: awsAccount, region: 'us-east-1' },
   tags,
   envName,
-  // 本番証明書取得後に context で渡す
-  domainName: app.node.tryGetContext('domainName'),
-  certificateArn: app.node.tryGetContext('certificateArn'),
+  // 本番の独自ドメイン(2026-10 時点で CloudFront に設定済み)を既定値にする。
+  // 未指定だと CloudFront から独自ドメインと証明書を外す差分になるため、既定値を外さないこと。
+  domainName: app.node.tryGetContext('domainName') ?? 'study.webcoach.jp',
+  certificateArn: app.node.tryGetContext('certificateArn')
+    ?? 'arn:aws:acm:us-east-1:840513866884:certificate/b47b928e-5326-40f3-9bed-32f8de86437e',
 });
 
 // ============================================================

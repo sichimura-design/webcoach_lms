@@ -23,6 +23,7 @@
  *     --app "npx ts-node --prefer-ts-exts bin/prod-infra-app.ts"
  *
  * ─── ALB に HTTPS を追加する場合 ─────────────────────────────────
+ *   既定で api.webcoach.jp の証明書を使う。別の証明書にする場合だけ
  *   --context albCertificateArn=arn:aws:acm:ap-northeast-1:840513866884:certificate/xxxx
  *
  * ─── スタック構成 ───────────────────────────────────────────────
@@ -68,7 +69,10 @@ const vpcStack = new ProdVpcStack(app, `${envName}-VpcStack`, {
 const albStack = new ProdAlbStack(app, `${envName}-AlbStack`, {
   env, tags, envName,
   vpc: vpcStack.vpc,
-  albCertificateArn: app.node.tryGetContext('albCertificateArn'),
+  // api.webcoach.jp の証明書(2026-10 時点で HTTPS:443 リスナーに設定済み)を既定値にする。
+  // 未指定だと HTTPS リスナーを削除して HTTP のみにする差分になるため、既定値を外さないこと。
+  albCertificateArn: app.node.tryGetContext('albCertificateArn')
+    ?? 'arn:aws:acm:ap-northeast-1:840513866884:certificate/c4487c0f-7ff7-4b3b-9453-7e1030f2eb89',
 });
 albStack.addDependency(vpcStack);
 

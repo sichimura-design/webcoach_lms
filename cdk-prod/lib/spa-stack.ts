@@ -41,8 +41,17 @@ export class ProdSpaStack extends cdk.Stack {
 
     const { envName, domainName, certificateArn } = props;
 
-    const contentTokenSecret: string =
-      this.node.tryGetContext('contentTokenSecret') ?? 'prod-secret-REPLACE_ME';
+    // BFF の CONTENT_TOKEN_SECRET (prod/lms/app-secrets の contentTokenSecret) と同じ値を渡す:
+    //   --context contentTokenSecret=$(aws secretsmanager get-secret-value --secret-id prod/lms/app-secrets \
+    //     --query SecretString --output text | python3 -c 'import json,sys;print(json.load(sys.stdin)["contentTokenSecret"])')
+    // 渡し忘れると仮の値で Lambda@Edge が更新され、教材 HTML の認証が全件失敗するため、
+    // 未指定ならこのスタックのデプロイをエラーで止める(他スタックのデプロイには影響しない)。
+    const contentTokenSecret: string | undefined = this.node.tryGetContext('contentTokenSecret');
+    if (!contentTokenSecret) {
+      cdk.Annotations.of(this).addError(
+        'contentTokenSecret が未指定です。--context contentTokenSecret=<prod/lms/app-secrets の contentTokenSecret> を渡してください。',
+      );
+    }
 
     const bucket = new s3.Bucket(this, 'SpaBucket', {
       // 本番: バケットを誤削除から保護
@@ -60,7 +69,7 @@ export class ProdSpaStack extends cdk.Stack {
       {
         runtime: lambda.Runtime.NODEJS_20_X,
         handler: 'index.handler',
-        code: lambda.Code.fromAsset(buildContentAuthAsset(contentTokenSecret)),
+        code: lambda.Code.fromAsset(buildContentAuthAsset(contentTokenSecret ?? '')),
         description: `Lambda@Edge: content auth for ${envName}`,
       }
     );
@@ -110,6 +119,12 @@ export class ProdSpaStack extends cdk.Stack {
       destinationBucket: bucket,
       distribution,
       distributionPaths: ['/*'],
+      // 既定(prune: true)だとビルドに無いファイルを削除するため、S3 に直置きしている
+      // 教材 HTML(materials/)や管理画面からアップロードした content/ 等まで消える。
+      // 古いビルドの掃除は GitHub Actions(deploy-frontend.yml の --delete + --exclude)に任せる。
+      prune: false,
+      // ビルド内の古い版で S3 側の原本(教材 HTML・アップロード画像等)を上書きしない
+      exclude: ['html-content/*', 'course-images/*', 'materials/*', 'vector_db/*'],
     });
 
     new cdk.CfnOutput(this, 'CloudFrontDomain', {
