@@ -28,7 +28,7 @@ export class ProdRdsStack extends cdk.Stack {
     // ========================================
     this.rdsSg = new ec2.SecurityGroup(this, 'RdsSg', {
       vpc,
-      securityGroupName: `${envName}-moodle-rds-sg`,
+      securityGroupName: `${envName}-lms-rds-sg`,
       description: 'RDS MySQL security group',
       allowAllOutbound: false,
     });
