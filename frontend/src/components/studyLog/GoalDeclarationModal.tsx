@@ -121,10 +121,13 @@ export function GoalDeclarationModal({
     declaration?.reflectionAchievement ?? null
   );
 
+  // 開いた時点のモードで固定する。振り返りを保存すると楽観更新で「振り返り待ち」から
+  // 外れて mode が edit に変わるため、保存中に見出しが入れ替わらないように
+  const [openedMode] = useState(mode);
   const title =
-    mode === 'create'
+    openedMode === 'create'
       ? '新しい目標を設定する'
-      : mode === 'review'
+      : openedMode === 'review'
         ? '振り返りを書く'
         : '目標を編集する';
 

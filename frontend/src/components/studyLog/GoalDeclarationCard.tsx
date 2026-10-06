@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { Flag, Plus } from 'lucide-react';
 import { ACHIEVEMENT_LABEL, StudyDayTotal } from '../../types/studyActivity';
 import {
@@ -9,6 +10,7 @@ import {
   declarationMinutes,
   declarationPhase,
   declarationStudyDays,
+  formatPeriod,
 } from '../../utils/goalDeclaration';
 import { formatMinutesHM, toLocalDateKey } from '../../utils/studyStats';
 import Loading from '../shared/Loading';
@@ -25,6 +27,14 @@ import Loading from '../shared/Loading';
  *
  * 🔴 期間中の学習時間は「事実」として添えるだけで、宣言に対する達成率ではない
  *    （宣言は目標分数を持たないので、そもそも割る相手がいない）。
+ *
+ * 並びは上から「進行中（1件）／振り返り待ち／ほかの進行中・これから／これまで」。
+ * 🔴 「これまでの宣言」には終わったもの（期間終了 or 状態が決まったもの）だけを入れる。
+ *    これから始まる目標や並行中の目標を混ぜると見出しと中身が食い違う。
+ * 🔴 件数で縦に伸び続けないよう、振り返り待ちとこれまでの宣言は先頭だけ出して畳む。
+ *    取得は全件のまま（進行中の判定に全件が要る）。畳むのは表示だけ。
+ * 🔴 期間は formatPeriod で出す。M/D だけだと前年の同じ月の目標と見分けが付かない。
+ * 🔴 id="goal" はマイページの「編集する ›」(/study-log#goal) の飛び先。消さないこと。
  * ============================================================
  */
 interface GoalDeclarationCardProps {
@@ -36,11 +46,13 @@ interface GoalDeclarationCardProps {
   daily: StudyDayTotal[];
   loading: boolean;
   onCreate: () => void;
-  onEdit: (declaration: GoalDeclaration) => void;
-  onReview: (declaration: GoalDeclaration) => void;
-  /** 「これまでの宣言」の行を開く（編集モーダル） */
+  /** 目標を開く。振り返り待ちなら振り返り、それ以外は編集のモーダルになる（決めるのは呼び出し側） */
   onOpen: (declaration: GoalDeclaration) => void;
 }
+
+/** 振り返り待ちとこれまでの宣言を、畳んだ状態で何件まで出すか */
+const PENDING_VISIBLE = 3;
+const PAST_VISIBLE = 5;
 
 const CARD: React.CSSProperties = {
   background: 'var(--dc-surface)',
@@ -49,11 +61,6 @@ const CARD: React.CSSProperties = {
   boxShadow: 'var(--dc-shadow-card)',
   padding: 'var(--dc-sp-card-y) var(--dc-sp-card-x)',
 };
-
-/** 'YYYY-MM-DD' → 'M/D' */
-function md(key: string): string {
-  return `${Number(key.slice(5, 7))}/${Number(key.slice(8, 10))}`;
-}
 
 function linkButton(label: string, onClick: () => void) {
   return (
@@ -85,17 +92,89 @@ export function GoalDeclarationCard({
   daily,
   loading,
   onCreate,
-  onEdit,
-  onReview,
   onOpen,
 }: GoalDeclarationCardProps) {
   const todayKey = toLocalDateKey(new Date());
-  // 「いま出しているもの」以外を過去分として並べる
+  const [showAllPending, setShowAllPending] = useState(false);
+  const [showAllPast, setShowAllPast] = useState(false);
+
+  // 「いま出しているもの」以外を、まだ動いているもの／終わったものに分ける
   const shownIds = new Set([active?.id, ...pendingReflection.map((d) => d.id)].filter(Boolean));
-  const past = items.filter((d) => !shownIds.has(d.id));
+  const rest = items.filter((d) => !shownIds.has(d.id));
+  const others = rest.filter((d) => d.status === 'active' && declarationPhase(d, todayKey) !== 'past');
+  const past = rest.filter((d) => !others.includes(d));
+
+  const pendingShown = showAllPending ? pendingReflection : pendingReflection.slice(0, PENDING_VISIBLE);
+  const pastShown = showAllPast ? past : past.slice(0, PAST_VISIBLE);
+
+  const rowLabel = (d: GoalDeclaration): string => {
+    const phase = declarationPhase(d, todayKey);
+    if (phase === 'upcoming') return 'これから';
+    // 振り返りは書いたが状態は進行中のまま、の目標。「進行中」と出すと期間中に見える
+    if (d.status === 'active' && phase === 'past') return '期間終了';
+    return GOAL_DECLARATION_STATUS_LABEL[d.status];
+  };
+
+  const row = (d: GoalDeclaration) => (
+    <button
+      key={d.id}
+      type="button"
+      className="studylog-goal-row focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#F6B9BD]"
+      onClick={() => onOpen(d)}
+      style={{
+        display: 'flex', alignItems: 'center', gap: 12,
+        width: '100%', minHeight: 44, padding: '10px 8px',
+        border: 'none', borderTop: '1px solid var(--dc-border)',
+        background: 'transparent', borderRadius: 8,
+        fontFamily: 'inherit', fontSize: 'var(--dc-fs-body)',
+        textAlign: 'left', cursor: 'pointer',
+      }}
+    >
+      <span className="studylog-goal-row__period dc-num" style={{ flex: 'none', minWidth: 92, color: 'var(--dc-text-muted)', fontSize: 'var(--dc-fs-caption)', whiteSpace: 'nowrap' }}>
+        {formatPeriod(d.periodFrom, d.periodTo, todayKey)}
+      </span>
+      <span
+        className="studylog-goal-row__text"
+        style={{
+          flex: 1, minWidth: 0, color: 'var(--dc-text)',
+          whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis',
+        }}
+      >
+        {d.text}
+      </span>
+      {/* 状態は色ではなく語で出す */}
+      <span className="studylog-goal-row__status" style={{ flex: 'none', fontSize: 'var(--dc-fs-caption)', color: 'var(--dc-text-muted)', whiteSpace: 'nowrap' }}>
+        {rowLabel(d)}
+        {d.reflectionAchievement ? ` ・ ${ACHIEVEMENT_LABEL[d.reflectionAchievement]}` : ''}
+      </span>
+      <span className="studylog-goal-row__chevron" aria-hidden="true" style={{ flex: 'none', color: 'var(--dc-chevron)' }}>›</span>
+    </button>
+  );
+
+  const subHeading = (label: string) => (
+    <h3 style={{ margin: '0 0 4px', fontSize: 'var(--dc-fs-caption)', fontWeight: 700, color: 'var(--dc-text-subtle)' }}>
+      {label}
+    </h3>
+  );
+
+  const toggle = (expanded: boolean, hiddenCount: number, onClick: () => void) => (
+    <button
+      type="button"
+      aria-expanded={expanded}
+      onClick={onClick}
+      className="dc-link-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#F6B9BD]"
+      style={{
+        display: 'block', margin: '8px auto 0', background: 'none', border: 'none', padding: '4px 8px',
+        fontFamily: 'inherit', fontSize: 'var(--dc-fs-caption)', fontWeight: 700,
+        color: 'var(--dc-primary)', cursor: 'pointer',
+      }}
+    >
+      {expanded ? '閉じる' : `ほか${hiddenCount}件を表示`}
+    </button>
+  );
 
   return (
-    <section style={CARD}>
+    <section id="goal" style={{ ...CARD, scrollMarginTop: 16 }}>
       <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 16, flexWrap: 'wrap' }}>
         <span
           style={{
@@ -112,6 +191,7 @@ export function GoalDeclarationCard({
         <button
           type="button"
           onClick={onCreate}
+          data-goal-create
           className="dc-cta-outline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#F6B9BD]"
           style={{
             display: 'inline-flex', alignItems: 'center', gap: 5,
@@ -136,16 +216,16 @@ export function GoalDeclarationCard({
         <>
           {/* 進行中 */}
           {active && (
-            <div style={{ marginBottom: past.length || pendingReflection.length ? 18 : 0 }}>
+            <div style={{ marginBottom: rest.length || pendingReflection.length ? 18 : 0 }}>
               <div style={{ display: 'flex', alignItems: 'baseline', gap: 10, marginBottom: 8, flexWrap: 'wrap' }}>
                 <span style={{ fontSize: 'var(--dc-fs-caption)', fontWeight: 700, color: 'var(--dc-primary)' }}>
                   {GOAL_DECLARATION_STATUS_LABEL.active}
                 </span>
                 <span className="dc-num" style={{ flex: 1, fontSize: 'var(--dc-fs-caption)', color: 'var(--dc-text-muted)' }}>
-                  {md(active.periodFrom)}〜{md(active.periodTo)}
+                  {formatPeriod(active.periodFrom, active.periodTo, todayKey)}
                   {`（あと${daysLeft(active, todayKey)}日）`}
                 </span>
-                {linkButton('編集する ›', () => onEdit(active))}
+                {linkButton('編集する ›', () => onOpen(active))}
               </div>
 
               {/* 宣言文は左の縦罫つきの引用体。コーチが決めたタスク一覧と見た目で区別する */}
@@ -172,7 +252,7 @@ export function GoalDeclarationCard({
           )}
 
           {/* 期間が終わったのに振り返りがまだのもの。放置を拾えるように上に出す */}
-          {pendingReflection.map((d) => (
+          {pendingShown.map((d) => (
             <div
               key={d.id}
               style={{
@@ -188,9 +268,9 @@ export function GoalDeclarationCard({
                   期間終了・振り返り待ち
                 </span>
                 <span className="dc-num" style={{ flex: 1, fontSize: 'var(--dc-fs-caption)', color: 'var(--dc-text-muted)' }}>
-                  {md(d.periodFrom)}〜{md(d.periodTo)}
+                  {formatPeriod(d.periodFrom, d.periodTo, todayKey)}
                 </span>
-                {linkButton('振り返りを書く ›', () => onReview(d))}
+                {linkButton('振り返りを書く ›', () => onOpen(d))}
               </div>
               <p style={{ margin: 0, fontSize: 'var(--dc-fs-body)', color: 'var(--dc-text)', overflowWrap: 'anywhere' }}>
                 {d.text}
@@ -198,49 +278,23 @@ export function GoalDeclarationCard({
             </div>
           ))}
 
+          {pendingReflection.length > PENDING_VISIBLE &&
+            toggle(showAllPending, pendingReflection.length - PENDING_VISIBLE, () => setShowAllPending((v) => !v))}
+
+          {/* 並行中・これから始まる目標。進行中に出している1件以外 */}
+          {others.length > 0 && (
+            <div style={{ marginTop: 4, borderTop: '1px solid var(--dc-border)', paddingTop: 12 }}>
+              {subHeading('ほかの進行中・これからの目標')}
+              {others.map(row)}
+            </div>
+          )}
+
           {/* これまでの宣言 */}
           {past.length > 0 && (
-            <div style={{ marginTop: 4, borderTop: '1px solid var(--dc-border)', paddingTop: 12 }}>
-              <h3 style={{ margin: '0 0 4px', fontSize: 'var(--dc-fs-caption)', fontWeight: 700, color: 'var(--dc-text-subtle)' }}>
-                これまでの宣言
-              </h3>
-              {past.map((d) => {
-                const phase = declarationPhase(d, todayKey);
-                return (
-                  <button
-                    key={d.id}
-                    type="button"
-                    className="studylog-goal-row focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#F6B9BD]"
-                    onClick={() => onOpen(d)}
-                    style={{
-                      display: 'flex', alignItems: 'center', gap: 12,
-                      width: '100%', minHeight: 44, padding: '10px 8px',
-                      border: 'none', borderTop: '1px solid var(--dc-border)',
-                      background: 'transparent', borderRadius: 8,
-                      fontFamily: 'inherit', fontSize: 'var(--dc-fs-body)',
-                      textAlign: 'left', cursor: 'pointer',
-                    }}
-                  >
-                    <span className="dc-num" style={{ flex: 'none', width: 92, color: 'var(--dc-text-muted)', fontSize: 'var(--dc-fs-caption)' }}>
-                      {md(d.periodFrom)}〜{md(d.periodTo)}
-                    </span>
-                    <span
-                      style={{
-                        flex: 1, minWidth: 0, color: 'var(--dc-text)',
-                        whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis',
-                      }}
-                    >
-                      {d.text}
-                    </span>
-                    {/* 状態は色ではなく語で出す */}
-                    <span style={{ flex: 'none', fontSize: 'var(--dc-fs-caption)', color: 'var(--dc-text-muted)', whiteSpace: 'nowrap' }}>
-                      {phase === 'upcoming' ? 'これから' : GOAL_DECLARATION_STATUS_LABEL[d.status]}
-                      {d.reflectionAchievement ? ` ・ ${ACHIEVEMENT_LABEL[d.reflectionAchievement]}` : ''}
-                    </span>
-                    <span aria-hidden="true" style={{ flex: 'none', color: 'var(--dc-chevron)' }}>›</span>
-                  </button>
-                );
-              })}
+            <div style={{ marginTop: others.length ? 12 : 4, borderTop: '1px solid var(--dc-border)', paddingTop: 12 }}>
+              {subHeading('これまでの宣言')}
+              {pastShown.map(row)}
+              {past.length > PAST_VISIBLE && toggle(showAllPast, past.length - PAST_VISIBLE, () => setShowAllPast((v) => !v))}
             </div>
           )}
         </>

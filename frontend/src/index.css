@@ -1633,6 +1633,28 @@ body.learning-immersive {
   background: var(--dc-soft-100);
 }
 
+/* 🔴 狭い幅では2段にする。1段のままだと期間と状態の語に幅を取られ、
+      目標文が「【検…」まで潰れて読めなくなっていた。
+      1段目＝期間・状態・›、2段目＝目標文（2行まで）。
+      行の各要素は inline style なので、ここは !important で上書きする。 */
+@media (max-width: 600px) {
+  .studylog-goal-row {
+    flex-wrap: wrap !important;
+    row-gap: 4px !important;
+  }
+  .studylog-goal-row__period { order: 1; }
+  .studylog-goal-row__status { order: 2; margin-left: auto; }
+  .studylog-goal-row__chevron { order: 3; }
+  .studylog-goal-row__text {
+    order: 4;
+    flex: 1 0 100% !important;
+    white-space: normal !important;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+  }
+}
+
 /* 日別詳細のコーチング1件。押すと ?session= でその記録が開く */
 .studylog-coaching-row {
   transition: border-color 120ms var(--dc-ease), background-color 120ms var(--dc-ease);

@@ -32,11 +32,14 @@ export function declarationPhase(d: GoalDeclaration, todayKey: string): Declarat
 }
 
 /**
- * いま有効な宣言。期間中かつ本人がまだ進行中としているもののうち、開始日が最も新しい1件。
+ * いま有効な宣言。期間中かつ本人がまだ進行中としているもののうち、最後に追加した1件。
  *
  * 複数の宣言が同時に走ること自体は許す（月の宣言と週の宣言を併走させたい人がいる）。
  * ただしトップページに出すのは1件だけにして、「どれが今の目標か」の判断を
  * 画面ごとにばらけさせない。
+ *
+ * 🔴 「開始日が新しいもの」ではなく「追加したのが新しいもの」。後から書いた目標の
+ *    ほうが本人にとって今の目標なので、期間の長短や開始日の前後では選ばない。
  */
 export function activeDeclaration(
   items: GoalDeclaration[],
@@ -46,26 +49,50 @@ export function activeDeclaration(
     (d) => d.status === 'active' && declarationPhase(d, todayKey) === 'current'
   );
   if (current.length === 0) return null;
-  return current.reduce((best, d) => (d.periodFrom > best.periodFrom ? d : best));
+  return current.reduce((best, d) => (compareCreated(d, best) > 0 ? d : best));
+}
+
+/** 振り返り（本文か手応えのどちらか）を書いたか */
+export function hasReflection(d: GoalDeclaration): boolean {
+  return Boolean(d.reflection?.trim()) || d.reflectionAchievement != null;
 }
 
 /**
  * 期間が終わったのに振り返りがまだのもの（新しい順）。
  * 「書きっぱなしで放置」を画面から拾えるようにするための導出。
+ *
+ * 🔴 状態（進行中のまま）だけで判定しない。振り返りを書いても状態を
+ *    変えなかった人の目標が、いつまでも「振り返り待ち」に残ってしまうため。
  */
 export function awaitingReflection(
   items: GoalDeclaration[],
   todayKey: string = toLocalDateKey(new Date())
 ): GoalDeclaration[] {
   return sortDeclarations(
-    items.filter((d) => d.status === 'active' && declarationPhase(d, todayKey) === 'past')
+    items.filter(
+      (d) => d.status === 'active' && declarationPhase(d, todayKey) === 'past' && !hasReflection(d)
+    )
   );
+}
+
+/** id `gd-<epochMs>-<base36>` に埋めた作成時刻（ms）。形式が違えば 0 */
+function idEpochMs(id: string): number {
+  const m = /^gd-(\d+)-/.exec(id);
+  return m ? Number(m[1]) : 0;
+}
+
+/**
+ * 追加した順の比較（a が後なら正）。サーバの createdAt は秒までなので、
+ * 同じ秒に作られたものは id に埋めたミリ秒で決める。
+ */
+export function compareCreated(a: GoalDeclaration, b: GoalDeclaration): number {
+  return a.createdAt.localeCompare(b.createdAt) || idEpochMs(a.id) - idEpochMs(b.id);
 }
 
 /** 開始日の新しい順。同じ日なら作成の新しい順 */
 export function sortDeclarations(items: GoalDeclaration[]): GoalDeclaration[] {
   return [...items].sort(
-    (a, b) => b.periodFrom.localeCompare(a.periodFrom) || b.createdAt.localeCompare(a.createdAt)
+    (a, b) => b.periodFrom.localeCompare(a.periodFrom) || compareCreated(b, a)
   );
 }
 
@@ -160,4 +187,19 @@ export function daysLeft(d: GoalDeclaration, todayKey: string = toLocalDateKey(n
   const to = new Date(Number(d.periodTo.slice(0, 4)), Number(d.periodTo.slice(5, 7)) - 1, Number(d.periodTo.slice(8, 10)));
   const today = new Date(Number(todayKey.slice(0, 4)), Number(todayKey.slice(5, 7)) - 1, Number(todayKey.slice(8, 10)));
   return Math.max(0, Math.round((to.getTime() - today.getTime()) / 86_400_000));
+}
+
+/**
+ * 'YYYY-MM-DD' 2つ → 「10/1〜10/14」。今年でない日付には年を付ける
+ * （前年の同じ月の目標と見分けが付かなくなるため）。
+ */
+export function formatPeriod(from: string, to: string, todayKey: string = toLocalDateKey(new Date())): string {
+  const thisYear = todayKey.slice(0, 4);
+  const fmt = (key: string, withYear: boolean) =>
+    `${withYear ? `${key.slice(0, 4)}/` : ''}${Number(key.slice(5, 7))}/${Number(key.slice(8, 10))}`;
+  const fromYear = from.slice(0, 4);
+  const toYear = to.slice(0, 4);
+  const showYear = fromYear !== thisYear || toYear !== thisYear;
+  // 年をまたがない期間なら、終わりの日に同じ年を繰り返さない
+  return `${fmt(from, showYear)}〜${fmt(to, showYear && toYear !== fromYear)}`;
 }

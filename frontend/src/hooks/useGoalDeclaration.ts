@@ -9,6 +9,9 @@
  *   ・エラーは日本語の固定文言（例外の中身は画面に出さない）
  *   ・update だけ楽観更新。振り返りを保存するたびに一覧を取り直すとちらつくため。
  *     create / remove は並びが変わるので取り直す。
+ *   ・🔴 error は保存・削除の失敗だけを表す。reload の成功で消さないこと
+ *     （update の失敗直後に取り直すと、出したばかりの文言が消えていた）。
+ *     消すのは次の保存を始めたときと、呼び出し側の clearError（モーダルを閉じたとき）。
  *
  * 🔴 unavailable は「モックOFF（本番）でこのAPIが無い」。エラー表示ではなくフラグで返すのは、
  *    本番で赤いエラーを出し続けないため（useStudyStats と同じ縮退のしかた）。
@@ -45,6 +48,8 @@ export interface UseGoalDeclarationResult {
   /** 取得できなかった = モックOFF。カードごと出さないための縮退フラグ */
   unavailable: boolean;
   reload: () => Promise<void>;
+  /** 保存エラーの文言を消す。モーダルを閉じたとき・開くときに呼ぶ */
+  clearError: () => void;
   create: (input: Omit<GoalDeclarationInput, 'id'>) => Promise<GoalDeclaration>;
   update: (id: string, patch: GoalDeclarationPatch) => Promise<void>;
   remove: (id: string) => Promise<void>;
@@ -76,7 +81,6 @@ export function useGoalDeclaration(userId: number | undefined): UseGoalDeclarati
       const list = await bffClient.getGoalDeclarations(userId);
       if (seq !== reqRef.current) return;
       setItems(sortDeclarations(list));
-      setError(null);
       setUnavailable(false);
     } catch {
       if (seq !== reqRef.current) return;
@@ -136,19 +140,22 @@ export function useGoalDeclaration(userId: number | undefined): UseGoalDeclarati
       setSaving(true);
       setError(null);
       // 楽観更新。振り返りの保存でカードが一瞬空にならないように
+      const before = cur;
       setItems((prev) => prev.map((d) => (d.id === id ? { ...d, ...patch } as GoalDeclaration : d)));
       try {
         const saved = await bffClient.updateGoalDeclaration(userId, id, patch);
         setItems((prev) => sortDeclarations(prev.map((d) => (d.id === id ? saved : d))));
       } catch (e) {
+        // 楽観更新した1件だけを元に戻す。取り直しはしない（通信できない状況で
+        // 取り直しても失敗するだけで、入力中のモーダルの対象も揺れる）
+        if (before) setItems((prev) => prev.map((d) => (d.id === id ? before : d)));
         setError(messageOf(e, '目標を保存できませんでした'));
-        void reload();  // 巻き戻す
         throw e;
       } finally {
         setSaving(false);
       }
     },
-    [userId, items, reload]
+    [userId, items]
   );
 
   const remove = useCallback(
@@ -169,6 +176,8 @@ export function useGoalDeclaration(userId: number | undefined): UseGoalDeclarati
     [userId, reload]
   );
 
+  const clearError = useCallback(() => setError(null), []);
+
   const todayKey = toLocalDateKey(new Date());
 
   return {
@@ -180,6 +189,7 @@ export function useGoalDeclaration(userId: number | undefined): UseGoalDeclarati
     error,
     unavailable,
     reload,
+    clearError,
     create,
     update,
     remove,

@@ -1,5 +1,5 @@
-import { useCallback, useEffect, useMemo, useState } from 'react';
-import { useNavigate, useSearchParams } from 'react-router-dom';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useLocation, useNavigate, useSearchParams } from 'react-router-dom';
 import { Clock, Flame } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
 import { AppFooter, AppHeader } from '../shared';
@@ -70,6 +70,17 @@ import CoachingRecordsCard from './CoachingRecordsCard';
  * 【クエリの優先順位】
  * 🔴 goal > date。2つ同時に付いていても、この順で1つだけが効く。
  *    ここが唯一の判断場所で、各カードは自分のクエリだけを見ない。
+ *
+ * 🔴 ?goal= は new か目標の id だけ。edit / review のような「その時点の役割」で
+ *    開かないこと。役割は保存のたびに別の目標へ移るので、開いているモーダルの
+ *    対象がすり替わる（2件目の振り返りを押して1件目が開く、保存失敗で入力が消える、
+ *    の原因だった）。古いリンクの edit / review は開いた時点で id に置き換える。
+ *
+ * 【マイページからの #goal / #goal-new】
+ * 🔴 モーダルは開かず、目標カードまでスクロールするだけ（#goal-new は「宣言を書く」に
+ *    フォーカスも当てる）。編集の入口を下部カードの1つにする規約のため
+ *    （mypage/GoalDeclarationCard.tsx の 🔴）。カードはデータ読込後に描画されるので、
+ *    ブラウザ標準のハッシュ移動は効かない。読込が終わってから1回だけ動かす。
  */
 
 function StudyLogPage() {
@@ -87,6 +98,7 @@ function StudyLogPage() {
 
   const [searchParams, setSearchParams] = useSearchParams();
   const navigate = useNavigate();
+  const location = useLocation();
   const goalParam = searchParams.get('goal');
   const selectedDate = goalParam ? null : searchParams.get('date');
 
@@ -174,20 +186,29 @@ function StudyLogPage() {
   const goalTarget = useMemo(() => {
     if (!goalParam) return null;
     if (goalParam === 'new') return { mode: 'create' as const, declaration: undefined };
-    if (goalParam === 'edit') {
-      return goals.active ? { mode: 'edit' as const, declaration: goals.active } : null;
-    }
-    if (goalParam === 'review') {
-      const d = goals.pendingReflection[0];
-      return d ? { mode: 'review' as const, declaration: d } : null;
-    }
-    // 「これまでの宣言」の行からも状態・振り返り・手応えを直せるよう編集で開く
-    // （以前は閲覧専用で、状態や手応えのピルが押しても何も起きなかった）
     const found = goals.items.find((d) => d.id === goalParam);
-    return found ? { mode: 'edit' as const, declaration: found } : null;
-  }, [goalParam, goals.active, goals.pendingReflection, goals.items]);
+    if (!found) return null;
+    // 振り返り待ちなら振り返りとして、それ以外（「これまでの宣言」の行を含む）は編集で開く
+    const awaiting = goals.pendingReflection.some((d) => d.id === found.id);
+    return { mode: awaiting ? ('review' as const) : ('edit' as const), declaration: found };
+  }, [goalParam, goals.pendingReflection, goals.items]);
 
-  const closeGoal = () => patchParams({ goal: null }, true);
+  // 古いリンクの ?goal=edit / ?goal=review を、その時点の対象の id に置き換える
+  useEffect(() => {
+    if (goals.loading || (goalParam !== 'edit' && goalParam !== 'review')) return;
+    const target = goalParam === 'edit' ? goals.active : goals.pendingReflection[0];
+    patchParams({ goal: target?.id ?? null }, true);
+  }, [goalParam, goals.loading, goals.active, goals.pendingReflection, patchParams]);
+
+  const openGoal = (goal: string) => {
+    goals.clearError();
+    patchParams({ goal });
+  };
+
+  const closeGoal = () => {
+    goals.clearError();
+    patchParams({ goal: null }, true);
+  };
 
   const saveGoal = async (value: Omit<GoalDeclarationInput, 'id'> | GoalDeclarationPatch) => {
     if (!goalTarget) return;
@@ -202,6 +223,29 @@ function StudyLogPage() {
       // 文言は goals.error。モーダルは開いたままにする
     }
   };
+
+  const deleteGoal = async (id: string) => {
+    try {
+      await goals.remove(id);
+      closeGoal();
+    } catch {
+      // 文言は goals.error。モーダルは開いたままにする
+    }
+  };
+
+  // マイページからの #goal / #goal-new。読込が終わってから、遷移ごとに1回だけ
+  const handledHashRef = useRef<string | null>(null);
+  useEffect(() => {
+    if (location.hash !== '#goal' && location.hash !== '#goal-new') return;
+    if (goals.loading || statsLoading || handledHashRef.current === location.key) return;
+    const card = document.getElementById('goal');
+    if (!card) return;
+    handledHashRef.current = location.key;
+    card.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    if (location.hash === '#goal-new') {
+      card.querySelector<HTMLButtonElement>('[data-goal-create]')?.focus({ preventScroll: true });
+    }
+  }, [location.hash, location.key, goals.loading, statsLoading]);
 
   // --- ランキング -----------------------------------------------------------
 
@@ -312,10 +356,8 @@ function StudyLogPage() {
               pendingReflection={goals.pendingReflection}
               daily={stats?.dailyTotals ?? []}
               loading={goals.loading}
-              onCreate={() => patchParams({ goal: 'new' })}
-              onEdit={(d) => patchParams({ goal: d.id === goals.active?.id ? 'edit' : d.id })}
-              onReview={() => patchParams({ goal: 'review' })}
-              onOpen={(d) => patchParams({ goal: d.id })}
+              onCreate={() => openGoal('new')}
+              onOpen={(d) => openGoal(d.id)}
             />
 
             {/* ⑤ コーチング記録 */}
@@ -377,15 +419,14 @@ function StudyLogPage() {
 
         {goalTarget && (
           <GoalDeclarationModal
+            // 対象が変わったら入力欄を作り直す（前の目標の入力が残らないように）
+            key={goalTarget.declaration?.id ?? 'new'}
             mode={goalTarget.mode}
             declaration={goalTarget.declaration}
             saving={goals.saving}
             error={goals.error}
             onSave={saveGoal}
-            onDelete={async (d) => {
-              await goals.remove(d.id);
-              closeGoal();
-            }}
+            onDelete={(d) => void deleteGoal(d.id)}
             onClose={closeGoal}
           />
         )}
