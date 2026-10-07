@@ -175,7 +175,7 @@ export function declarationMinutes(d: GoalDeclaration, daily: StudyDayTotal[]): 
   return minutes;
 }
 
-/** 宣言の期間中に学習した日数（10分以上の日）。isStudyDay をそのまま使う */
+/** 宣言の期間中に学習した日数（STUDY_DAY_MIN_MINUTES 以上の日）。isStudyDay をそのまま使う */
 export function declarationStudyDays(d: GoalDeclaration, daily: StudyDayTotal[]): number {
   return daily.filter((day) => day.date >= d.periodFrom && day.date <= d.periodTo && day.isStudyDay)
     .length;

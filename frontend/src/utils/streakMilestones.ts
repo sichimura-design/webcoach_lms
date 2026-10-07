@@ -37,7 +37,7 @@ export function nextStreakMilestone(currentDays: number): number | null {
  * 数字を繰り返すのではなく言葉で返す（数字はカード側が出している）。
  */
 export function streakMessage(currentDays: number, todayAchieved: boolean): string {
-  if (currentDays === 0) return '今日から始めましょう。10分でも記録に残ります 🌱';
+  if (currentDays === 0) return '今日から始めましょう。少しの時間でも記録に残ります 🌱';
   if (!todayAchieved) return '今日もう少し学習すると、連続記録が伸びます 🔥';
   if (currentDays >= 30) return 'ここまで続けられるのは本当にすごいことです 🏆';
   if (currentDays >= 7) return '1週間以上つづいています！習慣になってきましたね ✨';

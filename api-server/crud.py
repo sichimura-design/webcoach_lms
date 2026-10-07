@@ -3344,6 +3344,11 @@ _STUDY_CORRECTED_EVENT = "\\local_webcoach_utils\\event\\study_session_corrected
 # SPAが教材(page/url/resource)を開いた際にBFF経由で発火するイベント。courseid/cmidは
 # ネイティブ列(courseid列・contextinstanceid列)のみで記録されるためJSONパースは不要。
 _COURSE_MATERIAL_VIEWED_EVENT = "\\local_webcoach_utils\\event\\course_material_viewed"
+# 1日の合計(区間ごとに丸めた分数の和)がこの分数以上なら「学習した日」。
+# マイページ/学習記録(get_study_stats_summary)と集中ブース(get_study_streak)の共通の閾値。
+# frontend の STUDY_DAY_MIN_MINUTES と揃えること。
+# 以前は10分だったが、「2日学習したのに1日連続」と見える原因になったため1分に下げた(2026-10-07)。
+_STUDY_STREAK_THRESHOLD_MINUTES = 1
 
 
 def _segment_totals_cte(user_scoped: bool) -> str:
@@ -3583,15 +3588,20 @@ def get_study_streak(db: Session, mdl_user_id: int) -> Dict[str, Any]:
     学習ストリーク(連続で集中ブース学習を完了した日数)を算出する。
 
     ログインストリーク(get_user_login_streak, \\core\\event\\user_loggedin基準)とは
-    独立した別指標。「アプリを開いた」ではなく「その日1回以上、学習セッションを完了した」を
+    独立した別指標。「アプリを開いた」ではなく「その日の合計が_STUDY_STREAK_THRESHOLD_MINUTES以上」を
     ストリークの成立条件とする(セグメントのstarted_atのJST日付で判定。stats/calendarと揃える)。
+    get_study_stats_summary(マイページ/学習記録)と同じ定義なので、画面ごとに日数が食い違わない。
     """
     query = text(f"""
-        SELECT DISTINCT DATE(FROM_UNIXTIME(started_at + 9 * 3600)) AS activity_date
+        SELECT DATE(FROM_UNIXTIME(started_at + 9 * 3600)) AS activity_date
         FROM ({_segment_totals_cte(user_scoped=True)}) segment_totals
+        GROUP BY activity_date
+        HAVING SUM(duration_minutes) >= :threshold_minutes
         ORDER BY activity_date DESC
     """)
-    result = db.execute(query, _segment_params(mdl_user_id))
+    params = _segment_params(mdl_user_id)
+    params["threshold_minutes"] = _STUDY_STREAK_THRESHOLD_MINUTES
+    result = db.execute(query, params)
     activity_dates = [row[0] for row in result.fetchall()]
 
     if not activity_dates:
@@ -3879,9 +3889,6 @@ def get_course_material_access(db: Session, mdl_user_id: int, courseid: int) -> 
     ]
 
 
-_STUDY_STREAK_THRESHOLD_MINUTES = 10
-
-
 def get_study_stats_summary(db: Session, mdl_user_id: int, days: Optional[int] = 35) -> Dict[str, Any]:
     """
     マイページ「学習状況ダッシュボード」/ /study-log 向けの集計まとめ。
@@ -3891,11 +3898,8 @@ def get_study_stats_summary(db: Session, mdl_user_id: int, days: Optional[int] =
     全区間を一度に取得し、以降はPython側で集計する
     (frontend/src/utils/studyStats.ts の純関数と同じ方針・同じストリーク定義に揃えてある)。
 
-    🔴 get_study_streak/get_study_stats(FocusBoothPage向け)とはストリークの閾値定義が異なる。
-       あちらは「1分でも学習していれば成立」、こちらは STUDY_DAY_MIN_MINUTES(10分)以上を
-       「学習した日」とみなす。frontendのマイページ/学習記録ページの表示文言
-       （「あと○分で今日を達成」等）がこの閾値を前提にしているため、独自に定義し直している。
-       両者の統一は project_dev-miyabe-ai-app-gap.md に記載の未決着事項。
+    ストリークの「学習した日」は get_study_streak(集中ブース向け)と同じく
+    _STUDY_STREAK_THRESHOLD_MINUTES 以上の日。
 
     Args:
         days: dailyTotals を直近何日ぶん返すか。Noneなら最初の記録の日から今日まで全期間。

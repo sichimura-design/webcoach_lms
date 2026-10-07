@@ -73,20 +73,53 @@ def test_streak_resets_when_last_activity_is_two_or_more_days_ago():
 
 
 def test_threshold_minutes_boundary():
-    """STUDY_DAY_MIN_MINUTES(10分)ちょうどは成立、9分は不成立で連続が切れる"""
+    """_STUDY_STREAK_THRESHOLD_MINUTES(1分)ちょうどは成立、0分は不成立で連続が切れる"""
     now = datetime(2026, 9, 10, 8, 0, 0, tzinfo=JST)
     segments = [
-        _segment(None, 2026, 9, 9, 10),  # ちょうど10分 → 成立
-        _segment(None, 2026, 9, 8, 9),   # 9分 → 不成立
+        _segment(None, 2026, 9, 9, 1),  # ちょうど1分 → 成立
+        _segment(None, 2026, 9, 8, 0),  # 0分(30秒未満の区間) → 不成立
     ]
     result = _run_with_fixed_now(now, segments, course_title_rows=[])
 
     # 9/8が不成立のため、9/9からの連続は1日のみ
     assert result["streak"]["current_days"] == 1
+    assert result["streak"]["threshold_minutes"] == 1
 
     daily_by_date = {d["date"]: d for d in result["daily_totals"]}
     assert daily_by_date[date_cls(2026, 9, 9)]["is_study_day"] is True
     assert daily_by_date[date_cls(2026, 9, 8)]["is_study_day"] is False
+
+
+def test_short_study_days_are_counted_in_streak():
+    """10分未満の日も連続に数える(以前は10分閾値で「2日学習したのに1日連続」になっていた)"""
+    now = datetime(2026, 9, 10, 20, 0, 0, tzinfo=JST)
+    segments = [
+        _segment(None, 2026, 9, 9, 8),
+        _segment(None, 2026, 9, 10, 3),
+        _segment(None, 2026, 9, 10, 2, h=11),
+    ]
+    result = _run_with_fixed_now(now, segments, course_title_rows=[])
+
+    assert result["streak"]["current_days"] == 2
+    assert result["streak"]["today_achieved"] is True
+    assert result["streak"]["today_minutes"] == 5
+
+
+def test_get_study_streak_uses_same_threshold():
+    """集中ブース向けget_study_streakも同じ閾値をSQLのHAVINGに渡す(画面ごとの食い違い防止)"""
+    fixed_cls = type("_FixedDatetime", (_FixedDatetime,), {"_fixed_now": datetime(2026, 9, 10, 20, 0, 0, tzinfo=JST)})
+    db = MagicMock()
+    db.execute.return_value = MagicMock(fetchall=MagicMock(return_value=[
+        (date_cls(2026, 9, 10),), (date_cls(2026, 9, 9),),
+    ]))
+
+    with patch("crud.datetime", fixed_cls):
+        result = crud.get_study_streak(db, mdl_user_id=1)
+
+    query, params = db.execute.call_args.args
+    assert "HAVING SUM(duration_minutes) >= :threshold_minutes" in str(query)
+    assert params["threshold_minutes"] == crud._STUDY_STREAK_THRESHOLD_MINUTES == 1
+    assert result["current_streak"] == 2
 
 
 def test_daily_totals_fill_gaps_with_zero():

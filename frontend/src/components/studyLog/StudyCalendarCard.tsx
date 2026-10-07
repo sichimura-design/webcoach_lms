@@ -23,9 +23,9 @@ import {
  *
  * 🔴 濃淡の閾値は utils/studyStats.ts の STUDY_HEAT_THRESHOLDS が唯一の実装。
  *    ここで再定義しないこと。段は 30/60/120 分の3つで、これはストリークの
- *    「学習した日」（STUDY_DAY_MIN_MINUTES = 10分）とは別の軸。
- *    10〜29分の日は段に入らないが学習した日ではあるので、濃淡ではなく
- *    aria-label の文言のほうでストリークと同じ判定を持つ（minutes >= 10）。
+ *    「学習した日」（STUDY_DAY_MIN_MINUTES）とは別の軸。
+ *    1〜29分の日は段に入らないが学習した日ではあるので、濃淡ではなく
+ *    aria-label の文言のほうでストリークと同じ判定を持つ（minutes >= STUDY_DAY_MIN_MINUTES）。
  *    塗りの上では 1〜29分をまとめて「記録あり」（淡い地）として出す。
  *
  * 🔴 色だけで情報を伝えない。
@@ -170,7 +170,7 @@ export function StudyCalendarCard({
         parts.push(formatMinutesHM(minutes));
         // 🔴 濃淡の段（level）ではなくストリークと同じ閾値で判定する。
         //    level は 30分からしか立たないので、level > 0 で見ると
-        //    15分の日が「10分未満」と読み上げられてストリークと食い違う。
+        //    15分の日が「学習した日」と読み上げられずストリークと食い違う。
         parts.push(minutes >= STUDY_DAY_MIN_MINUTES ? '学習した日' : `${STUDY_DAY_MIN_MINUTES}分未満`);
         if ((total?.sessionCount ?? 0) > 0) parts.push(`記録${total?.sessionCount}件`);
       }

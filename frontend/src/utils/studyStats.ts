@@ -47,8 +47,12 @@ import {
 } from '../types/studyActivity';
 import { StreakInfo, WeekActivity } from '../types/mypage';
 
-/** 1日の合計がこの分数以上なら「学習した日」。ストリーク・カレンダーの唯一の閾値 */
-export const STUDY_DAY_MIN_MINUTES = 10;
+/**
+ * 1日の合計がこの分数以上なら「学習した日」。ストリーク・カレンダーの唯一の閾値。
+ * 🔴 実データの判定は api-server の _STUDY_STREAK_THRESHOLD_MINUTES が持つ。値を揃えること。
+ *    以前は10分だったが「2日学習したのに1日連続」と見えるため1分に下げた（2026-10-07）。
+ */
+export const STUDY_DAY_MIN_MINUTES = 1;
 
 /** これ未満は記録しない。誤操作の数秒が1分として積むと「学習した日」が成立してしまう */
 export const MIN_RECORDABLE_SECONDS = 60;
