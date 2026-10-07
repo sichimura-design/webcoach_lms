@@ -37,6 +37,11 @@ interface ResumeStudyCardProps {
    * 一瞬出てから「Lesson N …」に組み変わると、カードの中身が跳ねて見えるため。
    */
   lessonLoading?: boolean;
+  /**
+   * 受講中のコースはあるが、まだどれも開いていない（学習履歴が無い）。
+   * このとき course は渡されず、「続きから」ではなく履歴が無い旨を出す
+   */
+  noHistory?: boolean;
   /** 続きから学習する（没入型レッスンへ） */
   onOpenLesson: () => void;
   /** レッスンを選び直す（コース目次へ） */
@@ -70,7 +75,7 @@ function Placeholder({ width, height }: { width: CSSProperties['width']; height:
   );
 }
 
-export function ResumeStudyCard({ course, known, lessonLoading, onOpenLesson, onOpenCurriculum }: ResumeStudyCardProps) {
+export function ResumeStudyCard({ course, known, lessonLoading, noHistory, onOpenLesson, onOpenCurriculum }: ResumeStudyCardProps) {
   const navigate = useNavigate();
   const { no, name } = splitLesson(course?.currentLesson);
   const lessons = lessonProgressFromPercent(course?.progress, course?.totalLessons);
@@ -284,7 +289,7 @@ export function ResumeStudyCard({ course, known, lessonLoading, onOpenLesson, on
           </button>
         </>
       ) : (
-        // 受講中のコースが無いときは「続きから」が成立しないので、選ぶところから始めてもらう
+        // 受講中のコースが無い／まだ何も開いていないときは「続きから」が成立しないので、選ぶところから始めてもらう
         <>
           <div
             style={{
@@ -295,7 +300,9 @@ export function ResumeStudyCard({ course, known, lessonLoading, onOpenLesson, on
               marginBottom: 20,
             }}
           >
-            まだ受講中のコースがありません。学習コンテンツから最初の1つを選びましょう。
+            {noHistory
+              ? 'まだ学習履歴がありません。学習コンテンツから学びたいコースを選んで始めましょう。'
+              : 'まだ受講中のコースがありません。学習コンテンツから最初の1つを選びましょう。'}
           </div>
           <button
             type="button"

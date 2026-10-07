@@ -92,21 +92,30 @@ function MyPage() {
   const enrolledIds = new Set(learningCourses.map((c) => c.id));
   const accessedAt = (c: Course) => (c.lastAccessDate ? new Date(c.lastAccessDate).getTime() : 0);
   const byLastAccess = [...learningCourses].sort((a, b) => accessedAt(b) - accessedAt(a));
-  const resumeCandidateIds = [
-    ...(resumableCourse ? [resumableCourse.id] : []),
-    ...[...recentEntries]
-      .sort((a, b) => b.openedAt - a.openedAt)
-      .map((e) => e.courseId)
-      .filter((id) => enrolledIds.has(id)),
-    ...byLastAccess.map((c) => c.id),
-  ].filter((id, i, all) => all.indexOf(id) === i);
+  const recentIds = [...recentEntries]
+    .sort((a, b) => b.openedAt - a.openedAt)
+    .map((e) => e.courseId)
+    .filter((id) => enrolledIds.has(id));
+  // 🔴 どこにも学習履歴が無い受講生には「続きから」を出さない。以前は受講一覧の先頭コースの
+  //    Lesson 1 を「続きから学習」として出しており、まだ何も開いていないのに続きがあるように見えた
+  const hasStudyHistory =
+    !!resumableCourse || recentIds.length > 0 || learningCourses.some((c) => accessedAt(c) > 0);
+  const resumeCandidateIds = hasStudyHistory
+    ? [
+        ...(resumableCourse ? [resumableCourse.id] : []),
+        ...recentIds,
+        ...byLastAccess.map((c) => c.id),
+      ].filter((id, i, all) => all.indexOf(id) === i)
+    : [];
   // 「続きから学習」のレッスン名・レッスン数は実 Moodle の目次から組み立てる（useResumeLesson の doc）
   const {
     courseId: resumeCourseId,
     lesson: resumeLesson,
     loading: resumeLessonLoading,
   } = useResumeLesson(resumeCandidateIds);
-  const primaryCourse = learningCourses.find((c) => c.id === resumeCourseId) ?? learningCourses[0];
+  const primaryCourse = hasStudyHistory
+    ? learningCourses.find((c) => c.id === resumeCourseId) ?? learningCourses[0]
+    : undefined;
   const resumeCourse: Course | undefined =
     primaryCourse && resumeLesson
       ? {
@@ -242,6 +251,7 @@ function MyPage() {
             // 同じコースの受講中一覧（/moodle/courses）側の姿を添える
             known={activeCourses.find((c) => c.id === primaryCourse?.id)}
             lessonLoading={resumeLessonLoading}
+            noHistory={learningCourses.length > 0 && !hasStudyHistory}
             onOpenLesson={openLesson}
             onOpenCurriculum={openCurriculum}
           />
