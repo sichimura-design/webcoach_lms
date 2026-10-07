@@ -233,6 +233,28 @@ export class ProdEcsStack extends cdk.Stack {
     const difySecret = secretsmanager.Secret.fromSecretNameV2(this, 'DifySecret', `${envName}/lms/dify-credentials`);
     difySecret.grantRead(taskDef.taskRole);
 
+    // Google Meet連携(Organizer中心モデル)。BFFが起動時にOAuthクライアントを読み、
+    // Organizerのトークンは連携時・更新時に書き込む。議事録は専用バケットへ置く。
+    // どれも backend-stack が作るものを名前で参照する。
+    const googleOAuthClientSecretName = `${envName}/lms/google-oauth-client`;
+    const organizerCredentialsSecretName = `${envName}/lms/organizer-google-credentials`;
+    const recordingsBucketName = `${envName}-lms-recordings-${this.account}`;
+    secretsmanager.Secret.fromSecretNameV2(this, 'GoogleOAuthClientSecret', googleOAuthClientSecretName)
+      .grantRead(taskDef.taskRole);
+    const organizerCredentialsSecret = secretsmanager.Secret.fromSecretNameV2(
+      this, 'OrganizerGoogleCredentialsSecret', organizerCredentialsSecretName,
+    );
+    organizerCredentialsSecret.grantRead(taskDef.taskRole);
+    organizerCredentialsSecret.grantWrite(taskDef.taskRole);
+    taskDef.addToTaskRolePolicy(new iam.PolicyStatement({
+      actions: ['s3:ListBucket'],
+      resources: [`arn:aws:s3:::${recordingsBucketName}`],
+    }));
+    taskDef.addToTaskRolePolicy(new iam.PolicyStatement({
+      actions: ['s3:GetObject', 's3:PutObject'],
+      resources: [`arn:aws:s3:::${recordingsBucketName}/*`],
+    }));
+
     // 調整用の設定値（AIのトークン上限・ポーリング間隔等）はParameter Storeに置き、
     // 起動スクリプト(start-with-parameter-store.sh)が {prefix}/config/xxx-yyy を XXX_YYY として
     // exportする。デプロイせずにタスク再起動だけで値を変えられるようにするため。
@@ -353,6 +375,14 @@ export class ProdEcsStack extends cdk.Stack {
         ...(cloudfrontDomain ? { CLOUDFRONT_DOMAIN: cloudfrontDomain } : {}),
         ...(s3BucketName ? { S3_BUCKET_NAME: s3BucketName } : {}),
         ...(s3Region ? { S3_REGION: s3Region } : {}),
+        // Google Meet連携(Organizer中心モデル)。連携の完了後に戻る画面と、Googleからのコールバック先
+        FRONTEND_BASE_URL: 'https://study.webcoach.jp',
+        GOOGLE_REDIRECT_URI: 'https://api.webcoach.jp/api/integrations/organizer/google/callback',
+        GOOGLE_OAUTH_CLIENT_SECRET_ID: googleOAuthClientSecretName,
+        ORGANIZER_GOOGLE_CREDENTIALS_SECRET_ID: organizerCredentialsSecretName,
+        RECORDINGS_BUCKET_NAME: recordingsBucketName,
+        // 議事録の取得→AIノート生成。Meet発行済みの回が無ければ何もしない
+        TRANSCRIPT_SYNC_ENABLED: 'true',
       },
       secrets: {
         COGNITO_USER_POOL_ID: ecs.Secret.fromSecretsManager(cognitoSecret, 'userPoolId'),
@@ -362,6 +392,8 @@ export class ProdEcsStack extends cdk.Stack {
         INTERNAL_API_KEY: ecs.Secret.fromSecretsManager(appSecrets, 'internalApiKey'),
         SESSION_SECRET: ecs.Secret.fromSecretsManager(appSecrets, 'sessionSecret'),
         MOODLE_SERVICE_PASSWORD: ecs.Secret.fromSecretsManager(appSecrets, 'moodleServicePassword'),
+        // Google連携のOAuth state署名用。app-secrets に手動で追加したキー
+        INTEGRATION_STATE_SECRET: ecs.Secret.fromSecretsManager(appSecrets, 'integrationStateSecret'),
       },
     });
 

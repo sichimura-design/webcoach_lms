@@ -1,6 +1,7 @@
 import * as cdk from 'aws-cdk-lib';
 import * as ec2 from 'aws-cdk-lib/aws-ec2';
 import * as efs from 'aws-cdk-lib/aws-efs';
+import * as s3 from 'aws-cdk-lib/aws-s3';
 import * as secretsmanager from 'aws-cdk-lib/aws-secretsmanager';
 import { Construct } from 'constructs';
 
@@ -128,6 +129,35 @@ export class ProdBackendStack extends cdk.Stack {
       removalPolicy: cdk.RemovalPolicy.RETAIN,
     });
     this.appSecrets = appSecrets;
+
+    // Google Meet連携(Organizer中心モデル)。ecs-stack からは名前で参照する(Difyと同じ理由)。
+    // OAuth クライアントの値は GCP で発行したものをデプロイ後に手動で put-secret-value する。
+    new secretsmanager.Secret(this, 'GoogleOAuthClient', {
+      secretName: `${envName}/lms/google-oauth-client`,
+      description: 'Google OAuth Client ID/Secret for the WEBCOACH LMS (Organizer-centric Google Meet integration)',
+      secretObjectValue: {
+        client_id: cdk.SecretValue.unsafePlainText('REPLACE_ME'),
+        client_secret: cdk.SecretValue.unsafePlainText('REPLACE_ME'),
+      },
+      removalPolicy: cdk.RemovalPolicy.RETAIN,
+    });
+    // Organizer のトークン置き場。管理画面で Google 連携するとBFFが PutSecretValue で書き込む。
+    // 空のJSONで作り、以後中身はアプリが管理する(テンプレートを変えると上書きされるので触らない)。
+    new secretsmanager.Secret(this, 'OrganizerGoogleCredentials', {
+      secretName: `${envName}/lms/organizer-google-credentials`,
+      description: 'Organizer Google OAuth tokens, written by the BFF after the admin connects Google',
+      secretStringValue: cdk.SecretValue.unsafePlainText('{}'),
+      removalPolicy: cdk.RemovalPolicy.RETAIN,
+    });
+
+    // Google Meet の議事録(文字起こしJSON)置き場。SPAバケットはCloudFrontで公開されるため別にする
+    new s3.Bucket(this, 'RecordingsBucket', {
+      bucketName: `${envName}-lms-recordings-${this.account}`,
+      blockPublicAccess: s3.BlockPublicAccess.BLOCK_ALL,
+      encryption: s3.BucketEncryption.S3_MANAGED,
+      enforceSSL: true,
+      removalPolicy: cdk.RemovalPolicy.RETAIN,
+    });
 
     // ========================================
     // EFS (moodledata 永続化)
