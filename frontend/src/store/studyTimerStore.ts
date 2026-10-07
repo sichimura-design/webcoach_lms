@@ -40,6 +40,12 @@ interface StudyTimerState {
    *    打診は上限までで止まる。
    */
   promptDeclineCounts: Partial<Record<StudyCategory, number>>;
+  /**
+   * 「今日はもう聞かない」を押した日（YYYY-MM-DD）。この日は全カテゴリで打診しない。
+   * 🔴 回数（promptDeclineCounts）はカテゴリ別だが、この文言はアプリ全体の約束に読めるので
+   *    押したら全部止める。カテゴリ別のままだと、押した直後に別の種類のページでまた聞かれる。
+   */
+  promptMutedOn: string | null;
 
   startSession: (
     session: Omit<
@@ -68,6 +74,12 @@ interface StudyTimerState {
   markTargetReached: () => void;
   /** 稼働中でも学習目標を書き足せる */
   updateGoal: (goalText: string) => void;
+  /**
+   * 教材なしで始めた回に、計測中に開いたレッスンの教材を付ける。
+   * 🔴 すでに教材が付いている回は変えない（始めた教材を、寄り道で開いた別の教材で上書きしない）。
+   *    終了カードで選び直せるので、ここは「何もしなくてもだいたい正しい」までに留める。
+   */
+  attachCourse: (course: { courseId: number; courseTitle?: string; lessonId?: number; lessonTitle?: string; progressPercentAtStart?: number }) => void;
 
   /** 開いている区間を閉じて、別カテゴリの区間を開く。同じカテゴリなら何もしない */
   switchCategory: (category: StudyCategory) => void;
@@ -76,8 +88,11 @@ interface StudyTimerState {
   /** 放置ぶんを切り捨てて一時停止する。開いている区間も lastActiveAt で閉じる */
   trimToLastActive: () => void;
 
-  /** 打診を断った。同じ日・同じカテゴリのうちは回数が積み上がる */
-  declinePrompt: (category: StudyCategory) => void;
+  /**
+   * 打診を断った。同じ日・同じカテゴリのうちは回数が積み上がる。
+   * allToday なら「今日はもう聞かない」: その日は全カテゴリで打診しない（promptMutedOn）。
+   */
+  declinePrompt: (category: StudyCategory, allToday?: boolean) => void;
 
   setFinishDraft: (draft: StudyFinishDraft | null) => void;
   patchFinishDraft: (patch: Partial<StudyFinishDraft>) => void;
@@ -103,6 +118,7 @@ export const useStudyTimerStore = create<StudyTimerState>()(
       activityRevision: 0,
       promptDeclinedOn: null,
       promptDeclineCounts: {},
+      promptMutedOn: null,
 
       startSession: ({ category, ...session }) => {
         const now = Date.now();
@@ -221,7 +237,7 @@ export const useStudyTimerStore = create<StudyTimerState>()(
         });
       },
 
-      declinePrompt: (category) => {
+      declinePrompt: (category, allToday = false) => {
         const today = toLocalDateKey(new Date());
         const s = get();
         // 日付が変わっていたら全カテゴリ捨てて数え直す（前日ぶんを引き継がない）
@@ -229,7 +245,14 @@ export const useStudyTimerStore = create<StudyTimerState>()(
         set({
           promptDeclinedOn: today,
           promptDeclineCounts: { ...counts, [category]: (counts[category] ?? 0) + 1 },
+          ...(allToday ? { promptMutedOn: today } : {}),
         });
+      },
+
+      attachCourse: (course) => {
+        const { session } = get();
+        if (!session || session.courseId) return;
+        set({ session: { ...session, ...course } });
       },
 
       markTargetReached: () => {
@@ -290,6 +313,7 @@ export const useStudyTimerStore = create<StudyTimerState>()(
           activityRevision: 0,
           promptDeclinedOn: base?.promptDeclinedOn ?? null,
           promptDeclineCounts: base?.promptDeclineCounts ?? {},
+          promptMutedOn: base?.promptMutedOn ?? null,
           session: session?.startedAt ? session : null,
         } as StudyTimerState;
       },
@@ -300,6 +324,7 @@ export const useStudyTimerStore = create<StudyTimerState>()(
           finishDraft: s.finishDraft,
           promptDeclinedOn: s.promptDeclinedOn,
           promptDeclineCounts: s.promptDeclineCounts,
+          promptMutedOn: s.promptMutedOn,
         }) as StudyTimerState,
     }
   )

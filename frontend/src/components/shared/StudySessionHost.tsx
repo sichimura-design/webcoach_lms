@@ -54,6 +54,9 @@ const ACTIVE_THROTTLE_MS = 10_000;
  *    学習ページを開くたび中央モーダルが出る。
  * 🔴 上限に達する直前は文言を「今日はもう聞かない」に変える（下の secondaryLabel）。
  *    「あとで」と言っておいて二度と聞かないのは嘘になるため。
+ * 🔴 「今日はもう聞かない」を押したら、その日は全カテゴリで聞かない（promptMutedOn）。
+ *    文言はアプリ全体の約束に読めるので、押したページの種類だけ止めると、直後に
+ *    AIコーチやマイノートでまた聞かれて「押したのに何回も聞いてくる」になる。
  * ============================================================
  */
 const PROMPT_DECLINE_LIMIT = 3;
@@ -66,6 +69,8 @@ function StudySessionHost() {
   const promptDeclinedOn = useStudyTimerStore((x) => x.promptDeclinedOn);
   const promptDeclineCounts = useStudyTimerStore((x) => x.promptDeclineCounts);
   const declinePrompt = useStudyTimerStore((x) => x.declinePrompt);
+  const promptMutedOn = useStudyTimerStore((x) => x.promptMutedOn);
+  const attachCourse = useStudyTimerStore((x) => x.attachCourse);
   const markActive = useStudyTimerStore((x) => x.markActive);
   const recentEntries = useRecentCourseStore((x) => x.entries);
 
@@ -83,8 +88,10 @@ function StudySessionHost() {
    * 日付が変わっていれば 0 に戻る。
    * 🔴 打診を出すかの判定と副ボタンの文言の両方がこれを見る（判定を二重に持たない）。
    */
+  const todayKey = toLocalDateKey(new Date());
   const declinedInCategory =
-    promptDeclinedOn === toLocalDateKey(new Date()) ? (promptDeclineCounts[category] ?? 0) : 0;
+    promptDeclinedOn === todayKey ? (promptDeclineCounts[category] ?? 0) : 0;
+  const mutedToday = promptMutedOn === todayKey;
 
   /*
    * いま開いている教材。レッスン本文ページなら、useLessonDoc が開くたびに
@@ -114,6 +121,24 @@ function StudySessionHost() {
     // s は毎レンダー新しいオブジェクトなので依存に入れない（入れると毎秒発火する）
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [category, hasSession, activityId, location.pathname]);
+
+  /*
+   * 教材なしで始めた回で、計測中にレッスンを開いたらその教材を付ける。
+   * マイページやAIコーチから始めて教材を読んだ回が、ずっと「教材を指定しない」の
+   * ままになっていた。終了カードで選び直せるが、何もしなくてもだいたい正しくしておく。
+   * 付いた教材はこのあとの区間の start と、終了時の補正（サーバー側の教材の置き換え）に乗る。
+   */
+  const sessionCourseId = s.session?.courseId;
+  useEffect(() => {
+    if (!hasSession || sessionCourseId || !lessonCourse) return;
+    attachCourse({
+      courseId: lessonCourse.courseId,
+      courseTitle: lessonCourse.courseTitle,
+      lessonId: lessonCourse.lessonId,
+      lessonTitle: lessonCourse.lessonTitle,
+      progressPercentAtStart: lessonCourse.progressPercent,
+    });
+  }, [hasSession, sessionCourseId, lessonCourse, attachCourse]);
 
   // ---- 3. 放置検知の材料: 操作の観測 --------------------------------------
   const lastMarkRef = useRef(0);
@@ -170,9 +195,9 @@ function StudySessionHost() {
     }
     if (!isStudyEntryPath(location.pathname)) { setPromptFor(null); return; }
     if (handledPathRef.current === location.pathname) { setPromptFor(null); return; }
-    if (declinedInCategory >= PROMPT_DECLINE_LIMIT) { setPromptFor(null); return; }
+    if (mutedToday || declinedInCategory >= PROMPT_DECLINE_LIMIT) { setPromptFor(null); return; }
     setPromptFor(location.pathname);
-  }, [location.pathname, hasSession, declinedInCategory]);
+  }, [location.pathname, hasSession, declinedInCategory, mutedToday]);
 
   const startHere = useCallback(() => {
     s.start({
@@ -235,7 +260,7 @@ function StudySessionHost() {
             secondaryLabel={declinedInCategory >= PROMPT_DECLINE_LIMIT - 1 ? '今日はもう聞かない' : 'あとで'}
             onPrimary={startHere}
             onSecondary={() => {
-              declinePrompt(category);
+              declinePrompt(category, declinedInCategory >= PROMPT_DECLINE_LIMIT - 1);
               // 同じページで即座に聞き直さないための記録。これが無いと
               // 「あとで」を押した直後に同じ打診が戻ってくる。
               handledPathRef.current = location.pathname;

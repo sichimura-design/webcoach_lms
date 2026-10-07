@@ -83,7 +83,7 @@ function FinishCard({
           const noteId = await createNoteFromStudyRecord({
             localDate: draft.snapshot.localDate,
             minutes: patch.actualMinutes ?? draft.actualMinutes,
-            course: draft.snapshot.course,
+            course: patch.snapshot?.course ?? null,
             goalText: draft.goalText,
             contentNote: patch.contentNote ?? '',
             memo: patch.memo ?? '',

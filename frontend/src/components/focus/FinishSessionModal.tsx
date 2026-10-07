@@ -6,8 +6,11 @@ import {
   ACHIEVEMENT_LABEL,
   Achievement,
   STUDY_CATEGORY_LABEL,
+  StudyActivityCourseRef,
   StudyFinishDraft,
 } from '../../types/studyActivity';
+import { useAuth } from '../../contexts/AuthContext';
+import { StudyCourseSelect } from '../shared/StudyCourseSelect';
 import { MAX_ADJUST_EXTRA_MINUTES, adjustSegments, displaySegments, formatMinutesHM } from '../../utils/studyStats';
 import { formatDayLabel, formatSessionRange } from './focusFormat';
 
@@ -113,10 +116,17 @@ export function FinishSessionModal({
   onDismiss,
 }: FinishSessionModalProps) {
   const navigate = useNavigate();
+  const { user } = useAuth();
   const measuredMinutes = Math.max(1, Math.round(draft.measuredSeconds / 60));
 
   const [step, setStep] = useState<Step>('confirm');
   const [minutes, setMinutes] = useState(draft.actualMinutes);
+  /**
+   * 学習した教材。始めたときの教材（計測中に開いたレッスンが自動で付いた場合も含む）が初期値で、
+   * ここで選び直せる。記録すると snapshot.course を差し替えて渡し、サーバーの区間の教材も
+   * 補正イベントで置き換わる（BFF planCourseOverrides）。
+   */
+  const [course, setCourse] = useState<StudyActivityCourseRef | null>(draft.snapshot.course);
   const [editingMinutes, setEditingMinutes] = useState(false);
   const [contentNote, setContentNote] = useState(draft.contentNote);
   const [memo, setMemo] = useState(draft.memo);
@@ -153,6 +163,7 @@ export function FinishSessionModal({
     await onRecord(
       {
         actualMinutes: minutes,
+        snapshot: { ...draft.snapshot, course },
         contentNote: withDetail ? contentNote : '',
         memo: withDetail ? memo : '',
         achievement: withDetail ? achievement : null,
@@ -325,14 +336,27 @@ export function FinishSessionModal({
                 )}
 
                 <Row label="学習した教材">
-                  {snapshot.course ? (
-                    <Value>
-                      {snapshot.course.courseTitle}
-                      {snapshot.course.lessonTitle ? ` ・ ${snapshot.course.lessonTitle}` : ''}
-                    </Value>
-                  ) : (
-                    <Value muted>教材を指定しない</Value>
-                  )}
+                  <div style={{ flex: 1, minWidth: 0, maxWidth: 300 }}>
+                    <StudyCourseSelect
+                      userId={user?.userid}
+                      label={null}
+                      value={course ? { id: course.courseId, title: course.courseTitle } : null}
+                      onChange={(c) =>
+                        setCourse(
+                          !c
+                            ? null
+                            : c.id === snapshot.course?.courseId
+                              ? snapshot.course
+                              : { courseId: c.id, courseTitle: c.title }
+                        )
+                      }
+                    />
+                    {course?.lessonTitle && (
+                      <div style={{ ...font.caption, color: color.textMuted, marginTop: 4, textAlign: 'right' }}>
+                        {course.lessonTitle}
+                      </div>
+                    )}
+                  </div>
                 </Row>
 
                 <Row label="今回の学習目標">
@@ -430,7 +454,7 @@ export function FinishSessionModal({
                 }}
               >
                 {formatMinutesHM(minutes)}
-                {snapshot.course ? ` ・ ${snapshot.course.courseTitle}` : ' ・ 教材の指定なし'}
+                {course ? ` ・ ${course.courseTitle}` : ' ・ 教材の指定なし'}
               </div>
 
               {/* 🔴 行き先を必ず名指しする。書いた内容がマイノートに入ると思って探し、

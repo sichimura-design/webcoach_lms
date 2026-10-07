@@ -10,9 +10,9 @@ export interface StudyCourseChoice {
 /**
  * 学習時間の記録を始める前に「どの教材の学習か」を選ぶセレクト。
  * ============================================================
- * 🔴 教材は開始時にしか選べない。区間ごとの start/end が courseid 付きで
- *    Moodle ログに積まれる（useStudySession）ので、終了カードで後から
- *    差し替えても、すでに積んだ区間の教材は変わらない。
+ * 🔴 開始時（マイページ）と終了カード（FinishSessionModal）の両方で使う。
+ *    Moodle ログの start は書き換えられないので、終了カードで選び直した教材は
+ *    補正イベントの courseid で上書きする（BFF の planCourseOverrides）。
  * 🔴 選択肢は受講中のコース（GET /api/moodle/courses/{userid}）。
  *    学習記録ページの courseOptions（集計済み byCourse 由来）を使うと、
  *    まだ一度も記録していない教材が選べないため使わない。
@@ -24,9 +24,11 @@ interface StudyCourseSelectProps {
   userId: number | undefined;
   value: StudyCourseChoice | null;
   onChange: (value: StudyCourseChoice | null) => void;
+  /** 見出し。null なら出さない（行ラベルが別にある終了カード用） */
+  label?: string | null;
 }
 
-export function StudyCourseSelect({ userId, value, onChange }: StudyCourseSelectProps) {
+export function StudyCourseSelect({ userId, value, onChange, label = '学習する教材（任意）' }: StudyCourseSelectProps) {
   const { data, loading, error } = useAsyncData<StudyCourseChoice[]>(
     () =>
       userId
@@ -38,14 +40,17 @@ export function StudyCourseSelect({ userId, value, onChange }: StudyCourseSelect
         : Promise.resolve([]),
     [userId]
   );
-  const options = data ?? [];
+  // 受講一覧に無い教材が既に付いていても（一覧の取得失敗・受講終了など）、選択が消えないようにする
+  const fetched = data ?? [];
+  const options = value && !fetched.some((o) => o.id === value.id) ? [value, ...fetched] : fetched;
 
   return (
     <label style={{ display: 'flex', flexDirection: 'column', gap: 6, textAlign: 'left' }}>
-      <span style={{ ...font.caption, color: color.textMuted, fontWeight: 700 }}>学習する教材（任意）</span>
+      {label && <span style={{ ...font.caption, color: color.textMuted, fontWeight: 700 }}>{label}</span>}
       <select
         value={value?.id ?? ''}
         disabled={loading}
+        aria-label={label ?? '学習した教材'}
         onChange={(e) => {
           const id = Number(e.target.value);
           onChange(options.find((o) => o.id === id) ?? null);
