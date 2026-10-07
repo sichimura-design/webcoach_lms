@@ -3350,6 +3350,9 @@ def _segment_totals_cte(user_scoped: bool) -> str:
     """
     started/endedイベントをペアリングして1区間ごとの学習時間(分)を算出するCTE。
     補正イベント(study_session_corrected)があればother.endedlogidの区間、無ければ直前のendedセグメントに加算する。
+    補正イベントにcourseid列があれば、その区間の教材は最新の補正のcourseidに置き換える
+    (終了カードで教材を選び直したとき。Moodleのログは書き換えられないので後から上書きを足す)。
+    courseidは0/NULLなら「置き換えなし」。「教材を指定しない」へ戻す置き換えは表せない。
 
     Args:
         user_scoped: Trueなら:useridで絞り込む(個人集計用)。Falseなら全ユーザー対象(ランキング用)
@@ -3376,7 +3379,9 @@ def _segment_totals_cte(user_scoped: bool) -> str:
         ),
         corrections AS (
             SELECT
+                c.id,
                 c.userid,
+                c.courseid,
                 c.timecreated,
                 CAST(JSON_UNQUOTE(JSON_EXTRACT(c.other, '$.deltaminutes')) AS SIGNED) AS delta_minutes,
                 -- endedlogid付きの補正は名指しされた区間へ(一時停止をはさんだ回を減らすとき、
@@ -3394,13 +3399,25 @@ def _segment_totals_cte(user_scoped: bool) -> str:
             FROM mdl_logstore_standard_log c
             WHERE c.eventname = :corrected_event
               {user_filter}
+        ),
+        course_overrides AS (
+            SELECT target_ended_log_id, courseid
+            FROM (
+                SELECT
+                    target_ended_log_id, courseid,
+                    ROW_NUMBER() OVER (PARTITION BY target_ended_log_id ORDER BY id DESC) AS rn
+                FROM corrections
+                WHERE courseid > 0
+            ) latest
+            WHERE rn = 1
         )
         SELECT
-            s.userid, s.courseid, s.started_at, s.ended_at, s.ended_log_id,
+            s.userid, COALESCE(co.courseid, s.courseid) AS courseid, s.started_at, s.ended_at, s.ended_log_id,
             GREATEST(0, ROUND(s.duration_seconds / 60) + COALESCE(SUM(cor.delta_minutes), 0)) AS duration_minutes
         FROM segments s
         LEFT JOIN corrections cor ON cor.target_ended_log_id = s.ended_log_id
-        GROUP BY s.userid, s.courseid, s.started_at, s.ended_at, s.ended_log_id, s.duration_seconds
+        LEFT JOIN course_overrides co ON co.target_ended_log_id = s.ended_log_id
+        GROUP BY s.userid, s.courseid, co.courseid, s.started_at, s.ended_at, s.ended_log_id, s.duration_seconds
     """
 
 
@@ -3504,7 +3521,8 @@ def get_recorded_session_minutes(db: Session, mdl_user_id: int, since_seconds: i
         recorded_minutes: 窓内の区間の合計分数(既存の補正込み)
         last_segment_minutes: 窓内の最後の区間の分数
         segment_count: 窓内の区間数
-        segments: 窓内の区間(終了が古い順)。ended_log_idは補正先の指定に使う
+        segments: 窓内の区間(終了が古い順)。ended_log_idは補正先の指定に使う。
+            courseidは教材の置き換え込み(教材の選び直しが要るかの判定に使う)
     """
     since = int(time.time()) - max(0, since_seconds) - _SESSION_WINDOW_SLACK_SECONDS
     query = text(
@@ -3518,7 +3536,11 @@ def get_recorded_session_minutes(db: Session, mdl_user_id: int, since_seconds: i
     params["since"] = since
     rows = db.execute(query, params).fetchall()
     segments = [
-        {"ended_log_id": int(row.ended_log_id), "duration_minutes": int(row.duration_minutes)}
+        {
+            "ended_log_id": int(row.ended_log_id),
+            "duration_minutes": int(row.duration_minutes),
+            "courseid": int(row.courseid) if row.courseid else None,
+        }
         for row in rows
     ]
     minutes = [seg["duration_minutes"] for seg in segments]

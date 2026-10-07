@@ -44,6 +44,28 @@ function planSegmentCorrections(segments, deltaMinutes) {
   return plan;
 }
 
+/**
+ * 終了カードで選んだ教材と違う教材の区間に、教材だけを置き換える0分の補正を作る。
+ *
+ * Moodleのログ(started)のcourseidは書き換えられないので、補正イベントのcourseid列で
+ * 上書きする(api-serverの集計が区間ごとに最新の補正のcourseidを優先する)。
+ * 教材なしで始めて途中でレッスンを開いた回や、終了時に教材を選び直した回が対象。
+ * 🔴 courseidが無い(「教材を指定しない」)ときは何もしない。補正のcourseid列は0/NULLを
+ *    「置き換えなし」と区別できないため、教材を外す置き換えは表せない。
+ *
+ * @param {Array<{ended_log_id:number, courseid:number|null}>} segments
+ * @param {number|undefined} courseid
+ * @param {Set<number>} alreadyTouched - 時間の補正で既にcourseidを付けた区間
+ * @returns {Array<{endedLogId:number, delta:number}>}
+ */
+function planCourseOverrides(segments, courseid, alreadyTouched = new Set()) {
+  const target = parseInt(courseid, 10);
+  if (!target || !segments) return [];
+  return segments
+    .filter((seg) => seg.courseid !== target && !alreadyTouched.has(seg.ended_log_id))
+    .map((seg) => ({ endedLogId: seg.ended_log_id, delta: 0 }));
+}
+
 class StudySessionService {
   /**
    * Start (or resume after a pause) a study session segment
@@ -82,11 +104,21 @@ class StudySessionService {
     const recorded = await apiServerAdapter.getRecordedSessionMinutes(userid, sinceSeconds);
     const target = Math.max(0, Math.round(targetMinutes));
     const deltaMinutes = target - recorded.recorded_minutes;
-    if (deltaMinutes === 0 || recorded.segment_count === 0) {
+    if (recorded.segment_count === 0) {
       return { success: true, deltaMinutes: 0, recordedMinutes: recorded.recorded_minutes };
     }
-    console.log(`[StudySession] Correcting session for user ${userid} to ${target}min (recorded ${recorded.recorded_minutes}min, delta ${deltaMinutes})`);
-    for (const { endedLogId, delta } of planSegmentCorrections(recorded.segments, deltaMinutes)) {
+    const plan = planSegmentCorrections(recorded.segments, deltaMinutes);
+    if (plan.length > 0) {
+      console.log(`[StudySession] Correcting session for user ${userid} to ${target}min (recorded ${recorded.recorded_minutes}min, delta ${deltaMinutes})`);
+    }
+    // 時間の補正もcourseidを持つので、補正した区間はそれだけで教材も置き換わる
+    const lastEndedLogId = recorded.segments[recorded.segments.length - 1]?.ended_log_id;
+    const touched = new Set();
+    for (const { endedLogId, delta } of plan) {
+      await moodleAdapter.correctStudySession(userid, delta, courseid, endedLogId);
+      touched.add(endedLogId ?? lastEndedLogId);
+    }
+    for (const { endedLogId, delta } of planCourseOverrides(recorded.segments, courseid, touched)) {
       await moodleAdapter.correctStudySession(userid, delta, courseid, endedLogId);
     }
     return { success: true, deltaMinutes, recordedMinutes: recorded.recorded_minutes };
@@ -180,3 +212,4 @@ const studySessionService = new StudySessionService();
 
 module.exports = studySessionService;
 module.exports.planSegmentCorrections = planSegmentCorrections;
+module.exports.planCourseOverrides = planCourseOverrides;
