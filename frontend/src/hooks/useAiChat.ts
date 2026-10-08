@@ -163,7 +163,10 @@ export function useAiChat() {
         id: (Date.now() + 1).toString(),
         role: 'assistant',
         kind: 'error',
-        content: '回答を取得できませんでした。通信が不安定か、一時的なエラーです。',
+        // 429 = AIチャットの回数制限(nginx)。待てば送れるので理由を出す
+        content: error?.response?.status === 429
+          ? 'AIへの質問が続いたため、少し時間をおいてからもう一度お試しください。'
+          : '回答を取得できませんでした。通信が不安定か、一時的なエラーです。',
         timestamp: new Date(),
       });
     } finally {
