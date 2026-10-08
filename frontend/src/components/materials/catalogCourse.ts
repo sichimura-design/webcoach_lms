@@ -1,6 +1,6 @@
 import type { Course } from '../../types/mypage';
 import type { GalleryCourse } from './courseVisuals';
-import { courseImageOf } from '../../utils/courseImage';
+import { usableCourseImage } from '../../utils/courseImage';
 import { taxonomyOrderOf } from '../../constants/courseTaxonomy';
 
 /**
@@ -32,7 +32,7 @@ export function toCatalogCourse(
     duration: raw.duration,
     purposes: Array.isArray(raw.purposes) ? raw.purposes : undefined,
     tags: Array.isArray(raw.tags) ? raw.tags : undefined,
-    thumbnailUrl: courseImageOf(raw.courseimage, raw.shortname),
+    thumbnailUrl: usableCourseImage(raw.courseimage),
     progress: enrolled?.progress ?? 0,
     isCurrent,
     enrolled: !!enrolled,

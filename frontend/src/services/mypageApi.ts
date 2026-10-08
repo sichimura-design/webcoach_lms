@@ -4,7 +4,7 @@
  */
 
 import { bffClient } from './bffClient';
-import { courseImageOf } from '../utils/courseImage';
+import { usableCourseImage } from '../utils/courseImage';
 import { Profile } from '../types/api';
 import {
   Course,
@@ -57,7 +57,7 @@ export const fetchResumeCourses = async (userId: number, limit = 5): Promise<Cou
     title: course.fullname || '',
     description: course.summary || '',
     progress: course.progress || 0,
-    thumbnailUrl: courseImageOf(course.image_url, course.shortname),
+    thumbnailUrl: course.image_url,
     roadmapName: 'ロードマップ',
     categoryName: 'カテゴリ',
     categoryColor: '#F3A7A7',
@@ -113,7 +113,7 @@ export const fetchUserCourses = async (userId: number): Promise<Course[]> => {
       title: course.fullname || course.displayname || '',
       description: course.summary || '',
       progress: course.progress || 0,
-      thumbnailUrl: courseImageOf(course.courseimage || course.overviewfiles?.[0]?.fileurl, course.shortname),
+      thumbnailUrl: usableCourseImage(course.courseimage || course.overviewfiles?.[0]?.fileurl),
       categoryName: course.categoryname || 'カテゴリ',
       categoryColor: '#60A5FA',
       lastAccessDate: course.lastaccess ? new Date(course.lastaccess * 1000).toISOString() : undefined,
@@ -209,7 +209,7 @@ const mapRecommendedCourse = (course: any): Course => ({
   title: course.fullname || course.displayname || '',
   description: course.summary || '',
   categoryName: course.categoryname || 'カテゴリ',
-  thumbnailUrl: courseImageOf(course.courseimage, course.shortname),
+  thumbnailUrl: usableCourseImage(course.courseimage),
   difficulty: course.difficulty,
   duration: course.duration,
   totalLessons: course.lessoncount ?? course.totallessons,
