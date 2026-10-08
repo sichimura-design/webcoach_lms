@@ -42,6 +42,22 @@ def test_other_models_get_no_sonnet_5_5_options(monkeypatch):
     assert "output_config" not in payload
 
 
+def test_workspace_id_is_sent_as_header_when_set(monkeypatch):
+    monkeypatch.setenv("ANTHROPIC_API_KEY", "test-key")
+    monkeypatch.setenv("ANTHROPIC_WORKSPACE_ID", " wrkspc_test ")
+    llm = llm_factory.create_chat_model(max_tokens=1024)
+
+    assert llm._client.default_headers["anthropic-workspace-id"] == "wrkspc_test"
+
+
+def test_no_workspace_header_when_unset(monkeypatch):
+    monkeypatch.setenv("ANTHROPIC_API_KEY", "test-key")
+    monkeypatch.delenv("ANTHROPIC_WORKSPACE_ID", raising=False)
+    llm = llm_factory.create_chat_model(max_tokens=1024)
+
+    assert "anthropic-workspace-id" not in llm._client.default_headers
+
+
 def test_message_text_skips_thinking_and_tool_use_blocks():
     content = [
         {"type": "thinking", "thinking": "", "signature": "sig"},
