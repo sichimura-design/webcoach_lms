@@ -84,7 +84,8 @@ export class ProdCognitoStack extends cdk.Stack {
       ? cognito.UserPoolEmail.withSES({
           sesRegion: this.region,
           fromEmail: sesFromEmail,
-          fromName: 'WEBCOACHカスタマーサポート',
+          // noreply@ からの送信専用のため、返信不可と分かる名前にする
+          fromName: 'WEBCOACH（送信専用）',
           // ドメイン指定時は SES でドメイン検証済みとして扱う
           ...(sesFromDomain ? { sesVerifiedDomain: sesFromDomain } : {}),
         })
