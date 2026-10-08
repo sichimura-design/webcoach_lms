@@ -69,15 +69,22 @@ app.use(helmet({
 }));
 
 // CORS configuration
+// nginx no longer answers preflights itself, so this is the only CORS allowlist
+// (per environment via ALLOWED_ORIGINS). maxAge lets browsers cache preflights.
 const corsOptions = {
   origin: config.allowedOrigins,
   credentials: true,
-  optionsSuccessStatus: 200
+  optionsSuccessStatus: 200,
+  maxAge: 7200
 };
 app.use(cors(corsOptions));
 
-// Trust proxy (for nginx, CloudFront, etc.)
-app.set('trust proxy', true);
+// Trust X-Forwarded-* only from nginx (loopback in ECS host network mode,
+// a private docker-network address in docker-compose). nginx overwrites
+// X-Forwarded-For with the real client IP, so req.ip is that IP. `true` here
+// trusted the left-most X-Forwarded-For value, which the client can forge to
+// dodge the rate limiters and spoof the IPs in security logs.
+app.set('trust proxy', 'loopback, uniquelocal');
 
 // Rate limiting (applied to all routes)
 app.use('/api/', generalLimiter);
@@ -113,11 +120,13 @@ app.use(auditLogging);
 // Serve static files (for auth.html)
 app.use(express.static('public'));
 
-// Swagger UI
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument, {
-  customCss: '.swagger-ui .topbar { display: none }',
-  customSiteTitle: 'Moodle BFF API Documentation'
-}));
+// Swagger UI (exposes the full API map; off in production unless enabled)
+if (config.enableApiDocs) {
+  app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument, {
+    customCss: '.swagger-ui .topbar { display: none }',
+    customSiteTitle: 'Moodle BFF API Documentation'
+  }));
+}
 
 // Health check - detailed version
 app.get('/health', async (req, res) => {

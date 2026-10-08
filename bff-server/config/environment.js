@@ -9,6 +9,10 @@ const config = {
   // Server
   port: process.env.PORT || 3001,
   nodeEnv: NODE_ENV,
+  // Swagger UI(/api-docs)。未指定ならproduction以外で公開(dev EC2はdocker-composeでtrueを渡す)
+  enableApiDocs: process.env.ENABLE_API_DOCS
+    ? process.env.ENABLE_API_DOCS === 'true'
+    : NODE_ENV !== 'production',
 
   // Moodle
   moodleUrl: process.env.MOODLE_URL || 'http://localhost',

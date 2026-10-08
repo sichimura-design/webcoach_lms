@@ -142,6 +142,16 @@ const RUNTIME_SETTINGS = [
     description: 'api-serverのAPI一覧ページ(/docs・/redoc)を公開します。開発用のため、本番では無効にしてください。',
     defaultValue: true,
   },
+  {
+    name: 'ENABLE_API_DOCS',
+    service: 'bff-server',
+    type: 'boolean',
+    group: '接続',
+    label: 'BFFのAPI説明ページ(/api-docs)を公開',
+    description: 'BFFのAPI一覧ページ(Swagger、/api-docs)を公開します。誰でも見られるページなので、本番では無効のままにしてください。',
+    defaultValue: false,
+    current: () => config.enableApiDocs,
+  },
 ];
 
 /** AI_CHAT_MAX_OUTPUT_TOKENS → ai-chat-max-output-tokens (起動スクリプトの変換の逆) */
