@@ -32,14 +32,6 @@ def _model_options(model_name: str, effort: str) -> dict:
     return {}
 
 
-def _workspace_headers() -> dict:
-    """ワークスペースに属さないAPIキーは、使うワークスペースをリクエストごとに指定しないと400になる。
-    本番はParameter Store(/lms/prod/api-server/config/anthropic-workspace-id)から入る。
-    未設定ならヘッダーを付けない(ワークスペースに属するキーはそのまま動く)"""
-    workspace_id = (os.getenv("ANTHROPIC_WORKSPACE_ID") or "").strip()
-    return {"anthropic-workspace-id": workspace_id} if workspace_id else {}
-
-
 def create_chat_model(max_tokens: int, effort: str = "low") -> ChatAnthropic:
     """ANTHROPIC_MODELのモデルでChatAnthropicを作る。APIキーが無ければValueError"""
     api_key = os.getenv("ANTHROPIC_API_KEY")
@@ -50,7 +42,6 @@ def create_chat_model(max_tokens: int, effort: str = "low") -> ChatAnthropic:
         model=model_name,
         anthropic_api_key=api_key,
         max_tokens=max_tokens,
-        default_headers=_workspace_headers(),
         **_model_options(model_name, effort),
     )
     logger.info(f"Claude LLM initialized with model: {model_name}")
