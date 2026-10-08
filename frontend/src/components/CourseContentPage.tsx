@@ -144,7 +144,8 @@ interface ContentState {
 
 type ContentAction =
   | { type: 'FETCH_START' }
-  | { type: 'FETCH_SUCCESS'; sections: Section[]; courseName: string; initialModule?: Module | null }
+  | { type: 'FETCH_SUCCESS'; sections: Section[]; initialModule?: Module | null }
+  | { type: 'SET_COURSE_NAME'; courseName: string }
   | { type: 'FETCH_ERROR'; error: string }
   | { type: 'SELECT_MODULE'; module: Module }
   | { type: 'TOGGLE_SECTION'; sectionId: number }
@@ -169,16 +170,17 @@ const initialContentState: ContentState = {
 function contentReducer(state: ContentState, action: ContentAction): ContentState {
   switch (action.type) {
     case 'FETCH_START':
-      return { ...state, loading: true, error: null };
+      return { ...state, loading: true, error: null, courseName: '' };
     case 'FETCH_SUCCESS':
       return {
         ...state,
         loading: false,
         sections: action.sections,
-        courseName: action.courseName,
         expandedSections: action.sections.length > 0 ? [action.sections[0].id] : [],
         selectedModule: action.initialModule ?? action.sections[0]?.modules?.[0] ?? null,
       };
+    case 'SET_COURSE_NAME':
+      return { ...state, courseName: action.courseName };
     case 'FETCH_ERROR':
       return { ...state, loading: false, error: action.error };
     case 'SELECT_MODULE':
@@ -446,22 +448,36 @@ function CourseContentPage({ courseId, initialModuleId, onBack }: CourseContentP
   }, [selectedModule?.id]);
 
   // ─── データ読み込み ───────────────────────
+  // 🔴 目次・本文とコース名は別々に待つ。以前は Promise.all でコース名のための全コース一覧
+  //    （/api/moodle/courses）まで待ってから本文を出しており、一覧が遅いと教材が開くのも遅れた
   useEffect(() => {
+    let cancelled = false;
     dispatch({ type: 'FETCH_START' });
-    Promise.all([bffClient.getCourseContent(courseId), bffClient.getCourses()])
-      .then(([content, courses]) => {
+    bffClient.getCourseContent(courseId)
+      .then((content) => {
+        if (cancelled) return;
         const sections = Array.isArray(content) ? content : [];
-        const course = courses.find((c: any) => c.id === courseId);
         const allModules = sections.flatMap((s: any) => s.modules ?? []);
         const initialModule = initialModuleId
           ? (allModules.find((m: any) => m.id === initialModuleId) ?? allModules[0])
           : allModules[0];
-        dispatch({ type: 'FETCH_SUCCESS', sections, courseName: course?.fullname ?? '', initialModule });
+        dispatch({ type: 'FETCH_SUCCESS', sections, initialModule });
       })
       .catch((err: any) => {
+        if (cancelled) return;
         console.error('Failed to load course content:', err);
         dispatch({ type: 'FETCH_ERROR', error: getUserMessage(err, 'コースコンテンツの読み込みに失敗しました。') });
       });
+    bffClient.getCourses()
+      .then((courses) => {
+        if (cancelled) return;
+        const course = Array.isArray(courses) ? courses.find((c: any) => c.id === courseId) : undefined;
+        dispatch({ type: 'SET_COURSE_NAME', courseName: course?.fullname ?? '' });
+      })
+      .catch(() => {}); // コース名が取れなくても教材は読める
+    return () => {
+      cancelled = true;
+    };
   }, [courseId]);
 
   // 🔴 同じコース内のレッスンへのリンク（教材内のリンク・「続きから」など）は ?module だけが

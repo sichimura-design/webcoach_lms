@@ -127,8 +127,11 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       });
     }
 
-    // Lambda@Edge 用コンテンツ認証クッキーをセット
-    await setContentAuthCookie();
+    // Lambda@Edge 用コンテンツ認証クッキーをセット。
+    // 🔴 待たない。以前は await しており、全画面の表示が「Cognito → /user/info → /content-token」の
+    //    3段直列を待っていた。トークンを使うのは教材の iframe とアバター画像だけで、教材側は
+    //    contentToken が null の間は読み込み中を出して待つ（CourseContentPage / MoodleFallbackBlock）
+    void setContentAuthCookie();
 
     // アバター URL とニックネームを取得してキャッシュ
     if (moodleUserId) {

@@ -12,9 +12,28 @@ const COGNITO_TO_MOODLE_ROLE_MAPPING = {
   'coach': 'editingteacher',    // Coach/Teacher
 };
 
+// Cognito sub → Moodle ユーザーの対応。requireAuth が全APIリクエストで引くため、毎回 Moodle の
+// webservice を呼ぶと、画面1枚(十数本のAPI)ごとに同じ検索が十数回走り、Moodle の処理枠を
+// 食い合って全体が遅くなっていた。対応はほぼ変わらないのでプロセス内で一定時間覚えておく。
+// メールが変わったとき(同期が要る)はキャッシュを使わない。
+const MOODLE_USER_CACHE_TTL_MS = 10 * 60 * 1000;
+const MOODLE_USER_CACHE_MAX = 5000;
+const moodleUserCache = new Map(); // sub -> { user, email, expiresAt }
+// 画面表示時は同じユーザーのAPIが同時に十数本来る。キャッシュが空のときに全部が
+// Moodle へ行かない(新規ユーザーの二重作成も防ぐ)よう、問い合わせ中の Promise を共有する
+const moodleUserInflight = new Map(); // sub -> Promise
+
+function pruneMoodleUserCache(now) {
+  if (moodleUserCache.size < MOODLE_USER_CACHE_MAX) return;
+  for (const [key, entry] of moodleUserCache) {
+    if (entry.expiresAt <= now) moodleUserCache.delete(key);
+  }
+  if (moodleUserCache.size >= MOODLE_USER_CACHE_MAX) moodleUserCache.clear();
+}
+
 class UserService {
   /**
-   * Get or create Moodle user from Cognito payload
+   * Get or create Moodle user from Cognito payload (cached per Cognito sub)
    */
   async getOrCreateMoodleUser(cognitoPayload) {
     const { email, sub } = cognitoPayload;
@@ -22,6 +41,34 @@ class UserService {
     if (!sub) {
       throw new Error('Cognito sub is required');
     }
+
+    const now = Date.now();
+    const cached = moodleUserCache.get(sub);
+    if (cached && cached.email === email && cached.expiresAt > now) {
+      return cached.user;
+    }
+
+    const inflight = moodleUserInflight.get(sub);
+    if (inflight) return inflight;
+
+    const promise = this.lookupOrCreateMoodleUser(cognitoPayload)
+      .then((user) => {
+        if (user) {
+          pruneMoodleUserCache(Date.now());
+          moodleUserCache.set(sub, { user, email, expiresAt: Date.now() + MOODLE_USER_CACHE_TTL_MS });
+        }
+        return user;
+      })
+      .finally(() => moodleUserInflight.delete(sub));
+    moodleUserInflight.set(sub, promise);
+    return promise;
+  }
+
+  /**
+   * Cognito sub に紐づく Moodle ユーザーを探し、無ければ作る(キャッシュなし)
+   */
+  async lookupOrCreateMoodleUser(cognitoPayload) {
+    const { email, sub } = cognitoPayload;
 
     // Try to find existing user by idnumber (Cognito sub)
     try {

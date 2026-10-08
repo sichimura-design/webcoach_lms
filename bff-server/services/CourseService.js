@@ -8,6 +8,11 @@ const moodleAdapter = require('../adapters/MoodleAdapter');
 const { normalizeMoodleContent, decodeHtml } = require('../utils/html-normalizer');
 const { config } = require('../config/environment');
 
+// getAllCourses の短時間キャッシュ(getAllCourses のコメント参照)
+const ALL_COURSES_CACHE_TTL_MS = 60 * 1000;
+let allCoursesCache = null; // { courses, expiresAt }
+let allCoursesInflight = null;
+
 class CourseService {
   /**
    * Enrich courses with custom image URLs from WebCoach database
@@ -96,6 +101,37 @@ class CourseService {
    * Get all courses
    */
   async getAllCourses() {
+    // 全コース一覧は全員で同じ内容なのに、教材画面・マイページ・教材トップなどほぼ全画面が
+    // 毎回取りに行く(Moodle を3回呼ぶ)。短時間だけプロセス内で使い回し、同時の取得は1本にまとめる。
+    // コース/カテゴリを BFF 経由で作成・更新したときは invalidateAllCoursesCache() で捨てる
+    const now = Date.now();
+    if (allCoursesCache && allCoursesCache.expiresAt > now) {
+      return structuredClone(allCoursesCache.courses);
+    }
+    if (!allCoursesInflight) {
+      allCoursesInflight = this.fetchAllCourses()
+        .then((courses) => {
+          allCoursesCache = { courses, expiresAt: Date.now() + ALL_COURSES_CACHE_TTL_MS };
+          return courses;
+        })
+        .finally(() => {
+          allCoursesInflight = null;
+        });
+    }
+    // 呼び出し側が結果を書き換えてもキャッシュが汚れないよう複製を返す
+    return structuredClone(await allCoursesInflight);
+  }
+
+  invalidateAllCoursesCache() {
+    allCoursesCache = null;
+  }
+
+  async fetchAllCourses() {
+    // コース一覧とカテゴリ名は互いに依存しないので同時に取る
+    const categoriesPromise = moodleAdapter.getCategories().then(
+      (value) => ({ value }),
+      (error) => ({ error })
+    );
     const courses = await moodleAdapter.getCourses();
     if (!Array.isArray(courses)) {
       return [];
@@ -118,7 +154,9 @@ class CourseService {
     // never categoryname, so frontend code that groups courses by category.name
     // (materials/catalogCourse.ts) always saw an empty categoryName without this.
     try {
-      const categoriesRaw = await moodleAdapter.getCategories();
+      const categoriesResult = await categoriesPromise;
+      if (categoriesResult.error) throw categoriesResult.error;
+      const categoriesRaw = categoriesResult.value;
       const categoriesArray = Array.isArray(categoriesRaw) ? categoriesRaw : categoriesRaw.categories || [];
       const categoryNameById = new Map(categoriesArray.map((c) => [c.id, c.name]));
       filteredCourses.forEach((course) => {
@@ -202,12 +240,26 @@ class CourseService {
    * Get course contents with enriched page details
    */
   async getCourseContentsEnriched(courseid, userid = null) {
+    // 目次・ページ本文・完了状況は互いに依存しないので Moodle へ同時に投げる
+    // (以前は3回を順番に待っており、教材画面・マイページの「続きから」の表示が遅かった)。
+    // 補助の2つは失敗しても目次だけで返すため、ここで reject を値に変えておく
+    const settle = (promise) => promise.then(
+      (value) => ({ value }),
+      (error) => ({ error })
+    );
+    const pagesPromise = settle(moodleAdapter.getPagesByCourses([courseid]));
+    const completionPromise = userid
+      ? settle(moodleAdapter.getActivityCompletionStatus(courseid, userid))
+      : null;
+
     // Get course structure
     const contents = await moodleAdapter.getCourseContents(courseid);
 
     // Enrich with page module details
     try {
-      const pagesResponse = await moodleAdapter.getPagesByCourses([courseid]);
+      const pagesResult = await pagesPromise;
+      if (pagesResult.error) throw pagesResult.error;
+      const pagesResponse = pagesResult.value;
 
       // Create a map of page details by coursemodule ID
       const pagesMap = new Map(
@@ -259,9 +311,11 @@ class CourseService {
 
     // Fix completion tracking settings using core_completion_get_activities_completion_status
     // This API returns more reliable completion data than the potentially cached core_course_get_contents
-    if (userid) {
+    if (completionPromise) {
       try {
-        const completionStatus = await moodleAdapter.getActivityCompletionStatus(courseid, userid);
+        const completionResult = await completionPromise;
+        if (completionResult.error) throw completionResult.error;
+        const completionStatus = completionResult.value;
 
         if (completionStatus && completionStatus.statuses && Array.isArray(completionStatus.statuses)) {
           // Create a map of completion settings by coursemodule ID

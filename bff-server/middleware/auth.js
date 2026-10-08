@@ -8,6 +8,26 @@ const userService = require('../services/UserService');
 const logger = require('../utils/logger');
 const moodleAdapter = require('../adapters/MoodleAdapter');
 
+// 最終アクセス日時の更新(Moodle webservice)を全APIリクエストで送ると、画面1枚ごとに
+// 十数回 Moodle を叩くことになる。同じユーザーへは間隔を空けて送る。
+// ただしこの呼び出しは「その日最初のアクセスでログインイベントを記録する」役目も兼ねるので
+// (local_webcoach_utils の update_user_lastaccess)、日付(JST)が変わったら間隔に関係なく送る。
+const LASTACCESS_UPDATE_INTERVAL_MS = 5 * 60 * 1000;
+const lastAccessSent = new Map(); // moodleUserId -> { at, day }
+
+function jstDay(ms) {
+  return new Date(ms + 9 * 60 * 60 * 1000).toISOString().slice(0, 10);
+}
+
+function shouldUpdateLastAccess(moodleUserId, now = Date.now()) {
+  const day = jstDay(now);
+  const prev = lastAccessSent.get(moodleUserId);
+  if (prev && prev.day === day && now - prev.at < LASTACCESS_UPDATE_INTERVAL_MS) return false;
+  if (lastAccessSent.size >= 5000) lastAccessSent.clear();
+  lastAccessSent.set(moodleUserId, { at: now, day });
+  return true;
+}
+
 /**
  * Require authentication - JWT Token Verification or Internal API Key
  */
@@ -78,11 +98,14 @@ async function requireAuth(req, res, next) {
           moodleUsername: req.user.moodleUsername
         });
 
-        // Update user's lastaccess timestamp in background (non-blocking)
-        moodleAdapter.updateUserLastAccess(moodleUser.id).catch(err => {
-          logger.error('Failed to update user lastaccess:', err.message);
-          // Don't block the request if lastaccess update fails
-        });
+        // Update user's lastaccess timestamp in background (non-blocking, throttled per user)
+        if (shouldUpdateLastAccess(moodleUser.id)) {
+          moodleAdapter.updateUserLastAccess(moodleUser.id).catch(err => {
+            logger.error('Failed to update user lastaccess:', err.message);
+            // 失敗したら次のリクエストでもう一度送れるようにする
+            lastAccessSent.delete(moodleUser.id);
+          });
+        }
       }
     } catch (error) {
       logger.error('=== CRITICAL: Failed to lookup/create Moodle user ===');
@@ -104,3 +127,4 @@ async function requireAuth(req, res, next) {
 }
 
 module.exports = requireAuth;
+module.exports.shouldUpdateLastAccess = shouldUpdateLastAccess;

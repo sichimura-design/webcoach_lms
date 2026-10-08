@@ -60,14 +60,6 @@ router.get('/courses/:courseid/contents', requireAuth, async (req, res) => {
     const userid = req.user?.moodleUserId || null;
     const contents = await courseService.getCourseContentsEnriched(courseid, userid);
 
-    // Log completion values for debugging
-    console.log(`[DEBUG] Course ${courseid} final response - modules completion:`);
-    contents.forEach(section => {
-      section.modules?.forEach(module => {
-        console.log(`  cmid=${module.id}, modname=${module.modname}, completion=${module.completion}`);
-      });
-    });
-
     res.json(contents);
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -135,6 +127,7 @@ router.post('/create-category', requireAuth, requireAdmin, async (req, res) => {
       try {
         console.log(`[Update Categories] Updating ${toUpdate.length} categories`);
         const updated = await courseService.updateCategories(toUpdate);
+        courseService.invalidateAllCoursesCache();
         results.updated = toUpdate.length;
         toUpdate.forEach((c, idx) => results.categories.push({ ...c, status: 'updated' }));
       } catch (error) {
@@ -148,6 +141,7 @@ router.post('/create-category', requireAuth, requireAdmin, async (req, res) => {
       try {
         console.log(`[Create Categories] Creating ${toCreate.length} categories`);
         const created = await courseService.createCategories(toCreate);
+        courseService.invalidateAllCoursesCache();
         results.created = created.length;
         created.forEach(c => results.categories.push({ ...c, status: 'created' }));
       } catch (error) {
@@ -220,6 +214,7 @@ router.post('/create-course', requireAuth, requireAdmin, async (req, res) => {
       try {
         console.log(`[Update Courses] Updating ${toUpdate.length} courses`);
         const updated = await courseService.updateCourses(toUpdate);
+        courseService.invalidateAllCoursesCache();
         results.updated = toUpdate.length;
         toUpdate.forEach((c, idx) => results.courses.push({ ...c, status: 'updated' }));
       } catch (error) {
@@ -233,6 +228,7 @@ router.post('/create-course', requireAuth, requireAdmin, async (req, res) => {
       try {
         console.log(`[Create Courses] Creating ${toCreate.length} courses`);
         const created = await courseService.createCourses(toCreate);
+        courseService.invalidateAllCoursesCache();
         results.created = created.length;
         created.forEach(c => results.courses.push({ ...c, status: 'created' }));
       } catch (error) {
