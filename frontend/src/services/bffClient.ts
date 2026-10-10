@@ -286,6 +286,39 @@ export interface AiModelInfo {
   } | null;
 }
 
+/** 期限管理の段階。none=未連携など確かめる対象が無い */
+export type ExpiryLevel = 'ok' | 'warning' | 'danger' | 'expired' | 'error' | 'none';
+
+export interface CertificateExpiry {
+  host: string;
+  status: ExpiryLevel;
+  validFrom?: string;
+  validTo?: string;
+  daysLeft?: number;
+  issuer?: string | null;
+  subject?: string | null;
+  trusted?: boolean;
+  error?: string | null;
+}
+
+export interface ExpiryStatusResponse {
+  checkedAt: string;
+  thresholds: { warnDays: number; dangerDays: number };
+  certificates: CertificateExpiry[];
+  google: {
+    /** BFFにGoogleのOAuthクライアントが設定されているか */
+    configured: boolean;
+    status: ExpiryLevel;
+    /** nullは状態を読めなかった */
+    connected?: boolean | null;
+    providerAccountEmail?: string | null;
+    connectedAt?: string | null;
+    accessTokenExpiresAt?: string | null;
+    refreshOk?: boolean;
+    refreshError?: string | null;
+  };
+}
+
 export interface RuntimeSettingsResponse {
   editable: boolean;
   aiModel: AiModelInfo;
@@ -1880,6 +1913,12 @@ class BFFClient {
    */
   async getRuntimeSettings(): Promise<RuntimeSettingsResponse> {
     const response = await this.api.get('/admin/runtime-settings');
+    return response.data;
+  }
+
+  /** 証明書の有効期限・Google連携トークンが使えるか（管理者のみ・開いた時点で実際に確かめる） */
+  async getExpiryStatus(): Promise<ExpiryStatusResponse> {
+    const response = await this.api.get('/admin/expiry-status');
     return response.data;
   }
 

@@ -40,6 +40,7 @@ import { AdminCoachMappingPage } from '../components/admin/AdminCoachMappingPage
 // TODO(バックエンド未実装): 実装され次第 /admin/coach-integrations ルートへ再接続する。
 import { AdminSettingsPage } from '../components/admin/AdminSettingsPage';
 import { AdminRuntimeSettingsPage } from '../components/admin/AdminRuntimeSettingsPage';
+import { AdminExpiryPage } from '../components/admin/AdminExpiryPage';
 import { CoachStudentsPage } from '../components/coach/CoachStudentsPage';
 import { CoachingSchedulePage } from '../components/coach/CoachingSchedulePage';
 import { CoachSettingsPage } from '../components/coach/CoachSettingsPage';
@@ -533,6 +534,7 @@ function AppRoutes() {
         <Route path="coach-mapping" element={<AdminCoachMappingPage />} />
         <Route path="settings" element={<AdminSettingsPage />} />
         <Route path="runtime-settings" element={<AdminRuntimeSettingsPage />} />
+        <Route path="expiry" element={<AdminExpiryPage />} />
       </Route>
 
       <Route
