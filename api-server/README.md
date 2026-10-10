@@ -13,8 +13,7 @@ api-server/
 ├── entities/            # SQLAlchemy エンティティ
 ├── dto/  mappers/       # レスポンス DTO と変換
 ├── routers/             # エンドポイント（下表）
-├── agents/              # AI エージェント関連
-├── tools.py             # LangGraph 用ツール（Dify 動的ツール等）
+├── agents/              # AI エージェント関連（LangGraph 用ツール・Dify 動的ツールは tools_langchain.py）
 ├── vector_db.py  moodle_to_chromadb.py   # 教材ベクトル検索
 ├── tests/               # pytest
 └── swagger.yaml
@@ -27,7 +26,7 @@ api-server/
 | `health.py` | ヘルスチェック |
 | `courses.py` / `profiles.py` | コースアクセス履歴・プロフィール設定 |
 | `webcoach.py` | WebCoach 共通（学習状況・目標など） |
-| `ai.py` / `ai_langgraph.py` | AI チャット（LangGraph 版、Dify アプリ連携を含む） |
+| `ai_langgraph.py` | AI チャット（LangGraph 版、Dify アプリ連携を含む） |
 | `faiss_ingest.py` | 教材の FAISS 取り込み |
 | `coaching.py` / `notes.py` / `recordings.py` | コーチング管理・AI コーチングノート・録画メタデータ |
 | `integrations.py` | Zoom / Google Meet 連携 |
