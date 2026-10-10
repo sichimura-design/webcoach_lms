@@ -231,7 +231,7 @@ const ecsStack = new ProdEcsStack(app, `${envName}-EcsStack`, {
     // 本番のドメインだけ許可する(以前はUATの値を流用しておりlocalhostやdev/uatまで許可していた)
     ?? 'https://study.webcoach.jp,https://api.webcoach.jp',
   moodleServiceName: app.node.tryGetContext('moodleServiceName') ?? 'moodle-api-service',
-  moodleServiceUsername: app.node.tryGetContext('moodleServiceUsername') ?? 'admin',
+  moodleServiceUsername: app.node.tryGetContext('moodleServiceUsername') ?? 'bff-service',
   moodleLang: app.node.tryGetContext('moodleLang') ?? 'ja',
   vectorDbEnv: app.node.tryGetContext('vectorDbEnv') ?? 'keyword',
   // prod-SpaStack(us-east-1)の出力値。管理画面「コンテンツUP」の保存先と公開URLに使う

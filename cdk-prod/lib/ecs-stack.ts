@@ -44,7 +44,11 @@ export interface ProdEcsStackProps extends cdk.StackProps {
   readonly allowedOrigins?: string;
   /** Moodle Web Service のショートネーム */
   readonly moodleServiceName?: string;
-  /** Moodle Web Service 用アカウントのユーザー名 */
+  /**
+   * bff-server が Moodle Web Service に接続するアカウントのユーザー名。
+   * サイト管理者ではない専用アカウント(scripts/create-bff-service-account.php で作成)。
+   * パスワードは appSecrets の moodleServicePassword。
+   */
   readonly moodleServiceUsername?: string;
   /** Moodle 初回インストール時に作成する管理者アカウントのメールアドレス */
   readonly moodleAdminEmail?: string;
@@ -369,7 +373,7 @@ export class ProdEcsStack extends cdk.Stack {
         // タスクが2台あるので、議事録の取得・リマインドメールはapi-serverが決めた1台だけで動かす
         SCHEDULER_LEADER_ELECTION: 'true',
         MOODLE_SERVICE_NAME: moodleServiceName ?? 'moodle-api-service',
-        MOODLE_SERVICE_USERNAME: moodleServiceUsername ?? 'admin',
+        MOODLE_SERVICE_USERNAME: moodleServiceUsername ?? 'bff-service',
         ALLOWED_ORIGINS: allowedOrigins ?? '',
         COGNITO_REGION: this.region,
         ...(cloudfrontDomain ? { CLOUDFRONT_DOMAIN: cloudfrontDomain } : {}),
@@ -521,11 +525,12 @@ export class ProdEcsStack extends cdk.Stack {
         // スキーマ作成〜システムコンテキスト/管理者ユーザー/フロントページコース作成まで
         // 一通り完走させる。
         MOODLE_SKIP_BOOTSTRAP: 'no',
-        // ここで作成される初期管理者アカウントは、bff-server が Web Service 経由で
-        // ログインするサービスアカウント (MOODLE_SERVICE_USERNAME/MOODLE_SERVICE_PASSWORD、
-        // 上記 bffContainer 参照) と同一ユーザー名・パスワードにしておくことで、
-        // 初回インストール完了後すぐに bff-server が疎通できるようにする。
-        MOODLE_USERNAME: moodleServiceUsername ?? 'admin',
+        // 初回インストール時に作成される管理者アカウント(EFS にインストール済みなら使われない)。
+        // 以前は bff-server もこの admin で接続していたが、2026-10-10 に管理者権限を持たない
+        // 専用アカウント(bff-service)へ分けた。初回インストール時は admin が moodleServicePassword
+        // のパスワードで作られるので、インストール後に create-bff-service-account.php を実行し、
+        // admin のパスワードは Moodle 画面で別の値に変えること。
+        MOODLE_USERNAME: 'admin',
         MOODLE_EMAIL: moodleAdminEmail ?? 'admin@webcoach.jp',
         MOODLE_SITE_NAME: 'WebCoach',
       },
