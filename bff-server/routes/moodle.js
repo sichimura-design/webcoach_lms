@@ -340,7 +340,7 @@ router.get('/user-badges/:userid', requireAuth, requireOwnership, async (req, re
 });
 
 // Upload file
-router.post('/files/upload', requireAuth, upload.single('file'), async (req, res) => {
+router.post('/files/upload', requireAuth, requireAdmin, upload.single('file'), async (req, res) => {
   try {
     const file = req.file;
     const { courseid } = req.body;
@@ -353,9 +353,18 @@ router.post('/files/upload', requireAuth, upload.single('file'), async (req, res
 });
 
 // Generic Moodle API call
-router.post('/api', requireAuth, async (req, res) => {
+// サービスアカウントのトークンで任意の関数を呼べてしまうため、管理者限定かつ
+// 画面で実際に使う関数だけに絞る(以前はログインした受講生でも全関数を呼べた)
+const GENERIC_API_ALLOWED_FUNCTIONS = new Set([
+  'core_user_get_users_by_field', // 管理画面: コーチ割り当て
+]);
+
+router.post('/api', requireAuth, requireAdmin, async (req, res) => {
   try {
     const { wsfunction, params } = req.body;
+    if (!GENERIC_API_ALLOWED_FUNCTIONS.has(wsfunction)) {
+      return res.status(403).json({ error: 'Forbidden', message: 'この関数は呼び出せません' });
+    }
     const result = await moodleAdapter.callAPI(wsfunction, params);
     res.json(result);
   } catch (error) {
@@ -364,7 +373,7 @@ router.post('/api', requireAuth, async (req, res) => {
 });
 
 // Create activity
-router.post('/courses/:courseid/activities', requireAuth, async (req, res) => {
+router.post('/courses/:courseid/activities', requireAuth, requireAdmin, async (req, res) => {
   try {
     const { courseid } = req.params;
     const { modulename, ...activityData } = req.body;
