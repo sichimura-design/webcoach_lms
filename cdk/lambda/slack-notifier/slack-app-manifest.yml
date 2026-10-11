@@ -38,6 +38,12 @@ display_information:
   # Slackのアプリ一覧に出る短い説明(140文字まで)
   description: WebCoach(dev・本番)の障害・エラー・費用超過の即時通知と、AI利用状況・費用の日次レポート
   background_color: "#E86D78"
+features:
+  # botのスコープ(incoming-webhook)を使うにはbotユーザーの定義が必須
+  # (無いと「OAuth requires bot user」で作成できない)
+  bot_user:
+    display_name: WebCoach Monitor
+    always_online: false
 oauth_config:
   scopes:
     bot:
@@ -46,4 +52,5 @@ oauth_config:
 settings:
   org_deploy_enabled: false
   socket_mode_enabled: false
+  is_hosted: false
   token_rotation_enabled: false
