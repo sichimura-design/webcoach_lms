@@ -69,8 +69,24 @@ const sensitiveLimiter = rateLimit({
   legacyHeaders: false,
 });
 
+/**
+ * パスワード再設定前のメールアドレス登録確認用
+ * 登録有無を返すため、総当たりでアドレスを調べられないよう成功も含めて数える
+ */
+const accountCheckLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 10, // Limit each IP to 10 checks per windowMs
+  message: {
+    error: 'Too many requests',
+    detail: 'Too many account checks. Please try again after 15 minutes.'
+  },
+  standardHeaders: true,
+  legacyHeaders: false,
+});
+
 module.exports = {
   generalLimiter,
+  accountCheckLimiter,
   authLimiter,
   modifyLimiter,
   sensitiveLimiter,

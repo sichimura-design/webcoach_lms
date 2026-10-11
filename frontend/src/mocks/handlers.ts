@@ -437,6 +437,9 @@ function buildWeek(offsetWeeks: number) {
 export const handlers = [
   // ==================== 認証後のブート経路 ====================
   http.get('*/api/user/info', () => HttpResponse.json(userInfo)),
+  http.post('*/api/auth/password-reset/check', () =>
+    HttpResponse.json({ exists: true, needsFirstLogin: false })
+  ),
 
   http.get('*/api/content-token', () =>
     HttpResponse.json({ token: 'mock-content-token', expiresAt: Date.now() + 60 * 60 * 1000 })

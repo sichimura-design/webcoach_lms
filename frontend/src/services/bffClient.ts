@@ -414,6 +414,14 @@ class BFFClient {
     return response.data;
   }
 
+  /**
+   * パスワード再設定前のメールアドレス登録確認(未ログインで呼ぶ)
+   */
+  async checkPasswordResetAccount(email: string): Promise<{ exists: boolean; needsFirstLogin: boolean }> {
+    const response = await this.api.post('/auth/password-reset/check', { email });
+    return response.data;
+  }
+
   // ==================== Moodle コース ====================
 
   /**
