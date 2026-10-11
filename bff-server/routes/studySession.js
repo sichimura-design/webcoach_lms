@@ -68,13 +68,14 @@ router.post('/sessions/:userid/end', requireAuth, async (req, res) => {
 /**
  * POST /api/study/sessions/:userid/correct
  * Manually correct the duration of the session just finished (低頻度)
- * body: { targetMinutes, sinceSeconds, courseid } … この回を合計targetMinutes分にする(推奨)
+ * body: { targetMinutes, sinceSeconds, courseid, courseMap } … この回を合計targetMinutes分にする(推奨)
+ *       courseMap: [{ from: 元の教材(教材なしはnull), to: 置き換え先 }] … 複数教材の回の選び直し
  *       { deltaMinutes, courseid }               … 直前の区間に差分を足す(旧形式)
  */
 router.post('/sessions/:userid/correct', requireAuth, async (req, res) => {
   try {
     const { userid } = req.params;
-    const { deltaMinutes, targetMinutes, sinceSeconds, courseid } = req.body || {};
+    const { deltaMinutes, targetMinutes, sinceSeconds, courseid, courseMap } = req.body || {};
 
     if (!(await isSelfOrAdminOrAssignedCoach(req, userid))) {
       return forbid(res, req.user?.email, `correct a study session for user ${userid}`);
@@ -88,8 +89,11 @@ router.post('/sessions/:userid/correct', requireAuth, async (req, res) => {
       if (typeof sinceSeconds !== 'number' || !Number.isFinite(sinceSeconds) || sinceSeconds < 0) {
         return res.status(400).json({ error: 'Bad Request', detail: 'sinceSeconds must be a non-negative number' });
       }
+      if (courseMap !== undefined && !Array.isArray(courseMap)) {
+        return res.status(400).json({ error: 'Bad Request', detail: 'courseMap must be an array' });
+      }
       const result = await studySessionService.correctSessionToTarget(
-        parseInt(userid, 10), targetMinutes, Math.round(sinceSeconds), courseid
+        parseInt(userid, 10), targetMinutes, Math.round(sinceSeconds), courseid, courseMap
       );
       return res.json(result);
     }

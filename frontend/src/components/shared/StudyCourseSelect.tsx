@@ -2,6 +2,10 @@ import { bffClient } from '../../services/bffClient';
 import { useAsyncData } from '../../hooks/useAsyncData';
 import { color, font, radius } from '../../theme/webcoachTheme';
 import { buildCatalog } from '../materials/catalogCourse';
+import { useRecentCourseStore } from '../../store/recentCourseStore';
+
+/** 「最近開いた教材」に出す件数 */
+const RECENT_LIMIT = 5;
 
 export interface StudyCourseChoice {
   id: number;
@@ -14,10 +18,13 @@ export interface StudyCourseChoice {
  * 🔴 開始時（マイページ）と終了カード（FinishSessionModal）の両方で使う。
  *    Moodle ログの start は書き換えられないので、終了カードで選び直した教材は
  *    補正イベントの courseid で上書きする（BFF の planCourseOverrides）。
- * 🔴 選択肢は「受講中の教材」（GET /api/moodle/courses/{userid}）を先頭に、
- *    その下に「その他の教材」（GET /api/moodle/courses の公開中コース）を並べる。
+ * 🔴 選択肢は「最近開いた教材」（recentCourseStore）を先頭に、その下に「教材一覧」として
+ *    受講中の教材（GET /api/moodle/courses/{userid}）→ 公開中の残りのコース
+ *    （GET /api/moodle/courses）の順で並べる。
  *    受講登録は教材画面を開いたときにしか付かない（管理者・コーチは付かない）ので、
  *    受講中だけにすると本番で「HB添削しか選べない」状態になった。
+ *    以前は「受講中の教材」「その他の教材」に分けていたが、受講登録が付いているかは
+ *    受講生から見えず、学習した教材が「その他」に入って見えるだけだったのでやめた。
  *    学習記録ページの courseOptions（集計済み byCourse 由来）を使うと、
  *    まだ一度も記録していない教材が選べないため使わない。
  * 🔴 既定は「教材を指定しない」。アプリの外での学習も記録の対象なので必須にしない。
@@ -59,10 +66,16 @@ export function StudyCourseSelect({ userId, value, onChange, label = '学習す�
     },
     [userId]
   );
+  const recentOwner = useRecentCourseStore((x) => x.ownerId);
+  const recentEntries = useRecentCourseStore((x) => x.entries);
+  // 別のユーザーの履歴は出さない（同じブラウザで別アカウントにログインした場合）
+  const recent: StudyCourseChoice[] = (recentOwner === userId ? recentEntries : [])
+    .slice(0, RECENT_LIMIT)
+    .map((e) => ({ id: e.courseId, title: e.courseTitle || `コース${e.courseId}` }));
+  const recentIds = new Set(recent.map((c) => c.id));
+  const catalog = [...(data?.enrolled ?? []), ...(data?.others ?? [])].filter((c) => !recentIds.has(c.id));
   // 一覧に無い教材が既に付いていても（一覧の取得失敗・非公開化など）、選択が消えないようにする
-  const enrolled = data?.enrolled ?? [];
-  const others = data?.others ?? [];
-  const listed = [...enrolled, ...others];
+  const listed = [...recent, ...catalog];
   const extra = value && !listed.some((o) => o.id === value.id) ? [value] : [];
   const options = [...extra, ...listed];
 
@@ -97,18 +110,18 @@ export function StudyCourseSelect({ userId, value, onChange, label = '学習す�
             {o.title}
           </option>
         ))}
-        {enrolled.length > 0 && (
-          <optgroup label="受講中の教材">
-            {enrolled.map((o) => (
+        {recent.length > 0 && (
+          <optgroup label="最近開いた教材">
+            {recent.map((o) => (
               <option key={o.id} value={o.id}>
                 {o.title}
               </option>
             ))}
           </optgroup>
         )}
-        {others.length > 0 && (
-          <optgroup label={enrolled.length > 0 ? 'その他の教材' : '教材'}>
-            {others.map((o) => (
+        {catalog.length > 0 && (
+          <optgroup label="教材一覧">
+            {catalog.map((o) => (
               <option key={o.id} value={o.id}>
                 {o.title}
               </option>

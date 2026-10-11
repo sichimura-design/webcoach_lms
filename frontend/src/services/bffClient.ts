@@ -55,6 +55,7 @@ import {
   StudyActivityPage,
   StudyActivityPatch,
   StudyActivityQuery,
+  StudyCourseMapping,
   StudyStatsSummary,
   StudyReflection,
   StudyReflectionPatch,
@@ -854,14 +855,21 @@ class BFFClient {
    * 差分はBFFがサーバーの集計値から作る(区間ごとに丸める集計とフロントの計測はずれるため)。
    * POST /api/study/sessions/{userid}/correct
    * @param sinceSeconds この回の最初の開始から今までの秒数(一時停止も含む)。どの区間がこの回かを決める
+   * @param courseMap 複数教材の回で選び直した教材の対応表。区間ごとに教材を置き換える
    */
   async correctStudySessionToTarget(
     userId: number,
     targetMinutes: number,
     sinceSeconds: number,
-    courseId?: number
+    courseId?: number,
+    courseMap?: StudyCourseMapping[]
   ): Promise<void> {
-    await this.api.post(`/study/sessions/${userId}/correct`, { targetMinutes, sinceSeconds, courseid: courseId });
+    await this.api.post(`/study/sessions/${userId}/correct`, {
+      targetMinutes,
+      sinceSeconds,
+      courseid: courseId,
+      courseMap,
+    });
   }
 
   /**

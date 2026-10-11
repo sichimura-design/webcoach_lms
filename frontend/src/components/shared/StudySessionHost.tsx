@@ -70,7 +70,6 @@ function StudySessionHost() {
   const promptDeclineCounts = useStudyTimerStore((x) => x.promptDeclineCounts);
   const declinePrompt = useStudyTimerStore((x) => x.declinePrompt);
   const promptMutedOn = useStudyTimerStore((x) => x.promptMutedOn);
-  const attachCourse = useStudyTimerStore((x) => x.attachCourse);
   const markActive = useStudyTimerStore((x) => x.markActive);
   const recentEntries = useRecentCourseStore((x) => x.entries);
 
@@ -123,22 +122,27 @@ function StudySessionHost() {
   }, [category, hasSession, activityId, location.pathname]);
 
   /*
-   * 教材なしで始めた回で、計測中にレッスンを開いたらその教材を付ける。
-   * マイページやAIコーチから始めて教材を読んだ回が、ずっと「教材を指定しない」の
-   * ままになっていた。終了カードで選び直せるが、何もしなくてもだいたい正しくしておく。
-   * 付いた教材はこのあとの区間の start と、終了時の補正（サーバー側の教材の置き換え）に乗る。
+   * 計測中にレッスンを開いたら、その教材の区間に切り替える。
+   * 教材なしで始めた回なら教材が付き、別の教材で始めた回なら2つ目の教材として記録される
+   * （以前は最初の教材に固定で、あとから開いた教材の時間も最初の教材に付いていた）。
+   * 終了カードでは教材ごとに行が出て、それぞれ選び直せる。
+   * 🔴 教材ページ以外（AIコーチ等）に移っても教材は切り替えない。同じ教材について
+   *    相談している時間として、直前の教材に付ける。
    */
   const sessionCourseId = s.session?.courseId;
+  const lessonCourseId = lessonCourse?.courseId;
   useEffect(() => {
-    if (!hasSession || sessionCourseId || !lessonCourse) return;
-    attachCourse({
+    if (!hasSession || !lessonCourse || lessonCourse.courseId === sessionCourseId) return;
+    s.switchCourse({
       courseId: lessonCourse.courseId,
       courseTitle: lessonCourse.courseTitle,
       lessonId: lessonCourse.lessonId,
       lessonTitle: lessonCourse.lessonTitle,
       progressPercentAtStart: lessonCourse.progressPercent,
     });
-  }, [hasSession, sessionCourseId, lessonCourse, attachCourse]);
+    // s・lessonCourse は毎レンダー新しいオブジェクトなので、教材の id が変わったときだけ動かす
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [hasSession, sessionCourseId, lessonCourseId]);
 
   // ---- 3. 放置検知の材料: 操作の観測 --------------------------------------
   const lastMarkRef = useRef(0);

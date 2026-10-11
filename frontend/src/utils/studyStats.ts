@@ -36,6 +36,7 @@ import {
   StudyActivityInput,
   StudyActivityPatch,
   StudyCategory,
+  StudyCourseSegmentTotal,
   StudyDayTotal,
   StudyFinishDraft,
   StudyMonthTotal,
@@ -205,6 +206,94 @@ export function sessionSegmentTimeline(
     const last = out[out.length - 1];
     if (last && last.category === seg.category) out[out.length - 1] = { ...last, seconds: last.seconds + seconds };
     else out.push({ category: seg.category, seconds });
+  }
+  return out;
+}
+
+/**
+ * 実行中セッションの教材ごとの実測（時系列順・隣り合う同じ教材はつなぐ）。
+ * 終了カードの「学習した教材」の行と、その分数の元。
+ * 🔴 測り方は sessionSegmentTimeline と同じ（合計は経過秒と一致する）。
+ */
+export function sessionCourseTimeline(
+  s: ActiveStudySession,
+  now: number = Date.now()
+): StudyCourseSegmentTotal[] {
+  const end = s.pausedAt ?? now;
+  const out: StudyCourseSegmentTotal[] = [];
+  for (const seg of s.segments ?? []) {
+    const segEnd = seg.endedAt ?? end;
+    const seconds = Math.max(0, Math.floor((segEnd - seg.startedAt) / 1000));
+    if (seconds <= 0) continue;
+    const courseId = seg.courseId ?? null;
+    const last = out[out.length - 1];
+    if (last && last.courseId === courseId) {
+      out[out.length - 1] = { ...last, seconds: last.seconds + seconds };
+    } else {
+      out.push({ courseId, courseTitle: seg.courseTitle ?? '', seconds });
+    }
+  }
+  return out;
+}
+
+/**
+ * 教材ごとの分数。学習時間（totalMinutes）を修正したときも合計が一致するように配る。
+ *
+ * 🔴 配り方はサーバーの補正（BFF planSegmentCorrections）に合わせる。減らすときは
+ *    最後の区間から削り、増やすときは最後の区間に足す。比例配分にすると画面と記録が食い違う。
+ * 🔴 教材なし（courseId: null）の区間は、教材が1つでもあれば最初の教材に寄せる
+ *    （記録時もその教材として置き換える。マイページから始めて教材を開いた回の始めの数分など）。
+ *    教材が1つも無ければ null の1行になる。
+ * 返り値は最初に出てきた順。
+ */
+export function courseMinutes(
+  timeline: StudyCourseSegmentTotal[],
+  totalMinutes: number
+): { courseId: number | null; courseTitle: string; minutes: number }[] {
+  const list = timeline.filter((t) => t.seconds > 0);
+  const firstCourse = list.find((t) => t.courseId !== null);
+  const merged = list.map((t) =>
+    t.courseId === null && firstCourse ? { ...t, courseId: firstCourse.courseId, courseTitle: firstCourse.courseTitle } : t
+  );
+  if (merged.length === 0) return [];
+
+  // 最後から削る／最後に足す（秒で）
+  const target = Math.max(0, totalMinutes) * 60;
+  const total = merged.reduce((sum, t) => sum + t.seconds, 0);
+  const adjusted = merged.map((t) => ({ ...t }));
+  if (target >= total) {
+    adjusted[adjusted.length - 1].seconds += target - total;
+  } else {
+    let remove = total - target;
+    for (let i = adjusted.length - 1; i >= 0 && remove > 0; i -= 1) {
+      const take = Math.min(adjusted[i].seconds, remove);
+      adjusted[i].seconds -= take;
+      remove -= take;
+    }
+  }
+
+  // 教材ごとにまとめる（出てきた順）
+  const order: (number | null)[] = [];
+  const acc = new Map<number | null, { courseTitle: string; seconds: number }>();
+  for (const t of adjusted) {
+    const cur = acc.get(t.courseId);
+    if (cur) cur.seconds += t.seconds;
+    else {
+      order.push(t.courseId);
+      acc.set(t.courseId, { courseTitle: t.courseTitle, seconds: t.seconds });
+    }
+  }
+
+  // 最大剰余法で分を配る（segmentMinutes と同じ考え方。合計が totalMinutes と一致する）
+  const rows = order.map((courseId) => ({ courseId, ...(acc.get(courseId) as { courseTitle: string; seconds: number }) }));
+  const exact = rows.map((r) => (target > 0 ? (r.seconds / target) * totalMinutes : 0));
+  const out = rows.map((r, i) => ({ courseId: r.courseId, courseTitle: r.courseTitle, minutes: Math.floor(exact[i]) }));
+  let remainder = Math.max(0, totalMinutes) - out.reduce((sum, o) => sum + o.minutes, 0);
+  const byFrac = exact.map((e, i) => ({ i, frac: e - Math.floor(e) })).sort((a, b) => b.frac - a.frac);
+  for (const { i } of byFrac) {
+    if (remainder <= 0) break;
+    out[i].minutes += 1;
+    remainder -= 1;
   }
   return out;
 }
@@ -718,6 +807,7 @@ export function buildFinishDraft(
       // 実測の時系列のまま持つ。durationMinutes への合わせ込みは buildActivityInput が行う
       // （終了カードで分数を変えるたびにやり直せるよう、実測を残しておく）
       segments: sessionSegmentTimeline(session, end),
+      courseSegments: sessionCourseTimeline(session, end),
     },
   };
 }

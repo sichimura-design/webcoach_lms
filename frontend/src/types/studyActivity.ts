@@ -101,6 +101,27 @@ export interface StudySegment {
   startedAt: number;
   /** null = 進行中。閉じた区間だけ値が入る */
   endedAt: number | null;
+  /**
+   * この区間に学習していた教材。教材なしは未定義。
+   * 🔴 計測中に別の教材のレッスンを開くと、カテゴリが同じでも区間を切り替える
+   *    （1回の記録で複数の教材を学習できるようにするため。switchCourse 参照）。
+   *    この仕組みより前の区間には無いので、無ければ教材なしとして扱う。
+   */
+  courseId?: number;
+  courseTitle?: string;
+}
+
+/** 教材ごとの実測秒（時系列順・隣り合う同じ教材はつなぐ）。教材なしは courseId: null */
+export interface StudyCourseSegmentTotal {
+  courseId: number | null;
+  courseTitle: string;
+  seconds: number;
+}
+
+/** 終了カードでの教材の選び直し。from の教材の区間を to の教材として記録する（教材なしは from: null） */
+export interface StudyCourseMapping {
+  from: number | null;
+  to: number;
 }
 
 /** 記録に残すカテゴリ別の内訳。合計は必ず durationMinutes*60 に一致させる（adjustSegments） */
@@ -283,7 +304,17 @@ export interface StudyFinishDraft {
     completedTarget: boolean;
     /** 実測の内訳（時系列順）。記録時に adjustSegments で durationMinutes に合わせる元になる */
     segments: StudySegmentTotal[];
+    /**
+     * 教材ごとの実測（時系列順）。この仕組みより前の下書きには無い（無ければ course だけで扱う）。
+     * 🔴 course は代表の1つ（一番最初の教材）。教材別の記録はサーバーの区間が持つ。
+     */
+    courseSegments?: StudyCourseSegmentTotal[];
   };
+  /**
+   * 終了カードで選び直した教材の対応表。サーバーの区間の教材を置き換える（BFF courseMap）。
+   * 未定義なら snapshot.course で回全体を置き換える旧来の動き。
+   */
+  courseMap?: StudyCourseMapping[];
 }
 
 // ---- 集計値の型（dev/miyabe・元モック） -------------------------------------

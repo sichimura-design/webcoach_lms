@@ -28,4 +28,7 @@ assets/
 - `materials/_assets/lms-embed.js`・`lms-skin.css` … 教材HTMLが読み込む LMS 埋め込み用のJS・CSS。S3 の `materials/_assets/` が配信元で、
   ここはその原本（2026-10-11 に S3 から取り込み）。直したら S3 へ上げて CloudFront を無効化する
   （`--content-type "application/javascript; charset=utf-8"`／`text/css`）。教材HTML側は書き換えない方針。
+  `lesson-map.prod.json` は本番用の `lesson-map.json`（旧サイトの記事ID→LMSのレッスンURL）。Moodle のコース・モジュール番号は
+  環境ごとに違うので、UAT 用の表を本番に置くと別のレッスンへ飛ぶ（2026-10-11 に本番DBの mod/url から作り直した）。
+  S3 へは `materials/_assets/lesson-map.json` の名前で上げる。
 - `thumbnails/<コースslug>.png` … 54枚。`instagram.png` は原本名「Instagram広告運用」だが、対応する広告コースが無いため「インスタグラム運用」(instagram)に割り当てた。
