@@ -166,9 +166,9 @@ export class ProdSlackNotifierStack extends cdk.Stack {
     });
     addAlarm('RdsCpuAlarm', 'RDSのCPU使用率が15分以上80%を超えています',
       rdsMetric('CPUUtilization', 'Average'), { threshold: 80, evaluationPeriods: 3 });
-    // max_connections=200(t3.small)。接続プールの上限に近づくと新しい接続が待たされる
-    addAlarm('RdsConnectionsAlarm', 'RDSの接続数が150を超えています(上限200)',
-      rdsMetric('DatabaseConnections', 'Maximum'), { threshold: 150, evaluationPeriods: 2 });
+    // max_connections=300(t4g.medium、rds-stack.ts と合わせる)。接続プールの上限に近づくと新しい接続が待たされる
+    addAlarm('RdsConnectionsAlarm', 'RDSの接続数が225を超えています(上限300)',
+      rdsMetric('DatabaseConnections', 'Maximum'), { threshold: 225, evaluationPeriods: 2 });
     const storageThresholdBytes = Math.max(2, Math.round(props.dbAllocatedStorageGiB * 0.15)) * 1024 ** 3;
     addAlarm('RdsFreeStorageAlarm', `RDSの空き容量が${storageThresholdBytes / 1024 ** 3}GiBを切りました`,
       rdsMetric('FreeStorageSpace', 'Minimum'),

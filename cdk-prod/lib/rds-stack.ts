@@ -65,7 +65,10 @@ export class ProdRdsStack extends cdk.Stack {
       // 2026-10-06: 2026-07-25 にスナップショット復元で作った prod-lms-db を cdk import で
       // 管理下に戻した(旧 prod-moodle-db は削除済み)。
       instanceIdentifier: `${envName}-lms-db`,
-      instanceType: ec2.InstanceType.of(ec2.InstanceClass.T3, ec2.InstanceSize.SMALL),
+      // 2026-10-11: 200人規模の同時アクセスに備え t3.small(2GiB) → t4g.medium(Graviton・4GiB)。
+      // メモリが増えると InnoDB バッファプール(既定でメモリの約3/4)も自動で増える。
+      // ⚠ クラス変更はシングルAZのため適用中(5〜10分)DBに接続できない。利用者のいない時間にデプロイすること
+      instanceType: ec2.InstanceType.of(ec2.InstanceClass.T4G, ec2.InstanceSize.MEDIUM),
       vpc,
       vpcSubnets: { subnetType: ec2.SubnetType.PRIVATE_ISOLATED },
       securityGroups: [this.rdsSg],
@@ -85,7 +88,9 @@ export class ProdRdsStack extends cdk.Stack {
         parameters: {
           character_set_server: 'utf8mb4',
           collation_server: 'utf8mb4_unicode_ci',
-          max_connections: '200',
+          // Moodle(2タスク分) + api-server(接続プール10+20 × 2タスク) + 予備。
+          // t4g.medium(4GiB)に合わせて200から引き上げ。動的パラメータなので再起動不要
+          max_connections: '300',
         },
       }),
     });
