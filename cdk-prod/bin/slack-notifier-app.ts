@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * 本番の監視・利用状況のSlack通知(ログのエラー・アラーム・ECSタスク停止・日次レポート)単体デプロイ用
+ * 本番の監視・利用状況のSlack通知(ログのエラー・アラーム・ECSタスク停止・日次レポート・月の予算)単体デプロイ用
  * 稼働中のサービス(ECS/ALB/RDS)には何も変更を加えない。ARN/IDは文字列で渡す。
  *
  * 事前に Secrets Manager へ Slack Incoming WebhookのURLを文字列で登録しておくこと。
@@ -48,6 +48,8 @@ new ProdSlackNotifierStack(app, `${envName}-SlackNotifierStack`, {
     'arn:aws:elasticloadbalancing:ap-northeast-1:840513866884:targetgroup/prod-lms-tg/af622ca03891d1db'),
   dbInstanceIdentifier: ctx('dbInstanceIdentifier', `${envName}-lms-db`),
   dbAllocatedStorageGiB: Number(ctx('dbAllocatedStorageGiB', '20')),
+  // 2026-10時点の実績は1日あたり約$17(t4g.medium化後)=月$520前後。通常月では鳴らない額にしている
+  monthlyBudgetUsd: Number(ctx('monthlyBudgetUsd', '700')),
 });
 
 app.synth();

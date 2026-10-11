@@ -2,11 +2,12 @@
 WebCoachの監視・利用状況をSlackへ通知するLambda(dev: cdk/lib/slack-notifier-stack.ts、
 本番: cdk-prod/lib/slack-notifier-stack.ts。コードはこの1つを共用する)
 
-4種類のトリガーを1本で受け、投稿先チャンネル(=Webhook)を分ける:
+5種類のトリガーを1本で受け、投稿先チャンネル(=Webhook)を分ける:
 - CloudWatch Logsサブスクリプションフィルタ → エラーを即時通知(アラート用チャンネル)
     - api-server / bff-server / moodle / nginx のエラーっぽい行(文字列マッチ)
     - AI利用ログ(api-server/agents/usage_log.py の1行JSON)のうち status=error/timeout
 - CloudWatchアラーム(SNS経由) → ALB 5xx・ヘルスチェック失敗・RDS負荷などの状態変化(アラート用)
+- AWS Budgets(SNS経由) → 月の費用の実績・予測が予算の警告ラインを超えた(アラート用、本番のみ)
 - EventBridgeのECSタスク停止イベント → 予定外のタスク停止(アラート用)
 - EventBridgeの定期実行(毎朝9時) → 前日の利用状況・運用KPI・費用(利用状況用チャンネル)と、
   証明書/Google連携/AIモデルの期限切れが近いもの(アラート用)
@@ -246,8 +247,12 @@ def _format_ai_error(r):
 def _notify_alarms(records):
     posted = 0
     for record in records:
+        sns_record = record.get("Sns") or {}
+        if (sns_record.get("Subject") or "").startswith("AWS Budgets"):
+            posted += _notify_budget(sns_record.get("Message") or "")
+            continue
         try:
-            alarm = json.loads(record["Sns"]["Message"])
+            alarm = json.loads(sns_record["Message"])
         except (KeyError, ValueError):
             continue
         title = alarm.get("AlarmDescription") or alarm.get("AlarmName")
@@ -263,6 +268,31 @@ def _notify_alarms(records):
         _post_to_slack(ALERT_WEBHOOK_SECRET_ID, f"{head}\n`{alarm.get('AlarmName')}` {reason}")
         posted += 1
     return {"posted": posted}
+
+
+# AWS Budgetsの通知(SNSのMessageはJSONではなく英文のメール本文)から拾う行
+BUDGET_FIELDS = re.compile(
+    r"^(Budget Name|Budgeted Amount|Alert Type|Alert Threshold|ACTUAL Amount|FORECASTED Amount):\s*(.+)$",
+    re.MULTILINE,
+)
+
+
+def _notify_budget(message):
+    """月の予算(cdk-prod の MonthlyBudget)の実績・予測が閾値を超えたとき"""
+    fields = dict(BUDGET_FIELDS.findall(message))
+    if not fields:
+        return 0
+    alert_type = fields.get("Alert Type", "")
+    kind = "予測" if alert_type == "FORECASTED" else "実績"
+    amount = fields.get(f"{alert_type} Amount", "?")
+    head = f":money_with_wings: *[{ENV_NAME}] AWS費用が予算の警告ラインを超えました({kind})*"
+    body = (
+        f"今月の{kind} {amount} / 予算 {fields.get('Budgeted Amount', '?')}"
+        f"(警告ライン {fields.get('Alert Threshold', '?')})\n"
+        f"`{fields.get('Budget Name', '')}` 内訳はCost Explorerで確認"
+    )
+    _post_to_slack(ALERT_WEBHOOK_SECRET_ID, f"{head}\n{body}")
+    return 1
 
 
 # ---------------------------------------------------------------------------
