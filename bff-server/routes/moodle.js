@@ -285,16 +285,19 @@ router.post('/enroll-course/:courseid', requireAuth, async (req, res) => {
 });
 
 // New content notifications
-router.get('/notifications/new-content', requireAuth, async (req, res) => {
-  try {
-    const since = req.query.since;
-    const result = await courseService.getNewContentNotifications(since);
-    res.json(result);
-  } catch (error) {
-    console.error('[Notifications] Error:', error.message);
-    res.status(500).json({ error: error.message });
-  }
-});
+// 廃止(2026-10-11)。フロントの呼び出し(AppHeader の useNewContentNotification)を止めたため。
+// 1回の呼び出しで全コース(約77)の教材内容を Moodle から1件ずつ取得する重い処理で、
+// ログイン済みなら誰でも何度でも叩けてしまうのでルートごと外している。
+// router.get('/notifications/new-content', requireAuth, async (req, res) => {
+//   try {
+//     const since = req.query.since;
+//     const result = await courseService.getNewContentNotifications(since);
+//     res.json(result);
+//   } catch (error) {
+//     console.error('[Notifications] Error:', error.message);
+//     res.status(500).json({ error: error.message });
+//   }
+// });
 
 // Get courses by field
 router.get('/getcoursebyfield', requireAuth, async (req, res) => {
