@@ -5,7 +5,7 @@ import { Pause, Play, Square, Timer } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
 import { useStudySession } from '../../hooks/useStudySession';
 import { useStudyTimerStore } from '../../store/studyTimerStore';
-import { categoryOfPath } from '../../utils/studyCategory';
+import { categoryOfPath, sessionCategoryOf } from '../../utils/studyCategory';
 import { color, radius } from '../../theme/webcoachTheme';
 import { formatMMSS } from '../../utils/studyStats';
 import StudySessionPrompt from '../shared/StudySessionPrompt';
@@ -28,8 +28,9 @@ import StudyCourseSelect, { StudyCourseChoice } from '../shared/StudyCourseSelec
  * 🔴 カテゴリはユーザーに選ばせない（utils/studyCategory.ts の🔴）。
  *    この画面の categoryOfPath は 'other'＝「その他の学習時間」で、
  *    アプリの外で手を動かしている時間を拾うのがこの入口の役目。
- *    教材を読んでいた時間に混ぜないため、ここで 'material' に
- *    すり替えたりしないこと。ラベルも「学習時間」に留める。
+ *    ただし教材を選んで始めたら「教材」として数える（sessionCategoryOf）。
+ *    以前は教材を選んでも 'other' のままで、記録の大半が「その他」になっていた。
+ *    ラベルは「学習時間」に留める。
  *
  * 🔴 開始したその場で止められるようにする。
  *    かつてここは記録中「⏱ 学習時間を記録中」のテキストだけを出し、
@@ -194,7 +195,7 @@ function StartRecordingButton() {
               setConfirming(false);
               s.start({
                 mode: 'freeform',
-                category: categoryOfPath(location.pathname),
+                category: sessionCategoryOf(categoryOfPath(location.pathname), !!course),
                 courseId: course?.id,
                 courseTitle: course?.title,
               });
