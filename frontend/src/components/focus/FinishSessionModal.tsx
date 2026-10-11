@@ -7,11 +7,19 @@ import {
   Achievement,
   STUDY_CATEGORY_LABEL,
   StudyActivityCourseRef,
+  StudyCourseMapping,
+  StudyCourseSegmentTotal,
   StudyFinishDraft,
 } from '../../types/studyActivity';
 import { useAuth } from '../../contexts/AuthContext';
 import { StudyCourseSelect } from '../shared/StudyCourseSelect';
-import { MAX_ADJUST_EXTRA_MINUTES, adjustSegments, displaySegments, formatMinutesHM } from '../../utils/studyStats';
+import {
+  MAX_ADJUST_EXTRA_MINUTES,
+  adjustSegments,
+  courseMinutes,
+  displaySegments,
+  formatMinutesHM,
+} from '../../utils/studyStats';
 import { formatDayLabel, formatSessionRange } from './focusFormat';
 
 /**
@@ -108,6 +116,58 @@ function Value({ children, muted }: { children: React.ReactNode; muted?: boolean
   );
 }
 
+/** 行のキー。教材なしは 'none' */
+function keyOf(courseId: number | null): string {
+  return courseId === null ? 'none' : String(courseId);
+}
+
+/**
+ * 終了カードに出す教材の行（元の教材・出てきた順）。
+ * 🔴 教材なしの区間は、教材が1つでもあれば最初の教材に寄せるので行にしない（courseMinutes と同じ）。
+ * 🔴 courseSegments を持たない古い下書きは snapshot.course の1行。
+ */
+function courseOriginals(draft: StudyFinishDraft): { courseId: number | null; courseTitle: string }[] {
+  const timeline = (draft.snapshot.courseSegments ?? []).filter((t) => t.seconds > 0);
+  const seen = new Set<number>();
+  const rows: { courseId: number | null; courseTitle: string }[] = [];
+  for (const t of timeline) {
+    if (t.courseId === null || seen.has(t.courseId)) continue;
+    seen.add(t.courseId);
+    rows.push({ courseId: t.courseId, courseTitle: t.courseTitle });
+  }
+  if (rows.length > 0) return rows;
+  const c = draft.snapshot.course;
+  return [{ courseId: c?.courseId ?? null, courseTitle: c?.courseTitle ?? '' }];
+}
+
+function initialPick(
+  o: { courseId: number | null; courseTitle: string },
+  current: StudyActivityCourseRef | null
+): StudyActivityCourseRef | null {
+  if (o.courseId === null) return current;
+  if (current?.courseId === o.courseId) return current;
+  return { courseId: o.courseId, courseTitle: o.courseTitle };
+}
+
+/**
+ * 選び直しをサーバーへ渡す対応表にする。教材なしの区間は最初の行の行き先へ。
+ * 🔴 「教材を指定しない」へ戻す行は入れない（サーバーの補正で表せない。BFF courseTargetOf 参照）。
+ */
+function buildCourseMap(
+  originals: { courseId: number | null }[],
+  picked: Record<string, StudyActivityCourseRef | null>,
+  timeline: StudyCourseSegmentTotal[]
+): StudyCourseMapping[] {
+  const map: StudyCourseMapping[] = [];
+  for (const o of originals) {
+    const to = picked[keyOf(o.courseId)]?.courseId;
+    if (to) map.push({ from: o.courseId, to });
+  }
+  const firstTo = originals[0] ? picked[keyOf(originals[0].courseId)]?.courseId : undefined;
+  if (firstTo && timeline.some((t) => t.courseId === null && t.seconds > 0)) map.push({ from: null, to: firstTo });
+  return map;
+}
+
 export function FinishSessionModal({
   draft,
   weekBaseMinutes,
@@ -122,11 +182,14 @@ export function FinishSessionModal({
   const [step, setStep] = useState<Step>('confirm');
   const [minutes, setMinutes] = useState(draft.actualMinutes);
   /**
-   * 学習した教材。始めたときの教材（計測中に開いたレッスンが自動で付いた場合も含む）が初期値で、
-   * ここで選び直せる。記録すると snapshot.course を差し替えて渡し、サーバーの区間の教材も
-   * 補正イベントで置き換わる（BFF planCourseOverrides）。
+   * 学習した教材。計測中に開いた教材ごとに1行（教材を切り替えると区間が分かれる）。
+   * 行ごとに選び直せて、記録するとサーバーの区間の教材が補正イベントで置き換わる
+   * （BFF planCourseOverrides）。キーは元の教材（教材なしは 'none'）。
    */
-  const [course, setCourse] = useState<StudyActivityCourseRef | null>(draft.snapshot.course);
+  const originals = courseOriginals(draft);
+  const [picked, setPicked] = useState<Record<string, StudyActivityCourseRef | null>>(() =>
+    Object.fromEntries(originals.map((o) => [keyOf(o.courseId), initialPick(o, draft.snapshot.course)]))
+  );
   const [editingMinutes, setEditingMinutes] = useState(false);
   const [contentNote, setContentNote] = useState(draft.contentNote);
   const [memo, setMemo] = useState(draft.memo);
@@ -152,6 +215,21 @@ export function FinishSessionModal({
   const weekTotalMinutes = weekBaseMinutes + minutes;
   const breakdown = displaySegments(adjustSegments(snapshot.segments ?? [], minutes * 60), minutes);
 
+  /** 教材ごとの分数。学習時間を修正すると一緒に動く（減らす分は最後の教材から削る） */
+  const minutesByCourse = new Map(
+    courseMinutes(draft.snapshot.courseSegments ?? [], minutes).map((r) => [keyOf(r.courseId), r.minutes])
+  );
+  const multiCourse = originals.length > 1;
+  /** 代表の教材（「教材の進捗」・学習記録の course）。いまの教材の行、無ければ最初の行 */
+  const currentKey = keyOf(draft.snapshot.course?.courseId ?? null);
+  const representative =
+    (currentKey in picked ? picked[currentKey] : null) ?? originals.map((o) => picked[keyOf(o.courseId)]).find(Boolean) ?? null;
+
+  /** 選んである教材名（重複を除く）。「内容を追加」のチップに出す */
+  const pickedTitles = Array.from(
+    new Set(originals.map((o) => picked[keyOf(o.courseId)]?.courseTitle).filter((v): v is string => !!v))
+  );
+
   const stepMinutes = (delta: number) =>
     setMinutes((v) => Math.min(maxMinutes, Math.max(1, v + delta)));
 
@@ -163,7 +241,8 @@ export function FinishSessionModal({
     await onRecord(
       {
         actualMinutes: minutes,
-        snapshot: { ...draft.snapshot, course },
+        snapshot: { ...draft.snapshot, course: representative },
+        courseMap: multiCourse ? buildCourseMap(originals, picked, draft.snapshot.courseSegments ?? []) : undefined,
         contentNote: withDetail ? contentNote : '',
         memo: withDetail ? memo : '',
         achievement: withDetail ? achievement : null,
@@ -336,26 +415,45 @@ export function FinishSessionModal({
                 )}
 
                 <Row label="学習した教材">
-                  <div style={{ flex: 1, minWidth: 0, maxWidth: 300 }}>
-                    <StudyCourseSelect
-                      userId={user?.userid}
-                      label={null}
-                      value={course ? { id: course.courseId, title: course.courseTitle } : null}
-                      onChange={(c) =>
-                        setCourse(
-                          !c
-                            ? null
-                            : c.id === snapshot.course?.courseId
-                              ? snapshot.course
-                              : { courseId: c.id, courseTitle: c.title }
-                        )
-                      }
-                    />
-                    {course?.lessonTitle && (
-                      <div style={{ ...font.caption, color: color.textMuted, marginTop: 4, textAlign: 'right' }}>
-                        {course.lessonTitle}
-                      </div>
-                    )}
+                  <div style={{ flex: 1, minWidth: 0, maxWidth: 300, display: 'flex', flexDirection: 'column', gap: 8 }}>
+                    {originals.map((o) => {
+                      const key = keyOf(o.courseId);
+                      const course = picked[key] ?? null;
+                      const rowMinutes = minutesByCourse.get(key) ?? 0;
+                      return (
+                        <div key={key}>
+                          <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                            <div style={{ flex: 1, minWidth: 0 }}>
+                              <StudyCourseSelect
+                                userId={user?.userid}
+                                label={null}
+                                value={course ? { id: course.courseId, title: course.courseTitle } : null}
+                                onChange={(c) =>
+                                  setPicked((prev) => ({
+                                    ...prev,
+                                    [key]: !c
+                                      ? null
+                                      : c.id === snapshot.course?.courseId
+                                        ? snapshot.course
+                                        : { courseId: c.id, courseTitle: c.title },
+                                  }))
+                                }
+                              />
+                            </div>
+                            {multiCourse && (
+                              <span style={{ ...font.caption, color: color.textMuted, flexShrink: 0, fontVariantNumeric: 'tabular-nums' }}>
+                                {rowMinutes > 0 ? formatMinutesHM(rowMinutes) : '1分未満'}
+                              </span>
+                            )}
+                          </div>
+                          {course?.lessonTitle && (
+                            <div style={{ ...font.caption, color: color.textMuted, marginTop: 4, textAlign: 'right' }}>
+                              {course.lessonTitle}
+                            </div>
+                          )}
+                        </div>
+                      );
+                    })}
                   </div>
                 </Row>
 
@@ -454,7 +552,7 @@ export function FinishSessionModal({
                 }}
               >
                 {formatMinutesHM(minutes)}
-                {course ? ` ・ ${course.courseTitle}` : ' ・ 教材の指定なし'}
+                {pickedTitles.length > 0 ? ` ・ ${pickedTitles.join('、')}` : ' ・ 教材の指定なし'}
               </div>
 
               {/* 🔴 行き先を必ず名指しする。書いた内容がマイノートに入ると思って探し、

@@ -7,6 +7,7 @@ import {
   ActiveStudySession,
   StudyActivity,
   StudyCategory,
+  StudyCourseMapping,
   StudyFinishDraft,
   StudySegmentTotal,
 } from '../types/studyActivity';
@@ -97,6 +98,11 @@ export interface UseStudySession {
   resume: () => void;
   /** ページが変わってカテゴリが変わった。同じカテゴリなら何も起きない */
   switchCategory: (category: StudyCategory) => void;
+  /**
+   * 計測中に別の教材のレッスンを開いた。区間を切り替え、計測中ならサーバーの区間も
+   * いまの教材で閉じて新しい教材で開き直す。同じ教材なら何も起きない。
+   */
+  switchCourse: (course: { courseId: number; courseTitle?: string; lessonId?: number; lessonTitle?: string; progressPercentAtStart?: number }) => void;
   /** 放置ぶんを切り捨てて一時停止する */
   trimToLastActive: () => void;
   /** 記録せずに破棄して未開始に戻す */
@@ -123,6 +129,7 @@ export function useStudySession(userId: number | undefined): UseStudySession {
   const markTargetReached = useStudyTimerStore((s) => s.markTargetReached);
   const updateGoalInStore = useStudyTimerStore((s) => s.updateGoal);
   const switchCategory = useStudyTimerStore((s) => s.switchCategory);
+  const switchCourseInStore = useStudyTimerStore((s) => s.switchCourse);
   const trimToLastActiveInStore = useStudyTimerStore((s) => s.trimToLastActive);
   const setFinishDraft = useStudyTimerStore((s) => s.setFinishDraft);
   const bumpActivityRevision = useStudyTimerStore((s) => s.bumpActivityRevision);
@@ -190,6 +197,22 @@ export function useStudySession(userId: number | undefined): UseStudySession {
     }
   }, [userId, resumeSessionInStore]);
 
+  const switchCourse = useCallback<UseStudySession['switchCourse']>(
+    (course) => {
+      const current = useStudyTimerStore.getState().session;
+      if (!current || current.courseId === course.courseId) return;
+      switchCourseInStore(course);
+      // 一時停止中はサーバーの区間が閉じているので送らない（再開の start が新しい教材で送られる）
+      if (!userId || current.pausedAt !== null) return;
+      sendEnd(userId, current.courseId);
+      // 🔴 end が届いてから start を送る。順序が入れ替わるとサーバーは開いた区間を
+      //    すぐ閉じたものとして扱い、新しい教材の時間が丸ごと落ちる。
+      const ended = pendingEnd;
+      void ended.then(() => bffClient.startStudySession(userId, course.courseId).catch(() => {}));
+    },
+    [userId, switchCourseInStore]
+  );
+
   // ポモドーロ完了の検知。ref でガードして1回だけ処理する
   // （毎tickで pauseSession を呼ぶと一時停止カウントが増え続ける）
   const targetHandledRef = useRef<string | null>(null);
@@ -235,11 +258,16 @@ export function useStudySession(userId: number | undefined): UseStudySession {
    * 失敗しても記録の流れは止めない。
    */
   const correctToTarget = useCallback(
-    async (targetMinutes: number, sinceSeconds: number, courseId: number | undefined) => {
+    async (
+      targetMinutes: number,
+      sinceSeconds: number,
+      courseId: number | undefined,
+      courseMap?: StudyCourseMapping[]
+    ) => {
       if (!userId) return;
       await pendingEnd;
       await bffClient
-        .correctStudySessionToTarget(userId, targetMinutes, sinceSeconds, courseId)
+        .correctStudySessionToTarget(userId, targetMinutes, sinceSeconds, courseId, courseMap)
         .catch(() => {});
     },
     [userId]
@@ -303,7 +331,13 @@ export function useStudySession(userId: number | undefined): UseStudySession {
       //    サーバーは区間ごとに分へ丸め、時刻もMoodleが受けた時刻で測るので、start/endだけでは
       //    画面の分数と1分前後ずれる。差分はBFFがサーバーの集計値から作る(dev/kanegae)。
       //    再取得(bumpActivityRevision)の前に補正を終わらせ、古い値が出ないようにする。
-      await correctToTarget(Math.max(1, draft.actualMinutes), sinceSeconds, draft.snapshot.course?.courseId);
+      // 教材を選び直した対応表(courseMap)があれば区間ごとに置き換える。無ければ回全体を course で置き換える
+      await correctToTarget(
+        Math.max(1, draft.actualMinutes),
+        sinceSeconds,
+        draft.courseMap ? undefined : draft.snapshot.course?.courseId,
+        draft.courseMap
+      );
 
       // 教材の進捗（要件の自動記録項目）は終了時点の値を取り直す。失敗しても記録は続行する。
       let progressPercentAtEnd: number | undefined;
@@ -372,6 +406,7 @@ export function useStudySession(userId: number | undefined): UseStudySession {
     pause: pauseSession,
     resume: resumeSession,
     switchCategory,
+    switchCourse,
     trimToLastActive,
     discard,
     updateGoal: updateGoalInStore,

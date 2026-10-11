@@ -75,11 +75,16 @@ interface StudyTimerState {
   /** 稼働中でも学習目標を書き足せる */
   updateGoal: (goalText: string) => void;
   /**
-   * 教材なしで始めた回に、計測中に開いたレッスンの教材を付ける。
-   * 🔴 すでに教材が付いている回は変えない（始めた教材を、寄り道で開いた別の教材で上書きしない）。
-   *    終了カードで選び直せるので、ここは「何もしなくてもだいたい正しい」までに留める。
+   * 計測中に開いたレッスンの教材へ切り替える。開いている区間を閉じ、同じカテゴリで
+   * 新しい教材の区間を開く（1回の記録で複数の教材を学習できるようにするため）。
+   * 🔴 サーバー側の区間の切り替え（end/start）は useStudySession.switchCourse が送る。
+   *    ここはローカルの状態だけ。同じ教材なら何もしない。
+   * 🔴 一時停止中も切り替える（再開時の start が新しい教材で送られるように）。区間は
+   *    pausedAt で閉じて pausedAt から開く。再開時のずらしで開始は再開時刻になる。
+   * 🔴 session.courseId 等は「いまの教材」。end/start に乗る教材で、終了カードの
+   *    「教材の進捗」もこれで出す。回で学習した教材の一覧は区間（segments）が持つ。
    */
-  attachCourse: (course: { courseId: number; courseTitle?: string; lessonId?: number; lessonTitle?: string; progressPercentAtStart?: number }) => void;
+  switchCourse: (course: { courseId: number; courseTitle?: string; lessonId?: number; lessonTitle?: string; progressPercentAtStart?: number }) => void;
 
   /** 開いている区間を閉じて、別カテゴリの区間を開く。同じカテゴリなら何もしない */
   switchCategory: (category: StudyCategory) => void;
@@ -132,7 +137,7 @@ export const useStudyTimerStore = create<StudyTimerState>()(
             // 開始時に確定させる。POSTが失敗しても・再送しても EXP の eventId が変わらない
             activityId: newActivityId(now),
             targetReachedAt: null,
-            segments: [{ category, startedAt: now, endedAt: null }],
+            segments: [{ category, startedAt: now, endedAt: null, courseId: session.courseId, courseTitle: session.courseTitle }],
             lastActiveAt: now,
           },
           finishDraft: null,
@@ -154,7 +159,7 @@ export const useStudyTimerStore = create<StudyTimerState>()(
             pausedTotalMs: 0,
             activityId: newActivityId(sessionId),
             targetReachedAt: null,
-            segments: [{ category: 'material', startedAt, endedAt: null }],
+            segments: [{ category: 'material', startedAt, endedAt: null, courseId, courseTitle }],
             lastActiveAt: Date.now(),
           },
           finishDraft: null,
@@ -204,7 +209,8 @@ export const useStudyTimerStore = create<StudyTimerState>()(
             segments: [
               ...session.segments.slice(0, -1),
               ...(open ? [{ ...open, endedAt: open.endedAt ?? now }] : []),
-              { category, startedAt: now, endedAt: null },
+              // 教材は切り替わらない（教材→AIコーチと移っても、同じ教材について聞いている時間）
+              { category, startedAt: now, endedAt: null, courseId: session.courseId, courseTitle: session.courseTitle },
             ],
             // 🔴 lastActiveAt はここでは触らない。markActive だけが書き手。
             //    区間の切り替えはリロード直後にも起きるので、ここで今に更新すると
@@ -249,10 +255,31 @@ export const useStudyTimerStore = create<StudyTimerState>()(
         });
       },
 
-      attachCourse: (course) => {
+      switchCourse: (course) => {
         const { session } = get();
-        if (!session || session.courseId) return;
-        set({ session: { ...session, ...course } });
+        if (!session || session.courseId === course.courseId) return;
+        const at = session.pausedAt ?? Date.now();
+        const open = session.segments[session.segments.length - 1];
+        const segments =
+          open && open.endedAt === null
+            ? [
+                ...session.segments.slice(0, -1),
+                { ...open, endedAt: at },
+                { category: open.category, startedAt: at, endedAt: null, courseId: course.courseId, courseTitle: course.courseTitle },
+              ]
+            : session.segments;
+        set({
+          session: {
+            ...session,
+            // レッスン名・開始時の進捗も今の教材のものに入れ替える（前の教材の値を残さない）
+            courseId: course.courseId,
+            courseTitle: course.courseTitle,
+            lessonId: course.lessonId,
+            lessonTitle: course.lessonTitle,
+            progressPercentAtStart: course.progressPercentAtStart,
+            segments,
+          },
+        });
       },
 
       markTargetReached: () => {
