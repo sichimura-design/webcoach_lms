@@ -545,26 +545,6 @@ class MoodleAdapter {
   }
 
   /**
-   * Get all roles
-   */
-  async getAllRoles() {
-    return this.callAPI('core_role_get_all_roles');
-  }
-
-  /**
-   * Assign roles
-   */
-  async assignRoles(assignments) {
-    const params = {};
-    assignments.forEach((assignment, index) => {
-      params[`assignments[${index}][roleid]`] = assignment.roleid;
-      params[`assignments[${index}][userid]`] = assignment.userid;
-      params[`assignments[${index}][contextid]`] = assignment.contextid;
-    });
-    return this.callAPI('core_role_assign_roles', params);
-  }
-
-  /**
    * Get site info
    */
   async getSiteInfo() {
