@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Check, Minus, Plus, X } from 'lucide-react';
 import { color, font, radius, t } from '../../theme/webcoachTheme';
@@ -28,7 +28,7 @@ import { formatDayLabel, formatSessionRange } from './focusFormat';
  * 1つのモーダルで「確認 → 内容を追加 → 完了」を状態フラグで切り替える
  * （coaching/MeetingLinkModal.tsx と同じ作法）。
  * 操作は要件どおり「そのまま記録」「内容を追加して記録」の2つに絞る。
- * 閉じる（X・背景クリック）は記録せずタイマーへ戻る = onDismiss。
+ * 閉じる（×）は記録せずタイマーへ戻る = onDismiss。背景を押して閉じるのは完了画面だけ（backdrop の🔴）。
  */
 interface FinishSessionModalProps {
   draft: StudyFinishDraft;
@@ -255,9 +255,17 @@ export function FinishSessionModal({
     setStep('done');
   };
 
+  /*
+   * 背景を押して閉じるのは完了画面だけ。記録前は × でしか閉じない。
+   * 🔴 iPhone で教材のセレクト（ネイティブのピッカー）を閉じたタップが背景の click として届き、
+   *    記録前のカードが閉じていた。閉じると計測は一時停止のまま残り、選んだ教材も消える。
+   * 🔴 完了画面でも、押し始めが背景のときだけ閉じる（中で始まったタップが背景で終わった分は無視）。
+   */
+  const pressStartedOnBackdrop = useRef(false);
   const backdrop = (e: React.MouseEvent) => {
-    // 完了画面まで来たら記録済みなので、背景クリックでそのまま閉じる
-    if (e.target === e.currentTarget) onDismiss();
+    const fromBackdrop = pressStartedOnBackdrop.current && e.target === e.currentTarget;
+    pressStartedOnBackdrop.current = false;
+    if (step === 'done' && fromBackdrop) onDismiss();
   };
 
   const title =
@@ -275,6 +283,9 @@ export function FinishSessionModal({
         justifyContent: 'center',
         padding: 16,
         fontFamily: font.family,
+      }}
+      onPointerDown={(e) => {
+        pressStartedOnBackdrop.current = e.target === e.currentTarget;
       }}
       onClick={backdrop}
     >

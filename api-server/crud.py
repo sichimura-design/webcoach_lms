@@ -3443,7 +3443,7 @@ def get_active_study_session(db: Session, mdl_user_id: int) -> Optional[Dict[str
     別画面遷移・タブ再読込後もタイマーを継続表示するため、フロントは起動時にこれを参照する。
     """
     query = text("""
-        SELECT courseid, timecreated
+        SELECT id, courseid, timecreated
         FROM mdl_logstore_standard_log
         WHERE userid = :userid AND eventname = :started_event
         ORDER BY timecreated DESC, id DESC
@@ -3453,12 +3453,22 @@ def get_active_study_session(db: Session, mdl_user_id: int) -> Optional[Dict[str
     if not row:
         return None
 
-    courseid, started_timecreated = row
+    started_id, courseid, started_timecreated = row
+    # 🔴 「startedより後のended」は (timecreated, id) の順で判定する(区間のペアリングと同じ順)。
+    #    timecreatedは秒単位なので、教材の切り替え(前の教材のended→次の教材のstarted)は
+    #    同じ秒に並ぶ。timecreated >= だけで見ると、直前の教材のendedを「この区間のended」と
+    #    誤認して計測中なのに「進行中なし」を返し、フロントが計測中の記録を消していた。
     ended_after = db.execute(text("""
         SELECT 1 FROM mdl_logstore_standard_log
-        WHERE userid = :userid AND eventname = :ended_event AND timecreated >= :started_timecreated
+        WHERE userid = :userid AND eventname = :ended_event
+          AND (timecreated > :started_timecreated OR (timecreated = :started_timecreated AND id > :started_id))
         LIMIT 1
-    """), {"userid": mdl_user_id, "ended_event": _STUDY_ENDED_EVENT, "started_timecreated": started_timecreated}).fetchone()
+    """), {
+        "userid": mdl_user_id,
+        "ended_event": _STUDY_ENDED_EVENT,
+        "started_timecreated": started_timecreated,
+        "started_id": started_id,
+    }).fetchone()
     if ended_after:
         return None
 

@@ -67,6 +67,16 @@ export function waitForPendingEnd(): Promise<void> {
   return pendingEnd;
 }
 
+/**
+ * 教材の切り替え(前の教材の end → 次の教材の start)の送信。
+ * 🔴 この途中でサーバーに「進行中の区間」を聞くと、end だけ届いた状態なので「無い」と返る。
+ *    起動時の照合(下の syncedRef)はこれを待ってから聞く。
+ */
+let pendingSwitch: Promise<void> = Promise.resolve();
+
+/** サーバーが「進行中なし」と返したとき、手元の記録を消す前にもう一度確かめるまでの待ち */
+const ACTIVE_RECHECK_MS = 3000;
+
 function sendEnd(userId: number, courseId: number | undefined) {
   pendingEnd = bffClient.endStudySession(userId, courseId).catch(() => {});
 }
@@ -145,11 +155,26 @@ export function useStudySession(userId: number | undefined): UseStudySession {
     if (!userId || syncedRef.current) return;
     syncedRef.current = true;
 
-    bffClient
-      .getActiveStudySession(userId)
-      .then((active) => {
+    const fetchActive = () => pendingSwitch.then(() => bffClient.getActiveStudySession(userId));
+    fetchActive()
+      .then(async (active) => {
+        // 🔴 一時停止中はサーバーの区間が閉じている(pause で end を送る)ので「進行中なし」が正しい。
+        //    これを「別タブで終わった」とみなして消すと、一時停止して別の画面へ移っただけで記録が消える。
+        if (!active && useStudyTimerStore.getState().session?.pausedAt !== null) return;
+        if (!active && useStudyTimerStore.getState().session) {
+          /*
+           * 🔴 すぐには消さない。教材の切り替えや一時停止→再開の送信と行き違うと、
+           *    計測中でも一瞬「進行中なし」になる。消すのは時間をおいて聞き直しても
+           *    無いとき(=別タブで終了・破棄した)だけにする。以前はここで即座に消していて、
+           *    計測中に別の教材を開くと記録が終了カードも出ずに消えていた。
+           */
+          await new Promise((r) => setTimeout(r, ACTIVE_RECHECK_MS));
+          active = await fetchActive();
+        }
         if (!active) {
-          if (useStudyTimerStore.getState().session) clearSession();
+          const local = useStudyTimerStore.getState().session;
+          // 待っている間に一時停止した・終了カードへ進んだ回は消さない
+          if (local && local.pausedAt === null && !useStudyTimerStore.getState().finishDraft) clearSession();
           return;
         }
         // ローカルに既にセッションがあれば、サーバーの開始時刻とは厳密照合せずローカルを正とする
@@ -207,8 +232,12 @@ export function useStudySession(userId: number | undefined): UseStudySession {
       sendEnd(userId, current.courseId);
       // 🔴 end が届いてから start を送る。順序が入れ替わるとサーバーは開いた区間を
       //    すぐ閉じたものとして扱い、新しい教材の時間が丸ごと落ちる。
-      const ended = pendingEnd;
-      void ended.then(() => bffClient.startStudySession(userId, course.courseId).catch(() => {}));
+      pendingSwitch = pendingEnd.then(() =>
+        bffClient.startStudySession(userId, course.courseId).then(
+          () => {},
+          () => {}
+        )
+      );
     },
     [userId, switchCourseInStore]
   );
