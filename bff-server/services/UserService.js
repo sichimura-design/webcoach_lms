@@ -5,12 +5,11 @@
 
 const moodleAdapter = require('../adapters/MoodleAdapter');
 
-// Cognito group to Moodle role mapping
-// Supported groups: admin, coach
-const COGNITO_TO_MOODLE_ROLE_MAPPING = {
-  'admin': 'manager',           // System administrator
-  'coach': 'editingteacher',    // Coach/Teacher
-};
+// Cognitoのグループ(admin/coach)に応じたMoodleのロールは付けない。アプリ内の権限判定はすべて
+// Cognitoのグループで行い(middleware/coachAccess.js)、Moodleへは専用アカウント(bff-service)経由でしか
+// 触らないため、本人のMoodleロールは使われない。以前はここで付けようとしていたが、呼んでいた
+// core_role_get_all_roles がMoodleに存在せず一度も成功していなかった(bff-serviceはstudent以外を
+// 付ける権限も無い)ので2026-10-11に撤去した。
 
 // Cognito sub → Moodle ユーザーの対応。requireAuth が全APIリクエストで引くため、毎回 Moodle の
 // webservice を呼ぶと、画面1枚(十数本のAPI)ごとに同じ検索が十数回走り、Moodle の処理枠を
@@ -185,9 +184,6 @@ class UserService {
         username: createdUsername
       });
 
-      // Assign Moodle role based on Cognito groups
-      await this.assignRoleFromCognitoGroups(userId, groups);
-
       return {
         id: userId,
         username: createdUsername
@@ -221,8 +217,6 @@ class UserService {
             username: createdUsername
           });
 
-          await this.assignRoleFromCognitoGroups(userId, groups);
-
           return {
             id: userId,
             username: createdUsername
@@ -231,62 +225,6 @@ class UserService {
       }
 
       throw error;
-    }
-  }
-
-  /**
-   * Assign Moodle system role based on Cognito groups
-   */
-  async assignRoleFromCognitoGroups(userId, groups) {
-    let roleAssigned = false;
-
-    for (const group of groups) {
-      const moodleRole = COGNITO_TO_MOODLE_ROLE_MAPPING[group];
-      if (moodleRole) {
-        console.log(`[Assign Role] Cognito group '${group}' maps to Moodle role '${moodleRole}'`);
-        const success = await this.assignMoodleSystemRole(userId, moodleRole);
-        if (success) {
-          roleAssigned = true;
-          break; // Assign only the first matching role
-        }
-      }
-    }
-
-    if (!roleAssigned) {
-      console.log('[Assign Role] No Cognito group matched. User will have default "Authenticated User" role only.');
-    }
-  }
-
-  /**
-   * Assign Moodle system role to user
-   */
-  async assignMoodleSystemRole(userid, roleshortname) {
-    try {
-      console.log(`[Assign Role] Attempting to assign '${roleshortname}' to user ${userid}`);
-
-      // Get all roles and find role ID
-      const roles = await moodleAdapter.getAllRoles();
-      const role = roles.find(r => r.shortname === roleshortname);
-
-      if (!role) {
-        console.error(`[Assign Role] Role '${roleshortname}' not found in Moodle`);
-        return false;
-      }
-
-      console.log(`[Assign Role] Found role: ${role.name} (ID: ${role.id})`);
-
-      // Assign role in system context (contextid=1)
-      await moodleAdapter.assignRoles([{
-        roleid: role.id,
-        userid: userid,
-        contextid: 1 // System context
-      }]);
-
-      console.log(`[Assign Role] Successfully assigned '${roleshortname}' to user ${userid}`);
-      return true;
-    } catch (error) {
-      console.error(`[Assign Role] Failed to assign role '${roleshortname}' to user ${userid}:`, error.message);
-      return false;
     }
   }
 
