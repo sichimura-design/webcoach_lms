@@ -36,7 +36,8 @@ export interface CategoryHints {
 }
 
 export function categoryOfPath(pathname: string, _hints?: CategoryHints): StudyCategory {
-  if (pathname === '/ai-coach') return 'ai';
+  // AIコーチの個別アプリ（/ai-coach/apps/:appId）もAIコーチ。以前は完全一致で「その他」になっていた
+  if (pathname === '/ai-coach' || pathname.startsWith('/ai-coach/')) return 'ai';
   if (pathname === '/coaching') return 'coaching';
   if (pathname.startsWith('/notes')) return 'review';
   if (
@@ -50,6 +51,22 @@ export function categoryOfPath(pathname: string, _hints?: CategoryHints): StudyC
   // トップ・学習記録・ロードマップ・設定など。学習中に立ち寄っても記録は止めないが、
   // 「教材を読んでいた時間」に混ぜてしまうと内訳が嘘になるので別扱いにする。
   return 'other';
+}
+
+/**
+ * 計測中の区間のカテゴリ。ページのカテゴリに、記録に付いている教材を加味する。
+ *
+ * 🔴 教材を選んで記録している回は、教材以外の画面（マイページ・集中ブース・学習記録など
+ *    ページのカテゴリが 'other' の画面）にいる時間も「教材」として数える。
+ *    マイページで教材を選んで始め、紙やエディタで手を動かしていた時間が
+ *    ほとんど「その他」になってしまっていた（2026-10 ユーザー指摘）。
+ *    教材を選んだ時点で「その教材の学習時間」という意思表示とみなす。
+ * 🔴 AIコーチ・コーチング・復習（マイノート）はそのまま。教材を選んでいても
+ *    そこにいる時間は、その活動の時間として分けて見せる。
+ * 🔴 教材を選んでいない回は今までどおり「その他」（アプリの外での学習時間）。
+ */
+export function sessionCategoryOf(pageCategory: StudyCategory, hasCourse: boolean): StudyCategory {
+  return pageCategory === 'other' && hasCourse ? 'material' : pageCategory;
 }
 
 /**

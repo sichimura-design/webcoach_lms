@@ -1,17 +1,56 @@
 # Slackアプリ「WebCoach Monitor」のマニフェスト
-# https://api.slack.com/apps → Create New App → From a manifest に貼り付けて作成する。
-# インストール後、Incoming Webhooksで「Add New Webhook」をチャンネルごとに1本ずつ発行し、
-# URLをSecrets Managerの <env>/moodle/slack-usage-webhook / slack-alert-webhook へ登録する
-# (devと本番は同じチャンネルに投稿するので、Webhookは2本をdev/prodで共用する)。
+#
+# ─── 作り方 ─────────────────────────────────────────────────────
+# 1. https://api.slack.com/apps → Create New App → From a manifest にこのファイルを貼り付けて作成
+# 2. Install to Workspace でワークスペースに入れる
+# 3. Incoming Webhooks の画面で「Add New Webhook」から、次の2チャンネルに1本ずつWebhookを発行する
+#      利用状況チャンネル … 毎朝9時(JST)の日次レポート
+#      エラーチャンネル   … 障害・エラー・期限切れ間近・費用超過の即時通知
+# 4. 発行したURLを、文字列のままSecrets Managerに登録する(JSONにしない)
+#
+#      | アカウント          | 利用状況                       | エラー                         |
+#      |---------------------|--------------------------------|--------------------------------|
+#      | dev  (822824391912) | dev/moodle/slack-usage-webhook | dev/moodle/slack-alert-webhook |
+#      | 本番 (840513866884) | prod/lms/slack-usage-webhook   | prod/lms/slack-alert-webhook   |
+#
+#    devと本番は同じチャンネルに投稿する(見出しの [dev] / [prod] で区別)。
+#    AWSアカウントが別なので、同じWebhook URLを両方のアカウントに登録すること。
+#      例) aws secretsmanager create-secret --name prod/lms/slack-alert-webhook \
+#            --secret-string 'https://hooks.slack.com/services/...' --profile PowerUserAccess-840513866884
+#
+# ─── 届く内容 ───────────────────────────────────────────────────
+# 利用状況チャンネル(毎朝9時)
+#   - 前日のAIチャット・Difyアプリの利用回数/人数/トークン数と、Claudeの概算費用
+#   - 運用KPI(api-serverの集計)
+#   - AWS費用の前日分と今月累計(本番のみ。devのアカウントは他案件と共用のため出さない)
+# エラーチャンネル(その都度)
+#   - api-server / bff-server / Moodle / nginx のエラーログ、AI呼び出しの失敗・タイムアウト
+#     (同じエラーは10分間は再通知しない。devはRDSを夜間止めるため22:00〜9:00は出さない)
+#   - 死活監視(本番): ALBの5xx・ヘルスチェック失敗・ECSのCPU/メモリ・RDSの負荷/接続数/空き容量。復旧時も通知
+#   - 予定外のECSタスク停止(OOM・ヘルスチェック失敗など。デプロイによる入れ替えは除く)
+#   - 証明書・Google連携・AIモデルの期限切れが近いもの
+#   - AWS費用が月の予算の警告ラインを超えたとき(本番のみ。実績80%・100%、月末予測100%)
+#
+# 実装: cdk/lambda/slack-notifier/index.py(dev・本番共用)
+# デプロイ: dev は cdk/bin/slack-notifier-app.ts、本番は cdk-prod/bin/slack-notifier-app.ts
 display_information:
   name: WebCoach Monitor
-  description: WebCoachのAI利用状況の日次集計と、api-server/bff-serverのエラーを通知
+  # Slackのアプリ一覧に出る短い説明(140文字まで)
+  description: WebCoach(dev・本番)の障害・エラー・費用超過の即時通知と、AI利用状況・費用の日次レポート
   background_color: "#E86D78"
+features:
+  # botのスコープ(incoming-webhook)を使うにはbotユーザーの定義が必須
+  # (無いと「OAuth requires bot user」で作成できない)
+  bot_user:
+    display_name: WebCoach Monitor
+    always_online: false
 oauth_config:
   scopes:
     bot:
+      # Incoming Webhookで投稿するだけ。チャンネルの読み取りやメッセージ送信APIは使わない
       - incoming-webhook
 settings:
   org_deploy_enabled: false
   socket_mode_enabled: false
+  is_hosted: false
   token_rotation_enabled: false

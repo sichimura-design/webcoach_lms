@@ -6,6 +6,7 @@ import { useStudyStatsBundle } from '../hooks/useStudyStats';
 import { useScaleToFit } from '../hooks/useScaleToFit';
 import { StudySessionMode } from '../types/studyRoom';
 import { StudyFinishDraft } from '../types/studyActivity';
+import { sessionCategoryOf } from '../utils/studyCategory';
 import { color, font, space } from '../theme/webcoachTheme';
 import FocusTimerCard from './focus/FocusTimerCard';
 import { StudyCourseChoice } from './shared/StudyCourseSelect';
@@ -60,8 +61,15 @@ function FocusBoothPage() {
   const handleStart = () => {
     // dev/kanegae統合: 実API呼び出しは useStudySession 内で非同期(fire-and-forget)に
     // 送信されるようになり、開始操作そのものは同期で完了する（starting状態は不要）。
-    // category はページ専用のカテゴリが無いため、集中ブースは一律 'other' 扱いにする。
-    start({ mode, targetMinutes, category: 'other', courseId: course?.id, courseTitle: course?.title });
+    // category はページ専用のカテゴリが無いため、集中ブースは 'other' 扱い。
+    // ただし教材を選んで始めたら「教材」として数える（sessionCategoryOf の🔴）。
+    start({
+      mode,
+      targetMinutes,
+      category: sessionCategoryOf('other', !!course),
+      courseId: course?.id,
+      courseTitle: course?.title,
+    });
   };
 
   const handleCommit = async (patch: Partial<StudyFinishDraft>) => {

@@ -4,7 +4,13 @@ import { useAuth } from '../../contexts/AuthContext';
 import { useStudySession } from '../../hooks/useStudySession';
 import { useStudyTimerStore } from '../../store/studyTimerStore';
 import { useRecentCourseStore } from '../../store/recentCourseStore';
-import { categoryOfPath, courseIdOfPath, isLessonPath, isStudyEntryPath } from '../../utils/studyCategory';
+import {
+  categoryOfPath,
+  courseIdOfPath,
+  isLessonPath,
+  isStudyEntryPath,
+  sessionCategoryOf,
+} from '../../utils/studyCategory';
 import { toLocalDateKey } from '../../utils/studyStats';
 import StudySessionPrompt from './StudySessionPrompt';
 
@@ -112,14 +118,17 @@ function StudySessionHost() {
    *    ページ遷移はユーザーの操作なので2回目以降は記録する。
    */
   const mountedRef = useRef(false);
+  // 教材の付いた回は、教材以外の画面の時間も「教材」（sessionCategoryOf の🔴）
+  const sessionHasCourse = !!s.session?.courseId;
+  const segmentCategory = sessionCategoryOf(category, sessionHasCourse);
   useEffect(() => {
     if (!hasSession) return;
-    s.switchCategory(category);
+    s.switchCategory(segmentCategory);
     if (mountedRef.current) markActive();
     else mountedRef.current = true;
     // s は毎レンダー新しいオブジェクトなので依存に入れない（入れると毎秒発火する）
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [category, hasSession, activityId, location.pathname]);
+  }, [segmentCategory, hasSession, activityId, location.pathname]);
 
   /*
    * 計測中にレッスンを開いたら、その教材の区間に切り替える。

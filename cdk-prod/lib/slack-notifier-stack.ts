@@ -1,4 +1,5 @@
 import * as cdk from 'aws-cdk-lib';
+import * as budgets from 'aws-cdk-lib/aws-budgets';
 import * as cloudwatch from 'aws-cdk-lib/aws-cloudwatch';
 import * as cwActions from 'aws-cdk-lib/aws-cloudwatch-actions';
 import * as events from 'aws-cdk-lib/aws-events';
@@ -25,6 +26,8 @@ export interface ProdSlackNotifierStackProps extends cdk.StackProps {
   readonly dbInstanceIdentifier: string;
   /** RDSの割り当てストレージ(GiB)。空き容量アラームの閾値の目安に使う */
   readonly dbAllocatedStorageGiB: number;
+  /** 月のAWS費用の予算(USD)。実績が80%・100%、月末予測が100%を超えたらエラー用チャンネルへ通知 */
+  readonly monthlyBudgetUsd: number;
 }
 
 /**
@@ -35,6 +38,8 @@ export interface ProdSlackNotifierStackProps extends cdk.StackProps {
  *   → SNS → Lambda → エラー用チャンネル。復旧時も通知
  * - 予定外のECSタスク停止(OOM・ヘルスチェック失敗など。デプロイ・台数変更による停止は除く)
  * - 毎朝9時(JST)に前日のAI利用・運用KPI・AWS費用を利用状況用チャンネルへ、期限が近いものをエラー用へ
+ * - AWS Budgetsの月予算: 実績が80%・100%、月末の予測が100%を超えたらエラー用チャンネルへ
+ *   (Claude APIの費用はAWSの請求に含まれないので、日次レポートの概算かAnthropic Consoleで見る)
  *
  * Slack Incoming WebhookのURLは次の名前でSecrets Managerに手動登録する(このスタックでは作らない)。
  *   `${envName}/lms/slack-usage-webhook` 利用状況
@@ -193,6 +198,37 @@ export class ProdSlackNotifierStack extends cdk.Stack {
     // 失敗したのが日次集計でも、SNS経由の呼び出しは別の処理なので届く
     addAlarm('NotifierErrorsAlarm', 'Slack通知Lambdaが失敗しています(日次レポートが届いていない可能性)',
       fn.metricErrors({ period: cdk.Duration.minutes(5), statistic: 'Sum' }), { threshold: 1 });
+
+    // ---- 月のAWS費用の予算 → SNS → Lambda ----
+    // AWS Budgetsからの通知はアラームと同じトピックに流し、LambdaはSubjectで見分ける
+    alarmTopic.addToResourcePolicy(new iam.PolicyStatement({
+      principals: [new iam.ServicePrincipal('budgets.amazonaws.com')],
+      actions: ['sns:Publish'],
+      resources: [alarmTopic.topicArn],
+      conditions: { StringEquals: { 'aws:SourceAccount': this.account } },
+    }));
+    const budgetNotification = (notificationType: 'ACTUAL' | 'FORECASTED', threshold: number) => ({
+      notification: {
+        notificationType,
+        comparisonOperator: 'GREATER_THAN',
+        threshold,
+        thresholdType: 'PERCENTAGE',
+      },
+      subscribers: [{ subscriptionType: 'SNS', address: alarmTopic.topicArn }],
+    });
+    new budgets.CfnBudget(this, 'MonthlyBudget', {
+      budget: {
+        budgetName: `${envName}-monthly-cost`,
+        budgetType: 'COST',
+        timeUnit: 'MONTHLY',
+        budgetLimit: { amount: props.monthlyBudgetUsd, unit: 'USD' },
+      },
+      notificationsWithSubscribers: [
+        budgetNotification('ACTUAL', 80),
+        budgetNotification('ACTUAL', 100),
+        budgetNotification('FORECASTED', 100),
+      ],
+    });
 
     // ---- ECSタスクの停止 ----
     new events.Rule(this, 'EcsTaskStoppedRule', {

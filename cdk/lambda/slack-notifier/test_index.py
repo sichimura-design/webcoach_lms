@@ -252,6 +252,56 @@ def test_alarm_notifications():
         assert index.handler(_sns("INSUFFICIENT_DATA"), None)["posted"] == 0
 
 
+BUDGET_MESSAGE = """AWS Budget Notification October 20, 2026
+AWS Account 840513866884
+
+Dear AWS Customer,
+
+You requested that we alert you when the ACTUAL Cost associated with your prod-monthly-cost budget is greater than $480.00 for the current month. The ACTUAL Cost associated with this budget is $512.34. You can find additional details below and by accessing the AWS Budgets dashboard [1].
+
+Budget Name: prod-monthly-cost
+Budget Type: Cost
+Budgeted Amount: $600.00
+Alert Type: ACTUAL
+Alert Threshold: > $480.00
+ACTUAL Amount: $512.34
+
+[1] https://console.aws.amazon.com/billing/home#/budgets
+"""
+
+
+def test_budget_notification_goes_to_alert_channel():
+    event = {"Records": [{"EventSource": "aws:sns", "Sns": {
+        "Subject": "AWS Budgets: prod-monthly-cost has exceeded your alert threshold",
+        "Message": BUDGET_MESSAGE,
+    }}]}
+    with mock.patch.object(index, "_post_to_slack") as post:
+        assert index.handler(event, None)["posted"] == 1
+    secret_id, text = post.call_args[0]
+    assert secret_id == "dev/moodle/slack-alert-webhook"
+    assert "AWS費用" in text
+    assert "$512.34" in text and "$600.00" in text
+    assert "実績" in text
+    # 本文の挨拶やURLは載せない
+    assert "Dear AWS Customer" not in text
+
+
+def test_budget_forecast_notification():
+    message = BUDGET_MESSAGE.replace("ACTUAL", "FORECASTED").replace("$480.00", "$600.00")
+    event = {"Records": [{"EventSource": "aws:sns", "Sns": {
+        "Subject": "AWS Budgets: prod-monthly-cost has exceeded your alert threshold", "Message": message}}]}
+    with mock.patch.object(index, "_post_to_slack") as post:
+        assert index.handler(event, None)["posted"] == 1
+    assert "予測" in post.call_args[0][1]
+
+
+def test_non_json_sns_message_without_budget_is_ignored():
+    event = {"Records": [{"EventSource": "aws:sns", "Sns": {"Subject": "hello", "Message": "plain text"}}]}
+    with mock.patch.object(index, "_post_to_slack") as post:
+        assert index.handler(event, None)["posted"] == 0
+    post.assert_not_called()
+
+
 def test_ecs_task_stopped():
     def ev(reason, containers=()):
         return {"source": "aws.ecs", "detail-type": "ECS Task State Change",
