@@ -92,8 +92,12 @@ jobs:
     needs: [test-bff, test-api]
 
     strategy:
+      # 1つ失敗しても残りのビルド確認を止めない(以前はmoodle-appの失敗でbff/apiが毎回キャンセルされていた)
+      fail-fast: false
       matrix:
-        service: [nginx, bff-server, api-server, moodle-app]
+        # moodle-appは本番アカウントの非公開ECRにある土台イメージ(moodle-app-base-*)をFROMしており、
+        # AWSにログインしないCIではpullできず必ず401になるので対象外。ビルドはdeploy-backend.ymlで行う
+        service: [nginx, bff-server, api-server]
 
     steps:
       - name: Checkout code
@@ -119,6 +123,11 @@ jobs:
     name: Security Scan
     runs-on: ubuntu-latest
     needs: [test-bff, test-api]
+    # 結果をGitHubのSecurityタブへ上げるのに security-events: write が要る(無いと
+    # "Resource not accessible by integration" で失敗する)
+    permissions:
+      contents: read
+      security-events: write
 
     steps:
       - name: Checkout code
