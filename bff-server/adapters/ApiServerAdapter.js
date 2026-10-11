@@ -24,6 +24,17 @@ class ApiServerAdapter {
   }
 
   /**
+   * 前日(JST)の運用KPI(毎朝の運用レポート用。services/DailyReportService.js)
+   */
+  async getDailyKpi() {
+    const response = await axios.get(
+      `${this.apiServerUrl}/api/monitoring/daily-kpi`,
+      { timeout: 30000 }
+    );
+    return response.data;
+  }
+
+  /**
    * api-serverが今使っている動作設定の値（管理画面の「動作設定」用）
    */
   async getRuntimeSettings() {

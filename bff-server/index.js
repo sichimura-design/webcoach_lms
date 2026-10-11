@@ -20,6 +20,7 @@ const logger = require('./utils/logger');
 const authService = require('./services/AuthService');
 const transcriptSyncService = require('./services/TranscriptSyncService');
 const reminderService = require('./services/ReminderService');
+const dailyReportService = require('./services/DailyReportService');
 const apiServerAdapter = require('./adapters/ApiServerAdapter');
 
 // Middleware
@@ -274,6 +275,13 @@ if (require.main === module) {
         }, intervalMs);
         logger.log(`Coaching reminders: enabled (every ${config.reminderIntervalMinutes} min)`);
       }
+
+      // 毎朝の運用レポート(KPI・期限)を1行JSONでログへ書く(Slack通知の材料。see DailyReportService)
+      setInterval(() => {
+        if (dailyReportService.isDue()) {
+          runIfSchedulerLeader('DailyReport', () => dailyReportService.runIfDue());
+        }
+      }, dailyReportService.CHECK_INTERVAL_MS);
 
       // Start HTTP server
       app.listen(PORT, () => {
