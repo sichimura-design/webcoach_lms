@@ -10,6 +10,7 @@ const requireAuth = require('../middleware/auth');
 const authService = require('../services/AuthService');
 const userService = require('../services/UserService');
 const moodleAdapter = require('../adapters/MoodleAdapter');
+const cognitoAdapter = require('../adapters/CognitoAdapter');
 const axios = require('axios');
 const { config } = require('../config/environment');
 const { createErrorResponse } = require('../utils/errorHandler');
@@ -65,6 +66,30 @@ router.get('/content-token', requireAuth, (req, res) => {
   const tokenData = authService.generateContentToken(userId);
 
   res.json(tokenData);
+});
+
+// パスワード再設定の前に、メールアドレスが登録済みか確認する(未ログインで呼ぶ)
+// Cognitoはクライアント設定(preventUserExistenceErrors)で未登録でも成功を返すため、ここで判定する。
+// 仮パスワードのまま(初回ログイン前)のユーザーはCognitoの仕様で再設定コードを送れないため、
+// 代わりに仮パスワードを再発行して招待メールを送り直す
+router.post('/auth/password-reset/prepare', async (req, res) => {
+  const email = typeof req.body?.email === 'string' ? req.body.email.trim() : '';
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    return res.status(400).json({ error: 'Invalid email' });
+  }
+
+  try {
+    const user = await cognitoAdapter.findUserByEmail(email);
+    const exists = !!user && user.Enabled !== false;
+    if (exists && user.UserStatus === 'FORCE_CHANGE_PASSWORD') {
+      await cognitoAdapter.resendTemporaryPassword(user.Username);
+      return res.json({ exists, temporaryPasswordResent: true });
+    }
+    res.json({ exists, temporaryPasswordResent: false });
+  } catch (error) {
+    logger.error('Password reset prepare failed:', error.message);
+    res.status(500).json(createErrorResponse(error, 'cognito', 500));
+  }
 });
 
 module.exports = router;

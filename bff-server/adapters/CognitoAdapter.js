@@ -45,6 +45,21 @@ class CognitoAdapter {
   }
 
   /**
+   * Resend invitation with a new temporary password
+   * (仮パスワードのまま=FORCE_CHANGE_PASSWORD のユーザーのみ可)
+   */
+  async resendTemporaryPassword(username) {
+    const command = new AdminCreateUserCommand({
+      UserPoolId: this.userPoolId,
+      Username: username,
+      MessageAction: 'RESEND',
+      DesiredDeliveryMediums: ['EMAIL'],
+    });
+
+    await this.client.send(command);
+  }
+
+  /**
    * Add user to group
    */
   async addUserToGroup(username, groupName) {

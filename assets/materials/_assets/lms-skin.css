@@ -1,0 +1,95 @@
+/* WEBCOACH LMS に埋め込むときの教材スキン（materials/_assets/lms-skin.css）
+   旧サイト（Clipkit）の枠を外し、LMS のカードの中で読みやすくする。本文の中身には触らない。 */
+
+/* 1. 旧サイトの枠：サイドバー・目次モーダル・右下の目次ボタン・ロードマップ導線・赤いフッター */
+#side-bar, nav.fixed-top, .fixed-menu-modal, #fixed-menu_buttons, .fixed-menu_buttons,
+.back-to-roadmap, div[style*="B73E3D"], div[style*="b73e3d"],
+.pagenation-buttons, .floating-btn, #toggleBtn,
+.dynmsg, .breadcrumb, .share-buttons, .sns-share, .related-articles, .ranking,
+iframe[src*="googletagmanager"] { display: none !important; }
+
+/* 2. サイドバー分のずらしを戻し、1カラムにする */
+html, body { margin: 0 !important; padding: 0 !important; background: #FFFFFF !important; overflow-x: hidden !important; }
+body > .d-flex, body > .d-flex > main, main.ms-auto, #sb-site {
+  margin: 0 !important; padding: 0 !important; width: 100% !important; max-width: none !important;
+  display: block !important; transform: none !important; left: auto !important;
+}
+/* 旧サイトは .row（横並び）の中で .article を幅760px固定にしていた。縦1列にして縮めるようにする */
+.row { display: block !important; margin-left: 0 !important; margin-right: 0 !important; }
+.container, .article, .lesson-wrapper {
+  flex: none !important; min-width: 0 !important; width: 100% !important; box-sizing: border-box !important; max-width: 760px !important; margin-left: auto !important; margin-right: auto !important;
+  padding-left: 0 !important; padding-right: 0 !important;
+}
+
+/* 3. 文字：LMS と同じ書体・色・行間 */
+body, .article, .article-content, .lesson-wrapper {
+  font-family: 'Noto Sans JP', 'Hiragino Sans', 'Yu Gothic', sans-serif !important;
+  color: #1F1D1E; font-size: 16px; line-height: 1.9;
+  -webkit-text-size-adjust: 100%;
+}
+
+/* 4. はみ出し防止（横スクロールを出さない） */
+img, video, iframe, embed, object, svg { max-width: 100% !important; height: auto; }
+video, iframe { height: auto; aspect-ratio: auto; }
+iframe[src*="youtube"], iframe[src*="vimeo"] { width: 100% !important; aspect-ratio: 16 / 9; height: auto !important; }
+pre, code { white-space: pre-wrap; word-break: break-word; }
+table { display: block; max-width: 100%; overflow-x: auto; }
+p, li, td, th, h1, h2, h3, h4, h5, h6, a { overflow-wrap: anywhere; }
+
+/* 5. 先頭の余白を詰め、末尾は LMS 右下の常設ピルに隠れないだけ空ける */
+body > *:first-child, .container:first-child { margin-top: 0 !important; }
+body { padding-bottom: 96px !important; }
+
+/* 6. スマホ幅：左右に最低限の余白 */
+@media (max-width: 600px) {
+  .container, .article, .lesson-wrapper { padding-left: 4px !important; padding-right: 4px !important; }
+  body, .article, .lesson-wrapper { font-size: 15px; }
+  /* 左右比較の図（.fig-two）は縦に積む。横のままだと最小幅180pxの列と矢印がはみ出す */
+  .fig-two { flex-direction: column !important; }
+  .fig-two__col { min-width: 0 !important; }
+}
+
+/* 7. LMS 用に差し込んだ動画（Dropbox から取り込んだもの・YouTube のリンクから起こしたもの） */
+video.wc-video { display: block; width: 100% !important; height: auto; margin: 12px 0 20px; border-radius: 12px; background: #000; }
+.wc-yt { margin: 12px 0 20px; }
+.wc-yt iframe { display: block; width: 100% !important; aspect-ratio: 16 / 9; height: auto !important; border: 0; border-radius: 12px; }
+.wc-video-card { margin: 20px 0 28px; }
+.wc-video-title { margin: 0 0 8px !important; font-weight: 700; font-size: 15px; color: #1F1D1E; }
+
+/* 8. 日本語の折り返し（B-001）：単語の途中（「マ／ージン」）で切らず、文節で折り返す。
+      auto-phrase は lang="ja" のページで効く（Chrome 119+）。効かないブラウザでも strict で行頭の「ー」「ッ」などは避ける */
+p, li, td, th, dd, dt, blockquote, .icon-card, h1, h2, h3, h4, h5, h6 {
+  word-break: auto-phrase; line-break: strict; text-wrap: pretty;
+}
+
+/* 9. 補足ボックス（.icon-card）：本文と同じ幅・同じ左端に収め、影を弱めて張り出して見えないようにする。
+      上下の余白は前後の項目と揃える */
+.icon-card {
+  box-sizing: border-box !important; width: auto !important; max-width: 100% !important;
+  margin: 12px 0 20px !important;
+  border: 1px solid #F1E6DA !important; border-radius: 12px !important;
+  box-shadow: 0 1px 3px rgba(31, 29, 30, .06) !important;
+}
+
+/* 10. 「・見出し」の下に続くチェックリスト：□を見出しの文字位置まで下げて、階層を見せる */
+.item_markdown:has(+ .item_html ul.checkbox) li { font-weight: 700; }
+.item_markdown:has(+ .item_html ul.checkbox) + .item_html ul.checkbox,
+.item_html:has(ul.checkbox) + .item_html:has(> .item-body > .icon-card) .icon-card { margin-left: 24px !important; }
+.item_html:has(ul.checkbox) + .item_html:has(> .item-body > .icon-card) .icon-card { max-width: calc(100% - 24px) !important; }
+ul.checkbox > li { margin: 6px 0 !important; }
+@media (max-width: 600px) {
+  .icon-card { padding: 18px 14px 18px 44px !important; }
+  .item_markdown:has(+ .item_html ul.checkbox) + .item_html ul.checkbox,
+  .item_html:has(ul.checkbox) + .item_html:has(> .item-body > .icon-card) .icon-card { margin-left: 12px !important; }
+  .item_html:has(ul.checkbox) + .item_html:has(> .item-body > .icon-card) .icon-card { max-width: calc(100% - 12px) !important; }
+}
+
+/* 11. リンクカード（Clipkit の .item-link-inline.style-card、121ページ・323枚）：カードのどこを押してもリンクへ移る。
+       元はタイトルの文字だけが押せて、画像や説明文を押しても何も起きなかった（LMS改善点C 相談5、2026-10-11）。
+       タイトルの <a> の押せる範囲を ::after でカード全体に広げる（JS・HTML は触らない） */
+.item-link-inline.style-card { position: relative !important; cursor: pointer; transition: box-shadow .2s, border-color .2s; }
+/* 元サイトの CSS が <a> に position: relative を付けているので外す（付いたままだと ::after が文字の大きさに留まる） */
+.item-link-inline.style-card .item-source a { position: static !important; }
+.item-link-inline.style-card .item-source a::after { content: ''; position: absolute; inset: 0; z-index: 1; }
+.item-link-inline.style-card:hover { box-shadow: 0 2px 10px rgba(31, 29, 30, .10); }
+.item-link-inline.style-card:has(.item-source a):hover .item-source a { text-decoration: underline; }

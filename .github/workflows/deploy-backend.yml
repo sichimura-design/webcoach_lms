@@ -108,16 +108,49 @@ jobs:
           echo "task_def_arn=$NEW_TASK_DEF_ARN" >> $GITHUB_OUTPUT
 
       - name: Deploy new task definition to ECS
+        id: deploy
         run: |
-          aws ecs update-service \
+          DEPLOYMENT_ID=$(aws ecs update-service \
             --cluster $ECS_CLUSTER \
             --service $ECS_SERVICE \
             --task-definition ${{ steps.render-task-def.outputs.task_def_arn }} \
-            --region $AWS_REGION
+            --region $AWS_REGION \
+            --query "service.deployments[?status=='PRIMARY'].id | [0]" \
+            --output text)
+          echo "deployment_id=$DEPLOYMENT_ID" >> $GITHUB_OUTPUT
 
-      - name: Wait for ECS service to stabilize
+      # 🔴 aws ecs wait services-stable は使わない。
+      #    待ち時間が最大10分(15秒×40回)固定で、本番は1台ずつ入れ替える設定(maximumPercent=100)のため
+      #    2台の入れ替えだけで7〜10分かかり、実際には成功していても時間切れで「失敗」になっていた。
+      #    また途中で別のデプロイ(cdk deploy 等)が入ると、自分のデプロイが上書きされても気付けなかった。
+      #    ここでは「このワークフローが出したデプロイ」だけを最大25分まで追いかける
+      - name: Wait for this deployment to complete
+        env:
+          DEPLOYMENT_ID: ${{ steps.deploy.outputs.deployment_id }}
+          TASK_DEF_ARN: ${{ steps.render-task-def.outputs.task_def_arn }}
         run: |
-          aws ecs wait services-stable \
-            --cluster $ECS_CLUSTER \
-            --services $ECS_SERVICE \
-            --region $AWS_REGION
+          for i in $(seq 1 100); do
+            STATE=$(aws ecs describe-services \
+              --cluster $ECS_CLUSTER \
+              --services $ECS_SERVICE \
+              --region $AWS_REGION \
+              --query "services[0].deployments[?id=='$DEPLOYMENT_ID'].[rolloutState, runningCount, desiredCount] | [0]" \
+              --output text)
+            echo "$(date -u +%H:%M:%S) $STATE"
+            case "$STATE" in
+              COMPLETED*)
+                echo "デプロイ完了: $TASK_DEF_ARN"
+                exit 0 ;;
+              FAILED*)
+                echo "::error::デプロイが失敗しました(サーキットブレーカーで元の版へ戻っています)"
+                exit 1 ;;
+              None|"")
+                CURRENT=$(aws ecs describe-services --cluster $ECS_CLUSTER --services $ECS_SERVICE \
+                  --region $AWS_REGION --query 'services[0].taskDefinition' --output text)
+                echo "::error::このデプロイは別のデプロイに置き換えられました。現在の版: $CURRENT (このワークフローの版: $TASK_DEF_ARN)"
+                exit 1 ;;
+            esac
+            sleep 15
+          done
+          echo "::error::25分待ってもデプロイが完了しませんでした"
+          exit 1

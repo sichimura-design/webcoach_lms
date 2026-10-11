@@ -1,11 +1,15 @@
 """
-api-server / bff-server のログをSlackへ通知するLambda
+WebCoachの監視・利用状況をSlackへ通知するLambda(dev: cdk/lib/slack-notifier-stack.ts、
+本番: cdk-prod/lib/slack-notifier-stack.ts。コードはこの1つを共用する)
 
-2種類のトリガーを1本で受け、投稿先チャンネル(=Webhook)を分ける:
+4種類のトリガーを1本で受け、投稿先チャンネル(=Webhook)を分ける:
 - CloudWatch Logsサブスクリプションフィルタ → エラーを即時通知(アラート用チャンネル)
-    - api-server/bff-server のエラーっぽい行(ERROR/Traceback/Error等の文字列マッチ)
+    - api-server / bff-server / moodle / nginx のエラーっぽい行(文字列マッチ)
     - AI利用ログ(api-server/agents/usage_log.py の1行JSON)のうち status=error/timeout
-- EventBridgeの定期実行(毎朝) → Logs Insightsで前日(JST)のAI利用状況を集計(利用状況用チャンネル)
+- CloudWatchアラーム(SNS経由) → ALB 5xx・ヘルスチェック失敗・RDS負荷などの状態変化(アラート用)
+- EventBridgeのECSタスク停止イベント → 予定外のタスク停止(アラート用)
+- EventBridgeの定期実行(毎朝9時) → 前日の利用状況・運用KPI・費用(利用状況用チャンネル)と、
+  証明書/Google連携/AIモデルの期限切れが近いもの(アラート用)
 
 Slack Incoming WebhookのURLはSecrets Managerに文字列でそのまま入れておく。
 本番とdevで同じチャンネルに投稿するため、見出しに[ENV_NAME]を付けて区別する。
@@ -22,10 +26,15 @@ from datetime import datetime, timedelta, timezone
 import boto3
 
 ENV_NAME = os.environ.get("ENV_NAME", "dev")
-# 日次集計(Logs Insights)の対象。AI利用ログはapi-serverが出す
+# 日次集計(Logs Insights)の対象。AI利用ログはapi-server、運用レポート(daily_report)はbff-serverが出す
 USAGE_LOG_GROUP_NAME = os.environ["USAGE_LOG_GROUP_NAME"]
+REPORT_LOG_GROUP_NAME = os.environ.get("REPORT_LOG_GROUP_NAME", USAGE_LOG_GROUP_NAME)
 USAGE_WEBHOOK_SECRET_ID = os.environ["USAGE_WEBHOOK_SECRET_ID"]
 ALERT_WEBHOOK_SECRET_ID = os.environ["ALERT_WEBHOOK_SECRET_ID"]
+# AWS費用を日次集計に載せるか(devのアカウントは他案件と共用なので載せない)
+COST_REPORT_ENABLED = os.environ.get("COST_REPORT_ENABLED") == "true"
+# エラーのログ通知を止める時間帯(JST、"22-9"なら22:00〜翌8:59)。devはRDSを夜間止めるので接続エラーが出る
+QUIET_HOURS_JST = os.environ.get("QUIET_HOURS_JST", "")
 
 JST = timezone(timedelta(hours=9))
 # 1回の通知に載せるエラー行の上限(大量障害時にSlackを埋め尽くさないため)
@@ -35,12 +44,45 @@ MAX_LINE_CHARS = 300
 # 同じエラー(数字を伏せた文面が同じもの)を再通知しない秒数。
 # 同時実行1本のLambdaのメモリに持つだけなので、コールドスタートでリセットされる割り切り
 SUPPRESS_SECONDS = 600
+# Logs Insightsの結果を待つ上限(秒)。Lambdaのタイムアウトより十分短くする
+INSIGHTS_WAIT_SECONDS = 60
+# 期限の警告を出す残り日数
+CERT_ALERT_DAYS = 30
+MODEL_ALERT_DAYS = 60
+
+# サービスごとの「エラーとみなす行」。サブスクリプションフィルタは広めに拾い、ここで絞る
+ERROR_PATTERNS = {
+    # Pythonのloggingの「- ERROR -」「ERROR:」、uvicornの未処理例外、Traceback
+    "api-server": re.compile(r"ERROR|CRITICAL|Traceback"),
+    # console.error の書式が統一されていないため広めに拾い、想定内のものはIGNORE_PATTERNSで捨てる
+    "bff-server": re.compile(r"Error|ERROR|error|Exception|Failed|failed|エラー|失敗"),
+    # PHPの致命的エラーだけ(Moodleの通常のNoticeやデバッグ出力は拾わない)
+    "moodle": re.compile(r"PHP (Fatal|Parse) error|Fatal error"),
+    # nginxのerror_logの重大なものだけ(upstreamのタイムアウト等はALBの5xxアラームで見る)
+    "nginx": re.compile(r"\[(crit|alert|emerg)\]"),
+}
 
 # 文字列マッチで拾ってしまう想定内のログ。通知しない
 IGNORE_PATTERNS = [re.compile(p) for p in (
     r"\[AUDIT-ALERT\]",               # 外部スキャナによる /.env 等への不審アクセス(4xxで弾いている)
     r"Token verification failed",     # トークン期限切れ・不正形式(ログイン画面へ戻すだけ)
+    r'^\{"event":"daily_report"',     # 毎朝の運用レポート(中身に"error"キーがあるだけ)
 )]
+
+# ECSのタスク停止のうち、デプロイ・台数変更・手動停止による想定内のもの
+EXPECTED_STOP_REASONS = re.compile(r"^Scaling activity initiated by|^Task stopped by user")
+
+# Claudeの単価(USD / 100万トークン)。キャッシュ読みは入力の0.1倍、書きは1.25倍。
+# 載っていないモデルはトークン数だけ出す
+CLAUDE_PRICES = {
+    "claude-opus-5-5": (4.0, 20.0),
+    "claude-sonnet-5-5": (2.0, 10.0),
+    "claude-sonnet-5": (2.0, 10.0),
+    "claude-sonnet-4-6": (3.0, 15.0),
+    "claude-sonnet-4-5": (3.0, 15.0),
+    "claude-haiku-5-5": (0.10, 0.50),
+    "claude-haiku-4-5": (1.0, 5.0),
+}
 
 _logs = boto3.client("logs")
 _secrets = boto3.client("secretsmanager")
@@ -51,7 +93,8 @@ _last_notified = {}
 CHAT_QUERY = """
 filter event = "ai_chat"
 | stats count(*) as n, count_distinct(user_id) as users, sum(input_tokens) as in_tok,
-        sum(output_tokens) as out_tok, avg(duration_ms) as avg_ms by status
+        sum(output_tokens) as out_tok, sum(cache_read_tokens) as cr_tok,
+        sum(cache_creation_tokens) as cw_tok, avg(duration_ms) as avg_ms by status, model
 """
 
 APP_QUERY = """
@@ -60,31 +103,74 @@ filter event = "ai_app_call"
         avg(duration_ms) as avg_ms by app_id, status
 """
 
+REPORT_QUERY = """
+filter event = "daily_report"
+| sort @timestamp desc
+| limit 1
+| fields @message
+"""
+
 
 def handler(event, context):
     if "awslogs" in event:
         return _notify_errors(event)
+    records = event.get("Records") or []
+    if records and records[0].get("EventSource") == "aws:sns":
+        return _notify_alarms(records)
+    if event.get("source") == "aws.ecs":
+        return _notify_task_stopped(event)
     return _post_daily_summary()
 
 
 # ---------------------------------------------------------------------------
-# エラー即時通知
+# エラー即時通知(ログ)
 # ---------------------------------------------------------------------------
+
+def _service_of(log_group, log_stream):
+    """本番はロググループ1つにストリームの接頭辞(api/・bff/・lms/・nginx/)で分かれている"""
+    prefix = (log_stream or "").split("/", 1)[0]
+    by_prefix = {"api": "api-server", "bff": "bff-server", "lms": "moodle", "nginx": "nginx"}
+    if prefix in by_prefix:
+        return by_prefix[prefix]
+    # devは "/dev/moodle/api-server" のようにロググループで分かれている
+    return log_group.rstrip("/").rsplit("/", 1)[-1] or "?"
+
+
+def _in_quiet_hours(now):
+    if not QUIET_HOURS_JST:
+        return False
+    start, end = (int(h) for h in QUIET_HOURS_JST.split("-"))
+    hour = datetime.fromtimestamp(now, JST).hour
+    if start > end:  # 日をまたぐ(22-9)
+        return hour >= start or hour < end
+    return start <= hour < end
+
+
+def _is_error_line(service, message):
+    if any(p.search(message) for p in IGNORE_PATTERNS):
+        return False
+    record = _parse_json(message)
+    if isinstance(record, dict) and record.get("event") in ("ai_chat", "ai_app_call"):
+        return record.get("status") in ("error", "timeout")
+    pattern = ERROR_PATTERNS.get(service)
+    return bool(pattern.search(message)) if pattern else True
+
 
 def _notify_errors(event, now=None):
     payload = json.loads(gzip.decompress(base64.b64decode(event["awslogs"]["data"])))
     log_group = payload.get("logGroup", "")
-    # "/dev/moodle/api-server" → "api-server"
-    service = log_group.rstrip("/").rsplit("/", 1)[-1] or "?"
+    service = _service_of(log_group, payload.get("logStream", ""))
     now = time.time() if now is None else now
+    if _in_quiet_hours(now):
+        return {"posted": 0, "suppressed": 0, "quiet": True}
 
     # 同じ文面のエラーは1行にまとめて件数を付ける(dictは挿入順を保つ)
     groups = {}
     for log_event in payload.get("logEvents", []):
         message = (log_event.get("message") or "").strip()
-        if not message or any(p.search(message) for p in IGNORE_PATTERNS):
+        if not message or not _is_error_line(service, message):
             continue
-        sig = _signature(message)
+        sig = service + ":" + _signature(message)
         if sig in groups:
             groups[sig]["count"] += 1
         else:
@@ -112,19 +198,22 @@ def _notify_errors(event, now=None):
     return {"posted": total, "suppressed": len(groups) - len(fresh)}
 
 
+def _parse_json(message):
+    if not message.startswith("{"):
+        return None
+    try:
+        return json.loads(message)
+    except ValueError:
+        return None
+
+
 def _signature(message):
     """ID・時刻・件数などの数字を伏せ、同じ種類のエラーを同一視するためのキー"""
     return re.sub(r"\d+", "N", message[:MAX_LINE_CHARS])
 
 
 def _format_error(message, timestamp_ms=None):
-    record = None
-    if message.startswith("{"):
-        try:
-            record = json.loads(message)
-        except ValueError:
-            pass
-
+    record = _parse_json(message)
     if isinstance(record, dict) and record.get("event") in ("ai_chat", "ai_app_call"):
         return _format_ai_error(record)
 
@@ -151,34 +240,137 @@ def _format_ai_error(r):
 
 
 # ---------------------------------------------------------------------------
+# CloudWatchアラーム(SNS経由)
+# ---------------------------------------------------------------------------
+
+def _notify_alarms(records):
+    posted = 0
+    for record in records:
+        try:
+            alarm = json.loads(record["Sns"]["Message"])
+        except (KeyError, ValueError):
+            continue
+        title = alarm.get("AlarmDescription") or alarm.get("AlarmName")
+        state = alarm.get("NewStateValue")
+        if state == "ALARM":
+            head = f":rotating_light: *[{ENV_NAME}] {title}*"
+        elif state == "OK" and alarm.get("OldStateValue") == "ALARM":
+            head = f":white_check_mark: *[{ENV_NAME}] 復旧: {title}*"
+        else:
+            # INSUFFICIENT_DATA や 初回のOK は知らせない
+            continue
+        reason = (alarm.get("NewStateReason") or "")[:MAX_LINE_CHARS].replace("`", "'")
+        _post_to_slack(ALERT_WEBHOOK_SECRET_ID, f"{head}\n`{alarm.get('AlarmName')}` {reason}")
+        posted += 1
+    return {"posted": posted}
+
+
+# ---------------------------------------------------------------------------
+# ECSタスクの停止
+# ---------------------------------------------------------------------------
+
+def _notify_task_stopped(event):
+    detail = event.get("detail") or {}
+    if detail.get("lastStatus") != "STOPPED":
+        return {"posted": 0}
+    reason = detail.get("stoppedReason") or ""
+    if EXPECTED_STOP_REASONS.search(reason):
+        return {"posted": 0, "expected": True}
+
+    lines = [
+        f":warning: *[{ENV_NAME}] ECSタスクが停止しました*",
+        f"理由: `{reason[:MAX_LINE_CHARS]}` (stopCode={detail.get('stopCode')})",
+    ]
+    for c in detail.get("containers") or []:
+        exit_code = c.get("exitCode")
+        if exit_code in (None, 0) and not c.get("reason"):
+            continue
+        lines.append(f"  • {c.get('name')}: exitCode={exit_code} {c.get('reason') or ''}".rstrip())
+    lines.append("_サービスが自動で代わりのタスクを起動します。続く場合はALB/ヘルスチェックの通知も確認してください_")
+    _post_to_slack(ALERT_WEBHOOK_SECRET_ID, "\n".join(lines))
+    return {"posted": 1}
+
+
+# ---------------------------------------------------------------------------
 # 日次集計
 # ---------------------------------------------------------------------------
 
 def _post_daily_summary():
-    today = datetime.now(JST).replace(hour=0, minute=0, second=0, microsecond=0)
+    now = datetime.now(JST)
+    today = now.replace(hour=0, minute=0, second=0, microsecond=0)
     start, end = today - timedelta(days=1), today
 
-    chat_rows = _run_insights(CHAT_QUERY, start, end)
-    app_rows = _run_insights(APP_QUERY, start, end)
-    _post_to_slack(USAGE_WEBHOOK_SECRET_ID, _format_summary(start, chat_rows, app_rows))
-    return {"chat_rows": len(chat_rows), "app_rows": len(app_rows)}
+    # クエリを先に全部投げてから待つ(順番に待つとLambdaのタイムアウトに近づく)
+    queries = {
+        "chat": _start_insights(USAGE_LOG_GROUP_NAME, CHAT_QUERY, start, end),
+        "app": _start_insights(USAGE_LOG_GROUP_NAME, APP_QUERY, start, end),
+        # 運用レポートはBFFが8時台に書くので、今朝分を拾えるよう終わりを今にする
+        "report": _start_insights(REPORT_LOG_GROUP_NAME, REPORT_QUERY, now - timedelta(hours=20), now),
+    }
+    results = {name: _wait_insights(qid) for name, qid in queries.items()}
+    report = _parse_json(results["report"][0].get("@message", "")) if results["report"] else None
+
+    cost = _fetch_aws_cost(start) if COST_REPORT_ENABLED else None
+    _post_to_slack(USAGE_WEBHOOK_SECRET_ID, _format_summary(start, results["chat"], results["app"], report, cost))
+
+    alerts = _expiry_alerts(report)
+    if alerts:
+        _post_to_slack(
+            ALERT_WEBHOOK_SECRET_ID,
+            f":hourglass_flowing_sand: *[{ENV_NAME}] 期限が近いもの・確認が必要なもの*\n" + "\n".join(alerts)
+            + "\n_管理画面の「期限管理」で詳細を確認できます_",
+        )
+    return {"chat_rows": len(results["chat"]), "app_rows": len(results["app"]), "report": report is not None,
+            "alerts": len(alerts)}
 
 
-def _format_summary(day, chat_rows, app_rows):
-    lines = [f":bar_chart: *[{ENV_NAME}] AI利用 日次集計 {day:%Y/%m/%d}(JST)*"]
+def _format_summary(day, chat_rows, app_rows, report=None, cost=None):
+    lines = [f":bar_chart: *[{ENV_NAME}] 日次レポート {day:%Y/%m/%d}(JST)*"]
+    lines += _format_kpi(report)
+    lines += _format_ai_usage(chat_rows, app_rows)
+    lines += _format_model(report)
+    if cost is not None:
+        lines += _format_cost(cost)
+    return "\n".join(lines)
 
+
+def _format_kpi(report):
+    if not report:
+        return ["*運用* 運用レポートが見つかりません(BFFが止まっている/8時台に動いていない可能性)"]
+    kpi = report.get("kpi") or {}
+    if "error" in kpi:
+        return [f"*運用* KPIを取得できませんでした: `{kpi['error']}`"]
+    lines = [
+        f"*運用* アクティブ {kpi.get('active_users', 0)}人 / 新規登録 {kpi.get('new_users', 0)}人",
+        f"  コーチング 前日 {kpi.get('coaching_held', 0)}回・本日予定 {kpi.get('coaching_today', 0)}回",
+    ]
+    todo = []
+    if kpi.get("coaching_unrecorded"):
+        todo.append(f"実施結果の未記録 {kpi['coaching_unrecorded']}回(直近14日)")
+    if kpi.get("notes_awaiting_coach"):
+        todo.append(f"コーチ確認待ちのAIノート {kpi['notes_awaiting_coach']}件")
+    if todo:
+        lines.append("  :memo: " + " / ".join(todo))
+    return lines
+
+
+def _format_ai_usage(chat_rows, app_rows):
     if not chat_rows and not app_rows:
-        lines.append("利用なし")
-        return "\n".join(lines)
-
-    total = sum(_int(r, "n") for r in chat_rows)
-    in_tok = sum(_int(r, "in_tok") for r in chat_rows)
-    out_tok = sum(_int(r, "out_tok") for r in chat_rows)
-    by_status = ", ".join(f"{r.get('status')} {_int(r, 'n')}" for r in chat_rows)
-    lines.append(f"*AIチャット* {total}回 ({by_status})")
-    # count_distinct はstatus別の値なので、合計ではなく最大値を「少なくとも」として出す
-    lines.append(f"  利用者 {max((_int(r, 'users') for r in chat_rows), default=0)}人以上"
-                 f" / Claudeトークン 入力{in_tok:,} 出力{out_tok:,}")
+        return ["*AI* 利用なし"]
+    lines = []
+    if chat_rows:
+        total = sum(_int(r, "n") for r in chat_rows)
+        by_status = {}
+        for r in chat_rows:
+            by_status[r.get("status")] = by_status.get(r.get("status"), 0) + _int(r, "n")
+        in_tok = sum(_int(r, "in_tok") for r in chat_rows)
+        out_tok = sum(_int(r, "out_tok") for r in chat_rows)
+        lines.append(f"*AIチャット* {total}回 (" + ", ".join(f"{s} {n}" for s, n in by_status.items()) + ")")
+        # count_distinct は行ごとの値なので、合計ではなく最大値を「少なくとも」として出す
+        users = max((_int(r, "users") for r in chat_rows), default=0)
+        usd, unknown = _claude_cost(chat_rows)
+        cost_text = f" / 概算 ${usd:.2f}" + (f"(単価不明: {', '.join(unknown)})" if unknown else "")
+        lines.append(f"  利用者 {users}人以上 / Claudeトークン 入力{in_tok:,} 出力{out_tok:,}{cost_text}")
 
     if app_rows:
         lines.append("*Difyアプリ*")
@@ -196,20 +388,116 @@ def _format_summary(day, chat_rows, app_rows):
         total_price = sum(a["price"] for a in by_app.values())
         currency = next((a["currency"] for a in by_app.values() if a["currency"]), "")
         lines.append(f"  合計 {total_price:.4f} {currency}".rstrip())
+    return lines
 
-    return "\n".join(lines)
+
+def _format_model(report):
+    model = (report or {}).get("model") or {}
+    if not model.get("id"):
+        return []
+    retire = model.get("retirementOn")
+    if retire:
+        retire = f"{retire}より前には引退しない" if model.get("retirementNotSoonerThan") else f"{retire}に引退予定"
+    return [f"*AIモデル* {model['id']}({model.get('state') or '状態不明'}" + (f"、{retire}" if retire else "") + ")"]
 
 
-def _run_insights(query, start, end):
-    query_id = _logs.start_query(
-        logGroupName=USAGE_LOG_GROUP_NAME,
+def _claude_cost(chat_rows):
+    """AIチャットのClaude利用料の概算(USD)。input_tokensはキャッシュ読み書き分を含む合計"""
+    usd = 0.0
+    unknown = set()
+    for r in chat_rows:
+        model = r.get("model") or ""
+        price = CLAUDE_PRICES.get(model) or next(
+            (p for name, p in CLAUDE_PRICES.items() if model.startswith(name + "-")), None)
+        if price is None:
+            if model and _int(r, "in_tok"):
+                unknown.add(model)
+            continue
+        p_in, p_out = price
+        cr, cw = _int(r, "cr_tok"), _int(r, "cw_tok")
+        plain = max(_int(r, "in_tok") - cr - cw, 0)
+        usd += (plain * p_in + cr * p_in * 0.1 + cw * p_in * 1.25 + _int(r, "out_tok") * p_out) / 1_000_000
+    return usd, sorted(unknown)
+
+
+def _expiry_alerts(report):
+    if not report:
+        return []
+    alerts = []
+    certs = report.get("certificates")
+    if isinstance(certs, dict) and certs.get("error"):
+        alerts.append(f"• 証明書を確認できませんでした: `{certs['error']}`")
+    for c in certs if isinstance(certs, list) else []:
+        days = c.get("daysLeft")
+        if c.get("status") == "error":
+            alerts.append(f"• 証明書 {c.get('host')}: 確認できませんでした `{c.get('error')}`")
+        elif c.get("error"):
+            alerts.append(f"• 証明書 {c.get('host')}: {c.get('error')}")
+        elif days is not None and days <= CERT_ALERT_DAYS:
+            alerts.append(f"• 証明書 {c.get('host')}: 残り{days}日({(c.get('validTo') or '')[:10]}まで)。"
+                          "ACMの自動更新が止まっていないか確認してください")
+
+    google = report.get("google") or {}
+    if google.get("status") in ("danger", "error"):
+        alerts.append(f"• Google連携(Organizer): トークンを更新できません `{google.get('error')}`。"
+                      "管理画面から再接続してください")
+
+    model = report.get("model") or {}
+    days = model.get("daysUntilRetirement")
+    if model.get("state") in ("deprecated", "retired"):
+        alerts.append(f"• AIモデル {model.get('id')}: {model['state']}(引退予定 {model.get('retirementOn')})。"
+                      "後継モデルへの切り替えが必要です")
+    elif days is not None and days <= MODEL_ALERT_DAYS and not model.get("retirementNotSoonerThan"):
+        alerts.append(f"• AIモデル {model.get('id')}: 引退まで残り{days}日({model.get('retirementOn')})")
+    return alerts
+
+
+def _fetch_aws_cost(day):
+    """前日(UTCの日付)のAWS費用と今月の累計。Cost Explorerの値は速報で、後から少し増えることがある"""
+    try:
+        ce = boto3.client("ce", region_name="us-east-1")
+        d = day.date()
+        daily = ce.get_cost_and_usage(
+            TimePeriod={"Start": d.isoformat(), "End": (d + timedelta(days=1)).isoformat()},
+            Granularity="DAILY", Metrics=["UnblendedCost"],
+            GroupBy=[{"Type": "DIMENSION", "Key": "SERVICE"}],
+        )
+        services = [
+            (g["Keys"][0], float(g["Metrics"]["UnblendedCost"]["Amount"]))
+            for g in daily["ResultsByTime"][0]["Groups"]
+        ]
+        monthly = ce.get_cost_and_usage(
+            TimePeriod={"Start": d.replace(day=1).isoformat(), "End": (d + timedelta(days=1)).isoformat()},
+            Granularity="MONTHLY", Metrics=["UnblendedCost"],
+        )
+        mtd = sum(float(r["Total"]["UnblendedCost"]["Amount"]) for r in monthly["ResultsByTime"])
+        return {"services": sorted(services, key=lambda s: -s[1]), "mtd": mtd}
+    except Exception as e:  # 費用が取れなくても日次レポート自体は出す
+        return {"error": str(e)}
+
+
+def _format_cost(cost):
+    if "error" in cost:
+        return [f"*AWS費用* 取得できませんでした: `{cost['error'][:200]}`"]
+    total = sum(v for _, v in cost["services"])
+    top = ", ".join(f"{name} ${v:.2f}" for name, v in cost["services"][:5] if v >= 0.01)
+    return [f"*AWS費用* 前日 ${total:.2f}(速報値) / 今月累計 ${cost['mtd']:.2f}"] + ([f"  {top}"] if top else [])
+
+
+def _start_insights(log_group, query, start, end):
+    return _logs.start_query(
+        logGroupName=log_group,
         startTime=int(start.timestamp()),
         endTime=int(end.timestamp()),
         queryString=query,
     )["queryId"]
-    for _ in range(50):
+
+
+def _wait_insights(query_id):
+    deadline = time.time() + INSIGHTS_WAIT_SECONDS
+    while True:
         res = _logs.get_query_results(queryId=query_id)
-        if res["status"] in ("Complete", "Failed", "Cancelled", "Timeout"):
+        if res["status"] in ("Complete", "Failed", "Cancelled", "Timeout") or time.time() >= deadline:
             break
         time.sleep(1)
     if res["status"] != "Complete":

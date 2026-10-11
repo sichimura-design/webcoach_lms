@@ -1,6 +1,6 @@
 import React from 'react';
 import { NavLink, Outlet } from 'react-router-dom';
-import { Bot, BrainCircuit, FolderOpen, ImageUp, KeyRound, PlusCircle, UserCircle2, Users, Link2, Settings, SlidersHorizontal } from 'lucide-react';
+import { Bot, BrainCircuit, FolderOpen, ImageUp, KeyRound, PlusCircle, UserCircle2, Users, Link2, Settings, SlidersHorizontal, CalendarClock } from 'lucide-react';
 import { AppHeader } from '../shared/AppHeader';
 
 const sidebarItems = [
@@ -16,6 +16,7 @@ const sidebarItems = [
   { to: '/admin/vector-data', label: 'Vectorデータ設定', icon: BrainCircuit },
   { to: '/admin/settings', label: '連携設定', icon: Settings },
   { to: '/admin/runtime-settings', label: '動作設定', icon: SlidersHorizontal },
+  { to: '/admin/expiry', label: '期限管理', icon: CalendarClock },
 ];
 
 export const AdminLayout: React.FC = () => {

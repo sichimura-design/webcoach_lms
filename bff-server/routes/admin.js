@@ -13,6 +13,7 @@ const s3Adapter = require('../adapters/S3Adapter');
 const moodleAdapter = require('../adapters/MoodleAdapter');
 const apiServerAdapter = require('../adapters/ApiServerAdapter');
 const runtimeSettingsService = require('../services/RuntimeSettingsService');
+const expiryMonitorService = require('../services/ExpiryMonitorService');
 const { createErrorResponse } = require('../utils/errorHandler');
 const { formatLastAccess } = require('../utils/timeCalculator');
 
@@ -384,6 +385,21 @@ router.get('/students', requireAuth, async (req, res) => {
     console.error('[Admin/Coach] Error stack:', error.stack);
     const errorResponse = createErrorResponse(error, 'moodle', 500);
     res.status(500).json(errorResponse);
+  }
+});
+
+// ==================== EXPIRY MONITOR ====================
+
+/**
+ * GET /api/admin/expiry-status
+ * 証明書の有効期限・Google連携トークンが使えるかを、開いた時点で実際に確かめて返す
+ */
+router.get('/expiry-status', requireAuth, requireAdmin, async (req, res) => {
+  try {
+    res.json(await expiryMonitorService.getExpiryStatus());
+  } catch (error) {
+    console.error('[ExpiryMonitor] status error:', error);
+    res.status(500).json(createErrorResponse(error, 'general', 500));
   }
 });
 

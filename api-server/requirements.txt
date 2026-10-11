@@ -26,4 +26,4 @@ pytest==7.4.3
 pytest-cov==4.1.0
 schemathesis==3.19.7
 httpx==0.25.2
-hypothesis==6.92.1
+hypothesis==6.90.0

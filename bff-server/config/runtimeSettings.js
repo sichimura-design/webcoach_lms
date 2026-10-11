@@ -41,16 +41,6 @@ const RUNTIME_SETTINGS = [
     max: 10000,
   },
   {
-    name: 'AI_LEGACY_CHAT_MAX_OUTPUT_TOKENS',
-    service: 'api-server',
-    group: 'AIチャット',
-    label: '旧AIチャットの回答の最大トークン数',
-    description: '以前からある簡易版のAIチャット(/api/ai/chat)の回答の長さの上限です。',
-    defaultValue: 2048,
-    min: 256,
-    max: 8192,
-  },
-  {
     name: 'COACHING_NOTE_MAX_OUTPUT_TOKENS',
     service: 'api-server',
     group: 'AIコーチングノート',

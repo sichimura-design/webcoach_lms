@@ -14,7 +14,7 @@ from database import engine, Base
 import runtime_settings
 
 # Import routers
-from routers import health, courses, profiles, webcoach, badges, roadmaps, roadmap, ai, ai_langgraph, admin, tags, faiss_ingest, coaching, integrations, recordings, study, notes, my_note, runtime_settings as runtime_settings_router, scheduler as scheduler_router
+from routers import health, courses, profiles, webcoach, badges, roadmaps, roadmap, ai_langgraph, admin, tags, faiss_ingest, coaching, integrations, recordings, study, notes, my_note, runtime_settings as runtime_settings_router, scheduler as scheduler_router, monitoring
 
 # Load environment variables
 load_dotenv()
@@ -61,7 +61,6 @@ app.include_router(profiles.router)
 app.include_router(webcoach.router)
 app.include_router(badges.router)
 app.include_router(roadmaps.router)
-app.include_router(ai.router)
 app.include_router(ai_langgraph.router)  # LangGraph版AIチャット
 app.include_router(admin.router)
 app.include_router(tags.router)
@@ -75,6 +74,7 @@ app.include_router(roadmap.router)  # キャリアロードマップ(フェー�
 app.include_router(my_note.router)  # マイノート(フォルダ入れ子対応)
 app.include_router(runtime_settings_router.router)  # 動作設定の現在値(管理画面向け)
 app.include_router(scheduler_router.router)  # 定期処理の担当確認(BFF向け)
+app.include_router(monitoring.router)  # 運用の日次KPI(BFFの定期処理向け)
 
 
 # ==========================================

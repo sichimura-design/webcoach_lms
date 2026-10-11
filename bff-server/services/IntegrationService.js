@@ -334,6 +334,50 @@ class IntegrationService {
   }
 
   /**
+   * 保存済みのrefresh_tokenで実際にアクセストークンを取り直せるか確かめる(期限管理画面用)。
+   * Googleのrefresh_tokenには期限日が無く、取り消し・長期未使用・OAuth同意画面が
+   * 「テスト」のままだと7日で失効、などで突然使えなくなるため、日付ではなく実地で確かめる。
+   * 取り直したトークンは保存しない(保存済みのアクセストークンもそのまま有効なので、
+   * 確認のたびにSecrets Managerへ書き込まないようにしている)。
+   */
+  async checkOrganizerRefresh(provider) {
+    const credentials = await organizerCredentialsStore.load();
+    if (!credentials || credentials.provider !== provider) {
+      return { connected: false };
+    }
+
+    const base = {
+      connected: true,
+      providerAccountEmail: credentials.provider_account_email || null,
+      connectedAt: credentials.connected_at || null,
+      accessTokenExpiresAt: credentials.expires_at || null,
+    };
+    if (!credentials.refresh_token) {
+      return { ...base, refreshOk: false, refreshError: 'refresh_tokenが保存されていません' };
+    }
+
+    const providerConfig = this._getProviderConfig(provider);
+    const params = new URLSearchParams({
+      grant_type: 'refresh_token',
+      refresh_token: credentials.refresh_token,
+      client_id: providerConfig.clientId(),
+      client_secret: providerConfig.clientSecret(),
+    });
+    try {
+      await axios.post(providerConfig.tokenUrl, params.toString(), {
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        timeout: 10000,
+      });
+      return { ...base, refreshOk: true, refreshError: null };
+    } catch (err) {
+      // invalid_grant = 取り消された/失効した。それ以外は一時的な通信失敗の可能性がある
+      const code = err.response?.data?.error || err.code || err.message;
+      logger.warn(`[Integration] Organizer ${provider} refresh check failed: ${code}`);
+      return { ...base, refreshOk: false, refreshError: String(code) };
+    }
+  }
+
+  /**
    * Get the Organizer's connection status (no tokens included).
    */
   async getOrganizerStatus(provider) {

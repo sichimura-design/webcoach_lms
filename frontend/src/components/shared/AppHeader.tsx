@@ -7,7 +7,8 @@ import remarkGfm from 'remark-gfm';
 import remarkCjkFriendly from 'remark-cjk-friendly';
 import { useAuth } from '../../contexts/AuthContext';
 import { useNotificationStore } from '../../store/notificationStore';
-import { useNewContentNotification } from '../../hooks/useNewContentNotification';
+// 新着通知のチェックは廃止(下の useNewContentNotification() 呼び出し箇所のコメント参照)
+// import { useNewContentNotification } from '../../hooks/useNewContentNotification';
 import { useAiChat } from '../../hooks/useAiChat';
 import { useChatStore } from '../../store/chatStore';
 import { AccountSettingsDropdown } from './AccountSettingsDropdown';
@@ -64,7 +65,11 @@ export function AppHeader({ userName, avatarUrl }: AppHeaderProps) {
   const notifRef = useRef<HTMLDivElement>(null);
   const [helpOpen, setHelpOpen] = useState(false);
   const helpRef = useRef<HTMLDivElement>(null);
-  useNewContentNotification();
+  // 🔴 新着通知のチェックは廃止(2026-10-11)。ベルはもう画面に出しておらず結果を誰も見ないのに、
+  //    画面表示・5分おき・タブ復帰のたびに BFF が全コース(約77)の教材内容を Moodle から
+  //    1件ずつ取り直しており、同時アクセス時の一番重い負荷になっていた。
+  //    復活させるなら、BFF 側で全員共通の結果をキャッシュしてからにすること。
+  // useNewContentNotification();
 
   /*
    * アカウントのポップオーバー。
@@ -816,9 +821,8 @@ export function AppHeader({ userName, avatarUrl }: AppHeaderProps) {
         </div>
 
         {/* 🔴 お知らせ（ベル）はレールにもパネルにも置かない（レビューで不要と判断）。
-               通知そのものは useNewContentNotification が拾い続けているので、
-               入口が要るようになったらここにベルを戻すのではなく、
-               どの面に置くかを決めてから追加すること。 */}
+               新着通知のチェック(useNewContentNotification)自体も廃止した(上の呼び出し箇所参照)。
+               入口が要るようになったら、取得の負荷対策とどの面に置くかを決めてから追加すること。 */}
 
         {/* アカウント。ホバー／フォーカスでポップオーバーを出し、クリックはアカウント設定へ直行する。
             🔴 円形の切り抜きは button ではなく内側の span に持たせる。button 側に

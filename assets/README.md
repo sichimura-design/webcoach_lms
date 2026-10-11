@@ -25,4 +25,7 @@ assets/
   `html/` のリンクは相対パス `../../_clipkit/<cdn.clipkit.co以降のパス>` に書き換え済みで、
   実体は S3 の `materials/_clipkit/`。`scripts/materials/localize_clipkit_images.py` で再取得・書き換え・アップロードできる
   （UAT・本番はS3上のHTMLがローカルと違うので `--pull` を付ける。`admin-csv/README.md` 参照）。
+- `materials/_assets/lms-embed.js`・`lms-skin.css` … 教材HTMLが読み込む LMS 埋め込み用のJS・CSS。S3 の `materials/_assets/` が配信元で、
+  ここはその原本（2026-10-11 に S3 から取り込み）。直したら S3 へ上げて CloudFront を無効化する
+  （`--content-type "application/javascript; charset=utf-8"`／`text/css`）。教材HTML側は書き換えない方針。
 - `thumbnails/<コースslug>.png` … 54枚。`instagram.png` は原本名「Instagram広告運用」だが、対応する広告コースが無いため「インスタグラム運用」(instagram)に割り当てた。

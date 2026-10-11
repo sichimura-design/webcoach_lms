@@ -83,7 +83,7 @@ function LoginPage() {
       const code = err?.code || err?.name || '';
       if (code === 'NotAuthorizedException') {
         if (err.message?.includes('Temporary password has expired')) {
-          setError('仮パスワードの有効期限が切れています。管理者にお問い合わせください。');
+          setError('仮パスワードの有効期限が切れています。「パスワードお忘れですか？」から再発行してください。');
         } else {
           setError('メールアドレスまたはパスワードが正しくありません');
         }
