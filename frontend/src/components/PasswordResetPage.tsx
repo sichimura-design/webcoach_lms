@@ -6,7 +6,7 @@ import { bffClient } from '../services/bffClient';
 import { Button } from './ui/button';
 import { AppFooter } from './shared';
 
-type Step = 'email' | 'code' | 'done';
+type Step = 'email' | 'code' | 'done' | 'tempResent';
 
 function PasswordResetPage() {
   const navigate = useNavigate();
@@ -44,26 +44,24 @@ function PasswordResetPage() {
     setLoading(true);
     try {
       // Cognitoは未登録のアドレスでも成功を返す設定のため、送信前にBFFで登録を確認する
-      let account: { exists: boolean; needsFirstLogin: boolean };
+      let account: { exists: boolean; temporaryPasswordResent: boolean };
       try {
-        account = await bffClient.checkPasswordResetAccount(email.trim());
+        account = await bffClient.preparePasswordReset(email.trim());
       } catch (checkErr: any) {
-        const status = checkErr?.response?.status;
-        if (status === 429) {
-          setError('確認回数の上限に達しました。15分ほど待ってから再試行してください。');
-        } else if (status === 400) {
-          setError('メールアドレスの形式が正しくありません。');
-        } else {
-          setError('登録状況を確認できませんでした。時間をおいて再試行してください。');
-        }
+        setError(
+          checkErr?.response?.status === 400
+            ? 'メールアドレスの形式が正しくありません。'
+            : '登録状況を確認できませんでした。時間をおいて再試行してください。'
+        );
         return;
       }
       if (!account.exists) {
         setError('このメールアドレスは登録されていません。');
         return;
       }
-      if (account.needsFirstLogin) {
-        setError('初回ログインがまだ完了していません。お送りした仮パスワードでログインしてください。');
+      // 初回ログイン前(仮パスワードのまま)はBFF側で仮パスワードを再発行・送信済み
+      if (account.temporaryPasswordResent) {
+        setStep('tempResent');
         return;
       }
       await forgotPassword(email);
@@ -261,6 +259,30 @@ function PasswordResetPage() {
                 </button>
               </form>
             </>
+          )}
+
+          {/* 初回ログイン前のユーザー: 仮パスワードを再発行 */}
+          {step === 'tempResent' && (
+            <div className="flex flex-col items-center py-6 gap-4">
+              <CheckCircle className="w-14 h-14 text-green-500" />
+              <div className="text-center">
+                <p className="text-base font-bold text-brand-text mb-1">
+                  仮パスワードを再発行しました
+                </p>
+                <p className="text-sm text-brand-muted">
+                  メールに記載の新しい仮パスワードでログインし、パスワードを設定してください。
+                </p>
+              </div>
+              <Button
+                type="button"
+                onClick={() => navigate('/login')}
+                variant="brand-gradient"
+                className="mt-2 px-8"
+                style={{ height: '52px', borderRadius: '12px', fontSize: '16px' }}
+              >
+                ログインページへ
+              </Button>
+            </div>
           )}
 
           {/* Step 3: Done */}

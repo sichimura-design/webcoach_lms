@@ -11,7 +11,6 @@ const authService = require('../services/AuthService');
 const userService = require('../services/UserService');
 const moodleAdapter = require('../adapters/MoodleAdapter');
 const cognitoAdapter = require('../adapters/CognitoAdapter');
-const { accountCheckLimiter } = require('../middleware/rateLimit');
 const axios = require('axios');
 const { config } = require('../config/environment');
 const { createErrorResponse } = require('../utils/errorHandler');
@@ -70,8 +69,10 @@ router.get('/content-token', requireAuth, (req, res) => {
 });
 
 // パスワード再設定の前に、メールアドレスが登録済みか確認する(未ログインで呼ぶ)
-// Cognitoはクライアント設定(preventUserExistenceErrors)で未登録でも成功を返すため、ここで判定する
-router.post('/auth/password-reset/check', accountCheckLimiter, async (req, res) => {
+// Cognitoはクライアント設定(preventUserExistenceErrors)で未登録でも成功を返すため、ここで判定する。
+// 仮パスワードのまま(初回ログイン前)のユーザーはCognitoの仕様で再設定コードを送れないため、
+// 代わりに仮パスワードを再発行して招待メールを送り直す
+router.post('/auth/password-reset/prepare', async (req, res) => {
   const email = typeof req.body?.email === 'string' ? req.body.email.trim() : '';
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
     return res.status(400).json({ error: 'Invalid email' });
@@ -80,11 +81,13 @@ router.post('/auth/password-reset/check', accountCheckLimiter, async (req, res) 
   try {
     const user = await cognitoAdapter.findUserByEmail(email);
     const exists = !!user && user.Enabled !== false;
-    // 仮パスワードのまま(初回ログイン前)のユーザーはCognitoの仕様で再設定コードを送れない
-    const needsFirstLogin = exists && user.UserStatus === 'FORCE_CHANGE_PASSWORD';
-    res.json({ exists, needsFirstLogin });
+    if (exists && user.UserStatus === 'FORCE_CHANGE_PASSWORD') {
+      await cognitoAdapter.resendTemporaryPassword(user.Username);
+      return res.json({ exists, temporaryPasswordResent: true });
+    }
+    res.json({ exists, temporaryPasswordResent: false });
   } catch (error) {
-    logger.error('Password reset account check failed:', error.message);
+    logger.error('Password reset prepare failed:', error.message);
     res.status(500).json(createErrorResponse(error, 'cognito', 500));
   }
 });

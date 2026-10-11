@@ -416,9 +416,10 @@ class BFFClient {
 
   /**
    * パスワード再設定前のメールアドレス登録確認(未ログインで呼ぶ)
+   * 仮パスワードのままのユーザーには仮パスワードを再発行してメールで送り直す
    */
-  async checkPasswordResetAccount(email: string): Promise<{ exists: boolean; needsFirstLogin: boolean }> {
-    const response = await this.api.post('/auth/password-reset/check', { email });
+  async preparePasswordReset(email: string): Promise<{ exists: boolean; temporaryPasswordResent: boolean }> {
+    const response = await this.api.post('/auth/password-reset/prepare', { email });
     return response.data;
   }
 
