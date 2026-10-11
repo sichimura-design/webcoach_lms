@@ -83,3 +83,13 @@ ul.checkbox > li { margin: 6px 0 !important; }
   .item_html:has(ul.checkbox) + .item_html:has(> .item-body > .icon-card) .icon-card { margin-left: 12px !important; }
   .item_html:has(ul.checkbox) + .item_html:has(> .item-body > .icon-card) .icon-card { max-width: calc(100% - 12px) !important; }
 }
+
+/* 11. リンクカード（Clipkit の .item-link-inline.style-card、121ページ・323枚）：カードのどこを押してもリンクへ移る。
+       元はタイトルの文字だけが押せて、画像や説明文を押しても何も起きなかった（LMS改善点C 相談5、2026-10-11）。
+       タイトルの <a> の押せる範囲を ::after でカード全体に広げる（JS・HTML は触らない） */
+.item-link-inline.style-card { position: relative !important; cursor: pointer; transition: box-shadow .2s, border-color .2s; }
+/* 元サイトの CSS が <a> に position: relative を付けているので外す（付いたままだと ::after が文字の大きさに留まる） */
+.item-link-inline.style-card .item-source a { position: static !important; }
+.item-link-inline.style-card .item-source a::after { content: ''; position: absolute; inset: 0; z-index: 1; }
+.item-link-inline.style-card:hover { box-shadow: 0 2px 10px rgba(31, 29, 30, .10); }
+.item-link-inline.style-card:has(.item-source a):hover .item-source a { text-decoration: underline; }
