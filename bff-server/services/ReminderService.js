@@ -67,8 +67,6 @@ class ReminderService {
     }
     const dateLabel = this._formatDateJst(schedule.coaching_date);
     const body = [
-      'いつもご利用ありがとうございます。',
-      '',
       `明日 ${dateLabel} にコーチングセッションの予定があります。`,
       schedule.meeting_url ? `ミーティングURL: ${schedule.meeting_url}` : '',
       '',
