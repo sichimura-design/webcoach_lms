@@ -47,7 +47,7 @@ def test_ai_error_goes_to_alert_channel():
 
     assert result["posted"] == 2
     secret_id, text = post.call_args[0]
-    assert secret_id == "dev/moodle/slack-alert-webhook"
+    assert secret_id == index.ALERT
     assert "[dev] api-server エラー 2件" in text
     assert "09/26 10:00:00 Difyアプリ id=15 `timeout`" in text
     assert "AIチャット `error` error_type=APIError user_id=4" in text
@@ -143,7 +143,7 @@ def test_scheduled_event_runs_summary():
     assert run.call_count == 3
     assert post.call_count == 1  # 運用レポートが無ければ期限の通知は出さない
     secret_id, text = post.call_args[0]
-    assert secret_id == "dev/moodle/slack-usage-webhook"
+    assert secret_id == index.USAGE
     assert "運用レポートが見つかりません" in text
     assert "利用なし" in text
 
@@ -171,13 +171,13 @@ def test_daily_report_goes_to_usage_and_expiry_to_alert():
 
     assert result["alerts"] == 2
     usage = post.call_args_list[0][0]
-    assert usage[0] == "dev/moodle/slack-usage-webhook"
+    assert usage[0] == index.USAGE
     assert "アクティブ 12人 / 新規登録 1人" in usage[1]
     assert "前日 3回・本日予定 4回" in usage[1]
     assert "実施結果の未記録 2回(直近14日) / コーチ確認待ちのAIノート 5件" in usage[1]
     assert "claude-haiku-4-5(active、2026-10-15より前には引退しない)" in usage[1]
     alert = post.call_args_list[1][0]
-    assert alert[0] == "dev/moodle/slack-alert-webhook"
+    assert alert[0] == index.ALERT
     assert "api.webcoach.jp: 残り20日" in alert[1]
     assert "study.webcoach.jp" not in alert[1]
     assert "invalid_grant" in alert[1]
@@ -245,7 +245,7 @@ def test_alarm_notifications():
     with mock.patch.object(index, "_post_to_slack") as post:
         assert index.handler(_sns("ALARM"), None)["posted"] == 1
         assert "ALBの5xxが増えています" in post.call_args[0][1]
-        assert post.call_args[0][0] == "dev/moodle/slack-alert-webhook"
+        assert post.call_args[0][0] == index.ALERT
         assert index.handler(_sns("OK", old="ALARM"), None)["posted"] == 1
         assert "復旧" in post.call_args[0][1]
         assert index.handler(_sns("OK", old="INSUFFICIENT_DATA"), None)["posted"] == 0
@@ -278,7 +278,7 @@ def test_budget_notification_goes_to_alert_channel():
     with mock.patch.object(index, "_post_to_slack") as post:
         assert index.handler(event, None)["posted"] == 1
     secret_id, text = post.call_args[0]
-    assert secret_id == "dev/moodle/slack-alert-webhook"
+    assert secret_id == index.ALERT
     assert "AWS費用" in text
     assert "$512.34" in text and "$600.00" in text
     assert "実績" in text
@@ -317,3 +317,66 @@ def test_ecs_task_stopped():
     text = post.call_args[0][1]
     assert "api-server: exitCode=137 OutOfMemoryError" in text
     assert "nginx" not in text
+
+
+# ---------------------------------------------------------------------------
+# 送信方式(botトークン / Incoming Webhook)
+# ---------------------------------------------------------------------------
+
+class _FakeResponse:
+    def __init__(self, body):
+        self._body = body
+
+    def read(self):
+        return self._body
+
+    def __enter__(self):
+        return self
+
+    def __exit__(self, *args):
+        return False
+
+
+def _send(monkeypatch, secrets, response=b"ok"):
+    """_post_to_slack を呼び、送ったリクエストを返す"""
+    monkeypatch.setattr(index, "_secret_values", {})
+    sent = []
+
+    def fake_urlopen(req, timeout):
+        sent.append(req)
+        return _FakeResponse(response)
+
+    monkeypatch.setattr(index.urllib.request, "urlopen", fake_urlopen)
+    with mock.patch.object(index._secrets, "get_secret_value",
+                           side_effect=lambda SecretId: {"SecretString": secrets[SecretId] + "\n"}):
+        index._post_to_slack(index.ALERT, "障害です")
+    return sent
+
+
+def test_post_with_bot_token(monkeypatch):
+    monkeypatch.setattr(index, "SLACK_BOT_TOKEN_SECRET_ID", "dev/moodle/slack-bot-token")
+    monkeypatch.setattr(index, "SLACK_CHANNELS", {index.USAGE: "CUSAGE", index.ALERT: "CALERT"})
+    sent = _send(monkeypatch, {"dev/moodle/slack-bot-token": "xoxb-test"}, b'{"ok": true}')
+    req = sent[0]
+    assert req.full_url == "https://slack.com/api/chat.postMessage"
+    assert req.get_header("Authorization") == "Bearer xoxb-test"
+    body = json.loads(req.data)
+    assert body["channel"] == "CALERT"
+    assert body["text"] == "障害です"
+    # 既存アプリのbotで投稿するので、名前を変えて会員サポートの通知と見分ける
+    assert body["username"] == "WebCoach Monitor"
+
+
+def test_post_with_bot_token_raises_on_slack_error(monkeypatch):
+    # chat.postMessage は失敗してもHTTP 200で ok:false を返すので、例外にしてLambdaのエラーとして数える
+    monkeypatch.setattr(index, "SLACK_BOT_TOKEN_SECRET_ID", "dev/moodle/slack-bot-token")
+    monkeypatch.setattr(index, "SLACK_CHANNELS", {index.USAGE: "CUSAGE", index.ALERT: "CALERT"})
+    with pytest.raises(RuntimeError, match="channel_not_found"):
+        _send(monkeypatch, {"dev/moodle/slack-bot-token": "xoxb-test"}, b'{"ok": false, "error": "channel_not_found"}')
+
+
+def test_post_with_webhook_when_no_bot_token(monkeypatch):
+    monkeypatch.setattr(index, "SLACK_BOT_TOKEN_SECRET_ID", "")
+    sent = _send(monkeypatch, {"dev/moodle/slack-alert-webhook": "https://hooks.slack.com/services/T/B/x"})
+    assert sent[0].full_url == "https://hooks.slack.com/services/T/B/x"
+    assert json.loads(sent[0].data) == {"text": "障害です"}
