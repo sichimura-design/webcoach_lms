@@ -3,15 +3,19 @@
  * 本番の監視・利用状況のSlack通知(ログのエラー・アラーム・ECSタスク停止・日次レポート・月の予算)単体デプロイ用
  * 稼働中のサービス(ECS/ALB/RDS)には何も変更を加えない。ARN/IDは文字列で渡す。
  *
- * 事前に Secrets Manager へ Slack Incoming WebhookのURLを文字列で登録しておくこと。
- *   prod/lms/slack-usage-webhook  利用状況チャンネル
- *   prod/lms/slack-alert-webhook  エラーチャンネル
- * Slackアプリは cdk/lambda/slack-notifier/slack-app-manifest.yml から作れる(Webhookはdevと共用)。
+ * Slackへの送り方は2通り。事前に Secrets Manager へ文字列で登録しておくこと。
+ *   - botトークン方式(slackUsageChannel / slackAlertChannel を渡したとき)
+ *       prod/lms/slack-bot-token      botトークン(xoxb-...)。chat:write と chat:write.customize が要る
+ *   - Incoming Webhook方式(チャンネルIDを渡さないとき)
+ *       prod/lms/slack-usage-webhook  利用状況チャンネル
+ *       prod/lms/slack-alert-webhook  エラーチャンネル
+ *       Slackアプリは cdk/lambda/slack-notifier/slack-app-manifest.yml から作れる(Webhookはdevと共用)。
  *
  * ─── デプロイ ────────────────────────────────────────────────────
  *   cd cdk-prod
  *   ./node_modules/.bin/cdk deploy prod-SlackNotifierStack \
  *     --app 'npx ts-node --prefer-ts-exts bin/slack-notifier-app.ts' \
+ *     -c slackUsageChannel=<利用状況チャンネルID> -c slackAlertChannel=<エラーチャンネルID> \
  *     --profile PowerUserAccess-840513866884
  */
 
@@ -50,6 +54,8 @@ new ProdSlackNotifierStack(app, `${envName}-SlackNotifierStack`, {
   dbAllocatedStorageGiB: Number(ctx('dbAllocatedStorageGiB', '20')),
   // 2026-10時点の実績は1日あたり約$17(t4g.medium化後)=月$520前後。通常月では鳴らない額にしている
   monthlyBudgetUsd: Number(ctx('monthlyBudgetUsd', '700')),
+  slackUsageChannel: ctx('slackUsageChannel', '') || undefined,
+  slackAlertChannel: ctx('slackAlertChannel', '') || undefined,
 });
 
 app.synth();

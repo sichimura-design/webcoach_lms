@@ -100,6 +100,9 @@ export class ProdCognitoStack extends cdk.Stack {
       // 管理者がユーザーを作成する運用のため自己サインアップは無効
       selfSignUpEnabled: false,
       autoVerify: { email: true },
+      // メール変更時、確認コードが通るまで元のメールを残す(未設定だと即書き換わり、
+      // 打ち間違い・コード未入力でログインもパスワード再設定もできなくなる)
+      keepOriginal: { email: true },
       userVerification: {
         emailSubject: '[WEBCOACH] メールアドレスの確認',
         emailBody: '確認コードは {####} です。',

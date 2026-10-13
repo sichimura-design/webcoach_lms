@@ -15,6 +15,13 @@ import { Construct } from 'constructs';
 
 export interface SlackNotifierStackProps extends cdk.StackProps {
   readonly envName: string;
+  /**
+   * Slackへbotトークン(chat.postMessage)で送るときの投稿先チャンネルID。
+   * 両方指定するとbotトークン方式(トークンは Secrets Manager の `<env>/moodle/slack-bot-token`)、
+   * 空ならIncoming Webhook方式(`<env>/moodle/slack-usage-webhook` / `slack-alert-webhook`)
+   */
+  readonly slackUsageChannel?: string;
+  readonly slackAlertChannel?: string;
 }
 
 /**
@@ -53,10 +60,24 @@ export class SlackNotifierStack extends cdk.Stack {
       removalPolicy: cdk.RemovalPolicy.RETAIN,
     });
 
+    // Slackへの送り方: チャンネルIDが両方あればbotトークン(chat.postMessage)、無ければIncoming Webhook
+    const useBotToken = Boolean(props.slackUsageChannel && props.slackAlertChannel);
+    const botTokenSecretName = `${envName}/moodle/slack-bot-token`;
     const usageSecretName = `${envName}/moodle/slack-usage-webhook`;
     const alertSecretName = `${envName}/moodle/slack-alert-webhook`;
-    const usageSecret = secretsmanager.Secret.fromSecretNameV2(this, 'SlackUsageWebhookSecret', usageSecretName);
-    const alertSecret = secretsmanager.Secret.fromSecretNameV2(this, 'SlackAlertWebhookSecret', alertSecretName);
+    const slackSecrets = useBotToken
+      ? [secretsmanager.Secret.fromSecretNameV2(this, 'SlackBotTokenSecret', botTokenSecretName)]
+      : [
+        secretsmanager.Secret.fromSecretNameV2(this, 'SlackUsageWebhookSecret', usageSecretName),
+        secretsmanager.Secret.fromSecretNameV2(this, 'SlackAlertWebhookSecret', alertSecretName),
+      ];
+    const slackEnv: Record<string, string> = useBotToken
+      ? {
+        SLACK_BOT_TOKEN_SECRET_ID: botTokenSecretName,
+        SLACK_USAGE_CHANNEL: props.slackUsageChannel!,
+        SLACK_ALERT_CHANNEL: props.slackAlertChannel!,
+      }
+      : { USAGE_WEBHOOK_SECRET_ID: usageSecretName, ALERT_WEBHOOK_SECRET_ID: alertSecretName };
 
     const fn = new lambda.Function(this, 'NotifierFunction', {
       functionName: `${envName}-slack-notifier`,
@@ -80,13 +101,11 @@ export class SlackNotifierStack extends cdk.Stack {
         USAGE_LOG_GROUP_NAME: apiLogGroup.logGroupName,
         REPORT_LOG_GROUP_NAME: bffLogGroup.logGroupName,
         QUIET_HOURS_JST: '22-9',
-        USAGE_WEBHOOK_SECRET_ID: usageSecretName,
-        ALERT_WEBHOOK_SECRET_ID: alertSecretName,
+        ...slackEnv,
       },
     });
 
-    usageSecret.grantRead(fn);
-    alertSecret.grantRead(fn);
+    slackSecrets.forEach((secret) => secret.grantRead(fn));
     fn.addToRolePolicy(new iam.PolicyStatement({
       actions: ['logs:StartQuery'],
       resources: [apiLogGroup.logGroupArn, bffLogGroup.logGroupArn],

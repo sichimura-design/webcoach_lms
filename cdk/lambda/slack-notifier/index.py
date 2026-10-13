@@ -12,7 +12,8 @@ WebCoachの監視・利用状況をSlackへ通知するLambda(dev: cdk/lib/slack
 - EventBridgeの定期実行(毎朝9時) → 前日の利用状況・運用KPI・費用(利用状況用チャンネル)と、
   証明書/Google連携/AIモデルの期限切れが近いもの(アラート用)
 
-Slack Incoming WebhookのURLはSecrets Managerに文字列でそのまま入れておく。
+Slackへは、botトークン(chat.postMessage、投稿先はチャンネルID)かIncoming Webhookのどちらかで送る。
+トークン・Webhook URLはSecrets Managerに文字列でそのまま入れておく。
 本番とdevで同じチャンネルに投稿するため、見出しに[ENV_NAME]を付けて区別する。
 """
 import base64
@@ -30,8 +31,21 @@ ENV_NAME = os.environ.get("ENV_NAME", "dev")
 # 日次集計(Logs Insights)の対象。AI利用ログはapi-server、運用レポート(daily_report)はbff-serverが出す
 USAGE_LOG_GROUP_NAME = os.environ["USAGE_LOG_GROUP_NAME"]
 REPORT_LOG_GROUP_NAME = os.environ.get("REPORT_LOG_GROUP_NAME", USAGE_LOG_GROUP_NAME)
-USAGE_WEBHOOK_SECRET_ID = os.environ["USAGE_WEBHOOK_SECRET_ID"]
-ALERT_WEBHOOK_SECRET_ID = os.environ["ALERT_WEBHOOK_SECRET_ID"]
+# 投稿先(利用状況チャンネル / エラーチャンネル)
+USAGE = "usage"
+ALERT = "alert"
+# botトークン方式: トークンはSecrets Managerに文字列で入れ、投稿先はチャンネルIDで指定する。
+# 未設定ならIncoming Webhook方式(チャンネルごとのWebhook URLをSecrets Managerに入れる)
+SLACK_BOT_TOKEN_SECRET_ID = os.environ.get("SLACK_BOT_TOKEN_SECRET_ID", "")
+SLACK_CHANNELS = {USAGE: os.environ.get("SLACK_USAGE_CHANNEL", ""), ALERT: os.environ.get("SLACK_ALERT_CHANNEL", "")}
+WEBHOOK_SECRET_IDS = {
+    USAGE: os.environ.get("USAGE_WEBHOOK_SECRET_ID", ""),
+    ALERT: os.environ.get("ALERT_WEBHOOK_SECRET_ID", ""),
+}
+# botトークン方式は会員サポート用の既存アプリ(notify-member-support)のbotで投稿するので、
+# 名前とアイコンを変えて見分けられるようにする(chat:write.customize)
+BOT_USERNAME = "WebCoach Monitor"
+BOT_ICON_EMOJI = ":bar_chart:"
 # AWS費用を日次集計に載せるか(devのアカウントは他案件と共用なので載せない)
 COST_REPORT_ENABLED = os.environ.get("COST_REPORT_ENABLED") == "true"
 # エラーのログ通知を止める時間帯(JST、"22-9"なら22:00〜翌8:59)。devはRDSを夜間止めるので接続エラーが出る
@@ -87,7 +101,8 @@ CLAUDE_PRICES = {
 
 _logs = boto3.client("logs")
 _secrets = boto3.client("secretsmanager")
-_webhook_urls = {}
+# Secrets Managerから読んだ値(botトークン / Webhook URL)。コールドスタートまで使い回す
+_secret_values = {}
 # エラーの文面シグネチャ → 最後に通知した時刻(epoch秒)
 _last_notified = {}
 
@@ -190,7 +205,7 @@ def _notify_errors(event, now=None):
         shown.append(f"…ほか {len(lines) - MAX_ERROR_LINES} 種類")
 
     _post_to_slack(
-        ALERT_WEBHOOK_SECRET_ID,
+        ALERT,
         f":rotating_light: *[{ENV_NAME}] {service} エラー {total}件*\n"
         + "\n".join(shown)
         + f"\n_同じエラーは{SUPPRESS_SECONDS // 60}分間再通知しません_"
@@ -265,7 +280,7 @@ def _notify_alarms(records):
             # INSUFFICIENT_DATA や 初回のOK は知らせない
             continue
         reason = (alarm.get("NewStateReason") or "")[:MAX_LINE_CHARS].replace("`", "'")
-        _post_to_slack(ALERT_WEBHOOK_SECRET_ID, f"{head}\n`{alarm.get('AlarmName')}` {reason}")
+        _post_to_slack(ALERT, f"{head}\n`{alarm.get('AlarmName')}` {reason}")
         posted += 1
     return {"posted": posted}
 
@@ -291,7 +306,7 @@ def _notify_budget(message):
         f"(警告ライン {fields.get('Alert Threshold', '?')})\n"
         f"`{fields.get('Budget Name', '')}` 内訳はCost Explorerで確認"
     )
-    _post_to_slack(ALERT_WEBHOOK_SECRET_ID, f"{head}\n{body}")
+    _post_to_slack(ALERT, f"{head}\n{body}")
     return 1
 
 
@@ -317,7 +332,7 @@ def _notify_task_stopped(event):
             continue
         lines.append(f"  • {c.get('name')}: exitCode={exit_code} {c.get('reason') or ''}".rstrip())
     lines.append("_サービスが自動で代わりのタスクを起動します。続く場合はALB/ヘルスチェックの通知も確認してください_")
-    _post_to_slack(ALERT_WEBHOOK_SECRET_ID, "\n".join(lines))
+    _post_to_slack(ALERT, "\n".join(lines))
     return {"posted": 1}
 
 
@@ -341,12 +356,12 @@ def _post_daily_summary():
     report = _parse_json(results["report"][0].get("@message", "")) if results["report"] else None
 
     cost = _fetch_aws_cost(start) if COST_REPORT_ENABLED else None
-    _post_to_slack(USAGE_WEBHOOK_SECRET_ID, _format_summary(start, results["chat"], results["app"], report, cost))
+    _post_to_slack(USAGE, _format_summary(start, results["chat"], results["app"], report, cost))
 
     alerts = _expiry_alerts(report)
     if alerts:
         _post_to_slack(
-            ALERT_WEBHOOK_SECRET_ID,
+            ALERT,
             f":hourglass_flowing_sand: *[{ENV_NAME}] 期限が近いもの・確認が必要なもの*\n" + "\n".join(alerts)
             + "\n_管理画面の「期限管理」で詳細を確認できます_",
         )
@@ -553,12 +568,39 @@ def _float(row, key):
 # Slack
 # ---------------------------------------------------------------------------
 
-def _post_to_slack(secret_id, text):
-    url = _webhook_urls.get(secret_id)
-    if url is None:
-        url = _webhook_urls[secret_id] = _secrets.get_secret_value(SecretId=secret_id)["SecretString"].strip()
+def _secret(secret_id):
+    value = _secret_values.get(secret_id)
+    if value is None:
+        value = _secret_values[secret_id] = _secrets.get_secret_value(SecretId=secret_id)["SecretString"].strip()
+    return value
+
+
+def _post_to_slack(destination, text):
+    """destination は USAGE / ALERT"""
+    if SLACK_BOT_TOKEN_SECRET_ID:
+        req = urllib.request.Request(
+            "https://slack.com/api/chat.postMessage",
+            data=json.dumps({
+                "channel": SLACK_CHANNELS[destination],
+                "text": text,
+                "username": BOT_USERNAME,
+                "icon_emoji": BOT_ICON_EMOJI,
+                "unfurl_links": False,
+                "unfurl_media": False,
+            }).encode("utf-8"),
+            headers={
+                "Content-Type": "application/json; charset=utf-8",
+                "Authorization": f"Bearer {_secret(SLACK_BOT_TOKEN_SECRET_ID)}",
+            },
+        )
+        with urllib.request.urlopen(req, timeout=10) as resp:
+            result = json.loads(resp.read())
+        # 失敗してもHTTP 200で ok:false が返る。例外にしてLambdaのエラー(アラーム)として数える
+        if not result.get("ok"):
+            raise RuntimeError(f"Slack chat.postMessage failed: {result.get('error')}")
+        return
     req = urllib.request.Request(
-        url,
+        _secret(WEBHOOK_SECRET_IDS[destination]),
         data=json.dumps({"text": text}).encode("utf-8"),
         headers={"Content-Type": "application/json"},
     )

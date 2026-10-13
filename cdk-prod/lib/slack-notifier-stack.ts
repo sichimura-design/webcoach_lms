@@ -28,6 +28,13 @@ export interface ProdSlackNotifierStackProps extends cdk.StackProps {
   readonly dbAllocatedStorageGiB: number;
   /** 月のAWS費用の予算(USD)。実績が80%・100%、月末予測が100%を超えたらエラー用チャンネルへ通知 */
   readonly monthlyBudgetUsd: number;
+  /**
+   * Slackへbotトークン(chat.postMessage)で送るときの投稿先チャンネルID。
+   * 両方指定するとbotトークン方式(トークンは Secrets Manager の `<env>/lms/slack-bot-token`)、
+   * 空ならIncoming Webhook方式(`<env>/lms/slack-usage-webhook` / `slack-alert-webhook`)
+   */
+  readonly slackUsageChannel?: string;
+  readonly slackAlertChannel?: string;
 }
 
 /**
@@ -41,9 +48,9 @@ export interface ProdSlackNotifierStackProps extends cdk.StackProps {
  * - AWS Budgetsの月予算: 実績が80%・100%、月末の予測が100%を超えたらエラー用チャンネルへ
  *   (Claude APIの費用はAWSの請求に含まれないので、日次レポートの概算かAnthropic Consoleで見る)
  *
- * Slack Incoming WebhookのURLは次の名前でSecrets Managerに手動登録する(このスタックでは作らない)。
- *   `${envName}/lms/slack-usage-webhook` 利用状況
- *   `${envName}/lms/slack-alert-webhook` エラー
+ * Slackへの送り方は2通り(どちらもSecrets Managerに文字列で手動登録する。このスタックでは作らない)
+ *   - botトークン方式(slackUsageChannel / slackAlertChannel を指定したとき): `${envName}/lms/slack-bot-token`
+ *   - Incoming Webhook方式: `${envName}/lms/slack-usage-webhook`(利用状況) / `${envName}/lms/slack-alert-webhook`(エラー)
  */
 export class ProdSlackNotifierStack extends cdk.Stack {
   constructor(scope: Construct, id: string, props: ProdSlackNotifierStackProps) {
@@ -52,10 +59,24 @@ export class ProdSlackNotifierStack extends cdk.Stack {
     const { envName } = props;
     const ecsLogGroup = logs.LogGroup.fromLogGroupName(this, 'EcsLogGroup', props.ecsLogGroupName);
 
+    // Slackへの送り方: チャンネルIDが両方あればbotトークン(chat.postMessage)、無ければIncoming Webhook
+    const useBotToken = Boolean(props.slackUsageChannel && props.slackAlertChannel);
+    const botTokenSecretName = `${envName}/lms/slack-bot-token`;
     const usageSecretName = `${envName}/lms/slack-usage-webhook`;
     const alertSecretName = `${envName}/lms/slack-alert-webhook`;
-    const usageSecret = secretsmanager.Secret.fromSecretNameV2(this, 'SlackUsageWebhookSecret', usageSecretName);
-    const alertSecret = secretsmanager.Secret.fromSecretNameV2(this, 'SlackAlertWebhookSecret', alertSecretName);
+    const slackSecrets = useBotToken
+      ? [secretsmanager.Secret.fromSecretNameV2(this, 'SlackBotTokenSecret', botTokenSecretName)]
+      : [
+        secretsmanager.Secret.fromSecretNameV2(this, 'SlackUsageWebhookSecret', usageSecretName),
+        secretsmanager.Secret.fromSecretNameV2(this, 'SlackAlertWebhookSecret', alertSecretName),
+      ];
+    const slackEnv: Record<string, string> = useBotToken
+      ? {
+        SLACK_BOT_TOKEN_SECRET_ID: botTokenSecretName,
+        SLACK_USAGE_CHANNEL: props.slackUsageChannel!,
+        SLACK_ALERT_CHANNEL: props.slackAlertChannel!,
+      }
+      : { USAGE_WEBHOOK_SECRET_ID: usageSecretName, ALERT_WEBHOOK_SECRET_ID: alertSecretName };
 
     const fn = new lambda.Function(this, 'NotifierFunction', {
       functionName: `${envName}-slack-notifier`,
@@ -78,14 +99,12 @@ export class ProdSlackNotifierStack extends cdk.Stack {
         ENV_NAME: envName,
         USAGE_LOG_GROUP_NAME: props.ecsLogGroupName,
         REPORT_LOG_GROUP_NAME: props.ecsLogGroupName,
-        USAGE_WEBHOOK_SECRET_ID: usageSecretName,
-        ALERT_WEBHOOK_SECRET_ID: alertSecretName,
+        ...slackEnv,
         COST_REPORT_ENABLED: 'true',
       },
     });
 
-    usageSecret.grantRead(fn);
-    alertSecret.grantRead(fn);
+    slackSecrets.forEach((secret) => secret.grantRead(fn));
     fn.addToRolePolicy(new iam.PolicyStatement({
       actions: ['logs:StartQuery'],
       resources: [ecsLogGroup.logGroupArn],
