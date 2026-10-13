@@ -66,9 +66,8 @@ class ReminderService {
       return;
     }
     const dateLabel = this._formatDateJst(schedule.coaching_date);
-    const greeting = user.fullname ? `${user.fullname} 様` : 'いつもご利用ありがとうございます。';
     const body = [
-      greeting,
+      'いつもご利用ありがとうございます。',
       '',
       `明日 ${dateLabel} にコーチングセッションの予定があります。`,
       schedule.meeting_url ? `ミーティングURL: ${schedule.meeting_url}` : '',
