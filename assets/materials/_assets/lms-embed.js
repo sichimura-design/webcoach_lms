@@ -303,6 +303,53 @@
     return true;
   }
 
+  // 8. 開閉（.toggle > .open-btn + .toggle-content。理解度チェックの Q&A・補足など 95 ページ）
+  //    元の Clipkit の JS が消えて開かなかった（2026-10-14 教材不具合リスト）。見た目は lms-skin.css 12節
+  function toggleTarget(btn) {
+    var box = btn.parentNode;
+    return box && box.classList && box.classList.contains('toggle') ? box.querySelector('.toggle-content') : null;
+  }
+  function setToggle(btn, open) {
+    var body = toggleTarget(btn);
+    if (!body) return;
+    btn.classList.toggle('active', open);
+    btn.parentNode.classList.toggle('wc-open', open);
+    btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+    body.style.display = open ? 'block' : 'none';
+  }
+  function initToggles() {
+    $all('.toggle > .open-btn').forEach(function (btn) {
+      if (btn.hasAttribute('onclick') || !toggleTarget(btn)) return;
+      btn.setAttribute('role', 'button');
+      btn.setAttribute('tabindex', '0');
+      btn.setAttribute('aria-expanded', 'false');
+      // 右上の「回答を見る」（質問のとき）／「詳しく見る」
+      var text = (btn.textContent || '').replace(/\s+/g, '');
+      btn.setAttribute('data-wc-hint', /^Q|[？?]$/.test(text) ? '回答を見る' : '詳しく見る');
+      btn.parentNode.classList.add('wc-toggle');
+    });
+  }
+  document.addEventListener('keydown', function (e) {
+    if (e.key !== 'Enter' && e.key !== ' ') return;
+    var btn = closest(e.target, '.wc-toggle > .open-btn');
+    if (!btn) return;
+    e.preventDefault();
+    setToggle(btn, !btn.classList.contains('active'));
+  });
+
+  // 9. 旧サイトの「前の章に戻る」「次の章に進む」「前のレッスンに戻る」「次のレッスンに進む」ボタン（本文に直書き 800 か所超）
+  //    LMS の「前のレッスンへ」「次のレッスンへ」と重複し、行き先も合わないので隠す。ボタンだけが入った枠も隠す
+  var OLD_NAV = /^(前|次)の(章|レッスン)に(戻る|進む)$/;
+  function squash(s) { return String(s || '').replace(/\s+/g, ''); }
+  function hideOldNav() {
+    $all('a, button').forEach(function (a) {
+      if (!OLD_NAV.test(squash(a.textContent))) return;
+      a.style.display = 'none';
+      var p = a.parentElement;
+      if (p && p !== document.body && !squash(p.textContent).replace(/(前|次)の(章|レッスン)に(戻る|進む)/g, '')) p.style.display = 'none';
+    });
+  }
+
   document.addEventListener('click', function (e) {
     var t = e.target;
     var el;
@@ -310,6 +357,7 @@
       if (!e.defaultPrevented && e.button === 0 && jumpTo(el)) e.preventDefault();
       return;
     }
+    if ((el = closest(t, '.wc-toggle > .open-btn'))) { setToggle(el, !el.classList.contains('active')); return; }
     if ((el = closest(t, '.tt[data-tip]'))) { toggleTip(el); return; }
     if (openTip) { openTip.classList.remove('open'); resetPop(openTip); openTip = null; }
     if ((el = closest(t, '.quiz-opt'))) {
@@ -444,6 +492,7 @@
     if (!el) return;
     try { localStorage.setItem(sheetKey(el), el.value); } catch (x) { /* 保存できない環境 */ }
   });
-  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', initSheets); else initSheets();
+  function init() { initSheets(); initToggles(); hideOldNav(); }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init); else init();
 })();
 
