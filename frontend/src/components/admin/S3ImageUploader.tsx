@@ -37,8 +37,10 @@ function validateFile(file: File): string | null {
   return null;
 }
 
-function validateS3Key(key: string): string | null {
-  if (!key.trim()) return 'S3パスを入力してください';
+function validateS3Key(key: string, file: File): string | null {
+  if (!key.trim()) {
+    return isHtml(file) ? '差し替えたい教材のURLを貼り付けてください' : 'S3パスを入力してください';
+  }
   if (/[^\x00-\x7F]/.test(key)) {
     return 'S3パスに日本語・全角文字は使用できません';
   }
@@ -63,9 +65,12 @@ function normalizeKey(input: string): string {
   return key.replace(/^\/+/, '');
 }
 
+/**
+ * 保存先の初期値。HTMLは差し替える教材のURLを貼ってもらうため空にする
+ * （教材は materials/<領域>/html/<ID>.html にあり、手元のファイル名からは決まらない）
+ */
 function buildDefaultKey(file: File): string {
-  const prefix = isHtml(file) ? 'html-content' : 'course-images';
-  return `${prefix}/${file.name}`;
+  return isHtml(file) ? '' : `course-images/${file.name}`;
 }
 
 export const S3ImageUploader: React.FC = () => {
@@ -94,7 +99,7 @@ export const S3ImageUploader: React.FC = () => {
         id: `${Date.now()}-${Math.random()}`,
         file,
         s3Key: key,
-        keyError: validateS3Key(key),
+        keyError: validateS3Key(key, file),
         exists: null,
       });
     }
@@ -129,7 +134,7 @@ export const S3ImageUploader: React.FC = () => {
 
   const handleKeyChange = (id: string, value: string) => {
     setPendingFiles(prev =>
-      prev.map(f => f.id === id ? { ...f, s3Key: value, keyError: validateS3Key(value), exists: null } : f)
+      prev.map(f => f.id === id ? { ...f, s3Key: value, keyError: validateS3Key(value, f.file), exists: null } : f)
     );
   };
 
@@ -139,7 +144,7 @@ export const S3ImageUploader: React.FC = () => {
       prev.map(f => {
         if (f.id !== id) return f;
         const key = normalizeKey(f.s3Key);
-        return key === f.s3Key ? f : { ...f, s3Key: key, keyError: validateS3Key(key), exists: null };
+        return key === f.s3Key ? f : { ...f, s3Key: key, keyError: validateS3Key(key, f.file), exists: null };
       })
     );
   };
