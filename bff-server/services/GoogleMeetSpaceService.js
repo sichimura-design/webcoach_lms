@@ -32,7 +32,11 @@ class GoogleMeetSpaceService {
       `${MEET_API_BASE}/spaces`,
       {
         config: {
-          accessType: 'TRUSTED',
+          // OPEN (not TRUSTED): coaches and students may use accounts outside
+          // the Organizer's domain. With TRUSTED they'd have to knock, and the
+          // Organizer never joins to admit them. The URL is only shown in-app
+          // to the student and their coach.
+          accessType: 'OPEN',
           // Moderation OFF (not ON) is deliberate: with it ON, only a host/
           // co-host can start transcription, and the coach can't be made a
           // co-host (spaces.members.create needs Developer Preview Program
