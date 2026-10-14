@@ -399,7 +399,13 @@ router.get('/notes/:coaching_schedule_id', requireAuth, async (req, res) => {
 
     res.json(note);
   } catch (error) {
-    console.error('[Coaching] Get coaching note error:', error.message);
+    // 404 = その回のノートがまだ無い(AI下書きもコーチの記入も無い)。画面は「ノートなし」と出すだけなので
+    // エラーとして書かない(Slackのエラー通知に拾われるため)
+    if (error.response?.status === 404) {
+      console.log(`[Coaching] No coaching note yet for schedule ${req.params.coaching_schedule_id}`);
+    } else {
+      console.error('[Coaching] Get coaching note error:', error.message);
+    }
     if (error.response) {
       return res.status(error.response.status).json(error.response.data);
     }
