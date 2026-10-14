@@ -3,15 +3,13 @@
  * Abstracts AWS S3 operations
  */
 
-const { PutObjectCommand, HeadObjectCommand, ListObjectsV2Command } = require('@aws-sdk/client-s3');
+const { PutObjectCommand, HeadObjectCommand } = require('@aws-sdk/client-s3');
 const { CreateInvalidationCommand } = require('@aws-sdk/client-cloudfront');
 const { getS3Client, getCloudFrontClient } = require('../config/clients');
 const { config } = require('../config/environment');
 
 // 教材の置き場所。受講画面がiframeで読むHTMLと、その画像・CSS等
 const MATERIALS_PREFIX = 'materials/';
-// 教材のキー一覧の使い回し時間。コンテンツUPでファイルを選ぶたびに全件(約千件)を取り直さないため
-const MATERIALS_KEYS_TTL_MS = 5 * 60 * 1000;
 
 function isMaterialsKey(s3Key) {
   return s3Key.startsWith(MATERIALS_PREFIX);
@@ -27,7 +25,6 @@ class S3Adapter {
     this.bucketName = config.s3BucketName;
     this.cloudFrontDomain = config.cloudFrontDomain;
     this.distributionId = config.cloudFrontDistributionId;
-    this.materialsKeysCache = null; // { keys: string[], expiresAt: number }
   }
 
   /**
@@ -57,9 +54,6 @@ class S3Adapter {
       : `https://${this.bucketName}.s3.amazonaws.com/${s3Key}`;
 
     console.log(`[S3 Upload] Success: s3://${this.bucketName}/${s3Key} (overwritten=${overwritten})`);
-    if (materials && !overwritten && this.materialsKeysCache) {
-      this.materialsKeysCache.keys.push(s3Key);
-    }
 
     // キャッシュ削除の失敗でアップロード自体は失敗扱いにしない（画面で「反映に時間がかかる」と出す）
     const invalidated = materials && overwritten ? await this.invalidate(s3Key) : false;
@@ -86,34 +80,6 @@ class S3Adapter {
       }
       throw error;
     }
-  }
-
-  /**
-   * materials/ 配下で、ファイル名が name と同じものを探す（コンテンツUPの保存先の初期値に使う）
-   * 教材HTMLは materials/<領域>/html/<ID>.html にあり、手元のファイル名だけでは領域が分からないため
-   */
-  async findMaterialsByName(name) {
-    const keys = await this._listMaterialsKeys();
-    return keys.filter(key => key.slice(key.lastIndexOf('/') + 1) === name);
-  }
-
-  async _listMaterialsKeys() {
-    if (this.materialsKeysCache && this.materialsKeysCache.expiresAt > Date.now()) {
-      return this.materialsKeysCache.keys;
-    }
-    const keys = [];
-    let token;
-    do {
-      const res = await this.client.send(new ListObjectsV2Command({
-        Bucket: this.bucketName,
-        Prefix: MATERIALS_PREFIX,
-        ContinuationToken: token,
-      }));
-      for (const obj of res.Contents || []) keys.push(obj.Key);
-      token = res.IsTruncated ? res.NextContinuationToken : undefined;
-    } while (token);
-    this.materialsKeysCache = { keys, expiresAt: Date.now() + MATERIALS_KEYS_TTL_MS };
-    return keys;
   }
 
   /**

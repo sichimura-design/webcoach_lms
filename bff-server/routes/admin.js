@@ -269,26 +269,6 @@ router.get('/s3-exists', requireAuth, requireAdmin, async (req, res) => {
   }
 });
 
-/**
- * GET /api/admin/s3-find-material?name=4z0n5.html
- * 教材HTMLを選んだとき、同じファイル名の教材のS3パスを保存先の初期値にするため
- */
-router.get('/s3-find-material', requireAuth, requireAdmin, async (req, res) => {
-  try {
-    const name = req.query.name;
-    if (!name || name.includes('/')) {
-      return res.status(400).json({ error: 'Bad Request', detail: 'name にはファイル名だけを指定してください' });
-    }
-    if (!s3Adapter.isBucketConfigured()) {
-      return res.status(500).json({ error: 'S3_BUCKET_NAME が設定されていません' });
-    }
-    res.json({ keys: await s3Adapter.findMaterialsByName(name) });
-  } catch (error) {
-    console.error('[S3 Find Material] Error:', error.message);
-    res.status(500).json(createErrorResponse(error, 'general', 500));
-  }
-});
-
 // ==================== STUDENT MANAGEMENT ====================
 
 /**

@@ -1871,15 +1871,6 @@ class BFFClient {
   }
 
   /**
-   * materials/ 配下で同じファイル名の教材のS3パスを探す
-   * GET /api/admin/s3-find-material
-   */
-  async findMaterialKeys(name: string): Promise<string[]> {
-    const response = await this.api.get('/admin/s3-find-material', { params: { name } });
-    return response.data?.keys || [];
-  }
-
-  /**
    * 全コーチ・受講生マッピング取得
    * GET /api/coaching/mappings
    */
