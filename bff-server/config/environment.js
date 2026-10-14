@@ -36,6 +36,8 @@ const config = {
   // バケットのリージョン。本番のSPAバケットはus-east-1にある
   s3Region: process.env.S3_REGION || process.env.COGNITO_REGION || 'ap-northeast-1',
   cloudFrontDomain: process.env.CLOUDFRONT_DOMAIN || '',
+  // 管理画面「コンテンツUP」で教材(materials/)を上書きしたとき、そのファイルのキャッシュを消す配信
+  cloudFrontDistributionId: process.env.CLOUDFRONT_DISTRIBUTION_ID || '',
 
   // Coaching recordings (video/audio/transcript files; metadata in
   // webcoach_coaching_recording, actual files here)
