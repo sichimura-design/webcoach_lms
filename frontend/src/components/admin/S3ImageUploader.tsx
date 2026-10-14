@@ -8,6 +8,9 @@ interface PendingFile {
   keyError: string | null;
   /** 同じパスに既にファイルがあるか。null は確認中・未確認 */
   exists: boolean | null;
+  /** HTMLのとき、同じファイル名の教材を探している間・複数見つかったとき */
+  lookup?: 'searching' | 'multiple';
+  candidates?: string[];
 }
 
 interface UploadedFile {
@@ -63,9 +66,12 @@ function normalizeKey(input: string): string {
   return key.replace(/^\/+/, '');
 }
 
+/**
+ * 保存先の初期値。画像はコースのサムネ・アバター用の course-images/。
+ * HTMLは教材として materials/ に置く。同じ名前の教材があればそのパスに置き換える（findMaterialPaths）
+ */
 function buildDefaultKey(file: File): string {
-  const prefix = isHtml(file) ? 'html-content' : 'course-images';
-  return `${prefix}/${file.name}`;
+  return isHtml(file) ? `${MATERIALS_PREFIX}${file.name}` : `course-images/${file.name}`;
 }
 
 export const S3ImageUploader: React.FC = () => {
@@ -89,6 +95,7 @@ export const S3ImageUploader: React.FC = () => {
         errors.push(`${file.name}: ${err}`);
         continue;
       }
+      const html = isHtml(file);
       const key = buildDefaultKey(file);
       newPending.push({
         id: `${Date.now()}-${Math.random()}`,
@@ -96,6 +103,7 @@ export const S3ImageUploader: React.FC = () => {
         s3Key: key,
         keyError: validateS3Key(key),
         exists: null,
+        ...(html ? { lookup: 'searching' as const } : {}),
       });
     }
 
@@ -104,7 +112,32 @@ export const S3ImageUploader: React.FC = () => {
 
     if (newPending.length > 0) {
       setPendingFiles(prev => [...prev, ...newPending]);
+      newPending.filter(f => f.lookup === 'searching').forEach(findMaterialPaths);
     }
+  };
+
+  // 教材HTMLは materials/<領域>/html/<ID>.html にあり、ファイル名だけでは置き場所が決まらないので、
+  // 同じ名前の教材を探して保存先に入れる。見つからなければ materials/<ファイル名> のまま、複数あれば選んでもらう
+  const findMaterialPaths = async (pf: PendingFile) => {
+    let keys: string[] = [];
+    try {
+      keys = await bffClient.findMaterialKeys(pf.file.name);
+    } catch {
+      // 探せなくても、URLを貼り付ければアップロードできる
+    }
+    setPendingFiles(prev =>
+      prev.map(f => {
+        // 探している間に保存先を書き換えていたら、そちらを優先する
+        if (f.id !== pf.id || f.lookup !== 'searching') return f;
+        if (keys.length === 1) {
+          return { ...f, s3Key: keys[0], keyError: null, exists: null, lookup: undefined };
+        }
+        if (keys.length > 1) {
+          return { ...f, lookup: 'multiple', candidates: keys };
+        }
+        return { ...f, lookup: undefined };
+      })
+    );
   };
 
   const handleDrag = (e: React.DragEvent) => {
@@ -129,7 +162,7 @@ export const S3ImageUploader: React.FC = () => {
 
   const handleKeyChange = (id: string, value: string) => {
     setPendingFiles(prev =>
-      prev.map(f => f.id === id ? { ...f, s3Key: value, keyError: validateS3Key(value), exists: null } : f)
+      prev.map(f => f.id === id ? { ...f, s3Key: value, keyError: validateS3Key(value), exists: null, lookup: undefined } : f)
     );
   };
 
@@ -210,7 +243,8 @@ export const S3ImageUploader: React.FC = () => {
     setTimeout(() => setCopiedUrl(null), 2000);
   };
 
-  const hasKeyError = pendingFiles.some(f => f.keyError !== null);
+  // 保存先を探している間・候補から選ぶまでは、仮の保存先に上げてしまわないよう止める
+  const hasKeyError = pendingFiles.some(f => f.keyError !== null || f.lookup !== undefined);
 
   return (
     <div>
@@ -327,7 +361,9 @@ export const S3ImageUploader: React.FC = () => {
                     backgroundColor: isUploading ? '#f5f5f5' : '#fff',
                   }}
                 />
-                {pf.keyError ? (
+                {pf.lookup ? (
+                  <LookupStatus file={pf} onPick={key => handleKeyChange(pf.id, key)} />
+                ) : pf.keyError ? (
                   <div style={{ fontSize: '12px', color: '#D60934', marginTop: '4px' }}>{pf.keyError}</div>
                 ) : (
                   <KeyStatus file={pf} />
@@ -435,6 +471,29 @@ export const S3ImageUploader: React.FC = () => {
           </div>
         </div>
       )}
+    </div>
+  );
+};
+
+/** HTMLの保存先を探している間と、同じ名前の教材が複数あったときの案内 */
+const LookupStatus: React.FC<{ file: PendingFile; onPick: (key: string) => void }> = ({ file, onPick }) => {
+  const style: React.CSSProperties = { fontSize: '12px', marginTop: '4px', lineHeight: 1.6 };
+  if (file.lookup === 'searching') {
+    return <div style={{ ...style, color: '#9e9e9e' }}>同じ名前の教材を探しています…</div>;
+  }
+  return (
+    <div style={{ ...style, color: '#b26a00' }}>
+      同じ名前の教材が複数あります。差し替える教材を選んでください。
+      {file.candidates?.map(key => (
+        <button
+          key={key}
+          type="button"
+          onClick={() => onPick(key)}
+          style={{ display: 'block', marginTop: '4px', padding: '2px 8px', fontSize: '12px', background: '#fff', border: '1px solid #bdbdbd', borderRadius: '4px', cursor: 'pointer' }}
+        >
+          {key}
+        </button>
+      ))}
     </div>
   );
 };
