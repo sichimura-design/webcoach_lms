@@ -1841,11 +1841,17 @@ class BFFClient {
   }
 
   /**
-   * 画像をS3にアップロード
+   * 画像・HTMLをS3にアップロード
    * POST /api/admin/s3-upload
-   * @returns { success: boolean, s3Key: string, url: string }
+   * @returns overwritten: 既存ファイルを上書きしたか / invalidated: 配信キャッシュを消したか(教材のみ)
    */
-  async uploadToS3(file: File, s3Key: string): Promise<{ success: boolean; s3Key: string; url: string }> {
+  async uploadToS3(file: File, s3Key: string): Promise<{
+    success: boolean;
+    s3Key: string;
+    url: string;
+    overwritten?: boolean;
+    invalidated?: boolean;
+  }> {
     const formData = new FormData();
     formData.append('file', file);
     formData.append('s3Key', s3Key);
@@ -1853,6 +1859,15 @@ class BFFClient {
       headers: { 'Content-Type': 'multipart/form-data' },
     });
     return response.data;
+  }
+
+  /**
+   * S3に同じパスのファイルが既にあるか(上書きになるか)
+   * GET /api/admin/s3-exists
+   */
+  async s3ObjectExists(s3Key: string): Promise<boolean> {
+    const response = await this.api.get('/admin/s3-exists', { params: { key: s3Key } });
+    return !!response.data?.exists;
   }
 
   /**

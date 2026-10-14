@@ -249,6 +249,26 @@ router.post('/s3-upload', requireAuth, requireAdmin, upload.single('file'), asyn
   }
 });
 
+/**
+ * GET /api/admin/s3-exists?key=...
+ * アップロード前に「既存ファイルの上書き」か「新規作成」かを画面に出すため
+ */
+router.get('/s3-exists', requireAuth, requireAdmin, async (req, res) => {
+  try {
+    const s3Key = req.query.key;
+    if (!s3Key) {
+      return res.status(400).json({ error: 'Bad Request', detail: 'key が指定されていません' });
+    }
+    if (!s3Adapter.isBucketConfigured()) {
+      return res.status(500).json({ error: 'S3_BUCKET_NAME が設定されていません' });
+    }
+    res.json({ s3Key, exists: await s3Adapter.exists(s3Key) });
+  } catch (error) {
+    console.error('[S3 Exists] Error:', error.message);
+    res.status(500).json(createErrorResponse(error, 'general', 500));
+  }
+});
+
 // ==================== STUDENT MANAGEMENT ====================
 
 /**

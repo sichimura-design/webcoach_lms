@@ -96,6 +96,7 @@ services:
       INTERNAL_API_KEY: ${INTERNAL_API_KEY}
       S3_BUCKET_NAME: ${S3_BUCKET_NAME}
       CLOUDFRONT_DOMAIN: ${CLOUDFRONT_DOMAIN}
+      CLOUDFRONT_DISTRIBUTION_ID: ${CLOUDFRONT_DISTRIBUTION_ID:-}
       CONTENT_TOKEN_SECRET: ${CONTENT_TOKEN_SECRET}
     command: ["bash", "/app/start-with-parameter-store.sh"]
     depends_on:

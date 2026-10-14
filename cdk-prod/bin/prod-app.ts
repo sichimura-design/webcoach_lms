@@ -238,6 +238,8 @@ const ecsStack = new ProdEcsStack(app, `${envName}-EcsStack`, {
   cloudfrontDomain: app.node.tryGetContext('cloudfrontDomain') ?? 'study.webcoach.jp',
   s3BucketName: app.node.tryGetContext('s3BucketName') ?? 'prod-spastack-spabucket48e1059f-bvsjyjbr65bg',
   s3Region: app.node.tryGetContext('s3Region') ?? 'us-east-1',
+  // study.webcoach.jp の配信。コンテンツUPで教材を上書きしたときのキャッシュ削除に使う
+  cloudfrontDistributionId: app.node.tryGetContext('cloudfrontDistributionId') ?? 'E2695ZFFN37R3N',
   // CIでビルド済みのイメージを使う: --context imageTag=$(git rev-parse origin/master)
   imageTag: app.node.tryGetContext('imageTag'),
 });

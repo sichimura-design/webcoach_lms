@@ -62,6 +62,8 @@ export interface ProdEcsStackProps extends cdk.StackProps {
   readonly s3BucketName?: string;
   /** s3BucketName のリージョン。SpaStackはus-east-1にあるので、BFFのS3クライアントにはこちらを使わせる */
   readonly s3Region?: string;
+  /** cloudfrontDomain の配信ID。コンテンツUPで教材(materials/)を上書きしたとき、そのファイルのキャッシュを消す */
+  readonly cloudfrontDistributionId?: string;
   /**
    * deploy-backend.yml がpushした git SHA。指定すると4コンテナとも `moodle-xxx-<SHA>` を使う
    * (CIと同じ固定タグ。-latest だとECSホストが古いdigestを使い続けることがあるため)。
@@ -113,6 +115,7 @@ export class ProdEcsStack extends cdk.Stack {
       cloudfrontDomain,
       s3BucketName,
       s3Region,
+      cloudfrontDistributionId,
       imageTag,
     } = props;
     const tagOr = (prefix: string, fallback: string) => (imageTag ? `${prefix}-${imageTag}` : fallback);
@@ -290,6 +293,13 @@ export class ProdEcsStack extends cdk.Stack {
         resources: [`arn:aws:s3:::${s3BucketName}/*`],
       }));
     }
+    // コンテンツUPで教材を上書きしたとき、そのファイルだけキャッシュを消す
+    if (cloudfrontDistributionId) {
+      taskDef.addToTaskRolePolicy(new iam.PolicyStatement({
+        actions: ['cloudfront:CreateInvalidation'],
+        resources: [`arn:aws:cloudfront::${this.account}:distribution/${cloudfrontDistributionId}`],
+      }));
+    }
     // 管理画面のユーザー登録・削除・グループ変更(BFFのCognitoAdapter)
     if (cognitoUserPoolId) {
       taskDef.addToTaskRolePolicy(new iam.PolicyStatement({
@@ -377,6 +387,7 @@ export class ProdEcsStack extends cdk.Stack {
         ALLOWED_ORIGINS: allowedOrigins ?? '',
         COGNITO_REGION: this.region,
         ...(cloudfrontDomain ? { CLOUDFRONT_DOMAIN: cloudfrontDomain } : {}),
+        ...(cloudfrontDistributionId ? { CLOUDFRONT_DISTRIBUTION_ID: cloudfrontDistributionId } : {}),
         ...(s3BucketName ? { S3_BUCKET_NAME: s3BucketName } : {}),
         ...(s3Region ? { S3_REGION: s3Region } : {}),
         // Google Meet連携(Organizer中心モデル)。連携の完了後に戻る画面と、Googleからのコールバック先

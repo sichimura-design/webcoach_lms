@@ -10,6 +10,7 @@ const { SecretsManagerClient } = require('@aws-sdk/client-secrets-manager');
 const { SESClient } = require('@aws-sdk/client-ses');
 const { SSMClient } = require('@aws-sdk/client-ssm');
 const { ECSClient } = require('@aws-sdk/client-ecs');
+const { CloudFrontClient } = require('@aws-sdk/client-cloudfront');
 const { config } = require('./environment');
 
 let jwtVerifierInstance = null;
@@ -19,6 +20,7 @@ let secretsManagerClientInstance = null;
 let sesClientInstance = null;
 let ssmClientInstance = null;
 let ecsClientInstance = null;
+let cloudFrontClientInstance = null;
 
 /**
  * Get or create Cognito JWT Verifier instance (singleton)
@@ -108,6 +110,17 @@ function getEcsClient() {
   return ecsClientInstance;
 }
 
+/**
+ * Get or create CloudFront Client instance (singleton)
+ * CloudFrontはグローバルサービスでAPIの窓口はus-east-1
+ */
+function getCloudFrontClient() {
+  if (!cloudFrontClientInstance) {
+    cloudFrontClientInstance = new CloudFrontClient({ region: 'us-east-1' });
+  }
+  return cloudFrontClientInstance;
+}
+
 module.exports = {
   getCognitoJwtVerifier,
   getCognitoClient,
@@ -115,5 +128,6 @@ module.exports = {
   getSecretsManagerClient,
   getSesClient,
   getSsmClient,
-  getEcsClient
+  getEcsClient,
+  getCloudFrontClient
 };
