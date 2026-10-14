@@ -113,9 +113,11 @@ filter event = "ai_chat"
         sum(cache_creation_tokens) as cw_tok, avg(duration_ms) as avg_ms by status, model
 """
 
+# 集計結果に元のフィールドと同じ名前を付けない(latest(currency) as currency は
+# Logs Insights が「Cycle found in operation dependency graph」で失敗する)
 APP_QUERY = """
 filter event = "ai_app_call"
-| stats count(*) as n, sum(total_price) as price, latest(currency) as currency,
+| stats count(*) as n, sum(total_price) as price, latest(currency) as price_currency,
         avg(duration_ms) as avg_ms by app_id, status
 """
 
@@ -426,7 +428,7 @@ def _format_ai_usage(chat_rows, app_rows):
             if r.get("status") in ("error", "timeout"):
                 app["err"] += _int(r, "n")
             app["price"] += _float(r, "price")
-            app["currency"] = r.get("currency") or app["currency"]
+            app["currency"] = r.get("price_currency") or app["currency"]
         for app_id, a in sorted(by_app.items(), key=lambda kv: -kv[1]["n"]):
             err = f" (エラー{a['err']})" if a["err"] else ""
             lines.append(f"  • id={app_id}: {a['n']}回{err} / {a['price']:.4f} {a['currency']}".rstrip())
