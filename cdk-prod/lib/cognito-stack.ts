@@ -61,9 +61,9 @@ export class ProdCognitoStack extends cdk.Stack {
     // ========================================
     // Custom Message Lambda (invite / forgot-password email copy)
     // ========================================
-    // Cognito's built-in email templates only support {username}/{####} placeholders
-    // (and username here is an opaque UUID, not human-readable), so the invite/reset
-    // copy is built here instead where the full user attributes are available.
+    // Cognito's built-in email templates only support {username}/{####} placeholders,
+    // but the invite email needs to show the user's actual email address, so the copy
+    // is built here instead where the full user attributes are available.
     const customMessageFunction = new lambda.Function(this, 'CustomMessageFunction', {
       functionName: `${envName}-cognito-custom-message`,
       description: 'Builds WEBCOACH account-invite / password-reset email copy for Cognito',

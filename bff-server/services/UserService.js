@@ -22,6 +22,17 @@ const moodleUserCache = new Map(); // sub -> { user, email, expiresAt }
 // Moodle へ行かない(新規ユーザーの二重作成も防ぐ)よう、問い合わせ中の Promise を共有する
 const moodleUserInflight = new Map(); // sub -> Promise
 
+// ユーザー名が重なったときに英字を付けて試す回数
+const USERNAME_SUFFIX_ATTEMPTS = 10;
+
+function randomLetters(length) {
+  let letters = '';
+  for (let i = 0; i < length; i++) {
+    letters += String.fromCharCode(97 + Math.floor(Math.random() * 26));
+  }
+  return letters;
+}
+
 function pruneMoodleUserCache(now) {
   if (moodleUserCache.size < MOODLE_USER_CACHE_MAX) return;
   for (const [key, entry] of moodleUserCache) {
@@ -135,69 +146,42 @@ class UserService {
 
   /**
    * Create Moodle user from Cognito payload
+   *
+   * ユーザー名はメールの@より前(英数字のみ・小文字)。別人と重なったら「taro.a」「taro.kq」のように
+   * 英小文字を付けて空いている名前を探す。Moodle のユーザー名はログインには使わない(認証は Cognito、
+   * 紐付けは idnumber=sub)ので、名前に意味は要らない。
    */
   async createMoodleUser(cognitoPayload) {
     const { email, sub, 'cognito:username': cognitoUsername } = cognitoPayload;
-    const groups = cognitoPayload['cognito:groups'] || [];
 
     // Parse name from Cognito
     const givenName = cognitoPayload.given_name || cognitoUsername || 'User';
     const familyName = cognitoPayload.family_name || 'User';
 
-    // Generate username
-    let username = email.split('@')[0];
-    username = username.replace(/[^a-zA-Z0-9]/g, '').toLowerCase();
+    // @より前に英数字が無い(日本語など)と空になるので、その場合は user を土台にする
+    const baseUsername = email.split('@')[0].replace(/[^a-zA-Z0-9]/g, '').toLowerCase() || 'user';
 
     // Generate temporary password (not used with Cognito auth)
     const tempPassword = `Temp${Math.random().toString(36).slice(-8)}!${Date.now()}`;
 
-    console.log('[Create Moodle User] Attempting to create user:', {
-      username,
-      email,
-      firstname: givenName,
-      lastname: familyName,
-      cognitoGroups: groups
-    });
+    for (let attempt = 0; attempt <= USERNAME_SUFFIX_ATTEMPTS; attempt++) {
+      // 2回目以降は英字1文字×3回→2文字×3回→…と増やす
+      const username = attempt === 0
+        ? baseUsername
+        : `${baseUsername}.${randomLetters(Math.ceil(attempt / 3))}`;
 
-    try {
-      const result = await moodleAdapter.createUsers([{
+      if (await this.isMoodleUsernameTaken(username)) continue;
+
+      console.log('[Create Moodle User] Attempting to create user:', {
         username,
-        password: tempPassword,
-        firstname: givenName,
-        lastname: familyName,
         email,
-        auth: 'manual',
-        idnumber: sub,
-        lang: 'ja',
-        timezone: 'Asia/Tokyo'
-      }]);
-
-      if (!result || result.length === 0 || !result[0].id) {
-        throw new Error('User creation returned empty result');
-      }
-
-      const userId = result[0].id;
-      const createdUsername = result[0].username;
-
-      console.log('[Create Moodle User] User created successfully:', {
-        id: userId,
-        username: createdUsername
+        firstname: givenName,
+        lastname: familyName
       });
 
-      return {
-        id: userId,
-        username: createdUsername
-      };
-    } catch (error) {
-      console.error('[Create Moodle User] Error:', error.message);
-
-      // Retry with unique username if duplicate
-      if (error.message.includes('username') || error.message.includes('duplicate')) {
-        const uniqueUsername = `${username}${Date.now().toString().slice(-6)}`;
-        console.log('[Create Moodle User] Retrying with unique username:', uniqueUsername);
-
-        const retryResult = await moodleAdapter.createUsers([{
-          username: uniqueUsername,
+      try {
+        const result = await moodleAdapter.createUsers([{
+          username,
           password: tempPassword,
           firstname: givenName,
           lastname: familyName,
@@ -208,24 +192,44 @@ class UserService {
           timezone: 'Asia/Tokyo'
         }]);
 
-        if (retryResult && retryResult[0] && retryResult[0].id) {
-          const userId = retryResult[0].id;
-          const createdUsername = retryResult[0].username;
+        if (!result || result.length === 0 || !result[0].id) {
+          throw new Error('User creation returned empty result');
+        }
 
-          console.log('[Create Moodle User] User created with unique username:', {
-            id: userId,
-            username: createdUsername
-          });
+        console.log('[Create Moodle User] User created successfully:', {
+          id: result[0].id,
+          username: result[0].username
+        });
 
+        return {
+          id: result[0].id,
+          username: result[0].username
+        };
+      } catch (error) {
+        console.error('[Create Moodle User] Error:', error.message);
+
+        // 本番はBFFが2台あり、初回ログイン直後の同時リクエストで別の台が同じ人を先に作ることがある。
+        // その場合は作り直さずそれを使う(別名で作ると同じ人のMoodleユーザーが2件になる)
+        const existing = await moodleAdapter.getUsersByField('idnumber', [sub]);
+        if (existing && existing.length > 0) {
           return {
-            id: userId,
-            username: createdUsername
+            id: existing[0].id,
+            username: existing[0].username
           };
         }
-      }
 
-      throw error;
+        // 確認と作成の間に別人に取られた場合だけ次の候補へ。それ以外の失敗はそのまま返す
+        // (Moodle のエラー文は "Invalid parameter value detected" で、重複かどうかは文面から分からない)
+        if (!(await this.isMoodleUsernameTaken(username))) throw error;
+      }
     }
+
+    throw new Error(`Moodle username candidates exhausted for base: ${baseUsername}`);
+  }
+
+  async isMoodleUsernameTaken(username) {
+    const users = await moodleAdapter.getUsersByField('username', [username]);
+    return Boolean(users && users.length > 0);
   }
 
   /**
