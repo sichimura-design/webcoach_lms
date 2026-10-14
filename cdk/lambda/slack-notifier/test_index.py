@@ -102,9 +102,9 @@ def test_summary_aggregates_chat_and_apps():
         {"status": "error", "n": "1", "users": "1", "in_tok": "0", "out_tok": "0"},
     ]
     app_rows = [
-        {"app_id": "15", "status": "success", "n": "3", "price": "0.01", "currency": "USD"},
-        {"app_id": "15", "status": "timeout", "n": "1", "price": "0", "currency": ""},
-        {"app_id": "19", "status": "success", "n": "1", "price": "0.002", "currency": "USD"},
+        {"app_id": "15", "status": "success", "n": "3", "price": "0.01", "price_currency": "USD"},
+        {"app_id": "15", "status": "timeout", "n": "1", "price": "0", "price_currency": ""},
+        {"app_id": "19", "status": "success", "n": "1", "price": "0.002", "price_currency": "USD"},
     ]
     from datetime import datetime
     text = index._format_summary(datetime(2026, 9, 25, tzinfo=index.JST), chat_rows, app_rows)
@@ -380,3 +380,12 @@ def test_post_with_webhook_when_no_bot_token(monkeypatch):
     sent = _send(monkeypatch, {"dev/moodle/slack-alert-webhook": "https://hooks.slack.com/services/T/B/x"})
     assert sent[0].full_url == "https://hooks.slack.com/services/T/B/x"
     assert json.loads(sent[0].data) == {"text": "障害です"}
+
+
+def test_insights_queries_do_not_alias_to_source_field():
+    # latest(currency) as currency のように元のフィールドと同じ名前を付けると、
+    # Logs Insights が「Cycle found in operation dependency graph」で失敗する(本番で日次レポートが落ちた)
+    import re
+    for query in (index.CHAT_QUERY, index.APP_QUERY, index.REPORT_QUERY):
+        for field, alias in re.findall(r"\w+\((\w+)\)\s+as\s+(\w+)", query):
+            assert field != alias, f"{field} を同名で集計している"
