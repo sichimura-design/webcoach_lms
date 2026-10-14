@@ -10,6 +10,7 @@ const userService = require('./UserService');
 
 const originalGetUsersByField = moodleAdapter.getUsersByField;
 const originalUpdateUsers = moodleAdapter.updateUsers;
+const originalCreateUsers = moodleAdapter.createUsers;
 
 function stubMoodle(users) {
   const calls = [];
@@ -25,6 +26,7 @@ function stubMoodle(users) {
 test.afterEach(() => {
   moodleAdapter.getUsersByField = originalGetUsersByField;
   moodleAdapter.updateUsers = originalUpdateUsers;
+  moodleAdapter.createUsers = originalCreateUsers;
 });
 
 test('2回目以降は Moodle に問い合わせずキャッシュを返す', async () => {
@@ -74,4 +76,79 @@ test('失敗した結果は覚えず、次のリクエストで問い合わせ�
 
   assert.strictEqual(user.id, 14);
   assert.strictEqual(n, 2);
+});
+
+// ---- 新規作成時のユーザー名 ----
+
+// Moodle のユーザー表を配列で真似る。createUsers は同名があれば Moodle と同じ文面で失敗する
+function stubMoodleUsers(users, { beforeCreate } = {}) {
+  const created = [];
+  moodleAdapter.getUsersByField = async (field, values) =>
+    users.filter((u) => values.includes(u[field]));
+  moodleAdapter.createUsers = async ([user]) => {
+    if (beforeCreate) await beforeCreate(user);
+    if (users.some((u) => u.username === user.username)) {
+      throw new Error('Invalid parameter value detected');
+    }
+    const row = { id: 100 + users.length, ...user };
+    users.push(row);
+    created.push(row);
+    return [{ id: row.id, username: row.username }];
+  };
+  return created;
+}
+
+test('重ならなければメールの@より前をそのままユーザー名にする', async () => {
+  const created = stubMoodleUsers([]);
+
+  const user = await userService.createMoodleUser({ sub: 's-new-1', email: 'Ta.ro@example.com' });
+
+  assert.strictEqual(user.username, 'taro');
+  assert.strictEqual(created.length, 1);
+});
+
+test('別人と重なったら英小文字を付けた名前で作る', async () => {
+  const created = stubMoodleUsers([{ id: 1, username: 'taro', email: 'taro@other.com', idnumber: 'x' }]);
+
+  const user = await userService.createMoodleUser({ sub: 's-new-2', email: 'taro@example.com' });
+
+  assert.match(user.username, /^taro\.[a-z]+$/);
+  assert.strictEqual(created.length, 1);
+  assert.strictEqual(created[0].idnumber, 's-new-2');
+});
+
+test('@より前に英数字が無いときは user を土台にする', async () => {
+  stubMoodleUsers([]);
+
+  const user = await userService.createMoodleUser({ sub: 's-new-3', email: 'たろう@example.com' });
+
+  assert.strictEqual(user.username, 'user');
+});
+
+test('別の台が同じ人を先に作っていたら、作り直さずそれを使う', async () => {
+  const users = [];
+  const created = stubMoodleUsers(users, {
+    // 確認の後・作成の前に、もう1台のBFFが同じ人(同じsub)を作った状況
+    beforeCreate: async (user) => {
+      if (!users.some((u) => u.idnumber === user.idnumber)) {
+        users.push({ id: 50, username: user.username, email: user.email, idnumber: user.idnumber });
+      }
+    }
+  });
+
+  const user = await userService.createMoodleUser({ sub: 's-new-4', email: 'hanako@example.com' });
+
+  assert.deepStrictEqual(user, { id: 50, username: 'hanako' });
+  assert.strictEqual(created.length, 0);
+  assert.strictEqual(users.length, 1);
+});
+
+test('ユーザー名の重複以外の失敗はそのまま投げる', async () => {
+  stubMoodleUsers([]);
+  moodleAdapter.createUsers = async () => { throw new Error('Moodle down'); };
+
+  await assert.rejects(
+    userService.createMoodleUser({ sub: 's-new-5', email: 'jiro@example.com' }),
+    /Moodle down/
+  );
 });
