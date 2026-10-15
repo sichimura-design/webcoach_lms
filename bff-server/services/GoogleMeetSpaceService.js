@@ -54,6 +54,7 @@ class GoogleMeetSpaceService {
     const spaceName = spaceResponse.data.name; // e.g. "spaces/aBcD1234"
     const meetingUri = spaceResponse.data.meetingUri;
 
+    let step = 'members.create';
     try {
       const coachEmail = await this._getCoachEmail(coachUserId);
       // `email` is the input field for who to add; `user` is an output-only
@@ -69,6 +70,7 @@ class GoogleMeetSpaceService {
         { headers: authHeader, timeout: 10000 }
       );
 
+      step = 'spaces.patch(moderation ON)';
       // Host management ON is what lets a co-host from outside the Organizer's
       // domain start transcription (OFF only allows same-domain users —
       // confirmed manually 2026-10-15). Restrictions are NO_RESTRICTION so the
@@ -86,11 +88,10 @@ class GoogleMeetSpaceService {
             },
           },
         },
-        {
-          headers: authHeader,
-          params: { updateMask: 'config.moderation,config.moderationRestrictions' },
-          timeout: 10000,
-        }
+        // No updateMask: when omitted the API updates only the fields sent.
+        // An explicit 'config.moderation,config.moderationRestrictions' was
+        // rejected in prod with "Invalid update mask provided" (2026-10-15).
+        { headers: authHeader, timeout: 10000 }
       );
     } catch (err) {
       // Not fatal — the booking still gets a working Meet URL (moderation OFF,
@@ -99,8 +100,8 @@ class GoogleMeetSpaceService {
       // slack-notifier picks it up and posts to #lms-alert.
       logger.error(
         `[GoogleMeetSpace] ERROR: コーチ${coachUserId}をMeet ${spaceName} の共同主催者にできず失敗 ` +
-        '(社外アカウントのコーチは文字起こしを開始できない):',
-        err.response?.data || err.message
+        `(${step}、社外アカウントのコーチは文字起こしを開始できない):`,
+        err.response?.data ? JSON.stringify(err.response.data) : err.message
       );
     }
 
