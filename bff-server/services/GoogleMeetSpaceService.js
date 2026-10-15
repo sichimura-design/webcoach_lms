@@ -36,11 +36,17 @@ class GoogleMeetSpaceService {
           // Organizer never joins to admit them. The URL is only shown in-app
           // to the student and their coach.
           accessType: 'OPEN',
-          // Created with moderation OFF, then switched ON only after the coach
-          // is successfully added as co-host (see below). If the co-host step
-          // fails, leaving it OFF keeps the old fallback: anyone in the
-          // Organizer's domain can still start transcription.
-          moderation: 'OFF',
+          // Host management ON is what lets a co-host from outside the
+          // Organizer's domain start transcription (OFF only allows same-domain
+          // users — confirmed manually 2026-10-15). Restrictions are
+          // NO_RESTRICTION so the student keeps chat/reactions/screen share.
+          moderation: 'ON',
+          moderationRestrictions: {
+            chatRestriction: 'NO_RESTRICTION',
+            reactionRestriction: 'NO_RESTRICTION',
+            presentRestriction: 'NO_RESTRICTION',
+            defaultJoinAsViewerType: 'OFF',
+          },
           // Alone this doesn't start transcription without a host/co-host
           // present; the co-host coach still clicks "Start transcript".
           artifactConfig: {
@@ -68,38 +74,16 @@ class GoogleMeetSpaceService {
         },
         { headers: authHeader, timeout: 10000 }
       );
-
-      // Host management ON is what lets a co-host from outside the Organizer's
-      // domain start transcription (OFF only allows same-domain users —
-      // confirmed manually 2026-10-15). Restrictions are set to NO_RESTRICTION
-      // so the student keeps chat/reactions/screen share as before.
-      await axios.patch(
-        `${MEET_API_BASE}/${spaceName}`,
-        {
-          config: {
-            moderation: 'ON',
-            moderationRestrictions: {
-              chatRestriction: 'NO_RESTRICTION',
-              reactionRestriction: 'NO_RESTRICTION',
-              presentRestriction: 'NO_RESTRICTION',
-              defaultJoinAsViewerType: 'OFF',
-            },
-          },
-        },
-        {
-          headers: authHeader,
-          params: { updateMask: 'config.moderation,config.moderationRestrictions' },
-          timeout: 10000,
-        }
-      );
     } catch (err) {
-      // Not fatal — the Space itself was already created, and transcript
-      // retrieval only needs the Organizer's own token. If this fails the
-      // Space stays at moderation OFF (coach joins as a regular participant).
-      logger.warn(
+      // Fatal: with host management ON and no co-host, nobody in the call could
+      // start transcription. The booking is not saved; the created Space is
+      // left unused (the Meet API has no delete for Spaces).
+      logger.error(
         `[GoogleMeetSpace] Could not set coach ${coachUserId} as co-host on ${spaceName}:`,
         err.response?.data || err.message
       );
+      // Plain Error (no .response) so the route answers 500, not Google's 4xx.
+      throw new Error(`Failed to add coach ${coachUserId} as Meet co-host`);
     }
 
     return { meetingUri, spaceName };
