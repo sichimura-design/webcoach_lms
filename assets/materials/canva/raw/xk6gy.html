@@ -1,0 +1,532 @@
+
+
+
+<div>
+  
+    <div>
+      
+      
+        
+          <div class="article-item item_html " id="item53062" data-item-id="53062" data-item-type="ItemHtml"><div class="item-body"><!DOCTYPE html>
+<html lang="ja">
+<head><script async="async" data-label="saas" nonce="9xjlaONVheLsOBlLGWZtNA==" src="//b.clipkit.co/"></script><script src="//cdn.clipkit.co/clipkit_assets/beacon-787bbf3225ec43d93f198af35f7d56fdef40fb50440a2909500bdf5b99225aab.js" async="async" id="clipkit-beacon" data-page-type="article" data-page-id="3405" data-domain="learn.webcoach.jp" data-url="/web-design/canva/chap-3/xK6GY" data-href="https://learn.webcoach.jp/media/beacon"></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Canva AIでたたき台を作る</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@300;400;700&family=Noto+Sans+JP:wght@300;400;500;700&family=Inter:wght@600;700;800&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Noto Sans JP', sans-serif; color: #3D3D3D; font-size: 16px; line-height: 1.9; background: #fff; }
+.lesson-wrapper { max-width: 70%; margin: 0 auto; padding: 40px 0 80px; }
+@media (max-width: 600px) { .lesson-wrapper { max-width: 92%; } }
+h2 { font-size: 24px; font-weight: 700; color: #2D2D2D; margin: 64px 0 24px; padding: 0 0 14px; position: relative; letter-spacing: -0.02em; line-height: 1.4; }
+h2::after { content: ''; position: absolute; bottom: 0; left: 0; width: 48px; height: 4px; border-radius: 2px; background: linear-gradient(90deg, #E85D4A, #F5A64A); }
+h3 { font-size: 18px; font-weight: 700; color: #2D2D2D; margin: 48px 0 16px; border-left: 3px solid #2D2D2D; padding-left: 14px; }
+p { font-size: 16px; line-height: 2.0; color: #555; margin: 0 0 16px; }
+ul, ol { padding-left: 1.5em; margin: 0 0 16px; }
+li { font-size: 16px; line-height: 2.0; color: #555; margin-bottom: 6px; }
+strong { color: #2D2D2D; font-weight: 700; }
+.lesson-hero { background: linear-gradient(135deg, #F84744 0%, #FB9A3F 100%); border-radius: 16px; padding: 22px 28px; margin: 0 0 40px; color: #fff; }
+.lesson-hero__badge { display: inline-block; background: #fff; color: #E85D4A; padding: 5px 14px; border-radius: 8px; font-size: 11px; font-weight: 800; letter-spacing: 0.18em; margin-bottom: 14px; font-family: 'Inter', sans-serif; }
+.lesson-hero__title { font-size: 22px; font-weight: 800; line-height: 1.4; margin-bottom: 16px; letter-spacing: -0.01em; }
+.lesson-hero__meta { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+.lesson-hero__chip { display: inline-flex; align-items: center; background: #fff; color: #333; padding: 5px 11px; border-radius: 6px; font-size: 11.5px; font-weight: 700; font-family: 'Inter', sans-serif; letter-spacing: 0.04em; }
+.lesson-hero__topic { font-size: 13px; font-weight: 600; opacity: 0.95; }
+.lesson-hero__time { display: inline-flex; align-items: center; gap: 5px; font-size: 13px; font-weight: 600; opacity: 0.95; }
+.lesson-video { background: #fff; border-radius: 16px; padding: 24px 28px; margin: 0 0 32px; box-shadow: 0 2px 16px rgba(0,0,0,0.06); position: relative; overflow: hidden; }
+.lesson-video::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px; background: linear-gradient(90deg, #E85D4A, #F5A64A); }
+.lesson-video__label { font-size: 11px; font-weight: 700; color: #E85D4A; letter-spacing: 0.15em; margin-bottom: 14px; }
+.lesson-video__player { width: 100%; border-radius: 8px; display: block; background: #F7F8FA; }
+.goal-box { background: #fff; border-radius: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); padding: 20px 24px; margin: 0 0 40px; }
+.goal-box__head { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; }
+.goal-box__pill { display: inline-block; background: linear-gradient(135deg, #F84744 0%, #FB9A3F 100%); color: #fff; padding: 6px 16px; border-radius: 50px; font-size: 11px; font-weight: 700; letter-spacing: 0.18em; }
+.goal-box__sub { font-size: 14px; font-weight: 700; color: #333; letter-spacing: 0.02em; }
+.goal-box ul { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 6px; }
+.goal-box li { display: flex; gap: 12px; padding: 10px 14px; background: linear-gradient(135deg, #FFF5F0 0%, #FFFAEC 100%); border-radius: 10px; align-items: flex-start; transition: transform 0.2s; }
+.goal-box li:hover { transform: translateX(2px); }
+.goal-box__check { flex-shrink: 0; width: 22px; height: 22px; border-radius: 50%; background: linear-gradient(135deg, #F84744 0%, #FB9A3F 100%); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 800; margin-top: 1px; }
+.goal-box__text { flex: 1; font-size: 14px; color: #333; line-height: 1.7; font-weight: 500; }
+.toc { background: #fff; border-radius: 14px; padding: 22px 26px; box-shadow: 0 2px 12px rgba(0,0,0,0.05); margin: 0 0 48px; }
+.toc-head { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; }
+.toc-icon { width: 26px; height: 26px; border-radius: 7px; background: linear-gradient(135deg, #E85D4A, #F5A64A); display: flex; align-items: center; justify-content: center; color: #fff; font-size: 11px; font-weight: 700; }
+.toc-title { font-size: 15px; font-weight: 700; color: #2D2D2D; }
+.toc ul { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 3px; }
+.toc li a { display: flex; align-items: center; gap: 12px; padding: 8px 14px; background: #FAF9F8; border-radius: 8px; text-decoration: none; transition: background 0.2s; }
+.toc li a:hover { background: #F5EFEC; }
+.toc-num { font-size: 12px; font-weight: 700; color: #2D2D2D; letter-spacing: 0.05em; min-width: 22px; font-family: 'Inter', sans-serif; }
+.toc-text { flex: 1; font-size: 14px; color: #2D2D2D; font-weight: 500; }
+.toc-chev { color: #B8B8B8; font-size: 12px; }
+.point-box { background: #FFFBE6; border: 1.5px solid #F5C58F; border-radius: 10px; padding: 18px 22px 20px; margin: 0 0 28px; }
+.point-box__head { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+.point-box__tab { display: inline-flex; align-items: center; justify-content: center; gap: 5px; background: #F5A64A; color: #fff; font-size: 11px; font-weight: 700; padding: 5px 17px 5px 11px; min-width: 88px; letter-spacing: 0.05em; clip-path: polygon(0 0, 100% 0, calc(100% - 10px) 50%, 100% 100%, 0 100%); flex-shrink: 0; }
+.point-box__sub { font-size: 13.5px; font-weight: 700; color: #2D2D2D; }
+.point-box p { font-size: 15px; line-height: 1.9; color: #444; margin: 0; }
+.notice-box { background: #FFF5F4; border: 1.5px solid #F5A8A0; border-radius: 10px; padding: 18px 22px 20px; margin: 0 0 28px; }
+.notice-box__head { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+.notice-box__tab { display: inline-flex; align-items: center; justify-content: center; gap: 5px; background: #D9433A; color: #fff; font-size: 11px; font-weight: 700; padding: 5px 17px 5px 11px; min-width: 88px; letter-spacing: 0.05em; clip-path: polygon(0 0, 100% 0, calc(100% - 10px) 50%, 100% 100%, 0 100%); flex-shrink: 0; }
+.notice-box__icon { display: inline-flex; width: 14px; height: 14px; border-radius: 50%; background: #fff; color: #D9433A; font-size: 10px; font-weight: 700; align-items: center; justify-content: center; }
+.notice-box__sub { font-size: 13.5px; font-weight: 700; color: #2D2D2D; }
+.notice-box p { font-size: 14.5px; line-height: 1.85; color: #444; margin: 0; }
+.prep-list { background: #F5F7FA; border-radius: 12px; padding: 18px 22px; margin: 0 0 28px; }
+.prep-list__title { font-size: 13px; font-weight: 700; color: #46586E; margin-bottom: 10px; letter-spacing: 0.05em; }
+.prep-list ul { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 8px; }
+.prep-list li { font-size: 14px; color: #3D4C5E; display: flex; gap: 10px; align-items: flex-start; }
+.prep-list li::before { content: '□'; color: #7A8CA8; font-weight: 700; }
+.brief-box { background: #FAF7F2; border: 1.5px solid #E8DCC8; border-radius: 14px; padding: 22px 24px; margin: 0 0 24px; }
+.brief-box__head { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; padding-bottom: 12px; border-bottom: 1px dashed #D9C9AA; }
+.brief-box__tag { display: inline-block; background: #8B6F3F; color: #fff; padding: 4px 12px; border-radius: 6px; font-size: 11px; font-weight: 700; letter-spacing: 0.12em; font-family: 'Inter', sans-serif; }
+.brief-box__title { font-size: 13.5px; font-weight: 700; color: #6B5538; }
+.brief-box__body { font-size: 14.5px; line-height: 2; color: #3D3D3D; margin: 0; white-space: pre-line; }
+.step-row { display: flex; align-items: flex-start; gap: 16px; margin: 0 0 24px; }
+.step-row__num { flex-shrink: 0; width: 38px; height: 38px; border-radius: 50%; background: linear-gradient(135deg, #F84744 0%, #FB9A3F 100%); color: #fff; font-weight: 800; font-size: 15px; display: flex; align-items: center; justify-content: center; font-family: 'Inter', sans-serif; }
+.step-row__body { flex: 1; }
+.step-row__title { font-size: 16px; font-weight: 700; color: #2D2D2D; margin-bottom: 6px; line-height: 1.5; }
+.step-row__text { font-size: 14.5px; line-height: 1.9; color: #555; margin: 0 0 10px; }
+.step-row__text:last-child { margin-bottom: 0; }
+.screenshot-figure { background: #fff; border-radius: 14px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); padding: 12px 12px 16px; margin: 0 0 28px; }
+.screenshot-figure img { display: block; width: 100%; border-radius: 8px; }
+.screenshot-figure figcaption { font-size: 13.5px; color: #666; line-height: 1.7; padding: 12px 6px 2px; }
+.spec-table { width: 100%; border-collapse: collapse; border-radius: 12px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.04); margin: 0 0 28px; }
+.spec-table thead { background: linear-gradient(135deg, #E85D4A, #F5A64A); color: #fff; }
+.spec-table th { padding: 14px 16px; font-size: 13px; font-weight: 700; text-align: left; letter-spacing: 0.04em; }
+.spec-table td { padding: 14px 16px; font-size: 14px; color: #444; border-bottom: 1px solid #F0E5DC; vertical-align: top; line-height: 1.7; background: #fff; }
+.spec-table tr:nth-child(even) td { background: #FBF8F5; }
+.spec-table tr:last-child td { border-bottom: none; }
+.spec-table .tbl-name { font-weight: 700; color: #2D2D2D; }
+.quiz-box { background: linear-gradient(135deg, #FFF1F2 0%, #FCE7F3 100%); border-radius: 20px; padding: 20px 22px; margin: 28px 0; }
+.quiz-top { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+.quiz-icon { width: 30px; height: 30px; border-radius: 10px; background: #fff; color: #EC4899; display: flex; align-items: center; justify-content: center; font-size: 16px; box-shadow: 0 2px 8px rgba(236,72,153,0.15); font-weight: 700; }
+.quiz-title { font-size: 15px; font-weight: 700; color: #831843; }
+.quiz-q { font-size: 15px; font-weight: 700; color: #831843; margin-bottom: 12px; line-height: 1.6; background: #fff; padding: 12px 16px; border-radius: 12px; box-shadow: 0 2px 8px rgba(236,72,153,0.06); }
+.quiz-options { display: flex; flex-direction: column; gap: 7px; }
+.quiz-opt { display: flex; align-items: center; gap: 12px; padding: 10px 16px; background: #fff; border: 2px solid transparent; border-radius: 12px; cursor: pointer; transition: all 0.2s; font-family: inherit; text-align: left; width: 100%; box-shadow: 0 2px 6px rgba(236,72,153,0.05); }
+.quiz-opt:hover:not(:disabled) { border-color: #F9A8D4; transform: translateY(-1px); box-shadow: 0 4px 10px rgba(236,72,153,0.1); }
+.quiz-opt:disabled { cursor: default; }
+.quiz-letter { flex-shrink: 0; width: 28px; height: 28px; border-radius: 50%; background: #FCE7F3; color: #831843; font-size: 13px; font-weight: 700; display: flex; align-items: center; justify-content: center; }
+.quiz-opt-text { font-size: 14px; color: #1F1F1F; flex: 1; font-weight: 500; line-height: 1.55; }
+.quiz-opt.correct { background: #ECFCCB; border-color: #84CC16; }
+.quiz-opt.correct .quiz-letter { background: #84CC16; color: #fff; }
+.quiz-opt.correct .quiz-opt-text { color: #365314; font-weight: 700; }
+.quiz-opt.wrong { background: #FFE4E6; border-color: #FB7185; }
+.quiz-opt.wrong .quiz-letter { background: #FB7185; color: #fff; }
+.quiz-opt.wrong .quiz-opt-text { color: #881337; font-weight: 700; }
+.quiz-opt.dim { opacity: 0.4; }
+.quiz-feedback { display: none; gap: 12px; padding: 12px 16px; background: #fff; border-radius: 12px; margin-top: 10px; box-shadow: 0 2px 8px rgba(132,204,22,0.1); align-items: flex-start; }
+.quiz-feedback.show { display: flex; }
+.quiz-feedback.ng { box-shadow: 0 2px 8px rgba(251,113,133,0.1); }
+.quiz-feedback-icon { flex-shrink: 0; width: 28px; height: 28px; border-radius: 50%; background: #84CC16; color: #fff; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 700; }
+.quiz-feedback.ng .quiz-feedback-icon { background: #FB7185; }
+.quiz-feedback-body { flex: 1; }
+.quiz-feedback-title { font-size: 13px; font-weight: 800; color: #365314; margin-bottom: 4px; }
+.quiz-feedback.ng .quiz-feedback-title { color: #881337; }
+.quiz-feedback-text { font-size: 13px; color: #4D5552; line-height: 1.75; }
+.quiz-feedback.ng .quiz-feedback-text { color: #6B5258; }
+.summary-box { background: #E8F5E0; border-radius: 14px; padding: 20px 24px; margin: 48px 0 40px; }
+.summary-box__head { margin-bottom: 14px; }
+.summary-box__badge { display: inline-block; background: linear-gradient(135deg, #4A8024 0%, #6BAA45 100%); color: #fff; padding: 6px 14px; border-radius: 8px; font-size: 12px; font-weight: 700; letter-spacing: 0.18em; }
+.summary-box ol { list-style: none; padding: 0; margin: 0; counter-reset: sbc; }
+.summary-box li { counter-increment: sbc; position: relative; padding: 7px 0 7px 30px; font-size: 14.5px; line-height: 1.8; color: #2D2D2D; font-weight: 500; }
+.summary-box li::before { content: counter(sbc, decimal-leading-zero); position: absolute; left: 0; top: 7px; color: #4A8024; font-weight: 800; font-size: 13px; font-family: 'Inter', sans-serif; letter-spacing: -0.02em; }
+.check-box { background: #fff; border-radius: 14px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); padding: 20px 24px; margin: 0 0 40px; }
+.check-box__head { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; padding-bottom: 12px; border-bottom: 2px solid; border-image: linear-gradient(90deg, #F84744 0%, #FB9A3F 100%) 1; }
+.check-box__pill { display: inline-block; background: linear-gradient(135deg, #F84744 0%, #FB9A3F 100%); color: #fff; padding: 5px 14px; border-radius: 50px; font-size: 11px; font-weight: 800; letter-spacing: 0.18em; }
+.check-box__sub { font-size: 14px; font-weight: 700; color: #333; }
+.check-box details { margin-bottom: 7px; }
+.check-box summary { padding: 11px 18px; cursor: pointer; display: flex; align-items: center; gap: 12px; font-size: 14px; color: #2D2D2D; background: linear-gradient(135deg, #FFF5F0 0%, #FFFAEC 100%); border-radius: 22px; transition: all 0.2s; border: 1.5px solid transparent; font-weight: 500; list-style: none; }
+.check-box summary:hover { border-color: #F5A64A; }
+.check-box summary::-webkit-details-marker { display: none; }
+.check-box summary::before { content: '＋'; color: #fff; background: linear-gradient(135deg, #F84744 0%, #FB9A3F 100%); width: 22px; height: 22px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 800; flex-shrink: 0; }
+.check-box details[open] summary { border-color: #F5A64A; }
+.check-box details[open] summary::before { content: '−'; }
+.check-box__detail { padding: 12px 20px 4px 48px; font-size: 13.5px; color: #555; line-height: 1.85; }
+.reveal { opacity: 0; transform: translateY(20px); transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1); }
+.reveal.visible { opacity: 1; transform: translateY(0); }
+.prompt-toggle { margin: 0 0 24px; }
+.prompt-toggle summary { padding: 14px 20px; cursor: pointer; display: flex; align-items: center; gap: 12px; font-size: 14.5px; font-weight: 700; color: #6B5538; background: linear-gradient(135deg, #FFF5F0 0%, #FFFAEC 100%); border: 1.5px solid #E8DCC8; border-radius: 12px; list-style: none; transition: all 0.2s; }
+.prompt-toggle summary::-webkit-details-marker { display: none; }
+.prompt-toggle summary::before { content: '＋'; color: #fff; background: linear-gradient(135deg, #F84744 0%, #FB9A3F 100%); width: 22px; height: 22px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 800; flex-shrink: 0; }
+.prompt-toggle[open] summary { border-radius: 12px 12px 0 0; border-bottom: none; }
+.prompt-toggle[open] summary::before { content: '−'; }
+.prompt-toggle .brief-box { margin: 0; border-radius: 0 0 14px 14px; border-top: none; }
+.work-box { background: #fff; border: 2px solid #F5A64A; border-radius: 14px; padding: 24px 26px; margin: 28px 0 40px; box-shadow: 0 2px 12px rgba(0,0,0,0.08); }
+.work-box h4 { font-size: 17px; font-weight: 700; color: #2D2D2D; margin: 0 0 6px; }
+.substep-list { list-style: none; padding: 0; margin: 8px 0 0; display: flex; flex-direction: column; gap: 24px; }
+.substep-list li { display: flex; gap: 16px; align-items: flex-start; padding-bottom: 24px; border-bottom: 1px solid #F5EFEC; }
+.substep-list li:last-child { padding-bottom: 0; border-bottom: none; }
+.substep-list__num { flex-shrink: 0; width: 28px; height: 28px; border-radius: 50%; background: linear-gradient(135deg, #F84744 0%, #FB9A3F 100%); color: #fff; font-weight: 800; font-size: 13.5px; display: flex; align-items: center; justify-content: center; font-family: 'Inter', sans-serif; margin-top: 2px; }
+.substep-list__text { flex: 1; font-size: 15px; line-height: 1.9; color: #3D3D3D; }
+</style>
+<meta name="csrf-param" content="authenticity_token" />
+<meta name="csrf-token" content="ejxRnAqSwjEfUnBWdDC8La5zpsPPXfzJ5uUuw8NEB8cZ4MvIGrodcNSz-4DOtLGJYmf7AWSIh73wJZkBl4FfDw" /><meta content="" name="routing-root-path" /><meta content="media" name="site-name" /><meta content="ja" name="i18n-default-locale" /><meta content="ja" name="i18n-locale" /></head>
+<body>
+<div class="lesson-wrapper">
+
+<div class="lesson-hero">
+  <span class="lesson-hero__badge">CHAPTER 3</span>
+  <div class="lesson-hero__title">Canva AIでたたき台を作る</div>
+  <div class="lesson-hero__meta">
+    <span class="lesson-hero__chip">LESSON 3-2</span>
+    <span class="lesson-hero__topic">指示文を組み立てる → 生成する → 結果を確認する</span>
+    <span class="lesson-hero__time">⏱ 所要時間：約20分</span>
+  </div>
+</div>
+
+<div class="lesson-video reveal">
+  <div class="lesson-video__label">レッスン解説動画</div>
+  <video
+    src="https://media.webcoach.jp/videos/webdesign_canva-intro/chapter-03_practice/canva-3-2_explainer_v3.mp4"
+    controls
+    preload="metadata"
+    class="lesson-video__player"
+  ></video>
+</div>
+
+<div class="back-to-roadmap" style="display: flex; justify-content: center; align-items: center; padding: 24px 0; margin-top: 24px;"></div>
+
+<!-- 前の章に戻るボタン / 次の章に進むボタン がある場合 -->
+<div style="display: flex; justify-content: space-between; align-items: center; padding: 24px 0; margin-top: 24px; max-width: 1775px; margin-left: auto; margin-right: auto; width: 100%;">
+  <a href="RBWbE" style="position: relative; display: inline-block; background: linear-gradient(135deg, #E85D4A, #F5A64A); color: #fff; font-weight: 700; padding: 12px clamp(24px, 7vw, 48px); border-radius: 8px; text-decoration: none;">
+    <img src="/theme/webcoach/img/icons/arrow-right.svg" style="position: absolute; top: 50%; left: 12px; transform: translateY(-50%) rotate(180deg); filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(125deg) brightness(103%) contrast(103%);">
+    前の章に戻る
+  </a>
+  <a href="qJmB3" style="position: relative; display: inline-block; background: linear-gradient(135deg, #E85D4A, #F5A64A); color: #fff; font-weight: 700; padding: 12px clamp(24px, 7vw, 48px); border-radius: 8px; text-decoration: none;">
+    次の章に進む
+    <img src="/theme/webcoach/img/icons/arrow-right.svg" style="position: absolute; top: 50%; transform: translateY(-50%); right: 12px; filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(125deg) brightness(103%) contrast(103%);">
+  </a>
+</div>
+
+
+<div class="goal-box">
+  <div class="goal-box__head">
+    <div class="goal-box__pill">GOAL</div>
+    <div class="goal-box__sub">このレッスンのゴール</div>
+  </div>
+  <ul>
+    <li><div class="goal-box__check">✓</div><div class="goal-box__text">依頼書の情報を、「内容」と「配置」を含んだ1つの指示文に組み立てられる</div></li>
+    <li><div class="goal-box__check">✓</div><div class="goal-box__text">Canva AIチャットでSNS広告バナーのたたき台を生成できる</div></li>
+    <li><div class="goal-box__check">✓</div><div class="goal-box__text">生成結果を鵜呑みにせず、確認・修正すべき視点を持てる</div></li>
+  </ul>
+</div>
+
+<nav class="toc">
+  <div class="toc-head">
+    <div class="toc-icon">≡</div>
+    <div class="toc-title">目次</div>
+  </div>
+  <ul>
+    <li><a href="#s1"><span class="toc-num">01</span><span class="toc-text">Canva AIとは</span><span class="toc-chev">›</span></a></li>
+    <li><a href="#s2"><span class="toc-num">02</span><span class="toc-text">AIを使う前に：デザインの原則を学んだ意味</span><span class="toc-chev">›</span></a></li>
+    <li><a href="#s3"><span class="toc-num">03</span><span class="toc-text">事前準備</span><span class="toc-chev">›</span></a></li>
+    <li><a href="#s4"><span class="toc-num">04</span><span class="toc-text">Step 1〜4：指示文の組み立てから配置し直すまで</span><span class="toc-chev">›</span></a></li>
+  </ul>
+</nav>
+
+<!-- ===== セクション1 ===== -->
+<section id="s1">
+<h2>Canva AIとは</h2>
+
+<p>Canva AIは、チャット形式で頼みごとを伝えると、デザイン案を自動で生成してくれる機能です。<br>以前は独立した機能として提供されていましたが、現在はこのCanva AIチャットに統合されています。<br>内容と配置を指示文に含めて送るだけで、写真・見出し・図形といった素材をまとめて出力し、たたき台を素早く用意できるのが最大のメリットです。</p>
+
+<div class="point-box reveal">
+  <div class="point-box__head">
+    <div class="point-box__tab">✓ Point !</div>
+    <div class="point-box__sub">Canva AIの生成結果は「完成品」ではなく「たたき台」</div>
+  </div>
+  <p>Canva AIが出す案はかなり完成度が高く見えますが、あくまで出発点です。<br>依頼書の内容を100%満たしているとは限らないため、このあと自分の目で確認し、次のレッスンで手仕上げしていきます。</p>
+</div>
+</section>
+
+<!-- ===== セクション2 ===== -->
+<section id="s2">
+<h2>AIを使う前に：デザインの原則を学んだ意味</h2>
+
+<p>ここまでChapter 1・2で、Canvaの基本操作と、配置・配色・情報の階層といったデザインの原則を、模写を通じて学んできました。<br>AIが一発でデザインを作れる今、「その学習は何だったのか」と思うかもしれません。ですが、実際は逆です。</p>
+
+<div class="notice-box reveal">
+  <div class="notice-box__head">
+    <div class="notice-box__tab"><span class="notice-box__icon">!</span> 注意</div>
+    <div class="notice-box__sub">原則を知らないままAIを使うと、刃になりかねない</div>
+  </div>
+  <p>AIが出したデザインが依頼内容を本当に満たしているか、情報の優先順位が正しく表現されているかを判断できるのは、模写フェーズで学んだ配置・配色・余白・情報の階層といった原則を理解しているからです。<br>原則を知らないまま生成結果をそのまま使うと、店名が小さすぎる、重要な情報が目立たないといった問題に気づけないまま納品してしまいかねません。<br>AIは強力な道具ですが、使う人の目が育っていなければ、その力を正しく引き出せません。</p>
+</div>
+
+<div class="point-box reveal">
+  <div class="point-box__head">
+    <div class="point-box__tab">✓ Point !</div>
+    <div class="point-box__sub">丸投げする前に、完成形を自分の中で決めておく</div>
+  </div>
+  <p>AIに指示文を送る前に、「どんな見た目にしたいか」「どこに何を置きたいか」を、自分の頭の中で一度組み立てておきましょう。<br>完成形のイメージがないままAIに丸投げすると、出てきた結果が良いのか悪いのかも判断できず、次工程で何を直せばいいのかも分からなくなります。<br>先に自分で構成案を決め、それを指示文として言葉にする、という順番を必ず守りましょう。</p>
+</div>
+</section>
+
+<!-- ===== セクション3 ===== -->
+<section id="s3">
+<h2>事前準備</h2>
+
+<p>Canva AIを使う前に、3-1で仕分けた情報を手元にまとめておきましょう。</p>
+
+<div class="prep-list reveal">
+  <div class="prep-list__title">📋 事前準備</div>
+  <ul>
+    <li>依頼書の転記情報（商品名・価格・期間・店名・テーマカラー）を手元にメモしている</li>
+    <li>サイズ規定（今回は1080×1080px）を確認している</li>
+    <li>「春らしい・あたたかい雰囲気」をどんな言葉で伝えるか、簡単にイメージしている</li>
+    <li>見出し・価格・キャッチコピーなどを、どこに配置したいか大まかに決めている</li>
+  </ul>
+</div>
+</section>
+
+<!-- ===== セクション4 ===== -->
+<section id="s4">
+<h2>Step 1〜4：指示文の組み立てから配置し直すまで</h2>
+
+<div class="step-row reveal">
+  <div class="step-row__num">1</div>
+  <div class="step-row__body">
+    <div class="step-row__title">Canva AIを開く</div>
+    <p class="step-row__text">左サイドバーの<strong>Canva AI</strong>アイコンをクリックしてチャット画面を開きます。</p>
+  </div>
+</div>
+
+
+<figure class="screenshot-figure reveal">
+  <img src="https://media.webcoach.jp/courses/webdesign_canva-intro/chapter-03_practice/lesson-02_video/canva-ch3-02-canvaai-open.png" alt="左サイドバーのCanva AIを開いた直後の、チャット入力欄が空の状態" loading="lazy">
+  <figcaption>左サイドバーの「Canva AI」を開いた直後の画面。チャット入力欄はまだ空の状態</figcaption>
+</figure>
+
+<div class="step-row reveal">
+  <div class="step-row__num">2</div>
+  <div class="step-row__body">
+    <div class="step-row__title">「内容」と「配置」を含む指示文を組み立てる</div>
+    <p class="step-row__text">指示文は、<strong>「内容」→「配置」の順</strong>で書くと、AIが意図に近いデザインを一発で作ってくれます。</p>
+  </div>
+</div>
+
+<div class="point-box reveal">
+  <div class="point-box__head">
+    <div class="point-box__tab">✓ Point !</div>
+    <div class="point-box__sub">配置はどう考えればいいか</div>
+  </div>
+  <p>まず、「一番に見てほしい情報」を1つ決めましょう。今回なら、フェアの見出しやキャッチコピーがこれにあたります。<br>それを画面の中央や上部など、最初に目が行く位置に置きます。<br>次に、店名・価格・期間といった補足情報を、余白を意識しながら四隅や下部に振り分けます。<br>このとき、関連する情報同士は近づけて配置し（近接）、要素の端は揃えて配置する（整列）ことを意識すると、指示文も具体的になり、生成結果も安定します。<br>この「何を一番目立たせ、何を補足として添えるか」を自分の中で決めてから、指示文の「配置」の部分に落とし込みましょう。</p>
+</div>
+
+<details class="prompt-toggle reveal">
+  <summary>内容や配置を考えよう。あくまで一例なので、自分で考えてから確認しましょう</summary>
+  <div class="brief-box" data-asset-id="canva-ch3-02-prompt-example">
+    <div class="brief-box__head">
+      <span class="brief-box__tag">PROMPT</span>
+      <span class="brief-box__title">指示文の例</span>
+    </div>
+    <p class="brief-box__body">パン屋Boulangerie Marchéの新作クロワッサンフェアの告知バナーを作りたいです。
+価格は380円から、期間は4月1日〜4月30日、テーマカラーはベージュとブラウン系、
+春らしいあたたかい雰囲気でお願いします。サイズは正方形1080×1080pxです。
+配置は、左上に店名、中央に大きな見出し「新作クロワッサンフェア」、
+右下に価格と期間、下部中央にキャッチコピーを1行入れてください。</p>
+  </div>
+</details>
+
+<div class="point-box reveal">
+  <div class="point-box__head">
+    <div class="point-box__tab">✓ Point !</div>
+    <div class="point-box__sub">配置指示は「厳密」ではなく「おおむね」反映される</div>
+  </div>
+  <p>内容（商品・価格・期間・店名・テーマカラー・雰囲気・サイズ）は依頼書の情報をそのまま書きます。<br>配置は、見出しや価格をどこに置きたいか大まかな位置を指定します。厳密に守られるとは限りませんが、書いておくとおおむね反映されます。<br>一度で理想の結果にならなくても、指示文の言葉を変えて生成し直してかまいません。</p>
+</div>
+
+<div class="step-row reveal">
+  <div class="step-row__num">3</div>
+  <div class="step-row__body">
+    <div class="step-row__title">指示文を送信する</div>
+    <p class="step-row__text">組み立てた指示文を、チャット画面の一番最初のメッセージとして入力欄に入力し、送信します。少し待つと、指示に沿ったデザインが1つ生成され、画面右側に表示されます。</p>
+  </div>
+</div>
+
+<figure class="screenshot-figure reveal">
+  <img src="https://media.webcoach.jp/courses/webdesign_canva-intro/chapter-03_practice/lesson-02_video/canva-ch3-02-generation-result.png" alt="指示文を送信し、生成されたデザインが右側に表示された状態" loading="lazy">
+  <figcaption>指示文を送信すると、生成されたデザインが画面右側に表示される</figcaption>
+</figure>
+
+<div class="notice-box reveal">
+  <div class="notice-box__head">
+    <div class="notice-box__tab"><span class="notice-box__icon">!</span> 注意</div>
+    <div class="notice-box__sub">サイズ指定は指示文どおりにならないことが多い</div>
+  </div>
+  <p>指示文に「1080×1080px」と書いても、実際には縦長や横長など、まったく違うサイズで生成されることがよくあります。<br>サイズ指定は「おおむね反映される」配置指示よりもさらに信頼できないものだと思っておきましょう。<br>そのため、生成結果は毎回サイズを確認し、違っていたら次のStepの方法で直します。</p>
+</div>
+
+<div class="step-row reveal">
+  <div class="step-row__num">4</div>
+  <div class="step-row__body">
+    <div class="step-row__title">正しいサイズのキャンバスに要素を配置し直す</div>
+    <p class="step-row__text">生成されたデザインのサイズが1080×1080pxの正方形になっているか確認します。<br>Canvaの「リサイズ」機能はCanva Pro限定のため、無料プランでは使えません。<br>違うサイズだった場合は、Chapter1・2で学んだ操作だけで直せる、次の方法で1080×1080pxのキャンバスに要素を移し、これを完成まで使うベースにします。</p>
+  </div>
+</div>
+
+<div class="work-box reveal">
+  <h4>正しいサイズのキャンバスへの移し方</h4>
+  <ol class="substep-list">
+    <li><span class="substep-list__num">1</span><span class="substep-list__text">生成結果が表示されているブラウザのタブを右クリックし、「タブを複製」を選ぶ（生成結果のタブはそのまま残しておく）</span></li>
+    <li><span class="substep-list__num">2</span><span class="substep-list__text">複製したタブで、新規に1080×1080pxのカスタムサイズの空デザインを作成する</span></li>
+    <li><span class="substep-list__num">3</span><span class="substep-list__text">元の生成結果のタブに切り替え、要素を1つ選択してコピーする</span></li>
+    <li><span class="substep-list__num">4</span><span class="substep-list__text">新しい正方形キャンバスのタブに切り替えて貼り付け、サイズと位置を調整する</span></li>
+    <li><span class="substep-list__num">5</span><span class="substep-list__text">写真・店名・見出し・価格と期間・キャッチコピーなど、要素を1つずつタブを行き来しながらコピー＆ペーストし、1080×1080pxのキャンバスに配置し終える</span></li>
+    <li><span class="substep-list__num">6</span><span class="substep-list__text">配置しながら、内容の誤り・反映漏れ・Canva Pro限定素材がないかも合わせて確認する</span></li>
+    <li><span class="substep-list__num">7</span><span class="substep-list__text">サイズが違ったままの元のデザイン（複製前のタブ）は、このあと使わないので削除してよい</span></li>
+  </ol>
+</div>
+
+<table class="spec-table reveal">
+  <thead>
+    <tr>
+      <th style="width:30%;">確認する観点</th>
+      <th>チェック内容</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><span class="tbl-name">サイズ</span></td>
+      <td>正方形（1080×1080px）のキャンバスに、すべての要素を移し終えたか</td>
+    </tr>
+    <tr>
+      <td><span class="tbl-name">情報の誤り</span></td>
+      <td>価格・期間・店名など、AIが書いた文字に誤り（ハルシネーション）がないか</td>
+    </tr>
+    <tr>
+      <td><span class="tbl-name">反映漏れ</span></td>
+      <td>依頼書の要素（キャッチコピー・連絡先など）が抜け落ちていないか</td>
+    </tr>
+    <tr>
+      <td><span class="tbl-name">素材の制限</span></td>
+      <td>王冠マーク付きのCanva Pro限定素材が使われていないか</td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="notice-box reveal">
+  <div class="notice-box__head">
+    <div class="notice-box__tab"><span class="notice-box__icon">!</span> 注意</div>
+    <div class="notice-box__sub">生成後のチャット追加指示はCanva Pro限定機能</div>
+  </div>
+  <p>生成されたデザインに対してチャットで「ここを直して」と追加指示を送る機能は、Canva Pro限定です。<br>無料プランでは、この後は手作業でCanvaの編集画面を使って修正・仕上げを行います。次のレッスンで、これまで学んだ操作（テキスト編集・配置・色変更など）を使って仕上げていきます。</p>
+</div>
+
+<div class="quiz-box reveal">
+  <div class="quiz-top">
+    <div class="quiz-icon">Q</div>
+    <div class="quiz-title">確認クイズ</div>
+  </div>
+  <div class="quiz-q">Canva AIに指示文を送るときに、最も重要なことは？</div>
+  <div class="quiz-options">
+    <button class="quiz-opt" data-q="q1" data-correct="false"><div class="quiz-letter">A</div><div class="quiz-opt-text">とりあえず商品名だけ伝えて、あとはAI任せにする</div></button>
+    <button class="quiz-opt" data-q="q1" data-correct="true"><div class="quiz-letter">B</div><div class="quiz-opt-text">完成形を自分の中で決めてから、内容と配置を指示文にする</div></button>
+    <button class="quiz-opt" data-q="q1" data-correct="false"><div class="quiz-letter">C</div><div class="quiz-opt-text">生成後にチャットで何度も修正指示を送って完成させる</div></button>
+    <button class="quiz-opt" data-q="q1" data-correct="false"><div class="quiz-letter">D</div><div class="quiz-opt-text">サイズは後から変更できるので指示文に含めない</div></button>
+  </div>
+  <div class="quiz-feedback ok" id="q1-ok">
+    <div class="quiz-feedback-icon">✓</div>
+    <div class="quiz-feedback-body">
+      <div class="quiz-feedback-title">正解です！</div>
+      <div class="quiz-feedback-text">完成形のイメージがないままAIに丸投げすると、出てきた結果の良し悪しを判断できません。依頼書の情報を「内容」と「配置」に整理してから指示文にすることで、意図に近い結果が得られます。</div>
+    </div>
+  </div>
+  <div class="quiz-feedback ng" id="q1-ng">
+    <div class="quiz-feedback-icon">✕</div>
+    <div class="quiz-feedback-body">
+      <div class="quiz-feedback-title">惜しい！</div>
+      <div class="quiz-feedback-text">正解は「完成形を自分の中で決めてから、内容と配置を指示文にする」です。生成後のチャット追加指示はCanva Pro限定機能のため、無料プランでは使えません。</div>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- まとめ -->
+<div class="summary-box reveal">
+  <div class="summary-box__head"><div class="summary-box__badge">SUMMARY</div></div>
+  <ol>
+    <li>Canva AIは、チャットで依頼を伝えるとデザイン案を自動生成する機能</li>
+    <li>指示文は「内容」→「配置」の順で組み立てると、意図に近い結果が出やすい</li>
+    <li>AIに送る前に、完成形を自分の中で決めておく。丸投げは判断も修正もできなくなる</li>
+    <li>サイズ指定は特に信頼できない。違うサイズで出たら、タブを複製して正しいサイズの新規キャンバスを作り、行き来しながら要素をコピー＆ペーストして配置し直す</li>
+    <li>生成結果は「完成品」ではなく「たたき台」。原則を学んでいるからこそ、確認・修正すべき点に気づける</li>
+  </ol>
+</div>
+
+<!-- 理解度チェック -->
+<div class="check-box reveal">
+  <div class="check-box__head">
+    <div class="check-box__pill">CHECK</div>
+    <div class="check-box__sub">理解度チェック</div>
+  </div>
+  <details>
+    <summary>依頼書の情報から、内容と配置を含む指示文を組み立てられる</summary>
+    <div class="check-box__detail">商品・価格・期間・店名・テーマカラー・雰囲気・サイズなどの内容を書き、続けて見出しや価格の配置を指定します。</div>
+  </details>
+  <details>
+    <summary>AIに指示文を送る前に、完成形を自分で決めておく理由を説明できる</summary>
+    <div class="check-box__detail">完成形のイメージがなければ、生成結果の良し悪しを判断できず、次工程で何を直すべきかも分かりません。</div>
+  </details>
+  <details>
+    <summary>生成結果を鵜呑みにせず、確認すべき観点を説明できる</summary>
+    <div class="check-box__detail">サイズ・情報の誤り（ハルシネーション）・依頼内容の反映漏れ・Canva Pro限定素材の4点を確認します。</div>
+  </details>
+  <details>
+    <summary>サイズが違うときの直し方を説明できる</summary>
+    <div class="check-box__detail">タブを複製して正しいサイズの新規キャンバスを作り、2つのタブを行き来しながら要素を1つずつコピー＆ペーストして配置し直します。</div>
+  </details>
+</div>
+
+
+<!-- 前の章に戻るボタン / 次の章に進むボタン がある場合 -->
+<div style="display: flex; justify-content: space-between; align-items: center; padding: 24px 0; margin-top: 24px; max-width: 1775px; margin-left: auto; margin-right: auto; width: 100%;">
+  <a href="RBWbE" style="position: relative; display: inline-block; background: linear-gradient(135deg, #E85D4A, #F5A64A); color: #fff; font-weight: 700; padding: 12px clamp(24px, 7vw, 48px); border-radius: 8px; text-decoration: none;">
+    <img src="/theme/webcoach/img/icons/arrow-right.svg" style="position: absolute; top: 50%; left: 12px; transform: translateY(-50%) rotate(180deg); filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(125deg) brightness(103%) contrast(103%);">
+    前の章に戻る
+  </a>
+  <a href="qJmB3" style="position: relative; display: inline-block; background: linear-gradient(135deg, #E85D4A, #F5A64A); color: #fff; font-weight: 700; padding: 12px clamp(24px, 7vw, 48px); border-radius: 8px; text-decoration: none;">
+    次の章に進む
+    <img src="/theme/webcoach/img/icons/arrow-right.svg" style="position: absolute; top: 50%; transform: translateY(-50%); right: 12px; filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(125deg) brightness(103%) contrast(103%);">
+  </a>
+</div>
+
+<div class="back-to-roadmap" style="display: flex; justify-content: center; align-items: center; padding: 24px 0; margin-top: 24px;"></div>
+
+</div><!-- /.lesson-wrapper -->
+
+<script>
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) entry.target.classList.add('visible');
+  });
+}, { threshold: 0.1 });
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+document.querySelectorAll('.quiz-opt').forEach(btn => {
+  btn.addEventListener('click', function() {
+    const q = this.dataset.q;
+    const correct = this.dataset.correct === 'true';
+    const opts = document.querySelectorAll(`[data-q="${q}"]`);
+    opts.forEach(o => o.disabled = true);
+    this.classList.add(correct ? 'correct' : 'wrong');
+    opts.forEach(o => {
+      if (o === this) return;
+      if (o.dataset.correct === 'true') o.classList.add('correct');
+      else o.classList.add('dim');
+    });
+    document.getElementById(`${q}-${correct ? 'ok' : 'ng'}`).classList.add('show');
+  });
+});
+</script>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="ck-icon-arrow-down" viewBox="0 0 1792 1792"><path d="M1675 832q0 53-37 90l-651 652q-39 37-91 37-53 0-90-37l-651-652q-38-36-38-90 0-53 38-91l74-75q39-37 91-37 53 0 90 37l294 294v-704q0-52 38-90t90-38h128q52 0 90 38t38 90v704l294-294q37-37 90-37 52 0 91 37l75 75q37 39 37 91z" /></symbol><symbol id="ck-icon-arrow-up" viewBox="0 0 1792 1792"><path d="M1675 971q0 51-37 90l-75 75q-38 38-91 38-54 0-90-38l-294-293v704q0 52-37.5 84.5t-90.5 32.5h-128q-53 0-90.5-32.5t-37.5-84.5v-704l-294 293q-36 38-90 38t-90-38l-75-75q-38-38-38-90 0-53 38-91l651-651q35-37 90-37 54 0 91 37l651 651q37 39 37 91z" /></symbol><symbol id="ck-icon-calendar" viewBox="0 0 1792 1792"><path d="M192 1664h288v-288h-288v288zm352 0h320v-288h-320v288zm-352-352h288v-320h-288v320zm352 0h320v-320h-320v320zm-352-384h288v-288h-288v288zm736 736h320v-288h-320v288zm-384-736h320v-288h-320v288zm768 736h288v-288h-288v288zm-384-352h320v-320h-320v320zm-352-864v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm736 864h288v-320h-288v320zm-384-384h320v-288h-320v288zm384 0h288v-288h-288v288zm32-480v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm384-64v1280q0 52-38 90t-90 38h-1408q-52 0-90-38t-38-90v-1280q0-52 38-90t90-38h128v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h384v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h128q52 0 90 38t38 90z" /></symbol><symbol id="ck-icon-chevron-left" viewBox="0 0 1792 1792"><path d="M1427 301l-531 531 531 531q19 19 19 45t-19 45l-166 166q-19 19-45 19t-45-19l-742-742q-19-19-19-45t19-45l742-742q19-19 45-19t45 19l166 166q19 19 19 45t-19 45z" /></symbol><symbol id="ck-icon-chevron-right" viewBox="0 0 1792 1792"><path d="M1363 877l-742 742q-19 19-45 19t-45-19l-166-166q-19-19-19-45t19-45l531-531-531-531q-19-19-19-45t19-45l166-166q19-19 45-19t45 19l742 742q19 19 19 45t-19 45z" /></symbol><symbol id="ck-icon-clock-o" viewBox="0 0 1792 1792"><path d="M1024 544v448q0 14-9 23t-23 9h-320q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h224v-352q0-14 9-23t23-9h64q14 0 23 9t9 23zm416 352q0-148-73-273t-198-198-273-73-273 73-198 198-73 273 73 273 198 198 273 73 273-73 198-198 73-273zm224 0q0 209-103 385.5t-279.5 279.5-385.5 103-385.5-103-279.5-279.5-103-385.5 103-385.5 279.5-279.5 385.5-103 385.5 103 279.5 279.5 103 385.5z" /></symbol><symbol id="ck-icon-trash" viewBox="0 0 1792 1792"><path d="M704 1376v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm-544-992h448l-48-117q-7-9-17-11h-317q-10 2-17 11zm928 32v64q0 14-9 23t-23 9h-96v948q0 83-47 143.5t-113 60.5h-832q-66 0-113-58.5t-47-141.5v-952h-96q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h309l70-167q15-37 54-63t79-26h320q40 0 79 26t54 63l70 167h309q14 0 23 9t9 23z" /></symbol><symbol id="ck-icon-undo" viewBox="0 0 1792 1792"><path d="M1664 896q0 156-61 298t-164 245-245 164-298 61q-172 0-327-72.5t-264-204.5q-7-10-6.5-22.5t8.5-20.5l137-138q10-9 25-9 16 2 23 12 73 95 179 147t225 52q104 0 198.5-40.5t163.5-109.5 109.5-163.5 40.5-198.5-40.5-198.5-109.5-163.5-163.5-109.5-198.5-40.5q-98 0-188 35.5t-160 101.5l137 138q31 30 14 69-17 40-59 40h-448q-26 0-45-19t-19-45v-448q0-42 40-59 39-17 69 14l130 129q107-101 244.5-156.5t284.5-55.5q156 0 298 61t245 164 164 245 61 298z" /></symbol></svg><script async="async" defer="defer" nonce="9xjlaONVheLsOBlLGWZtNA==" src="//www.instagram.com/embed.js"></script>
+
+<!--Clipkit(R) v15.10.0-20260930 Copyright (C) 2026 VECTOR Inc.-->
+
+</body>
+</html></div></div>
+        
+      
+    </div>
+  
+  </div>
+</div>
+<!-- <script src="https://cdn.clipkit.co/clipkit/javascripts/item-shopify-1.0.js?v=v15.10.0-20260930" async></script> -->

@@ -231,17 +231,17 @@ export default function CourseTopPage() {
   // 「トラッキング対象外のページが1つでもあると分母だけ膨らんで完了扱いにならない」バグになる。
   const trackableModules = modules.filter(m => (m.completion ?? 0) >= 1);
 
+  // 🔴 完了状態はコース単位で1回に取る。レッスンごとに並べて取ると、レッスンの多いコース
+  //    (本番で約160件)では nginx の回数制限(burst 100)を超え、溢れた分が429→未完了表示になる。
   useEffect(() => {
     if (sections.length === 0) return;
-    Promise.all(
-      trackableModules.map(m =>
-        bffClient.getActivityCompletion(m.id, courseIdNum)
-          .then((d: { state: number }) => ({ id: m.id, state: d.state }))
-          .catch(() => ({ id: m.id, state: 0 }))
-      )
-    ).then(results => {
-      setCompletedIds(new Set(results.filter(r => r.state >= 1).map(r => r.id)));
-    });
+    const trackableIds = new Set(trackableModules.map(m => m.id));
+    bffClient.getCourseActivitiesCompletion(courseIdNum)
+      .then(({ statuses = [] }) => statuses)
+      .catch(() => [])
+      .then(statuses => {
+        setCompletedIds(new Set(statuses.filter(s => s.state >= 1 && trackableIds.has(s.cmid)).map(s => s.cmid)));
+      });
   }, [sections, courseIdNum]);
 
   if (loading) {

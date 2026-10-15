@@ -172,16 +172,13 @@ function MaterialsTopPage() {
     bffClient.getCourseContent(courseId).then(async (raw: any) => {
       const sections = (Array.isArray(raw) ? raw : []).filter((s: any) => s.modules?.length > 0);
       const flat = sections.flatMap((s: any) => (s.modules ?? []).map((m: any) => ({ module: m, sectionName: s.name as string })));
-      const trackable = flat.filter(({ module }: any) => (module.completion ?? 0) >= 1);
-      const results = await Promise.all(
-        trackable.map(({ module }: any) =>
-          bffClient.getActivityCompletion(module.id, courseId)
-            .then((d: any) => ({ id: module.id, done: (d?.state ?? 0) >= 1 }))
-            .catch(() => ({ id: module.id, done: false }))
-        )
+      const trackableIds = new Set(
+        flat.filter(({ module }: any) => (module.completion ?? 0) >= 1).map(({ module }: any) => module.id)
       );
+      // 🔴 完了状態はコース単位で1回に取る(レッスンごとに並べると回数制限を超えて429になる)
+      const { statuses = [] } = await bffClient.getCourseActivitiesCompletion(courseId).catch(() => ({ statuses: [] }));
       if (!alive) return;
-      const doneMap = new Map(results.map((r) => [r.id, r.done]));
+      const doneMap = new Map(statuses.map((s) => [s.cmid, trackableIds.has(s.cmid) && s.state >= 1]));
       const at = flat.findIndex(({ module }: any) => !doneMap.get(module.id));
       const hitIndex = at < 0 ? 0 : at;
       const hit = flat[hitIndex];

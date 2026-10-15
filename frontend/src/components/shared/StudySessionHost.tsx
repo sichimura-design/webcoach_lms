@@ -137,11 +137,23 @@ function StudySessionHost() {
    * 終了カードでは教材ごとに行が出て、それぞれ選び直せる。
    * 🔴 教材ページ以外（AIコーチ等）に移っても教材は切り替えない。同じ教材について
    *    相談している時間として、直前の教材に付ける。
+   * 🔴 切り替えるのは「このタブで教材を開いた」「このタブに戻ってきた」ときだけ。
+   *    セッションの教材(session.courseId)の変化を依存に入れると、別々の教材を開いた
+   *    2つのタブが、相手の切り替え(localStorage → useStudyTimerSync の rehydrate)を見て
+   *    切り替え直し合い、end/start を無限に送り続ける(本番で8秒に約1,400回送って429)。
    */
-  const sessionCourseId = s.session?.courseId;
   const lessonCourseId = lessonCourse?.courseId;
+  const [visibleTick, setVisibleTick] = useState(0);
   useEffect(() => {
-    if (!hasSession || !lessonCourse || lessonCourse.courseId === sessionCourseId) return;
+    const onVisible = () => {
+      if (document.visibilityState === 'visible') setVisibleTick((n) => n + 1);
+    };
+    document.addEventListener('visibilitychange', onVisible);
+    return () => document.removeEventListener('visibilitychange', onVisible);
+  }, []);
+  useEffect(() => {
+    if (!hasSession || !lessonCourse || document.visibilityState === 'hidden') return;
+    if (lessonCourse.courseId === useStudyTimerStore.getState().session?.courseId) return;
     s.switchCourse({
       courseId: lessonCourse.courseId,
       courseTitle: lessonCourse.courseTitle,
@@ -151,7 +163,7 @@ function StudySessionHost() {
     });
     // s・lessonCourse は毎レンダー新しいオブジェクトなので、教材の id が変わったときだけ動かす
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [hasSession, sessionCourseId, lessonCourseId]);
+  }, [hasSession, lessonCourseId, visibleTick]);
 
   // ---- 3. 放置検知の材料: 操作の観測 --------------------------------------
   const lastMarkRef = useRef(0);
