@@ -1,0 +1,334 @@
+{
+  "version": 1,
+  "courseSlug": "canva",
+  "baseUrl": "https://learn.webcoach.jp",
+  "generatedAt": "2026-10-14T07:05:45.249Z",
+  "kind": "snapshot",
+  "pages": [
+    {
+      "url": "https://learn.webcoach.jp/web-design/canva/chap-0/sVXKK",
+      "title": "Canvaへようこそ — コース全体像とロードマップ",
+      "slug": "svxkk",
+      "order": 0,
+      "htmlPath": "html/svxkk.html",
+      "rawPath": "raw/svxkk.html",
+      "status": "ok",
+      "bytes": 31045,
+      "textLength": 15912,
+      "resourceCount": 3,
+      "removedScripts": 4,
+      "unresolved": [
+        "https://media.webcoach.jp/videos/webdesign_canva-intro/chapter-00_start-guide/slide-00-01_explainer.mp4"
+      ],
+      "fetchedAt": "2026-10-14T07:05:45.249Z",
+      "error": null
+    },
+    {
+      "url": "https://learn.webcoach.jp/web-design/canva/chap-0/wZcIy",
+      "title": "学習後の到達点と学習の心得",
+      "slug": "wzciy",
+      "order": 1,
+      "htmlPath": "html/wzciy.html",
+      "rawPath": "raw/wzciy.html",
+      "status": "ok",
+      "bytes": 31527,
+      "textLength": 15873,
+      "resourceCount": 3,
+      "removedScripts": 4,
+      "unresolved": [
+        "https://media.webcoach.jp/videos/webdesign_canva-intro/chapter-00_start-guide/slide-00-02_explainer_v2.mp4"
+      ],
+      "fetchedAt": "2026-10-14T07:05:45.249Z",
+      "error": null
+    },
+    {
+      "url": "https://learn.webcoach.jp/web-design/canva/chap-0/HRtUR",
+      "title": "試行錯誤を恐れない — 完璧を目指さない学び方",
+      "slug": "hrtur",
+      "order": 2,
+      "htmlPath": "html/hrtur.html",
+      "rawPath": "raw/hrtur.html",
+      "status": "ok",
+      "bytes": 22791,
+      "textLength": 10909,
+      "resourceCount": 3,
+      "removedScripts": 4,
+      "unresolved": [
+        "https://media.webcoach.jp/videos/webdesign_canva-intro/chapter-00_start-guide/slide-00-03_explainer.mp4"
+      ],
+      "fetchedAt": "2026-10-14T07:05:45.249Z",
+      "error": null
+    },
+    {
+      "url": "https://learn.webcoach.jp/web-design/canva/chap-1/9uo5a",
+      "title": "Canvaとは｜無料版・有料版の違いとアカウント準備",
+      "slug": "9uo5a",
+      "order": 3,
+      "htmlPath": "html/9uo5a.html",
+      "rawPath": "raw/9uo5a.html",
+      "status": "ok",
+      "bytes": 32197,
+      "textLength": 15360,
+      "resourceCount": 8,
+      "removedScripts": 4,
+      "unresolved": [
+        "https://media.webcoach.jp/videos/webdesign_canva-intro/chapter-01_basics/canva-1-1_explainer.mp4"
+      ],
+      "fetchedAt": "2026-10-14T07:05:45.249Z",
+      "error": null
+    },
+    {
+      "url": "https://learn.webcoach.jp/web-design/canva/chap-1/AIgLg",
+      "title": "基本操作｜テキスト・素材・レイアウトを配置する",
+      "slug": "aiglg",
+      "order": 4,
+      "htmlPath": "html/aiglg.html",
+      "rawPath": "raw/aiglg.html",
+      "status": "ok",
+      "bytes": 45043,
+      "textLength": 17151,
+      "resourceCount": 30,
+      "removedScripts": 4,
+      "unresolved": [
+        "https://media.webcoach.jp/videos/webdesign_canva-intro/chapter-01_basics/canva-1-2_explainer_v3.mp4"
+      ],
+      "fetchedAt": "2026-10-14T07:05:45.249Z",
+      "error": null
+    },
+    {
+      "url": "https://learn.webcoach.jp/web-design/canva/chap-1/nvr5d",
+      "title": "保存・共有・ダウンロードの実務知識",
+      "slug": "nvr5d",
+      "order": 5,
+      "htmlPath": "html/nvr5d.html",
+      "rawPath": "raw/nvr5d.html",
+      "status": "ok",
+      "bytes": 31734,
+      "textLength": 14754,
+      "resourceCount": 5,
+      "removedScripts": 4,
+      "unresolved": [
+        "https://media.webcoach.jp/videos/webdesign_canva-intro/chapter-01_basics/canva-1-3_explainer_v2.mp4"
+      ],
+      "fetchedAt": "2026-10-14T07:05:45.249Z",
+      "error": null
+    },
+    {
+      "url": "https://learn.webcoach.jp/web-design/canva/chap-1/Igc51",
+      "title": "ファイル管理の基本を身につける",
+      "slug": "igc51",
+      "order": 6,
+      "htmlPath": "html/igc51.html",
+      "rawPath": "raw/igc51.html",
+      "status": "ok",
+      "bytes": 27954,
+      "textLength": 14401,
+      "resourceCount": 3,
+      "removedScripts": 4,
+      "unresolved": [
+        "https://media.webcoach.jp/videos/webdesign_canva-intro/chapter-01_basics/slide-01-04_explainer.mp4"
+      ],
+      "fetchedAt": "2026-10-14T07:05:45.249Z",
+      "error": null
+    },
+    {
+      "url": "https://learn.webcoach.jp/web-design/canva/chap-2/sKrXO",
+      "title": "Zoom背景をお手本通りに模写する",
+      "slug": "skrxo",
+      "order": 7,
+      "htmlPath": "html/skrxo.html",
+      "rawPath": "raw/skrxo.html",
+      "status": "ok",
+      "bytes": 28890,
+      "textLength": 12598,
+      "resourceCount": 12,
+      "removedScripts": 4,
+      "unresolved": [
+        "https://media.webcoach.jp/videos/webdesign_canva-intro/chapter-02_trace/canva-2-1_explainer_v2.mp4"
+      ],
+      "fetchedAt": "2026-10-14T07:05:45.249Z",
+      "error": null
+    },
+    {
+      "url": "https://learn.webcoach.jp/web-design/canva/chap-2/XBZJO",
+      "title": "名刺をお手本通りに模写する",
+      "slug": "xbzjo",
+      "order": 8,
+      "htmlPath": "html/xbzjo.html",
+      "rawPath": "raw/xbzjo.html",
+      "status": "ok",
+      "bytes": 33964,
+      "textLength": 15847,
+      "resourceCount": 10,
+      "removedScripts": 4,
+      "unresolved": [
+        "https://media.webcoach.jp/videos/webdesign_canva-intro/chapter-02_trace/canva-2-2_explainer_v3.mp4"
+      ],
+      "fetchedAt": "2026-10-14T07:05:45.249Z",
+      "error": null
+    },
+    {
+      "url": "https://learn.webcoach.jp/web-design/canva/chap-2/8uFQV",
+      "title": "SNS投稿をお手本通りに模写する",
+      "slug": "8ufqv",
+      "order": 9,
+      "htmlPath": "html/8ufqv.html",
+      "rawPath": "raw/8ufqv.html",
+      "status": "ok",
+      "bytes": 40210,
+      "textLength": 16756,
+      "resourceCount": 18,
+      "removedScripts": 4,
+      "unresolved": [
+        "https://media.webcoach.jp/videos/webdesign_canva-intro/chapter-02_trace/canva-2-3_explainer_v6.mp4"
+      ],
+      "fetchedAt": "2026-10-14T07:05:45.249Z",
+      "error": null
+    },
+    {
+      "url": "https://learn.webcoach.jp/web-design/canva/chap-3/RBWbE",
+      "title": "依頼書を読み解き、作るものを整理する",
+      "slug": "rbwbe",
+      "order": 10,
+      "htmlPath": "html/rbwbe.html",
+      "rawPath": "raw/rbwbe.html",
+      "status": "ok",
+      "bytes": 29318,
+      "textLength": 14840,
+      "resourceCount": 3,
+      "removedScripts": 4,
+      "unresolved": [
+        "https://media.webcoach.jp/videos/webdesign_canva-intro/chapter-03_practice/slide-03-01_explainer_v2.mp4"
+      ],
+      "fetchedAt": "2026-10-14T07:05:45.249Z",
+      "error": null
+    },
+    {
+      "url": "https://learn.webcoach.jp/web-design/canva/chap-3/xK6GY",
+      "title": "Canva AIでたたき台を作る",
+      "slug": "xk6gy",
+      "order": 11,
+      "htmlPath": "html/xk6gy.html",
+      "rawPath": "raw/xk6gy.html",
+      "status": "ok",
+      "bytes": 45055,
+      "textLength": 21441,
+      "resourceCount": 5,
+      "removedScripts": 4,
+      "unresolved": [
+        "https://media.webcoach.jp/videos/webdesign_canva-intro/chapter-03_practice/canva-3-2_explainer_v3.mp4"
+      ],
+      "fetchedAt": "2026-10-14T07:05:45.249Z",
+      "error": null
+    },
+    {
+      "url": "https://learn.webcoach.jp/web-design/canva/chap-3/qJmB3",
+      "title": "SNS広告バナーを仕上げる",
+      "slug": "qjmb3",
+      "order": 12,
+      "htmlPath": "html/qjmb3.html",
+      "rawPath": "raw/qjmb3.html",
+      "status": "ok",
+      "bytes": 22391,
+      "textLength": 8780,
+      "resourceCount": 3,
+      "removedScripts": 4,
+      "unresolved": [
+        "https://media.webcoach.jp/videos/webdesign_canva-intro/chapter-03_practice/slide-03-03_explainer_v2.mp4"
+      ],
+      "fetchedAt": "2026-10-14T07:05:45.249Z",
+      "error": null
+    },
+    {
+      "url": "https://learn.webcoach.jp/web-design/canva/chap-3/mwH9C",
+      "title": "納品前チェックを行う",
+      "slug": "mwh9c",
+      "order": 13,
+      "htmlPath": "html/mwh9c.html",
+      "rawPath": "raw/mwh9c.html",
+      "status": "ok",
+      "bytes": 25662,
+      "textLength": 12042,
+      "resourceCount": 3,
+      "removedScripts": 4,
+      "unresolved": [
+        "https://media.webcoach.jp/videos/webdesign_canva-intro/chapter-03_practice/slide-03-04_explainer_v2.mp4"
+      ],
+      "fetchedAt": "2026-10-14T07:05:45.249Z",
+      "error": null
+    },
+    {
+      "url": "https://learn.webcoach.jp/web-design/canva/chap-3/juaKt",
+      "title": "こだわりポイントを言語化する",
+      "slug": "juakt",
+      "order": 14,
+      "htmlPath": "html/juakt.html",
+      "rawPath": "raw/juakt.html",
+      "status": "ok",
+      "bytes": 19034,
+      "textLength": 7398,
+      "resourceCount": 3,
+      "removedScripts": 4,
+      "unresolved": [
+        "https://media.webcoach.jp/videos/webdesign_canva-intro/chapter-03_practice/slide-03-05_explainer_v2.mp4"
+      ],
+      "fetchedAt": "2026-10-14T07:05:45.249Z",
+      "error": null
+    },
+    {
+      "url": "https://learn.webcoach.jp/web-design/canva/chap-3/FGSG3",
+      "title": "チラシを作る",
+      "slug": "fgsg3",
+      "order": 15,
+      "htmlPath": "html/fgsg3.html",
+      "rawPath": "raw/fgsg3.html",
+      "status": "ok",
+      "bytes": 26251,
+      "textLength": 12693,
+      "resourceCount": 4,
+      "removedScripts": 4,
+      "unresolved": [
+        "https://media.webcoach.jp/videos/webdesign_canva-intro/chapter-03_practice/slide-03-06_explainer_v2.mp4"
+      ],
+      "fetchedAt": "2026-10-14T07:05:45.249Z",
+      "error": null
+    },
+    {
+      "url": "https://learn.webcoach.jp/web-design/canva/chap-3/TjatA",
+      "title": "新規依頼書で複数媒体を自力制作する",
+      "slug": "tjata",
+      "order": 16,
+      "htmlPath": "html/tjata.html",
+      "rawPath": "raw/tjata.html",
+      "status": "ok",
+      "bytes": 18243,
+      "textLength": 7075,
+      "resourceCount": 3,
+      "removedScripts": 4,
+      "unresolved": [
+        "https://media.webcoach.jp/videos/webdesign_canva-intro/chapter-03_practice/slide-03-07_explainer_v2.mp4"
+      ],
+      "fetchedAt": "2026-10-14T07:05:45.249Z",
+      "error": null
+    },
+    {
+      "url": "https://learn.webcoach.jp/web-design/canva/chap-3/JgEti",
+      "title": "追加演習バンクで実践量を増やす",
+      "slug": "jgeti",
+      "order": 17,
+      "htmlPath": "html/jgeti.html",
+      "rawPath": "raw/jgeti.html",
+      "status": "ok",
+      "bytes": 16402,
+      "textLength": 6836,
+      "resourceCount": 3,
+      "removedScripts": 4,
+      "unresolved": [
+        "https://media.webcoach.jp/videos/webdesign_canva-intro/chapter-03_practice/slide-03-08_explainer_v3.mp4"
+      ],
+      "fetchedAt": "2026-10-14T07:05:45.249Z",
+      "error": null
+    }
+  ],
+  "failures": []
+}

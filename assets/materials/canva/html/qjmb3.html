@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<!-- clipkit-source-url: https://learn.webcoach.jp/web-design/canva/chap-3/qJmB3 -->
+<!-- clipkit-fetched-at: 2026-10-14T07:05:45.249Z -->
+<html lang="ja"><head><style data-clipkit-snapshot="force-visible">[data-aos],.reveal,.wow,.fade-in,.animate__animated,.js-reveal{opacity:1!important;transform:none!important;visibility:visible!important;animation:none!important;transition:none!important}</style></head><body><div>
+  
+    <div>
+      
+      
+        
+          <div class="article-item item_html " id="item53056" data-item-id="53056" data-item-type="ItemHtml"><div class="item-body">
+
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SNS広告バナーを仕上げる</title>
+<link rel="preconnect" href="https://fonts.googleapis.com/">
+<link href="../../_assets/e9c67fa5e8.css" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Noto Sans JP', sans-serif; color: #3D3D3D; font-size: 16px; line-height: 1.9; background: #fff; }
+.lesson-wrapper { max-width: 70%; margin: 0 auto; padding: 40px 0 80px; }
+@media (max-width: 600px) { .lesson-wrapper { max-width: 92%; } }
+h2 { font-size: 24px; font-weight: 700; color: #2D2D2D; margin: 64px 0 24px; padding: 0 0 14px; position: relative; letter-spacing: -0.02em; line-height: 1.4; }
+h2::after { content: ''; position: absolute; bottom: 0; left: 0; width: 48px; height: 4px; border-radius: 2px; background: linear-gradient(90deg, #E85D4A, #F5A64A); }
+h3 { font-size: 18px; font-weight: 700; color: #2D2D2D; margin: 48px 0 16px; border-left: 3px solid #2D2D2D; padding-left: 14px; }
+p { font-size: 16px; line-height: 2.0; color: #555; margin: 0 0 16px; }
+ul, ol { padding-left: 1.5em; margin: 0 0 16px; }
+li { font-size: 16px; line-height: 2.0; color: #555; margin-bottom: 6px; }
+strong { color: #2D2D2D; font-weight: 700; }
+.lesson-hero { background: linear-gradient(135deg, #F84744 0%, #FB9A3F 100%); border-radius: 16px; padding: 22px 28px; margin: 0 0 40px; color: #fff; }
+.lesson-hero__badge { display: inline-block; background: #fff; color: #E85D4A; padding: 5px 14px; border-radius: 8px; font-size: 11px; font-weight: 800; letter-spacing: 0.18em; margin-bottom: 14px; font-family: 'Inter', sans-serif; }
+.lesson-hero__title { font-size: 22px; font-weight: 800; line-height: 1.4; margin-bottom: 16px; letter-spacing: -0.01em; }
+.lesson-hero__meta { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+.lesson-hero__chip { display: inline-flex; align-items: center; background: #fff; color: #333; padding: 5px 11px; border-radius: 6px; font-size: 11.5px; font-weight: 700; font-family: 'Inter', sans-serif; letter-spacing: 0.04em; }
+.lesson-hero__topic { font-size: 13px; font-weight: 600; opacity: 0.95; }
+.lesson-hero__time { display: inline-flex; align-items: center; gap: 5px; font-size: 13px; font-weight: 600; opacity: 0.95; }
+.point-box { background: #FFFBE6; border: 1.5px solid #F5C58F; border-radius: 10px; padding: 18px 22px 20px; margin: 0 0 28px; }
+.point-box__head { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+.point-box__tab { display: inline-flex; align-items: center; justify-content: center; gap: 5px; background: #F5A64A; color: #fff; font-size: 11px; font-weight: 700; padding: 5px 17px 5px 11px; min-width: 88px; letter-spacing: 0.05em; clip-path: polygon(0 0, 100% 0, calc(100% - 10px) 50%, 100% 100%, 0 100%); flex-shrink: 0; }
+.point-box__sub { font-size: 13.5px; font-weight: 700; color: #2D2D2D; }
+.point-box p { font-size: 15px; line-height: 1.9; color: #444; margin: 0; }
+.work-box { background: #fff; border: 2px solid #F5A64A; border-radius: 14px; padding: 22px 24px; margin: 28px 0; box-shadow: 0 2px 12px rgba(0,0,0,0.08); }
+.work-box__badge { display: inline-block; background: linear-gradient(135deg, #F84744 0%, #FB9A3F 100%); color: #fff; padding: 5px 14px; border-radius: 8px; font-size: 11px; font-weight: 800; letter-spacing: 0.12em; margin-bottom: 14px; }
+.work-box h4 { font-size: 15px; font-weight: 700; color: #2D2D2D; margin: 16px 0 8px; }
+.work-box ol, .work-box ul { margin: 0 0 8px; padding-left: 1.4em; }
+.work-box li { font-size: 14.5px; color: #4A4A4A; line-height: 1.85; }
+.submit-note { background: linear-gradient(135deg, #FFF5F0 0%, #FFFAEC 100%); border-radius: 10px; padding: 12px 16px; font-size: 14px; font-weight: 700; color: #C2402F; margin-top: 14px; text-align: center; }
+.spec-table { width: 100%; border-collapse: collapse; border-radius: 12px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.04); margin: 0 0 28px; }
+.spec-table thead { background: linear-gradient(135deg, #E85D4A, #F5A64A); color: #fff; }
+.spec-table th { padding: 14px 16px; font-size: 13px; font-weight: 700; text-align: left; letter-spacing: 0.04em; }
+.spec-table td { padding: 14px 16px; font-size: 14px; color: #444; border-bottom: 1px solid #F0E5DC; vertical-align: top; line-height: 1.7; background: #fff; }
+.spec-table tr:nth-child(even) td { background: #FBF8F5; }
+.spec-table tr:last-child td { border-bottom: none; }
+.spec-table .tbl-num { font-family: 'Inter', sans-serif; font-weight: 800; color: #E85D4A; font-size: 13px; margin-right: 4px; }
+.spec-table .tbl-name { font-weight: 700; color: #2D2D2D; }
+.summary-box { background: #E8F5E0; border-radius: 14px; padding: 20px 24px; margin: 48px 0 40px; }
+.summary-box__head { margin-bottom: 14px; }
+.summary-box__badge { display: inline-block; background: linear-gradient(135deg, #4A8024 0%, #6BAA45 100%); color: #fff; padding: 6px 14px; border-radius: 8px; font-size: 12px; font-weight: 700; letter-spacing: 0.18em; }
+.summary-box ol { list-style: none; padding: 0; margin: 0; counter-reset: sbc; }
+.summary-box li { counter-increment: sbc; position: relative; padding: 7px 0 7px 30px; font-size: 14.5px; line-height: 1.8; color: #2D2D2D; font-weight: 500; }
+.summary-box li::before { content: counter(sbc, decimal-leading-zero); position: absolute; left: 0; top: 7px; color: #4A8024; font-weight: 800; font-size: 13px; font-family: 'Inter', sans-serif; letter-spacing: -0.02em; }
+.principle-table { width: 100%; border-collapse: collapse; border-radius: 12px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.04); margin: 20px 0 0; }
+.principle-table thead { background: linear-gradient(135deg, #4A8024, #6BAA45); color: #fff; }
+.principle-table th { padding: 12px 16px; font-size: 12.5px; font-weight: 700; text-align: left; letter-spacing: 0.03em; }
+.principle-table td { padding: 12px 16px; font-size: 13.5px; color: #444; border-bottom: 1px solid #EAF2E6; background: #fff; line-height: 1.75; vertical-align: top; }
+.principle-table tr:last-child td { border-bottom: none; }
+.principle-table .tbl-name { font-weight: 700; color: #2D2D2D; white-space: nowrap; }
+.reveal { opacity: 0; transform: translateY(20px); transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1); }
+.reveal.visible { opacity: 1; transform: translateY(0); }
+.lesson-video { background: #fff; border-radius: 16px; padding: 24px 28px; margin: 0 0 28px; box-shadow: 0 2px 16px rgba(0,0,0,0.06); position: relative; overflow: hidden; }
+.lesson-video::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px; background: linear-gradient(90deg, #E85D4A, #F5A64A); }
+.lesson-video__label { font-size: 11px; font-weight: 700; color: #E85D4A; letter-spacing: 0.15em; margin-bottom: 14px; }
+.lesson-video__player { width: 100%; border-radius: 8px; display: block; background: #F7F8FA; }
+</style>
+<meta name="csrf-param" content="authenticity_token">
+<meta name="csrf-token" content="TrTk6Fq3HpEyIw68q-1KjQVRHURVYCRJ2Xa2Cgq1wqdkY8fESN92ri54Cr5s0o_pGTNGrOHGqdCHj6tAQpuNrg"><meta content="" name="routing-root-path"><meta content="media" name="site-name"><meta content="ja" name="i18n-default-locale"><meta content="ja" name="i18n-locale">
+
+<div class="lesson-wrapper">
+
+<div class="lesson-hero">
+  <span class="lesson-hero__badge">CHAPTER 3</span>
+  <div class="lesson-hero__title">SNS広告バナーを仕上げる</div>
+  <div class="lesson-hero__meta">
+    <span class="lesson-hero__chip">LESSON 3-3</span>
+    <span class="lesson-hero__topic">Canva AIのたたき台をCanvaで手仕上げする</span>
+    <span class="lesson-hero__time">⏱ 所要時間：約40分</span>
+  </div>
+</div>
+
+<div class="lesson-video">
+  <div class="lesson-video__label">レッスン解説動画</div>
+  <video src="https://media.webcoach.jp/videos/webdesign_canva-intro/chapter-03_practice/slide-03-03_explainer_v2.mp4" controls="" preload="metadata" class="lesson-video__player"></video>
+</div>
+
+<div class="back-to-roadmap" style="display: flex; justify-content: center; align-items: center; padding: 24px 0; margin-top: 24px;"></div>
+
+<!-- 前の章に戻るボタン / 次の章に進むボタン がある場合 -->
+<div style="display: flex; justify-content: space-between; align-items: center; padding: 24px 0; margin-top: 24px; max-width: 1775px; margin-left: auto; margin-right: auto; width: 100%;">
+  <a href="https://learn.webcoach.jp/web-design/canva/chap-3/xK6GY" style="position: relative; display: inline-block; background: linear-gradient(135deg, #E85D4A, #F5A64A); color: #fff; font-weight: 700; padding: 12px clamp(24px, 7vw, 48px); border-radius: 8px; text-decoration: none;">
+    <img src="../../_assets/47498cfebf.svg" style="position: absolute; top: 50%; left: 12px; transform: translateY(-50%) rotate(180deg); filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(125deg) brightness(103%) contrast(103%);">
+    前の章に戻る
+  </a>
+  <a href="https://learn.webcoach.jp/web-design/canva/chap-3/mwH9C" style="position: relative; display: inline-block; background: linear-gradient(135deg, #E85D4A, #F5A64A); color: #fff; font-weight: 700; padding: 12px clamp(24px, 7vw, 48px); border-radius: 8px; text-decoration: none;">
+    次の章に進む
+    <img src="../../_assets/47498cfebf.svg" style="position: absolute; top: 50%; transform: translateY(-50%); right: 12px; filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(125deg) brightness(103%) contrast(103%);">
+  </a>
+</div>
+
+
+<div class="point-box reveal visible">
+  <div class="point-box__head">
+    <div class="point-box__tab">✓ Point !</div>
+    <div class="point-box__sub">ここがコース最初の「一連の流れ」完結体験</div>
+  </div>
+  <p>依頼書を読み解き（3-1）、Canva AIでたたき台を作り（3-2）、ここで手仕上げして完成させる。<br>この一連の流れを最後まで自力でやり切ることが、このレッスンのゴールです。</p>
+</div>
+
+<p>3-2でCanva AIが生成したたたき台を、Canvaで手仕上げして「Boulangerie Marché」のSNS広告バナーを完成させます。<br>AIの生成結果をそのまま使うのではなく、依頼内容に合わせて自分の判断で仕上げる力を身につけるための演習です（目安30〜40分）。</p>
+
+<h2>仕上げの進め方</h2>
+
+<p>たたき台には、依頼書の情報がまだ反映されていない部分があります。<br>次の観点で1つずつ手を入れていきましょう。</p>
+
+<table class="spec-table reveal visible">
+  <thead>
+    <tr>
+      <th style="width:26%;">仕上げ項目</th>
+      <th>やること</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><span class="tbl-num">①</span><span class="tbl-name">生成結果の点検</span></td>
+      <td>価格・期間・店名などAIが書いた文字に誤り（ハルシネーション）がないか、王冠マーク付きのCanva Pro限定素材が使われていないかを確認する</td>
+    </tr>
+    <tr>
+      <td><span class="tbl-num">②</span><span class="tbl-name">テキストの差し替え</span></td>
+      <td>「新作クロワッサンフェア」「Boulangerie Marché」「¥380〜」「4/1〜4/30」に加え、抜け落ちている「TEL 03-0000-0000」を追加する</td>
+    </tr>
+    <tr>
+      <td><span class="tbl-num">③</span><span class="tbl-name">キャッチコピーの検討</span></td>
+      <td>Canva AIが自動生成したキャッチコピーをそのまま使ってよいか判断し、必要なら自分で書き直す（例：「春を、ひとくちに。」など）</td>
+    </tr>
+    <tr>
+      <td><span class="tbl-num">④</span><span class="tbl-name">文字サイズの階層づけ</span></td>
+      <td>キャッチコピー→店名→価格・期間・連絡先の順に文字を小さくし、優先度を視覚化する</td>
+    </tr>
+    <tr>
+      <td><span class="tbl-num">⑤</span><span class="tbl-name">配色の調整</span></td>
+      <td>依頼書指定の「ベージュ×ブラウン系」に配色を寄せる</td>
+    </tr>
+    <tr>
+      <td><span class="tbl-num">⑥</span><span class="tbl-name">最終チェック</span></td>
+      <td>誤字脱字・要素のはみ出し・文字の読みやすさを確認する</td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="work-box reveal visible">
+  <h4>STEP 1：仕上げ項目を1つずつ手直しする</h4>
+  <p>上の表の①〜⑥の順に、Canva AIのたたき台へ手を入れます。</p>
+
+  <h4>STEP 2：デザイン4原則でセルフチェックする</h4>
+  <p>手直しが終わったら、感覚だけで判断せず、これまでに学んだ<strong>デザイン4原則（近接・整列・対比・反復）</strong>に沿って見直しましょう。<br>原則ごとに具体的な観点で確認することで、修正の精度が上がります。</p>
+
+  <table class="principle-table reveal visible">
+    <thead>
+      <tr>
+        <th style="width:18%;">原則</th>
+        <th>このバナーで確認する観点</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="tbl-name">近接</span></td>
+        <td>価格・期間・連絡先など関連する情報同士が近くにまとまっているか。キャッチコピーと店名の間には、意味のグループが変わったとわかるだけの余白があるか</td>
+      </tr>
+      <tr>
+        <td><span class="tbl-name">整列</span></td>
+        <td>キャッチコピー・店名・価格・期間・連絡先の左端（または中心）が揃っているか。要素ごとに揃え方がバラバラになっていないか</td>
+      </tr>
+      <tr>
+        <td><span class="tbl-name">対比</span></td>
+        <td>キャッチコピー→店名→価格・期間・連絡先の順で文字サイズに明確な差がついているか。すべて同じくらいの大きさで並んでいないか</td>
+      </tr>
+      <tr>
+        <td><span class="tbl-name">反復</span></td>
+        <td>ベージュ×ブラウン系の配色やフォントの使い方が、バナー全体で統一されているか。1箇所だけ違う色・違うフォントが混ざっていないか</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h4>つまずいたときのヒント</h4>
+  <ul>
+    <li>近接が崩れている場合は、関連する要素同士をドラッグで近づけ、関連しない要素との間には図形の高さ1つ分程度の余白を空ける</li>
+    <li>整列が崩れている場合は、複数の要素を選択して上部ツールバーの「配置」→「左揃え」または「中央揃え」で一括で揃える</li>
+    <li>対比が弱い場合は、キャッチコピーの文字サイズを一段階上げるか、店名以下の文字サイズを一段階下げて差を広げる</li>
+    <li>反復が崩れている場合は、崩れている要素を選択してカラーパレットからブランドカラーを選び直す</li>
+    <li>文字が読みにくい場合は、背景に半透明の帯（図形＋透明度）を敷くと読みやすくなる</li>
+    <li>Chapter 1・2で学んだ「テキスト入力」「配置揃え」「レイヤー操作」がそのまま使える</li>
+  </ul>
+  <h4>完了条件（成果物）</h4>
+  <ul>
+    <li>依頼書の転記情報（商品名・価格・期間・店名・連絡先）がすべて正しく反映されているSNS広告バナー</li>
+    <li>自分で考えたキャッチコピーが配置されている</li>
+    <li>1080×1080pxのPNGとして書き出せている</li>
+    <li><strong>AI活用メモ</strong>：Canva AIがどこまでのたたき台を作り、どこを自分（人）の判断で仕上げたかを一言メモしておく</li>
+  </ul>
+  <div class="submit-note">できたら、コーチへ共有してみましょう！</div>
+</div>
+
+<!-- まとめ -->
+<div class="summary-box reveal">
+  <div class="summary-box__head"><div class="summary-box__badge">SUMMARY</div></div>
+  <ol>
+    <li>Canva AIのたたき台は「生成結果の点検→テキスト差し替え→キャッチコピー検討→文字階層→配色→最終チェック」の順で仕上げる</li>
+    <li>AIの生成結果をそのまま使わず、依頼内容に合わせて自分の判断を加えることが仕上げの本質</li>
+    <li>ここまでで「依頼書→たたき台→仕上げ」の一連の流れを完走したことになる</li>
+  </ol>
+</div>
+
+
+<!-- 前の章に戻るボタン / 次の章に進むボタン がある場合 -->
+<div style="display: flex; justify-content: space-between; align-items: center; padding: 24px 0; margin-top: 24px; max-width: 1775px; margin-left: auto; margin-right: auto; width: 100%;">
+  <a href="https://learn.webcoach.jp/web-design/canva/chap-3/xK6GY" style="position: relative; display: inline-block; background: linear-gradient(135deg, #E85D4A, #F5A64A); color: #fff; font-weight: 700; padding: 12px clamp(24px, 7vw, 48px); border-radius: 8px; text-decoration: none;">
+    <img src="../../_assets/47498cfebf.svg" style="position: absolute; top: 50%; left: 12px; transform: translateY(-50%) rotate(180deg); filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(125deg) brightness(103%) contrast(103%);">
+    前の章に戻る
+  </a>
+  <a href="https://learn.webcoach.jp/web-design/canva/chap-3/mwH9C" style="position: relative; display: inline-block; background: linear-gradient(135deg, #E85D4A, #F5A64A); color: #fff; font-weight: 700; padding: 12px clamp(24px, 7vw, 48px); border-radius: 8px; text-decoration: none;">
+    次の章に進む
+    <img src="../../_assets/47498cfebf.svg" style="position: absolute; top: 50%; transform: translateY(-50%); right: 12px; filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(125deg) brightness(103%) contrast(103%);">
+  </a>
+</div>
+
+<div class="back-to-roadmap" style="display: flex; justify-content: center; align-items: center; padding: 24px 0; margin-top: 24px;"></div>
+
+</div><!-- /.lesson-wrapper -->
+
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="ck-icon-arrow-down" viewBox="0 0 1792 1792"><path d="M1675 832q0 53-37 90l-651 652q-39 37-91 37-53 0-90-37l-651-652q-38-36-38-90 0-53 38-91l74-75q39-37 91-37 53 0 90 37l294 294v-704q0-52 38-90t90-38h128q52 0 90 38t38 90v704l294-294q37-37 90-37 52 0 91 37l75 75q37 39 37 91z"></path></symbol><symbol id="ck-icon-arrow-up" viewBox="0 0 1792 1792"><path d="M1675 971q0 51-37 90l-75 75q-38 38-91 38-54 0-90-38l-294-293v704q0 52-37.5 84.5t-90.5 32.5h-128q-53 0-90.5-32.5t-37.5-84.5v-704l-294 293q-36 38-90 38t-90-38l-75-75q-38-38-38-90 0-53 38-91l651-651q35-37 90-37 54 0 91 37l651 651q37 39 37 91z"></path></symbol><symbol id="ck-icon-calendar" viewBox="0 0 1792 1792"><path d="M192 1664h288v-288h-288v288zm352 0h320v-288h-320v288zm-352-352h288v-320h-288v320zm352 0h320v-320h-320v320zm-352-384h288v-288h-288v288zm736 736h320v-288h-320v288zm-384-736h320v-288h-320v288zm768 736h288v-288h-288v288zm-384-352h320v-320h-320v320zm-352-864v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm736 864h288v-320h-288v320zm-384-384h320v-288h-320v288zm384 0h288v-288h-288v288zm32-480v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm384-64v1280q0 52-38 90t-90 38h-1408q-52 0-90-38t-38-90v-1280q0-52 38-90t90-38h128v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h384v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h128q52 0 90 38t38 90z"></path></symbol><symbol id="ck-icon-chevron-left" viewBox="0 0 1792 1792"><path d="M1427 301l-531 531 531 531q19 19 19 45t-19 45l-166 166q-19 19-45 19t-45-19l-742-742q-19-19-19-45t19-45l742-742q19-19 45-19t45 19l166 166q19 19 19 45t-19 45z"></path></symbol><symbol id="ck-icon-chevron-right" viewBox="0 0 1792 1792"><path d="M1363 877l-742 742q-19 19-45 19t-45-19l-166-166q-19-19-19-45t19-45l531-531-531-531q-19-19-19-45t19-45l166-166q19-19 45-19t45 19l742 742q19 19 19 45t-19 45z"></path></symbol><symbol id="ck-icon-clock-o" viewBox="0 0 1792 1792"><path d="M1024 544v448q0 14-9 23t-23 9h-320q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h224v-352q0-14 9-23t23-9h64q14 0 23 9t9 23zm416 352q0-148-73-273t-198-198-273-73-273 73-198 198-73 273 73 273 198 198 273 73 273-73 198-198 73-273zm224 0q0 209-103 385.5t-279.5 279.5-385.5 103-385.5-103-279.5-279.5-103-385.5 103-385.5 279.5-279.5 385.5-103 385.5 103 279.5 279.5 103 385.5z"></path></symbol><symbol id="ck-icon-trash" viewBox="0 0 1792 1792"><path d="M704 1376v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm-544-992h448l-48-117q-7-9-17-11h-317q-10 2-17 11zm928 32v64q0 14-9 23t-23 9h-96v948q0 83-47 143.5t-113 60.5h-832q-66 0-113-58.5t-47-141.5v-952h-96q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h309l70-167q15-37 54-63t79-26h320q40 0 79 26t54 63l70 167h309q14 0 23 9t9 23z"></path></symbol><symbol id="ck-icon-undo" viewBox="0 0 1792 1792"><path d="M1664 896q0 156-61 298t-164 245-245 164-298 61q-172 0-327-72.5t-264-204.5q-7-10-6.5-22.5t8.5-20.5l137-138q10-9 25-9 16 2 23 12 73 95 179 147t225 52q104 0 198.5-40.5t163.5-109.5 109.5-163.5 40.5-198.5-40.5-198.5-109.5-163.5-163.5-109.5-198.5-40.5q-98 0-188 35.5t-160 101.5l137 138q31 30 14 69-17 40-59 40h-448q-26 0-45-19t-19-45v-448q0-42 40-59 39-17 69 14l130 129q107-101 244.5-156.5t284.5-55.5q156 0 298 61t245 164 164 245 61 298z"></path></symbol></svg>
+
+<!--Clipkit(R) v15.10.0-20260930 Copyright (C) 2026 VECTOR Inc.-->
+
+
+</div></div>
+        
+      
+    </div>
+  
+  </div>
+
+<!-- <script src="https://cdn.clipkit.co/clipkit/javascripts/item-shopify-1.0.js?v=v15.10.0-20260930" async></script> -->
+</body></html>
