@@ -9,7 +9,8 @@ import { color, font, t } from '../../theme/webcoachTheme';
 import { toLocalDateKey } from '../../utils/studyStats';
 import { getUserMessage } from '../../utils/errorMessage';
 
-type NoteState = CoachingNote | 'none' | 'forbidden' | 'error';
+// 'none': ノートがまだ無い（AIの下書き待ち） / 'missed': 自動作成が失敗した回（手で書ける）
+type NoteState = CoachingNote | 'none' | 'missed' | 'forbidden' | 'error';
 const isNote = (v: NoteState | undefined): v is CoachingNote => typeof v === 'object' && v !== null;
 
 const NOTE_FIELD_LABELS: { key: keyof UpdateCoachingNoteRequest; label: string }[] = [
@@ -180,6 +181,8 @@ export function CoachingSchedulePage({ studentId }: CoachingSchedulePageProps) {
   const [noteLoading, setNoteLoading] = useState(false);
   const [noteForm, setNoteForm] = useState<UpdateCoachingNoteRequest>({});
   const [noteSaving, setNoteSaving] = useState(false);
+  // 自動作成が失敗した回で「記録を手で書く」を押した回（空の入力欄を出す。保存時にノートが作られる）
+  const [manualNoteIds, setManualNoteIds] = useState<Set<number>>(new Set());
   const [resultDraft, setResultDraft] = useState<Record<number, HeldResult>>({});
 
   const [rescheduleTarget, setRescheduleTarget] = useState<CoachingSchedule | null>(null);
@@ -307,7 +310,9 @@ export function CoachingSchedulePage({ studentId }: CoachingSchedulePageProps) {
       setNoteForm({ ...note });
     } catch (err: any) {
       const status = err?.response?.status;
-      const state: NoteState = status === 404 ? 'none' : status === 403 ? 'forbidden' : 'error';
+      // 404の本文の manual_allowed: 自動作成が失敗した回として、手で記録を書けるか（api-serverが判定）
+      const manualAllowed = err?.response?.data?.manual_allowed === true;
+      const state: NoteState = status === 404 ? (manualAllowed ? 'missed' : 'none') : status === 403 ? 'forbidden' : 'error';
       setNotes(prev => ({ ...prev, [scheduleId]: state }));
       setNoteForm({});
     } finally {
@@ -335,8 +340,10 @@ export function CoachingSchedulePage({ studentId }: CoachingSchedulePageProps) {
       });
       setNotes(prev => ({ ...prev, [schedule.id]: updated }));
       setNoteForm({ ...updated });
-    } catch {
-      setError('コーチング記録の保存に失敗しました');
+    } catch (err: any) {
+      setError(err?.response?.status === 409
+        ? 'AIのコーチング記録がまだ作成中のため、手で書けません。予約日の翌日以降も届かない場合に書けます'
+        : 'コーチング記録の保存に失敗しました');
       setNoteSaving(false);
       return;
     }
@@ -603,11 +610,30 @@ export function CoachingSchedulePage({ studentId }: CoachingSchedulePageProps) {
                             もう一度読み込む
                           </button>
                         </div>
-                      ) : notes[schedule.id] === 'none' ? (
+                      ) : notes[schedule.id] === 'none'
+                        || (notes[schedule.id] === 'missed' && !manualNoteIds.has(schedule.id)) ? (
                         <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-                          <p style={{ ...font.meta, color: color.textSubtle, margin: 0 }}>
-                            まだコーチング記録がありません（録画の文字起こしが届くと、記録から要約を作成します）。
-                          </p>
+                          {notes[schedule.id] === 'missed' ? (
+                            <div style={{ display: 'flex', flexDirection: 'column', gap: 8, alignItems: 'flex-start' }}>
+                              <p style={{ ...font.meta, color: color.textSubtle, margin: 0 }}>
+                                この回はAIのコーチング記録を作れませんでした（文字起こしが取れなかった等）。手で記録を書いて公開すると、受講生の次回TODOにも反映されます。
+                              </p>
+                              <button
+                                type="button"
+                                style={ghostSmallButton}
+                                onClick={() => {
+                                  setManualNoteIds(prev => new Set(prev).add(schedule.id));
+                                  setNoteForm({});
+                                }}
+                              >
+                                記録を手で書く
+                              </button>
+                            </div>
+                          ) : (
+                            <p style={{ ...font.meta, color: color.textSubtle, margin: 0 }}>
+                              まだコーチング記録がありません（録画の文字起こしが届くと、記録から要約を作成します）。
+                            </p>
+                          )}
                           <ResultPicker
                             value={resultOf(schedule)}
                             onChange={v => setResultDraft(prev => ({ ...prev, [schedule.id]: v }))}
