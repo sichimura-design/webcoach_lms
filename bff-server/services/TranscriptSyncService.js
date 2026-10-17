@@ -37,6 +37,8 @@ class TranscriptSyncService {
   constructor() {
     // coaching_schedule_id -> number of note generation requests api-server accepted
     this.noteGenerationAttempts = new Map();
+    // schedules already warned about having only empty transcripts
+    this.emptyTranscriptWarned = new Set();
   }
 
   async syncPendingTranscripts() {
@@ -70,33 +72,67 @@ class TranscriptSyncService {
   async _syncOne(schedule, accessToken) {
     const authHeader = { Authorization: `Bearer ${accessToken}` };
 
-    const recordsRes = await axios.get(`${MEET_API_BASE}/conferenceRecords`, {
-      headers: authHeader,
-      params: { filter: `space.name="${schedule.meet_space_name}"` },
-      timeout: 10000,
-    });
-    const ended = (recordsRes.data.conferenceRecords || []).find(r => r.endTime);
-    if (!ended) {
-      return; // meeting hasn't happened (or hasn't ended) yet — retry next poll
+    // One Space can hold several conference records: e.g. the coach joins
+    // early alone and leaves, then the real session starts as a new record
+    // (prod schedule 11, 2026-10-17: an empty 2-minute record came first and
+    // was synced instead of the 1-hour session). So every record and every
+    // transcript in the Space is read and merged in time order.
+    const records = await this._listAll(
+      `${MEET_API_BASE}/conferenceRecords`,
+      { filter: `space.name="${schedule.meet_space_name}"` },
+      'conferenceRecords',
+      authHeader
+    );
+    if (records.length === 0 || records.some(r => !r.endTime)) {
+      return; // not held yet, or still in progress — retry next poll
+    }
+    // Wait a while after the last record ended, in case the participants
+    // rejoin (which starts another record) — once synced it isn't re-read.
+    const lastEnd = Math.max(...records.map(r => Date.parse(r.endTime)));
+    if (Date.now() - lastEnd < config.transcriptSettleMinutes * 60 * 1000) {
+      return;
     }
 
-    const transcriptsRes = await axios.get(`${MEET_API_BASE}/${ended.name}/transcripts`, {
-      headers: authHeader,
-      timeout: 10000,
-    });
-    const transcript = (transcriptsRes.data.transcripts || [])[0];
+    const transcripts = [];
+    for (const record of records) {
+      transcripts.push(...await this._listAll(`${MEET_API_BASE}/${record.name}/transcripts`, {}, 'transcripts', authHeader));
+    }
     // Transcript.state lifecycle: STARTED -> ENDED -> FILE_GENERATED. Only
     // FILE_GENERATED means the file is actually ready to read (confirmed via
     // a real test call — the same transcript that returned entries while
     // still ENDED had moved to FILE_GENERATED minutes later).
-    if (!transcript || transcript.state !== 'FILE_GENERATED') {
-      return; // Google hasn't finished generating the transcript yet — retry next poll
+    if (transcripts.some(t => t.state !== 'FILE_GENERATED')) {
+      return; // Google hasn't finished generating a transcript yet — retry next poll
     }
 
-    const rawEntries = await this._fetchAllEntries(transcript.name, authHeader);
+    const rawEntries = [];
+    let mainTranscript = null;
+    let mainCount = -1;
+    for (const transcript of transcripts) {
+      const entries = await this._fetchAllEntries(transcript.name, authHeader);
+      rawEntries.push(...entries);
+      if (entries.length > mainCount) {
+        mainTranscript = transcript;
+        mainCount = entries.length;
+      }
+    }
+    if (rawEntries.length === 0) {
+      // Nothing is saved, so this is checked again on later polls (in case
+      // the session is held later in the same Space). Logged once per BFF
+      // process as a warning, not an error, so #lms-alert isn't spammed.
+      if (!this.emptyTranscriptWarned.has(schedule.id)) {
+        this.emptyTranscriptWarned.add(schedule.id);
+        logger.warn(
+          `[TranscriptSync] Schedule ${schedule.id}: ${records.length} meeting(s) ended but ` +
+          `${transcripts.length} transcript(s) have no entries (transcription not started?) — not syncing yet`
+        );
+      }
+      return;
+    }
+    rawEntries.sort((a, b) => String(a.startTime || '').localeCompare(String(b.startTime || '')));
     const transcriptEntries = await this._toTranscriptEntries(schedule, rawEntries, authHeader);
 
-    const s3Key = `coaching-transcripts/${schedule.id}/${transcript.name.split('/').pop()}.json`;
+    const s3Key = `coaching-transcripts/${schedule.id}/${mainTranscript.name.split('/').pop()}.json`;
     await getS3Client().send(new PutObjectCommand({
       Bucket: config.recordingsBucketName,
       Key: s3Key,
@@ -110,12 +146,26 @@ class TranscriptSyncService {
       source: 'google_meet',
       s3_bucket: config.recordingsBucketName,
       s3_key: s3Key,
-      external_recording_id: transcript.name,
+      external_recording_id: mainTranscript.name,
       status: 'completed',
     });
 
     await this._requestNoteGeneration(schedule.id, transcriptEntries);
-    logger.log(`[TranscriptSync] Synced transcript and requested note generation for schedule ${schedule.id}`);
+    logger.log(
+      `[TranscriptSync] Synced ${transcriptEntries.length} entries from ${transcripts.length} transcript(s) ` +
+      `and requested note generation for schedule ${schedule.id}`
+    );
+  }
+
+  async _listAll(url, params, field, authHeader) {
+    const items = [];
+    let pageToken;
+    do {
+      const res = await axios.get(url, { headers: authHeader, params: { ...params, pageToken }, timeout: 10000 });
+      items.push(...(res.data[field] || []));
+      pageToken = res.data.nextPageToken;
+    } while (pageToken);
+    return items;
   }
 
   /**
@@ -200,60 +250,118 @@ class TranscriptSyncService {
   }
 
   /**
-   * Map raw Meet transcript entries to {speaker, text, timestamp}, resolving
-   * "speaker" to coach/client/unknown via a best-effort display-name match —
-   * the Meet API's Participant resource exposes a display name, not an email,
-   * so this can't be an exact match the way OAuth-based identity would be.
+   * Map raw Meet transcript entries to {speaker, text, timestamp} with
+   * speaker = coach/client/unknown. The Meet API gives a participant's
+   * display name and Google user id, not an email, and the Google display
+   * name often differs from the Moodle name (prod 2026-10-17: "Yu Takahashi"
+   * vs the coach's Moodle name, so every entry came out 'unknown'). So:
+   *   1. the coach is the participant whose Google user is the Space's
+   *      co-host member (added by email in GoogleMeetSpaceService);
+   *   2. otherwise a loose name match against the Moodle name;
+   *   3. if exactly one participant and one role are left, they go together
+   *      (a coaching session is normally just the coach and the student).
    */
   async _toTranscriptEntries(schedule, rawEntries, authHeader) {
-    const [coachUsers, clientUsers] = await Promise.all([
+    const [coachUsers, clientUsers, cohostUsers] = await Promise.all([
       moodleAdapter.getUsersByField('id', [schedule.coach_user_id]),
       moodleAdapter.getUsersByField('id', [schedule.mdl_user_id]),
+      this._getCohostUsers(schedule.meet_space_name, authHeader),
     ]);
-    const coachName = coachUsers?.[0]?.fullname?.toLowerCase();
-    const clientName = clientUsers?.[0]?.fullname?.toLowerCase();
 
-    const participantNameCache = new Map();
-    const result = [];
+    const participantCache = new Map();
+    const participants = new Map(); // participant resource name -> { name, user }
     for (const entry of rawEntries) {
-      const displayName = await this._resolveParticipantName(entry.participant, authHeader, participantNameCache);
-      const lowerName = displayName?.toLowerCase();
-
-      let speaker = 'unknown';
-      if (lowerName && coachName && lowerName.includes(coachName)) {
-        speaker = 'coach';
-      } else if (lowerName && clientName && lowerName.includes(clientName)) {
-        speaker = 'client';
+      if (entry.participant && !participants.has(entry.participant)) {
+        participants.set(entry.participant, await this._resolveParticipant(entry.participant, authHeader, participantCache));
       }
-
-      result.push({ speaker, text: entry.text, timestamp: entry.startTime || null });
     }
-    return result;
+
+    // Keyed by Google user (or display name for anonymous joins), since the
+    // same person gets a separate participant resource in each conference record.
+    const personKey = p => p?.user || (p?.name ? `name:${p.name}` : null);
+    const roles = new Map(); // personKey -> 'coach' | 'client'
+    const people = new Map(); // personKey -> participant
+    for (const p of participants.values()) {
+      const key = personKey(p);
+      if (key) people.set(key, p);
+    }
+    for (const [key, p] of people) {
+      if (p.user && cohostUsers.has(p.user)) roles.set(key, 'coach');
+    }
+    for (const [key, p] of people) {
+      if (roles.has(key)) continue;
+      if (![...roles.values()].includes('coach') && this._nameMatches(p.name, coachUsers?.[0])) {
+        roles.set(key, 'coach');
+      } else if (![...roles.values()].includes('client') && this._nameMatches(p.name, clientUsers?.[0])) {
+        roles.set(key, 'client');
+      }
+    }
+    const unassigned = [...people.keys()].filter(k => !roles.has(k));
+    const missingRoles = ['coach', 'client'].filter(r => ![...roles.values()].includes(r));
+    if (unassigned.length === 1 && missingRoles.length === 1) {
+      roles.set(unassigned[0], missingRoles[0]);
+    }
+    if (unassigned.length > 0) {
+      logger.log(
+        `[TranscriptSync] Schedule ${schedule.id} speakers: ` +
+        [...people].map(([k, p]) => `${p.name || '?'}=${roles.get(k) || 'unknown'}`).join(', ')
+      );
+    }
+
+    return rawEntries.map(entry => ({
+      speaker: roles.get(personKey(participants.get(entry.participant))) || 'unknown',
+      text: entry.text,
+      timestamp: entry.startTime || null,
+    }));
   }
 
-  async _resolveParticipantName(participantResourceName, authHeader, cache) {
-    if (!participantResourceName) {
-      return null;
+  /** Google user ids ("users/...") of the Space's co-host members (= the coach). */
+  async _getCohostUsers(spaceName, authHeader) {
+    try {
+      const members = await this._listAll(`${MEET_API_BASE}/${spaceName}/members`, {}, 'members', authHeader);
+      return new Set(members.filter(m => m.role === 'COHOST' && m.user).map(m => m.user));
+    } catch (err) {
+      logger.warn(`[TranscriptSync] Could not list members of ${spaceName}:`, err.response?.data || err.message);
+      return new Set();
     }
+  }
+
+  /** Loose match: ignores case, width and spaces, and accepts either name order. */
+  _nameMatches(displayName, moodleUser) {
+    const norm = v => (v || '').normalize('NFKC').toLowerCase().replace(/\s+/g, '');
+    const name = norm(displayName);
+    if (!name || !moodleUser) return false;
+    const candidates = [
+      moodleUser.fullname,
+      `${moodleUser.lastname || ''}${moodleUser.firstname || ''}`,
+      `${moodleUser.firstname || ''}${moodleUser.lastname || ''}`,
+    ].map(norm).filter(Boolean);
+    return candidates.some(c => name.includes(c) || c.includes(name));
+  }
+
+  async _resolveParticipant(participantResourceName, authHeader, cache) {
     if (cache.has(participantResourceName)) {
       return cache.get(participantResourceName);
     }
 
-    let name = null;
+    let participant = { name: null, user: null };
     try {
       const res = await axios.get(`${MEET_API_BASE}/${participantResourceName}`, {
         headers: authHeader,
         timeout: 10000,
       });
-      name = res.data.signedinUser?.displayName
-        || res.data.anonymousUser?.displayName
-        || res.data.phoneUser?.displayName
-        || null;
+      participant = {
+        name: res.data.signedinUser?.displayName
+          || res.data.anonymousUser?.displayName
+          || res.data.phoneUser?.displayName
+          || null,
+        user: res.data.signedinUser?.user || null,
+      };
     } catch (err) {
       logger.warn(`[TranscriptSync] Could not resolve participant ${participantResourceName}:`, err.message);
     }
-    cache.set(participantResourceName, name);
-    return name;
+    cache.set(participantResourceName, participant);
+    return participant;
   }
 }
 
