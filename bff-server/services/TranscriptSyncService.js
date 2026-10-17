@@ -287,7 +287,7 @@ class TranscriptSyncService {
     if (roles.size === 1 && unassigned.length === 1) {
       roles.set(unassigned[0], 'client');
     }
-    if (unassigned.length > 0) {
+    if (roles.size < people.size) {
       logger.log(
         `[TranscriptSync] Schedule ${schedule.id} speakers: ` +
         [...people].map(([k, p]) => `${p.name || '?'}=${roles.get(k) || 'unknown'}`).join(', ')
