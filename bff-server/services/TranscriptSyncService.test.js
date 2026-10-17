@@ -159,7 +159,8 @@ const THREE_RECORDS = {
     'conferenceRecords/r3/participants/c': { signedinUser: { user: 'users/coach', displayName: 'Yu Takahashi' } },
     'conferenceRecords/r3/participants/s': { signedinUser: { user: 'users/student', displayName: 'Chihaya' } },
   },
-  members: [{ email: 'coach@example.com', role: 'COHOST', user: 'users/coach' }],
+  // as returned in prod: no `user`, the Google user id is the member id
+  members: [{ name: 'spaces/S/members/coach', email: 'coach@example.com', role: 'COHOST' }],
 };
 
 test('reads every meeting in the Space, not just the first (empty) one', async () => {

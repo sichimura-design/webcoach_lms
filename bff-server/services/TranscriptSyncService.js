@@ -305,7 +305,13 @@ class TranscriptSyncService {
   async _getCohostUsers(spaceName, authHeader) {
     try {
       const members = await this._listAll(`${MEET_API_BASE}/${spaceName}/members`, {}, 'members', authHeader);
-      return new Set(members.filter(m => m.role === 'COHOST' && m.user).map(m => m.user));
+      // `user` came back empty in prod (2026-10-17), but the member id in
+      // `name` ("spaces/X/members/114039...") was the same number as the
+      // participant's signedinUser.user ("users/114039...").
+      return new Set(members
+        .filter(m => m.role === 'COHOST')
+        .map(m => m.user || (m.name ? `users/${m.name.split('/').pop()}` : null))
+        .filter(Boolean));
     } catch (err) {
       logger.warn(`[TranscriptSync] Could not list members of ${spaceName}:`, err.response?.data || err.message);
       return new Set();
