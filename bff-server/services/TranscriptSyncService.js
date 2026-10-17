@@ -76,12 +76,17 @@ class TranscriptSyncService {
     // (prod schedule 11, 2026-10-17: an empty 2-minute record came first and
     // was synced instead of the 1-hour session). So every record and every
     // transcript in the Space is read and merged in time order.
-    const records = await this._listAll(
+    // A booking has a date but no time, so the coaching day (JST) is the
+    // only window there is. Meetings that ended before it (e.g. the coach
+    // trying the link the day before) are ignored.
+    const dayStart = Date.parse(`${schedule.coaching_date}T00:00:00+09:00`);
+    const dayEnd = dayStart + 24 * 60 * 60 * 1000;
+    const records = (await this._listAll(
       `${MEET_API_BASE}/conferenceRecords`,
       { filter: `space.name="${schedule.meet_space_name}"` },
       'conferenceRecords',
       authHeader
-    );
+    )).filter(r => !r.endTime || Date.parse(r.endTime) >= dayStart);
     if (records.length === 0 || records.some(r => !r.endTime)) {
       return; // not held yet, or still in progress — retry next poll
     }
@@ -121,8 +126,25 @@ class TranscriptSyncService {
       }
       return;
     }
-    rawEntries.sort((a, b) => String(a.startTime || '').localeCompare(String(b.startTime || '')));
-    const transcriptEntries = await this._toTranscriptEntries(schedule, rawEntries, authHeader);
+    rawEntries.sort((a, b) => (Date.parse(a.startTime) || 0) - (Date.parse(b.startTime) || 0));
+    const { entries: transcriptEntries, speakers, coachFound } =
+      await this._toTranscriptEntries(schedule, rawEntries, authHeader);
+
+    // Only one person spoke: likely the coach testing the link early
+    // ("テスト" and leave), with the real session still to come. Syncing now
+    // would finalize on that and never read the real session, so wait until
+    // the coaching day is over unless a conversation (2+ speakers) is there.
+    if (speakers.length < 2 && Date.now() < dayEnd) {
+      return;
+    }
+    if (!coachFound) {
+      // The coach is found via the co-host member id (an observed, not
+      // documented, match), so make it visible in #lms-alert when it fails.
+      logger.error(
+        `[TranscriptSync] ERROR: schedule ${schedule.id} の発言者からコーチを判定できず失敗 ` +
+        `(全員unknownでノートを作ります)。参加者: ${speakers.join(', ')}`
+      );
+    }
 
     // One file for the whole Space (all transcripts merged), listing which
     // transcripts went into it.
@@ -287,18 +309,16 @@ class TranscriptSyncService {
     if (roles.size === 1 && unassigned.length === 1) {
       roles.set(unassigned[0], 'client');
     }
-    if (roles.size < people.size) {
-      logger.log(
-        `[TranscriptSync] Schedule ${schedule.id} speakers: ` +
-        [...people].map(([k, p]) => `${p.name || '?'}=${roles.get(k) || 'unknown'}`).join(', ')
-      );
-    }
-
-    return rawEntries.map(entry => ({
-      speaker: roles.get(personKey(participants.get(entry.participant))) || 'unknown',
-      text: entry.text,
-      timestamp: entry.startTime || null,
-    }));
+    return {
+      entries: rawEntries.map(entry => ({
+        speaker: roles.get(personKey(participants.get(entry.participant))) || 'unknown',
+        text: entry.text,
+        timestamp: entry.startTime || null,
+      })),
+      // "<display name>=<role>" per distinct person who spoke
+      speakers: [...people].map(([k, p]) => `${p.name || '?'}=${roles.get(k) || 'unknown'}`),
+      coachFound: [...roles.values()].includes('coach'),
+    };
   }
 
   /** Google user ids ("users/...") of the Space's co-host members (= the coach). */

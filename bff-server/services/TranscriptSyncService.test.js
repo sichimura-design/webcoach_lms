@@ -113,15 +113,22 @@ const axios = require('axios');
 const integrationService = require('./IntegrationService');
 
 const MIN = 60 * 1000;
-const ago = (m) => new Date(Date.now() - m * MIN).toISOString();
+// Fixed "now": 2026-10-17 14:00 JST, the coaching day of the schedule below
+const NOW = Date.parse('2026-10-17T05:00:00Z');
+const realDateNow = Date.now;
+const ago = (m) => new Date(NOW - m * MIN).toISOString();
+test.after(() => { Date.now = realDateNow; });
 
-function setupMeet({ records, transcripts, entries, participants, members = [] }) {
+function setupMeet({ records, transcripts, entries, participants, members = [], now = NOW }) {
   setup({ pending: () => [], generate: () => ({ status: 'started' }) });
+  Date.now = () => now;
+  const errors = [];
+  logger.error = (...a) => { errors.push(a.join(' ')); };
   transcriptSyncService.emptyTranscriptWarned.clear();
   const upserts = [];
   const generated = [];
   apiServerAdapter.getPendingGoogleMeetSchedules = async () => [
-    { id: 11, coach_user_id: 89, mdl_user_id: 113, meet_space_name: 'spaces/S' },
+    { id: 11, coach_user_id: 89, mdl_user_id: 113, meet_space_name: 'spaces/S', coaching_date: '2026-10-17' },
   ];
   apiServerAdapter.upsertCoachingRecording = async (id, type, data) => { upserts.push({ id, type, data }); };
   apiServerAdapter.generateCoachingNote = async (id, e) => { generated.push({ id, entries: e }); return { status: 'started' }; };
@@ -135,7 +142,7 @@ function setupMeet({ records, transcripts, entries, participants, members = [] }
     if (participants[path]) return { data: participants[path] };
     throw new Error(`unexpected GET ${url}`);
   };
-  return { upserts, generated };
+  return { upserts, generated, errors };
 }
 
 const THREE_RECORDS = {
@@ -196,12 +203,94 @@ test('does not finalize when every transcript is empty', async () => {
   assert.strictEqual(generated.length, 0);
 });
 
-test('leaves both speakers unknown when the co-host is not among them', async () => {
-  const { generated } = setupMeet({ ...THREE_RECORDS, members: [] });
+test('leaves both speakers unknown and alerts when the co-host is not among them', async () => {
+  const { generated, errors } = setupMeet({ ...THREE_RECORDS, members: [] });
 
   await transcriptSyncService.syncPendingTranscripts();
 
   assert.deepStrictEqual(generated[0].entries.map(e => e.speaker), ['unknown', 'unknown']);
+  assert.match(errors.join('\n'), /ERROR: schedule 11 .*コーチを判定できず失敗/);
+});
+
+test('uses the member `user` field when Google returns it', async () => {
+  const { generated, errors } = setupMeet({
+    ...THREE_RECORDS,
+    members: [{ name: 'spaces/S/members/other-id', role: 'COHOST', user: 'users/coach' }],
+  });
+
+  await transcriptSyncService.syncPendingTranscripts();
+
+  assert.deepStrictEqual(generated[0].entries.map(e => e.speaker), ['coach', 'client']);
+  assert.deepStrictEqual(errors, []);
+});
+
+// The coach tries the link early, says one word and leaves; the real
+// session comes later the same day.
+const COACH_ONLY = {
+  ...THREE_RECORDS,
+  records: [{ name: 'conferenceRecords/r1', startTime: ago(150), endTime: ago(148) }],
+  entries: {
+    'conferenceRecords/r1/transcripts/t1': [
+      { participant: 'conferenceRecords/r1/participants/c', text: 'テスト', startTime: ago(149) },
+    ],
+  },
+  participants: {
+    'conferenceRecords/r1/participants/c': { signedinUser: { user: 'users/coach', displayName: 'Yu Takahashi' } },
+  },
+};
+
+test('does not finalize on one speaker while the coaching day is not over', async () => {
+  const { upserts } = setupMeet(COACH_ONLY);
+
+  await transcriptSyncService.syncPendingTranscripts();
+
+  assert.strictEqual(upserts.length, 0);
+});
+
+test('finalizes on one speaker once the coaching day (JST) is over', async () => {
+  const { upserts, generated } = setupMeet({ ...COACH_ONLY, now: Date.parse('2026-10-17T15:00:00Z') });
+
+  await transcriptSyncService.syncPendingTranscripts();
+
+  assert.strictEqual(upserts.length, 1);
+  assert.deepStrictEqual(generated[0].entries.map(e => [e.speaker, e.text]), [['coach', 'テスト']]);
+});
+
+test('ignores meetings that ended before the coaching day', async () => {
+  // a link check the day before, then the real session
+  const { generated } = setupMeet({
+    ...THREE_RECORDS,
+    records: [
+      THREE_RECORDS.records[0],
+      { name: 'conferenceRecords/r1', startTime: ago(24 * 60), endTime: ago(24 * 60 - 2) },
+    ],
+    entries: {
+      ...THREE_RECORDS.entries,
+      'conferenceRecords/r1/transcripts/t1': [
+        { participant: 'conferenceRecords/r3/participants/c', text: '前日のテスト', startTime: ago(24 * 60 - 1) },
+      ],
+    },
+  });
+
+  await transcriptSyncService.syncPendingTranscripts();
+
+  assert.deepStrictEqual(generated[0].entries.map(e => e.text), ['こんにちは', 'よろしくお願いします']);
+});
+
+test('orders entries by time even when fractional seconds differ in length', async () => {
+  const { generated } = setupMeet({
+    ...THREE_RECORDS,
+    entries: {
+      'conferenceRecords/r3/transcripts/t3': [
+        { participant: 'conferenceRecords/r3/participants/s', text: 'B', startTime: '2026-10-17T01:29:41.5Z' },
+        { participant: 'conferenceRecords/r3/participants/c', text: 'A', startTime: '2026-10-17T01:29:41Z' },
+      ],
+    },
+  });
+
+  await transcriptSyncService.syncPendingTranscripts();
+
+  assert.deepStrictEqual(generated[0].entries.map(e => e.text), ['A', 'B']);
 });
 
 test('merges entries from every transcript in time order', async () => {
