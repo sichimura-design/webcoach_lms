@@ -47,6 +47,8 @@ const config = {
   // by default so local dev / tests don't need Organizer credentials configured.
   transcriptSyncEnabled: process.env.TRANSCRIPT_SYNC_ENABLED === 'true',
   transcriptSyncIntervalMinutes: parseInt(process.env.TRANSCRIPT_SYNC_INTERVAL_MINUTES || '15', 10),
+  // 最後の会議が終わってから議事録を確定するまで待つ時間(分)。入り直すと別の会議として記録されるため。
+  transcriptSettleMinutes: parseInt(process.env.TRANSCRIPT_SETTLE_MINUTES || '30', 10),
   // AIコーチングノートの生成に失敗した回を、同期のたびに作り直す回数の上限（1回あたり）。
   // 回数はBFFのメモリで数えるので、BFFを再起動すると数え直しになる。
   noteGenerationMaxAttempts: parseInt(process.env.NOTE_GENERATION_MAX_ATTEMPTS || '3', 10),

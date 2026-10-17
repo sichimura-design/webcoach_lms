@@ -83,6 +83,17 @@ const RUNTIME_SETTINGS = [
     current: () => config.transcriptSyncIntervalMinutes,
   },
   {
+    name: 'TRANSCRIPT_SETTLE_MINUTES',
+    service: 'bff-server',
+    group: '定期処理',
+    label: '議事録を確定するまでの待ち時間(分)',
+    description: '最後の会議が終わってから議事録を取り込むまで待つ時間です。入り直すと別の会議として記録されるので、その分もまとめて取り込めるように待ちます。',
+    defaultValue: 30,
+    min: 0,
+    max: 1440,
+    current: () => config.transcriptSettleMinutes,
+  },
+  {
     name: 'REMINDER_ENABLED',
     service: 'bff-server',
     type: 'boolean',
