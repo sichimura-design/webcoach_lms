@@ -27,7 +27,6 @@ const { PutObjectCommand, GetObjectCommand } = require('@aws-sdk/client-s3');
 const { getS3Client } = require('../config/clients');
 const { config } = require('../config/environment');
 const integrationService = require('./IntegrationService');
-const moodleAdapter = require('../adapters/MoodleAdapter');
 const apiServerAdapter = require('../adapters/ApiServerAdapter');
 const logger = require('../utils/logger');
 
@@ -254,19 +253,15 @@ class TranscriptSyncService {
    * speaker = coach/client/unknown. The Meet API gives a participant's
    * display name and Google user id, not an email, and the Google display
    * name often differs from the Moodle name (prod 2026-10-17: "Yu Takahashi"
-   * vs the coach's Moodle name, so every entry came out 'unknown'). So:
+   * vs the coach's Moodle name, so every entry came out 'unknown'), so
+   * names aren't compared at all:
    *   1. the coach is the participant whose Google user is the Space's
    *      co-host member (added by email in GoogleMeetSpaceService);
-   *   2. otherwise a loose name match against the Moodle name;
-   *   3. if exactly one participant and one role are left, they go together
+   *   2. if exactly one other participant is left, they are the student
    *      (a coaching session is normally just the coach and the student).
    */
   async _toTranscriptEntries(schedule, rawEntries, authHeader) {
-    const [coachUsers, clientUsers, cohostUsers] = await Promise.all([
-      moodleAdapter.getUsersByField('id', [schedule.coach_user_id]),
-      moodleAdapter.getUsersByField('id', [schedule.mdl_user_id]),
-      this._getCohostUsers(schedule.meet_space_name, authHeader),
-    ]);
+    const cohostUsers = await this._getCohostUsers(schedule.meet_space_name, authHeader);
 
     const participantCache = new Map();
     const participants = new Map(); // participant resource name -> { name, user }
@@ -288,18 +283,9 @@ class TranscriptSyncService {
     for (const [key, p] of people) {
       if (p.user && cohostUsers.has(p.user)) roles.set(key, 'coach');
     }
-    for (const [key, p] of people) {
-      if (roles.has(key)) continue;
-      if (![...roles.values()].includes('coach') && this._nameMatches(p.name, coachUsers?.[0])) {
-        roles.set(key, 'coach');
-      } else if (![...roles.values()].includes('client') && this._nameMatches(p.name, clientUsers?.[0])) {
-        roles.set(key, 'client');
-      }
-    }
     const unassigned = [...people.keys()].filter(k => !roles.has(k));
-    const missingRoles = ['coach', 'client'].filter(r => ![...roles.values()].includes(r));
-    if (unassigned.length === 1 && missingRoles.length === 1) {
-      roles.set(unassigned[0], missingRoles[0]);
+    if (roles.size === 1 && unassigned.length === 1) {
+      roles.set(unassigned[0], 'client');
     }
     if (unassigned.length > 0) {
       logger.log(
@@ -324,19 +310,6 @@ class TranscriptSyncService {
       logger.warn(`[TranscriptSync] Could not list members of ${spaceName}:`, err.response?.data || err.message);
       return new Set();
     }
-  }
-
-  /** Loose match: ignores case, width and spaces, and accepts either name order. */
-  _nameMatches(displayName, moodleUser) {
-    const norm = v => (v || '').normalize('NFKC').toLowerCase().replace(/\s+/g, '');
-    const name = norm(displayName);
-    if (!name || !moodleUser) return false;
-    const candidates = [
-      moodleUser.fullname,
-      `${moodleUser.lastname || ''}${moodleUser.firstname || ''}`,
-      `${moodleUser.firstname || ''}${moodleUser.lastname || ''}`,
-    ].map(norm).filter(Boolean);
-    return candidates.some(c => name.includes(c) || c.includes(name));
   }
 
   async _resolveParticipant(participantResourceName, authHeader, cache) {

@@ -110,7 +110,6 @@ test('a failure while retrying does not stop the new-transcript sync', async () 
 // --- transcript sync across several conference records (prod schedule 11, 2026-10-17) ---
 
 const axios = require('axios');
-const moodleAdapter = require('../adapters/MoodleAdapter');
 const integrationService = require('./IntegrationService');
 
 const MIN = 60 * 1000;
@@ -127,11 +126,6 @@ function setupMeet({ records, transcripts, entries, participants, members = [] }
   apiServerAdapter.upsertCoachingRecording = async (id, type, data) => { upserts.push({ id, type, data }); };
   apiServerAdapter.generateCoachingNote = async (id, e) => { generated.push({ id, entries: e }); return { status: 'started' }; };
   integrationService.getValidOrganizerAccessToken = async () => 'token';
-  moodleAdapter.getUsersByField = async (_f, [id]) => [
-    id === 89
-      ? { fullname: '高橋 優', firstname: '優', lastname: '高橋' }
-      : { fullname: '國枝 千早', firstname: '千早', lastname: '國枝' },
-  ];
   axios.get = async (url) => {
     const path = url.replace('https://meet.googleapis.com/v2/', '');
     if (path === 'conferenceRecords') return { data: { conferenceRecords: records } };
@@ -201,19 +195,12 @@ test('does not finalize when every transcript is empty', async () => {
   assert.strictEqual(generated.length, 0);
 });
 
-test('falls back to a loose Moodle name match when the co-host is unknown', async () => {
-  const { generated } = setupMeet({
-    ...THREE_RECORDS,
-    members: [],
-    participants: {
-      'conferenceRecords/r3/participants/c': { signedinUser: { user: 'users/coach', displayName: 'Coach X' } },
-      'conferenceRecords/r3/participants/s': { signedinUser: { user: 'users/student', displayName: '國枝千早' } },
-    },
-  });
+test('leaves both speakers unknown when the co-host is not among them', async () => {
+  const { generated } = setupMeet({ ...THREE_RECORDS, members: [] });
 
   await transcriptSyncService.syncPendingTranscripts();
 
-  assert.deepStrictEqual(generated[0].entries.map(e => e.speaker), ['coach', 'client']);
+  assert.deepStrictEqual(generated[0].entries.map(e => e.speaker), ['unknown', 'unknown']);
 });
 
 test('merges entries from every transcript in time order', async () => {
