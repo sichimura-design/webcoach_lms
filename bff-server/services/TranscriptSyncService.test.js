@@ -177,7 +177,8 @@ test('reads every meeting in the Space, not just the first (empty) one', async (
     ['coach', 'こんにちは'],
     ['client', 'よろしくお願いします'],
   ]);
-  assert.strictEqual(upserts[0].data.external_recording_id, 'conferenceRecords/r3/transcripts/t3');
+  assert.strictEqual(upserts[0].data.external_recording_id, 'spaces/S');
+  assert.strictEqual(upserts[0].data.s3_key, 'coaching-transcripts/11/S.json');
 });
 
 test('waits for the settle time after the last meeting ends', async () => {
@@ -213,4 +214,20 @@ test('falls back to a loose Moodle name match when the co-host is unknown', asyn
   await transcriptSyncService.syncPendingTranscripts();
 
   assert.deepStrictEqual(generated[0].entries.map(e => e.speaker), ['coach', 'client']);
+});
+
+test('merges entries from every transcript in time order', async () => {
+  const { generated } = setupMeet({
+    ...THREE_RECORDS,
+    entries: {
+      ...THREE_RECORDS.entries,
+      'conferenceRecords/r1/transcripts/t1': [
+        { participant: 'conferenceRecords/r3/participants/c', text: '早く入りました', startTime: '2026-10-17T00:59:00Z' },
+      ],
+    },
+  });
+
+  await transcriptSyncService.syncPendingTranscripts();
+
+  assert.deepStrictEqual(generated[0].entries.map(e => e.text), ['早く入りました', 'こんにちは', 'よろしくお願いします']);
 });

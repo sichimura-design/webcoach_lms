@@ -106,15 +106,8 @@ class TranscriptSyncService {
     }
 
     const rawEntries = [];
-    let mainTranscript = null;
-    let mainCount = -1;
     for (const transcript of transcripts) {
-      const entries = await this._fetchAllEntries(transcript.name, authHeader);
-      rawEntries.push(...entries);
-      if (entries.length > mainCount) {
-        mainTranscript = transcript;
-        mainCount = entries.length;
-      }
+      rawEntries.push(...await this._fetchAllEntries(transcript.name, authHeader));
     }
     if (rawEntries.length === 0) {
       // Nothing is saved, so this is checked again on later polls (in case
@@ -132,11 +125,17 @@ class TranscriptSyncService {
     rawEntries.sort((a, b) => String(a.startTime || '').localeCompare(String(b.startTime || '')));
     const transcriptEntries = await this._toTranscriptEntries(schedule, rawEntries, authHeader);
 
-    const s3Key = `coaching-transcripts/${schedule.id}/${mainTranscript.name.split('/').pop()}.json`;
+    // One file for the whole Space (all transcripts merged), listing which
+    // transcripts went into it.
+    const s3Key = `coaching-transcripts/${schedule.id}/${schedule.meet_space_name.split('/').pop()}.json`;
     await getS3Client().send(new PutObjectCommand({
       Bucket: config.recordingsBucketName,
       Key: s3Key,
-      Body: JSON.stringify({ coaching_schedule_id: schedule.id, entries: transcriptEntries }, null, 2),
+      Body: JSON.stringify({
+        coaching_schedule_id: schedule.id,
+        transcripts: transcripts.map(t => t.name),
+        entries: transcriptEntries,
+      }, null, 2),
       ContentType: 'application/json',
     }));
 
@@ -146,7 +145,8 @@ class TranscriptSyncService {
       source: 'google_meet',
       s3_bucket: config.recordingsBucketName,
       s3_key: s3Key,
-      external_recording_id: mainTranscript.name,
+      // the Space, since the entries come from every transcript in it
+      external_recording_id: schedule.meet_space_name,
       status: 'completed',
     });
 
