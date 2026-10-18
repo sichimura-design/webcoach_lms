@@ -142,6 +142,10 @@ const ghostSmallButton: React.CSSProperties = {
   cursor: 'pointer', whiteSpace: 'nowrap',
 };
 
+/** インラインstyleでは :disabled が書けないので、押せないボタンはここで薄くする */
+const withDisabled = (style: React.CSSProperties, disabled: boolean): React.CSSProperties =>
+  disabled ? { ...style, opacity: 0.5, cursor: 'not-allowed' } : style;
+
 const inputStyle: React.CSSProperties = {
   width: '100%',
   boxSizing: 'border-box',
@@ -675,12 +679,17 @@ export function CoachingSchedulePage({ studentId }: CoachingSchedulePageProps) {
                             onChange={v => setResultDraft(prev => ({ ...prev, [schedule.id]: v }))}
                           />
                           <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap' }}>
-                            <button type="button" style={ghostSmallButton} onClick={() => handleSaveNote(schedule)} disabled={noteSaving || isManualEmpty(schedule.id)}>
+                            <button
+                              type="button"
+                              style={withDisabled(ghostSmallButton, noteSaving || isManualEmpty(schedule.id))}
+                              onClick={() => handleSaveNote(schedule)}
+                              disabled={noteSaving || isManualEmpty(schedule.id)}
+                            >
                               {noteSaving ? '保存中...' : '下書き保存'}
                             </button>
                             <button
                               type="button"
-                              style={{ ...smallPrimaryButton, background: '#1E7A34' }}
+                              style={withDisabled({ ...smallPrimaryButton, background: '#1E7A34' }, noteSaving || isManualEmpty(schedule.id))}
                               onClick={() => handleSaveNote(schedule, 'published')}
                               disabled={noteSaving || isManualEmpty(schedule.id)}
                             >
