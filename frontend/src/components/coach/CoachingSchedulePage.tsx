@@ -9,7 +9,8 @@ import { color, font, t } from '../../theme/webcoachTheme';
 import { toLocalDateKey } from '../../utils/studyStats';
 import { getUserMessage } from '../../utils/errorMessage';
 
-type NoteState = CoachingNote | 'none' | 'forbidden' | 'error';
+// 'none': ノートがまだ無い（AIの下書き待ち） / 'missed': 自動作成が失敗した回（手で書ける）
+type NoteState = CoachingNote | 'none' | 'missed' | 'forbidden' | 'error';
 const isNote = (v: NoteState | undefined): v is CoachingNote => typeof v === 'object' && v !== null;
 
 const NOTE_FIELD_LABELS: { key: keyof UpdateCoachingNoteRequest; label: string }[] = [
@@ -141,6 +142,10 @@ const ghostSmallButton: React.CSSProperties = {
   cursor: 'pointer', whiteSpace: 'nowrap',
 };
 
+/** インラインstyleでは :disabled が書けないので、押せないボタンはここで薄くする */
+const withDisabled = (style: React.CSSProperties, disabled: boolean): React.CSSProperties =>
+  disabled ? { ...style, opacity: 0.5, cursor: 'not-allowed' } : style;
+
 const inputStyle: React.CSSProperties = {
   width: '100%',
   boxSizing: 'border-box',
@@ -180,6 +185,10 @@ export function CoachingSchedulePage({ studentId }: CoachingSchedulePageProps) {
   const [noteLoading, setNoteLoading] = useState(false);
   const [noteForm, setNoteForm] = useState<UpdateCoachingNoteRequest>({});
   const [noteSaving, setNoteSaving] = useState(false);
+  // 自動作成が失敗した回で「記録を手で書く」を押した回（空の入力欄を出す。保存時にノートが作られる）
+  const [manualNoteIds, setManualNoteIds] = useState<Set<number>>(new Set());
+  // 手書きの書きかけ（記録欄を閉じたり別の回を開いたりしても消さない）
+  const [manualDrafts, setManualDrafts] = useState<Record<number, UpdateCoachingNoteRequest>>({});
   const [resultDraft, setResultDraft] = useState<Record<number, HeldResult>>({});
 
   const [rescheduleTarget, setRescheduleTarget] = useState<CoachingSchedule | null>(null);
@@ -286,6 +295,10 @@ export function CoachingSchedulePage({ studentId }: CoachingSchedulePageProps) {
   };
 
   const toggleNote = async (scheduleId: number) => {
+    // 開いていた回が手書き中なら、閉じる前に書きかけを取っておく
+    if (noteOpenId !== null && manualNoteIds.has(noteOpenId) && !isNote(notes[noteOpenId])) {
+      setManualDrafts(prev => ({ ...prev, [noteOpenId]: noteForm }));
+    }
     if (noteOpenId === scheduleId) {
       setNoteOpenId(null);
       return;
@@ -293,7 +306,7 @@ export function CoachingSchedulePage({ studentId }: CoachingSchedulePageProps) {
     setNoteOpenId(scheduleId);
     const existing = notes[scheduleId];
     if (existing && existing !== 'error') {
-      setNoteForm(isNote(existing) ? { ...existing } : {});
+      setNoteForm(isNote(existing) ? { ...existing } : manualDrafts[scheduleId] || {});
       return;
     }
     await loadNote(scheduleId);
@@ -307,7 +320,9 @@ export function CoachingSchedulePage({ studentId }: CoachingSchedulePageProps) {
       setNoteForm({ ...note });
     } catch (err: any) {
       const status = err?.response?.status;
-      const state: NoteState = status === 404 ? 'none' : status === 403 ? 'forbidden' : 'error';
+      // 404の本文の manual_allowed: 自動作成が失敗した回として、手で記録を書けるか（api-serverが判定）
+      const manualAllowed = err?.response?.data?.manual_allowed === true;
+      const state: NoteState = status === 404 ? (manualAllowed ? 'missed' : 'none') : status === 403 ? 'forbidden' : 'error';
       setNotes(prev => ({ ...prev, [scheduleId]: state }));
       setNoteForm({});
     } finally {
@@ -323,6 +338,14 @@ export function CoachingSchedulePage({ studentId }: CoachingSchedulePageProps) {
     setSchedules(prev => prev.map(s => (s.id === schedule.id ? { ...s, ...updated, status: result } : s)));
   };
 
+  /** 手書き中（まだノートが無い回）で、どの項目も空。空のノートを作らせない（api-serverも400で断る） */
+  const isManualEmpty = (scheduleId: number) =>
+    !isNote(notes[scheduleId])
+    && NOTE_FIELD_LABELS.every(({ key }) => !((noteForm[key] as string) || '').trim());
+
+  /** 記録の「下書き保存」「受講生に公開」を押せないとき（保存中、または手書きで全項目が空）。見た目と disabled の両方で使う */
+  const isNoteSaveDisabled = (scheduleId: number) => noteSaving || isManualEmpty(scheduleId);
+
   /** ノートの保存（下書き／公開）と実施結果の保存を一度に行う */
   const handleSaveNote = async (schedule: CoachingSchedule, status?: CoachingNoteStatus) => {
     if (noteSaving) return;
@@ -335,8 +358,12 @@ export function CoachingSchedulePage({ studentId }: CoachingSchedulePageProps) {
       });
       setNotes(prev => ({ ...prev, [schedule.id]: updated }));
       setNoteForm({ ...updated });
-    } catch {
-      setError('コーチング記録の保存に失敗しました');
+    } catch (err: any) {
+      // 手書きを断られた理由（作成中・リスケ・空のまま・AIが先に作成）はapi-serverの文言をそのまま出す
+      const detail = err?.response?.data?.detail;
+      setError([400, 409].includes(err?.response?.status) && typeof detail === 'string'
+        ? detail
+        : 'コーチング記録の保存に失敗しました');
       setNoteSaving(false);
       return;
     }
@@ -603,11 +630,30 @@ export function CoachingSchedulePage({ studentId }: CoachingSchedulePageProps) {
                             もう一度読み込む
                           </button>
                         </div>
-                      ) : notes[schedule.id] === 'none' ? (
+                      ) : notes[schedule.id] === 'none'
+                        || (notes[schedule.id] === 'missed' && !manualNoteIds.has(schedule.id)) ? (
                         <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-                          <p style={{ ...font.meta, color: color.textSubtle, margin: 0 }}>
-                            まだコーチング記録がありません（録画の文字起こしが届くと、記録から要約を作成します）。
-                          </p>
+                          {notes[schedule.id] === 'missed' ? (
+                            <div style={{ display: 'flex', flexDirection: 'column', gap: 8, alignItems: 'flex-start' }}>
+                              <p style={{ ...font.meta, color: color.textSubtle, margin: 0 }}>
+                                この回はAIのコーチング記録を作れませんでした（文字起こしが取れなかった等）。手で記録を書いて公開すると、受講生の次回TODOにも反映されます。
+                              </p>
+                              <button
+                                type="button"
+                                style={ghostSmallButton}
+                                onClick={() => {
+                                  setManualNoteIds(prev => new Set(prev).add(schedule.id));
+                                  setNoteForm(manualDrafts[schedule.id] || {});
+                                }}
+                              >
+                                記録を手で書く
+                              </button>
+                            </div>
+                          ) : (
+                            <p style={{ ...font.meta, color: color.textSubtle, margin: 0 }}>
+                              まだコーチング記録がありません（録画の文字起こしが届くと、記録から要約を作成します）。
+                            </p>
+                          )}
                           <ResultPicker
                             value={resultOf(schedule)}
                             onChange={v => setResultDraft(prev => ({ ...prev, [schedule.id]: v }))}
@@ -636,17 +682,25 @@ export function CoachingSchedulePage({ studentId }: CoachingSchedulePageProps) {
                             onChange={v => setResultDraft(prev => ({ ...prev, [schedule.id]: v }))}
                           />
                           <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap' }}>
-                            <button type="button" style={ghostSmallButton} onClick={() => handleSaveNote(schedule)} disabled={noteSaving}>
+                            <button
+                              type="button"
+                              style={withDisabled(ghostSmallButton, isNoteSaveDisabled(schedule.id))}
+                              onClick={() => handleSaveNote(schedule)}
+                              disabled={isNoteSaveDisabled(schedule.id)}
+                            >
                               {noteSaving ? '保存中...' : '下書き保存'}
                             </button>
                             <button
                               type="button"
-                              style={{ ...smallPrimaryButton, background: '#1E7A34' }}
+                              style={withDisabled({ ...smallPrimaryButton, background: '#1E7A34' }, isNoteSaveDisabled(schedule.id))}
                               onClick={() => handleSaveNote(schedule, 'published')}
-                              disabled={noteSaving}
+                              disabled={isNoteSaveDisabled(schedule.id)}
                             >
                               受講生に公開
                             </button>
+                            {isManualEmpty(schedule.id) && (
+                              <span style={{ ...font.meta, color: color.textSubtle }}>どれか1つの項目を書くと保存できます</span>
+                            )}
                           </div>
                         </div>
                       )}

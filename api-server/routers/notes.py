@@ -8,7 +8,9 @@ import json
 import logging
 import threading
 from typing import List, Set
+from fastapi.responses import JSONResponse
 from fastapi import APIRouter, Depends, HTTPException, status
+from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
 
 from database import get_db, SessionLocal
@@ -17,6 +19,8 @@ from dto.response import CoachingNoteResponse, CoachingNoteGenerateAcceptedRespo
 from crud import (
     upsert_ai_coaching_note_draft,
     get_coaching_note,
+    create_coach_coaching_note,
+    is_coaching_note_missed,
     update_coaching_note,
     get_coaching_schedule_by_id,
     sync_next_coaching_goals_from_note,
@@ -25,6 +29,12 @@ from crud import (
 from coaching_note_generator import generate_coaching_note_draft
 
 logger = logging.getLogger(__name__)
+
+# コーチが書く8項目（手書きの記録は、どれか1つは必須）
+NOTE_TEXT_FIELDS = (
+    "session_summary", "client_status_and_goal", "main_issues", "coach_feedback",
+    "decisions", "client_next_actions", "coach_follow_up", "next_session_check",
+)
 
 router = APIRouter(prefix="/api/coaching/notes", tags=["Coaching Notes"])
 
@@ -61,6 +71,11 @@ def _generate_and_save_note(coaching_schedule_id: int, entries: List[dict]) -> N
     """
     db = SessionLocal()
     try:
+        existing = get_coaching_note(db=db, coaching_schedule_id=coaching_schedule_id)
+        if existing and existing.status != "ai_suggested":
+            # コーチが確認・公開済み、または手で書いた記録がある。AIを呼ばず上書きもしない
+            logger.info(f"Skipped coaching note generation for schedule {coaching_schedule_id}: note is {existing.status}")
+            return
         draft = generate_coaching_note_draft(entries)
         upsert_ai_coaching_note_draft(db=db, coaching_schedule_id=coaching_schedule_id, **draft)
         logger.info(f"Generated coaching note for schedule {coaching_schedule_id}")
@@ -210,16 +225,17 @@ def get_note(
     Returns:
         コーチングノート
 
-    Raises:
-        HTTPException: ノートが存在しない場合（404）
+    ノートが無い場合は404。本文の manual_allowed は、自動作成が失敗した回として
+    コーチが手で記録を書けるか（is_coaching_note_missed）を表す。
     """
     note = get_coaching_note(db=db, coaching_schedule_id=coaching_schedule_id)
 
     if not note:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail=f"Coaching note not found: coaching_schedule_id={coaching_schedule_id}"
-        )
+        schedule = get_coaching_schedule_by_id(db, coaching_schedule_id)
+        return JSONResponse(status_code=status.HTTP_404_NOT_FOUND, content={
+            "detail": f"Coaching note not found: coaching_schedule_id={coaching_schedule_id}",
+            "manual_allowed": bool(schedule and is_coaching_note_missed(db, schedule)),
+        })
 
     return note
 
@@ -242,19 +258,37 @@ def update_note(
         request: 更新内容
         db: Database session
 
+    ノートがまだ無い回は、自動作成が失敗した回（is_coaching_note_missed）に限り、
+    コーチが手で書いた記録として新しく作ります。それ以外は409。
+
     Returns:
         更新後のコーチングノート
-
-    Raises:
-        HTTPException: ノートが存在しない場合（404）
     """
     note = get_coaching_note(db=db, coaching_schedule_id=coaching_schedule_id)
 
     if not note:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail=f"Coaching note not found: coaching_schedule_id={coaching_schedule_id}"
-        )
+        # 自動作成が失敗した回に限り、コーチが手で書いた記録として作る
+        # （AIの下書きがこれから届く回まで手書きにさせない）
+        schedule = get_coaching_schedule_by_id(db, coaching_schedule_id)
+        if schedule and schedule.status == "rescheduled":
+            raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="リスケの回には記録を書けません。")
+        if not schedule or not is_coaching_note_missed(db, schedule):
+            raise HTTPException(
+                status_code=status.HTTP_409_CONFLICT,
+                detail="AIのコーチング記録がまだ作成中のため、手で書けません。予約日の翌日以降も届かない場合に書けます。",
+            )
+        # 空のまま作ると、公開しても中身が無く、後から文字起こしが届いてもAIはもう作らない
+        if not any((getattr(request, f) or "").strip() for f in NOTE_TEXT_FIELDS):
+            raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="どれか1つの項目は書いてください。")
+        try:
+            note = create_coach_coaching_note(db=db, coaching_schedule_id=coaching_schedule_id)
+        except IntegrityError:
+            # 同じ瞬間にAIの下書きが保存された（ノートは1回につき1件）
+            db.rollback()
+            raise HTTPException(
+                status_code=status.HTTP_409_CONFLICT,
+                detail="AIのコーチング記録が先に作成されました。記録を開き直してください。",
+            )
 
     try:
         updated = update_coaching_note(

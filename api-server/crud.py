@@ -5,6 +5,7 @@ import time
 from datetime import datetime, timedelta, timezone, date
 from typing import Optional, List, Dict, Any
 from sqlalchemy.orm import Session
+from sqlalchemy.exc import IntegrityError
 from sqlalchemy import desc, text, func, bindparam, or_, and_
 from entities import (
     UserLastCourseAccess,
@@ -3211,6 +3212,9 @@ def upsert_ai_coaching_note_draft(
     """
     AI生成したコーチングノートの下書きを保存（同一schedule_idが既にあれば内容のみ上書き、statusは変更しない）
 
+    🔴 既存のノートがコーチの手を経たもの（coach_confirmed / published。手で書いた記録を含む）
+       なら上書きせずそのまま返す。後から文字起こしが届いてもコーチの記入を消さないため。
+
     Args:
         db: Database session
         coaching_schedule_id: 対象のコーチング回（webcoach_coaching_schedule.id）
@@ -3235,6 +3239,8 @@ def upsert_ai_coaching_note_draft(
     ).first()
 
     if existing:
+        if existing.status != 'ai_suggested':
+            return existing
         for key, value in fields.items():
             setattr(existing, key, value)
         db.commit()
@@ -3243,8 +3249,62 @@ def upsert_ai_coaching_note_draft(
 
     note = WebCoachCoachingNote(coaching_schedule_id=coaching_schedule_id, **fields)
     db.add(note)
-    db.commit()
+    try:
+        db.commit()
+    except IntegrityError:
+        # 同じ瞬間にコーチが手で書いた記録が作られた（ノートは1回につき1件）。コーチの記録を残す
+        db.rollback()
+        return db.query(WebCoachCoachingNote).filter(
+            WebCoachCoachingNote.coaching_schedule_id == coaching_schedule_id
+        ).first()
     db.refresh(note)
+    return note
+
+
+# 文字起こしを取り込んでから、AIの作り直し（BFFが15分ごとに最大3回）が終わるまでの目安
+NOTE_GENERATION_GIVE_UP = timedelta(hours=1)
+
+
+def is_coaching_note_missed(db: Session, schedule: WebCoachCoachingSchedule) -> bool:
+    """
+    この回のAIコーチングノートの自動作成が失敗した（もう届かない）とみなせるか。
+    コーチが手で記録を書けるのはこの場合だけ（自動で作られる回まで手書きにさせないため）。
+
+    - ノートが無い
+    - 予約日が過ぎている（JSTの翌日以降。1人しか話さなかった回は予約日が終わってから確定するため）
+    - 文字起こしを取り込んでいない、または取り込んでから NOTE_GENERATION_GIVE_UP たってもノートが無い
+    リスケの回は対象外。
+    """
+    if schedule.status == 'rescheduled':
+        return False
+    if get_coaching_note(db, schedule.id) is not None:
+        return False
+    if datetime.now(JST).date() <= schedule.coaching_date:
+        return False
+    transcript = db.query(WebCoachCoachingRecording).filter(
+        WebCoachCoachingRecording.coaching_schedule_id == schedule.id,
+        WebCoachCoachingRecording.recording_type == 'transcript',
+    ).first()
+    if transcript is None:
+        return True
+    # updated_at はDBの時計（タイムゾーンはDBの設定次第）なので、DBの現在時刻と比べる
+    db_now = db.query(func.current_timestamp()).scalar()
+    if isinstance(db_now, str):  # SQLite（テスト）は文字列で返す
+        db_now = datetime.fromisoformat(db_now)
+    return db_now - transcript.updated_at >= NOTE_GENERATION_GIVE_UP
+
+
+def create_coach_coaching_note(db: Session, coaching_schedule_id: int) -> WebCoachCoachingNote:
+    """
+    AIの下書きが届かなかった回に、コーチが手で書くための空のノートを作る（status=coach_confirmed）。
+    呼び出し側で is_coaching_note_missed を確かめてから使う。
+
+    文字起こしが取れなかった回でも、記録を書いて公開すれば次回TODOに反映できるようにするため。
+    coach_confirmed にしておくので、後から文字起こしが届いてもAIの下書きで上書きされない。
+    """
+    note = WebCoachCoachingNote(coaching_schedule_id=coaching_schedule_id, status='coach_confirmed')
+    db.add(note)
+    db.flush()
     return note
 
 
