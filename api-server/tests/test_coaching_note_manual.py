@@ -187,3 +187,73 @@ def test_get_404_tells_whether_manual_note_is_allowed(client, test_db):
     res = client.get(f"/api/coaching/notes/{waiting.id}")
     assert res.status_code == 404
     assert res.json()["manual_allowed"] is False
+
+
+def test_manual_note_needs_at_least_one_field(client, test_db):
+    schedule = _add_schedule(test_db)
+    test_db.commit()
+
+    res = client.put(f"/api/coaching/notes/{schedule.id}", json={"status": "published", "session_summary": "  "})
+
+    assert res.status_code == 400
+    assert test_db.query(WebCoachCoachingNote).filter_by(coaching_schedule_id=schedule.id).count() == 0
+
+
+def test_rescheduled_session_gets_its_own_message(client, test_db):
+    schedule = _add_schedule(test_db, status="rescheduled")
+    test_db.commit()
+
+    res = client.put(f"/api/coaching/notes/{schedule.id}", json={"session_summary": "x"})
+
+    assert res.status_code == 409
+    assert "リスケ" in res.json()["detail"]
+
+
+def test_ai_draft_saved_at_the_same_moment_returns_409(client, test_db):
+    from sqlalchemy.exc import IntegrityError
+    schedule = _add_schedule(test_db)
+    test_db.commit()
+
+    def collide(db, coaching_schedule_id):
+        raise IntegrityError("INSERT", {}, Exception("Duplicate entry"))
+
+    with patch.object(notes, "create_coach_coaching_note", side_effect=collide):
+        res = client.put(f"/api/coaching/notes/{schedule.id}", json={"session_summary": "x"})
+
+    assert res.status_code == 409
+    assert "先に作成" in res.json()["detail"]
+
+
+def test_ai_draft_insert_collision_keeps_the_coach_note(test_db):
+    from sqlalchemy.exc import IntegrityError
+    schedule = _add_schedule(test_db)
+    coach_note = _add_note(test_db, schedule.id, "coach_confirmed")
+    test_db.commit()
+
+    # 存在確認の後、AIのINSERTより先にコーチの記録が入った状況を、最初の検索だけ「無し」にして再現する
+    real_query = test_db.query
+    calls = []
+
+    def query(*args, **kwargs):
+        q = real_query(*args, **kwargs)
+        if args and args[0] is WebCoachCoachingNote and not calls:
+            calls.append(1)
+
+            class Empty:
+                def filter(self, *a, **k):
+                    return self
+
+                def first(self):
+                    return None
+            return Empty()
+        return q
+
+    commit = test_db.commit
+    with patch.object(test_db, "query", side_effect=query), \
+            patch.object(test_db, "commit", side_effect=[IntegrityError("INSERT", {}, Exception("dup")), None]), \
+            patch.object(test_db, "rollback", side_effect=lambda: None):
+        saved = crud.upsert_ai_coaching_note_draft(test_db, coaching_schedule_id=schedule.id, session_summary="AI")
+
+    assert saved.id == coach_note.id
+    test_db.expunge_all()
+    commit()

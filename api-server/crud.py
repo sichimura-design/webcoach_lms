@@ -5,6 +5,7 @@ import time
 from datetime import datetime, timedelta, timezone, date
 from typing import Optional, List, Dict, Any
 from sqlalchemy.orm import Session
+from sqlalchemy.exc import IntegrityError
 from sqlalchemy import desc, text, func, bindparam, or_, and_
 from entities import (
     UserLastCourseAccess,
@@ -3248,7 +3249,14 @@ def upsert_ai_coaching_note_draft(
 
     note = WebCoachCoachingNote(coaching_schedule_id=coaching_schedule_id, **fields)
     db.add(note)
-    db.commit()
+    try:
+        db.commit()
+    except IntegrityError:
+        # 同じ瞬間にコーチが手で書いた記録が作られた（ノートは1回につき1件）。コーチの記録を残す
+        db.rollback()
+        return db.query(WebCoachCoachingNote).filter(
+            WebCoachCoachingNote.coaching_schedule_id == coaching_schedule_id
+        ).first()
     db.refresh(note)
     return note
 

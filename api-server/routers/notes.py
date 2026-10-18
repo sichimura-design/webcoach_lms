@@ -10,6 +10,7 @@ import threading
 from typing import List, Set
 from fastapi.responses import JSONResponse
 from fastapi import APIRouter, Depends, HTTPException, status
+from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
 
 from database import get_db, SessionLocal
@@ -28,6 +29,12 @@ from crud import (
 from coaching_note_generator import generate_coaching_note_draft
 
 logger = logging.getLogger(__name__)
+
+# コーチが書く8項目（手書きの記録は、どれか1つは必須）
+NOTE_TEXT_FIELDS = (
+    "session_summary", "client_status_and_goal", "main_issues", "coach_feedback",
+    "decisions", "client_next_actions", "coach_follow_up", "next_session_check",
+)
 
 router = APIRouter(prefix="/api/coaching/notes", tags=["Coaching Notes"])
 
@@ -263,15 +270,27 @@ def update_note(
         # 自動作成が失敗した回に限り、コーチが手で書いた記録として作る
         # （AIの下書きがこれから届く回まで手書きにさせない）
         schedule = get_coaching_schedule_by_id(db, coaching_schedule_id)
+        if schedule and schedule.status == "rescheduled":
+            raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="リスケの回には記録を書けません。")
         if not schedule or not is_coaching_note_missed(db, schedule):
             raise HTTPException(
                 status_code=status.HTTP_409_CONFLICT,
-                detail="AIの下書きがまだ作成されていないか、作成中です。予約日の翌日以降も届かない場合に手で書けます。",
+                detail="AIのコーチング記録がまだ作成中のため、手で書けません。予約日の翌日以降も届かない場合に書けます。",
+            )
+        # 空のまま作ると、公開しても中身が無く、後から文字起こしが届いてもAIはもう作らない
+        if not any((getattr(request, f) or "").strip() for f in NOTE_TEXT_FIELDS):
+            raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="どれか1つの項目は書いてください。")
+        try:
+            note = create_coach_coaching_note(db=db, coaching_schedule_id=coaching_schedule_id)
+        except IntegrityError:
+            # 同じ瞬間にAIの下書きが保存された（ノートは1回につき1件）
+            db.rollback()
+            raise HTTPException(
+                status_code=status.HTTP_409_CONFLICT,
+                detail="AIのコーチング記録が先に作成されました。記録を開き直してください。",
             )
 
     try:
-        if not note:
-            note = create_coach_coaching_note(db=db, coaching_schedule_id=coaching_schedule_id)
         updated = update_coaching_note(
             db=db,
             note_id=note.id,
