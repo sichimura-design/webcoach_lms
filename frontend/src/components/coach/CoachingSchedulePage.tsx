@@ -343,6 +343,9 @@ export function CoachingSchedulePage({ studentId }: CoachingSchedulePageProps) {
     !isNote(notes[scheduleId])
     && NOTE_FIELD_LABELS.every(({ key }) => !((noteForm[key] as string) || '').trim());
 
+  /** 記録の「下書き保存」「受講生に公開」を押せないとき（保存中、または手書きで全項目が空）。見た目と disabled の両方で使う */
+  const isNoteSaveDisabled = (scheduleId: number) => noteSaving || isManualEmpty(scheduleId);
+
   /** ノートの保存（下書き／公開）と実施結果の保存を一度に行う */
   const handleSaveNote = async (schedule: CoachingSchedule, status?: CoachingNoteStatus) => {
     if (noteSaving) return;
@@ -681,17 +684,17 @@ export function CoachingSchedulePage({ studentId }: CoachingSchedulePageProps) {
                           <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap' }}>
                             <button
                               type="button"
-                              style={withDisabled(ghostSmallButton, noteSaving || isManualEmpty(schedule.id))}
+                              style={withDisabled(ghostSmallButton, isNoteSaveDisabled(schedule.id))}
                               onClick={() => handleSaveNote(schedule)}
-                              disabled={noteSaving || isManualEmpty(schedule.id)}
+                              disabled={isNoteSaveDisabled(schedule.id)}
                             >
                               {noteSaving ? '保存中...' : '下書き保存'}
                             </button>
                             <button
                               type="button"
-                              style={withDisabled({ ...smallPrimaryButton, background: '#1E7A34' }, noteSaving || isManualEmpty(schedule.id))}
+                              style={withDisabled({ ...smallPrimaryButton, background: '#1E7A34' }, isNoteSaveDisabled(schedule.id))}
                               onClick={() => handleSaveNote(schedule, 'published')}
-                              disabled={noteSaving || isManualEmpty(schedule.id)}
+                              disabled={isNoteSaveDisabled(schedule.id)}
                             >
                               受講生に公開
                             </button>
