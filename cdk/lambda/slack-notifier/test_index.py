@@ -110,11 +110,11 @@ def test_summary_aggregates_chat_and_apps():
     text = index._format_summary(datetime(2026, 9, 25, tzinfo=index.JST), chat_rows, app_rows)
 
     assert "2026/09/25(金)" in text
-    assert "AIチャット: 11回(エラー 1回) / 使った人 4人以上" in text
+    assert "AIチャット *11回* _(エラー 1回)_ / 使った人 *4人以上*" in text
     assert "入力1,000 / 出力200トークン" in text
-    assert "Difyアプリ: 5回 / 約$0.01" in text
-    assert "id=15: 4回(うちエラー1回) / $0.0100" in text
-    assert "id=19: 1回 / $0.0020" in text
+    assert "Difyアプリ *5回* / 約$0.01" in text
+    assert "`id=15` 4回 _(うちエラー1回)_ / $0.0100" in text
+    assert "`id=19` 1回 / $0.0020" in text
 
 
 def test_summary_shows_app_name_and_total_cost():
@@ -125,9 +125,9 @@ def test_summary_shows_app_name_and_total_cost():
     from datetime import datetime
     text = index._format_summary(datetime(2026, 10, 19, tzinfo=index.JST), chat_rows, app_rows)
 
-    assert "AIチャット: 7回(すべて成功) / 使った人 2人\n" in text
-    assert "面接練習(id=18): 1回 / $0.5000" in text
-    assert "AI費用の合計: 約$2.50" in text
+    assert "AIチャット *7回* _(すべて成功)_ / 使った人 *2人*\n" in text
+    assert "面接練習 `id=18` 1回 / $0.5000" in text
+    assert "AI費用の合計 *約$2.50*" in text
 
 
 def test_summary_without_usage():
@@ -186,11 +186,11 @@ def test_daily_report_goes_to_usage_and_expiry_to_alert():
     assert result["alerts"] == 2
     usage = post.call_args_list[0][0]
     assert usage[0] == index.USAGE
-    assert "ログインして操作した人: 12人" in usage[1]
-    assert "新規登録: 1人" in usage[1]
-    assert "前日の実施 3回 / 本日の予定 4回" in usage[1]
-    assert "実施結果が未記録のコーチング 2回(直近14日) / コーチの確認待ちのAIノート 5件" in usage[1]
-    assert "claude-haiku-4-5(提供中、2026-10-15までは提供が続く)" in usage[1]
+    assert "ログインして操作した人 *12人*" in usage[1]
+    assert "新規登録 *1人*" in usage[1]
+    assert "前日の実施 *3回* / 本日の予定 *4回*" in usage[1]
+    assert "> • 実施結果が未記録のコーチング *2回* _(直近14日)_\n> • コーチの確認待ちのAIノート *5件*" in usage[1]
+    assert "`claude-haiku-4-5` _(提供中、2026-10-15までは提供が続く)_" in usage[1]
     alert = post.call_args_list[1][0]
     assert alert[0] == index.ALERT
     assert "api.webcoach.jp: 残り20日" in alert[1]
