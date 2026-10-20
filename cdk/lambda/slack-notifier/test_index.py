@@ -109,17 +109,31 @@ def test_summary_aggregates_chat_and_apps():
     from datetime import datetime
     text = index._format_summary(datetime(2026, 9, 25, tzinfo=index.JST), chat_rows, app_rows)
 
-    assert "2026/09/25" in text
-    assert "AIチャット* 11回 (success 10, error 1)" in text
-    assert "入力1,000 出力200" in text
-    assert "id=15: 4回 (エラー1) / 0.0100 USD" in text
-    assert "合計 0.0120 USD" in text
+    assert "2026/09/25(金)" in text
+    assert "AIチャット: 11回(エラー 1回) / 使った人 4人以上" in text
+    assert "入力1,000 / 出力200トークン" in text
+    assert "Difyアプリ: 5回 / 約$0.01" in text
+    assert "id=15: 4回(うちエラー1回) / $0.0100" in text
+    assert "id=19: 1回 / $0.0020" in text
+
+
+def test_summary_shows_app_name_and_total_cost():
+    chat_rows = [{"status": "success", "n": "7", "users": "2", "in_tok": "1000000", "out_tok": "0",
+                  "model": "claude-sonnet-5-5"}]
+    app_rows = [{"app_id": "18", "status": "success", "n": "1", "price": "0.5", "price_currency": "USD",
+                 "app_label": "面接練習"}]
+    from datetime import datetime
+    text = index._format_summary(datetime(2026, 10, 19, tzinfo=index.JST), chat_rows, app_rows)
+
+    assert "AIチャット: 7回(すべて成功) / 使った人 2人\n" in text
+    assert "面接練習(id=18): 1回 / $0.5000" in text
+    assert "AI費用の合計: 約$2.50" in text
 
 
 def test_summary_without_usage():
     from datetime import datetime
     text = index._format_summary(datetime(2026, 9, 25, tzinfo=index.JST), [], [])
-    assert text.endswith("利用なし")
+    assert "• 利用なし" in text
 
 
 def _fake_insights(results_by_query):
@@ -172,10 +186,11 @@ def test_daily_report_goes_to_usage_and_expiry_to_alert():
     assert result["alerts"] == 2
     usage = post.call_args_list[0][0]
     assert usage[0] == index.USAGE
-    assert "アクティブ 12人 / 新規登録 1人" in usage[1]
-    assert "前日 3回・本日予定 4回" in usage[1]
-    assert "実施結果の未記録 2回(直近14日) / コーチ確認待ちのAIノート 5件" in usage[1]
-    assert "claude-haiku-4-5(active、2026-10-15より前には引退しない)" in usage[1]
+    assert "ログインして操作した人: 12人" in usage[1]
+    assert "新規登録: 1人" in usage[1]
+    assert "前日の実施 3回 / 本日の予定 4回" in usage[1]
+    assert "実施結果が未記録のコーチング 2回(直近14日) / コーチの確認待ちのAIノート 5件" in usage[1]
+    assert "claude-haiku-4-5(提供中、2026-10-15までは提供が続く)" in usage[1]
     alert = post.call_args_list[1][0]
     assert alert[0] == index.ALERT
     assert "api.webcoach.jp: 残り20日" in alert[1]

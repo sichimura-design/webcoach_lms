@@ -626,6 +626,7 @@ def _call_dify_chat(
     run_id: Optional[str] = None,
     opening_shown: bool = False,
     inputs_confirmed: bool = False,
+    app_name: Optional[str] = None,
 ) -> str:
     """Dify上に構築されたAIアプリに問い合わせる（同一ユーザー・同一アプリ・同一セッションの
     会話はプロセス内で継続する）
@@ -716,6 +717,7 @@ def _call_dify_chat(
     usage_fields: Dict[str, Any] = {
         "user_id": userid,
         "app_id": app_id,
+        "app_name": app_name,
         "session_id": session_id,
         "new_conversation": not conversation_id,
         "has_image": bool(files),
@@ -875,6 +877,7 @@ def create_ai_application_tools(
         def make_func(
             api_key: str = api_key,
             app_id: int = app.id,
+            app_name: str = app.name,
             message: str = raw_user_message,
             session_id: Optional[str] = session_id,
             image: Optional[Dict[str, str]] = image,
@@ -903,6 +906,7 @@ def create_ai_application_tools(
                     run_id=run_id,
                     opening_shown=opening_shown,
                     inputs_confirmed=preset_inputs is not None,
+                    app_name=app_name,
                 )
             return _call
 

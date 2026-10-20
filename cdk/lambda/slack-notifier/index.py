@@ -87,6 +87,30 @@ IGNORE_PATTERNS = [re.compile(p) for p in (
 # ECSのタスク停止のうち、デプロイ・台数変更・手動停止による想定内のもの
 EXPECTED_STOP_REASONS = re.compile(r"^Scaling activity initiated by|^Task stopped by user")
 
+# AWSのサービス名(Cost Explorer)の短い表示名。載っていないものはそのまま出す
+AWS_SERVICE_LABELS = {
+    "Amazon Elastic Compute Cloud - Compute": "EC2",
+    "EC2 - Other": "EC2その他(EBS・通信等)",
+    "Amazon Relational Database Service": "RDS",
+    "Amazon Elastic Container Service": "ECS",
+    "Amazon Elastic Load Balancing": "ALB",
+    "Amazon Virtual Private Cloud": "VPC(NAT等)",
+    "Amazon Simple Storage Service": "S3",
+    "Amazon CloudFront": "CloudFront",
+    "AmazonCloudWatch": "CloudWatch",
+    "Amazon Elastic File System": "EFS",
+    "AWS Secrets Manager": "Secrets Manager",
+    "Amazon EC2 Container Registry (ECR)": "ECR",
+    "AWS Lambda": "Lambda",
+    "Amazon Route 53": "Route 53",
+    "Amazon Simple Email Service": "SES",
+    "Amazon Cognito": "Cognito",
+    "Tax": "税",
+}
+WEEKDAYS_JA = "月火水木金土日"
+CHAT_STATUS_LABELS = {"success": "成功", "error": "エラー", "timeout": "タイムアウト", "cancelled": "中止",
+                      "rejected": "拒否"}
+
 # Claudeの単価(USD / 100万トークン)。キャッシュ読みは入力の0.1倍、書きは1.25倍。
 # 載っていないモデルはトークン数だけ出す
 CLAUDE_PRICES = {
@@ -118,7 +142,7 @@ filter event = "ai_chat"
 APP_QUERY = """
 filter event = "ai_app_call"
 | stats count(*) as n, sum(total_price) as price, latest(currency) as price_currency,
-        avg(duration_ms) as avg_ms by app_id, status
+        latest(app_name) as app_label, avg(duration_ms) as avg_ms by app_id, status
 """
 
 REPORT_QUERY = """
@@ -372,70 +396,95 @@ def _post_daily_summary():
 
 
 def _format_summary(day, chat_rows, app_rows, report=None, cost=None):
-    lines = [f":bar_chart: *[{ENV_NAME}] 日次レポート {day:%Y/%m/%d}(JST)*"]
-    lines += _format_kpi(report)
-    lines += _format_ai_usage(chat_rows, app_rows)
-    lines += _format_model(report)
+    lines = [f":bar_chart: *[{ENV_NAME}] 日次レポート {day:%Y/%m/%d}({WEEKDAYS_JA[day.weekday()]})の1日分*"]
+    sections = [_format_kpi(report), _format_ai_usage(chat_rows, app_rows) + _format_model(report)]
     if cost is not None:
-        lines += _format_cost(cost)
+        sections.append(_format_cost(cost))
+    for section in sections:
+        lines += [""] + section
     return "\n".join(lines)
 
 
 def _format_kpi(report):
+    head = "*:busts_in_silhouette: 利用者・コーチング*"
     if not report:
-        return ["*運用* 運用レポートが見つかりません(BFFが止まっている/8時台に動いていない可能性)"]
+        return [head, "• 運用レポートが見つかりません(BFFが止まっている/8時台に動いていない可能性)"]
     kpi = report.get("kpi") or {}
     if "error" in kpi:
-        return [f"*運用* KPIを取得できませんでした: `{kpi['error']}`"]
+        return [head, f"• 取得できませんでした: `{kpi['error']}`"]
     lines = [
-        f"*運用* アクティブ {kpi.get('active_users', 0)}人 / 新規登録 {kpi.get('new_users', 0)}人",
-        f"  コーチング 前日 {kpi.get('coaching_held', 0)}回・本日予定 {kpi.get('coaching_today', 0)}回",
+        head,
+        # active_usersはMoodleに操作が残った人数(受講生・コーチ・管理者を区別しない)
+        f"• ログインして操作した人: {kpi.get('active_users', 0)}人(受講生・コーチ・管理者の合計)",
+        f"• 新規登録: {kpi.get('new_users', 0)}人",
+        f"• コーチング: 前日の実施 {kpi.get('coaching_held', 0)}回 / 本日の予定 {kpi.get('coaching_today', 0)}回",
     ]
     todo = []
     if kpi.get("coaching_unrecorded"):
-        todo.append(f"実施結果の未記録 {kpi['coaching_unrecorded']}回(直近14日)")
+        todo.append(f"実施結果が未記録のコーチング {kpi['coaching_unrecorded']}回(直近14日)")
     if kpi.get("notes_awaiting_coach"):
-        todo.append(f"コーチ確認待ちのAIノート {kpi['notes_awaiting_coach']}件")
+        todo.append(f"コーチの確認待ちのAIノート {kpi['notes_awaiting_coach']}件")
     if todo:
-        lines.append("  :memo: " + " / ".join(todo))
+        lines.append(":memo: *要対応*: " + " / ".join(todo))
     return lines
 
 
 def _format_ai_usage(chat_rows, app_rows):
+    head = "*:robot_face: AIの利用*"
     if not chat_rows and not app_rows:
-        return ["*AI* 利用なし"]
-    lines = []
+        return [head, "• 利用なし"]
+    lines = [head]
+    chat_usd = app_usd = None
     if chat_rows:
         total = sum(_int(r, "n") for r in chat_rows)
         by_status = {}
         for r in chat_rows:
             by_status[r.get("status")] = by_status.get(r.get("status"), 0) + _int(r, "n")
+        failed = {s: n for s, n in by_status.items() if s != "success" and n}
+        result = ("、".join(f"{CHAT_STATUS_LABELS.get(s, s)} {n}回" for s, n in failed.items())
+                  if failed else "すべて成功")
+        # count_distinct は行(結果×モデル)ごとの値で、足すと同じ人を重複して数えるため最大値を出す。
+        # 行が複数あるときは実際の人数がそれより多い可能性がある
+        users = max((_int(r, "users") for r in chat_rows), default=0)
+        users_text = f"{users}人" + ("以上" if len(chat_rows) > 1 else "")
         in_tok = sum(_int(r, "in_tok") for r in chat_rows)
         out_tok = sum(_int(r, "out_tok") for r in chat_rows)
-        lines.append(f"*AIチャット* {total}回 (" + ", ".join(f"{s} {n}" for s, n in by_status.items()) + ")")
-        # count_distinct は行ごとの値なので、合計ではなく最大値を「少なくとも」として出す
-        users = max((_int(r, "users") for r in chat_rows), default=0)
-        usd, unknown = _claude_cost(chat_rows)
-        cost_text = f" / 概算 ${usd:.2f}" + (f"(単価不明: {', '.join(unknown)})" if unknown else "")
-        lines.append(f"  利用者 {users}人以上 / Claudeトークン 入力{in_tok:,} 出力{out_tok:,}{cost_text}")
+        chat_usd, unknown = _claude_cost(chat_rows)
+        lines.append(f"• AIチャット: {total}回({result}) / 使った人 {users_text}")
+        lines.append(f"    約${chat_usd:.2f}(Claude 入力{in_tok:,} / 出力{out_tok:,}トークン)"
+                     + (f" ※単価不明のモデルは含まず: {', '.join(unknown)}" if unknown else ""))
 
     if app_rows:
-        lines.append("*Difyアプリ*")
         by_app = {}
         for r in app_rows:
-            app = by_app.setdefault(r.get("app_id", "?"), {"n": 0, "err": 0, "price": 0.0, "currency": ""})
+            app = by_app.setdefault(r.get("app_id", "?"), {"n": 0, "err": 0, "price": 0.0, "currency": "", "name": ""})
             app["n"] += _int(r, "n")
             if r.get("status") in ("error", "timeout"):
                 app["err"] += _int(r, "n")
             app["price"] += _float(r, "price")
             app["currency"] = r.get("price_currency") or app["currency"]
+            app["name"] = r.get("app_label") or app["name"]
+        total_n = sum(a["n"] for a in by_app.values())
+        app_usd = sum(a["price"] for a in by_app.values())
+        currency = next((a["currency"] for a in by_app.values() if a["currency"]), "USD")
+        lines.append(f"• Difyアプリ: {total_n}回 / 約{_money(app_usd, currency)}")
         for app_id, a in sorted(by_app.items(), key=lambda kv: -kv[1]["n"]):
-            err = f" (エラー{a['err']})" if a["err"] else ""
-            lines.append(f"  • id={app_id}: {a['n']}回{err} / {a['price']:.4f} {a['currency']}".rstrip())
-        total_price = sum(a["price"] for a in by_app.values())
-        currency = next((a["currency"] for a in by_app.values() if a["currency"]), "")
-        lines.append(f"  合計 {total_price:.4f} {currency}".rstrip())
+            name = f"{a['name']}(id={app_id})" if a["name"] else f"id={app_id}"
+            err = f"(うちエラー{a['err']}回)" if a["err"] else ""
+            lines.append(f"    - {name}: {a['n']}回{err} / {_money(a['price'], a['currency'] or currency, 4)}")
+        if currency != "USD":
+            app_usd = None  # 円建て等なら合計に混ぜない
+
+    if chat_usd is not None and app_usd is not None:
+        lines.append(f"• AI費用の合計: 約${chat_usd + app_usd:.2f}")
     return lines
+
+
+def _money(amount, currency, digits=2):
+    """Difyの利用料はアプリ単位だと1セント未満が多いので、内訳だけ桁を増やして出す"""
+    if currency == "USD":
+        return f"${amount:.{digits}f}"
+    return f"{amount:.{digits}f} {currency}".rstrip()
 
 
 def _format_model(report):
@@ -444,8 +493,9 @@ def _format_model(report):
         return []
     retire = model.get("retirementOn")
     if retire:
-        retire = f"{retire}より前には引退しない" if model.get("retirementNotSoonerThan") else f"{retire}に引退予定"
-    return [f"*AIモデル* {model['id']}({model.get('state') or '状態不明'}" + (f"、{retire}" if retire else "") + ")"]
+        retire = f"{retire}までは提供が続く" if model.get("retirementNotSoonerThan") else f"{retire}に提供終了予定"
+    state = {"active": "提供中", "deprecated": "非推奨", "retired": "提供終了"}.get(model.get("state"), "状態不明")
+    return [f"• 使用中のAIモデル: {model['id']}({state}" + (f"、{retire}" if retire else "") + ")"]
 
 
 def _claude_cost(chat_rows):
@@ -524,11 +574,16 @@ def _fetch_aws_cost(day):
 
 
 def _format_cost(cost):
+    head = "*:moneybag: AWS費用*"
     if "error" in cost:
-        return [f"*AWS費用* 取得できませんでした: `{cost['error'][:200]}`"]
+        return [head, f"• 取得できませんでした: `{cost['error'][:200]}`"]
     total = sum(v for _, v in cost["services"])
-    top = ", ".join(f"{name} ${v:.2f}" for name, v in cost["services"][:5] if v >= 0.01)
-    return [f"*AWS費用* 前日 ${total:.2f}(速報値) / 今月累計 ${cost['mtd']:.2f}"] + ([f"  {top}"] if top else [])
+    top = " / ".join(f"{AWS_SERVICE_LABELS.get(name, name)} ${v:.2f}"
+                     for name, v in cost["services"][:5] if v >= 0.01)
+    lines = [head, f"• 前日 ${total:.2f}(速報値。後から少し増えることがある)", f"• 今月の累計 ${cost['mtd']:.2f}"]
+    if top:
+        lines.append(f"• 前日の内訳(上位): {top}")
+    return lines
 
 
 def _start_insights(log_group, query, start, end):
