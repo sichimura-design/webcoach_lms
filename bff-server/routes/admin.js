@@ -14,6 +14,7 @@ const moodleAdapter = require('../adapters/MoodleAdapter');
 const apiServerAdapter = require('../adapters/ApiServerAdapter');
 const runtimeSettingsService = require('../services/RuntimeSettingsService');
 const expiryMonitorService = require('../services/ExpiryMonitorService');
+const supportLookupService = require('../services/SupportLookupService');
 const { createErrorResponse } = require('../utils/errorHandler');
 const { formatLastAccess } = require('../utils/timeCalculator');
 
@@ -405,6 +406,25 @@ router.get('/students', requireAuth, async (req, res) => {
     console.error('[Admin/Coach] Error stack:', error.stack);
     const errorResponse = createErrorResponse(error, 'moodle', 500);
     res.status(500).json(errorResponse);
+  }
+});
+
+// ==================== SUPPORT LOOKUP ====================
+
+/**
+ * GET /api/admin/support/user-lookup?email=...
+ * 問い合わせ対応用: メールアドレスからログイン・学習データ・コーチングの状態と原因の目安を返す(読むだけ)
+ */
+router.get('/support/user-lookup', requireAuth, requireAdmin, async (req, res) => {
+  const email = typeof req.query.email === 'string' ? req.query.email.trim() : '';
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    return res.status(400).json({ error: 'Bad Request', message: 'メールアドレスの形式が正しくありません' });
+  }
+  try {
+    res.json(await supportLookupService.lookupByEmail(email));
+  } catch (error) {
+    console.error('[Support Lookup] Error:', error.message);
+    res.status(500).json(createErrorResponse(error, 'cognito', 500));
   }
 });
 

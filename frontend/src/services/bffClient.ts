@@ -320,6 +320,59 @@ export interface ExpiryStatusResponse {
   };
 }
 
+/** 問い合わせ対応「受講生の状態確認」。項目ごとに取得に失敗すると {error} になる */
+export type SupportHintLevel = 'danger' | 'warning' | 'info';
+export type SupportStageLevel = SupportHintLevel | 'ok';
+type OrError<T> = T | { error: string };
+
+export interface SupportSchedule {
+  id: number;
+  coachingNo: number;
+  coachingDate: string;
+  /** コーチが付けた実施結果 (completed / interrupted / rescheduled) */
+  result: string | null;
+  meetingProvider: string | null;
+  hasMeetingUrl: boolean;
+  reminderSentAt: string | null;
+  transcript: { status: string; updatedAt: string } | null;
+  note: { status: string; publishedAt: string | null; updatedAt: string | null } | null;
+  manualAllowed: boolean;
+  stage: string;
+  label: string;
+  level: SupportStageLevel;
+  errors: string[];
+}
+
+export interface SupportLookupResponse {
+  checkedAt: string;
+  email: string;
+  cognito: {
+    username: string;
+    name: string | null;
+    status: string;
+    enabled: boolean;
+    emailVerified: boolean;
+    createdAt: string | null;
+    updatedAt: string | null;
+    tempPasswordExpiresAt: string | null;
+    tempPasswordExpired: boolean;
+    groups: string[];
+  } | null;
+  moodle: OrError<{
+    id: number;
+    fullname: string;
+    email: string;
+    firstaccess: number;
+    lastaccess: number;
+    suspended: boolean;
+  }> | null;
+  courses: OrError<{ id: number; fullname: string; progress: number | null; lastaccess: number }[]> | null;
+  coach: OrError<{ id: number | null; fullname?: string | null; email?: string | null }> | null;
+  coachStudents: OrError<number[]> | null;
+  schedules: OrError<SupportSchedule[]> | null;
+  hints: { level: SupportHintLevel; text: string }[];
+}
+
 export interface RuntimeSettingsResponse {
   editable: boolean;
   aiModel: AiModelInfo;
@@ -1951,6 +2004,12 @@ class BFFClient {
   /** 証明書の有効期限・Google連携トークンが使えるか（管理者のみ・開いた時点で実際に確かめる） */
   async getExpiryStatus(): Promise<ExpiryStatusResponse> {
     const response = await this.api.get('/admin/expiry-status');
+    return response.data;
+  }
+
+  /** 問い合わせ対応: メールアドレスからアカウント・学習データ・コーチングの状態を調べる（管理者のみ・読むだけ） */
+  async lookupSupportUser(email: string): Promise<SupportLookupResponse> {
+    const response = await this.api.get('/admin/support/user-lookup', { params: { email } });
     return response.data;
   }
 

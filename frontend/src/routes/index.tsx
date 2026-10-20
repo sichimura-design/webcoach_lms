@@ -41,6 +41,7 @@ import { AdminCoachMappingPage } from '../components/admin/AdminCoachMappingPage
 import { AdminSettingsPage } from '../components/admin/AdminSettingsPage';
 import { AdminRuntimeSettingsPage } from '../components/admin/AdminRuntimeSettingsPage';
 import { AdminExpiryPage } from '../components/admin/AdminExpiryPage';
+import { AdminSupportLookupPage } from '../components/admin/AdminSupportLookupPage';
 import { CoachStudentsPage } from '../components/coach/CoachStudentsPage';
 import { CoachingSchedulePage } from '../components/coach/CoachingSchedulePage';
 import { CoachSettingsPage } from '../components/coach/CoachSettingsPage';
@@ -535,6 +536,7 @@ function AppRoutes() {
         <Route path="settings" element={<AdminSettingsPage />} />
         <Route path="runtime-settings" element={<AdminRuntimeSettingsPage />} />
         <Route path="expiry" element={<AdminExpiryPage />} />
+        <Route path="support-lookup" element={<AdminSupportLookupPage />} />
       </Route>
 
       <Route
