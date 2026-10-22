@@ -143,9 +143,9 @@ def _ask(messages_from_runner):
     return text, fake.beta.messages.tool_runner.call_args.kwargs
 
 
-def test_Claudeへの依頼_マニュアルをキャッシュし_ソースを調べる道具と回数上限を渡す():
+def test_回答役はOpus_マニュアルをキャッシュし_道具は調査の依頼だけ():
     text, kwargs = _ask([
-        _message("tool_use", [SimpleNamespace(type="tool_use", name="search_code")]),
+        _message("tool_use", [SimpleNamespace(type="tool_use", name="investigate_code")]),
         _message("end_turn", [SimpleNamespace(type="text", text="答えです")]),
     ])
     assert text == "答えです"
@@ -153,8 +153,42 @@ def test_Claudeへの依頼_マニュアルをキャッシュし_ソースを調
     assert kwargs["fallbacks"] == "default" and kwargs["betas"] == ["server-side-fallback-2026-07-01"]
     assert kwargs["system"][0]["cache_control"] == {"type": "ephemeral", "ttl": "1h"}
     assert "<manual>" in kwargs["system"][0]["text"]
+    assert [t.name for t in kwargs["tools"]] == ["investigate_code"]
+    assert kwargs["max_iterations"] == index.MAX_ANSWER_ITERATIONS == 3
+
+
+def _investigate(messages_from_runner):
+    fake = mock.Mock()
+    fake.beta.messages.tool_runner.return_value = iter(messages_from_runner)
+    with mock.patch.object(index, "_claude", return_value=fake):
+        text = index.investigate_code.call({"question": "リマインドは何時に送られるか"})
+    return text, fake.beta.messages.tool_runner.call_args.kwargs
+
+
+def test_調査役はSonnetがソースの道具を最大8回まで使い_結果を返す():
+    text, kwargs = _investigate([
+        _message("tool_use", [SimpleNamespace(type="tool_use", name="search_code")]),
+        _message("end_turn", [SimpleNamespace(type="text", text="- 前日に送る (bff-server/services/ReminderService.js:22)")]),
+    ])
+    assert text == "- 前日に送る (bff-server/services/ReminderService.js:22)"
+    assert kwargs["model"] == "claude-sonnet-5-5"
+    assert kwargs["max_iterations"] == index.MAX_RESEARCH_ITERATIONS == 8
     assert [t.name for t in kwargs["tools"]] == ["search_code", "read_file", "list_files"]
-    assert kwargs["max_iterations"] == index.MAX_TOOL_ITERATIONS
+    assert kwargs["fallbacks"] == "default" and kwargs["betas"] == ["server-side-fallback-2026-07-01"]
+    assert kwargs["messages"] == [{"role": "user", "content": "リマインドは何時に送られるか"}]
+    # 調査役にはマニュアルを渡さない(ソースの読み取りに専念させ、入力を小さくする)
+    assert "<manual>" not in kwargs["system"][0]["text"]
+
+
+def test_調査が上限で打ち切られたら結論ではないと断る_エラーは文字列で返す():
+    text, _ = _investigate([_message("tool_use", [SimpleNamespace(type="text", text="途中の発見"),
+                                                  SimpleNamespace(type="tool_use", name="read_file")])])
+    assert "結論ではありません" in text and "途中の発見" in text
+
+    fake = mock.Mock()
+    fake.beta.messages.tool_runner.side_effect = index.anthropic.APIConnectionError(request=mock.Mock())
+    with mock.patch.object(index, "_claude", return_value=fake):
+        assert "確かめられませんでした" in index.investigate_code.call({"question": "x"})
 
 
 def test_断られたら定型文_上限まで調べても終わらなければそう伝える():

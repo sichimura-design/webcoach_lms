@@ -9,7 +9,7 @@ import re
 from anthropic import beta_tool
 
 MAX_SEARCH_RESULTS = 60
-MAX_READ_LINES = 400
+MAX_READ_LINES = 200
 MAX_LIST_FILES = 300
 MAX_LINE_CHARS = 300
 
@@ -112,12 +112,12 @@ def search_code(pattern: str, path_prefix: str = "") -> str:
 
 @beta_tool
 def read_file(path: str, start_line: int = 1, end_line: int = 0) -> str:
-    """WEBCOACHのソースファイルを行番号つきで読む。一度に最大400行。
+    """WEBCOACHのソースファイルを行番号つきで読む。一度に最大200行。必要な範囲だけを読む。
 
     Args:
         path: ファイルのパス。例: "bff-server/services/ReminderService.js"
         start_line: 読み始める行(1から)
-        end_line: 読み終える行。0ならファイルの最後まで(最大400行)
+        end_line: 読み終える行。0ならファイルの最後まで(最大200行)
     """
     return _safe(read_file_impl, path, start_line, end_line)
 
