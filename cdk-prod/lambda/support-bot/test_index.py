@@ -107,25 +107,57 @@ def test_署名が違えば401(_):
 
 
 @mock.patch.object(index, "_slack_secret", return_value={"signing_secret": SECRET, "bot_token": "xoxb"})
-def test_回答はスレッドへ返す_スレッド外の発言はその文だけで聞く(_):
+def test_先に調べていますと出し_回答で差し替える_スレッド外の発言はその文だけで聞く(_):
     with mock.patch.object(index, "ask_claude", return_value="回答です") as ask, \
-         mock.patch.object(index, "_slack_api") as slack:
+         mock.patch.object(index, "_slack_api", return_value={"ok": True, "ts": "2.2"}) as slack:
         index.answer({"channel": "C1", "ts": "1.1", "text": "<@UBOT> ログインできない"}, "UBOT")
     ask.assert_called_once_with([{"role": "user", "content": "ログインできない"}])
-    slack.assert_called_once_with("chat.postMessage", "xoxb", payload={"channel": "C1", "thread_ts": "1.1", "text": "回答です"})
+    assert slack.call_args_list == [
+        mock.call("chat.postMessage", "xoxb", payload={"channel": "C1", "thread_ts": "1.1", "text": index.PLACEHOLDER_TEXT}),
+        mock.call("chat.update", "xoxb", payload={"channel": "C1", "ts": "2.2", "text": "回答です"}),
+    ]
 
 
-def test_Claudeへの依頼_マニュアルをキャッシュして渡す_断られたら定型文():
-    fake = mock.Mock()
-    fake.beta.messages.create.return_value = SimpleNamespace(
-        model=index.MODEL, stop_reason="refusal", content=[], _request_id="req_1",
+def test_仮の発言は会話に入れない():
+    thread = [
+        {"user": "U1", "text": "<@UBOT> 1つめ"},
+        {"user": "UBOT", "text": "答え"},
+        {"user": "U1", "text": "<@UBOT> 2つめ"},
+        {"user": "UBOT", "text": index.PLACEHOLDER_TEXT},
+    ]
+    assert index.thread_to_messages(thread, "UBOT")[-1] == {"role": "user", "content": "2つめ"}
+
+
+def _message(stop_reason, content=()):
+    return SimpleNamespace(
+        model=index.MODEL, stop_reason=stop_reason, content=list(content), _request_id="req_1",
         usage=SimpleNamespace(input_tokens=1, cache_read_input_tokens=0, cache_creation_input_tokens=0, output_tokens=0),
     )
+
+
+def _ask(messages_from_runner):
+    fake = mock.Mock()
+    fake.beta.messages.tool_runner.return_value = iter(messages_from_runner)
     with mock.patch.dict(os.environ, {"MANUAL_DIR": REPO_MANUAL}), mock.patch.object(index, "_claude", return_value=fake):
         text = index.ask_claude([{"role": "user", "content": "質問"}])
-    assert "エンジニア" in text
-    kwargs = fake.beta.messages.create.call_args.kwargs
+    return text, fake.beta.messages.tool_runner.call_args.kwargs
+
+
+def test_Claudeへの依頼_マニュアルをキャッシュし_ソースを調べる道具と回数上限を渡す():
+    text, kwargs = _ask([
+        _message("tool_use", [SimpleNamespace(type="tool_use", name="search_code")]),
+        _message("end_turn", [SimpleNamespace(type="text", text="答えです")]),
+    ])
+    assert text == "答えです"
     assert kwargs["model"] == "claude-opus-5-5"
     assert kwargs["fallbacks"] == "default" and kwargs["betas"] == ["server-side-fallback-2026-07-01"]
     assert kwargs["system"][0]["cache_control"] == {"type": "ephemeral", "ttl": "1h"}
     assert "<manual>" in kwargs["system"][0]["text"]
+    assert [t.name for t in kwargs["tools"]] == ["search_code", "read_file", "list_files"]
+    assert kwargs["max_iterations"] == index.MAX_TOOL_ITERATIONS
+
+
+def test_断られたら定型文_上限まで調べても終わらなければそう伝える():
+    assert "エンジニア" in _ask([_message("refusal")])[0]
+    text = _ask([_message("tool_use", [SimpleNamespace(type="text", text="途中"), SimpleNamespace(type="tool_use", name="read_file")])])[0]
+    assert "結論まで届きませんでした" in text and "途中" not in text

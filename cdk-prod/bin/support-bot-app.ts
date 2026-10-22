@@ -11,6 +11,8 @@
  *   AnthropicのAPIキーは prod-BackendStack の prod/lms/anthropic-api-key を共用する
  *
  * ─── デプロイ ────────────────────────────────────────────────────
+ *   ボットは本番のソース(既定 origin/master)も同梱して読むので、先に最新を取ってくる
+ *   git fetch origin master
  *   cd cdk-prod
  *   ./node_modules/.bin/cdk deploy prod-SupportBotStack \
  *     --app 'npx ts-node --prefer-ts-exts bin/support-bot-app.ts' \
@@ -18,7 +20,8 @@
  *     --profile PowerUserAccess-840513866884
  *   出力 SlackRequestUrl を Slackアプリの Event Subscriptions → Request URL に設定する
  *
- *   docs/support/ のマニュアルを直したら、同じコマンドで再デプロイすると反映される
+ *   docs/support/ のマニュアルを直したとき・本番を更新したときは、同じコマンドで再デプロイすると反映される
+ *   (読ませるソースを変えるときは -c supportBotCodeRef=<ブランチやコミット>)
  */
 
 import * as cdk from 'aws-cdk-lib';
@@ -47,6 +50,8 @@ new ProdSupportBotStack(app, `${envName}-SupportBotStack`, {
   slackSecretName: ctx('supportBotSlackSecret', `${envName}/lms/support-bot-slack`),
   anthropicSecretName: ctx('anthropicSecretName', `${envName}/lms/anthropic-api-key`),
   allowedChannels: ctx('supportBotChannels', ''),
+  // 本番で動いているソース。デプロイ前に git fetch origin master しておく
+  codeRef: ctx('supportBotCodeRef', 'origin/master'),
 });
 
 app.synth();
