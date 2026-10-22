@@ -24,7 +24,7 @@ const dailyReportService = require('./services/DailyReportService');
 const apiServerAdapter = require('./adapters/ApiServerAdapter');
 
 // Middleware
-const { cookieLogging, auditLogging, rawBodyLogging } = require('./middleware/logging');
+const { auditLogging } = require('./middleware/logging');
 const { generalLimiter } = require('./middleware/rateLimit');
 
 // Routes
@@ -92,7 +92,7 @@ app.use('/api/', generalLimiter);
 
 // Body parsing
 // limit: AIチャットのBase64画像添付（~5MB画像 → 約6.7MBのBase64文字列）に対応するため引き上げ
-app.use(express.json({ verify: rawBodyLogging, limit: '8mb' }));
+app.use(express.json({ limit: '8mb' }));
 app.use(express.urlencoded({ extended: true, limit: '8mb' }));
 
 // Session configuration
@@ -113,7 +113,6 @@ const sessionConfig = {
 app.use(session(sessionConfig));
 
 // Logging middleware
-app.use(cookieLogging);
 app.use(auditLogging);
 
 // ==================== ROUTES ====================
