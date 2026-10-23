@@ -72,6 +72,7 @@ export const COURSE_THUMBNAILS: Record<string, string> = {
   'shopify': 'shopify.webp',
   'short-video-creator': 'short-video-creator.webp',
   'sns-buzz': 'sns-buzz.webp',
+  'studio': 'studio.webp',
   'tiktok-ads': 'tiktok-ads.webp',
   'tutorial': 'tutorial.webp',
   'vscode-setup': 'vscode-setup.webp',
