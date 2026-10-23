@@ -93,6 +93,7 @@ export const AREA_COURSES: ReadonlyArray<AreaDef & { courses: readonly CourseDef
     family: 'build',
     description: 'ノーコードからコーディングまで、作って公開する',
     courses: [
+      { name: 'STUDIO', slug: 'studio' },
       { name: 'Wix', slug: 'wix' },
       { name: 'WordPress', slug: 'wordpress' },
       { name: 'VSCode環境セットアップ', slug: 'vscode-setup' },
