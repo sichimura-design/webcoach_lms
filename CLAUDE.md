@@ -15,6 +15,11 @@
 
 サンプル実装「お知らせ」（`/announcements`）が写経のベースとして同梱済み。
 
+## 教材HTMLを作る・直すとき（教材作成者向け）
+- `/lesson-html` スキル（`.claude/skills/lesson-html/SKILL.md`）の手順で進める。道具は `tools/lesson-html/`。
+- 触るのは `assets/materials/<領域>/` の教材 HTML と画像だけ。`assets/materials/_assets/`（lms-skin.css・lms-embed.js）と `frontend/` は全教材・全画面に効くので、原因がそこにあれば相談メモを作って止まる。
+- 新しい教材 HTML には `lms-skin.css`・`lms-embed.js` の2行が必須（無いと教材だけがスクロールし、前後ボタンが二重になる）。`prepare` で入る。
+
 ## ブランチ運用
 - 作業は必ず **`dev/<名前>` ブランチ**で行い、push する（例: `dev/feature-xxx`）。
 - `dev/**` への push で GitHub Actions（Dev Preview）が発火し、`/branches/<slug>/` にプレビュー配信される。プレビューでもモックが有効。

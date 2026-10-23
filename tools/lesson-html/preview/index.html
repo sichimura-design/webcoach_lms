@@ -1,0 +1,202 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>教材プレビュー（LMS の枠）</title>
+<!-- 教材を LMS と同じ条件で開く: EmbeddedLessonFrame.tsx と同じ sandbox・高さ追従（届かなければ 85vh・最低 400px） -->
+<script src="/__rules.js"></script>
+<style>
+  :root { --bg: #F7F4F0; --card: #fff; --ink: #1F1D1E; --sub: #6B6466; --line: #E8E1DA; --ng: #C0392B; --warn: #B7791F; --ok: #2F855A; --accent: #B73E3D; }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--ink); font: 14px/1.7 'Noto Sans JP', 'Hiragino Sans', 'Yu Gothic', sans-serif; }
+  header { position: sticky; top: 0; z-index: 10; background: #fff; border-bottom: 1px solid var(--line); padding: 10px 16px; display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+  header input { flex: 1 1 320px; min-width: 0; padding: 6px 10px; border: 1px solid var(--line); border-radius: 8px; font: inherit; }
+  header button { padding: 6px 12px; border: 1px solid var(--line); border-radius: 8px; background: #fff; font: inherit; cursor: pointer; }
+  header button[aria-pressed="true"] { background: var(--ink); color: #fff; border-color: var(--ink); }
+  .wrap { display: flex; gap: 20px; align-items: flex-start; padding: 20px 16px 120px; justify-content: center; flex-wrap: wrap; }
+  .lms { width: 880px; max-width: 100%; transition: width .2s; }
+  .lms.sp { width: 390px; }
+  .topbar { display: flex; gap: 12px; align-items: center; background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 10px 14px; margin-bottom: 12px; min-width: 0; }
+  .topbar .back { color: var(--sub); white-space: nowrap; }
+  .topbar .title { font-weight: 700; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; min-width: 0; }
+  .card { background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 0; overflow: hidden; }
+  iframe { width: 100%; border: none; display: block; min-height: 400px; }
+  .lmsnav { display: flex; justify-content: space-between; margin-top: 12px; gap: 8px; }
+  .lmsnav span { background: var(--card); border: 1px solid var(--line); border-radius: 999px; padding: 6px 14px; color: var(--sub); font-size: 13px; }
+  .lmsnav-note { color: var(--sub); font-size: 12px; text-align: center; margin-top: 4px; }
+  aside { width: 360px; max-width: 100%; position: sticky; top: 72px; background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 14px 16px; }
+  aside h2 { font-size: 15px; margin: 0 0 8px; }
+  aside .sum { font-weight: 700; margin-bottom: 8px; }
+  aside ul { list-style: none; margin: 0; padding: 0; }
+  aside li { padding: 8px 0; border-top: 1px solid var(--line); word-break: break-all; }
+  .lv { display: inline-block; font-size: 11px; font-weight: 700; border-radius: 4px; padding: 0 6px; margin-right: 6px; color: #fff; }
+  .lv.NG { background: var(--ng); } .lv.注意 { background: var(--warn); } .lv.OK { background: var(--ok); }
+  .hint { color: var(--sub); font-size: 12px; margin-top: 2px; }
+  .toast { position: fixed; left: 50%; bottom: 24px; transform: translateX(-50%); background: var(--ink); color: #fff; padding: 8px 16px; border-radius: 999px; display: none; }
+  .noframe { outline: 3px solid var(--ng); outline-offset: -3px; }
+</style>
+</head>
+<body>
+<header>
+  <input id="src" placeholder="/materials/knowledge/html/2enjv.html または /local/<リポジトリ内のパス>" aria-label="教材のパス">
+  <button id="open">開く</button>
+  <button id="pc" aria-pressed="true">PC</button>
+  <button id="sp" aria-pressed="false">スマホ 390px</button>
+</header>
+<div class="wrap">
+  <div class="lms" id="lms">
+    <div class="topbar"><span class="back">← コースに戻る</span><span class="title" id="title">（レッスン名）</span></div>
+    <div class="card"><iframe id="frame" title="教材" sandbox="allow-scripts allow-same-origin allow-forms allow-popups allow-popups-to-escape-sandbox"></iframe></div>
+    <div class="lmsnav"><span>← 前のレッスンへ</span><span>次のレッスンへ →</span></div>
+    <div class="lmsnav-note">↑ LMS が出す前後ボタン（教材の中には要らない）</div>
+  </div>
+  <aside aria-live="polite">
+    <h2>チェック結果</h2>
+    <div class="sum" id="sum">読み込み中…</div>
+    <ul id="list"></ul>
+  </aside>
+</div>
+<div class="toast" id="toast"></div>
+<script>
+(function () {
+  var R = window.WC_RULES;
+  var NAV_TEXT = new RegExp(R.NAV_TEXT, 'i'), NAV_STRIP = new RegExp(R.NAV_STRIP, 'g'), LMS_WORD = new RegExp(R.LMS_WORD);
+  var frame = document.getElementById('frame'), lms = document.getElementById('lms');
+  var height = 0, gotHeight = false, timer = 0, firstAt = 0, msgs = 0, minH = 0;
+
+  // ---- LMS と同じ高さ追従（EmbeddedLessonFrame.tsx） ----
+  function setHeight(h) {
+    height = h;
+    frame.style.height = h ? h + 'px' : '85vh';
+    if (h) frame.setAttribute('scrolling', 'no'); else frame.removeAttribute('scrolling');
+  }
+  window.addEventListener('message', function (e) {
+    if (e.source !== frame.contentWindow || !e.data) return;
+    var d = e.data;
+    if (d.type === 'wc-lesson:height' && typeof d.height === 'number') {
+      if (!gotHeight) { firstAt = Date.now(); minH = d.height; }
+      gotHeight = true; msgs++; minH = Math.min(minH, d.height);
+      setHeight(Math.ceil(d.height));
+      // 高さが伸び続けると診断が始まらないので、通知が続いても 3 秒で一度出す
+      if (Date.now() - firstAt > 3000 && !diagnose.ran) { diagnose(); return; }
+      later();
+    }
+    if (d.type === 'wc-lesson:navigate' && typeof d.path === 'string') {
+      frame.contentWindow.postMessage({ type: 'wc-lesson:navigate-ack' }, '*');
+      toast('LMS の ' + d.path + ' へ移ります（プレビューでは移りません）');
+    }
+  });
+
+  function toast(msg) {
+    var t = document.getElementById('toast');
+    t.textContent = msg; t.style.display = 'block';
+    clearTimeout(t._h); t._h = setTimeout(function () { t.style.display = 'none'; }, 2500);
+  }
+
+  function open(src) {
+    if (!src) return;
+    document.getElementById('src').value = src;
+    history.replaceState(null, '', '?src=' + encodeURIComponent(src) + (lms.classList.contains('sp') ? '&w=390' : ''));
+    gotHeight = false; msgs = 0; diagnose.ran = false; setHeight(0);
+    document.getElementById('sum').textContent = '読み込み中…';
+    document.getElementById('list').innerHTML = '';
+    frame.src = src;
+  }
+  frame.addEventListener('load', function () {
+    try { frame.contentWindow.postMessage({ type: 'wc-lesson:text-request' }, '*'); } catch (x) { /* 無視 */ }
+    later(1500);
+  });
+  function later(ms) { clearTimeout(timer); timer = setTimeout(diagnose, ms || 600); }
+
+  // ---- 診断 ----
+  function squashNav(s) { return String(s || '').replace(NAV_STRIP, ''); }
+  function isNav(s) { var t = squashNav(s); return t.length >= 2 && t.length <= 20 && NAV_TEXT.test(t); }
+  function visible(el) { return !!(el.getClientRects().length && getComputedStyle(el).visibility !== 'hidden'); }
+  function label(el) {
+    var s = el.tagName.toLowerCase();
+    if (el.id) return s + '#' + el.id;
+    var c = (el.getAttribute('class') || '').trim().split(/\s+/).filter(Boolean).slice(0, 2);
+    return s + (c.length ? '.' + c.join('.') : '');
+  }
+
+  function diagnose() {
+    var items = [], doc, win;
+    function add(level, msg, hint) { items.push({ level: level, msg: msg, hint: hint || '' }); }
+    try { doc = frame.contentDocument; win = frame.contentWindow; } catch (x) { doc = null; }
+    if (!doc || !doc.body) { add('NG', '教材が開けない', 'パスを確かめる（/materials/... か /local/...）'); return render(items); }
+    document.getElementById('title').textContent = (doc.title || '').replace(/\s*[-|｜]\s*WEBCOACH.*$/i, '') || '（title なし）';
+
+    diagnose.ran = true;
+    if (!gotHeight) add('NG', '教材の高さが LMS に届いていない（枠は 85vh のまま、教材だけがスクロールする）', 'lms-embed.js が読めていない。prepare で2行を入れる');
+    if (msgs > 20 && height - minH > 500) add('NG', '教材の高さが伸び続けている（' + msgs + ' 回で ' + Math.round(minH) + 'px → ' + height + 'px）', 'html / body や外枠の height: 100% / min-height: 100vh を外す（prepare で外れる）');
+    var skin = [].some.call(doc.querySelectorAll('link[href]'), function (l) { return l.getAttribute('href').split(/[?#]/)[0].slice(-R.SKIN_FILE.length) === R.SKIN_FILE && l.sheet; });
+    if (!skin) add('NG', 'lms-skin.css が効いていない', 'prepare で2行を入れる');
+
+    var all = doc.body.getElementsByTagName('*'), scrollers = [], fixed = [], wide = [];
+    var vw = doc.documentElement.clientWidth;
+    for (var i = 0; i < all.length; i++) {
+      var el = all[i], cs = win.getComputedStyle(el);
+      if (/^(auto|scroll|overlay)$/.test(cs.overflowY) && el.clientHeight >= 150 && el.scrollHeight > el.clientHeight + 4 && !/^(TEXTAREA|PRE|CODE|TABLE|SELECT)$/.test(el.tagName)) scrollers.push(el);
+      if ((cs.position === 'fixed' || cs.position === 'sticky') && visible(el)) fixed.push(el);
+      var r = el.getBoundingClientRect();
+      if (r.width && r.right > vw + 1 && cs.position !== 'fixed' && !el.closest('table, pre')) wide.push({ el: el, over: Math.round(r.right - vw) });
+    }
+    scrollers.forEach(function (el) {
+      add('NG', '中だけスクロールする箱: ' + label(el) + '（見えている高さ ' + el.clientHeight + 'px／中身 ' + el.scrollHeight + 'px）', 'height: 100vh などと overflow: auto を外す（prepare で外れる。外れなければ CSS を直接直す）');
+    });
+
+    var navs = [].filter.call(doc.querySelectorAll('a, button'), function (a) { return visible(a) && isNav(a.textContent); });
+    if (navs.length) add('NG', '教材の中の前後ボタンが見えている: ' + navs.map(function (a) { return '「' + a.textContent.trim() + '」'; }).join(' '), 'LMS の前後ボタンと二重になる。prepare で消える');
+
+    if (doc.documentElement.scrollWidth > vw + 1) {
+      wide.sort(function (a, b) { return b.over - a.over; });
+      add('NG', '横にはみ出している（' + (doc.documentElement.scrollWidth - vw) + 'px）: ' + wide.slice(0, 3).map(function (w) { return label(w.el) + ' +' + w.over + 'px'; }).join('、'), '幅を px で固定している要素を max-width: 100% にする');
+    }
+    if (fixed.length) add('注意', '画面に貼りつく要素がある: ' + fixed.slice(0, 3).map(label).join('、'), 'LMS の中では iframe が伸びるので、思った位置に出ない。要らなければ消す');
+
+    // _assets/・_clipkit/ は全教材共通の置き場所で、実体は S3 にだけある。ここでは出なくて正常なので数えない
+    var broken = [].filter.call(doc.images, function (img) { var s = img.getAttribute('src'); return s && img.complete && img.naturalWidth === 0 && !/(^|\/)_(assets|clipkit)\//.test(s); });
+    if (broken.length) add('NG', '表示されない画像が ' + broken.length + ' 枚: ' + broken.slice(0, 2).map(function (i) { return i.getAttribute('src'); }).join('、'), 'パスか置き場所を直す');
+    var badVideo = [].filter.call(doc.querySelectorAll('video'), function (v) { return v.error; });
+    if (badVideo.length) add('NG', '再生できない動画が ' + badVideo.length + ' 本', '動画の URL を確かめる');
+
+    var title = (doc.title || '').replace(/\s*[-|｜]\s*WEBCOACH.*$/i, '').replace(/\s+/g, '');
+    var h1 = [].filter.call(doc.querySelectorAll('h1'), function (h) { var t = h.textContent.replace(/\s+/g, ''); return visible(h) && t && title && (t.indexOf(title) >= 0 || title.indexOf(t) >= 0); });
+    if (h1.length) add('注意', 'レッスン名と同じ見出し（h1）が見えている', 'LMS の上部バーと二重になる。prepare で消える');
+    var root = doc.querySelector('main') || doc.body;
+    if (LMS_WORD.test(root.innerText)) add('注意', '本文に「LMS」と書いてある', '受講生向けは「WEBCOACH学習システム」と書く');
+
+    render(items);
+  }
+
+  function render(items) {
+    var ng = items.filter(function (i) { return i.level === 'NG'; }).length;
+    var report = { ok: ng === 0, height: height, gotHeight: gotHeight, width: frame.clientWidth, items: items, at: Date.now() };
+    window.__wcReport = report; // Playwright から読む（cli.js verify）
+    document.getElementById('sum').innerHTML = ng ? '<span class="lv NG">NG</span>' + ng + ' 件' : '<span class="lv OK">OK</span>崩れの原因は見つかりませんでした';
+    document.getElementById('list').innerHTML = items.map(function (i) {
+      return '<li><span class="lv ' + i.level + '">' + i.level + '</span>' + esc(i.msg) + (i.hint ? '<div class="hint">' + esc(i.hint) + '</div>' : '') + '</li>';
+    }).join('');
+    document.querySelector('.card').classList.toggle('noframe', !gotHeight);
+  }
+  function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
+
+  function setWidth(sp) {
+    lms.classList.toggle('sp', sp);
+    document.getElementById('pc').setAttribute('aria-pressed', String(!sp));
+    document.getElementById('sp').setAttribute('aria-pressed', String(sp));
+    later(800);
+  }
+  document.getElementById('pc').onclick = function () { setWidth(false); };
+  document.getElementById('sp').onclick = function () { setWidth(true); };
+  document.getElementById('open').onclick = function () { open(document.getElementById('src').value.trim()); };
+  document.getElementById('src').addEventListener('keydown', function (e) { if (e.key === 'Enter') open(this.value.trim()); });
+
+  var q = new URLSearchParams(location.search);
+  if (q.get('w') === '390') setWidth(true);
+  if (q.get('src')) open(q.get('src')); else document.getElementById('sum').textContent = '上の欄に教材のパスを入れて「開く」';
+})();
+</script>
+</body>
+</html>

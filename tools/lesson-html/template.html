@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- レッスン名。「AIに聞く」に教材名として届く。LMS の上部バーにもレッスン名が出るので、本文に h1 は書かない -->
+<title>（レッスン名） - WEBCOACH</title>
+<!-- LMS 用の2行（消さない）。lms-skin.css が見た目を LMS に合わせ、lms-embed.js が高さを LMS に伝える -->
+<link rel="stylesheet" href="/materials/_assets/lms-skin.css" data-wc-lms>
+<script src="/materials/_assets/lms-embed.js" data-wc-lms defer></script>
+<!--
+  書き方の決まり（tools/lesson-html/README.md）
+  ・前後のレッスンへ移るボタン・目次・サイドバー・ヘッダー／フッターは書かない（LMS が出す）
+  ・高さを 100vh や 100% に固定しない。中だけスクロールする箱（overflow: auto）を作らない
+  ・幅は px で固定しない（本文は最大 760px。スマホは 390px）
+  ・画像は同じフォルダの images/ に置き、相対パスで書く。動画は media.webcoach.jp の URL
+  ・受講生向けの文章では「LMS」と書かず「WEBCOACH学習システム」と書く
+-->
+<style>
+  /* このレッスンだけの見た目はここに書く（高さ・幅の固定はしない） */
+</style>
+</head>
+<body>
+<main class="article">
+
+  <h2>この動画で学ぶこと</h2>
+  <p>（リード文）</p>
+
+  <!-- 解説動画。preload="none" で、再生ボタンを押すまで読み込まない -->
+  <div class="wc-video-card">
+    <p class="wc-video-title">解説動画（約◯分）</p>
+    <video class="wc-video" controls preload="none" playsinline src="https://media.webcoach.jp/（動画のパス）.mp4"></video>
+  </div>
+  <!-- YouTube のときはこちら
+  <div class="wc-yt"><iframe src="https://www.youtube.com/embed/（動画ID）" title="解説動画" allowfullscreen></iframe></div>
+  -->
+
+  <h2>（見出し）</h2>
+  <p>（本文）</p>
+  <ul>
+    <li>（箇条書き）</li>
+  </ul>
+
+  <!-- 補足ボックス（Clipkit の .icon-card と同じ見た目） -->
+  <div class="icon-card white bulb">（補足・ポイント）</div>
+
+  <h2>理解度チェック</h2>
+  <!-- 開閉（押すと答えが開く）。.toggle > .open-btn ＋ .toggle-content の形は変えない（lms-embed.js が開閉を付ける） -->
+  <div class="toggle">
+    <div class="open-btn">Q. （問題文）？</div>
+    <div class="toggle-content" style="display: none;">
+      <p>（答えと解説）</p>
+    </div>
+  </div>
+
+  <!-- 別のレッスンへのリンクは、LMS のパスを data-lms-route に書く（同じタブで移る）
+  <p><a href="https://study.webcoach.jp/course/20?module=45" data-lms-route="/course/20?module=45">検索の心得</a>も読んでみましょう。</p>
+  -->
+
+</main>
+</body>
+</html>

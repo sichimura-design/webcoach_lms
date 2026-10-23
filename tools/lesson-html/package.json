@@ -1,0 +1,21 @@
+{
+  "name": "lesson-html",
+  "version": "1.0.0",
+  "private": true,
+  "description": "教材HTMLを WEBCOACH 学習システムに載せる前に、整える・チェックする・LMSの枠で見る",
+  "license": "UNLICENSED",
+  "bin": {
+    "lesson-html": "src/cli.js"
+  },
+  "scripts": {
+    "prepare-html": "node src/cli.js prepare",
+    "check": "node src/cli.js check",
+    "preview": "node src/cli.js preview"
+  },
+  "dependencies": {
+    "cheerio": "^1.0.0"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
