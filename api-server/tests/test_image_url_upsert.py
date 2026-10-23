@@ -15,6 +15,7 @@ def test_upsert_course_image_url_returns_200_and_saves(client):
     body = res.json()
     assert body["image_url"] == url
     assert body["created_at"] is not None
+    assert body["updated_at"] is not None
 
     got = client.get("/api/image-url/1/77")
     assert got.json()["image_url"] == url
@@ -26,4 +27,5 @@ def test_upsert_course_image_url_updates_existing_row(client):
     res = client.post("/api/image-url/1/77", json={"image_url": "https://example.com/new.webp"})
 
     assert res.status_code == 200, res.text
+    assert res.json()["updated_at"] is not None
     assert client.get("/api/image-url/1/77").json()["image_url"] == "https://example.com/new.webp"
