@@ -334,6 +334,46 @@ def test_ecs_task_stopped():
     assert "nginx" not in text
 
 
+def _guardduty_event(severity=8.0, count=1, resource=None, sample=False):
+    return {"source": "aws.guardduty", "detail-type": "GuardDuty Finding",
+            "detail": {"id": "abc123", "region": "ap-northeast-1", "severity": severity,
+                       "type": "UnauthorizedAccess:IAMUser/InstanceCredentialExfiltration.OutsideAWS",
+                       "title": "EC2のキーが外部から使われました", "description": "x" * 500,
+                       "resource": resource or {"resourceType": "AccessKey",
+                                                "accessKeyDetails": {"accessKeyId": "ASIAXXX", "userName": "prod-role"}},
+                       "service": {"count": count, "additionalInfo": {"sample": sample}}}}
+
+
+def test_guardduty_finding_goes_to_alert_channel():
+    with mock.patch.object(index, "_post_to_slack") as post:
+        assert index.handler(_guardduty_event(), None) == {"posted": 1}
+    dest, text = post.call_args[0]
+    assert dest == index.ALERT
+    assert "重要度: 高 8" in text and ":rotating_light:" in text
+    assert "InstanceCredentialExfiltration" in text
+    assert "`prod-role` (キー `ASIAXXX`)" in text
+    assert "fId=abc123" in text
+    assert "x" * (index.MAX_LINE_CHARS + 1) not in text
+    assert "サンプル" not in text
+
+
+def test_guardduty_repeated_finding_is_not_posted_again():
+    with mock.patch.object(index, "_post_to_slack") as post:
+        assert index.handler(_guardduty_event(count=5), None)["posted"] == 0
+    post.assert_not_called()
+
+
+def test_guardduty_medium_ec2_sample():
+    ev = _guardduty_event(severity=5, sample=True,
+                          resource={"resourceType": "Instance", "instanceDetails": {"instanceId": "i-0123"}})
+    with mock.patch.object(index, "_post_to_slack") as post:
+        index.handler(ev, None)
+    text = post.call_args[0][1]
+    assert "重要度: 中 5" in text and ":warning:" in text
+    assert "(サンプル)" in text
+    assert "Instance `i-0123`" in text
+
+
 # ---------------------------------------------------------------------------
 # 送信方式(botトークン / Incoming Webhook)
 # ---------------------------------------------------------------------------

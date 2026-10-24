@@ -2,13 +2,14 @@
 WebCoachの監視・利用状況をSlackへ通知するLambda(dev: cdk/lib/slack-notifier-stack.ts、
 本番: cdk-prod/lib/slack-notifier-stack.ts。コードはこの1つを共用する)
 
-5種類のトリガーを1本で受け、投稿先チャンネル(=Webhook)を分ける:
+6種類のトリガーを1本で受け、投稿先チャンネル(=Webhook)を分ける:
 - CloudWatch Logsサブスクリプションフィルタ → エラーを即時通知(アラート用チャンネル)
     - api-server / bff-server / moodle / nginx のエラーっぽい行(文字列マッチ)
     - AI利用ログ(api-server/agents/usage_log.py の1行JSON)のうち status=error/timeout
 - CloudWatchアラーム(SNS経由) → ALB 5xx・ヘルスチェック失敗・RDS負荷などの状態変化(アラート用)
 - AWS Budgets(SNS経由) → 月の費用の実績・予測が予算の警告ラインを超えた(アラート用、本番のみ)
 - EventBridgeのECSタスク停止イベント → 予定外のタスク停止(アラート用)
+- EventBridgeのGuardDuty検知イベント → 脅威の検知(アラート用、本番のみ。重要度の絞り込みはルール側)
 - EventBridgeの定期実行(毎朝9時) → 前日の利用状況・運用KPI・費用(利用状況用チャンネル)と、
   証明書/Google連携/AIモデルの期限切れが近いもの(アラート用)
 
@@ -161,6 +162,8 @@ def handler(event, context):
         return _notify_alarms(records)
     if event.get("source") == "aws.ecs":
         return _notify_task_stopped(event)
+    if event.get("source") == "aws.guardduty":
+        return _notify_guardduty(event)
     return _post_daily_summary()
 
 
@@ -360,6 +363,66 @@ def _notify_task_stopped(event):
     lines.append("_サービスが自動で代わりのタスクを起動します。続く場合はALB/ヘルスチェックの通知も確認してください_")
     _post_to_slack(ALERT, "\n".join(lines))
     return {"posted": 1}
+
+
+# ---------------------------------------------------------------------------
+# GuardDutyの検知
+# ---------------------------------------------------------------------------
+
+# GuardDutyの重要度(0.1〜10)の区分。下限の大きい順に見る
+GUARDDUTY_SEVERITY_LABELS = ((9.0, "致命的"), (7.0, "高"), (4.0, "中"), (0.0, "低"))
+
+
+def _notify_guardduty(event):
+    """同じ検知が続くとGuardDutyは件数(service.count)を増やして再送してくるので、初回だけ知らせる"""
+    detail = event.get("detail") or {}
+    service = detail.get("service") or {}
+    if (service.get("count") or 1) > 1:
+        return {"posted": 0, "repeated": True}
+
+    severity = float(detail.get("severity") or 0)
+    label = next(name for floor, name in GUARDDUTY_SEVERITY_LABELS if severity >= floor)
+    icon = ":rotating_light:" if severity >= 7 else ":warning:"
+    sample = " (サンプル)" if (service.get("additionalInfo") or {}).get("sample") else ""
+    lines = [
+        f"{icon} *[{ENV_NAME}] GuardDutyが脅威を検知しました(重要度: {label} {severity:g}){sample}*",
+        f"*{detail.get('title') or detail.get('type')}*",
+        f"種類: `{detail.get('type')}`",
+    ]
+    target = _guardduty_target(detail.get("resource") or {})
+    if target:
+        lines.append(f"対象: {target}")
+    description = (detail.get("description") or "")[:MAX_LINE_CHARS]
+    if description:
+        lines.append(f"> {description}")
+    region = detail.get("region") or os.environ.get("AWS_REGION", "ap-northeast-1")
+    lines.append(
+        f"<https://{region}.console.aws.amazon.com/guardduty/home?region={region}#/findings?macros=current"
+        f"&fId={detail.get('id')}|GuardDutyで詳細を見る>"
+    )
+    _post_to_slack(ALERT, "\n".join(lines))
+    return {"posted": 1}
+
+
+def _guardduty_target(resource):
+    """検知の対象を1行で(EC2・IAMのキー・S3・RDS・Lambdaなど種類ごとに主なIDを拾う)"""
+    kind = resource.get("resourceType") or ""
+    instance = resource.get("instanceDetails") or {}
+    access_key = resource.get("accessKeyDetails") or {}
+    buckets = [b.get("name") for b in resource.get("s3BucketDetails") or [] if b.get("name")]
+    rds = resource.get("rdsDbInstanceDetails") or {}
+    lambda_fn = resource.get("lambdaDetails") or {}
+    if instance.get("instanceId"):
+        return f"{kind} `{instance['instanceId']}`"
+    if access_key.get("userName") or access_key.get("accessKeyId"):
+        return f"{kind} `{access_key.get('userName') or ''}` (キー `{access_key.get('accessKeyId') or ''}`)"
+    if buckets:
+        return f"{kind} `{', '.join(buckets)}`"
+    if rds.get("dbInstanceIdentifier"):
+        return f"{kind} `{rds['dbInstanceIdentifier']}`"
+    if lambda_fn.get("functionName"):
+        return f"{kind} `{lambda_fn['functionName']}`"
+    return kind
 
 
 # ---------------------------------------------------------------------------
