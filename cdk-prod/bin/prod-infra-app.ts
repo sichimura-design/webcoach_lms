@@ -73,6 +73,12 @@ const albStack = new ProdAlbStack(app, `${envName}-AlbStack`, {
   // 未指定だと HTTPS リスナーを削除して HTTP のみにする差分になるため、既定値を外さないこと。
   albCertificateArn: app.node.tryGetContext('albCertificateArn')
     ?? 'arn:aws:acm:ap-northeast-1:840513866884:certificate/c4487c0f-7ff7-4b3b-9453-7e1030f2eb89',
+  // Moodle(BFF用以外のパス)の手前でCognitoログインを求める。外すときは -c moodleGate=off
+  moodleGate: app.node.tryGetContext('moodleGate') === 'off' ? undefined : {
+    userPoolId: app.node.tryGetContext('cognitoUserPoolId') ?? 'ap-northeast-1_egAV2FlqQ',
+    userPoolDomainPrefix: app.node.tryGetContext('cognitoDomainPrefix') ?? `${envName}-lms-webcoach`,
+    albDomain: app.node.tryGetContext('moodleDomain') ?? 'api.webcoach.jp',
+  },
 });
 albStack.addDependency(vpcStack);
 

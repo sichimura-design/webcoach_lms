@@ -2,6 +2,8 @@ import * as cdk from 'aws-cdk-lib';
 import * as ec2 from 'aws-cdk-lib/aws-ec2';
 import * as elbv2 from 'aws-cdk-lib/aws-elasticloadbalancingv2';
 import * as acm from 'aws-cdk-lib/aws-certificatemanager';
+import * as cognito from 'aws-cdk-lib/aws-cognito';
+import * as elbv2Actions from 'aws-cdk-lib/aws-elasticloadbalancingv2-actions';
 import { Construct } from 'constructs';
 
 export interface ProdAlbStackProps extends cdk.StackProps {
@@ -12,7 +14,28 @@ export interface ProdAlbStackProps extends cdk.StackProps {
    * 指定するとポート 443 リスナーが追加され、80 は 443 にリダイレクトされる。
    */
   readonly albCertificateArn?: string;
+  /**
+   * 指定すると、Moodle(BFF用のパス以外)へのアクセスをALBでCognitoログイン済みの人だけに絞る。
+   * HTTPSリスナーがあるときだけ有効。
+   */
+  readonly moodleGate?: MoodleGateProps;
 }
+
+export interface MoodleGateProps {
+  /** 本番ユーザープールID(prod-CognitoStack)。ALB用のアプリクライアントをこのプールに追加する */
+  readonly userPoolId: string;
+  /** Cognitoドメインのプレフィックス(ログイン画面 https://<prefix>.auth.<region>.amazoncognito.com) */
+  readonly userPoolDomainPrefix: string;
+  /** ALBのドメイン(api.webcoach.jp)。ログイン後の戻り先 /oauth2/idpresponse に使う */
+  readonly albDomain: string;
+}
+
+/**
+ * ALBのCognito認証を通さずに素通しするパス。SPA(BFF)・Googleなど外部からの戻り先・ヘルスチェック用。
+ * BFF/api-serverからMoodleへの呼び出しは localhost:8080 直結でALBを通らないので、ここに無くてよい。
+ * 1つの条件に書けるのは5個まで。
+ */
+const MOODLE_GATE_PUBLIC_PATHS = ['/api/*', '/health', '/user/info', '/login', '/auth.html'];
 
 /**
  * ALB スタック: ECS サービスより先に ALB + 空のターゲットグループを用意する。
@@ -29,7 +52,7 @@ export class ProdAlbStack extends cdk.Stack {
   constructor(scope: Construct, id: string, props: ProdAlbStackProps) {
     super(scope, id, props);
 
-    const { envName, vpc, albCertificateArn } = props;
+    const { envName, vpc, albCertificateArn, moodleGate } = props;
 
     this.albSecurityGroup = new ec2.SecurityGroup(this, 'AlbSg', {
       vpc,
@@ -74,12 +97,22 @@ export class ProdAlbStack extends cdk.Stack {
 
     if (albCertificateArn) {
       const cert = acm.Certificate.fromCertificateArn(this, 'AlbCert', albCertificateArn);
+      const forwardToEcs = elbv2.ListenerAction.forward([this.targetGroup]);
       const httpsListener = this.alb.addListener('HttpsListener', {
         port: 443,
         certificates: [cert],
-        defaultTargetGroups: [this.targetGroup],
+        defaultAction: moodleGate ? this.moodleGateAction(envName, moodleGate, forwardToEcs) : forwardToEcs,
       });
       httpsListener.node.addDependency(this.targetGroup);
+
+      if (moodleGate) {
+        // BFF・ヘルスチェック等は認証なしで通す(既定の動作=Cognito認証より先に評価される)
+        httpsListener.addAction('MoodleGatePublicPaths', {
+          priority: 10,
+          conditions: [elbv2.ListenerCondition.pathPatterns(MOODLE_GATE_PUBLIC_PATHS)],
+          action: forwardToEcs,
+        });
+      }
 
       this.alb.addListener('HttpListener', {
         port: 80,
@@ -110,6 +143,39 @@ export class ProdAlbStack extends cdk.Stack {
       value: this.albSecurityGroup.securityGroupId,
       description: 'backend-stack の EC2 SG が ALB からのインバウンドを許可する際に参照するSG ID',
       exportName: `${envName}-AlbSecurityGroupId`,
+    });
+  }
+
+  /**
+   * 2026-10-24: Moodle(PHP)を、Cognitoにログインしていない人から隠す。
+   * Moodle 4.3はセキュリティサポートが終わっており、ログイン前に突ける穴・デバッグ表示・
+   * パスワード再設定画面が外から見えていたため、4.5へ上げるまでの応急処置として入れた。
+   * 本番プールをそのまま使うので受講生・コーチもALBは通過できる(その先はMoodle自身のログイン)。
+   */
+  private moodleGateAction(envName: string, gate: MoodleGateProps, next: elbv2.ListenerAction): elbv2.ListenerAction {
+    const userPool = cognito.UserPool.fromUserPoolId(this, 'MoodleGateUserPool', gate.userPoolId);
+    const userPoolClient = new cognito.UserPoolClient(this, 'MoodleGateClient', {
+      userPool,
+      userPoolClientName: `${envName}-lms-alb-moodle-gate`,
+      // ALBの認証はクライアントシークレット必須
+      generateSecret: true,
+      authFlows: {},
+      oAuth: {
+        flows: { authorizationCodeGrant: true },
+        scopes: [cognito.OAuthScope.OPENID],
+        callbackUrls: [`https://${gate.albDomain}/oauth2/idpresponse`],
+      },
+      supportedIdentityProviders: [cognito.UserPoolClientIdentityProvider.COGNITO],
+      preventUserExistenceErrors: true,
+    });
+    const userPoolDomain = cognito.UserPoolDomain.fromDomainName(this, 'MoodleGateDomain', gate.userPoolDomainPrefix);
+    return new elbv2Actions.AuthenticateCognitoAction({
+      userPool,
+      userPoolClient,
+      userPoolDomain,
+      // 管理作業の1日分。切れたらCognitoのログイン画面に戻される
+      sessionTimeout: cdk.Duration.hours(12),
+      next,
     });
   }
 }
