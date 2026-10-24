@@ -4,7 +4,7 @@
  * 実際に何があるかはこちら。
  *
  * 教材の構成は「学習領域 ＞ コース」の2段で確定した。ここがその写しで、
- * 領域の表示順・コースのカリキュラム順・コースIDのすべてがこの1つの表から出る。
+ * 領域・コースのカリキュラム順（MSW モックの表示順。実環境は Moodle の順）・コースIDがこの1つの表から出る。
  *
  * 重要: 「区分（基礎 / 応用 / 発展）」は退役した。
  * 3段のどこに置くかを人が手で決めていたため、受講生に「基礎と応用は何が違うのか」を
@@ -46,11 +46,11 @@ export interface CourseDef {
 /** 領域とコース。この配列の順序がそのまま表示順・カリキュラム順になる */
 export const AREA_COURSES: ReadonlyArray<AreaDef & { courses: readonly CourseDef[] }> = [
   /*
-   * 🔴 この配列の順序がそのまま学習トップ（⑤ 領域から探す）の表示順になる。
+   * 🔴 実環境の表示順（領域の順も領域内のコースの順も）は Moodle の「コースおよびカテゴリ管理」の順で決まる
+   *    （catalogCourse.ts の buildCatalog）。この配列の順が効くのは MSW モックだけ。
+   *    本番の並びを変えたいときは、ここではなく Moodle でカテゴリ・コースを上下に動かすこと。
    *    以前あった「コース数の降順」は廃止した（MaterialsTopPage の sortedAreas の🔴）。
-   *    並べ替えたいときはここを入れ替えること。
-   *    ただし領域内のコースの並びは、実環境では Moodle の「コースおよびカテゴリ管理」の順で決まる
-   *    （catalogCourse.ts の buildCatalog）。ここのコースの順が効くのは MSW モックだけ。
+   *    並べるときの目安（Moodle でもこの考え方で並べる）:
    *    ・「学習ガイド」は入口なので必ず先頭
    *    ・「生成AI基礎」は「Web×AI」の直前（前提 → 応用の順）
    *    ・「案件獲得・キャリア」は学び終えた先の話なので最後
@@ -220,7 +220,7 @@ export const AREAS: readonly AreaDef[] = AREA_COURSES.map(({ courses, ...area })
 /** 領域code → 領域。URL（/courses/category/:code）から領域を引くのに使う */
 export const areaByCode = (code: number): AreaDef | undefined => AREAS.find((a) => a.code === code);
 
-/** 領域名（表示順）。絞り込みプルダウンの並びはこれが正典 */
+/** 領域名（courseTaxonomy の順）。実環境の表示順は Moodle の順なので、これはモックと正典に無い領域の判定用 */
 export const AREA_NAMES: readonly string[] = AREAS.map((a) => a.name);
 
 /** コース1件。領域から切り離しても領域名と順番が分かる形にしておく */
@@ -257,7 +257,7 @@ export const courseIdOf = (slug: string): number | undefined => COURSE_BY_SLUG.g
 const ORDER_BY_SLUG = new Map(COURSES.map((c, i) => [c.slug, i]));
 /**
  * 一覧での並び順（COURSES の何番目か）。Moodle の shortname = slug で引く。正典に無いコースは undefined。
- * 🔴 実環境の領域内の並びは Moodle の categorysortorder（「コースおよびカテゴリ管理」の順）で決まり、これは使わない。
+ * 🔴 実環境の並びは Moodle の categorysortorder（「コースおよびカテゴリ管理」の順）で決まり、これは使わない。
  *    sortorder の来ない MSW モックでだけ効く（catalogCourse.ts の buildCatalog）。
  */
 export const taxonomyOrderOf = (slug?: string | null): number | undefined =>

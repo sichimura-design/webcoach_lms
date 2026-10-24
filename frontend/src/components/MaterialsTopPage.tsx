@@ -15,8 +15,7 @@ import { t } from '../theme/tokens';
 import { pageTitleStyle } from '../theme/pageTitle';
 import { LEARNING_HIERARCHY } from '../constants/learningTaxonomy';
 import {
-  AREAS,
-  AREA_NAMES,
+  areaByName,
   type AreaFamily,
 } from '../constants/courseTaxonomy';
 import { lessonProgressFromPercent } from '../utils/lessonProgress';
@@ -214,8 +213,10 @@ function MaterialsTopPage() {
 
   /**
    * 領域カードの中身。件数と「学習中」は実データ（カタログ）から数え、
-   * 表示順・説明文・family は constants/courseTaxonomy.ts が正典。
-   * 実BFFが独自のカテゴリ名を返した場合（正典に無い領域）は family unknown で後ろに足す。
+   * 説明文・family・code は constants/courseTaxonomy.ts から引く。
+   * 実BFFが独自のカテゴリ名を返した場合（正典に無い領域）は family unknown にする。
+   * 領域の並びはカタログに最初に出てきた順。カタログは buildCatalog が
+   * Moodle の「コースおよびカテゴリ管理」の順（モックでは courseTaxonomy の順）に並べてある。
    */
   const areaCards = useMemo(() => {
     const byName = new Map<string, CatalogCourse[]>();
@@ -226,37 +227,27 @@ function MaterialsTopPage() {
       else byName.set(c.categoryName, [c]);
     });
 
-    const known = AREAS.filter((a) => byName.has(a.name)).map((a) => ({
-      name: a.name,
-      description: a.description,
-      family: a.family as AreaFamily | 'unknown',
-      code: a.code as number | null,
-      courses: byName.get(a.name) ?? [],
-    }));
-    const unknown = Array.from(byName.keys())
-      .filter((name) => !AREA_NAMES.includes(name))
-      .map((name) => ({
+    return Array.from(byName, ([name, courses]) => {
+      const def = areaByName(name);
+      return {
         name,
-        description: '',
-        family: 'unknown' as const,
-        code: null,
-        courses: byName.get(name) ?? [],
-      }));
-
-    return [...known, ...unknown].map((a) => ({
-      ...a,
-      count: a.courses.length,
-      inProgress: a.courses.filter((c) => courseStatusOf(c) === COURSE_STATUS.inProgress).length,
-    }));
+        description: def?.description ?? '',
+        family: (def?.family ?? 'unknown') as AreaFamily | 'unknown',
+        code: (def?.code ?? null) as number | null,
+        courses,
+        count: courses.length,
+        inProgress: courses.filter((c) => courseStatusOf(c) === COURSE_STATUS.inProgress).length,
+      };
+    });
   }, [catalog]);
 
   /**
-   * 表示順＝courseTaxonomy の宣言順（AREA_COURSES の並びそのまま）。
+   * 表示順＝Moodle の「コースおよびカテゴリ管理」のカテゴリの順（areaCards の🔴）。
+   * 管理者がカテゴリを上下に動かせば、デプロイなしでここの順が変わる。
    * 🔴 かつては「コース数の降順」だった（学べることが多い領域から見せる）。やめた理由:
    *    ・入口として最初に読んでほしい「学習ガイド」が、コースが少ないので最後に落ちる
    *    ・「生成AI基礎（2件）」が「Web×AI（5件）」の下に来て、前提より応用が先に出る
    *    件数はその領域に何本あるかでしかなく、読む順番の根拠にならなかった。
-   *    並べ替えたくなったら courseTaxonomy.ts の AREA_COURSES の順を入れ替えること。
    *    ここで sort を復活させない。
    *    family（キャリア/制作/…）のグループ見出しは廃止したまま。
    */

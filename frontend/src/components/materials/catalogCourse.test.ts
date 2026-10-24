@@ -22,11 +22,21 @@ describe('buildCatalog の並び順', () => {
     ).toEqual(['studio', 'wordpress', 'wix']);
   });
 
-  it('領域の並びは courseTaxonomy の順のまま（categorysortorder に引きずられない）', () => {
+  it('領域の並びも Moodle の categorysortorder の順（カテゴリの並べ替えが効く）', () => {
     expect(
       titles([
         course(1, 'wix', 'Web制作', 10001),
         course(2, 'tutorial', '学習ガイド', 90001),
+        course(3, 'wordpress', 'Web制作', 10002),
+      ])
+    ).toEqual(['wix', 'wordpress', 'tutorial']);
+  });
+
+  it('categorysortorder が欠けたコースが混じるときは courseTaxonomy の順に戻す', () => {
+    expect(
+      titles([
+        course(1, 'wix', 'Web制作', 10001),
+        course(2, 'tutorial', '学習ガイド'),
       ])
     ).toEqual(['tutorial', 'wix']);
   });
