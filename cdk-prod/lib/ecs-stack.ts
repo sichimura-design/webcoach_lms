@@ -164,6 +164,12 @@ export class ProdEcsStack extends cdk.Stack {
       ],
     });
 
+    // 2026-10-23: IMDSv2(トークン必須)に限定する。v1のままだとMoodle(PHP)にSSRFが1つあるだけで
+    // GET 1回でこのEC2ロールのキー(DB/Cognito/Anthropic等のSecretsを読める)が取れてしまう。
+    // HOSTネットワークなのでhop limit 1では防げない。addCapacity()はrequireImdsv2を受け取らないので
+    // AutoScalingGroup(requireImdsv2: true)が内部で使うAspectを直接付ける。起動テンプレートが変わりEC2は入れ替わる
+    cdk.Aspects.of(asg).add(new autoscaling.AutoScalingGroupRequireImdsv2Aspect());
+
     asg.addSecurityGroup(ec2SecurityGroup);
     asg.role.addManagedPolicy(
       iam.ManagedPolicy.fromAwsManagedPolicyName('AmazonSSMManagedInstanceCore'),
