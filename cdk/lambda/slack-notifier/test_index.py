@@ -334,14 +334,16 @@ def test_ecs_task_stopped():
     assert "nginx" not in text
 
 
-def _guardduty_event(severity=8.0, count=1, resource=None, sample=False):
+def _guardduty_event(severity=8.0, count=1, resource=None, sample=False, sample_in_value=False):
+    info = {"value": json.dumps({"recentCredentials": [], "sample": True}), "type": "default"} if sample_in_value \
+        else {"sample": sample}
     return {"source": "aws.guardduty", "detail-type": "GuardDuty Finding",
             "detail": {"id": "abc123", "region": "ap-northeast-1", "severity": severity,
                        "type": "UnauthorizedAccess:IAMUser/InstanceCredentialExfiltration.OutsideAWS",
                        "title": "EC2のキーが外部から使われました", "description": "x" * 500,
                        "resource": resource or {"resourceType": "AccessKey",
                                                 "accessKeyDetails": {"accessKeyId": "ASIAXXX", "userName": "prod-role"}},
-                       "service": {"count": count, "additionalInfo": {"sample": sample}}}}
+                       "service": {"count": count, "additionalInfo": info}}}
 
 
 def test_guardduty_finding_goes_to_alert_channel():
@@ -354,7 +356,24 @@ def test_guardduty_finding_goes_to_alert_channel():
     assert "`prod-role` (キー `ASIAXXX`)" in text
     assert "fId=abc123" in text
     assert "x" * (index.MAX_LINE_CHARS + 1) not in text
-    assert "サンプル" not in text
+    assert "サンプル" not in text and "テスト" not in text
+
+
+def test_guardduty_sample_from_eventbridge_is_labeled():
+    """EventBridgeの実イベントではサンプルの印が additionalInfo.value(JSON文字列)の中にある"""
+    with mock.patch.object(index, "_post_to_slack") as post:
+        index.handler(_guardduty_event(sample_in_value=True), None)
+    text = post.call_args[0][1]
+    assert "【サンプル】" in text and "実際の検知ではありません" in text
+    assert ":rotating_light:" not in text and "脅威を検知しました" not in text
+
+
+def test_guardduty_test_notification():
+    with mock.patch.object(index, "_post_to_slack") as post:
+        assert index.handler({"test": "guardduty"}, None) == {"posted": 1, "test": True}
+    dest, text = post.call_args[0]
+    assert dest == index.ALERT
+    assert "【テスト通知】" in text and "実際の検知ではありません" in text
 
 
 def test_guardduty_repeated_finding_is_not_posted_again():
@@ -369,8 +388,7 @@ def test_guardduty_medium_ec2_sample():
     with mock.patch.object(index, "_post_to_slack") as post:
         index.handler(ev, None)
     text = post.call_args[0][1]
-    assert "重要度: 中 5" in text and ":warning:" in text
-    assert "(サンプル)" in text
+    assert "【サンプル】" in text and "重要度" not in text.splitlines()[0]
     assert "Instance `i-0123`" in text
 
 

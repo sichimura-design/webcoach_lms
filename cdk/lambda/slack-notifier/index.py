@@ -164,6 +164,8 @@ def handler(event, context):
         return _notify_task_stopped(event)
     if event.get("source") == "aws.guardduty":
         return _notify_guardduty(event)
+    if event.get("test") == "guardduty":
+        return _post_guardduty_test()
     return _post_daily_summary()
 
 
@@ -382,10 +384,14 @@ def _notify_guardduty(event):
 
     severity = float(detail.get("severity") or 0)
     label = next(name for floor, name in GUARDDUTY_SEVERITY_LABELS if severity >= floor)
-    icon = ":rotating_light:" if severity >= 7 else ":warning:"
-    sample = " (サンプル)" if (service.get("additionalInfo") or {}).get("sample") else ""
+    if _is_guardduty_sample(service):
+        # コンソールやCLIの「サンプル検知の作成」で作られたもの。本物と見間違えないよう見出しから変える
+        head = f":test_tube: *[{ENV_NAME}] 【サンプル】GuardDutyのサンプル検知です(実際の検知ではありません)*"
+    else:
+        icon = ":rotating_light:" if severity >= 7 else ":warning:"
+        head = f"{icon} *[{ENV_NAME}] GuardDutyが脅威を検知しました(重要度: {label} {severity:g})*"
     lines = [
-        f"{icon} *[{ENV_NAME}] GuardDutyが脅威を検知しました(重要度: {label} {severity:g}){sample}*",
+        head,
         f"*{detail.get('title') or detail.get('type')}*",
         f"種類: `{detail.get('type')}`",
     ]
@@ -402,6 +408,27 @@ def _notify_guardduty(event):
     )
     _post_to_slack(ALERT, "\n".join(lines))
     return {"posted": 1}
+
+
+def _is_guardduty_sample(service):
+    """サンプル検知か。EventBridgeで届く検知では additionalInfo.value にJSON文字列で {"sample": true} が入る"""
+    info = service.get("additionalInfo") or {}
+    if info.get("sample"):
+        return True
+    try:
+        return bool(json.loads(info.get("value") or "{}").get("sample"))
+    except (TypeError, ValueError, AttributeError):
+        return False
+
+
+def _post_guardduty_test():
+    """通知経路(Lambda→Slack)の確認用。手動で {"test": "guardduty"} を渡して呼ぶ"""
+    _post_to_slack(ALERT, (
+        f":test_tube: *[{ENV_NAME}] 【テスト通知】GuardDutyの通知設定の確認です*\n"
+        "実際の検知ではありません。対応は不要です。\n"
+        "_今後、GuardDutyが重要度「中」以上の脅威を検知すると、このチャンネルに通知されます_"
+    ))
+    return {"posted": 1, "test": True}
 
 
 def _guardduty_target(resource):
