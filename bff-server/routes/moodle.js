@@ -272,10 +272,14 @@ router.post('/enroll-course/:courseid', requireAuth, async (req, res) => {
       result
     });
   } catch (error) {
-    console.error('[Enroll Course] Error:', error.message);
-
     // Check if error has a statusCode property (e.g., 409 for already enrolled)
     const statusCode = error.statusCode || 500;
+
+    // 登録済み(409)は教材を開くたびに起きる想定内の応答なので console.error にしない
+    // (CourseService 側で登録済みの旨は出している。Slack通知の誤検知になっていた)
+    if (statusCode !== 409) {
+      console.error('[Enroll Course] Error:', error.message);
+    }
 
     res.status(statusCode).json({
       error: statusCode === 409 ? 'Already enrolled' : 'Failed to enroll in course',

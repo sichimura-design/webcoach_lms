@@ -109,17 +109,31 @@ def test_summary_aggregates_chat_and_apps():
     from datetime import datetime
     text = index._format_summary(datetime(2026, 9, 25, tzinfo=index.JST), chat_rows, app_rows)
 
-    assert "2026/09/25" in text
-    assert "AIチャット* 11回 (success 10, error 1)" in text
-    assert "入力1,000 出力200" in text
-    assert "id=15: 4回 (エラー1) / 0.0100 USD" in text
-    assert "合計 0.0120 USD" in text
+    assert "2026/09/25(金)" in text
+    assert "AIチャット *11回* _(エラー 1回)_ / 使った人 *4人以上*" in text
+    assert "入力1,000 / 出力200トークン" in text
+    assert "Difyアプリ *5回* / 約$0.01" in text
+    assert "`id=15` 4回 _(うちエラー1回)_ / $0.0100" in text
+    assert "`id=19` 1回 / $0.0020" in text
+
+
+def test_summary_shows_app_name_and_total_cost():
+    chat_rows = [{"status": "success", "n": "7", "users": "2", "in_tok": "1000000", "out_tok": "0",
+                  "model": "claude-sonnet-5-5"}]
+    app_rows = [{"app_id": "18", "status": "success", "n": "1", "price": "0.5", "price_currency": "USD",
+                 "app_label": "面接練習"}]
+    from datetime import datetime
+    text = index._format_summary(datetime(2026, 10, 19, tzinfo=index.JST), chat_rows, app_rows)
+
+    assert "AIチャット *7回* _(すべて成功)_ / 使った人 *2人*\n" in text
+    assert "面接練習 `id=18` 1回 / $0.5000" in text
+    assert "AI費用の合計 *約$2.50*" in text
 
 
 def test_summary_without_usage():
     from datetime import datetime
     text = index._format_summary(datetime(2026, 9, 25, tzinfo=index.JST), [], [])
-    assert text.endswith("利用なし")
+    assert "• 利用なし" in text
 
 
 def _fake_insights(results_by_query):
@@ -172,10 +186,11 @@ def test_daily_report_goes_to_usage_and_expiry_to_alert():
     assert result["alerts"] == 2
     usage = post.call_args_list[0][0]
     assert usage[0] == index.USAGE
-    assert "アクティブ 12人 / 新規登録 1人" in usage[1]
-    assert "前日 3回・本日予定 4回" in usage[1]
-    assert "実施結果の未記録 2回(直近14日) / コーチ確認待ちのAIノート 5件" in usage[1]
-    assert "claude-haiku-4-5(active、2026-10-15より前には引退しない)" in usage[1]
+    assert "ログインして操作した人 *12人*" in usage[1]
+    assert "新規登録 *1人*" in usage[1]
+    assert "前日の実施 *3回* / 本日の予定 *4回*" in usage[1]
+    assert "> • 実施結果が未記録のコーチング *2回* _(直近14日)_\n> • コーチの確認待ちのAIノート *5件*" in usage[1]
+    assert "`claude-haiku-4-5` _(提供中、2026-10-15までは提供が続く)_" in usage[1]
     alert = post.call_args_list[1][0]
     assert alert[0] == index.ALERT
     assert "api.webcoach.jp: 残り20日" in alert[1]
@@ -317,6 +332,64 @@ def test_ecs_task_stopped():
     text = post.call_args[0][1]
     assert "api-server: exitCode=137 OutOfMemoryError" in text
     assert "nginx" not in text
+
+
+def _guardduty_event(severity=8.0, count=1, resource=None, sample=False, sample_in_value=False):
+    info = {"value": json.dumps({"recentCredentials": [], "sample": True}), "type": "default"} if sample_in_value \
+        else {"sample": sample}
+    return {"source": "aws.guardduty", "detail-type": "GuardDuty Finding",
+            "detail": {"id": "abc123", "region": "ap-northeast-1", "severity": severity,
+                       "type": "UnauthorizedAccess:IAMUser/InstanceCredentialExfiltration.OutsideAWS",
+                       "title": "EC2のキーが外部から使われました", "description": "x" * 500,
+                       "resource": resource or {"resourceType": "AccessKey",
+                                                "accessKeyDetails": {"accessKeyId": "ASIAXXX", "userName": "prod-role"}},
+                       "service": {"count": count, "additionalInfo": info}}}
+
+
+def test_guardduty_finding_goes_to_alert_channel():
+    with mock.patch.object(index, "_post_to_slack") as post:
+        assert index.handler(_guardduty_event(), None) == {"posted": 1}
+    dest, text = post.call_args[0]
+    assert dest == index.ALERT
+    assert "重要度: 高 8" in text and ":rotating_light:" in text
+    assert "InstanceCredentialExfiltration" in text
+    assert "`prod-role` (キー `ASIAXXX`)" in text
+    assert "fId=abc123" in text
+    assert "x" * (index.MAX_LINE_CHARS + 1) not in text
+    assert "サンプル" not in text and "テスト" not in text
+
+
+def test_guardduty_sample_from_eventbridge_is_labeled():
+    """EventBridgeの実イベントではサンプルの印が additionalInfo.value(JSON文字列)の中にある"""
+    with mock.patch.object(index, "_post_to_slack") as post:
+        index.handler(_guardduty_event(sample_in_value=True), None)
+    text = post.call_args[0][1]
+    assert "【サンプル】" in text and "実際の検知ではありません" in text
+    assert ":rotating_light:" not in text and "脅威を検知しました" not in text
+
+
+def test_guardduty_test_notification():
+    with mock.patch.object(index, "_post_to_slack") as post:
+        assert index.handler({"test": "guardduty"}, None) == {"posted": 1, "test": True}
+    dest, text = post.call_args[0]
+    assert dest == index.ALERT
+    assert "【テスト通知】" in text and "実際の検知ではありません" in text
+
+
+def test_guardduty_repeated_finding_is_not_posted_again():
+    with mock.patch.object(index, "_post_to_slack") as post:
+        assert index.handler(_guardduty_event(count=5), None)["posted"] == 0
+    post.assert_not_called()
+
+
+def test_guardduty_medium_ec2_sample():
+    ev = _guardduty_event(severity=5, sample=True,
+                          resource={"resourceType": "Instance", "instanceDetails": {"instanceId": "i-0123"}})
+    with mock.patch.object(index, "_post_to_slack") as post:
+        index.handler(ev, None)
+    text = post.call_args[0][1]
+    assert "【サンプル】" in text and "重要度" not in text.splitlines()[0]
+    assert "Instance `i-0123`" in text
 
 
 # ---------------------------------------------------------------------------

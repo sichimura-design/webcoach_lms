@@ -49,6 +49,8 @@ export const AREA_COURSES: ReadonlyArray<AreaDef & { courses: readonly CourseDef
    * 🔴 この配列の順序がそのまま学習トップ（⑤ 領域から探す）の表示順になる。
    *    以前あった「コース数の降順」は廃止した（MaterialsTopPage の sortedAreas の🔴）。
    *    並べ替えたいときはここを入れ替えること。
+   *    ただし領域内のコースの並びは、実環境では Moodle の「コースおよびカテゴリ管理」の順で決まる
+   *    （catalogCourse.ts の buildCatalog）。ここのコースの順が効くのは MSW モックだけ。
    *    ・「学習ガイド」は入口なので必ず先頭
    *    ・「生成AI基礎」は「Web×AI」の直前（前提 → 応用の順）
    *    ・「案件獲得・キャリア」は学び終えた先の話なので最後
@@ -255,8 +257,8 @@ export const courseIdOf = (slug: string): number | undefined => COURSE_BY_SLUG.g
 const ORDER_BY_SLUG = new Map(COURSES.map((c, i) => [c.slug, i]));
 /**
  * 一覧での並び順（COURSES の何番目か）。Moodle の shortname = slug で引く。正典に無いコースは undefined。
- * 🔴 Moodle は作成順（id 順）で返すので、あとから足したコースは領域の末尾に来てしまう。
- *    一覧の並びはここで決める（catalogCourse.ts の buildCatalog）。
+ * 🔴 実環境の領域内の並びは Moodle の categorysortorder（「コースおよびカテゴリ管理」の順）で決まり、これは使わない。
+ *    sortorder の来ない MSW モックでだけ効く（catalogCourse.ts の buildCatalog）。
  */
 export const taxonomyOrderOf = (slug?: string | null): number | undefined =>
   slug ? ORDER_BY_SLUG.get(slug) : undefined;

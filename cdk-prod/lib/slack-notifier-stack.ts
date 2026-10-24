@@ -46,6 +46,7 @@ export interface ProdSlackNotifierStackProps extends cdk.StackProps {
  * - 予定外のECSタスク停止(OOM・ヘルスチェック失敗など。デプロイ・台数変更による停止は除く)
  * - 毎朝9時(JST)に前日のAI利用・運用KPI・AWS費用を利用状況用チャンネルへ、期限が近いものをエラー用へ
  * - AWS Budgetsの月予算: 実績が80%・100%、月末の予測が100%を超えたらエラー用チャンネルへ
+ * - GuardDuty(prod-GuardDutyStack)の検知のうち重要度「中」(4)以上をエラー用チャンネルへ
  *   (Claude APIの費用はAWSの請求に含まれないので、日次レポートの概算かAnthropic Consoleで見る)
  *
  * Slackへの送り方は2通り(どちらもSecrets Managerに文字列で手動登録する。このスタックでは作らない)
@@ -259,6 +260,19 @@ export class ProdSlackNotifierStack extends cdk.Stack {
           clusterArn: [`arn:aws:ecs:${this.region}:${this.account}:cluster/${props.ecsClusterName}`],
           lastStatus: ['STOPPED'],
         },
+      },
+      targets: [new targets.LambdaFunction(fn)],
+    });
+
+    // ---- GuardDutyの検知 ----
+    // 検知はディテクター(prod-GuardDutyStack)と関係なくアカウントのEventBridgeに流れるので、ここでルールを持つ。
+    // 「低」(4未満)は外部からのポートスキャン等が日常的に出るので知らせない
+    new events.Rule(this, 'GuardDutyFindingRule', {
+      ruleName: `${envName}-guardduty-finding`,
+      eventPattern: {
+        source: ['aws.guardduty'],
+        detailType: ['GuardDuty Finding'],
+        detail: { severity: [{ numeric: ['>=', 4] }] },
       },
       targets: [new targets.LambdaFunction(fn)],
     });

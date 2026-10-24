@@ -1,7 +1,7 @@
 import type { Course } from '../../types/mypage';
 import type { GalleryCourse } from './courseVisuals';
 import { usableCourseImage } from '../../utils/courseImage';
-import { taxonomyOrderOf } from '../../constants/courseTaxonomy';
+import { AREA_NAMES, taxonomyOrderOf } from '../../constants/courseTaxonomy';
 
 /**
  * BFF の生コース（/moodle/courses）を一覧タイルの表現に直す。
@@ -48,13 +48,21 @@ export function buildCatalog(
   const list = Array.isArray(raw) ? raw : [];
   // BFF は管理者トークンで Moodle を引くので、非表示（visible=0）のコースも返ってくる。
   // 受講生の一覧には出さない（Moodle の「コースの可視性」を効かせる）。
-  // 並びは courseTaxonomy の宣言順（領域内のカリキュラム順）。正典に無いコースは元の順のまま後ろへ。
-  // Moodle の返す順（作成順）のままだと、あとから足したコースが領域の末尾に来る。
+  // 並びは「領域の表示順（courseTaxonomy）→ 領域内は Moodle の並び順（categorysortorder）」。
+  // 領域内の順番は Moodle の「コースおよびカテゴリ管理」で上下を動かせば変えられる（BFF のキャッシュで最大1分遅れる）。
+  // Moodle の返す配列そのものは id 順（作成順）なので並べ直す。categorysortorder は
+  // core_course_get_courses が moodle/course:update を持つ呼び出し元（bff-service）にだけ返す値。
+  // 無いとき（MSW モック）は courseTaxonomy の宣言順、それも無ければ元の順。
   const visible = list.filter((c) => c?.visible !== 0 && c?.visible !== '0');
-  const rank = (c: any, i: number) => taxonomyOrderOf(c?.shortname) ?? 100000 + i;
+  const areaRank = (c: any) => {
+    const i = AREA_NAMES.indexOf(c?.categoryname);
+    return i === -1 ? AREA_NAMES.length : i;
+  };
+  const rankInArea = (c: any, i: number) =>
+    typeof c?.categorysortorder === 'number' ? c.categorysortorder : taxonomyOrderOf(c?.shortname) ?? 100000 + i;
   const ordered = visible
-    .map((c, i) => ({ c, r: rank(c, i) }))
-    .sort((a, b) => a.r - b.r)
+    .map((c, i) => ({ c, area: areaRank(c), r: rankInArea(c, i) }))
+    .sort((a, b) => a.area - b.area || a.r - b.r)
     .map(({ c }) => c);
   return ordered.map((c) => {
     const enrolled =

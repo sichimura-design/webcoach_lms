@@ -1444,16 +1444,18 @@ def upsert_image_url(
         raise ValueError(f"Invalid category_id: {category_id}. Must be 1 (course) or 2 (category)")
 
     # 画像URLを登録（URLがある場合のみ）
-    if image_url:
-        upsert_image(db, entity_type, target_id, image_url)
+    record = upsert_image(db, entity_type, target_id, image_url) if image_url else None
 
     # レガシー互換のため、ダミーオブジェクトを返す
+    # (ルータが created_at/updated_at を返すので、無いと保存後に500になる)
     class LegacyResult:
         def __init__(self):
             self.category_id = category_id
             self.target_id = target_id
             self.image_url = image_url
             self.associated_category_id = associated_category_id
+            self.created_at = record.created_at if record else None
+            self.updated_at = record.updated_at if record else None
 
     return LegacyResult()
 

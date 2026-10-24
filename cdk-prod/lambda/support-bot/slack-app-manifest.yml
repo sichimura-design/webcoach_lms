@@ -1,0 +1,47 @@
+# Slackアプリ「WebCoach サポート」のマニフェスト(問い合わせ一次対応ボット)
+#
+# ─── 作り方 ─────────────────────────────────────────────────────
+# 1. https://api.slack.com/apps → Create New App → From a manifest にこのファイルを貼り付けて作成
+#    (request_url は後で差し替えるので、仮の値のままでよい)
+# 2. Install to Workspace でワークスペースに入れる
+# 3. 「OAuth & Permissions」の Bot User OAuth Token(xoxb-...)と、
+#    「Basic Information」の Signing Secret を、JSONでSecrets Managerに登録する
+#      aws secretsmanager create-secret --name prod/lms/support-bot-slack \
+#        --secret-string '{"bot_token":"xoxb-...","signing_secret":"..."}' --profile PowerUserAccess-840513866884
+# 4. cdk-prod/bin/support-bot-app.ts の手順でデプロイし、出力 SlackRequestUrl を
+#    「Event Subscriptions」の Request URL に貼る(Verified と出ればOK)
+# 5. 使うチャンネルに /invite @WebCoach サポート で招待する
+#
+# ─── 使い方 ─────────────────────────────────────────────────────
+#   @WebCoach サポート 仮パスワードの期限が切れたと言われた。どう答えればいい?
+#   → docs/support/ のマニュアルをもとに、原因・確認すること・回答例をスレッドに返す。
+#     マニュアルで足りなければ、同梱した本番のソースを検索して確かめる(先に「調べています…」と出して差し替える)。
+#     同じスレッドで続けてメンションすると、前のやり取りも踏まえて答える。
+#
+# 実装: cdk-prod/lambda/support-bot/index.py
+display_information:
+  name: WebCoach サポート
+  description: 受講生・コーチからの問い合わせへの一次回答を、問い合わせ対応マニュアルをもとに提案します
+  background_color: "#E86D78"
+features:
+  bot_user:
+    display_name: WebCoach サポート
+    always_online: false
+oauth_config:
+  scopes:
+    bot:
+      # メンションを受け取る
+      - app_mentions:read
+      # スレッドに返信する
+      - chat:write
+      # スレッドの前のやり取りを読む(公開チャンネル・非公開チャンネル)
+      - channels:history
+      - groups:history
+settings:
+  event_subscriptions:
+    request_url: https://example.com/replace-after-deploy
+    bot_events:
+      - app_mention
+  org_deploy_enabled: false
+  socket_mode_enabled: false
+  token_rotation_enabled: false

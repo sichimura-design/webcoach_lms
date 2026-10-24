@@ -2,13 +2,14 @@
 WebCoachの監視・利用状況をSlackへ通知するLambda(dev: cdk/lib/slack-notifier-stack.ts、
 本番: cdk-prod/lib/slack-notifier-stack.ts。コードはこの1つを共用する)
 
-5種類のトリガーを1本で受け、投稿先チャンネル(=Webhook)を分ける:
+6種類のトリガーを1本で受け、投稿先チャンネル(=Webhook)を分ける:
 - CloudWatch Logsサブスクリプションフィルタ → エラーを即時通知(アラート用チャンネル)
     - api-server / bff-server / moodle / nginx のエラーっぽい行(文字列マッチ)
     - AI利用ログ(api-server/agents/usage_log.py の1行JSON)のうち status=error/timeout
 - CloudWatchアラーム(SNS経由) → ALB 5xx・ヘルスチェック失敗・RDS負荷などの状態変化(アラート用)
 - AWS Budgets(SNS経由) → 月の費用の実績・予測が予算の警告ラインを超えた(アラート用、本番のみ)
 - EventBridgeのECSタスク停止イベント → 予定外のタスク停止(アラート用)
+- EventBridgeのGuardDuty検知イベント → 脅威の検知(アラート用、本番のみ。重要度の絞り込みはルール側)
 - EventBridgeの定期実行(毎朝9時) → 前日の利用状況・運用KPI・費用(利用状況用チャンネル)と、
   証明書/Google連携/AIモデルの期限切れが近いもの(アラート用)
 
@@ -87,6 +88,30 @@ IGNORE_PATTERNS = [re.compile(p) for p in (
 # ECSのタスク停止のうち、デプロイ・台数変更・手動停止による想定内のもの
 EXPECTED_STOP_REASONS = re.compile(r"^Scaling activity initiated by|^Task stopped by user")
 
+# AWSのサービス名(Cost Explorer)の短い表示名。載っていないものはそのまま出す
+AWS_SERVICE_LABELS = {
+    "Amazon Elastic Compute Cloud - Compute": "EC2",
+    "EC2 - Other": "EC2その他(EBS・通信等)",
+    "Amazon Relational Database Service": "RDS",
+    "Amazon Elastic Container Service": "ECS",
+    "Amazon Elastic Load Balancing": "ALB",
+    "Amazon Virtual Private Cloud": "VPC(NAT等)",
+    "Amazon Simple Storage Service": "S3",
+    "Amazon CloudFront": "CloudFront",
+    "AmazonCloudWatch": "CloudWatch",
+    "Amazon Elastic File System": "EFS",
+    "AWS Secrets Manager": "Secrets Manager",
+    "Amazon EC2 Container Registry (ECR)": "ECR",
+    "AWS Lambda": "Lambda",
+    "Amazon Route 53": "Route 53",
+    "Amazon Simple Email Service": "SES",
+    "Amazon Cognito": "Cognito",
+    "Tax": "税",
+}
+WEEKDAYS_JA = "月火水木金土日"
+CHAT_STATUS_LABELS = {"success": "成功", "error": "エラー", "timeout": "タイムアウト", "cancelled": "中止",
+                      "rejected": "拒否"}
+
 # Claudeの単価(USD / 100万トークン)。キャッシュ読みは入力の0.1倍、書きは1.25倍。
 # 載っていないモデルはトークン数だけ出す
 CLAUDE_PRICES = {
@@ -118,7 +143,7 @@ filter event = "ai_chat"
 APP_QUERY = """
 filter event = "ai_app_call"
 | stats count(*) as n, sum(total_price) as price, latest(currency) as price_currency,
-        avg(duration_ms) as avg_ms by app_id, status
+        latest(app_name) as app_label, avg(duration_ms) as avg_ms by app_id, status
 """
 
 REPORT_QUERY = """
@@ -137,6 +162,10 @@ def handler(event, context):
         return _notify_alarms(records)
     if event.get("source") == "aws.ecs":
         return _notify_task_stopped(event)
+    if event.get("source") == "aws.guardduty":
+        return _notify_guardduty(event)
+    if event.get("test") == "guardduty":
+        return _post_guardduty_test()
     return _post_daily_summary()
 
 
@@ -339,6 +368,91 @@ def _notify_task_stopped(event):
 
 
 # ---------------------------------------------------------------------------
+# GuardDutyの検知
+# ---------------------------------------------------------------------------
+
+# GuardDutyの重要度(0.1〜10)の区分。下限の大きい順に見る
+GUARDDUTY_SEVERITY_LABELS = ((9.0, "致命的"), (7.0, "高"), (4.0, "中"), (0.0, "低"))
+
+
+def _notify_guardduty(event):
+    """同じ検知が続くとGuardDutyは件数(service.count)を増やして再送してくるので、初回だけ知らせる"""
+    detail = event.get("detail") or {}
+    service = detail.get("service") or {}
+    if (service.get("count") or 1) > 1:
+        return {"posted": 0, "repeated": True}
+
+    severity = float(detail.get("severity") or 0)
+    label = next(name for floor, name in GUARDDUTY_SEVERITY_LABELS if severity >= floor)
+    if _is_guardduty_sample(service):
+        # コンソールやCLIの「サンプル検知の作成」で作られたもの。本物と見間違えないよう見出しから変える
+        head = f":test_tube: *[{ENV_NAME}] 【サンプル】GuardDutyのサンプル検知です(実際の検知ではありません)*"
+    else:
+        icon = ":rotating_light:" if severity >= 7 else ":warning:"
+        head = f"{icon} *[{ENV_NAME}] GuardDutyが脅威を検知しました(重要度: {label} {severity:g})*"
+    lines = [
+        head,
+        f"*{detail.get('title') or detail.get('type')}*",
+        f"種類: `{detail.get('type')}`",
+    ]
+    target = _guardduty_target(detail.get("resource") or {})
+    if target:
+        lines.append(f"対象: {target}")
+    description = (detail.get("description") or "")[:MAX_LINE_CHARS]
+    if description:
+        lines.append(f"> {description}")
+    region = detail.get("region") or os.environ.get("AWS_REGION", "ap-northeast-1")
+    lines.append(
+        f"<https://{region}.console.aws.amazon.com/guardduty/home?region={region}#/findings?macros=current"
+        f"&fId={detail.get('id')}|GuardDutyで詳細を見る>"
+    )
+    _post_to_slack(ALERT, "\n".join(lines))
+    return {"posted": 1}
+
+
+def _is_guardduty_sample(service):
+    """サンプル検知か。EventBridgeで届く検知では additionalInfo.value にJSON文字列で {"sample": true} が入る"""
+    info = service.get("additionalInfo") or {}
+    if info.get("sample"):
+        return True
+    try:
+        return bool(json.loads(info.get("value") or "{}").get("sample"))
+    except (TypeError, ValueError, AttributeError):
+        return False
+
+
+def _post_guardduty_test():
+    """通知経路(Lambda→Slack)の確認用。手動で {"test": "guardduty"} を渡して呼ぶ"""
+    _post_to_slack(ALERT, (
+        f":test_tube: *[{ENV_NAME}] 【テスト通知】GuardDutyの通知設定の確認です*\n"
+        "実際の検知ではありません。対応は不要です。\n"
+        "_今後、GuardDutyが重要度「中」以上の脅威を検知すると、このチャンネルに通知されます_"
+    ))
+    return {"posted": 1, "test": True}
+
+
+def _guardduty_target(resource):
+    """検知の対象を1行で(EC2・IAMのキー・S3・RDS・Lambdaなど種類ごとに主なIDを拾う)"""
+    kind = resource.get("resourceType") or ""
+    instance = resource.get("instanceDetails") or {}
+    access_key = resource.get("accessKeyDetails") or {}
+    buckets = [b.get("name") for b in resource.get("s3BucketDetails") or [] if b.get("name")]
+    rds = resource.get("rdsDbInstanceDetails") or {}
+    lambda_fn = resource.get("lambdaDetails") or {}
+    if instance.get("instanceId"):
+        return f"{kind} `{instance['instanceId']}`"
+    if access_key.get("userName") or access_key.get("accessKeyId"):
+        return f"{kind} `{access_key.get('userName') or ''}` (キー `{access_key.get('accessKeyId') or ''}`)"
+    if buckets:
+        return f"{kind} `{', '.join(buckets)}`"
+    if rds.get("dbInstanceIdentifier"):
+        return f"{kind} `{rds['dbInstanceIdentifier']}`"
+    if lambda_fn.get("functionName"):
+        return f"{kind} `{lambda_fn['functionName']}`"
+    return kind
+
+
+# ---------------------------------------------------------------------------
 # 日次集計
 # ---------------------------------------------------------------------------
 
@@ -372,70 +486,96 @@ def _post_daily_summary():
 
 
 def _format_summary(day, chat_rows, app_rows, report=None, cost=None):
-    lines = [f":bar_chart: *[{ENV_NAME}] 日次レポート {day:%Y/%m/%d}(JST)*"]
-    lines += _format_kpi(report)
-    lines += _format_ai_usage(chat_rows, app_rows)
-    lines += _format_model(report)
+    lines = [f":bar_chart: *[{ENV_NAME}] 日次レポート {day:%Y/%m/%d}({WEEKDAYS_JA[day.weekday()]})の1日分*", "━━━━━━━━━━━━━━━━"]
+    sections = [_format_kpi(report), _format_ai_usage(chat_rows, app_rows) + _format_model(report)]
     if cost is not None:
-        lines += _format_cost(cost)
+        sections.append(_format_cost(cost))
+    for section in sections:
+        lines += [""] + section
     return "\n".join(lines)
 
 
 def _format_kpi(report):
+    # Slackのmrkdwnは *太字* / _斜体_ の前後に空白か記号が無いと効かないため、必ず空白で区切る
+    head = "*:busts_in_silhouette: 利用者・コーチング*"
     if not report:
-        return ["*運用* 運用レポートが見つかりません(BFFが止まっている/8時台に動いていない可能性)"]
+        return [head, "• 運用レポートが見つかりません _(BFFが止まっている/8時台に動いていない可能性)_"]
     kpi = report.get("kpi") or {}
     if "error" in kpi:
-        return [f"*運用* KPIを取得できませんでした: `{kpi['error']}`"]
+        return [head, f"• 取得できませんでした `{kpi['error']}`"]
     lines = [
-        f"*運用* アクティブ {kpi.get('active_users', 0)}人 / 新規登録 {kpi.get('new_users', 0)}人",
-        f"  コーチング 前日 {kpi.get('coaching_held', 0)}回・本日予定 {kpi.get('coaching_today', 0)}回",
+        head,
+        # active_usersはMoodleに操作が残った人数(受講生・コーチ・管理者を区別しない)
+        f"• ログインして操作した人 *{kpi.get('active_users', 0)}人* _(受講生・コーチ・管理者の合計)_",
+        f"• 新規登録 *{kpi.get('new_users', 0)}人*",
+        f"• コーチング 前日の実施 *{kpi.get('coaching_held', 0)}回* / 本日の予定 *{kpi.get('coaching_today', 0)}回*",
     ]
     todo = []
     if kpi.get("coaching_unrecorded"):
-        todo.append(f"実施結果の未記録 {kpi['coaching_unrecorded']}回(直近14日)")
+        todo.append(f"> • 実施結果が未記録のコーチング *{kpi['coaching_unrecorded']}回* _(直近14日)_")
     if kpi.get("notes_awaiting_coach"):
-        todo.append(f"コーチ確認待ちのAIノート {kpi['notes_awaiting_coach']}件")
+        todo.append(f"> • コーチの確認待ちのAIノート *{kpi['notes_awaiting_coach']}件*")
     if todo:
-        lines.append("  :memo: " + " / ".join(todo))
+        lines += ["> :memo: *要対応*"] + todo
     return lines
 
 
 def _format_ai_usage(chat_rows, app_rows):
+    head = "*:robot_face: AIの利用*"
     if not chat_rows and not app_rows:
-        return ["*AI* 利用なし"]
-    lines = []
+        return [head, "• 利用なし"]
+    lines = [head]
+    chat_usd = app_usd = None
     if chat_rows:
         total = sum(_int(r, "n") for r in chat_rows)
         by_status = {}
         for r in chat_rows:
             by_status[r.get("status")] = by_status.get(r.get("status"), 0) + _int(r, "n")
+        failed = {s: n for s, n in by_status.items() if s != "success" and n}
+        result = ("、".join(f"{CHAT_STATUS_LABELS.get(s, s)} {n}回" for s, n in failed.items())
+                  if failed else "すべて成功")
+        # count_distinct は行(結果×モデル)ごとの値で、足すと同じ人を重複して数えるため最大値を出す。
+        # 行が複数あるときは実際の人数がそれより多い可能性がある
+        users = max((_int(r, "users") for r in chat_rows), default=0)
+        users_text = f"{users}人" + ("以上" if len(chat_rows) > 1 else "")
         in_tok = sum(_int(r, "in_tok") for r in chat_rows)
         out_tok = sum(_int(r, "out_tok") for r in chat_rows)
-        lines.append(f"*AIチャット* {total}回 (" + ", ".join(f"{s} {n}" for s, n in by_status.items()) + ")")
-        # count_distinct は行ごとの値なので、合計ではなく最大値を「少なくとも」として出す
-        users = max((_int(r, "users") for r in chat_rows), default=0)
-        usd, unknown = _claude_cost(chat_rows)
-        cost_text = f" / 概算 ${usd:.2f}" + (f"(単価不明: {', '.join(unknown)})" if unknown else "")
-        lines.append(f"  利用者 {users}人以上 / Claudeトークン 入力{in_tok:,} 出力{out_tok:,}{cost_text}")
+        chat_usd, unknown = _claude_cost(chat_rows)
+        lines.append(f"• AIチャット *{total}回* _({result})_ / 使った人 *{users_text}*")
+        lines.append(f"      ◦ 約${chat_usd:.2f} _(Claude 入力{in_tok:,} / 出力{out_tok:,}トークン)_"
+                     + (f" ※単価不明のモデルは含まず: `{', '.join(unknown)}`" if unknown else ""))
 
     if app_rows:
-        lines.append("*Difyアプリ*")
         by_app = {}
         for r in app_rows:
-            app = by_app.setdefault(r.get("app_id", "?"), {"n": 0, "err": 0, "price": 0.0, "currency": ""})
+            app = by_app.setdefault(r.get("app_id", "?"), {"n": 0, "err": 0, "price": 0.0, "currency": "", "name": ""})
             app["n"] += _int(r, "n")
             if r.get("status") in ("error", "timeout"):
                 app["err"] += _int(r, "n")
             app["price"] += _float(r, "price")
             app["currency"] = r.get("price_currency") or app["currency"]
+            app["name"] = r.get("app_label") or app["name"]
+        total_n = sum(a["n"] for a in by_app.values())
+        app_usd = sum(a["price"] for a in by_app.values())
+        currency = next((a["currency"] for a in by_app.values() if a["currency"]), "USD")
+        lines.append(f"• Difyアプリ *{total_n}回* / 約{_money(app_usd, currency)}")
         for app_id, a in sorted(by_app.items(), key=lambda kv: -kv[1]["n"]):
-            err = f" (エラー{a['err']})" if a["err"] else ""
-            lines.append(f"  • id={app_id}: {a['n']}回{err} / {a['price']:.4f} {a['currency']}".rstrip())
-        total_price = sum(a["price"] for a in by_app.values())
-        currency = next((a["currency"] for a in by_app.values() if a["currency"]), "")
-        lines.append(f"  合計 {total_price:.4f} {currency}".rstrip())
+            name = f"{a['name']} `id={app_id}`" if a["name"] else f"`id={app_id}`"
+            err = f" _(うちエラー{a['err']}回)_" if a["err"] else ""
+            lines.append(f"      ◦ {name} {a['n']}回{err} / {_money(a['price'], a['currency'] or currency, 4)}")
+        if currency != "USD":
+            app_usd = None  # 円建て等なら合計に混ぜない
+
+    if chat_usd is not None and app_usd is not None:
+        lines.append(f"• AI費用の合計 *約${chat_usd + app_usd:.2f}*")
     return lines
+
+
+def _money(amount, currency, digits=2):
+    """Difyの利用料はアプリ単位だと1セント未満が多いので、内訳だけ桁を増やして出す"""
+    if currency == "USD":
+        return f"${amount:.{digits}f}"
+    return f"{amount:.{digits}f} {currency}".rstrip()
 
 
 def _format_model(report):
@@ -444,8 +584,9 @@ def _format_model(report):
         return []
     retire = model.get("retirementOn")
     if retire:
-        retire = f"{retire}より前には引退しない" if model.get("retirementNotSoonerThan") else f"{retire}に引退予定"
-    return [f"*AIモデル* {model['id']}({model.get('state') or '状態不明'}" + (f"、{retire}" if retire else "") + ")"]
+        retire = f"{retire}までは提供が続く" if model.get("retirementNotSoonerThan") else f"{retire}に提供終了予定"
+    state = {"active": "提供中", "deprecated": "非推奨", "retired": "提供終了"}.get(model.get("state"), "状態不明")
+    return [f"• 使用中のAIモデル `{model['id']}` _({state}" + (f"、{retire}" if retire else "") + ")_"]
 
 
 def _claude_cost(chat_rows):
@@ -524,11 +665,17 @@ def _fetch_aws_cost(day):
 
 
 def _format_cost(cost):
+    head = "*:moneybag: AWS費用*"
     if "error" in cost:
-        return [f"*AWS費用* 取得できませんでした: `{cost['error'][:200]}`"]
+        return [head, f"• 取得できませんでした `{cost['error'][:200]}`"]
     total = sum(v for _, v in cost["services"])
-    top = ", ".join(f"{name} ${v:.2f}" for name, v in cost["services"][:5] if v >= 0.01)
-    return [f"*AWS費用* 前日 ${total:.2f}(速報値) / 今月累計 ${cost['mtd']:.2f}"] + ([f"  {top}"] if top else [])
+    lines = [head, f"• 前日 *${total:.2f}* _(速報値。後から少し増えることがある)_",
+             f"• 今月の累計 *${cost['mtd']:.2f}*"]
+    top = [(name, v) for name, v in cost["services"][:5] if v >= 0.01]
+    if top:
+        lines.append("• 前日の内訳 _(上位)_")
+        lines += [f"      ◦ {AWS_SERVICE_LABELS.get(name, name)} ${v:.2f}" for name, v in top]
+    return lines
 
 
 def _start_insights(log_group, query, start, end):

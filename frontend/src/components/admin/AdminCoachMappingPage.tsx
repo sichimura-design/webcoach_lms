@@ -40,6 +40,8 @@ interface UserSearchBoxProps<T> {
   getKey: (item: T) => string;
   getLabel: (item: T) => string;
   getSublabel: (item: T) => string;
+  // Moodle user id; a query of digits only matches it exactly
+  getId?: (item: T) => number | undefined;
   loading: boolean;
   accentColor?: string;
 }
@@ -53,6 +55,7 @@ function UserSearchBox<T>({
   getKey,
   getLabel,
   getSublabel,
+  getId,
   loading,
   accentColor = '#E86D78',
 }: UserSearchBoxProps<T>) {
@@ -63,12 +66,14 @@ function UserSearchBox<T>({
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase();
     if (!q) return items.slice(0, 20);
+    const idQuery = getId && /^\d+$/.test(q) ? Number(q) : null;
     return items.filter(
       item =>
+        (idQuery !== null && getId!(item) === idQuery) ||
         getLabel(item).toLowerCase().includes(q) ||
         getSublabel(item).toLowerCase().includes(q)
     ).slice(0, 20);
-  }, [items, query, getLabel, getSublabel]);
+  }, [items, query, getLabel, getSublabel, getId]);
 
   useEffect(() => {
     function handleClickOutside(e: MouseEvent) {
@@ -552,6 +557,7 @@ export const AdminCoachMappingPage: React.FC = () => {
               getKey={c => c.userId}
               getLabel={c => c.email ? `${c.username} (${c.email})` : c.username}
               getSublabel={c => c.username}
+              getId={c => c.moodleUserId}
               loading={loadingCoaches}
               accentColor="#E86D78"
             />
@@ -577,6 +583,7 @@ export const AdminCoachMappingPage: React.FC = () => {
               getKey={s => String(s.id)}
               getLabel={s => s.fullname}
               getSublabel={s => s.username}
+              getId={s => s.id}
               loading={loadingStudents}
               accentColor="#FA9262"
             />
@@ -645,6 +652,7 @@ export const AdminCoachMappingPage: React.FC = () => {
               getKey={c => c.userId}
               getLabel={c => c.email ? `${c.username} (${c.email})` : c.username}
               getSublabel={c => c.username}
+              getId={c => c.moodleUserId}
               loading={loadingCoaches}
               accentColor="#E86D78"
             />

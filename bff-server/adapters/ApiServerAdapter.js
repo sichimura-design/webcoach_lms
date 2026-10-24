@@ -1173,6 +1173,20 @@ class ApiServerAdapter {
   }
 
   /**
+   * Recordings (transcript etc.) saved for a coaching schedule
+   */
+  async getCoachingRecordings(coachingScheduleId) {
+    const response = await axios.get(
+      `${this.apiServerUrl}/api/coaching/recordings/${coachingScheduleId}`,
+      {
+        headers: { 'Content-Type': 'application/json' },
+        timeout: 10000
+      }
+    );
+    return response.data;
+  }
+
+  /**
    * Coaching schedules whose transcript was fetched but which still have no AI coaching note
    * (generation failed or is still running). Each item: { coaching_schedule_id, s3_bucket, s3_key }.
    * (internal — used by TranscriptSyncService to retry note generation)
