@@ -32,6 +32,10 @@ node_modules/
 # Documentation (exclude MD files)
 *.md
 !README.md
+# 運用・引き継ぎの資料と Claude Code の運用スキルは管理する
+!docs/support/*.md
+!docs/handover/*.md
+!.claude/skills/**/SKILL.md
 
 # Test scripts
 test-*.sh
@@ -126,10 +130,11 @@ materials/lessons/
 # 一括ignoreすると git 管理から丸ごと外れてしまう。
 
 # Claude のローカル設定・worktree（各自の環境依存なので共有しない）
-# ただしチーム共通の hooks 設定(settings.json と hooks/)だけは共有する
+# ただしチーム共通の hooks 設定(settings.json と hooks/)と運用スキル(skills/)は共有する
 .claude/*
 !.claude/settings.json
 !.claude/hooks/
+!.claude/skills/
 
 # デザイン受領物・配布物の展開先（リポジトリの成果物ではなく作業用の置き場）
 __MACOSX/

@@ -4,7 +4,7 @@
  * 稼働中のサービス(ECS/ALB/RDS)には何も変更を加えない。ARN/IDは文字列で渡す。
  *
  * Slackへの送り方は2通り。事前に Secrets Manager へ文字列で登録しておくこと。
- *   - botトークン方式(slackUsageChannel / slackAlertChannel を渡したとき)
+ *   - botトークン方式(slackUsageChannel / slackAlertChannel が空でないとき。既定は本番のチャンネル)
  *       prod/lms/slack-bot-token      botトークン(xoxb-...)。chat:write と chat:write.customize が要る
  *   - Incoming Webhook方式(チャンネルIDを渡さないとき)
  *       prod/lms/slack-usage-webhook  利用状況チャンネル
@@ -13,10 +13,7 @@
  *
  * ─── デプロイ ────────────────────────────────────────────────────
  *   cd cdk-prod
- *   ./node_modules/.bin/cdk deploy prod-SlackNotifierStack \
- *     --app 'npx ts-node --prefer-ts-exts bin/slack-notifier-app.ts' \
- *     -c slackUsageChannel=<利用状況チャンネルID> -c slackAlertChannel=<エラーチャンネルID> \
- *     --profile PowerUserAccess-840513866884
+ *   ./scripts/deploy-prod.sh deploy prod-SlackNotifierStack
  */
 
 import * as cdk from 'aws-cdk-lib';
@@ -54,8 +51,10 @@ new ProdSlackNotifierStack(app, `${envName}-SlackNotifierStack`, {
   dbAllocatedStorageGiB: Number(ctx('dbAllocatedStorageGiB', '20')),
   // 2026-10時点の実績は1日あたり約$17(t4g.medium化後)=月$520前後。通常月では鳴らない額にしている
   monthlyBudgetUsd: Number(ctx('monthlyBudgetUsd', '700')),
-  slackUsageChannel: ctx('slackUsageChannel', '') || undefined,
-  slackAlertChannel: ctx('slackAlertChannel', '') || undefined,
+  // 2026-10-14からbotトークン方式で運用中(#lms-cost-reporting / #lms-alert)。既定値を空にすると、
+  // 渡し忘れたときWebhook方式に戻ってしまう。Webhook方式に戻すときだけ -c slackUsageChannel= のように空で渡す
+  slackUsageChannel: ctx('slackUsageChannel', 'C0C9QMZHCE4') || undefined,
+  slackAlertChannel: ctx('slackAlertChannel', 'C0C8PVB76M9') || undefined,
 });
 
 app.synth();

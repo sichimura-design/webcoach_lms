@@ -18,17 +18,13 @@
  *   # us-east-1 (Lambda@Edge 用)
  *   ./node_modules/.bin/cdk bootstrap aws://840513866884/us-east-1
  *
- * ─── 全スタック一括デプロイ ───────────────────────────────────────
- *   cd cdk-prod
- *   export AWS_PROFILE=PowerUserAccess-840513866884
- *   export CDK_DEFAULT_ACCOUNT=840513866884
- *   export CDK_DEFAULT_REGION=ap-northeast-1
- *
- *   npm install
- *   ./node_modules/.bin/cdk deploy --all \
- *     --context contentTokenSecret=<prod/lms/app-secrets の contentTokenSecret> \
- *     --context moodleSiteUrl=https://webcoach.jp \
- *     --require-approval never
+ * ─── 稼働中の本番を更新するとき(2026-10-24〜) ─────────────────────
+ *   cdk deploy を直接打たず、必ず scripts/deploy-prod.sh を使う(1スタックずつ・必須の値を自動で渡す)
+ *     cd cdk-prod
+ *     ./scripts/deploy-prod.sh diff   prod-EcsStack
+ *     ./scripts/deploy-prod.sh deploy prod-EcsStack
+ *   --all での一括デプロイはしない(prod-GithubActionsStack が REPLACE_ME で更新され、
+ *   GitHub Actions のデプロイ権限が壊れる)。以下の手順は初回構築時の記録として残している。
  *
  * ─── config のデフォルト値について ───────────────────────────────
  *   allowedOrigins / moodleServiceName / moodleServiceUsername / moodleLang /
